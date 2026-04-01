@@ -4,57 +4,48 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
 import com.example.boxmanagernew.domain.model.Box
-import com.example.boxmanagernew.domain.repository.BoxRepository
 import kotlinx.coroutines.launch
 
 class BoxViewModel(
-    private val repository: BoxRepository
+    private val repository: BoxRepositoryImpl
 ) : ViewModel() {
 
     private val _boxes = MutableLiveData<List<Box>>()
     val boxes: LiveData<List<Box>> = _boxes
 
-    private var allBoxes: List<Box> = emptyList()
-    private var isAsc = true
+    private var currentList: List<Box> = emptyList()
+
+    private var isAscending = true
+    private var currentQuery: String = "" // 🔴 STATO FILTRO
 
     fun loadBoxes() {
         viewModelScope.launch {
-            allBoxes = if (isAsc) {
-                repository.getAllBoxesSortedAsc()
-            } else {
-                repository.getAllBoxesSortedDesc()
-            }
-            _boxes.postValue(allBoxes)
+            val data = repository.getAllBoxes()
+            currentList = data
+            applyFilterAndSort()
         }
-    }
-
-    fun toggleSort() {
-        isAsc = !isAsc
-        loadBoxes()
-    }
-
-    fun filter(query: String) {
-        val filtered = if (query.isBlank()) {
-            allBoxes
-        } else {
-            allBoxes.filter {
-                it.name.contains(query, ignoreCase = true)
-            }
-        }
-        _boxes.postValue(filtered)
     }
 
     fun addBox(name: String) {
         viewModelScope.launch {
-            repository.insertBox(Box(0, name))
+            val box = Box(
+                id = 0,
+                name = name
+            )
+            repository.insertBox(box)
             loadBoxes()
         }
     }
 
-    fun updateBox(id: Int, name: String) {
+    fun updateBox(id: Int, newName: String) {
         viewModelScope.launch {
-            repository.updateBox(Box(id, name))
+            val box = Box(
+                id = id,
+                name = newName
+            )
+            repository.updateBox(box)
             loadBoxes()
         }
     }
@@ -64,5 +55,45 @@ class BoxViewModel(
             repository.deleteBox(id)
             loadBoxes()
         }
+    }
+
+    fun deleteBoxes(boxes: List<Box>) {
+        viewModelScope.launch {
+            boxes.forEach {
+                repository.deleteBox(it.id)
+            }
+            loadBoxes()
+        }
+    }
+
+    fun toggleSort() {
+        isAscending = !isAscending
+        applyFilterAndSort()
+    }
+
+    fun filter(query: String) {
+        currentQuery = query
+        applyFilterAndSort()
+    }
+
+    // 🔴 CORE LOGIC CENTRALIZZATA
+    private fun applyFilterAndSort() {
+        var result = currentList
+
+        // filtro
+        if (currentQuery.isNotBlank()) {
+            result = result.filter {
+                it.name.contains(currentQuery, ignoreCase = true)
+            }
+        }
+
+        // ordinamento
+        result = if (isAscending) {
+            result.sortedBy { it.name }
+        } else {
+            result.sortedByDescending { it.name }
+        }
+
+        _boxes.value = result
     }
 }

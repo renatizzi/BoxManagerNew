@@ -1,13 +1,17 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.boxmanagernew">
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
         android:allowBackup="true"
         android:label="BoxManagerNew"
-        android:theme="@style/Theme.Material3.DayNight.NoActionBar">
+        android:theme="@style/Theme.BoxManagerNew">
+
+        <activity android:name=".ui.categories.CategoriesActivity" />
+        <activity android:name=".ui.dashboard.DashboardActivity" />
+        <activity android:name=".ui.settings.SettingsActivity" />
 
         <activity
-            android:name="com.example.boxmanagernew.MainActivity"
+            android:name=".MainActivity"
             android:exported="true">
 
             <intent-filter>

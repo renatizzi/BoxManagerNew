@@ -9,14 +9,20 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.boxmanagernew.data.local.DatabaseProvider
 import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
+import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.example.boxmanagernew.ui.main.BoxAdapter
 import com.example.boxmanagernew.ui.main.BoxViewModel
 
@@ -24,16 +30,36 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: BoxViewModel
     private lateinit var adapter: BoxAdapter
+    private lateinit var buttonDeleteSelected: Button
+    private lateinit var textSelectionCount: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
         setContentView(R.layout.activity_main)
+
+        val root = findViewById<View>(android.R.id.content)
+        ViewCompat.setOnApplyWindowInsetsListener(root) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(
+                systemBars.left,
+                systemBars.top,
+                systemBars.right,
+                systemBars.bottom
+            )
+            insets
+        }
 
         val editText = findViewById<EditText>(R.id.editTextBox)
         val editSearch = findViewById<EditText>(R.id.editTextSearch)
         val button = findViewById<Button>(R.id.buttonAdd)
         val buttonSort = findViewById<Button>(R.id.buttonSort)
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewBoxes)
+
+        buttonDeleteSelected = findViewById(R.id.btnDeleteSelected)
+        textSelectionCount = findViewById(R.id.textSelectionCount)
 
         val db = DatabaseProvider.getDatabase(applicationContext)
         val dao = db.boxDao()
@@ -45,15 +71,44 @@ class MainActivity : AppCompatActivity() {
             }
         })[BoxViewModel::class.java]
 
-        adapter = BoxAdapter(emptyList()) { box ->
-            showEditDialog(box.id, box.name)
-        }
+        adapter = BoxAdapter(
+            items = emptyList(),
+            onClick = { box -> showEditDialog(box.id, box.name) },
+            onEdit = { box -> showEditDialog(box.id, box.name) },
+            onDelete = { box -> showDeleteDialog(box.id) }
+        )
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
-        viewModel.boxes.observe(this) { boxes ->
-            adapter.updateData(boxes)
+        adapter.onSelectionChanged = { count ->
+            if (count > 0) {
+                buttonDeleteSelected.visibility = View.VISIBLE
+                textSelectionCount.visibility = View.VISIBLE
+                textSelectionCount.text = "$count selezionati"
+            } else {
+                buttonDeleteSelected.visibility = View.GONE
+                textSelectionCount.visibility = View.GONE
+            }
+        }
+
+        buttonDeleteSelected.setOnClickListener {
+            val selectedItems = adapter.getSelectedItems()
+            if (selectedItems.isEmpty()) return@setOnClickListener
+
+            AlertDialog.Builder(this)
+                .setTitle("Conferma eliminazione")
+                .setMessage("Eliminare ${selectedItems.size} elementi?")
+                .setPositiveButton("Sì") { _, _ ->
+                    viewModel.deleteBoxes(selectedItems)
+                    adapter.clearSelection()
+                }
+                .setNegativeButton("No", null)
+                .show()
+        }
+
+        viewModel.boxes.observe(this) {
+            adapter.updateData(it)
         }
 
         viewModel.loadBoxes()
@@ -65,30 +120,24 @@ class MainActivity : AppCompatActivity() {
         editSearch.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 val query = s.toString()
-
                 viewModel.filter(query)
 
                 if (query.isBlank()) {
-                    button.visibility = View.VISIBLE
                     editSearch.clearFocus()
                     hideKeyboard(editSearch)
-                } else {
-                    button.visibility = View.GONE
                 }
             }
+
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
-        // ENTER su campo input
         editText.setOnEditorActionListener { v, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 val text = v.text.toString().trim()
                 if (text.isNotBlank()) {
                     viewModel.addBox(text)
                     editText.text.clear()
-
-                    // FIX: chiudi tastiera
                     editText.clearFocus()
                     hideKeyboard(editText)
                 }
@@ -96,18 +145,29 @@ class MainActivity : AppCompatActivity() {
             } else false
         }
 
-        // Click bottone aggiungi
         button.setOnClickListener {
             val text = editText.text.toString().trim()
             if (text.isNotBlank()) {
                 viewModel.addBox(text)
                 editText.text.clear()
-
-                // FIX: chiudi tastiera
                 editText.clearFocus()
                 hideKeyboard(editText)
             }
         }
+
+        // 🔴 Bottom Nav centralizzata
+        BottomNavManager.setup(this, BottomNavManager.TAB_BOXES)
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val selectedItems = adapter.getSelectedItems()
+                if (selectedItems.isNotEmpty()) {
+                    adapter.clearSelection()
+                } else {
+                    finish()
+                }
+            }
+        })
     }
 
     private fun hideKeyboard(view: View) {
@@ -119,7 +179,7 @@ class MainActivity : AppCompatActivity() {
         val input = EditText(this)
         input.setText(currentName)
 
-        val dialog = AlertDialog.Builder(this)
+        AlertDialog.Builder(this)
             .setTitle("Modifica nome")
             .setView(input)
             .setPositiveButton("Salva") { _, _ ->
@@ -129,22 +189,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             .setNegativeButton("Annulla", null)
-            .setNeutralButton("Elimina") { _, _ ->
-                showDeleteDialog(id)
-            }
-            .create()
-
-        dialog.setOnShowListener {
-            input.requestFocus()
-        }
-
-        dialog.show()
-
-        // FIX: chiudi tastiera quando chiudi dialog
-        dialog.setOnDismissListener {
-            input.clearFocus()
-            hideKeyboard(input)
-        }
+            .show()
     }
 
     private fun showDeleteDialog(id: Int) {

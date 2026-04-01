@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bottomNav"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="#FFFFFF"
+    android:elevation="8dp"
+    android:weightSum="4"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+
+    <TextView
+        android:id="@+id/navDashboard"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="Dashboard"
+        android:textColor="#888888"
+        android:clickable="true"
+        android:focusable="true" />
+
+    <TextView
+        android:id="@+id/navBoxes"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="Contenitori"
+        android:textColor="#888888"
+        android:clickable="true"
+        android:focusable="true" />
+
+    <TextView
+        android:id="@+id/navCategories"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="Categorie"
+        android:textColor="#888888"
+        android:clickable="true"
+        android:focusable="true" />
+
+    <TextView
+        android:id="@+id/navSettings"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="Impostazioni"
+        android:textColor="#888888"
+        android:clickable="true"
+        android:focusable="true" />
+
+</LinearLayout>
