@@ -37,7 +37,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
-
         setContentView(R.layout.activity_main)
 
         val root = findViewById<View>(android.R.id.content)
@@ -114,6 +113,8 @@ class MainActivity : AppCompatActivity() {
         viewModel.loadBoxes()
 
         buttonSort.setOnClickListener {
+            hideKeyboard(it)
+            editSearch.clearFocus()
             viewModel.toggleSort()
         }
 
@@ -137,6 +138,10 @@ class MainActivity : AppCompatActivity() {
                 val text = v.text.toString().trim()
                 if (text.isNotBlank()) {
                     viewModel.addBox(text)
+
+                    // 🔴 RESET RICERCA
+                    editSearch.setText("")
+
                     editText.text.clear()
                     editText.clearFocus()
                     hideKeyboard(editText)
@@ -149,13 +154,16 @@ class MainActivity : AppCompatActivity() {
             val text = editText.text.toString().trim()
             if (text.isNotBlank()) {
                 viewModel.addBox(text)
+
+                // 🔴 RESET RICERCA
+                editSearch.setText("")
+
                 editText.text.clear()
                 editText.clearFocus()
                 hideKeyboard(editText)
             }
         }
 
-        // 🔴 Bottom Nav centralizzata
         BottomNavManager.setup(this, BottomNavManager.TAB_BOXES)
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
