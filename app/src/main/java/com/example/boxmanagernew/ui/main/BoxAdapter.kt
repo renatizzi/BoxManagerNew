@@ -43,7 +43,10 @@ class BoxAdapter(
         val isSelected = selectedItems.contains(box)
         holder.itemView.alpha = if (isSelected) 0.5f else 1.0f
 
-        // 🔴 CLICK SOLO AREA CONTENUTO
+        // 👉 NASCONDE MENU IN SELEZIONE
+        holder.textMenu.visibility = if (selectionMode) View.GONE else View.VISIBLE
+
+        // CLICK
         holder.contentArea.setOnClickListener {
             if (selectionMode) {
                 toggleSelection(box)
@@ -58,9 +61,10 @@ class BoxAdapter(
             true
         }
 
-        // 🔴 MENU ISOLATO
+        // MENU
         holder.textMenu.setOnClickListener { view ->
             val popup = PopupMenu(view.context, view)
+
             popup.menu.add("Modifica")
             popup.menu.add("Elimina")
 
