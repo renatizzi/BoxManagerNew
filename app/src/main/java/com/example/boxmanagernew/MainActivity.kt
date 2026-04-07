@@ -84,7 +84,15 @@ class MainActivity : AppCompatActivity() {
             if (count > 0) {
                 buttonDeleteSelected.visibility = View.VISIBLE
                 textSelectionCount.visibility = View.VISIBLE
-                textSelectionCount.text = "$count selezionati"
+
+                // ✅ FIX UX
+                val text = if (count == 1) {
+                    "1 selezionato"
+                } else {
+                    "$count selezionati"
+                }
+
+                textSelectionCount.text = text
             } else {
                 buttonDeleteSelected.visibility = View.GONE
                 textSelectionCount.visibility = View.GONE
@@ -139,7 +147,6 @@ class MainActivity : AppCompatActivity() {
                 if (text.isNotBlank()) {
                     viewModel.addBox(text)
 
-                    // 🔴 RESET RICERCA
                     editSearch.setText("")
 
                     editText.text.clear()
@@ -155,7 +162,6 @@ class MainActivity : AppCompatActivity() {
             if (text.isNotBlank()) {
                 viewModel.addBox(text)
 
-                // 🔴 RESET RICERCA
                 editSearch.setText("")
 
                 editText.text.clear()
