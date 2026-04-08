@@ -20,9 +20,8 @@ class BoxViewModel(
     private var isAscending = true
     private var currentQuery: String = ""
 
-    // ✅ STATO SELEZIONE
-    private val _selectedItems = MutableLiveData<Set<Box>>(emptySet())
-    val selectedItems: LiveData<Set<Box>> = _selectedItems
+    private val _selectedItems = MutableLiveData<Set<Int>>(emptySet())
+    val selectedItems: LiveData<Set<Int>> = _selectedItems
 
     private val _selectionMode = MutableLiveData(false)
     val selectionMode: LiveData<Boolean> = _selectionMode
@@ -32,13 +31,11 @@ class BoxViewModel(
             val data = repository.getAllBoxes()
             currentList = data
 
-            // ✅ FIX: riallineamento selezione dopo reload
             val currentSelected = _selectedItems.value ?: emptySet()
 
             if (currentSelected.isNotEmpty()) {
-                val updatedSelection = data.filter { newBox ->
-                    currentSelected.any { it.id == newBox.id }
-                }.toSet()
+                val validIds = data.map { it.id }.toSet()
+                val updatedSelection = currentSelected.intersect(validIds)
 
                 _selectedItems.value = updatedSelection
                 _selectionMode.value = updatedSelection.isNotEmpty()
@@ -50,10 +47,7 @@ class BoxViewModel(
 
     fun addBox(name: String) {
         viewModelScope.launch {
-            val box = Box(
-                id = 0,
-                name = name
-            )
+            val box = Box(id = 0, name = name)
             repository.insertBox(box)
             loadBoxes()
         }
@@ -61,10 +55,7 @@ class BoxViewModel(
 
     fun updateBox(id: Int, newName: String) {
         viewModelScope.launch {
-            val box = Box(
-                id = id,
-                name = newName
-            )
+            val box = Box(id = id, name = newName)
             repository.updateBox(box)
             loadBoxes()
         }
@@ -77,11 +68,9 @@ class BoxViewModel(
         }
     }
 
-    fun deleteBoxes(boxes: List<Box>) {
+    fun deleteBoxes(ids: List<Int>) {
         viewModelScope.launch {
-            boxes.forEach {
-                repository.deleteBox(it.id)
-            }
+            ids.forEach { repository.deleteBox(it) }
             clearSelection()
             loadBoxes()
         }
@@ -101,10 +90,10 @@ class BoxViewModel(
         val current = _selectedItems.value ?: emptySet()
         val updated = current.toMutableSet()
 
-        if (updated.contains(box)) {
-            updated.remove(box)
+        if (updated.contains(box.id)) {
+            updated.remove(box.id)
         } else {
-            updated.add(box)
+            updated.add(box.id)
         }
 
         _selectedItems.value = updated

@@ -17,7 +17,7 @@ class BoxAdapter(
     private val onToggleSelection: (Box) -> Unit
 ) : RecyclerView.Adapter<BoxAdapter.BoxViewHolder>() {
 
-    private var selectedItems: Set<Box> = emptySet()
+    private var selectedIds: Set<Int> = emptySet()
     private var selectionMode: Boolean = false
 
     inner class BoxViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -39,10 +39,9 @@ class BoxAdapter(
         holder.textBoxName.text = box.name
         holder.textSubtitle.text = "Categoria - Posizione"
 
-        val isSelected = selectedItems.contains(box)
+        val isSelected = selectedIds.contains(box.id)
         holder.itemView.alpha = if (isSelected) 0.5f else 1.0f
 
-        // menu visibile solo fuori selezione
         holder.textMenu.visibility = if (selectionMode) View.GONE else View.VISIBLE
 
         holder.contentArea.setOnClickListener {
@@ -83,12 +82,11 @@ class BoxAdapter(
         notifyDataSetChanged()
     }
 
-    // ✅ NUOVO: stato dall’esterno
     fun updateSelection(
-        selected: Set<Box>,
+        selectedIds: Set<Int>,
         selectionMode: Boolean
     ) {
-        this.selectedItems = selected
+        this.selectedIds = selectedIds
         this.selectionMode = selectionMode
         notifyDataSetChanged()
     }

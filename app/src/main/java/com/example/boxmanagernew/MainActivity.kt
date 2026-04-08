@@ -90,25 +90,20 @@ class MainActivity : AppCompatActivity() {
             adapter.updateData(it)
         }
 
-        // ✅ FIX DEFINITIVO
-        viewModel.selectedItems.observe(this) { selected ->
-            val count = selected.size
+        viewModel.selectedItems.observe(this) { selectedIds ->
+            val count = selectedIds.size
 
             if (count > 0) {
                 selectionBar.visibility = View.VISIBLE
-
                 textSelectionCount.text =
-                    if (count == 1) "1 selezionato"
-                    else "$count selezionati"
-
+                    if (count == 1) "1 selezionato" else "$count selezionati"
             } else {
                 selectionBar.visibility = View.GONE
             }
 
             val mode = viewModel.selectionMode.value ?: false
-            adapter.updateSelection(selected, mode)
+            adapter.updateSelection(selectedIds, mode)
 
-            // ✅ SOLUZIONE PULITA: riallinea lista
             recyclerView.post {
                 (recyclerView.layoutManager as LinearLayoutManager)
                     .scrollToPositionWithOffset(0, 0)
@@ -121,14 +116,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         buttonDeleteSelected.setOnClickListener {
-            val selectedItems = viewModel.selectedItems.value?.toList() ?: emptyList()
-            if (selectedItems.isEmpty()) return@setOnClickListener
+            val selectedIds = viewModel.selectedItems.value?.toList() ?: emptyList()
+            if (selectedIds.isEmpty()) return@setOnClickListener
 
             AlertDialog.Builder(this)
                 .setTitle("Conferma eliminazione")
-                .setMessage("Eliminare ${selectedItems.size} elementi?")
+                .setMessage("Eliminare ${selectedIds.size} elementi?")
                 .setPositiveButton("Sì") { _, _ ->
-                    viewModel.deleteBoxes(selectedItems)
+                    viewModel.deleteBoxes(selectedIds)
                 }
                 .setNegativeButton("No", null)
                 .show()
@@ -162,9 +157,7 @@ class MainActivity : AppCompatActivity() {
                 val text = v.text.toString().trim()
                 if (text.isNotBlank()) {
                     viewModel.addBox(text)
-
                     editSearch.setText("")
-
                     editText.text.clear()
                     editText.clearFocus()
                     hideKeyboard(editText)
@@ -177,9 +170,7 @@ class MainActivity : AppCompatActivity() {
             val text = editText.text.toString().trim()
             if (text.isNotBlank()) {
                 viewModel.addBox(text)
-
                 editSearch.setText("")
-
                 editText.text.clear()
                 editText.clearFocus()
                 hideKeyboard(editText)
