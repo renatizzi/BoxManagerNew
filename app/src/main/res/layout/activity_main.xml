@@ -7,115 +7,120 @@
     android:orientation="vertical"
     android:background="#FAFAFA">
 
-    <!-- CONTENUTO -->
-    <ScrollView
+    <!-- HEADER -->
+    <LinearLayout
+        android:id="@+id/headerContainer"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <LinearLayout
+        <!-- TITOLO -->
+        <TextView
+            android:id="@+id/textTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Contenitori"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Archivio locale"
+            android:textSize="13sp"
+            android:textColor="#888888"
+            android:layout_marginBottom="16dp" />
+
+        <!-- CONTATORE -->
+        <TextView
+            android:id="@+id/textSelectionCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0 selezionati"
+            android:visibility="gone"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- DELETE -->
+        <Button
+            android:id="@+id/btnDeleteSelected"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:text="Elimina selezionati"
+            android:visibility="gone"
+            android:layout_marginBottom="12dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Contenitori"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+        <!-- ADD -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            card_view:cardCornerRadius="16dp"
+            card_view:cardElevation="3dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Archivio locale"
-                android:textSize="13sp"
-                android:textColor="#888888"
-                android:layout_marginBottom="16dp"/>
-
-            <androidx.cardview.widget.CardView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                card_view:cardCornerRadius="16dp"
-                card_view:cardElevation="3dp">
+                android:orientation="vertical"
+                android:padding="14dp">
 
-                <LinearLayout
+                <EditText
+                    android:id="@+id/editTextBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="14dp">
+                    android:hint="Inserisci nome box"
+                    android:layout_marginBottom="8dp"/>
 
-                    <EditText
-                        android:id="@+id/editTextBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Inserisci nome box"
-                        android:layout_marginBottom="8dp"/>
-
-                    <Button
-                        android:id="@+id/buttonAdd"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Aggiungi" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                card_view:cardCornerRadius="16dp"
-                card_view:cardElevation="3dp">
-
-                <LinearLayout
+                <Button
+                    android:id="@+id/buttonAdd"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="14dp">
+                    android:text="Aggiungi" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
-                    <EditText
-                        android:id="@+id/editTextSearch"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Cerca..."
-                        android:layout_marginBottom="8dp"/>
+        <!-- SEARCH -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            card_view:cardCornerRadius="16dp"
+            card_view:cardElevation="3dp">
 
-                    <Button
-                        android:id="@+id/buttonSort"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Ordina" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <TextView
-                android:id="@+id/textSelectionCount"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="0 selezionati"
-                android:visibility="gone"
-                android:textStyle="bold"
-                android:padding="8dp" />
+                android:orientation="vertical"
+                android:padding="14dp">
 
-            <Button
-                android:id="@+id/btnDeleteSelected"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Elimina selezionati"
-                android:visibility="gone"
-                android:layout_marginBottom="12dp" />
+                <EditText
+                    android:id="@+id/editTextSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Cerca..."
+                    android:layout_marginBottom="8dp"/>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewBoxes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                <Button
+                    android:id="@+id/buttonSort"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ordina" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
-        </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
 
-    <!-- 🔴 BOTTOM NAV CONDIVISA -->
+    <!-- LISTA -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewBoxes"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="8dp" />
+
+    <!-- BOTTOM NAV -->
     <include layout="@layout/layout_bottom_nav" />
 
 </LinearLayout>

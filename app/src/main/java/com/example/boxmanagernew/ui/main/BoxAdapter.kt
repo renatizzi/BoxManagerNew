@@ -13,13 +13,12 @@ class BoxAdapter(
     private var items: List<Box>,
     private val onClick: (Box) -> Unit,
     private val onEdit: (Box) -> Unit,
-    private val onDelete: (Box) -> Unit
+    private val onDelete: (Box) -> Unit,
+    private val onToggleSelection: (Box) -> Unit
 ) : RecyclerView.Adapter<BoxAdapter.BoxViewHolder>() {
 
-    private val selectedItems = mutableSetOf<Box>()
-    private var selectionMode = false
-
-    var onSelectionChanged: ((Int) -> Unit)? = null
+    private var selectedItems: Set<Box> = emptySet()
+    private var selectionMode: Boolean = false
 
     inner class BoxViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val contentArea: View = itemView.findViewById(R.id.contentArea)
@@ -43,25 +42,22 @@ class BoxAdapter(
         val isSelected = selectedItems.contains(box)
         holder.itemView.alpha = if (isSelected) 0.5f else 1.0f
 
-        // 👉 NASCONDE MENU IN SELEZIONE
+        // menu visibile solo fuori selezione
         holder.textMenu.visibility = if (selectionMode) View.GONE else View.VISIBLE
 
-        // CLICK
         holder.contentArea.setOnClickListener {
             if (selectionMode) {
-                toggleSelection(box)
+                onToggleSelection(box)
             } else {
                 onClick(box)
             }
         }
 
         holder.contentArea.setOnLongClickListener {
-            selectionMode = true
-            toggleSelection(box)
+            onToggleSelection(box)
             true
         }
 
-        // MENU
         holder.textMenu.setOnClickListener { view ->
             val popup = PopupMenu(view.context, view)
 
@@ -84,31 +80,16 @@ class BoxAdapter(
 
     fun updateData(newItems: List<Box>) {
         items = newItems
-        clearSelection()
         notifyDataSetChanged()
     }
 
-    private fun toggleSelection(box: Box) {
-        if (selectedItems.contains(box)) {
-            selectedItems.remove(box)
-        } else {
-            selectedItems.add(box)
-        }
-
-        if (selectedItems.isEmpty()) {
-            selectionMode = false
-        }
-
+    // ✅ NUOVO: stato dall’esterno
+    fun updateSelection(
+        selected: Set<Box>,
+        selectionMode: Boolean
+    ) {
+        this.selectedItems = selected
+        this.selectionMode = selectionMode
         notifyDataSetChanged()
-        onSelectionChanged?.invoke(selectedItems.size)
-    }
-
-    fun getSelectedItems(): List<Box> = selectedItems.toList()
-
-    fun clearSelection() {
-        selectedItems.clear()
-        selectionMode = false
-        notifyDataSetChanged()
-        onSelectionChanged?.invoke(0)
     }
 }

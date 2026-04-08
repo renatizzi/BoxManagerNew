@@ -70,37 +70,50 @@ class MainActivity : AppCompatActivity() {
             }
         })[BoxViewModel::class.java]
 
+        // ✅ ADAPTER STATELESS
         adapter = BoxAdapter(
             items = emptyList(),
             onClick = { box -> showEditDialog(box.id, box.name) },
             onEdit = { box -> showEditDialog(box.id, box.name) },
-            onDelete = { box -> showDeleteDialog(box.id) }
+            onDelete = { box -> showDeleteDialog(box.id) },
+            onToggleSelection = { box ->
+                viewModel.toggleSelection(box)
+            }
         )
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
-        adapter.onSelectionChanged = { count ->
+        // ✅ OSSERVA LISTA
+        viewModel.boxes.observe(this) {
+            adapter.updateData(it)
+        }
+
+        // ✅ OSSERVA SELEZIONE (CUORE DEL FIX)
+        viewModel.selectedItems.observe(this) { selected ->
+            val mode = viewModel.selectionMode.value ?: false
+            adapter.updateSelection(selected, mode)
+
+            val count = selected.size
             if (count > 0) {
                 buttonDeleteSelected.visibility = View.VISIBLE
                 textSelectionCount.visibility = View.VISIBLE
 
-                // ✅ FIX UX
-                val text = if (count == 1) {
-                    "1 selezionato"
-                } else {
-                    "$count selezionati"
-                }
-
-                textSelectionCount.text = text
+                textSelectionCount.text =
+                    if (count == 1) "1 selezionato" else "$count selezionati"
             } else {
                 buttonDeleteSelected.visibility = View.GONE
                 textSelectionCount.visibility = View.GONE
             }
         }
 
+        viewModel.selectionMode.observe(this) { mode ->
+            val selected = viewModel.selectedItems.value ?: emptySet()
+            adapter.updateSelection(selected, mode)
+        }
+
         buttonDeleteSelected.setOnClickListener {
-            val selectedItems = adapter.getSelectedItems()
+            val selectedItems = viewModel.selectedItems.value?.toList() ?: emptyList()
             if (selectedItems.isEmpty()) return@setOnClickListener
 
             AlertDialog.Builder(this)
@@ -108,14 +121,9 @@ class MainActivity : AppCompatActivity() {
                 .setMessage("Eliminare ${selectedItems.size} elementi?")
                 .setPositiveButton("Sì") { _, _ ->
                     viewModel.deleteBoxes(selectedItems)
-                    adapter.clearSelection()
                 }
                 .setNegativeButton("No", null)
                 .show()
-        }
-
-        viewModel.boxes.observe(this) {
-            adapter.updateData(it)
         }
 
         viewModel.loadBoxes()
@@ -174,9 +182,9 @@ class MainActivity : AppCompatActivity() {
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                val selectedItems = adapter.getSelectedItems()
-                if (selectedItems.isNotEmpty()) {
-                    adapter.clearSelection()
+                val selected = viewModel.selectedItems.value ?: emptySet()
+                if (selected.isNotEmpty()) {
+                    viewModel.clearSelection()
                 } else {
                     finish()
                 }
