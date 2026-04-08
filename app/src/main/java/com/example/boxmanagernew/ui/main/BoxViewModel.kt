@@ -20,7 +20,7 @@ class BoxViewModel(
     private var isAscending = true
     private var currentQuery: String = ""
 
-    // ✅ NUOVO: stato selezione persistente
+    // ✅ STATO SELEZIONE
     private val _selectedItems = MutableLiveData<Set<Box>>(emptySet())
     val selectedItems: LiveData<Set<Box>> = _selectedItems
 
@@ -31,6 +31,19 @@ class BoxViewModel(
         viewModelScope.launch {
             val data = repository.getAllBoxes()
             currentList = data
+
+            // ✅ FIX: riallineamento selezione dopo reload
+            val currentSelected = _selectedItems.value ?: emptySet()
+
+            if (currentSelected.isNotEmpty()) {
+                val updatedSelection = data.filter { newBox ->
+                    currentSelected.any { it.id == newBox.id }
+                }.toSet()
+
+                _selectedItems.value = updatedSelection
+                _selectionMode.value = updatedSelection.isNotEmpty()
+            }
+
             applyFilterAndSort()
         }
     }
@@ -84,7 +97,6 @@ class BoxViewModel(
         applyFilterAndSort()
     }
 
-    // ✅ NUOVO: gestione selezione
     fun toggleSelection(box: Box) {
         val current = _selectedItems.value ?: emptySet()
         val updated = current.toMutableSet()
@@ -104,7 +116,6 @@ class BoxViewModel(
         _selectionMode.value = false
     }
 
-    // 🔴 CORE LOGIC
     private fun applyFilterAndSort() {
         var result = currentList
 

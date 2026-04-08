@@ -32,6 +32,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var adapter: BoxAdapter
     private lateinit var buttonDeleteSelected: Button
     private lateinit var textSelectionCount: TextView
+    private lateinit var selectionBar: View
+    private lateinit var recyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,10 +57,11 @@ class MainActivity : AppCompatActivity() {
         val editSearch = findViewById<EditText>(R.id.editTextSearch)
         val button = findViewById<Button>(R.id.buttonAdd)
         val buttonSort = findViewById<Button>(R.id.buttonSort)
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewBoxes)
+        recyclerView = findViewById(R.id.recyclerViewBoxes)
 
         buttonDeleteSelected = findViewById(R.id.btnDeleteSelected)
         textSelectionCount = findViewById(R.id.textSelectionCount)
+        selectionBar = findViewById(R.id.selectionBar)
 
         val db = DatabaseProvider.getDatabase(applicationContext)
         val dao = db.boxDao()
@@ -70,7 +73,6 @@ class MainActivity : AppCompatActivity() {
             }
         })[BoxViewModel::class.java]
 
-        // ✅ ADAPTER STATELESS
         adapter = BoxAdapter(
             items = emptyList(),
             onClick = { box -> showEditDialog(box.id, box.name) },
@@ -84,26 +86,32 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
-        // ✅ OSSERVA LISTA
         viewModel.boxes.observe(this) {
             adapter.updateData(it)
         }
 
-        // ✅ OSSERVA SELEZIONE (CUORE DEL FIX)
+        // ✅ FIX DEFINITIVO
         viewModel.selectedItems.observe(this) { selected ->
+            val count = selected.size
+
+            if (count > 0) {
+                selectionBar.visibility = View.VISIBLE
+
+                textSelectionCount.text =
+                    if (count == 1) "1 selezionato"
+                    else "$count selezionati"
+
+            } else {
+                selectionBar.visibility = View.GONE
+            }
+
             val mode = viewModel.selectionMode.value ?: false
             adapter.updateSelection(selected, mode)
 
-            val count = selected.size
-            if (count > 0) {
-                buttonDeleteSelected.visibility = View.VISIBLE
-                textSelectionCount.visibility = View.VISIBLE
-
-                textSelectionCount.text =
-                    if (count == 1) "1 selezionato" else "$count selezionati"
-            } else {
-                buttonDeleteSelected.visibility = View.GONE
-                textSelectionCount.visibility = View.GONE
+            // ✅ SOLUZIONE PULITA: riallinea lista
+            recyclerView.post {
+                (recyclerView.layoutManager as LinearLayoutManager)
+                    .scrollToPositionWithOffset(0, 0)
             }
         }
 
