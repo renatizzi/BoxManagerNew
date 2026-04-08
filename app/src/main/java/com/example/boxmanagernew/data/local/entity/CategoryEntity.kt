@@ -11,5 +11,5 @@ data class CategoryEntity(
 
     val name: String,
 
-    val createdAt: Long = System.currentTimeMillis()
+    val icon: String
 )
