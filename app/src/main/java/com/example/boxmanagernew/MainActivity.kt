@@ -1,6 +1,7 @@
 package com.example.boxmanagernew
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -22,6 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.boxmanagernew.data.local.DatabaseProvider
 import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
+import com.example.boxmanagernew.ui.categories.CategoriesActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.example.boxmanagernew.ui.main.BoxAdapter
 import com.example.boxmanagernew.ui.main.BoxViewModel
@@ -178,6 +180,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         BottomNavManager.setup(this, BottomNavManager.TAB_BOXES)
+
+        findViewById<View>(R.id.navCategories).setOnClickListener {
+            startActivity(Intent(this, CategoriesActivity::class.java))
+        }
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
