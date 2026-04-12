@@ -24,10 +24,6 @@ import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.example.boxmanagernew.ui.main.BoxAdapter
 import com.example.boxmanagernew.ui.main.BoxViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
 
@@ -67,19 +63,9 @@ class MainActivity : AppCompatActivity() {
         val categoryDao = db.categoryDao()
         val repository = BoxRepositoryImpl(dao)
 
-        // 🔴 LOAD CATEGORIES
-        categoryDao.getAllCategories().observe(this) {
-            categories = it
-        }
-
-        viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return BoxViewModel(repository) as T
-            }
-        })[BoxViewModel::class.java]
-
         adapter = BoxAdapter(
             items = emptyList(),
+            categories = emptyList(),
             onClick = { box -> showEditDialog(box.id, box.name) },
             onEdit = { box -> showEditDialog(box.id, box.name) },
             onDelete = { box -> showDeleteDialog(box.id) },
@@ -88,6 +74,17 @@ class MainActivity : AppCompatActivity() {
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
+
+        categoryDao.getAllCategories().observe(this) {
+            categories = it
+            adapter.updateCategories(it)
+        }
+
+        viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return BoxViewModel(repository) as T
+            }
+        })[BoxViewModel::class.java]
 
         viewModel.boxes.observe(this) {
             adapter.updateData(it)
@@ -179,12 +176,11 @@ class MainActivity : AppCompatActivity() {
                 val name = inputName.text.toString().trim()
                 if (name.isNotBlank() && categories.isNotEmpty()) {
 
-                    val selectedIndex = spinner.selectedItemPosition
-                    val categoryId = categories[selectedIndex].id
+                    val selectedCategory = categories[spinner.selectedItemPosition]
 
                     viewModel.addBox(
                         name = name,
-                        categoryId = categoryId,
+                        categoryId = selectedCategory.id,
                         position = ""
                     )
                 }
