@@ -7,5 +7,8 @@ import androidx.room.PrimaryKey
 data class BoxEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val name: String
+    val name: String,
+    val categoryId: Int,
+    val position: String,
+    val lastModified: Long
 )

@@ -45,17 +45,31 @@ class BoxViewModel(
         }
     }
 
-    fun addBox(name: String) {
+    fun addBox(name: String, categoryId: Int, position: String) {
         viewModelScope.launch {
-            val box = Box(id = 0, name = name)
+            val box = Box(
+                id = 0,
+                name = name,
+                description = null,
+                categoryId = categoryId,
+                position = position,
+                lastModified = System.currentTimeMillis()
+            )
             repository.insertBox(box)
             loadBoxes()
         }
     }
 
-    fun updateBox(id: Int, newName: String) {
+    fun updateBox(id: Int, newName: String, categoryId: Int, position: String) {
         viewModelScope.launch {
-            val box = Box(id = id, name = newName)
+            val box = Box(
+                id = id,
+                name = newName,
+                description = null,
+                categoryId = categoryId,
+                position = position,
+                lastModified = System.currentTimeMillis()
+            )
             repository.updateBox(box)
             loadBoxes()
         }

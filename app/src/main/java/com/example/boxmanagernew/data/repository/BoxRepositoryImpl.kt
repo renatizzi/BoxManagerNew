@@ -10,27 +10,70 @@ class BoxRepositoryImpl(
 ) : BoxRepository {
 
     override suspend fun getAllBoxes(): List<Box> {
-        return boxDao.getAll().map { Box(it.id, it.name) }
+        return boxDao.getAll().map {
+            Box(
+                id = it.id,
+                name = it.name,
+                description = null,
+                categoryId = it.categoryId,
+                position = it.position,
+                lastModified = it.lastModified
+            )
+        }
     }
 
     override suspend fun getAllBoxesSortedAsc(): List<Box> {
         return boxDao.getAll()
             .sortedBy { it.name.lowercase() }
-            .map { Box(it.id, it.name) }
+            .map {
+                Box(
+                    id = it.id,
+                    name = it.name,
+                    description = null,
+                    categoryId = it.categoryId,
+                    position = it.position,
+                    lastModified = it.lastModified
+                )
+            }
     }
 
     override suspend fun getAllBoxesSortedDesc(): List<Box> {
         return boxDao.getAll()
             .sortedByDescending { it.name.lowercase() }
-            .map { Box(it.id, it.name) }
+            .map {
+                Box(
+                    id = it.id,
+                    name = it.name,
+                    description = null,
+                    categoryId = it.categoryId,
+                    position = it.position,
+                    lastModified = it.lastModified
+                )
+            }
     }
 
     override suspend fun insertBox(box: Box) {
-        boxDao.insert(BoxEntity(0, box.name))
+        boxDao.insert(
+            BoxEntity(
+                id = 0,
+                name = box.name,
+                categoryId = box.categoryId,
+                position = box.position,
+                lastModified = box.lastModified
+            )
+        )
     }
 
     override suspend fun updateBox(box: Box) {
-        boxDao.update(BoxEntity(box.id, box.name))
+        boxDao.update(
+            BoxEntity(
+                id = box.id,
+                name = box.name,
+                categoryId = box.categoryId,
+                position = box.position,
+                lastModified = box.lastModified
+            )
+        )
     }
 
     override suspend fun deleteBox(id: Int) {

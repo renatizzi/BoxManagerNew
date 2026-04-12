@@ -158,7 +158,11 @@ class MainActivity : AppCompatActivity() {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 val text = v.text.toString().trim()
                 if (text.isNotBlank()) {
-                    viewModel.addBox(text)
+                    viewModel.addBox(
+                        name = text,
+                        categoryId = 1,
+                        position = ""
+                    )
                     editSearch.setText("")
                     editText.text.clear()
                     editText.clearFocus()
@@ -171,7 +175,11 @@ class MainActivity : AppCompatActivity() {
         button.setOnClickListener {
             val text = editText.text.toString().trim()
             if (text.isNotBlank()) {
-                viewModel.addBox(text)
+                viewModel.addBox(
+                    name = text,
+                    categoryId = 1,
+                    position = ""
+                )
                 editSearch.setText("")
                 editText.text.clear()
                 editText.clearFocus()
@@ -212,7 +220,12 @@ class MainActivity : AppCompatActivity() {
             .setPositiveButton("Salva") { _, _ ->
                 val newName = input.text.toString().trim()
                 if (newName.isNotBlank()) {
-                    viewModel.updateBox(id, newName)
+                    viewModel.updateBox(
+                        id = id,
+                        newName = newName,
+                        categoryId = 1,
+                        position = ""
+                    )
                 }
             }
             .setNegativeButton("Annulla", null)
