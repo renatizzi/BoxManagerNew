@@ -7,10 +7,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.boxmanagernew.R
-import com.example.boxmanagernew.data.local.entity.CategoryEntity
+import com.example.boxmanagernew.domain.model.Category
 
 class CategoryAdapter(
-    private var items: List<CategoryEntity>
+    private var items: List<Category>
 ) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
     inner class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -35,7 +35,7 @@ class CategoryAdapter(
 
     override fun getItemCount(): Int = items.size
 
-    fun updateData(newItems: List<CategoryEntity>) {
+    fun updateData(newItems: List<Category>) {
         items = newItems
         notifyDataSetChanged()
     }
