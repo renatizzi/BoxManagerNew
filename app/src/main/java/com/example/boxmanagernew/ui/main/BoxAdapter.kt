@@ -44,13 +44,20 @@ class BoxAdapter(
         holder.textBoxName.text = box.name
 
         val category = categories.find { it.id == box.categoryId }
+        val categoryName = category?.name ?: "Categoria sconosciuta"
+
+        val positionText = if (box.position.isBlank()) {
+            ""
+        } else {
+            " • ${box.position}"
+        }
+
+        holder.textSubtitle.text = categoryName + positionText
 
         if (category != null) {
-            holder.textSubtitle.text = category.name
             val iconRes = IconMapper.getIconRes(category.icon)
             holder.imageCategory.setImageResource(iconRes)
         } else {
-            holder.textSubtitle.text = "Categoria sconosciuta"
             holder.imageCategory.setImageResource(R.drawable.ic_launcher_foreground)
         }
 

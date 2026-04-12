@@ -5,8 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.Gravity
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
@@ -72,13 +72,10 @@ class MainActivity : AppCompatActivity() {
             categories = emptyList(),
             onClick = { box ->
                 val mode = viewModel.selectionMode.value ?: false
-                if (mode) {
-                    viewModel.toggleSelection(box)
-                } else {
-                    showEditDialog(box.id, box.name)
-                }
+                if (mode) viewModel.toggleSelection(box)
+                else showEditDialog(box)
             },
-            onEdit = { box -> showEditDialog(box.id, box.name) },
+            onEdit = { box -> showEditDialog(box) },
             onDelete = { box -> showDeleteDialog(box.id) },
             onToggleSelection = { box -> viewModel.toggleSelection(box) }
         )
@@ -145,13 +142,7 @@ class MainActivity : AppCompatActivity() {
 
         editSearch.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                val query = s.toString()
-                viewModel.filter(query)
-
-                if (query.isBlank()) {
-                    editSearch.clearFocus()
-                    hideKeyboard(editSearch)
-                }
+                viewModel.filter(s.toString())
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -170,16 +161,60 @@ class MainActivity : AppCompatActivity() {
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 val selected = viewModel.selectedItems.value ?: emptySet()
-                if (selected.isNotEmpty()) {
-                    viewModel.clearSelection()
-                } else {
-                    finish()
-                }
+                if (selected.isNotEmpty()) viewModel.clearSelection()
+                else finish()
             }
         })
     }
 
     private fun showAddDialog() {
+        val layout = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(40, 20, 40, 10)
+        }
+
+        val inputName = EditText(this).apply { hint = "Nome contenitore" }
+
+        val spinner = Spinner(this)
+        spinner.adapter = CategorySpinnerAdapter(this, categories)
+
+        val positionRow = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+        }
+
+        val icon = ImageView(this).apply {
+            setImageResource(R.drawable.ic_place)
+            layoutParams = LinearLayout.LayoutParams(60, 60)
+        }
+
+        val inputPosition = EditText(this).apply {
+            hint = "Posizione (opzionale)"
+            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+        }
+
+        positionRow.addView(icon)
+        positionRow.addView(inputPosition)
+
+        layout.addView(inputName)
+        layout.addView(spinner)
+        layout.addView(positionRow)
+
+        AlertDialog.Builder(this)
+            .setTitle("Nuovo contenitore")
+            .setView(layout)
+            .setPositiveButton("Aggiungi") { _, _ ->
+                val name = inputName.text.toString().trim()
+                if (name.isNotBlank() && categories.isNotEmpty()) {
+                    val category = categories[spinner.selectedItemPosition]
+                    viewModel.addBox(name, category.id, inputPosition.text.toString())
+                }
+            }
+            .setNegativeButton("Annulla", null)
+            .show()
+    }
+
+    private fun showEditDialog(box: com.example.boxmanagernew.domain.model.Box) {
 
         val layout = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -188,28 +223,50 @@ class MainActivity : AppCompatActivity() {
 
         val inputName = EditText(this).apply {
             hint = "Nome contenitore"
+            setText(box.name)
         }
 
         val spinner = Spinner(this)
-        val adapterSpinner = CategorySpinnerAdapter(this, categories)
-        spinner.adapter = adapterSpinner
+        spinner.adapter = CategorySpinnerAdapter(this, categories)
+
+        val index = categories.indexOfFirst { it.id == box.categoryId }
+        if (index >= 0) spinner.setSelection(index)
+
+        val positionRow = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+        }
+
+        val icon = ImageView(this).apply {
+            setImageResource(R.drawable.ic_place)
+            layoutParams = LinearLayout.LayoutParams(60, 60)
+        }
+
+        val inputPosition = EditText(this).apply {
+            hint = "Posizione (opzionale)"
+            setText(box.position)
+            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+        }
+
+        positionRow.addView(icon)
+        positionRow.addView(inputPosition)
 
         layout.addView(inputName)
         layout.addView(spinner)
+        layout.addView(positionRow)
 
         AlertDialog.Builder(this)
-            .setTitle("Nuovo contenitore")
+            .setTitle("Modifica contenitore")
             .setView(layout)
-            .setPositiveButton("Aggiungi") { _, _ ->
+            .setPositiveButton("Salva") { _, _ ->
                 val name = inputName.text.toString().trim()
                 if (name.isNotBlank() && categories.isNotEmpty()) {
-
-                    val selectedCategory = categories[spinner.selectedItemPosition]
-
-                    viewModel.addBox(
-                        name = name,
-                        categoryId = selectedCategory.id,
-                        position = ""
+                    val category = categories[spinner.selectedItemPosition]
+                    viewModel.updateBox(
+                        id = box.id,
+                        newName = name,
+                        categoryId = category.id,
+                        position = inputPosition.text.toString()
                     )
                 }
             }
@@ -222,35 +279,11 @@ class MainActivity : AppCompatActivity() {
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-    private fun showEditDialog(id: Int, currentName: String) {
-        val input = EditText(this)
-        input.setText(currentName)
-
-        AlertDialog.Builder(this)
-            .setTitle("Modifica nome")
-            .setView(input)
-            .setPositiveButton("Salva") { _, _ ->
-                val newName = input.text.toString().trim()
-                if (newName.isNotBlank()) {
-                    viewModel.updateBox(
-                        id = id,
-                        newName = newName,
-                        categoryId = 1,
-                        position = ""
-                    )
-                }
-            }
-            .setNegativeButton("Annulla", null)
-            .show()
-    }
-
     private fun showDeleteDialog(id: Int) {
         AlertDialog.Builder(this)
             .setTitle("Conferma eliminazione")
             .setMessage("Vuoi eliminare questo elemento?")
-            .setPositiveButton("Sì") { _, _ ->
-                viewModel.deleteBox(id)
-            }
+            .setPositiveButton("Sì") { _, _ -> viewModel.deleteBox(id) }
             .setNegativeButton("No", null)
             .show()
     }
