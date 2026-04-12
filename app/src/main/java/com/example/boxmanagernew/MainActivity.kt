@@ -3,7 +3,10 @@ package com.example.boxmanagernew
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
@@ -20,6 +23,7 @@ import com.example.boxmanagernew.data.local.DatabaseProvider
 import com.example.boxmanagernew.data.local.entity.CategoryEntity
 import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
 import com.example.boxmanagernew.ui.categories.CategoriesActivity
+import com.example.boxmanagernew.ui.categories.CategorySpinnerAdapter
 import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.example.boxmanagernew.ui.main.BoxAdapter
 import com.example.boxmanagernew.ui.main.BoxViewModel
@@ -66,7 +70,14 @@ class MainActivity : AppCompatActivity() {
         adapter = BoxAdapter(
             items = emptyList(),
             categories = emptyList(),
-            onClick = { box -> showEditDialog(box.id, box.name) },
+            onClick = { box ->
+                val mode = viewModel.selectionMode.value ?: false
+                if (mode) {
+                    viewModel.toggleSelection(box)
+                } else {
+                    showEditDialog(box.id, box.name)
+                }
+            },
             onEdit = { box -> showEditDialog(box.id, box.name) },
             onDelete = { box -> showDeleteDialog(box.id) },
             onToggleSelection = { box -> viewModel.toggleSelection(box) }
@@ -105,6 +116,11 @@ class MainActivity : AppCompatActivity() {
             adapter.updateSelection(selectedIds, mode)
         }
 
+        viewModel.selectionMode.observe(this) { mode ->
+            val selected = viewModel.selectedItems.value ?: emptySet()
+            adapter.updateSelection(selected, mode)
+        }
+
         buttonDeleteSelected.setOnClickListener {
             val selectedIds = viewModel.selectedItems.value?.toList() ?: emptyList()
             if (selectedIds.isEmpty()) return@setOnClickListener
@@ -126,6 +142,20 @@ class MainActivity : AppCompatActivity() {
             editSearch.clearFocus()
             viewModel.toggleSort()
         }
+
+        editSearch.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val query = s.toString()
+                viewModel.filter(query)
+
+                if (query.isBlank()) {
+                    editSearch.clearFocus()
+                    hideKeyboard(editSearch)
+                }
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
 
         fab.setOnClickListener {
             showAddDialog()
@@ -161,9 +191,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val spinner = Spinner(this)
-
-        val names = categories.map { it.name }
-        val adapterSpinner = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, names)
+        val adapterSpinner = CategorySpinnerAdapter(this, categories)
         spinner.adapter = adapterSpinner
 
         layout.addView(inputName)
