@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
@@ -27,6 +26,7 @@ import com.example.boxmanagernew.ui.categories.CategoriesActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.example.boxmanagernew.ui.main.BoxAdapter
 import com.example.boxmanagernew.ui.main.BoxViewModel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
 
@@ -55,10 +55,9 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        val editText = findViewById<EditText>(R.id.editTextBox)
         val editSearch = findViewById<EditText>(R.id.editTextSearch)
-        val button = findViewById<Button>(R.id.buttonAdd)
         val buttonSort = findViewById<Button>(R.id.buttonSort)
+        val fab = findViewById<FloatingActionButton>(R.id.fabAdd)
         recyclerView = findViewById(R.id.recyclerViewBoxes)
 
         buttonDeleteSelected = findViewById(R.id.btnDeleteSelected)
@@ -154,37 +153,8 @@ class MainActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
-        editText.setOnEditorActionListener { v, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                val text = v.text.toString().trim()
-                if (text.isNotBlank()) {
-                    viewModel.addBox(
-                        name = text,
-                        categoryId = 1,
-                        position = ""
-                    )
-                    editSearch.setText("")
-                    editText.text.clear()
-                    editText.clearFocus()
-                    hideKeyboard(editText)
-                }
-                true
-            } else false
-        }
-
-        button.setOnClickListener {
-            val text = editText.text.toString().trim()
-            if (text.isNotBlank()) {
-                viewModel.addBox(
-                    name = text,
-                    categoryId = 1,
-                    position = ""
-                )
-                editSearch.setText("")
-                editText.text.clear()
-                editText.clearFocus()
-                hideKeyboard(editText)
-            }
+        fab.setOnClickListener {
+            showAddDialog()
         }
 
         BottomNavManager.setup(this, BottomNavManager.TAB_BOXES)
@@ -203,6 +173,26 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    private fun showAddDialog() {
+        val input = EditText(this)
+
+        AlertDialog.Builder(this)
+            .setTitle("Nuovo contenitore")
+            .setView(input)
+            .setPositiveButton("Aggiungi") { _, _ ->
+                val name = input.text.toString().trim()
+                if (name.isNotBlank()) {
+                    viewModel.addBox(
+                        name = name,
+                        categoryId = 1,
+                        position = ""
+                    )
+                }
+            }
+            .setNegativeButton("Annulla", null)
+            .show()
     }
 
     private fun hideKeyboard(view: View) {
