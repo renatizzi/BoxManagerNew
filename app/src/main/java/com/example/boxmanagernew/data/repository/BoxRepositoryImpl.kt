@@ -1,5 +1,7 @@
 package com.example.boxmanagernew.data.repository
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.map
 import com.example.boxmanagernew.data.local.dao.BoxDao
 import com.example.boxmanagernew.data.local.entity.BoxEntity
 import com.example.boxmanagernew.domain.model.Box
@@ -50,6 +52,22 @@ class BoxRepositoryImpl(
                     lastModified = it.lastModified
                 )
             }
+    }
+
+    // NUOVO metodo reattivo
+    fun getAllBoxesLive(): LiveData<List<Box>> {
+        return boxDao.getAllLive().map { list ->
+            list.map { entity ->
+                Box(
+                    id = entity.id,
+                    name = entity.name,
+                    description = null,
+                    categoryId = entity.categoryId,
+                    position = entity.position,
+                    lastModified = entity.lastModified
+                )
+            }
+        }
     }
 
     override suspend fun insertBox(box: Box) {
