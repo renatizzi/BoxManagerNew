@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.Gravity
+import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
@@ -17,6 +18,7 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.boxmanagernew.data.local.DatabaseProvider
@@ -28,6 +30,7 @@ import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.example.boxmanagernew.ui.main.BoxAdapter
 import com.example.boxmanagernew.ui.main.BoxViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -67,6 +70,59 @@ class MainActivity : AppCompatActivity() {
         val categoryDao = db.categoryDao()
         val repository = BoxRepositoryImpl(dao)
 
+        // 🔴 SEED SICURO (NO DUPLICATI)
+        lifecycleScope.launch {
+            val names = listOf(
+                "Abbigliamento e Calzature",
+                "Alimenti e Bevande",
+                "Attrezzi, Strumenti e Ferramenta",
+                "Bricolage e Materiali",
+                "Cancelleria e Scuola",
+                "Collezionismo",
+                "Documenti e Archivi",
+                "Elettronica e Informatica",
+                "Fai da te",
+                "Foto e Video",
+                "Hobby",
+                "Imballaggi e Contenitori",
+                "Libri e Riviste",
+                "Medicinali e Salute",
+                "Oggetti di valore",
+                "Miscellanea"
+            )
+
+            val icons = listOf(
+                "outline_checkroom_24",
+                "outline_fastfood_24",
+                "outline_handyman_24",
+                "outline_carpenter_24",
+                "outline_ink_pen_24",
+                "outline_garage_money_24",
+                "outline_passport_24",
+                "outline_broadcast_on_home_24",
+                "outline_tools_power_drill_24",
+                "outline_photo_frame_24",
+                "outline_library_music_24",
+                "outline_box_24",
+                "outline_menu_book_24",
+                "outline_medical_services_24",
+                "outline_money_bag_24",
+                "outline_browse_24"
+            )
+
+            names.forEachIndexed { i, name ->
+                val existing = categoryDao.getCategoryByName(name)
+                if (existing == null) {
+                    categoryDao.insert(
+                        CategoryEntity(
+                            name = name,
+                            icon = icons[i]
+                        )
+                    )
+                }
+            }
+        }
+
         adapter = BoxAdapter(
             items = emptyList(),
             categories = emptyList(),
@@ -83,9 +139,9 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
-        categoryDao.getAllCategories().observe(this) {
-            categories = it
-            adapter.updateCategories(it)
+        categoryDao.getAllCategories().observe(this) { list ->
+            categories = list
+            adapter.updateCategories(list)
         }
 
         viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
@@ -94,8 +150,8 @@ class MainActivity : AppCompatActivity() {
             }
         })[BoxViewModel::class.java]
 
-        viewModel.boxes.observe(this) {
-            adapter.updateData(it)
+        viewModel.boxes.observe(this) { list ->
+            adapter.updateData(list)
         }
 
         viewModel.selectedItems.observe(this) { selectedIds ->
@@ -284,5 +340,13 @@ class MainActivity : AppCompatActivity() {
             .setPositiveButton("Sì") { _, _ -> viewModel.deleteBox(id) }
             .setNegativeButton("No", null)
             .show()
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        if (currentFocus != null) {
+            hideKeyboard(currentFocus!!)
+            currentFocus?.clearFocus()
+        }
+        return super.dispatchTouchEvent(ev)
     }
 }
