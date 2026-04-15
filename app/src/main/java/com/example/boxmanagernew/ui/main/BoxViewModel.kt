@@ -21,6 +21,8 @@ class BoxViewModel(
     private var isAscending = true
     private var currentQuery: String = ""
 
+    private var lastSource: List<Box> = emptyList()
+
     private val _selectedItems = MutableLiveData<Set<Int>>(emptySet())
     val selectedItems: LiveData<Set<Int>> = _selectedItems
 
@@ -29,6 +31,8 @@ class BoxViewModel(
 
     init {
         _boxes.addSource(source) { list ->
+
+            lastSource = list
 
             val currentSelected = _selectedItems.value ?: emptySet()
 
@@ -90,12 +94,12 @@ class BoxViewModel(
 
     fun toggleSort() {
         isAscending = !isAscending
-        _boxes.value = _boxes.value?.let { applyFilterAndSortInternal(it) }
+        applyFilterAndSort(lastSource)
     }
 
     fun filter(query: String) {
         currentQuery = query
-        _boxes.value = _boxes.value?.let { applyFilterAndSortInternal(it) }
+        applyFilterAndSort(lastSource)
     }
 
     fun toggleSelection(box: Box) {
