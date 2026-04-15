@@ -16,11 +16,6 @@ interface BoxDao {
     @Update
     suspend fun update(box: BoxEntity)
 
-    // Metodo ATTUALE (non toccato)
-    @Query("SELECT * FROM box")
-    suspend fun getAll(): List<BoxEntity>
-
-    // NUOVO metodo REATTIVO (v3.2)
     @Query("SELECT * FROM box ORDER BY lastModified DESC")
     fun getAllLive(): LiveData<List<BoxEntity>>
 
