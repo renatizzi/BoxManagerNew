@@ -12,20 +12,13 @@ class CategoryRepositoryImpl(
 
     fun getAllCategories(): LiveData<List<Category>> {
         return categoryDao.getAllCategories().map { list ->
-
-            val mapped = list.map {
+            list.map {
                 Category(
                     id = it.id,
                     name = it.name,
                     icon = it.icon
                 )
             }
-
-            // 🔴 FIX: Miscellanea sempre ultima
-            mapped.sortedWith(
-                compareBy<Category> { it.name == "Miscellanea" }
-                    .thenBy { it.name }
-            )
         }
     }
 
