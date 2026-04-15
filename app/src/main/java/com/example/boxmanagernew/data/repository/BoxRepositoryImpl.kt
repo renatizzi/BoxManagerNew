@@ -11,21 +11,7 @@ class BoxRepositoryImpl(
     private val boxDao: BoxDao
 ) : BoxRepository {
 
-    // 🔴 metodi legacy mantenuti per compatibilità (non usati)
-    override suspend fun getAllBoxes(): List<Box> {
-        return emptyList()
-    }
-
-    override suspend fun getAllBoxesSortedAsc(): List<Box> {
-        return emptyList()
-    }
-
-    override suspend fun getAllBoxesSortedDesc(): List<Box> {
-        return emptyList()
-    }
-
-    // ✅ unico metodo reale usato (reattivo)
-    fun getAllBoxesLive(): LiveData<List<Box>> {
+    override fun getAllBoxesLive(): LiveData<List<Box>> {
         return boxDao.getAllLive().map { list ->
             list.map { entity ->
                 Box(

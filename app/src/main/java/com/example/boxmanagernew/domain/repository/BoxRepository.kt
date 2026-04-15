@@ -1,14 +1,11 @@
 package com.example.boxmanagernew.domain.repository
 
+import androidx.lifecycle.LiveData
 import com.example.boxmanagernew.domain.model.Box
 
 interface BoxRepository {
 
-    suspend fun getAllBoxes(): List<Box>
-
-    suspend fun getAllBoxesSortedAsc(): List<Box>
-
-    suspend fun getAllBoxesSortedDesc(): List<Box>
+    fun getAllBoxesLive(): LiveData<List<Box>>
 
     suspend fun insertBox(box: Box)
 
