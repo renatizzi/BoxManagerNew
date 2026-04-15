@@ -44,7 +44,7 @@ class BoxViewModel(
                 _selectionMode.value = updatedSelection.isNotEmpty()
             }
 
-            applyFilterAndSort(list)
+            applyFilterAndSort()
         }
     }
 
@@ -94,12 +94,12 @@ class BoxViewModel(
 
     fun toggleSort() {
         isAscending = !isAscending
-        applyFilterAndSort(lastSource)
+        applyFilterAndSort()
     }
 
     fun filter(query: String) {
         currentQuery = query
-        applyFilterAndSort(lastSource)
+        applyFilterAndSort()
     }
 
     fun toggleSelection(box: Box) {
@@ -121,12 +121,8 @@ class BoxViewModel(
         _selectionMode.value = false
     }
 
-    private fun applyFilterAndSort(list: List<Box>) {
-        _boxes.value = applyFilterAndSortInternal(list)
-    }
-
-    private fun applyFilterAndSortInternal(list: List<Box>): List<Box> {
-        var result = list
+    private fun applyFilterAndSort() {
+        var result = lastSource
 
         if (currentQuery.isNotBlank()) {
             result = result.filter {
@@ -140,6 +136,6 @@ class BoxViewModel(
             result.sortedByDescending { it.name }
         }
 
-        return result
+        _boxes.value = result
     }
 }

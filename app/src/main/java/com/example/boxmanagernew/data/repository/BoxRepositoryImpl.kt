@@ -54,7 +54,6 @@ class BoxRepositoryImpl(
             }
     }
 
-    // NUOVO metodo reattivo
     fun getAllBoxesLive(): LiveData<List<Box>> {
         return boxDao.getAllLive().map { list ->
             list.map { entity ->
