@@ -132,8 +132,6 @@ class MainActivity : AppCompatActivity() {
                 .show()
         }
 
-        viewModel.loadBoxes()
-
         buttonSort.setOnClickListener {
             hideKeyboard(it)
             editSearch.clearFocus()

@@ -1,6 +1,7 @@
 package com.example.boxmanagernew.ui.main
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,10 +13,10 @@ class BoxViewModel(
     private val repository: BoxRepositoryImpl
 ) : ViewModel() {
 
-    private val _boxes = MutableLiveData<List<Box>>()
-    val boxes: LiveData<List<Box>> = _boxes
+    private val source: LiveData<List<Box>> = repository.getAllBoxesLive()
 
-    private var currentList: List<Box> = emptyList()
+    private val _boxes = MediatorLiveData<List<Box>>()
+    val boxes: LiveData<List<Box>> = _boxes
 
     private var isAscending = true
     private var currentQuery: String = ""
@@ -26,59 +27,57 @@ class BoxViewModel(
     private val _selectionMode = MutableLiveData(false)
     val selectionMode: LiveData<Boolean> = _selectionMode
 
-    fun loadBoxes() {
-        viewModelScope.launch {
-            val data = repository.getAllBoxes()
-            currentList = data
+    init {
+        _boxes.addSource(source) { list ->
 
             val currentSelected = _selectedItems.value ?: emptySet()
 
             if (currentSelected.isNotEmpty()) {
-                val validIds = data.map { it.id }.toSet()
+                val validIds = list.map { it.id }.toSet()
                 val updatedSelection = currentSelected.intersect(validIds)
 
                 _selectedItems.value = updatedSelection
                 _selectionMode.value = updatedSelection.isNotEmpty()
             }
 
-            applyFilterAndSort()
+            applyFilterAndSort(list)
         }
     }
 
     fun addBox(name: String, categoryId: Int, position: String) {
         viewModelScope.launch {
-            val box = Box(
-                id = 0,
-                name = name,
-                description = null,
-                categoryId = categoryId,
-                position = position,
-                lastModified = System.currentTimeMillis()
+            repository.insertBox(
+                Box(
+                    id = 0,
+                    name = name,
+                    description = null,
+                    categoryId = categoryId,
+                    position = position,
+                    lastModified = System.currentTimeMillis()
+                )
             )
-            repository.insertBox(box)
-            loadBoxes()
         }
     }
 
     fun updateBox(id: Int, newName: String, categoryId: Int, position: String) {
         viewModelScope.launch {
-            val box = Box(
-                id = id,
-                name = newName,
-                description = null,
-                categoryId = categoryId,
-                position = position,
-                lastModified = System.currentTimeMillis()
+            repository.updateBox(
+                Box(
+                    id = id,
+                    name = newName,
+                    description = null,
+                    categoryId = categoryId,
+                    position = position,
+                    lastModified = System.currentTimeMillis()
+                )
             )
-            repository.updateBox(box)
-            loadBoxes()
         }
     }
 
     fun deleteBox(id: Int) {
         viewModelScope.launch {
             repository.deleteBox(id)
-            loadBoxes()
+            clearSelection()
         }
     }
 
@@ -86,18 +85,17 @@ class BoxViewModel(
         viewModelScope.launch {
             ids.forEach { repository.deleteBox(it) }
             clearSelection()
-            loadBoxes()
         }
     }
 
     fun toggleSort() {
         isAscending = !isAscending
-        applyFilterAndSort()
+        _boxes.value = _boxes.value?.let { applyFilterAndSortInternal(it) }
     }
 
     fun filter(query: String) {
         currentQuery = query
-        applyFilterAndSort()
+        _boxes.value = _boxes.value?.let { applyFilterAndSortInternal(it) }
     }
 
     fun toggleSelection(box: Box) {
@@ -119,8 +117,12 @@ class BoxViewModel(
         _selectionMode.value = false
     }
 
-    private fun applyFilterAndSort() {
-        var result = currentList
+    private fun applyFilterAndSort(list: List<Box>) {
+        _boxes.value = applyFilterAndSortInternal(list)
+    }
+
+    private fun applyFilterAndSortInternal(list: List<Box>): List<Box> {
+        var result = list
 
         if (currentQuery.isNotBlank()) {
             result = result.filter {
@@ -134,6 +136,6 @@ class BoxViewModel(
             result.sortedByDescending { it.name }
         }
 
-        _boxes.value = result
+        return result
     }
 }
