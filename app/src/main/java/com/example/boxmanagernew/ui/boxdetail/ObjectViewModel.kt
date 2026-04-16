@@ -15,15 +15,42 @@ class ObjectViewModel(
         return repository.getObjectsByBox(boxId)
     }
 
-    fun addObject(obj: Object) {
+    fun addObject(
+        typeObjectId: Int,
+        boxId: Int,
+        description: String?,
+        quantity: Int?
+    ) {
         viewModelScope.launch {
-            repository.insert(obj)
+            repository.insert(
+                Object(
+                    id = 0,
+                    typeObjectId = typeObjectId,
+                    boxId = boxId,
+                    description = description,
+                    quantity = quantity
+                )
+            )
         }
     }
 
-    fun updateObject(obj: Object) {
+    fun updateObject(
+        id: Int,
+        typeObjectId: Int,
+        boxId: Int,
+        description: String?,
+        quantity: Int?
+    ) {
         viewModelScope.launch {
-            repository.update(obj)
+            repository.update(
+                Object(
+                    id = id,
+                    typeObjectId = typeObjectId,
+                    boxId = boxId,
+                    description = description,
+                    quantity = quantity
+                )
+            )
         }
     }
 
