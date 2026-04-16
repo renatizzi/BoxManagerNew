@@ -6,7 +6,7 @@
     android:orientation="horizontal"
     android:background="#FFFFFF"
     android:elevation="8dp"
-    android:weightSum="4"
+    android:weightSum="5"
     android:paddingTop="8dp"
     android:paddingBottom="8dp">
 
@@ -44,12 +44,24 @@
         android:focusable="true" />
 
     <TextView
+        android:id="@+id/navUtility"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="Utility"
+        android:textColor="#888888"
+        android:clickable="true"
+        android:focusable="true" />
+
+    <TextView
         android:id="@+id/navSettings"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="Impostazioni"
+        android:text="⚙"
+        android:textSize="20sp"
         android:textColor="#888888"
         android:clickable="true"
         android:focusable="true" />
