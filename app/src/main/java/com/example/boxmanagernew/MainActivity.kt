@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.boxmanagernew.data.local.DatabaseProvider
 import com.example.boxmanagernew.data.local.entity.CategoryEntity
 import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
+import com.example.boxmanagernew.ui.boxdetail.BoxDetailActivity
 import com.example.boxmanagernew.ui.categories.CategoriesActivity
 import com.example.boxmanagernew.ui.categories.CategorySpinnerAdapter
 import com.example.boxmanagernew.ui.common.BottomNavManager
@@ -70,7 +71,6 @@ class MainActivity : AppCompatActivity() {
         val categoryDao = db.categoryDao()
         val repository = BoxRepositoryImpl(dao)
 
-        // 🔴 SEED SICURO (NO DUPLICATI)
         lifecycleScope.launch {
             val names = listOf(
                 "Abbigliamento e Calzature",
@@ -128,8 +128,14 @@ class MainActivity : AppCompatActivity() {
             categories = emptyList(),
             onClick = { box ->
                 val mode = viewModel.selectionMode.value ?: false
-                if (mode) viewModel.toggleSelection(box)
-                else showEditDialog(box)
+                if (mode) {
+                    viewModel.toggleSelection(box)
+                } else {
+                    val intent = Intent(this, BoxDetailActivity::class.java)
+                    intent.putExtra("boxId", box.id)
+                    intent.putExtra("boxName", box.name)
+                    startActivity(intent)
+                }
             },
             onEdit = { box -> showEditDialog(box) },
             onDelete = { box -> showDeleteDialog(box.id) },
