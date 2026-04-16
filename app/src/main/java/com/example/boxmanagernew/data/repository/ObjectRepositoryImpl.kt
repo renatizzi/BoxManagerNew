@@ -5,6 +5,7 @@ import androidx.lifecycle.map
 import com.example.boxmanagernew.data.local.dao.ObjectDao
 import com.example.boxmanagernew.data.local.entity.ObjectEntity
 import com.example.boxmanagernew.domain.model.Object
+import com.example.boxmanagernew.domain.model.ObjectWithType
 import com.example.boxmanagernew.domain.repository.ObjectRepository
 
 class ObjectRepositoryImpl(
@@ -12,7 +13,7 @@ class ObjectRepositoryImpl(
 ) : ObjectRepository {
 
     override fun getObjectsByBox(boxId: Int): LiveData<List<Object>> {
-        return dao.getObjectsByBox(boxId).map { list ->
+        return dao.getObjectsWithTypeByBox(boxId).map { list ->
             list.map {
                 Object(
                     id = it.id,
@@ -20,6 +21,23 @@ class ObjectRepositoryImpl(
                     boxId = it.boxId,
                     description = it.description,
                     quantity = it.quantity
+                )
+            }
+        }
+    }
+
+    override fun getObjectsWithType(boxId: Int): LiveData<List<ObjectWithType>> {
+        return dao.getObjectsWithTypeByBox(boxId).map { list ->
+            list.map {
+                ObjectWithType(
+                    obj = Object(
+                        id = it.id,
+                        typeObjectId = it.typeObjectId,
+                        boxId = it.boxId,
+                        description = it.description,
+                        quantity = it.quantity
+                    ),
+                    typeName = it.typeName
                 )
             }
         }

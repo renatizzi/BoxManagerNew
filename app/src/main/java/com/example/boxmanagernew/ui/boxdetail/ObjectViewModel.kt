@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.boxmanagernew.domain.model.Object
+import com.example.boxmanagernew.domain.model.ObjectWithType
 import com.example.boxmanagernew.domain.repository.ObjectRepository
 import kotlinx.coroutines.launch
 
@@ -13,6 +14,10 @@ class ObjectViewModel(
 
     fun getObjects(boxId: Int): LiveData<List<Object>> {
         return repository.getObjectsByBox(boxId)
+    }
+
+    fun getObjectsWithType(boxId: Int): LiveData<List<ObjectWithType>> {
+        return repository.getObjectsWithType(boxId)
     }
 
     fun addObject(

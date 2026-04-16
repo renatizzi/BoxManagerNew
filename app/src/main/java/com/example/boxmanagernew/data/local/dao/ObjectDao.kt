@@ -4,6 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.boxmanagernew.data.local.entity.ObjectEntity
 
+data class ObjectWithTypeName(
+    val id: Int,
+    val typeObjectId: Int,
+    val boxId: Int,
+    val description: String?,
+    val quantity: Int?,
+    val typeName: String
+)
+
 @Dao
 interface ObjectDao {
 
@@ -16,6 +25,17 @@ interface ObjectDao {
     @Delete
     suspend fun delete(obj: ObjectEntity)
 
-    @Query("SELECT * FROM objects WHERE boxId = :boxId")
-    fun getObjectsByBox(boxId: Int): LiveData<List<ObjectEntity>>
+    @Query("""
+        SELECT 
+            o.id,
+            o.typeObjectId,
+            o.boxId,
+            o.description,
+            o.quantity,
+            t.name AS typeName
+        FROM objects o
+        INNER JOIN object_types t ON o.typeObjectId = t.id
+        WHERE o.boxId = :boxId
+    """)
+    fun getObjectsWithTypeByBox(boxId: Int): LiveData<List<ObjectWithTypeName>>
 }
