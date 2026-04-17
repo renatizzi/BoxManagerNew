@@ -11,11 +11,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.data.local.AppDatabase
+import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
 import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
+import com.example.boxmanagernew.ui.main.BoxViewModel
 
 class BoxDetailActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: ObjectViewModel
+    private lateinit var objectViewModel: ObjectViewModel
+    private lateinit var boxViewModel: BoxViewModel
     private lateinit var adapter: ObjectAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,25 +47,32 @@ class BoxDetailActivity : AppCompatActivity() {
 
         textTitle.text = boxName
 
-        // Placeholder dati (da collegare al BoxViewModel nel prossimo step)
-        textCategory.text = "Categoria: -"
-        textPosition.text = "Posizione: -"
-        textCount.text = "Oggetti: -"
-        textLastModified.text = "Ultima modifica: -"
-
         adapter = ObjectAdapter(emptyList())
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
-        val dao = AppDatabase.getDatabase(this).objectDao()
-        val repository = ObjectRepositoryImpl(dao)
-        val factory = ObjectViewModelFactory(repository)
+        val db = AppDatabase.getDatabase(this)
 
-        viewModel = ViewModelProvider(this, factory)[ObjectViewModel::class.java]
+        val objectRepository = ObjectRepositoryImpl(db.objectDao())
+        val objectFactory = ObjectViewModelFactory(objectRepository)
+        objectViewModel = ViewModelProvider(this, objectFactory)[ObjectViewModel::class.java]
 
-        viewModel.getObjectsWithType(boxId).observe(this) { list ->
+        val boxRepository = BoxRepositoryImpl(db.boxDao())
+        boxViewModel = BoxViewModel(boxRepository)
+
+        objectViewModel.getObjectsWithType(boxId).observe(this) { list ->
             adapter.updateData(list)
             textCount.text = "Oggetti: ${list.size}"
         }
+
+        boxViewModel.boxes.observe(this) { list ->
+            val box = list.find { it.id == boxId }
+            if (box != null) {
+                textPosition.text = "Posizione: ${box.position}"
+                textLastModified.text = "Ultima modifica: ${box.lastModified}"
+            }
+        }
+
+        textCategory.text = "Categoria: (da collegare)"
     }
 }
