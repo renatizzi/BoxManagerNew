@@ -12,13 +12,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.data.local.AppDatabase
 import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
+import com.example.boxmanagernew.data.repository.CategoryRepositoryImpl
 import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
+import com.example.boxmanagernew.ui.categories.CategoryViewModel
 import com.example.boxmanagernew.ui.main.BoxViewModel
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class BoxDetailActivity : AppCompatActivity() {
 
     private lateinit var objectViewModel: ObjectViewModel
     private lateinit var boxViewModel: BoxViewModel
+    private lateinit var categoryViewModel: CategoryViewModel
     private lateinit var adapter: ObjectAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,19 +66,31 @@ class BoxDetailActivity : AppCompatActivity() {
         val boxRepository = BoxRepositoryImpl(db.boxDao())
         boxViewModel = BoxViewModel(boxRepository)
 
+        val categoryRepository = CategoryRepositoryImpl(db.categoryDao())
+        categoryViewModel = CategoryViewModel(categoryRepository)
+
+        val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+
         objectViewModel.getObjectsWithType(boxId).observe(this) { list ->
             adapter.updateData(list)
             textCount.text = "Oggetti: ${list.size}"
         }
 
-        boxViewModel.boxes.observe(this) { list ->
-            val box = list.find { it.id == boxId }
+        boxViewModel.boxes.observe(this) { boxes ->
+            val box = boxes.find { it.id == boxId }
             if (box != null) {
                 textPosition.text = "Posizione: ${box.position}"
-                textLastModified.text = "Ultima modifica: ${box.lastModified}"
+
+                val formattedDate = dateFormat.format(Date(box.lastModified))
+                textLastModified.text = "Ultima modifica: $formattedDate"
+
+                categoryViewModel.categories.observe(this) { categories ->
+                    val category = categories.find { it.id == box.categoryId }
+                    if (category != null) {
+                        textCategory.text = "Categoria: ${category.name}"
+                    }
+                }
             }
         }
-
-        textCategory.text = "Categoria: (da collegare)"
     }
 }
