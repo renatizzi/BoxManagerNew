@@ -16,6 +16,32 @@
         android:textSize="24sp"
         android:textStyle="bold" />
 
+    <!-- AREA INFORMATIVA -->
+    <TextView
+        android:id="@+id/textCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Categoria"
+        android:layout_marginTop="8dp" />
+
+    <TextView
+        android:id="@+id/textPosition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Posizione" />
+
+    <TextView
+        android:id="@+id/textCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Numero oggetti" />
+
+    <TextView
+        android:id="@+id/textLastModified"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ultima modifica" />
+
     <!-- Separatore -->
     <View
         android:layout_width="match_parent"

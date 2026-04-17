@@ -33,6 +33,10 @@ class BoxDetailActivity : AppCompatActivity() {
         }
 
         val textTitle = findViewById<TextView>(R.id.textTitle)
+        val textCategory = findViewById<TextView>(R.id.textCategory)
+        val textPosition = findViewById<TextView>(R.id.textPosition)
+        val textCount = findViewById<TextView>(R.id.textCount)
+        val textLastModified = findViewById<TextView>(R.id.textLastModified)
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerObjects)
 
         val boxId = intent.getIntExtra("boxId", -1)
@@ -40,11 +44,16 @@ class BoxDetailActivity : AppCompatActivity() {
 
         textTitle.text = boxName
 
+        // Placeholder dati (da collegare al BoxViewModel nel prossimo step)
+        textCategory.text = "Categoria: -"
+        textPosition.text = "Posizione: -"
+        textCount.text = "Oggetti: -"
+        textLastModified.text = "Ultima modifica: -"
+
         adapter = ObjectAdapter(emptyList())
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
-        // Repository + Factory
         val dao = AppDatabase.getDatabase(this).objectDao()
         val repository = ObjectRepositoryImpl(dao)
         val factory = ObjectViewModelFactory(repository)
@@ -53,6 +62,7 @@ class BoxDetailActivity : AppCompatActivity() {
 
         viewModel.getObjectsWithType(boxId).observe(this) { list ->
             adapter.updateData(list)
+            textCount.text = "Oggetti: ${list.size}"
         }
     }
 }
