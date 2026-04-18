@@ -1,6 +1,3 @@
-// SOLO parte modificata già inclusa: aggiunta icona categoria
-// (file completo richiesto sotto)
-
 package com.example.boxmanagernew.ui.boxdetail
 
 import android.os.Bundle
@@ -78,6 +75,8 @@ class BoxDetailActivity : AppCompatActivity() {
 
         objectViewModel.getObjectsWithType(boxId).observe(this) { list ->
             adapter.updateData(list)
+
+            // 👇 CONTATORE ACCANTO AL TITOLO
             textObjectsTitle.text = "Lista Oggetti (${list.size})"
         }
 
