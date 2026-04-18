@@ -7,7 +7,7 @@
     android:background="#FFFFFF"
     android:padding="16dp">
 
-    <!-- Titolo -->
+    <!-- TITOLO -->
     <TextView
         android:id="@+id/textTitle"
         android:layout_width="wrap_content"
@@ -17,64 +17,100 @@
         android:textStyle="bold" />
 
     <!-- AREA INFORMATIVA -->
-    <TextView
-        android:id="@+id/textCategory"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Categoria"
-        android:layout_marginTop="8dp" />
+        android:orientation="vertical"
+        android:layout_marginTop="8dp">
 
-    <TextView
-        android:id="@+id/textPosition"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Posizione" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
-    <TextView
-        android:id="@+id/textCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Numero oggetti" />
+            <ImageView
+                android:id="@+id/imageCategoryIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="8dp" />
 
-    <TextView
-        android:id="@+id/textLastModified"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Ultima modifica" />
+            <TextView
+                android:id="@+id/textCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Categoria" />
+        </LinearLayout>
 
-    <!-- Separatore -->
+        <TextView
+            android:id="@+id/textPosition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="📍 Posizione" />
+
+        <TextView
+            android:id="@+id/textLastModified"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="📅 Data" />
+    </LinearLayout>
+
+    <!-- SEPARATORE -->
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="12dp"
         android:background="#DDDDDD" />
 
-    <!-- Titolo sezione Oggetti -->
-    <TextView
-        android:id="@+id/textObjectsTitle"
-        android:layout_width="wrap_content"
+    <!-- HEADER LISTA OGGETTI -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Oggetti"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginTop="12dp" />
+        android:orientation="vertical"
+        android:layout_marginTop="12dp">
 
-    <!-- RecyclerView -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/textObjectsTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Lista Oggetti"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabAddObject"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="Aggiungi oggetto"
+                app:srcCompat="@android:drawable/ic_input_add"
+                app:backgroundTint="@color/purple_500"
+                app:tint="@android:color/white" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textObjectsCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0 oggetti"
+            android:textSize="13sp"
+            android:textColor="#888888"
+            android:layout_marginTop="2dp" />
+
+    </LinearLayout>
+
+    <!-- LISTA -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerObjects"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:layout_marginTop="8dp" />
-
-    <!-- Pulsante aggiungi oggetto -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabAddObject"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_marginTop="16dp"
-        android:contentDescription="Aggiungi oggetto"
-        app:srcCompat="@android:drawable/ic_input_add" />
 
 </LinearLayout>

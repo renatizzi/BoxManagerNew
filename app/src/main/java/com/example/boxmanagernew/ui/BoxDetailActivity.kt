@@ -1,6 +1,10 @@
+// SOLO parte modificata già inclusa: aggiunta icona categoria
+// (file completo richiesto sotto)
+
 package com.example.boxmanagernew.ui.boxdetail
 
 import android.os.Bundle
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -15,6 +19,7 @@ import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
 import com.example.boxmanagernew.data.repository.CategoryRepositoryImpl
 import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
 import com.example.boxmanagernew.ui.categories.CategoryViewModel
+import com.example.boxmanagernew.ui.categories.IconMapper
 import com.example.boxmanagernew.ui.main.BoxViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -31,7 +36,6 @@ class BoxDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
-
         setContentView(R.layout.activity_box_detail)
 
         val root = findViewById<android.view.View>(android.R.id.content)
@@ -43,9 +47,10 @@ class BoxDetailActivity : AppCompatActivity() {
 
         val textTitle = findViewById<TextView>(R.id.textTitle)
         val textCategory = findViewById<TextView>(R.id.textCategory)
+        val imageCategoryIcon = findViewById<ImageView>(R.id.imageCategoryIcon)
         val textPosition = findViewById<TextView>(R.id.textPosition)
-        val textCount = findViewById<TextView>(R.id.textCount)
         val textLastModified = findViewById<TextView>(R.id.textLastModified)
+        val textObjectsTitle = findViewById<TextView>(R.id.textObjectsTitle)
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerObjects)
 
         val boxId = intent.getIntExtra("boxId", -1)
@@ -73,21 +78,23 @@ class BoxDetailActivity : AppCompatActivity() {
 
         objectViewModel.getObjectsWithType(boxId).observe(this) { list ->
             adapter.updateData(list)
-            textCount.text = "Oggetti: ${list.size}"
+            textObjectsTitle.text = "Lista Oggetti (${list.size})"
         }
 
         boxViewModel.boxes.observe(this) { boxes ->
             val box = boxes.find { it.id == boxId }
             if (box != null) {
-                textPosition.text = "Posizione: ${box.position}"
 
-                val formattedDate = dateFormat.format(Date(box.lastModified))
-                textLastModified.text = "Ultima modifica: $formattedDate"
+                textPosition.text = "📍 ${box.position}"
+                textLastModified.text =
+                    "📅 ${dateFormat.format(Date(box.lastModified))}"
 
                 categoryViewModel.categories.observe(this) { categories ->
                     val category = categories.find { it.id == box.categoryId }
                     if (category != null) {
-                        textCategory.text = "Categoria: ${category.name}"
+                        textCategory.text = category.name
+                        val iconRes = IconMapper.getIconRes(category.icon)
+                        imageCategoryIcon.setImageResource(iconRes)
                     }
                 }
             }
