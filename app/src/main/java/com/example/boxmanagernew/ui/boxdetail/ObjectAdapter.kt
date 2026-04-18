@@ -3,6 +3,7 @@ package com.example.boxmanagernew.ui.boxdetail
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
@@ -12,7 +13,9 @@ import com.example.boxmanagernew.domain.model.ObjectWithType
 class ObjectAdapter(
     private var items: List<ObjectWithType>,
     private val onClick: (ObjectWithType) -> Unit,
-    private val onToggleSelection: (ObjectWithType) -> Unit
+    private val onToggleSelection: (ObjectWithType) -> Unit,
+    private val onEdit: (ObjectWithType) -> Unit,
+    private val onDelete: (ObjectWithType) -> Unit
 ) : RecyclerView.Adapter<ObjectAdapter.ObjectViewHolder>() {
 
     private var selectedIds: Set<Int> = emptySet()
@@ -24,6 +27,7 @@ class ObjectAdapter(
         val textName: TextView = itemView.findViewById(R.id.textName)
         val textDescription: TextView = itemView.findViewById(R.id.textDescription)
         val textQuantity: TextView = itemView.findViewById(R.id.textQuantity)
+        val textMenu: TextView = itemView.findViewById(R.id.textMenu)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ObjectViewHolder {
@@ -54,11 +58,13 @@ class ObjectAdapter(
         val isSelected = selectedIds.contains(item.obj.id)
 
         val color = if (isSelected)
-            0xFFE0E0E0.toInt()   // grigio chiaro coerente
+            0xFFE0E0E0.toInt()
         else
-            0xFFFFFFFF.toInt()   // bianco
+            0xFFFFFFFF.toInt()
 
         holder.card.setCardBackgroundColor(color)
+
+        holder.textMenu.visibility = if (selectionMode) View.GONE else View.VISIBLE
 
         holder.contentArea.setOnClickListener {
             if (selectionMode) onToggleSelection(item) else onClick(item)
@@ -67,6 +73,22 @@ class ObjectAdapter(
         holder.contentArea.setOnLongClickListener {
             onToggleSelection(item)
             true
+        }
+
+        holder.textMenu.setOnClickListener { view ->
+            val popup = PopupMenu(view.context, view)
+            popup.menu.add("Modifica")
+            popup.menu.add("Elimina")
+
+            popup.setOnMenuItemClickListener {
+                when (it.title) {
+                    "Modifica" -> onEdit(item)
+                    "Elimina" -> onDelete(item)
+                }
+                true
+            }
+
+            popup.show()
         }
     }
 

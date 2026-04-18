@@ -18,6 +18,7 @@ import com.example.boxmanagernew.data.local.AppDatabase
 import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
 import com.example.boxmanagernew.data.repository.CategoryRepositoryImpl
 import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
+import com.example.boxmanagernew.domain.model.ObjectWithType
 import com.example.boxmanagernew.ui.categories.CategoriesActivity
 import com.example.boxmanagernew.ui.categories.CategoryViewModel
 import com.example.boxmanagernew.ui.categories.IconMapper
@@ -99,7 +100,18 @@ class BoxDetailActivity : AppCompatActivity() {
                 val mode = objectViewModel.selectionMode.value ?: false
                 if (mode) objectViewModel.toggleSelection(it)
             },
-            onToggleSelection = { objectViewModel.toggleSelection(it) }
+            onToggleSelection = { objectViewModel.toggleSelection(it) },
+            onEdit = { /* placeholder */ },
+            onDelete = { obj ->
+                AlertDialog.Builder(this)
+                    .setTitle("Conferma eliminazione")
+                    .setMessage("Eliminare questo oggetto?")
+                    .setPositiveButton("Sì") { _, _ ->
+                        objectViewModel.deleteObject(obj.obj)
+                    }
+                    .setNegativeButton("No", null)
+                    .show()
+            }
         )
 
         recyclerView.layoutManager = LinearLayoutManager(this)
