@@ -23,10 +23,17 @@ class ObjectViewModel(
     private val _objects = MediatorLiveData<List<ObjectWithType>>()
     val objects: LiveData<List<ObjectWithType>> = _objects
 
+    private var currentSource: LiveData<List<ObjectWithType>>? = null
     private var lastSource: List<ObjectWithType> = emptyList()
 
     fun load(boxId: Int) {
+
+        currentSource?.let {
+            _objects.removeSource(it)
+        }
+
         val source = repository.getObjectsWithType(boxId)
+        currentSource = source
 
         _objects.addSource(source) { list ->
 

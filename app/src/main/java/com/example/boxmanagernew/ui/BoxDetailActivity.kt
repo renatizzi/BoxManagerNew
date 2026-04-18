@@ -3,7 +3,9 @@ package com.example.boxmanagernew.ui.boxdetail
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.*
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
@@ -31,13 +33,17 @@ class BoxDetailActivity : AppCompatActivity() {
     private lateinit var categoryViewModel: CategoryViewModel
     private lateinit var adapter: ObjectAdapter
 
+    private lateinit var selectionBar: View
+    private lateinit var textSelectionCount: TextView
+    private lateinit var buttonDeleteSelected: Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContentView(R.layout.activity_box_detail)
 
-        val root = findViewById<android.view.View>(android.R.id.content)
+        val root = findViewById<View>(android.R.id.content)
         ViewCompat.setOnApplyWindowInsetsListener(root) { view, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             view.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -52,6 +58,10 @@ class BoxDetailActivity : AppCompatActivity() {
         val textObjectsTitle = findViewById<TextView>(R.id.textObjectsTitle)
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerObjects)
         val fabAdd = findViewById<com.google.android.material.floatingactionbutton.FloatingActionButton>(R.id.fabAddObject)
+
+        selectionBar = findViewById(R.id.selectionBar)
+        textSelectionCount = findViewById(R.id.textSelectionCount)
+        buttonDeleteSelected = findViewById(R.id.btnDeleteSelected)
 
         BottomNavManager.setup(this, BottomNavManager.TAB_BOXES)
 
@@ -68,10 +78,6 @@ class BoxDetailActivity : AppCompatActivity() {
 
         textTitle.text = boxName
 
-        adapter = ObjectAdapter(emptyList())
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = adapter
-
         val db = AppDatabase.getDatabase(this)
 
         val objectRepository = ObjectRepositoryImpl(
@@ -87,14 +93,59 @@ class BoxDetailActivity : AppCompatActivity() {
         val categoryRepository = CategoryRepositoryImpl(db.categoryDao())
         categoryViewModel = CategoryViewModel(categoryRepository)
 
+        adapter = ObjectAdapter(
+            items = emptyList(),
+            onClick = {
+                val mode = objectViewModel.selectionMode.value ?: false
+                if (mode) objectViewModel.toggleSelection(it)
+            },
+            onToggleSelection = { objectViewModel.toggleSelection(it) }
+        )
+
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = adapter
+
         val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
 
-        // ✅ NUOVO FLUSSO
         objectViewModel.load(boxId)
 
         objectViewModel.objects.observe(this) { list ->
             adapter.updateData(list)
             textObjectsTitle.text = "Lista Oggetti (${list.size})"
+        }
+
+        objectViewModel.selectedItems.observe(this) { selectedIds ->
+            val count = selectedIds.size
+
+            if (count > 0) {
+                selectionBar.visibility = View.VISIBLE
+                textSelectionCount.text =
+                    if (count == 1) "1 selezionato" else "$count selezionati"
+            } else {
+                selectionBar.visibility = View.GONE
+            }
+
+            val mode = objectViewModel.selectionMode.value ?: false
+            adapter.updateSelection(selectedIds, mode)
+        }
+
+        objectViewModel.selectionMode.observe(this) { mode ->
+            val selected = objectViewModel.selectedItems.value ?: emptySet()
+            adapter.updateSelection(selected, mode)
+        }
+
+        buttonDeleteSelected.setOnClickListener {
+            val selectedIds = objectViewModel.selectedItems.value?.toList() ?: emptyList()
+            if (selectedIds.isEmpty()) return@setOnClickListener
+
+            AlertDialog.Builder(this)
+                .setTitle("Conferma eliminazione")
+                .setMessage("Eliminare ${selectedIds.size} elementi?")
+                .setPositiveButton("Sì") { _, _ ->
+                    objectViewModel.deleteObjects(selectedIds)
+                }
+                .setNegativeButton("No", null)
+                .show()
         }
 
         boxViewModel.boxes.observe(this) { boxes ->
@@ -119,6 +170,14 @@ class BoxDetailActivity : AppCompatActivity() {
         fabAdd.setOnClickListener {
             showAddObjectDialog(boxId)
         }
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val selected = objectViewModel.selectedItems.value ?: emptySet()
+                if (selected.isNotEmpty()) objectViewModel.clearSelection()
+                else finish()
+            }
+        })
     }
 
     private fun showAddObjectDialog(boxId: Int) {

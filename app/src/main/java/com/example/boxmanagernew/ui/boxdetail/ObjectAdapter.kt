@@ -9,10 +9,16 @@ import com.example.boxmanagernew.R
 import com.example.boxmanagernew.domain.model.ObjectWithType
 
 class ObjectAdapter(
-    private var items: List<ObjectWithType>
+    private var items: List<ObjectWithType>,
+    private val onClick: (ObjectWithType) -> Unit,
+    private val onToggleSelection: (ObjectWithType) -> Unit
 ) : RecyclerView.Adapter<ObjectAdapter.ObjectViewHolder>() {
 
+    private var selectedIds: Set<Int> = emptySet()
+    private var selectionMode: Boolean = false
+
     inner class ObjectViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val contentArea: View = itemView
         val textName: TextView = itemView.findViewById(R.id.textName)
         val textDescription: TextView = itemView.findViewById(R.id.textDescription)
         val textQuantity: TextView = itemView.findViewById(R.id.textQuantity)
@@ -42,12 +48,30 @@ class ObjectAdapter(
             holder.textQuantity.visibility = View.VISIBLE
             holder.textQuantity.text = "Quantità: ${item.obj.quantity}"
         }
+
+        val isSelected = selectedIds.contains(item.obj.id)
+        holder.itemView.alpha = if (isSelected) 0.5f else 1.0f
+
+        holder.contentArea.setOnClickListener {
+            if (selectionMode) onToggleSelection(item) else onClick(item)
+        }
+
+        holder.contentArea.setOnLongClickListener {
+            onToggleSelection(item)
+            true
+        }
     }
 
     override fun getItemCount(): Int = items.size
 
     fun updateData(newItems: List<ObjectWithType>) {
         items = newItems
+        notifyDataSetChanged()
+    }
+
+    fun updateSelection(selectedIds: Set<Int>, selectionMode: Boolean) {
+        this.selectedIds = selectedIds
+        this.selectionMode = selectionMode
         notifyDataSetChanged()
     }
 }
