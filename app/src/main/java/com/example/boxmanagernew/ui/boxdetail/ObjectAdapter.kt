@@ -1,10 +1,10 @@
 package com.example.boxmanagernew.ui.boxdetail
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.domain.model.ObjectWithType
@@ -19,6 +19,7 @@ class ObjectAdapter(
     private var selectionMode: Boolean = false
 
     inner class ObjectViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val card: CardView = itemView as CardView
         val contentArea: View = itemView
         val textName: TextView = itemView.findViewById(R.id.textName)
         val textDescription: TextView = itemView.findViewById(R.id.textDescription)
@@ -52,11 +53,12 @@ class ObjectAdapter(
 
         val isSelected = selectedIds.contains(item.obj.id)
 
-        if (isSelected) {
-            holder.itemView.setBackgroundColor(Color.parseColor("#E0E0E0"))
-        } else {
-            holder.itemView.setBackgroundColor(Color.WHITE)
-        }
+        val color = if (isSelected)
+            0xFFE0E0E0.toInt()   // grigio chiaro coerente
+        else
+            0xFFFFFFFF.toInt()   // bianco
+
+        holder.card.setCardBackgroundColor(color)
 
         holder.contentArea.setOnClickListener {
             if (selectionMode) onToggleSelection(item) else onClick(item)
