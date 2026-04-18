@@ -5,11 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.boxmanagernew.domain.model.Object
 import com.example.boxmanagernew.domain.model.ObjectWithType
-import com.example.boxmanagernew.domain.repository.ObjectRepository
+import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
 import kotlinx.coroutines.launch
 
 class ObjectViewModel(
-    private val repository: ObjectRepository
+    private val repository: ObjectRepositoryImpl
 ) : ViewModel() {
 
     fun getObjects(boxId: Int): LiveData<List<Object>> {
@@ -20,25 +20,26 @@ class ObjectViewModel(
         return repository.getObjectsWithType(boxId)
     }
 
+    // 🔥 NUOVO: inserimento dinamico
     fun addObject(
-        typeObjectId: Int,
+        name: String,
         boxId: Int,
         description: String?,
         quantity: Int?
     ) {
+        if (name.isBlank()) return
+
         viewModelScope.launch {
-            repository.insert(
-                Object(
-                    id = 0,
-                    typeObjectId = typeObjectId,
-                    boxId = boxId,
-                    description = description,
-                    quantity = quantity
-                )
+            repository.insertDynamic(
+                name = name,
+                boxId = boxId,
+                description = description,
+                quantity = quantity
             )
         }
     }
 
+    // 🔧 aggiornamento (manteniamo struttura attuale)
     fun updateObject(
         id: Int,
         typeObjectId: Int,

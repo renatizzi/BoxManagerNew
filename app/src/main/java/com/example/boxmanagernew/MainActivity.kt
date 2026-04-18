@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.boxmanagernew.data.local.DatabaseProvider
 import com.example.boxmanagernew.data.local.entity.CategoryEntity
+import com.example.boxmanagernew.data.local.entity.ObjectTypeEntity
 import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
 import com.example.boxmanagernew.ui.boxdetail.BoxDetailActivity
 import com.example.boxmanagernew.ui.categories.CategoriesActivity
@@ -69,9 +70,12 @@ class MainActivity : AppCompatActivity() {
         val db = DatabaseProvider.getDatabase(applicationContext)
         val dao = db.boxDao()
         val categoryDao = db.categoryDao()
+        val objectTypeDao = db.objectTypeDao()
         val repository = BoxRepositoryImpl(dao)
 
         lifecycleScope.launch {
+
+            // ✔ CATEGORIE (già esistenti)
             val names = listOf(
                 "Abbigliamento e Calzature",
                 "Alimenti e Bevande",
@@ -117,6 +121,28 @@ class MainActivity : AppCompatActivity() {
                         CategoryEntity(
                             name = name,
                             icon = icons[i]
+                        )
+                    )
+                }
+            }
+
+            // 🔥 NUOVO: OBJECT TYPES
+            val objectTypes = listOf(
+                "Generico",
+                "Documento",
+                "Accessorio",
+                "Componente",
+                "Ricambio",
+                "Strumento",
+                "Altro"
+            )
+
+            objectTypes.forEach { name ->
+                val existing = objectTypeDao.getByName(name)
+                if (existing == null) {
+                    objectTypeDao.insert(
+                        ObjectTypeEntity(
+                            name = name
                         )
                     )
                 }

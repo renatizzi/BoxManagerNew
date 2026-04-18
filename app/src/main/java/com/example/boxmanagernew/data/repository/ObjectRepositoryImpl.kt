@@ -3,13 +3,16 @@ package com.example.boxmanagernew.data.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.example.boxmanagernew.data.local.dao.ObjectDao
+import com.example.boxmanagernew.data.local.dao.ObjectTypeDao
 import com.example.boxmanagernew.data.local.entity.ObjectEntity
+import com.example.boxmanagernew.data.local.entity.ObjectTypeEntity
 import com.example.boxmanagernew.domain.model.Object
 import com.example.boxmanagernew.domain.model.ObjectWithType
 import com.example.boxmanagernew.domain.repository.ObjectRepository
 
 class ObjectRepositoryImpl(
-    private val dao: ObjectDao
+    private val dao: ObjectDao,
+    private val typeDao: ObjectTypeDao
 ) : ObjectRepository {
 
     override fun getObjectsByBox(boxId: Int): LiveData<List<Object>> {
@@ -41,6 +44,40 @@ class ObjectRepositoryImpl(
                 )
             }
         }
+    }
+
+    // 🔥 NUOVA LOGICA DINAMICA
+    suspend fun insertDynamic(
+        name: String,
+        boxId: Int,
+        description: String?,
+        quantity: Int?
+    ) {
+
+        val normalized = normalize(name)
+
+        // 1. cerca tipo esistente
+        var type = typeDao.getByName(normalized)
+
+        // 2. se non esiste → crea
+        if (type == null) {
+            typeDao.insert(ObjectTypeEntity(name = normalized))
+            type = typeDao.getByName(normalized)
+        }
+
+        // sicurezza
+        val typeId = type?.id ?: return
+
+        // 3. inserisce oggetto
+        dao.insert(
+            ObjectEntity(
+                id = 0,
+                typeObjectId = typeId,
+                boxId = boxId,
+                description = description,
+                quantity = quantity
+            )
+        )
     }
 
     override suspend fun insert(obj: Object) {
@@ -77,5 +114,12 @@ class ObjectRepositoryImpl(
                 quantity = obj.quantity
             )
         )
+    }
+
+    // 🔧 NORMALIZZAZIONE
+    private fun normalize(input: String): String {
+        return input
+            .trim()
+            .lowercase()
     }
 }

@@ -2,10 +2,10 @@ package com.example.boxmanagernew.ui.boxdetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.boxmanagernew.domain.repository.ObjectRepository
+import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
 
 class ObjectViewModelFactory(
-    private val repository: ObjectRepository
+    private val repository: ObjectRepositoryImpl
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

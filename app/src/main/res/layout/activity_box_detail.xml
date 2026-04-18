@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:background="#FFFFFF">
 
-    <!-- CONTENUTO SCROLLABILE -->
+    <!-- CONTENUTO -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -23,7 +23,7 @@
             android:textSize="24sp"
             android:textStyle="bold" />
 
-        <!-- AREA INFORMATIVA -->
+        <!-- INFO -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -86,6 +86,7 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
+            <!-- FIX: FAB dimensione corretta -->
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fabAddObject"
                 android:layout_width="wrap_content"

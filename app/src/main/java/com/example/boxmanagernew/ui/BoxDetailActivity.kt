@@ -1,9 +1,9 @@
 package com.example.boxmanagernew.ui.boxdetail
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
@@ -22,8 +22,7 @@ import com.example.boxmanagernew.ui.categories.IconMapper
 import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.example.boxmanagernew.ui.main.BoxViewModel
 import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import java.util.*
 
 class BoxDetailActivity : AppCompatActivity() {
 
@@ -52,16 +51,14 @@ class BoxDetailActivity : AppCompatActivity() {
         val textLastModified = findViewById<TextView>(R.id.textLastModified)
         val textObjectsTitle = findViewById<TextView>(R.id.textObjectsTitle)
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerObjects)
+        val fabAdd = findViewById<com.google.android.material.floatingactionbutton.FloatingActionButton>(R.id.fabAddObject)
 
-        // NAVBAR
         BottomNavManager.setup(this, BottomNavManager.TAB_BOXES)
 
-        // 👉 CONTENITORI = BACK
         findViewById<TextView>(R.id.navBoxes).setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
 
-        // 👉 CATEGORIE
         findViewById<TextView>(R.id.navCategories).setOnClickListener {
             startActivity(Intent(this, CategoriesActivity::class.java))
         }
@@ -77,7 +74,10 @@ class BoxDetailActivity : AppCompatActivity() {
 
         val db = AppDatabase.getDatabase(this)
 
-        val objectRepository = ObjectRepositoryImpl(db.objectDao())
+        val objectRepository = ObjectRepositoryImpl(
+            db.objectDao(),
+            db.objectTypeDao()
+        )
         val objectFactory = ObjectViewModelFactory(objectRepository)
         objectViewModel = ViewModelProvider(this, objectFactory)[ObjectViewModel::class.java]
 
@@ -112,5 +112,53 @@ class BoxDetailActivity : AppCompatActivity() {
                 }
             }
         }
+
+        fabAdd.setOnClickListener {
+            showAddObjectDialog(boxId)
+        }
+    }
+
+    private fun showAddObjectDialog(boxId: Int) {
+
+        val layout = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(40, 20, 40, 10)
+        }
+
+        val inputName = EditText(this).apply {
+            hint = "Nome oggetto"
+        }
+
+        val inputDescription = EditText(this).apply {
+            hint = "Descrizione (opzionale)"
+        }
+
+        val inputQuantity = EditText(this).apply {
+            hint = "Quantità (opzionale)"
+            inputType = android.text.InputType.TYPE_CLASS_NUMBER
+        }
+
+        layout.addView(inputName)
+        layout.addView(inputDescription)
+        layout.addView(inputQuantity)
+
+        AlertDialog.Builder(this)
+            .setTitle("Nuovo oggetto")
+            .setView(layout)
+            .setPositiveButton("Aggiungi") { _, _ ->
+
+                val name = inputName.text.toString()
+                val desc = inputDescription.text.toString().ifBlank { null }
+                val qty = inputQuantity.text.toString().toIntOrNull()
+
+                objectViewModel.addObject(
+                    name = name,
+                    boxId = boxId,
+                    description = desc,
+                    quantity = qty
+                )
+            }
+            .setNegativeButton("Annulla", null)
+            .show()
     }
 }
