@@ -26,6 +26,9 @@ class ObjectViewModel(
     private var currentSource: LiveData<List<ObjectWithType>>? = null
     private var lastSource: List<ObjectWithType> = emptyList()
 
+    private var currentQuery: String = ""
+    private var isAscending: Boolean = true
+
     fun load(boxId: Int) {
 
         currentSource?.let {
@@ -49,8 +52,37 @@ class ObjectViewModel(
                 _selectionMode.value = updatedSelection.isNotEmpty()
             }
 
-            _objects.value = list
+            applyFilterAndSort()
         }
+    }
+
+    fun filter(query: String) {
+        currentQuery = query
+        applyFilterAndSort()
+    }
+
+    fun toggleSort() {
+        isAscending = !isAscending
+        applyFilterAndSort()
+    }
+
+    private fun applyFilterAndSort() {
+        var result = lastSource
+
+        if (currentQuery.isNotBlank()) {
+            result = result.filter {
+                it.typeName.contains(currentQuery, ignoreCase = true) ||
+                        (it.obj.description?.contains(currentQuery, ignoreCase = true) == true)
+            }
+        }
+
+        result = if (isAscending) {
+            result.sortedBy { it.typeName }
+        } else {
+            result.sortedByDescending { it.typeName }
+        }
+
+        _objects.value = result
     }
 
     fun toggleSelection(item: ObjectWithType) {
