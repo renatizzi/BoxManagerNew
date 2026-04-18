@@ -1,5 +1,6 @@
 package com.example.boxmanagernew.ui.boxdetail
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,7 +51,12 @@ class ObjectAdapter(
         }
 
         val isSelected = selectedIds.contains(item.obj.id)
-        holder.itemView.alpha = if (isSelected) 0.5f else 1.0f
+
+        if (isSelected) {
+            holder.itemView.setBackgroundColor(Color.parseColor("#E0E0E0"))
+        } else {
+            holder.itemView.setBackgroundColor(Color.WHITE)
+        }
 
         holder.contentArea.setOnClickListener {
             if (selectionMode) onToggleSelection(item) else onClick(item)

@@ -6,32 +6,6 @@
     android:orientation="vertical"
     android:background="#FFFFFF">
 
-    <!-- BARRA SELEZIONE -->
-    <LinearLayout
-        android:id="@+id/selectionBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="12dp"
-        android:background="#EEEEEE"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/textSelectionCount"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="0 selezionati"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/btnDeleteSelected"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Elimina" />
-    </LinearLayout>
-
-    <!-- CONTENUTO -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -146,6 +120,30 @@
                 app:srcCompat="@android:drawable/ic_input_add"
                 app:backgroundTint="@color/purple_500"
                 app:tint="@android:color/white" />
+        </LinearLayout>
+
+        <!-- BARRA SELEZIONE ALLINEATA AI CONTENITORI -->
+        <LinearLayout
+            android:id="@+id/selectionBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="12dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/textSelectionCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0 selezionati"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
+
+            <Button
+                android:id="@+id/btnDeleteSelected"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ELIMINA SELEZIONATI" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
