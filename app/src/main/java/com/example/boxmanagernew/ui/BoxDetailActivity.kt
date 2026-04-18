@@ -101,7 +101,7 @@ class BoxDetailActivity : AppCompatActivity() {
                 if (mode) objectViewModel.toggleSelection(it)
             },
             onToggleSelection = { objectViewModel.toggleSelection(it) },
-            onEdit = { /* placeholder */ },
+            onEdit = { showEditDialog(it, boxId) },
             onDelete = { obj ->
                 AlertDialog.Builder(this)
                     .setTitle("Conferma eliminazione")
@@ -190,6 +190,53 @@ class BoxDetailActivity : AppCompatActivity() {
                 else finish()
             }
         })
+    }
+
+    private fun showEditDialog(item: ObjectWithType, boxId: Int) {
+
+        val layout = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(40, 20, 40, 10)
+        }
+
+        val inputName = EditText(this).apply {
+            hint = "Nome oggetto"
+            setText(item.typeName)
+        }
+
+        val inputDescription = EditText(this).apply {
+            hint = "Descrizione"
+            setText(item.obj.description)
+        }
+
+        val inputQuantity = EditText(this).apply {
+            hint = "Quantità"
+            inputType = android.text.InputType.TYPE_CLASS_NUMBER
+            setText(item.obj.quantity?.toString() ?: "")
+        }
+
+        layout.addView(inputName)
+        layout.addView(inputDescription)
+        layout.addView(inputQuantity)
+
+        AlertDialog.Builder(this)
+            .setTitle("Modifica oggetto")
+            .setView(layout)
+            .setPositiveButton("Salva") { _, _ ->
+
+                val desc = inputDescription.text.toString().ifBlank { null }
+                val qty = inputQuantity.text.toString().toIntOrNull()
+
+                objectViewModel.updateObject(
+                    id = item.obj.id,
+                    typeObjectId = item.obj.typeObjectId,
+                    boxId = boxId,
+                    description = desc,
+                    quantity = qty
+                )
+            }
+            .setNegativeButton("Annulla", null)
+            .show()
     }
 
     private fun showAddObjectDialog(boxId: Int) {
