@@ -98,9 +98,9 @@ class BoxDetailActivity : AppCompatActivity() {
             val box = boxes.find { it.id == boxId }
             if (box != null) {
 
-                textPosition.text = "📍 ${box.position}"
+                textPosition.text = box.position
                 textLastModified.text =
-                    "📅 ${dateFormat.format(Date(box.lastModified))}"
+                    dateFormat.format(Date(box.lastModified))
 
                 categoryViewModel.categories.observe(this) { categories ->
                     val category = categories.find { it.id == box.categoryId }
