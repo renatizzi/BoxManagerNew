@@ -89,7 +89,10 @@ class BoxDetailActivity : AppCompatActivity() {
 
         val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
 
-        objectViewModel.getObjectsWithType(boxId).observe(this) { list ->
+        // ✅ NUOVO FLUSSO
+        objectViewModel.load(boxId)
+
+        objectViewModel.objects.observe(this) { list ->
             adapter.updateData(list)
             textObjectsTitle.text = "Lista Oggetti (${list.size})"
         }
