@@ -27,6 +27,7 @@ class BoxAdapter(
 
     inner class BoxViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val iconArea: FrameLayout = itemView.findViewById(R.id.iconArea)
+        val imageOpenBox: ImageView = itemView.findViewById(R.id.imageOpenBox)
         val contentArea: View = itemView.findViewById(R.id.contentArea)
         val textBoxName: TextView = itemView.findViewById(R.id.textBoxName)
         val textSubtitle: TextView = itemView.findViewById(R.id.textSubtitle)
@@ -63,12 +64,24 @@ class BoxAdapter(
 
         holder.textMenu.visibility = if (selectionMode) View.GONE else View.VISIBLE
 
-        // ICONA = UNICO ACCESSO
+        // ICONA = accesso + animazione affidabile
         holder.iconArea.setOnClickListener {
+
+            holder.imageOpenBox.animate()
+                .alpha(0.3f)
+                .setDuration(80)
+                .withEndAction {
+                    holder.imageOpenBox.animate()
+                        .alpha(1f)
+                        .setDuration(120)
+                        .start()
+                }
+                .start()
+
             onClick(box)
         }
 
-        // CARD = SOLO SELEZIONE
+        // CARD = solo selezione
         holder.contentArea.setOnClickListener {
             onToggleSelection(box)
         }
