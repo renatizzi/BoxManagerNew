@@ -2,6 +2,7 @@ package com.example.boxmanagernew
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -75,7 +76,6 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
 
-            // ✔ CATEGORIE (già esistenti)
             val names = listOf(
                 "Abbigliamento e Calzature",
                 "Alimenti e Bevande",
@@ -126,7 +126,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            // 🔥 NUOVO: OBJECT TYPES
             val objectTypes = listOf(
                 "Generico",
                 "Documento",
@@ -184,6 +183,13 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.boxes.observe(this) { list ->
             adapter.updateData(list)
+        }
+
+        viewModel.isAscending.observe(this) { asc ->
+            val arrow = if (asc) "↑" else "↓"
+            buttonSort.text = "ORDINA   $arrow"
+            buttonSort.textSize = 18f
+            buttonSort.setTypeface(null, Typeface.BOLD)
         }
 
         viewModel.selectedItems.observe(this) { selectedIds ->

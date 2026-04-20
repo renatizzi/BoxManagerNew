@@ -18,7 +18,9 @@ class BoxViewModel(
     private val _boxes = MediatorLiveData<List<Box>>()
     val boxes: LiveData<List<Box>> = _boxes
 
-    private var isAscending = true
+    private val _isAscending = MutableLiveData(true)
+    val isAscending: LiveData<Boolean> = _isAscending
+
     private var currentQuery: String = ""
 
     private var lastSource: List<Box> = emptyList()
@@ -93,7 +95,8 @@ class BoxViewModel(
     }
 
     fun toggleSort() {
-        isAscending = !isAscending
+        val current = _isAscending.value ?: true
+        _isAscending.value = !current
         applyFilterAndSort()
     }
 
@@ -130,7 +133,9 @@ class BoxViewModel(
             }
         }
 
-        result = if (isAscending) {
+        val asc = _isAscending.value ?: true
+
+        result = if (asc) {
             result.sortedBy { it.name }
         } else {
             result.sortedByDescending { it.name }
