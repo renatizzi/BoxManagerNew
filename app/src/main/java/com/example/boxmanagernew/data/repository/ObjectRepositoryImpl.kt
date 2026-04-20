@@ -46,32 +46,57 @@ class ObjectRepositoryImpl(
         }
     }
 
-    // 🔥 NUOVA LOGICA DINAMICA
+    // 🔥 INSERT DINAMICO (già esistente)
     suspend fun insertDynamic(
         name: String,
         boxId: Int,
         description: String?,
         quantity: Int?
     ) {
-
         val normalized = normalize(name)
 
-        // 1. cerca tipo esistente
         var type = typeDao.getByName(normalized)
 
-        // 2. se non esiste → crea
         if (type == null) {
             typeDao.insert(ObjectTypeEntity(name = normalized))
             type = typeDao.getByName(normalized)
         }
 
-        // sicurezza
         val typeId = type?.id ?: return
 
-        // 3. inserisce oggetto
         dao.insert(
             ObjectEntity(
                 id = 0,
+                typeObjectId = typeId,
+                boxId = boxId,
+                description = description,
+                quantity = quantity
+            )
+        )
+    }
+
+    // 🔥 NUOVO: UPDATE CON NOME
+    suspend fun updateWithName(
+        id: Int,
+        name: String,
+        boxId: Int,
+        description: String?,
+        quantity: Int?
+    ) {
+        val normalized = normalize(name)
+
+        var type = typeDao.getByName(normalized)
+
+        if (type == null) {
+            typeDao.insert(ObjectTypeEntity(name = normalized))
+            type = typeDao.getByName(normalized)
+        }
+
+        val typeId = type?.id ?: return
+
+        dao.update(
+            ObjectEntity(
+                id = id,
                 typeObjectId = typeId,
                 boxId = boxId,
                 description = description,
@@ -116,10 +141,7 @@ class ObjectRepositoryImpl(
         )
     }
 
-    // 🔧 NORMALIZZAZIONE
     private fun normalize(input: String): String {
-        return input
-            .trim()
-            .lowercase()
+        return input.trim().lowercase()
     }
 }

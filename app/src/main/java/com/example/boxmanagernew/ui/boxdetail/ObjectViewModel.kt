@@ -138,6 +138,25 @@ class ObjectViewModel(
         }
     }
 
+    // 🔥 NUOVO METODO
+    fun updateObjectWithName(
+        id: Int,
+        name: String,
+        boxId: Int,
+        description: String?,
+        quantity: Int?
+    ) {
+        viewModelScope.launch {
+            repository.updateWithName(
+                id = id,
+                name = name,
+                boxId = boxId,
+                description = description,
+                quantity = quantity
+            )
+        }
+    }
+
     fun updateObject(
         id: Int,
         typeObjectId: Int,

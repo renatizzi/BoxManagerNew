@@ -258,6 +258,11 @@ class BoxDetailActivity : AppCompatActivity() {
             setPadding(40, 20, 40, 10)
         }
 
+        val inputName = EditText(this).apply {
+            hint = "Nome oggetto"
+            setText(item.typeName)
+        }
+
         val inputDescription = EditText(this).apply {
             hint = "Descrizione"
             setText(item.obj.description)
@@ -269,6 +274,7 @@ class BoxDetailActivity : AppCompatActivity() {
             setText(item.obj.quantity?.toString() ?: "")
         }
 
+        layout.addView(inputName)
         layout.addView(inputDescription)
         layout.addView(inputQuantity)
 
@@ -276,12 +282,13 @@ class BoxDetailActivity : AppCompatActivity() {
             .setTitle("Modifica oggetto")
             .setView(layout)
             .setPositiveButton("Salva") { _, _ ->
+                val name = inputName.text.toString()
                 val desc = inputDescription.text.toString().ifBlank { null }
                 val qty = inputQuantity.text.toString().toIntOrNull()
 
-                objectViewModel.updateObject(
+                objectViewModel.updateObjectWithName(
                     id = item.obj.id,
-                    typeObjectId = item.obj.typeObjectId,
+                    name = name,
                     boxId = item.obj.boxId,
                     description = desc,
                     quantity = qty
