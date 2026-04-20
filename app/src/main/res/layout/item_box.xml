@@ -5,21 +5,21 @@
     android:layout_height="wrap_content"
     android:layout_margin="6dp"
     app:cardCornerRadius="12dp"
-    app:cardElevation="4dp">
+    app:cardElevation="3dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:padding="12dp">
+        android:padding="10dp">
 
         <!-- ICONA APERTURA -->
         <FrameLayout
             android:id="@+id/iconArea"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="8dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginEnd="10dp"
             android:clickable="true"
             android:focusable="true"
             android:background="?attr/selectableItemBackgroundBorderless">
@@ -29,11 +29,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_box_open"
-                app:tint="#666666"
-                android:alpha="1.0" />
+                app:tint="#555555" />
         </FrameLayout>
 
-        <!-- AREA CLICK -->
+        <!-- AREA CONTENUTO -->
         <LinearLayout
             android:id="@+id/contentArea"
             android:layout_width="0dp"
@@ -47,8 +46,8 @@
             <!-- ICONA CATEGORIA -->
             <ImageView
                 android:id="@+id/imageCategory"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
                 android:layout_marginEnd="6dp"
                 android:scaleType="centerInside" />
 
@@ -62,7 +61,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
-                    android:textSize="16sp" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/textSubtitle"
@@ -76,11 +75,11 @@
         <!-- MENU -->
         <TextView
             android:id="@+id/textMenu"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
             android:gravity="center"
             android:text="⋮"
-            android:textSize="22sp"
+            android:textSize="20sp"
             android:clickable="true"
             android:focusable="true"
             android:background="?attr/selectableItemBackgroundBorderless" />
