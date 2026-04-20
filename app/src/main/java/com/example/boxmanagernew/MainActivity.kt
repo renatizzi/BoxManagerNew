@@ -2,7 +2,6 @@ package com.example.boxmanagernew
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -30,6 +29,7 @@ import com.example.boxmanagernew.ui.boxdetail.BoxDetailActivity
 import com.example.boxmanagernew.ui.categories.CategoriesActivity
 import com.example.boxmanagernew.ui.categories.CategorySpinnerAdapter
 import com.example.boxmanagernew.ui.common.BottomNavManager
+import com.example.boxmanagernew.ui.common.UiUtils
 import com.example.boxmanagernew.ui.main.BoxAdapter
 import com.example.boxmanagernew.ui.main.BoxViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -186,10 +186,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewModel.isAscending.observe(this) { asc ->
-            val arrow = if (asc) "↑" else "↓"
-            buttonSort.text = "ORDINA   $arrow"
-            buttonSort.textSize = 18f
-            buttonSort.setTypeface(null, Typeface.BOLD)
+            UiUtils.updateSortButton(buttonSort, asc)
         }
 
         viewModel.selectedItems.observe(this) { selectedIds ->
