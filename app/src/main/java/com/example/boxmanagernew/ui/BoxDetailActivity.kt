@@ -3,6 +3,7 @@ package com.example.boxmanagernew.ui.boxdetail
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -125,6 +126,13 @@ class BoxDetailActivity : AppCompatActivity() {
             textObjectsTitle.text = "Lista Oggetti (${list.size})"
         }
 
+        objectViewModel.isAscending.observe(this) { asc ->
+            val arrow = if (asc) "↑" else "↓"
+            buttonSort.text = "ORDINA   $arrow"
+            buttonSort.textSize = 18f
+            buttonSort.setTypeface(null, Typeface.BOLD)
+        }
+
         objectViewModel.selectedItems.observe(this) { selected ->
             val count = selected.size
 
@@ -159,7 +167,6 @@ class BoxDetailActivity : AppCompatActivity() {
                 .show()
         }
 
-        // SEARCH LIVE
         editSearch.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 objectViewModel.filter(s.toString())
@@ -168,7 +175,6 @@ class BoxDetailActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
-        // SORT
         buttonSort.setOnClickListener {
             hideKeyboard(it)
             editSearch.clearFocus()

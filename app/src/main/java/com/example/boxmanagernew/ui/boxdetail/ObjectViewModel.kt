@@ -23,11 +23,13 @@ class ObjectViewModel(
     private val _objects = MediatorLiveData<List<ObjectWithType>>()
     val objects: LiveData<List<ObjectWithType>> = _objects
 
+    private val _isAscending = MutableLiveData(true)
+    val isAscending: LiveData<Boolean> = _isAscending
+
     private var currentSource: LiveData<List<ObjectWithType>>? = null
     private var lastSource: List<ObjectWithType> = emptyList()
 
     private var currentQuery: String = ""
-    private var isAscending: Boolean = true
 
     fun load(boxId: Int) {
 
@@ -62,7 +64,8 @@ class ObjectViewModel(
     }
 
     fun toggleSort() {
-        isAscending = !isAscending
+        val current = _isAscending.value ?: true
+        _isAscending.value = !current
         applyFilterAndSort()
     }
 
@@ -76,7 +79,9 @@ class ObjectViewModel(
             }
         }
 
-        result = if (isAscending) {
+        val asc = _isAscending.value ?: true
+
+        result = if (asc) {
             result.sortedBy { it.typeName }
         } else {
             result.sortedByDescending { it.typeName }
