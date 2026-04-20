@@ -3,6 +3,7 @@ package com.example.boxmanagernew.ui.main
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.TextView
@@ -25,6 +26,7 @@ class BoxAdapter(
     private var selectionMode: Boolean = false
 
     inner class BoxViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val iconArea: FrameLayout = itemView.findViewById(R.id.iconArea)
         val contentArea: View = itemView.findViewById(R.id.contentArea)
         val textBoxName: TextView = itemView.findViewById(R.id.textBoxName)
         val textSubtitle: TextView = itemView.findViewById(R.id.textSubtitle)
@@ -46,12 +48,7 @@ class BoxAdapter(
         val category = categories.find { it.id == box.categoryId }
         val categoryName = category?.name ?: "Categoria sconosciuta"
 
-        val positionText = if (box.position.isBlank()) {
-            ""
-        } else {
-            " • ${box.position}"
-        }
-
+        val positionText = if (box.position.isBlank()) "" else " • ${box.position}"
         holder.textSubtitle.text = categoryName + positionText
 
         if (category != null) {
@@ -66,8 +63,14 @@ class BoxAdapter(
 
         holder.textMenu.visibility = if (selectionMode) View.GONE else View.VISIBLE
 
+        // ICONA = UNICO ACCESSO
+        holder.iconArea.setOnClickListener {
+            onClick(box)
+        }
+
+        // CARD = SOLO SELEZIONE
         holder.contentArea.setOnClickListener {
-            if (selectionMode) onToggleSelection(box) else onClick(box)
+            onToggleSelection(box)
         }
 
         holder.contentArea.setOnLongClickListener {

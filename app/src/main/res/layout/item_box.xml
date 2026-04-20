@@ -14,7 +14,21 @@
         android:gravity="center_vertical"
         android:padding="12dp">
 
-        <!-- AREA CLICK -->
+        <!-- ICONA AZIONE (solo visuale per ora) -->
+        <FrameLayout
+            android:id="@+id/iconArea"
+            android:layout_width="48dp"
+            android:layout_height="48dp">
+
+            <ImageView
+                android:id="@+id/imageOpenBox"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:src="@drawable/outline_box_24" />
+        </FrameLayout>
+
+        <!-- AREA CONTENUTO (invariata) -->
         <LinearLayout
             android:id="@+id/contentArea"
             android:layout_width="0dp"
@@ -25,7 +39,6 @@
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground">
 
-            <!-- ICONA -->
             <ImageView
                 android:id="@+id/imageCategory"
                 android:layout_width="40dp"
