@@ -23,7 +23,7 @@ class ObjectAdapter(
 
     inner class ObjectViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val card: CardView = itemView as CardView
-        val contentArea: View = itemView
+        val contentArea: View = itemView.findViewById(R.id.contentArea)
         val textName: TextView = itemView.findViewById(R.id.textName)
         val textDescription: TextView = itemView.findViewById(R.id.textDescription)
         val textQuantity: TextView = itemView.findViewById(R.id.textQuantity)
