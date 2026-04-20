@@ -3,7 +3,6 @@ package com.example.boxmanagernew.ui.boxdetail
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
-import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -29,6 +28,7 @@ import com.example.boxmanagernew.ui.categories.CategoriesActivity
 import com.example.boxmanagernew.ui.categories.CategoryViewModel
 import com.example.boxmanagernew.ui.categories.IconMapper
 import com.example.boxmanagernew.ui.common.BottomNavManager
+import com.example.boxmanagernew.ui.common.UiUtils
 import com.example.boxmanagernew.ui.main.BoxViewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -127,10 +127,7 @@ class BoxDetailActivity : AppCompatActivity() {
         }
 
         objectViewModel.isAscending.observe(this) { asc ->
-            val arrow = if (asc) "↑" else "↓"
-            buttonSort.text = "ORDINA   $arrow"
-            buttonSort.textSize = 18f
-            buttonSort.setTypeface(null, Typeface.BOLD)
+            UiUtils.updateSortButton(buttonSort, asc)
         }
 
         objectViewModel.selectedItems.observe(this) { selected ->
