@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="6dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="3dp">
+    card_view:cardCornerRadius="16dp"
+    card_view:cardElevation="6dp">
 
     <LinearLayout
         android:id="@+id/rootSelectable"
@@ -13,10 +13,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:padding="10dp"
+        android:padding="12dp"
         android:background="@drawable/bg_box_selector">
 
-        <!-- ICON AREA -->
         <FrameLayout
             android:id="@+id/iconArea"
             android:layout_width="36dp"
@@ -32,7 +31,6 @@
                 android:textSize="18sp" />
         </FrameLayout>
 
-        <!-- CONTENT AREA -->
         <LinearLayout
             android:id="@+id/contentArea"
             android:layout_width="0dp"
@@ -57,10 +55,12 @@
 
                 <TextView
                     android:id="@+id/textDescription"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="12sp"
-                    android:textColor="#888888" />
+                    android:textColor="#888888"
+                    android:maxLines="1"
+                    android:ellipsize="end" />
 
                 <TextView
                     android:id="@+id/textQuantity"
@@ -73,7 +73,6 @@
 
         </LinearLayout>
 
-        <!-- MENU -->
         <TextView
             android:id="@+id/textMenu"
             android:layout_width="44dp"

@@ -109,17 +109,12 @@ class BoxDetailActivity : AppCompatActivity() {
         adapter = ObjectAdapter(
             items = emptyList(),
             onClick = {},
-            onToggleSelection = { id ->
-                objectViewModel.toggleSelection(id)
-            },
+            onToggleSelection = { id -> objectViewModel.toggleSelection(id) },
             onEdit = { id ->
-                val item = objectViewModel.objects.value
-                    ?.find { it.obj.id == id }
+                val item = objectViewModel.objects.value?.find { it.obj.id == id }
                 if (item != null) showEditDialog(item)
             },
-            onDelete = { id ->
-                showDeleteDialog(id)
-            }
+            onDelete = { id -> showDeleteDialog(id) }
         )
 
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -162,9 +157,24 @@ class BoxDetailActivity : AppCompatActivity() {
             val ids = objectViewModel.selectedItems.value?.toList() ?: emptyList()
             if (ids.isEmpty()) return@setOnClickListener
 
+            val count = ids.size
+
+            val visibleIds = objectViewModel.objects.value
+                ?.map { it.obj.id }
+                ?.toSet() ?: emptySet()
+
+            val selectedIds = ids.toSet()
+            val hasHiddenSelections = selectedIds.any { it !in visibleIds }
+
+            val message = if (hasHiddenSelections) {
+                "Eliminare $count elementi?\n\nAlcuni elementi selezionati non sono visibili per via del filtro attivo."
+            } else {
+                "Eliminare $count elementi?"
+            }
+
             AlertDialog.Builder(this)
                 .setTitle("Conferma eliminazione")
-                .setMessage("Eliminare ${ids.size} elementi?")
+                .setMessage(message)
                 .setPositiveButton("Sì") { _, _ ->
                     objectViewModel.deleteObjects(ids)
                 }
@@ -174,7 +184,9 @@ class BoxDetailActivity : AppCompatActivity() {
 
         editSearch.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                objectViewModel.filter(s.toString())
+                val query = s.toString()
+                objectViewModel.filter(query)
+                adapter.updateFilterState(query.isNotBlank())
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -216,6 +228,26 @@ class BoxDetailActivity : AppCompatActivity() {
         })
     }
 
+    private fun createSingleLineDescriptionInput(context: Context, hintText: String): EditText {
+        return EditText(context).apply {
+            hint = hintText
+            inputType = android.text.InputType.TYPE_CLASS_TEXT
+            maxLines = 1
+
+            addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable?) {
+                    if (s != null && s.contains("\n")) {
+                        val cleaned = s.toString().replace("\n", " ")
+                        setText(cleaned)
+                        setSelection(cleaned.length)
+                    }
+                }
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            })
+        }
+    }
+
     private fun hideKeyboard(view: View) {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view.windowToken, 0)
@@ -236,7 +268,7 @@ class BoxDetailActivity : AppCompatActivity() {
         }
 
         val inputName = EditText(this).apply { hint = "Nome oggetto" }
-        val inputDescription = EditText(this).apply { hint = "Descrizione (opzionale)" }
+        val inputDescription = createSingleLineDescriptionInput(this, "Descrizione (opzionale)")
         val inputQuantity = EditText(this).apply {
             hint = "Quantità (opzionale)"
             inputType = android.text.InputType.TYPE_CLASS_NUMBER
@@ -271,8 +303,7 @@ class BoxDetailActivity : AppCompatActivity() {
             setText(item.typeName)
         }
 
-        val inputDescription = EditText(this).apply {
-            hint = "Descrizione"
+        val inputDescription = createSingleLineDescriptionInput(this, "Descrizione").apply {
             setText(item.obj.description)
         }
 

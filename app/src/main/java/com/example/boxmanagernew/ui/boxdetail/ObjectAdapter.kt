@@ -20,6 +20,7 @@ class ObjectAdapter(
 
     private var selectedIds: Set<Int> = emptySet()
     private var selectionMode: Boolean = false
+    private var isFilterActive: Boolean = false
 
     inner class ObjectViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val rootSelectable: View = itemView.findViewById(R.id.rootSelectable)
@@ -48,6 +49,9 @@ class ObjectAdapter(
         } else {
             holder.textDescription.visibility = View.VISIBLE
             holder.textDescription.text = item.obj.description
+
+            // 🔴 maxLines dinamico
+            holder.textDescription.maxLines = if (isFilterActive) 2 else 1
         }
 
         if (item.obj.quantity == null) {
@@ -98,6 +102,11 @@ class ObjectAdapter(
     fun updateSelection(selectedIds: Set<Int>, selectionMode: Boolean) {
         this.selectedIds = selectedIds
         this.selectionMode = selectionMode
+        notifyDataSetChanged()
+    }
+
+    fun updateFilterState(isFilterActive: Boolean) {
+        this.isFilterActive = isFilterActive
         notifyDataSetChanged()
     }
 }

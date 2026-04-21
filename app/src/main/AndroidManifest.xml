@@ -6,7 +6,10 @@
         android:label="BoxManagerNew"
         android:theme="@style/Theme.BoxManagerNew">
 
-        <activity android:name=".ui.boxdetail.BoxDetailActivity" />
+        <activity
+            android:name=".ui.boxdetail.BoxDetailActivity"
+            android:windowSoftInputMode="adjustPan" />
+
         <activity android:name=".ui.categories.CategoriesActivity" />
         <activity android:name=".ui.dashboard.DashboardActivity" />
         <activity android:name=".ui.settings.SettingsActivity" />
