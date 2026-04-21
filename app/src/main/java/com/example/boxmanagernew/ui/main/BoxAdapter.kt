@@ -29,6 +29,7 @@ class BoxAdapter(
         val iconArea: FrameLayout = itemView.findViewById(R.id.iconArea)
         val imageOpenBox: ImageView = itemView.findViewById(R.id.imageOpenBox)
         val contentArea: View = itemView.findViewById(R.id.contentArea)
+        val rootSelectable: View = itemView.findViewById(R.id.rootSelectable)
         val textBoxName: TextView = itemView.findViewById(R.id.textBoxName)
         val textSubtitle: TextView = itemView.findViewById(R.id.textSubtitle)
         val textMenu: TextView = itemView.findViewById(R.id.textMenu)
@@ -60,13 +61,11 @@ class BoxAdapter(
         }
 
         val isSelected = selectedIds.contains(box.id)
-        holder.itemView.alpha = if (isSelected) 0.5f else 1.0f
+        holder.rootSelectable.isSelected = isSelected
 
         holder.textMenu.visibility = if (selectionMode) View.GONE else View.VISIBLE
 
-        // ICONA = accesso + animazione affidabile
         holder.iconArea.setOnClickListener {
-
             holder.imageOpenBox.animate()
                 .alpha(0.3f)
                 .setDuration(80)
@@ -81,7 +80,6 @@ class BoxAdapter(
             onClick(box)
         }
 
-        // CARD = solo selezione
         holder.contentArea.setOnClickListener {
             onToggleSelection(box)
         }

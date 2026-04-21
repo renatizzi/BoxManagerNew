@@ -1,5 +1,6 @@
 package com.example.boxmanagernew.ui.boxdetail
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,17 +58,16 @@ class ObjectAdapter(
 
         val isSelected = selectedIds.contains(item.obj.id)
 
-        val color = if (isSelected)
-            0xFFE0E0E0.toInt()
-        else
-            0xFFFFFFFF.toInt()
-
-        holder.card.setCardBackgroundColor(color)
+        if (isSelected) {
+            holder.card.setCardBackgroundColor(Color.parseColor("#E3F2FD"))
+        } else {
+            holder.card.setCardBackgroundColor(Color.parseColor("#F5F5F5"))
+        }
 
         holder.textMenu.visibility = if (selectionMode) View.GONE else View.VISIBLE
 
         holder.contentArea.setOnClickListener {
-            if (selectionMode) onToggleSelection(item) else onClick(item)
+            onToggleSelection(item)
         }
 
         holder.contentArea.setOnLongClickListener {

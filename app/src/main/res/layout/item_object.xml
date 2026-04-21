@@ -5,17 +5,18 @@
     android:layout_height="wrap_content"
     android:layout_margin="6dp"
     card_view:cardCornerRadius="16dp"
-    card_view:cardElevation="6dp"
-    card_view:cardBackgroundColor="#F5F5F5">
+    card_view:cardElevation="6dp">
 
     <LinearLayout
+        android:id="@+id/rootSelectable"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:padding="12dp">
+        android:padding="12dp"
+        android:background="@drawable/bg_box_selector">
 
-        <!-- AREA CONTENUTO (CLICK + LONG PRESS) -->
+        <!-- AREA CONTENUTO -->
         <LinearLayout
             android:id="@+id/contentArea"
             android:layout_width="0dp"
@@ -63,7 +64,7 @@
 
         </LinearLayout>
 
-        <!-- MENU (AREA SEPARATA) -->
+        <!-- MENU -->
         <TextView
             android:id="@+id/textMenu"
             android:layout_width="48dp"

@@ -8,11 +8,13 @@
     app:cardElevation="3dp">
 
     <LinearLayout
+        android:id="@+id/rootSelectable"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:padding="10dp">
+        android:padding="10dp"
+        android:background="@drawable/bg_box_selector">
 
         <!-- ICONA APERTURA -->
         <FrameLayout
