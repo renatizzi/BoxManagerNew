@@ -1,13 +1,11 @@
 package com.example.boxmanagernew.ui.boxdetail
 
-import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.PopupMenu
 import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.domain.model.ObjectWithType
@@ -24,7 +22,8 @@ class ObjectAdapter(
     private var selectionMode: Boolean = false
 
     inner class ObjectViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val card: CardView = itemView as CardView
+        val rootSelectable: View = itemView.findViewById(R.id.rootSelectable)
+        val iconArea: FrameLayout = itemView.findViewById(R.id.iconArea)
         val contentArea: View = itemView.findViewById(R.id.contentArea)
         val textName: TextView = itemView.findViewById(R.id.textName)
         val textDescription: TextView = itemView.findViewById(R.id.textDescription)
@@ -58,22 +57,11 @@ class ObjectAdapter(
         }
 
         val isSelected = selectedIds.contains(item.obj.id)
-
-        val drawable = GradientDrawable().apply {
-            cornerRadius = 16f
-            if (isSelected) {
-                setColor(Color.parseColor("#E3F2FD"))
-                setStroke(4, Color.parseColor("#2196F3"))
-            } else {
-                setColor(Color.WHITE)
-                setStroke(0, Color.TRANSPARENT)
-            }
-        }
-
-        holder.card.background = drawable
+        holder.rootSelectable.isSelected = isSelected
 
         holder.textMenu.visibility = if (selectionMode) View.GONE else View.VISIBLE
 
+        // 👉 SOLO contentArea gestisce selezione (coerente con Box)
         holder.contentArea.setOnClickListener {
             onToggleSelection(item)
         }
