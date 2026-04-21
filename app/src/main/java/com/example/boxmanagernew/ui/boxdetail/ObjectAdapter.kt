@@ -1,6 +1,7 @@
 package com.example.boxmanagernew.ui.boxdetail
 
 import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,11 +59,18 @@ class ObjectAdapter(
 
         val isSelected = selectedIds.contains(item.obj.id)
 
-        if (isSelected) {
-            holder.card.setCardBackgroundColor(Color.parseColor("#E3F2FD"))
-        } else {
-            holder.card.setCardBackgroundColor(Color.parseColor("#F5F5F5"))
+        val drawable = GradientDrawable().apply {
+            cornerRadius = 16f
+            if (isSelected) {
+                setColor(Color.parseColor("#E3F2FD"))
+                setStroke(4, Color.parseColor("#2196F3"))
+            } else {
+                setColor(Color.WHITE)
+                setStroke(0, Color.TRANSPARENT)
+            }
         }
+
+        holder.card.background = drawable
 
         holder.textMenu.visibility = if (selectionMode) View.GONE else View.VISIBLE
 

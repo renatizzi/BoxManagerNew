@@ -41,9 +41,7 @@ class ObjectViewModel(
         currentSource = source
 
         _objects.addSource(source) { list ->
-
             lastSource = list
-
             applyFilterAndSort()
         }
     }
@@ -78,16 +76,6 @@ class ObjectViewModel(
         }
 
         _objects.value = result
-
-        // 🔴 FIX: sincronizzazione selezione con dataset filtrato
-        val currentSelected = _selectedItems.value ?: emptySet()
-        if (currentSelected.isNotEmpty()) {
-            val validIds = result.map { it.obj.id }.toSet()
-            val updatedSelection = currentSelected.intersect(validIds)
-
-            _selectedItems.value = updatedSelection
-            _selectionMode.value = updatedSelection.isNotEmpty()
-        }
     }
 
     fun toggleSelection(item: ObjectWithType) {
@@ -100,7 +88,8 @@ class ObjectViewModel(
             updated.add(item.obj.id)
         }
 
-        _selectedItems.value = updated
+        // 🔴 FIX CRITICO
+        _selectedItems.value = updated.toSet()   // nuovo riferimento SEMPRE
         _selectionMode.value = updated.isNotEmpty()
     }
 
