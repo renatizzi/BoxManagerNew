@@ -12,10 +12,10 @@ import com.example.boxmanagernew.domain.model.ObjectWithType
 
 class ObjectAdapter(
     private var items: List<ObjectWithType>,
-    private val onClick: (ObjectWithType) -> Unit,
-    private val onToggleSelection: (ObjectWithType) -> Unit,
-    private val onEdit: (ObjectWithType) -> Unit,
-    private val onDelete: (ObjectWithType) -> Unit
+    private val onClick: (Int) -> Unit,
+    private val onToggleSelection: (Int) -> Unit,
+    private val onEdit: (Int) -> Unit,
+    private val onDelete: (Int) -> Unit
 ) : RecyclerView.Adapter<ObjectAdapter.ObjectViewHolder>() {
 
     private var selectedIds: Set<Int> = emptySet()
@@ -39,6 +39,7 @@ class ObjectAdapter(
 
     override fun onBindViewHolder(holder: ObjectViewHolder, position: Int) {
         val item = items[position]
+        val id = item.obj.id
 
         holder.textName.text = item.typeName
 
@@ -56,18 +57,17 @@ class ObjectAdapter(
             holder.textQuantity.text = "Quantità: ${item.obj.quantity}"
         }
 
-        val isSelected = selectedIds.contains(item.obj.id)
+        val isSelected = selectedIds.contains(id)
         holder.rootSelectable.isSelected = isSelected
 
         holder.textMenu.visibility = if (selectionMode) View.GONE else View.VISIBLE
 
-        // 👉 SOLO contentArea gestisce selezione (coerente con Box)
         holder.contentArea.setOnClickListener {
-            onToggleSelection(item)
+            onToggleSelection(id)
         }
 
         holder.contentArea.setOnLongClickListener {
-            onToggleSelection(item)
+            onToggleSelection(id)
             true
         }
 
@@ -78,8 +78,8 @@ class ObjectAdapter(
 
             popup.setOnMenuItemClickListener {
                 when (it.title) {
-                    "Modifica" -> onEdit(item)
-                    "Elimina" -> onDelete(item)
+                    "Modifica" -> onEdit(id)
+                    "Elimina" -> onDelete(id)
                 }
                 true
             }

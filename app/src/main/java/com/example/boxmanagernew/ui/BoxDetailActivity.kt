@@ -109,9 +109,17 @@ class BoxDetailActivity : AppCompatActivity() {
         adapter = ObjectAdapter(
             items = emptyList(),
             onClick = {},
-            onToggleSelection = { item -> objectViewModel.toggleSelection(item) },
-            onEdit = { showEditDialog(it) },
-            onDelete = { showDeleteDialog(it.obj.id) }
+            onToggleSelection = { id ->
+                objectViewModel.toggleSelection(id)
+            },
+            onEdit = { id ->
+                val item = objectViewModel.objects.value
+                    ?.find { it.obj.id == id }
+                if (item != null) showEditDialog(item)
+            },
+            onDelete = { id ->
+                showDeleteDialog(id)
+            }
         )
 
         recyclerView.layoutManager = LinearLayoutManager(this)

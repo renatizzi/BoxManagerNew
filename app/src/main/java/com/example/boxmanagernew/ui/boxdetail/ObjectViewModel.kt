@@ -78,18 +78,18 @@ class ObjectViewModel(
         _objects.value = result
     }
 
-    fun toggleSelection(item: ObjectWithType) {
+    // 🔴 MODIFICA CHIAVE: ora lavora con ID
+    fun toggleSelection(id: Int) {
         val current = _selectedItems.value ?: emptySet()
         val updated = current.toMutableSet()
 
-        if (updated.contains(item.obj.id)) {
-            updated.remove(item.obj.id)
+        if (updated.contains(id)) {
+            updated.remove(id)
         } else {
-            updated.add(item.obj.id)
+            updated.add(id)
         }
 
-        // 🔴 FIX CRITICO
-        _selectedItems.value = updated.toSet()   // nuovo riferimento SEMPRE
+        _selectedItems.value = updated.toSet()
         _selectionMode.value = updated.isNotEmpty()
     }
 
