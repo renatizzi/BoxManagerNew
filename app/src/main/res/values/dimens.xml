@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- SPACING -->
+    <dimen name="space_xs">4dp</dimen>
+    <dimen name="space_s">8dp</dimen>
+    <dimen name="space_m">12dp</dimen>
+    <dimen name="space_l">16dp</dimen>
+
+    <!-- CARD -->
+    <dimen name="card_margin">6dp</dimen>
+    <dimen name="card_padding">12dp</dimen>
+    <dimen name="card_radius">12dp</dimen>
+    <dimen name="card_elevation">4dp</dimen>
+
+    <!-- ICON -->
+    <dimen name="icon_size">36dp</dimen>
+    <dimen name="menu_size">44dp</dimen>
+
+    <!-- TEXT -->
+    <dimen name="text_primary">15sp</dimen>
+    <dimen name="text_secondary">12sp</dimen>
+    <dimen name="text_menu">20sp</dimen>
+
+</resources>

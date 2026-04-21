@@ -3,9 +3,9 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="6dp"
-    card_view:cardCornerRadius="16dp"
-    card_view:cardElevation="6dp">
+    android:layout_margin="@dimen/card_margin"
+    card_view:cardCornerRadius="@dimen/card_radius"
+    card_view:cardElevation="@dimen/card_elevation">
 
     <LinearLayout
         android:id="@+id/rootSelectable"
@@ -13,14 +13,14 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:padding="12dp"
+        android:padding="@dimen/card_padding"
         android:background="@drawable/bg_box_selector">
 
         <FrameLayout
             android:id="@+id/iconArea"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_marginEnd="10dp">
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:layout_marginEnd="@dimen/space_s">
 
             <TextView
                 android:id="@+id/textIcon"
@@ -51,14 +51,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/text_primary" />
 
                 <TextView
                     android:id="@+id/textDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:textColor="#888888"
+                    android:textSize="@dimen/text_secondary"
+                    android:textColor="@color/text_secondary"
                     android:maxLines="1"
                     android:ellipsize="end" />
 
@@ -66,8 +66,8 @@
                     android:id="@+id/textQuantity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:textColor="#888888" />
+                    android:textSize="@dimen/text_secondary"
+                    android:textColor="@color/text_secondary" />
 
             </LinearLayout>
 
@@ -75,11 +75,11 @@
 
         <TextView
             android:id="@+id/textMenu"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
+            android:layout_width="@dimen/menu_size"
+            android:layout_height="@dimen/menu_size"
             android:gravity="center"
             android:text="⋮"
-            android:textSize="20sp"
+            android:textSize="@dimen/text_menu"
             android:clickable="true"
             android:focusable="true"
             android:background="?attr/selectableItemBackgroundBorderless" />
