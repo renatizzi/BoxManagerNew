@@ -1,5 +1,9 @@
 package com.example.boxmanagernew.ui.main
 
+import android.graphics.Color
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.BackgroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +28,7 @@ class BoxAdapter(
 
     private var selectedIds: Set<Int> = emptySet()
     private var selectionMode: Boolean = false
+    private var currentQuery: String = ""
 
     inner class BoxViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val iconArea: FrameLayout = itemView.findViewById(R.id.iconArea)
@@ -45,7 +50,7 @@ class BoxAdapter(
     override fun onBindViewHolder(holder: BoxViewHolder, position: Int) {
         val box = items[position]
 
-        holder.textBoxName.text = box.name
+        holder.textBoxName.text = highlight(box.name)
 
         val category = categories.find { it.id == box.categoryId }
         val categoryName = category?.name ?: "Categoria sconosciuta"
@@ -122,5 +127,28 @@ class BoxAdapter(
         this.selectedIds = selectedIds
         this.selectionMode = selectionMode
         notifyDataSetChanged()
+    }
+
+    fun updateQuery(query: String) {
+        currentQuery = query
+        notifyDataSetChanged()
+    }
+
+    private fun highlight(text: String): SpannableString {
+        if (currentQuery.isBlank()) return SpannableString(text)
+
+        val start = text.lowercase().indexOf(currentQuery.lowercase())
+        if (start < 0) return SpannableString(text)
+
+        val end = start + currentQuery.length
+
+        return SpannableString(text).apply {
+            setSpan(
+                BackgroundColorSpan(Color.YELLOW),
+                start,
+                end,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        }
     }
 }
