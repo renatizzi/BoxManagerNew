@@ -21,4 +21,8 @@ interface BoxDao {
 
     @Query("DELETE FROM box WHERE id = :id")
     suspend fun deleteById(id: Int)
+
+    // 🔹 NUOVO: conteggio contenitori per categoria
+    @Query("SELECT COUNT(*) FROM box WHERE categoryId = :categoryId")
+    suspend fun countBoxesByCategory(categoryId: Int): Int
 }

@@ -103,7 +103,10 @@ class BoxDetailActivity : AppCompatActivity() {
         val boxRepository = BoxRepositoryImpl(db.boxDao())
         boxViewModel = BoxViewModel(boxRepository)
 
-        val categoryRepository = CategoryRepositoryImpl(db.categoryDao())
+        val categoryRepository = CategoryRepositoryImpl(
+            db.categoryDao(),
+            db.boxDao()
+        )
         categoryViewModel = CategoryViewModel(categoryRepository)
 
         adapter = ObjectAdapter(
@@ -187,7 +190,7 @@ class BoxDetailActivity : AppCompatActivity() {
                 val query = s.toString()
                 objectViewModel.filter(query)
                 adapter.updateFilterState(query.isNotBlank())
-                adapter.updateQuery(query) // 🔴 FIX
+                adapter.updateQuery(query)
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}

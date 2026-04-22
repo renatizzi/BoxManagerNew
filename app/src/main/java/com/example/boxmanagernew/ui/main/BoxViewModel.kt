@@ -26,7 +26,11 @@ class BoxViewModel(
     val currentQuery: LiveData<String> = _currentQuery
 
     private var lastSource: List<Box> = emptyList()
-    private var categories: List<CategoryEntity> = emptyList()
+
+    // 🔴 FIX: categories reattivo
+    private val _categories = MutableLiveData<List<CategoryEntity>>(emptyList())
+    private val categories: List<CategoryEntity>
+        get() = _categories.value ?: emptyList()
 
     private val _selectedItems = MutableLiveData<Set<Int>>(emptySet())
     val selectedItems: LiveData<Set<Int>> = _selectedItems
@@ -47,11 +51,15 @@ class BoxViewModel(
         _boxes.addSource(_isAscending) {
             applyFilterAndSort()
         }
+
+        // 🔴 FIX: trigger anche su categories
+        _boxes.addSource(_categories) {
+            applyFilterAndSort()
+        }
     }
 
     fun setCategories(list: List<CategoryEntity>) {
-        categories = list
-        applyFilterAndSort()
+        _categories.value = list
     }
 
     fun addBox(name: String, categoryId: Int, position: String) {

@@ -59,8 +59,9 @@ class CategoriesActivity : AppCompatActivity() {
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewCategories)
 
         val db = DatabaseProvider.getDatabase(applicationContext)
-        val dao = db.categoryDao()
-        val repository = CategoryRepositoryImpl(dao)
+        val categoryDao = db.categoryDao()
+        val boxDao = db.boxDao()
+        val repository = CategoryRepositoryImpl(categoryDao, boxDao)
 
         viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {

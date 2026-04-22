@@ -3,11 +3,13 @@ package com.example.boxmanagernew.data.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.example.boxmanagernew.data.local.dao.CategoryDao
+import com.example.boxmanagernew.data.local.dao.BoxDao
 import com.example.boxmanagernew.data.local.entity.CategoryEntity
 import com.example.boxmanagernew.domain.model.Category
 
 class CategoryRepositoryImpl(
-    private val categoryDao: CategoryDao
+    private val categoryDao: CategoryDao,
+    private val boxDao: BoxDao
 ) {
 
     fun getAllCategories(): LiveData<List<Category>> {
@@ -42,13 +44,22 @@ class CategoryRepositoryImpl(
         )
     }
 
-    suspend fun delete(category: Category) {
-        categoryDao.delete(
-            CategoryEntity(
-                id = category.id,
-                name = category.name,
-                icon = category.icon
+    // 🔴 MODIFICATO: ora controlla utilizzo
+    suspend fun delete(category: Category): Boolean {
+
+        val count = boxDao.countBoxesByCategory(category.id)
+
+        return if (count > 0) {
+            false // blocco eliminazione
+        } else {
+            categoryDao.delete(
+                CategoryEntity(
+                    id = category.id,
+                    name = category.name,
+                    icon = category.icon
+                )
             )
-        )
+            true
+        }
     }
 }

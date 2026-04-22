@@ -16,7 +16,6 @@ interface CategoryDao {
     @Delete
     suspend fun delete(category: CategoryEntity)
 
-    // 🔴 FIX: Miscellanea sempre ultima
     @Query("""
         SELECT * FROM categories
         ORDER BY 
@@ -25,6 +24,10 @@ interface CategoryDao {
     """)
     fun getAllCategories(): LiveData<List<CategoryEntity>>
 
-    @Query("SELECT * FROM categories WHERE name = :name LIMIT 1")
+    @Query("""
+        SELECT * FROM categories 
+        WHERE LOWER(name) = LOWER(:name) 
+        LIMIT 1
+    """)
     suspend fun getCategoryByName(name: String): CategoryEntity?
 }
