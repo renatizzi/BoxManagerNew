@@ -1,11 +1,16 @@
 package com.example.boxmanagernew.ui.boxdetail
 
+import android.graphics.Color
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.BackgroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.PopupMenu
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.domain.model.ObjectWithType
@@ -21,6 +26,7 @@ class ObjectAdapter(
     private var selectedIds: Set<Int> = emptySet()
     private var selectionMode: Boolean = false
     private var isFilterActive: Boolean = false
+    private var currentQuery: String = ""
 
     inner class ObjectViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val rootSelectable: View = itemView.findViewById(R.id.rootSelectable)
@@ -42,15 +48,13 @@ class ObjectAdapter(
         val item = items[position]
         val id = item.obj.id
 
-        holder.textName.text = item.typeName
+        holder.textName.text = highlight(item.typeName)
 
         if (item.obj.description.isNullOrEmpty()) {
             holder.textDescription.visibility = View.GONE
         } else {
             holder.textDescription.visibility = View.VISIBLE
-            holder.textDescription.text = item.obj.description
-
-            // 🔴 maxLines dinamico
+            holder.textDescription.text = highlight(item.obj.description ?: "")
             holder.textDescription.maxLines = if (isFilterActive) 2 else 1
         }
 
@@ -95,8 +99,11 @@ class ObjectAdapter(
     override fun getItemCount(): Int = items.size
 
     fun updateData(newItems: List<ObjectWithType>) {
+        val diffCallback = ObjectDiffCallback(items, newItems)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+
         items = newItems
-        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
     }
 
     fun updateSelection(selectedIds: Set<Int>, selectionMode: Boolean) {
@@ -108,5 +115,49 @@ class ObjectAdapter(
     fun updateFilterState(isFilterActive: Boolean) {
         this.isFilterActive = isFilterActive
         notifyDataSetChanged()
+    }
+
+    fun updateQuery(query: String) {
+        currentQuery = query
+        notifyDataSetChanged()
+    }
+
+    private fun highlight(text: String): SpannableString {
+        if (currentQuery.isBlank()) return SpannableString(text)
+
+        val start = text.lowercase().indexOf(currentQuery.lowercase())
+        if (start < 0) return SpannableString(text)
+
+        val end = start + currentQuery.length
+
+        return SpannableString(text).apply {
+            setSpan(
+                BackgroundColorSpan(Color.YELLOW),
+                start,
+                end,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        }
+    }
+
+    class ObjectDiffCallback(
+        private val oldList: List<ObjectWithType>,
+        private val newList: List<ObjectWithType>
+    ) : DiffUtil.Callback() {
+
+        override fun getOldListSize(): Int = oldList.size
+        override fun getNewListSize(): Int = newList.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition].obj.id == newList[newItemPosition].obj.id
+        }
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            val oldItem = oldList[oldItemPosition]
+            val newItem = newList[newItemPosition]
+
+            return oldItem.obj == newItem.obj &&
+                    oldItem.typeName == newItem.typeName
+        }
     }
 }

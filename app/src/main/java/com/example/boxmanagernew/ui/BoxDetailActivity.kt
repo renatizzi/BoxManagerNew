@@ -79,7 +79,7 @@ class BoxDetailActivity : AppCompatActivity() {
         BottomNavManager.setup(this, BottomNavManager.TAB_BOXES)
 
         findViewById<TextView>(R.id.navBoxes).setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
+            finish()
         }
 
         findViewById<TextView>(R.id.navCategories).setOnClickListener {
@@ -187,6 +187,7 @@ class BoxDetailActivity : AppCompatActivity() {
                 val query = s.toString()
                 objectViewModel.filter(query)
                 adapter.updateFilterState(query.isNotBlank())
+                adapter.updateQuery(query) // 🔴 FIX
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -226,6 +227,13 @@ class BoxDetailActivity : AppCompatActivity() {
                 else finish()
             }
         })
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (isFinishing) {
+            objectViewModel.clearSelection()
+        }
     }
 
     private fun createSingleLineDescriptionInput(context: Context, hintText: String): EditText {
