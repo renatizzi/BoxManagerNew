@@ -21,7 +21,8 @@ class BoxViewModel(
     private val _isAscending = MutableLiveData(true)
     val isAscending: LiveData<Boolean> = _isAscending
 
-    private var currentQuery: String = ""
+    private val _currentQuery = MutableLiveData("")
+    val currentQuery: LiveData<String> = _currentQuery
 
     private var lastSource: List<Box> = emptyList()
 
@@ -46,6 +47,14 @@ class BoxViewModel(
                 _selectionMode.value = updatedSelection.isNotEmpty()
             }
 
+            applyFilterAndSort()
+        }
+
+        _boxes.addSource(_currentQuery) {
+            applyFilterAndSort()
+        }
+
+        _boxes.addSource(_isAscending) {
             applyFilterAndSort()
         }
     }
@@ -97,12 +106,10 @@ class BoxViewModel(
     fun toggleSort() {
         val current = _isAscending.value ?: true
         _isAscending.value = !current
-        applyFilterAndSort()
     }
 
     fun filter(query: String) {
-        currentQuery = query
-        applyFilterAndSort()
+        _currentQuery.value = query
     }
 
     fun toggleSelection(box: Box) {
@@ -124,12 +131,24 @@ class BoxViewModel(
         _selectionMode.value = false
     }
 
+    fun hasHiddenSelections(): Boolean {
+        val selected = _selectedItems.value ?: emptySet()
+        val visible = _boxes.value?.map { it.id }?.toSet() ?: emptySet()
+
+        if (selected.isEmpty()) return false
+
+        return selected.any { it !in visible }
+    }
+
     private fun applyFilterAndSort() {
         var result = lastSource
 
-        if (currentQuery.isNotBlank()) {
-            result = result.filter {
-                it.name.contains(currentQuery, ignoreCase = true)
+        val query = _currentQuery.value?.trim()?.lowercase() ?: ""
+
+        if (query.isNotBlank()) {
+            result = result.filter { box ->
+                box.name.lowercase().contains(query) ||
+                        box.position.lowercase().contains(query)
             }
         }
 
