@@ -50,14 +50,17 @@ class BoxAdapter(
     override fun onBindViewHolder(holder: BoxViewHolder, position: Int) {
         val box = items[position]
 
+        // NAME
         holder.textBoxName.text = highlight(box.name)
 
+        // CATEGORY + POSITION
         val category = categories.find { it.id == box.categoryId }
         val categoryName = category?.name ?: "Categoria sconosciuta"
+        val positionText = box.position
 
-        val positionText = if (box.position.isBlank()) "" else " • ${box.position}"
-        holder.textSubtitle.text = categoryName + positionText
+        holder.textSubtitle.text = buildSubtitle(categoryName, positionText)
 
+        // ICON
         if (category != null) {
             val iconRes = IconMapper.getIconRes(category.icon)
             holder.imageCategory.setImageResource(iconRes)
@@ -65,11 +68,12 @@ class BoxAdapter(
             holder.imageCategory.setImageResource(R.drawable.ic_launcher_foreground)
         }
 
+        // SELECTION
         val isSelected = selectedIds.contains(box.id)
         holder.rootSelectable.isSelected = isSelected
-
         holder.textMenu.visibility = if (selectionMode) View.GONE else View.VISIBLE
 
+        // CLICK ICON
         holder.iconArea.setOnClickListener {
             holder.imageOpenBox.animate()
                 .alpha(0.3f)
@@ -85,15 +89,14 @@ class BoxAdapter(
             onClick(box)
         }
 
-        holder.contentArea.setOnClickListener {
-            onToggleSelection(box)
-        }
-
+        // SELECTION
+        holder.contentArea.setOnClickListener { onToggleSelection(box) }
         holder.contentArea.setOnLongClickListener {
             onToggleSelection(box)
             true
         }
 
+        // MENU
         holder.textMenu.setOnClickListener { view ->
             val popup = PopupMenu(view.context, view)
             popup.menu.add("Modifica")
@@ -134,13 +137,20 @@ class BoxAdapter(
         notifyDataSetChanged()
     }
 
-    private fun highlight(text: String): SpannableString {
-        if (currentQuery.isBlank()) return SpannableString(text)
+    // -------------------------
+    // HIGHLIGHT FUNCTIONS
+    // -------------------------
 
-        val start = text.lowercase().indexOf(currentQuery.lowercase())
+    private fun highlight(text: String): SpannableString {
+        if (currentQuery.length < 3) return SpannableString(text)
+
+        val lowerText = text.lowercase()
+        val lowerQuery = currentQuery.lowercase()
+
+        val start = lowerText.indexOf(lowerQuery)
         if (start < 0) return SpannableString(text)
 
-        val end = start + currentQuery.length
+        val end = start + lowerQuery.length
 
         return SpannableString(text).apply {
             setSpan(
@@ -150,5 +160,50 @@ class BoxAdapter(
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
             )
         }
+    }
+
+    private fun buildSubtitle(category: String, position: String): SpannableString {
+
+        val fullText = if (position.isBlank()) {
+            category
+        } else {
+            "$category • $position"
+        }
+
+        val spannable = SpannableString(fullText)
+
+        if (currentQuery.length < 3) return spannable
+
+        val query = currentQuery.lowercase()
+
+        // CATEGORY
+        val catStart = 0
+        val catEnd = category.length
+
+        if (category.lowercase().contains(query)) {
+            spannable.setSpan(
+                BackgroundColorSpan(Color.YELLOW),
+                catStart,
+                catEnd,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        }
+
+        // POSITION
+        if (position.isNotBlank()) {
+            val posStart = category.length + 3
+            val posEnd = posStart + position.length
+
+            if (position.lowercase().contains(query)) {
+                spannable.setSpan(
+                    BackgroundColorSpan(Color.YELLOW),
+                    posStart,
+                    posEnd,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+            }
+        }
+
+        return spannable
     }
 }
