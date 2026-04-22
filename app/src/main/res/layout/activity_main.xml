@@ -69,7 +69,7 @@
                 android:id="@+id/editTextSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Cerca..."
+                android:hint="Cerca per nome, categoria o posizione"
                 android:layout_marginBottom="8dp"/>
 
             <Button
