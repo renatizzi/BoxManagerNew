@@ -1,6 +1,7 @@
 package com.example.boxmanagernew.ui.categories
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.boxmanagernew.domain.model.Category
@@ -14,21 +15,37 @@ class CategoryViewModel(
     val categories: LiveData<List<Category>> =
         repository.getAllCategories()
 
+    private val _operationResult = MutableLiveData<String?>()
+    val operationResult: LiveData<String?> = _operationResult
+
+    fun clearMessage() {
+        _operationResult.value = null
+    }
+
     fun insert(category: Category) {
         viewModelScope.launch {
-            repository.insert(category)
+            val success = repository.insert(category) ?: true
+            if (success == false) {
+                _operationResult.postValue("Categoria già esistente")
+            }
         }
     }
 
     fun update(category: Category) {
         viewModelScope.launch {
-            repository.update(category)
+            val success = repository.update(category) ?: true
+            if (success == false) {
+                _operationResult.postValue("Categoria già esistente")
+            }
         }
     }
 
     fun delete(category: Category) {
         viewModelScope.launch {
-            repository.delete(category)
+            val success = repository.delete(category) ?: true
+            if (success == false) {
+                _operationResult.postValue("Categoria in uso: eliminazione non consentita")
+            }
         }
     }
 }
