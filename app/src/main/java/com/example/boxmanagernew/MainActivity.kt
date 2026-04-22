@@ -173,6 +173,7 @@ class MainActivity : AppCompatActivity() {
         categoryDao.getAllCategories().observe(this) { list ->
             categories = list
             adapter.updateCategories(list)
+            viewModel.setCategories(list) // 🔴 FIX
         }
 
         viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
@@ -233,7 +234,7 @@ class MainActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) {
                 val query = s.toString()
                 viewModel.filter(query)
-                adapter.updateQuery(query) // 🔴 FIX
+                adapter.updateQuery(query)
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}

@@ -5,6 +5,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.boxmanagernew.data.local.entity.CategoryEntity
 import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
 import com.example.boxmanagernew.domain.model.Box
 import kotlinx.coroutines.launch
@@ -25,6 +26,7 @@ class BoxViewModel(
     val currentQuery: LiveData<String> = _currentQuery
 
     private var lastSource: List<Box> = emptyList()
+    private var categories: List<CategoryEntity> = emptyList()
 
     private val _selectedItems = MutableLiveData<Set<Int>>(emptySet())
     val selectedItems: LiveData<Set<Int>> = _selectedItems
@@ -34,19 +36,7 @@ class BoxViewModel(
 
     init {
         _boxes.addSource(source) { list ->
-
             lastSource = list
-
-            val currentSelected = _selectedItems.value ?: emptySet()
-
-            if (currentSelected.isNotEmpty()) {
-                val validIds = list.map { it.id }.toSet()
-                val updatedSelection = currentSelected.intersect(validIds)
-
-                _selectedItems.value = updatedSelection
-                _selectionMode.value = updatedSelection.isNotEmpty()
-            }
-
             applyFilterAndSort()
         }
 
@@ -57,6 +47,11 @@ class BoxViewModel(
         _boxes.addSource(_isAscending) {
             applyFilterAndSort()
         }
+    }
+
+    fun setCategories(list: List<CategoryEntity>) {
+        categories = list
+        applyFilterAndSort()
     }
 
     fun addBox(name: String, categoryId: Int, position: String) {
@@ -104,8 +99,7 @@ class BoxViewModel(
     }
 
     fun toggleSort() {
-        val current = _isAscending.value ?: true
-        _isAscending.value = !current
+        _isAscending.value = !(_isAscending.value ?: true)
     }
 
     fun filter(query: String) {
@@ -116,11 +110,8 @@ class BoxViewModel(
         val current = _selectedItems.value ?: emptySet()
         val updated = current.toMutableSet()
 
-        if (updated.contains(box.id)) {
-            updated.remove(box.id)
-        } else {
-            updated.add(box.id)
-        }
+        if (updated.contains(box.id)) updated.remove(box.id)
+        else updated.add(box.id)
 
         _selectedItems.value = updated
         _selectionMode.value = updated.isNotEmpty()
@@ -131,34 +122,28 @@ class BoxViewModel(
         _selectionMode.value = false
     }
 
-    fun hasHiddenSelections(): Boolean {
-        val selected = _selectedItems.value ?: emptySet()
-        val visible = _boxes.value?.map { it.id }?.toSet() ?: emptySet()
-
-        if (selected.isEmpty()) return false
-
-        return selected.any { it !in visible }
-    }
-
     private fun applyFilterAndSort() {
         var result = lastSource
-
         val query = _currentQuery.value?.trim()?.lowercase() ?: ""
 
         if (query.isNotBlank()) {
             result = result.filter { box ->
+
+                val categoryName = categories
+                    .find { it.id == box.categoryId }
+                    ?.name
+                    ?.lowercase() ?: ""
+
                 box.name.lowercase().contains(query) ||
-                        box.position.lowercase().contains(query)
+                        box.position.lowercase().contains(query) ||
+                        categoryName.contains(query)
             }
         }
 
         val asc = _isAscending.value ?: true
 
-        result = if (asc) {
-            result.sortedBy { it.name }
-        } else {
-            result.sortedByDescending { it.name }
-        }
+        result = if (asc) result.sortedBy { it.name }
+        else result.sortedByDescending { it.name }
 
         _boxes.value = result
     }
