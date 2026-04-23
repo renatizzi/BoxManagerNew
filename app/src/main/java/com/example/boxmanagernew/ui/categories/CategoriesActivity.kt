@@ -8,7 +8,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.core.view.ViewCompat
@@ -64,7 +63,12 @@ class CategoriesActivity : AppCompatActivity() {
             }
         })[CategoryViewModel::class.java]
 
-        adapter = CategoryAdapter(emptyList())
+        adapter = CategoryAdapter(
+            emptyList(),
+            onUpdate = { updatedCategory ->
+                viewModel.update(updatedCategory)
+            }
+        )
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
@@ -73,116 +77,22 @@ class CategoriesActivity : AppCompatActivity() {
             adapter.updateData(it)
         }
 
-        viewModel.operationResult.observe(this) { message ->
-            if (message != null) {
-                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-                viewModel.clearMessage()
-            }
-        }
-
         fabAdd.setOnClickListener {
             showAddDialog()
         }
     }
 
     private fun showAddDialog() {
+        val input = EditText(this)
 
-        val layout = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(40, 20, 40, 10)
-        }
-
-        val inputName = EditText(this).apply {
-            hint = "Nome categoria"
-        }
-
-        val iconGrid = RecyclerView(this).apply {
-            layoutManager = GridLayoutManager(context, 4)
-        }
-
-        val drawableIds = mutableListOf<Int>()
-        val fields = R.drawable::class.java.fields
-
-        for (field in fields) {
-            val id = field.getInt(null)
-            val name = resources.getResourceEntryName(id)
-
-            if (name.startsWith("ic_cat")) {
-                drawableIds.add(id)
-            }
-        }
-
-        var selectedIcon: Int? = null
-
-        val iconAdapter = object : RecyclerView.Adapter<IconViewHolder>() {
-
-            override fun onCreateViewHolder(parent: android.view.ViewGroup, viewType: Int): IconViewHolder {
-                val img = ImageView(parent.context).apply {
-                    layoutParams = LinearLayout.LayoutParams(140, 140)
-                    setPadding(16, 16, 16, 16)
-                }
-                return IconViewHolder(img)
-            }
-
-            override fun onBindViewHolder(holder: IconViewHolder, position: Int) {
-                val res = drawableIds[position]
-                holder.image.setImageResource(res)
-
-                if (res == selectedIcon) {
-                    holder.image.setBackgroundResource(android.R.drawable.alert_light_frame)
-                } else {
-                    holder.image.background = null
-                }
-
-                holder.image.setOnClickListener {
-                    selectedIcon = res
-                    notifyDataSetChanged()
-                }
-            }
-
-            override fun getItemCount(): Int = drawableIds.size
-        }
-
-        iconGrid.adapter = iconAdapter
-
-        layout.addView(inputName)
-        layout.addView(iconGrid)
-
-        val dialog = AlertDialog.Builder(this)
+        AlertDialog.Builder(this)
             .setTitle("Nuova categoria")
-            .setView(layout)
-            .setPositiveButton("Aggiungi", null)
-            .setNegativeButton("Annulla", null)
-            .create()
-
-        dialog.setOnShowListener {
-
-            val btn = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-
-            btn.setOnClickListener {
-
-                val name = inputName.text.toString().trim()
-
-                if (name.isEmpty()) {
-                    inputName.error = "Inserisci un nome"
-                    return@setOnClickListener
-                }
-
-                if (selectedIcon == null) {
-                    Toast.makeText(this, "Seleziona un'icona", Toast.LENGTH_SHORT).show()
-                    return@setOnClickListener
-                }
-
-                val iconName = resources.getResourceEntryName(selectedIcon!!)
-
-                viewModel.insert(Category(0, name, iconName))
-
-                dialog.dismiss()
+            .setView(input)
+            .setPositiveButton("Aggiungi") { _, _ ->
+                val name = input.text.toString()
+                viewModel.insert(Category(0, name, ""))
             }
-        }
-
-        dialog.show()
+            .setNegativeButton("Annulla", null)
+            .show()
     }
-
-    class IconViewHolder(val image: ImageView) : RecyclerView.ViewHolder(image)
 }
