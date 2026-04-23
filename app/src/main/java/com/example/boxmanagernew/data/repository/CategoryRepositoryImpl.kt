@@ -24,33 +24,50 @@ class CategoryRepositoryImpl(
         }
     }
 
-    suspend fun insert(category: Category) {
-        categoryDao.insert(
-            CategoryEntity(
-                id = category.id,
-                name = category.name,
-                icon = category.icon
+    // 🔴 FIX: controllo duplicati
+    suspend fun insert(category: Category): Boolean {
+
+        val existing = categoryDao.getCategoryByName(category.name)
+
+        return if (existing != null) {
+            false // duplicato
+        } else {
+            categoryDao.insert(
+                CategoryEntity(
+                    id = category.id,
+                    name = category.name,
+                    icon = category.icon
+                )
             )
-        )
+            true
+        }
     }
 
-    suspend fun update(category: Category) {
-        categoryDao.update(
-            CategoryEntity(
-                id = category.id,
-                name = category.name,
-                icon = category.icon
+    // 🔴 FIX: controllo duplicati anche su update
+    suspend fun update(category: Category): Boolean {
+
+        val existing = categoryDao.getCategoryByName(category.name)
+
+        return if (existing != null && existing.id != category.id) {
+            false
+        } else {
+            categoryDao.update(
+                CategoryEntity(
+                    id = category.id,
+                    name = category.name,
+                    icon = category.icon
+                )
             )
-        )
+            true
+        }
     }
 
-    // 🔴 MODIFICATO: ora controlla utilizzo
     suspend fun delete(category: Category): Boolean {
 
         val count = boxDao.countBoxesByCategory(category.id)
 
         return if (count > 0) {
-            false // blocco eliminazione
+            false
         } else {
             categoryDao.delete(
                 CategoryEntity(
