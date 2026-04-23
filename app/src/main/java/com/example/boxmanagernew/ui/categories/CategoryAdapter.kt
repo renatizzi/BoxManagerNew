@@ -25,7 +25,26 @@ class CategoryAdapter(
 ) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
     private var expandedPosition: Int = -1
-    private var stableIcons: List<IconItem> = emptyList()
+
+    // 🔴 LISTA ICONE FISSA (DEFINITIVA)
+    private val stableIcons = listOf(
+        "outline_fastfood_24",
+        "outline_garage_money_24",
+        "outline_handyman_24",
+        "outline_ink_pen_24",
+        "outline_library_music_24",
+        "outline_medical_services_24",
+        "outline_menu_book_24",
+        "outline_money_bag_24",
+        "outline_passport_24",
+        "outline_photo_frame_24",
+        "outline_tools_power_drill_24",
+        "outline_checkroom_24",
+        "outline_broadcast_on_home_24",
+        "outline_box_24",
+        "outline_browse_24",
+        "outline_carpen ter_24" // ⚠️ se questo nome è diverso nel tuo progetto, correggilo
+    ).map { IconItem(it, IconMapper.getIconRes(it)) }
 
     inner class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textName: TextView = itemView.findViewById(R.id.textCategoryName)
@@ -54,7 +73,7 @@ class CategoryAdapter(
             holder.editName.setText(category.name)
         }
 
-        // 🔴 BLOCCO RETURN + TASTO FATTO
+        // 🔴 BLOCCO RETURN + FATTO
         holder.editName.setSingleLine(true)
         holder.editName.imeOptions = EditorInfo.IME_ACTION_DONE
 
@@ -106,12 +125,6 @@ class CategoryAdapter(
 
             if (oldPos != -1) notifyItemChanged(oldPos)
             notifyItemChanged(position)
-        }
-
-        if (stableIcons.isEmpty()) {
-            stableIcons = items.map { it.icon }
-                .distinct()
-                .map { IconItem(it, IconMapper.getIconRes(it)) }
         }
 
         holder.recyclerIcons.layoutManager =
