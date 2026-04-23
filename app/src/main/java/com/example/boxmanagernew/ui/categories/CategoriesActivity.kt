@@ -1,10 +1,13 @@
 package com.example.boxmanagernew.ui.categories
 
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +21,7 @@ import androidx.core.view.WindowCompat
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.data.local.DatabaseProvider
 import com.example.boxmanagernew.data.repository.CategoryRepositoryImpl
+import com.example.boxmanagernew.domain.model.Category
 import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -25,6 +29,25 @@ class CategoriesActivity : AppCompatActivity() {
 
     private lateinit var viewModel: CategoryViewModel
     private lateinit var adapter: CategoryAdapter
+
+    private val iconNames = listOf(
+        "outline_checkroom_24",
+        "outline_fastfood_24",
+        "outline_handyman_24",
+        "outline_carpenter_24",
+        "outline_ink_pen_24",
+        "outline_garage_money_24",
+        "outline_passport_24",
+        "outline_broadcast_on_home_24",
+        "outline_tools_power_drill_24",
+        "outline_photo_frame_24",
+        "outline_library_music_24",
+        "outline_box_24",
+        "outline_menu_book_24",
+        "outline_medical_services_24",
+        "outline_money_bag_24",
+        "outline_browse_24"
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,12 +103,77 @@ class CategoriesActivity : AppCompatActivity() {
             adapter.updateData(it)
         }
 
+        // 🔴 INSERT DIALOG (FIX DEFINITIVO)
         fabAdd.setOnClickListener {
-            Toast.makeText(this, "TODO inserimento", Toast.LENGTH_SHORT).show()
+            showAddCategoryDialog()
         }
     }
 
-    // 🔴 FIX DEFINITIVO
+    private fun showAddCategoryDialog() {
+
+        val view = LayoutInflater.from(this)
+            .inflate(R.layout.dialog_add_category, null)
+
+        val editName = view.findViewById<EditText>(R.id.editCategoryName)
+        val recyclerIcons = view.findViewById<RecyclerView>(R.id.recyclerIcons)
+
+        val iconAdapter = IconAdapter(iconNames) {}
+        recyclerIcons.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        recyclerIcons.adapter = iconAdapter
+
+        val dialog = AlertDialog.Builder(this)
+            .setTitle("Nuova categoria")
+            .setView(view)
+            .setNegativeButton("Annulla", null)
+            .setPositiveButton("Aggiungi", null)
+            .create()
+
+        dialog.setOnShowListener {
+
+            val btnAdd = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+
+            btnAdd.setOnClickListener {
+
+                val name = editName.text.toString().trim()
+                val selectedIcon = iconAdapter.getSelectedIcon()
+
+                if (name.isEmpty()) {
+                    editName.error = "Nome obbligatorio"
+                    return@setOnClickListener
+                }
+
+                if (selectedIcon == null) {
+                    Toast.makeText(this, "Seleziona un'icona", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                val duplicate = adapterHasDuplicate(name)
+                if (duplicate) {
+                    Toast.makeText(this, "Categoria già esistente", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                viewModel.insert(
+                    Category(
+                        name = name,
+                        icon = selectedIcon
+                    )
+                )
+
+                hideKeyboard()
+                dialog.dismiss()
+            }
+        }
+
+        dialog.show()
+    }
+
+    private fun adapterHasDuplicate(name: String): Boolean {
+        val current = viewModel.categories.value ?: return false
+        return current.any { it.name.equals(name, true) }
+    }
+
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         if (currentFocus != null) {
             hideKeyboard()
