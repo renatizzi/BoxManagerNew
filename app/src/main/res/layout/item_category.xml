@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:padding="12dp">
 
-    <!-- ROW BASE -->
+    <!-- HEADER -->
     <LinearLayout
         android:id="@+id/layoutHeader"
         android:layout_width="match_parent"
@@ -26,7 +26,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp" />
-
     </LinearLayout>
 
     <!-- AREA ESPANSA -->
@@ -50,10 +49,12 @@
             android:text="Seleziona icona"
             android:layout_marginTop="8dp"/>
 
+        <!-- 🔴 ORA ORIZZONTALE -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerIcons"
             android:layout_width="match_parent"
-            android:layout_height="120dp" />
+            android:layout_height="72dp"
+            android:overScrollMode="never" />
 
     </LinearLayout>
 

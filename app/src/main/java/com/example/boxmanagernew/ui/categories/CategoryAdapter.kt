@@ -1,14 +1,18 @@
 package com.example.boxmanagernew.ui.categories
 
+import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.domain.model.Category
@@ -19,6 +23,9 @@ class CategoryAdapter(
 ) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
     private var expandedPosition: Int = -1
+
+    // 🔴 FIX REALE: lista icone UNA VOLTA SOLA
+    private var stableIcons: List<IconItem> = emptyList()
 
     inner class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textName: TextView = itemView.findViewById(R.id.textCategoryName)
@@ -43,13 +50,11 @@ class CategoryAdapter(
 
         holder.textName.text = category.name
 
-        // 🔴 FIX: evita reset continuo mentre scrivi
         if (!holder.editName.hasFocus()) {
             holder.editName.setText(category.name)
         }
 
-        val iconRes = IconMapper.getIconRes(category.icon)
-        holder.imageIcon.setImageResource(iconRes)
+        holder.imageIcon.setImageResource(IconMapper.getIconRes(category.icon))
 
         val isExpanded = position == expandedPosition
         holder.layoutExpanded.visibility = if (isExpanded) View.VISIBLE else View.GONE
@@ -62,9 +67,16 @@ class CategoryAdapter(
             notifyItemChanged(position)
         }
 
-        val icons = IconMapper.getAvailableIcons(items.map { it.icon })
+        // 🔴 inizializza UNA VOLTA (mantiene le 16 icone)
+        if (stableIcons.isEmpty()) {
+            stableIcons = items.map { it.icon }
+                .distinct()
+                .map { IconItem(it, IconMapper.getIconRes(it)) }
+        }
 
-        holder.recyclerIcons.layoutManager = GridLayoutManager(holder.itemView.context, 4)
+        holder.recyclerIcons.layoutManager =
+            LinearLayoutManager(holder.itemView.context, LinearLayoutManager.HORIZONTAL, false)
+
         holder.recyclerIcons.adapter = object : RecyclerView.Adapter<IconViewHolder>() {
 
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IconViewHolder {
@@ -76,16 +88,40 @@ class CategoryAdapter(
             }
 
             override fun onBindViewHolder(iconHolder: IconViewHolder, i: Int) {
-                val item = icons[i]
+                val item = stableIcons[i]
+
                 iconHolder.image.setImageResource(item.resId)
+
+                // 🔴 highlight forte
+                if (item.name == category.icon) {
+                    val border = GradientDrawable().apply {
+                        setColor(Color.parseColor("#22007AFF"))
+                        setStroke(5, Color.parseColor("#007AFF"))
+                        cornerRadius = 20f
+                    }
+                    iconHolder.image.background = border
+                } else {
+                    iconHolder.image.background = null
+                }
+
+                iconHolder.image.setOnClickListener {
+
+                    val imm = holder.itemView.context
+                        .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(holder.itemView.windowToken, 0)
+
+                    holder.editName.clearFocus()
+
+                    if (item.name != category.icon) {
+                        onUpdate(category.copy(icon = item.name))
+                    }
+                }
             }
 
-            override fun getItemCount(): Int = icons.size
+            override fun getItemCount(): Int = stableIcons.size
         }
 
-        // 🔴 FIX REALE: salvataggio su perdita focus + confronto corretto
         holder.editName.setOnFocusChangeListener { v, hasFocus ->
-
             if (!hasFocus) {
 
                 val newName = holder.editName.text.toString().trim()
