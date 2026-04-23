@@ -59,6 +59,7 @@ class CategoriesActivity : AppCompatActivity() {
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
+                viewModel.clearSelection()
                 hideKeyboard()
                 finish()
             }
@@ -94,7 +95,8 @@ class CategoriesActivity : AppCompatActivity() {
             onUpdate = { updated ->
                 viewModel.update(updated)
             },
-            onDelete = { category ->
+            onDeleteRequest = { category ->
+                viewModel.selectCategory(category.id)
                 showDeleteDialog(category)
             }
         )
@@ -102,11 +104,17 @@ class CategoriesActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
+        // 🔴 UPDATE LISTA
         viewModel.categories.observe(this) {
             adapter.updateData(it)
         }
 
-        // 🔴 osservatore messaggi ViewModel
+        // 🔴 SELEZIONE (COME OGGETTI)
+        viewModel.selectedCategory.observe(this) { id ->
+            adapter.updateSelection(id)
+        }
+
+        // 🔴 MESSAGGI
         viewModel.operationResult.observe(this) { message ->
             message?.let {
                 Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
@@ -118,8 +126,6 @@ class CategoriesActivity : AppCompatActivity() {
             showAddCategoryDialog()
         }
     }
-
-    // ---------------- INSERT ----------------
 
     private fun showAddCategoryDialog() {
 
@@ -181,16 +187,20 @@ class CategoriesActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    // ---------------- DELETE ----------------
-
     private fun showDeleteDialog(category: Category) {
 
         AlertDialog.Builder(this)
             .setTitle("Elimina categoria")
             .setMessage("Sei sicuro di voler eliminare \"${category.name}\"?")
-            .setNegativeButton("Annulla", null)
+            .setNegativeButton("Annulla") { _, _ ->
+                viewModel.clearSelection()
+            }
             .setPositiveButton("Elimina") { _, _ ->
                 viewModel.delete(category)
+                viewModel.clearSelection()
+            }
+            .setOnCancelListener {
+                viewModel.clearSelection()
             }
             .show()
     }

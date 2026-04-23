@@ -1,8 +1,6 @@
 package com.example.boxmanagernew.ui.categories
 
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,29 +19,18 @@ import com.example.boxmanagernew.domain.model.Category
 class CategoryAdapter(
     private var items: List<Category>,
     private val onUpdate: (Category) -> Unit,
-    private val onDelete: (Category) -> Unit // 🔴 NUOVO
+    private val onDeleteRequest: (Category) -> Unit // 🔴 cambia nome: solo evento
 ) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
     private var expandedPosition: Int = -1
 
-    private val iconNames = listOf(
-        "outline_checkroom_24",
-        "outline_fastfood_24",
-        "outline_handyman_24",
-        "outline_carpenter_24",
-        "outline_ink_pen_24",
-        "outline_garage_money_24",
-        "outline_passport_24",
-        "outline_broadcast_on_home_24",
-        "outline_tools_power_drill_24",
-        "outline_photo_frame_24",
-        "outline_library_music_24",
-        "outline_box_24",
-        "outline_menu_book_24",
-        "outline_medical_services_24",
-        "outline_money_bag_24",
-        "outline_browse_24"
-    )
+    // 🔴 NUOVO: stato esterno
+    private var selectedCategoryId: Int? = null
+
+    fun updateSelection(id: Int?) {
+        selectedCategoryId = id
+        notifyDataSetChanged()
+    }
 
     inner class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textName: TextView = itemView.findViewById(R.id.textCategoryName)
@@ -65,6 +52,10 @@ class CategoryAdapter(
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
 
         val category = items[position]
+
+        // 🔴 HIGHLIGHT basato su ID (COME OGGETTI)
+        val isSelected = category.id == selectedCategoryId
+        holder.layoutHeader.isSelected = isSelected
 
         holder.textName.text = category.name
 
@@ -114,16 +105,22 @@ class CategoryAdapter(
         holder.layoutExpanded.visibility = if (isExpanded) View.VISIBLE else View.GONE
 
         holder.layoutHeader.setOnClickListener {
+            val currentPos = holder.bindingAdapterPosition
+            if (currentPos == RecyclerView.NO_POSITION) return@setOnClickListener
+
             val oldPos = expandedPosition
-            expandedPosition = if (isExpanded) -1 else position
+            expandedPosition = if (currentPos == expandedPosition) -1 else currentPos
 
             if (oldPos != -1) notifyItemChanged(oldPos)
-            notifyItemChanged(position)
+            notifyItemChanged(currentPos)
         }
 
-        // 🔴 LONG PRESS → DELETE
+        // 🔴 LONG PRESS → SOLO EVENTO (come oggetti)
         holder.layoutHeader.setOnLongClickListener {
-            onDelete(category)
+            val currentPos = holder.bindingAdapterPosition
+            if (currentPos == RecyclerView.NO_POSITION) return@setOnLongClickListener true
+
+            onDeleteRequest(items[currentPos])
             true
         }
 
@@ -131,6 +128,25 @@ class CategoryAdapter(
             LinearLayoutManager(holder.itemView.context, LinearLayoutManager.HORIZONTAL, false)
 
         holder.recyclerIcons.adapter = object : RecyclerView.Adapter<IconViewHolder>() {
+
+            private val iconNames = listOf(
+                "outline_checkroom_24",
+                "outline_fastfood_24",
+                "outline_handyman_24",
+                "outline_carpenter_24",
+                "outline_ink_pen_24",
+                "outline_garage_money_24",
+                "outline_passport_24",
+                "outline_broadcast_on_home_24",
+                "outline_tools_power_drill_24",
+                "outline_photo_frame_24",
+                "outline_library_music_24",
+                "outline_box_24",
+                "outline_menu_book_24",
+                "outline_medical_services_24",
+                "outline_money_bag_24",
+                "outline_browse_24"
+            )
 
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IconViewHolder {
                 val img = ImageView(parent.context).apply {
@@ -146,12 +162,7 @@ class CategoryAdapter(
                 iconHolder.image.setImageResource(IconMapper.getIconRes(iconName))
 
                 if (iconName == category.icon) {
-                    val border = GradientDrawable().apply {
-                        setColor(Color.parseColor("#22007AFF"))
-                        setStroke(5, Color.parseColor("#007AFF"))
-                        cornerRadius = 20f
-                    }
-                    iconHolder.image.background = border
+                    iconHolder.image.setBackgroundResource(R.drawable.bg_selected_item)
                 } else {
                     iconHolder.image.background = null
                 }

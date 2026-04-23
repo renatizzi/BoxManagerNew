@@ -18,6 +18,18 @@ class CategoryViewModel(
     private val _operationResult = MutableLiveData<String?>()
     val operationResult: LiveData<String?> = _operationResult
 
+    // 🔴 NUOVO: selezione singola
+    private val _selectedCategory = MutableLiveData<Int?>()
+    val selectedCategory: LiveData<Int?> = _selectedCategory
+
+    fun selectCategory(id: Int) {
+        _selectedCategory.value = id
+    }
+
+    fun clearSelection() {
+        _selectedCategory.value = null
+    }
+
     fun clearMessage() {
         _operationResult.value = null
     }

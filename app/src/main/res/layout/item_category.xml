@@ -12,7 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:background="@drawable/bg_category_selectable"
+        android:padding="8dp">
 
         <ImageView
             android:id="@+id/imageCategoryIcon"
@@ -49,7 +51,6 @@
             android:text="Seleziona icona"
             android:layout_marginTop="8dp"/>
 
-        <!-- 🔴 ORA ORIZZONTALE -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerIcons"
             android:layout_width="match_parent"
