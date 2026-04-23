@@ -1,9 +1,11 @@
 package com.example.boxmanagernew.ui.categories
 
-import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
-import android.widget.*
+import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
@@ -16,7 +18,6 @@ import androidx.core.view.WindowCompat
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.data.local.DatabaseProvider
 import com.example.boxmanagernew.data.repository.CategoryRepositoryImpl
-import com.example.boxmanagernew.domain.model.Category
 import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -35,11 +36,13 @@ class CategoriesActivity : AppCompatActivity() {
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
+                hideKeyboard()
                 finish()
             }
         })
 
         val root = findViewById<View>(android.R.id.content)
+
         ViewCompat.setOnApplyWindowInsetsListener(root) { view, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             view.setPadding(
@@ -65,8 +68,8 @@ class CategoriesActivity : AppCompatActivity() {
 
         adapter = CategoryAdapter(
             emptyList(),
-            onUpdate = { updatedCategory ->
-                viewModel.update(updatedCategory)
+            onUpdate = { updated ->
+                viewModel.update(updated)
             }
         )
 
@@ -78,21 +81,23 @@ class CategoriesActivity : AppCompatActivity() {
         }
 
         fabAdd.setOnClickListener {
-            showAddDialog()
+            Toast.makeText(this, "TODO inserimento", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun showAddDialog() {
-        val input = EditText(this)
+    // 🔴 FIX DEFINITIVO
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        if (currentFocus != null) {
+            hideKeyboard()
+            currentFocus?.clearFocus()
+        }
+        return super.dispatchTouchEvent(ev)
+    }
 
-        AlertDialog.Builder(this)
-            .setTitle("Nuova categoria")
-            .setView(input)
-            .setPositiveButton("Aggiungi") { _, _ ->
-                val name = input.text.toString()
-                viewModel.insert(Category(0, name, ""))
-            }
-            .setNegativeButton("Annulla", null)
-            .show()
+    private fun hideKeyboard() {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        currentFocus?.let {
+            imm.hideSoftInputFromWindow(it.windowToken, 0)
+        }
     }
 }
