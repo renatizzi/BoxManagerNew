@@ -3,9 +3,11 @@ package com.example.boxmanagernew.ui.categories
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
@@ -23,8 +25,6 @@ class CategoryAdapter(
 ) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
     private var expandedPosition: Int = -1
-
-    // 🔴 FIX REALE: lista icone UNA VOLTA SOLA
     private var stableIcons: List<IconItem> = emptyList()
 
     inner class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -54,6 +54,47 @@ class CategoryAdapter(
             holder.editName.setText(category.name)
         }
 
+        // 🔴 BLOCCO RETURN + TASTO FATTO
+        holder.editName.setSingleLine(true)
+        holder.editName.imeOptions = EditorInfo.IME_ACTION_DONE
+
+        holder.editName.setOnKeyListener { _, keyCode, _ ->
+            keyCode == KeyEvent.KEYCODE_ENTER
+        }
+
+        holder.editName.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+
+                val newName = holder.editName.text.toString().trim()
+
+                if (newName.isEmpty()) {
+                    holder.editName.error = "Nome obbligatorio"
+                    return@setOnEditorActionListener true
+                }
+
+                val duplicate = items.any {
+                    it.name.equals(newName, true) && it.id != category.id
+                }
+
+                if (duplicate) {
+                    Toast.makeText(holder.itemView.context, "Categoria già esistente", Toast.LENGTH_SHORT).show()
+                    return@setOnEditorActionListener true
+                }
+
+                if (newName != category.name) {
+                    onUpdate(category.copy(name = newName))
+                }
+
+                val imm = holder.itemView.context
+                    .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(holder.itemView.windowToken, 0)
+
+                holder.editName.clearFocus()
+
+                true
+            } else false
+        }
+
         holder.imageIcon.setImageResource(IconMapper.getIconRes(category.icon))
 
         val isExpanded = position == expandedPosition
@@ -67,7 +108,6 @@ class CategoryAdapter(
             notifyItemChanged(position)
         }
 
-        // 🔴 inizializza UNA VOLTA (mantiene le 16 icone)
         if (stableIcons.isEmpty()) {
             stableIcons = items.map { it.icon }
                 .distinct()
@@ -92,7 +132,6 @@ class CategoryAdapter(
 
                 iconHolder.image.setImageResource(item.resId)
 
-                // 🔴 highlight forte
                 if (item.name == category.icon) {
                     val border = GradientDrawable().apply {
                         setColor(Color.parseColor("#22007AFF"))
