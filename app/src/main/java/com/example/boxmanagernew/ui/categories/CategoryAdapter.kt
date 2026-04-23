@@ -3,9 +3,11 @@ package com.example.boxmanagernew.ui.categories
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
@@ -24,7 +26,6 @@ class CategoryAdapter(
 
     private var expandedPosition: Int = -1
 
-    // 🔴 ORDINE FISSO DEFINITIVO (come da tua lista)
     private val iconNames = listOf(
         "outline_checkroom_24",
         "outline_fastfood_24",
@@ -41,7 +42,7 @@ class CategoryAdapter(
         "outline_menu_book_24",
         "outline_medical_services_24",
         "outline_money_bag_24",
-        "outline_browse_24" // 🔴 sempre ultima
+        "outline_browse_24"
     )
 
     inner class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -69,6 +70,43 @@ class CategoryAdapter(
 
         if (!holder.editName.hasFocus()) {
             holder.editName.setText(category.name)
+        }
+
+        // 🔴 FIX FATTO
+        holder.editName.setSingleLine(true)
+        holder.editName.imeOptions = EditorInfo.IME_ACTION_DONE
+
+        holder.editName.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+
+                val newName = holder.editName.text.toString().trim()
+
+                if (newName.isEmpty()) {
+                    holder.editName.error = "Nome obbligatorio"
+                    return@setOnEditorActionListener true
+                }
+
+                val duplicate = items.any {
+                    it.name.equals(newName, true) && it.id != category.id
+                }
+
+                if (duplicate) {
+                    Toast.makeText(holder.itemView.context, "Categoria già esistente", Toast.LENGTH_SHORT).show()
+                    return@setOnEditorActionListener true
+                }
+
+                if (newName != category.name) {
+                    onUpdate(category.copy(name = newName))
+                }
+
+                val imm = holder.itemView.context
+                    .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(holder.itemView.windowToken, 0)
+
+                holder.editName.clearFocus()
+
+                true
+            } else false
         }
 
         holder.imageIcon.setImageResource(IconMapper.getIconRes(category.icon))
@@ -100,9 +138,7 @@ class CategoryAdapter(
             override fun onBindViewHolder(iconHolder: IconViewHolder, i: Int) {
                 val iconName = iconNames[i]
 
-                iconHolder.image.setImageResource(
-                    IconMapper.getIconRes(iconName) // 🔴 risoluzione runtime (NO cache)
-                )
+                iconHolder.image.setImageResource(IconMapper.getIconRes(iconName))
 
                 if (iconName == category.icon) {
                     val border = GradientDrawable().apply {
