@@ -3,7 +3,6 @@ package com.example.boxmanagernew.ui.categories
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +20,8 @@ import com.example.boxmanagernew.domain.model.Category
 
 class CategoryAdapter(
     private var items: List<Category>,
-    private val onUpdate: (Category) -> Unit
+    private val onUpdate: (Category) -> Unit,
+    private val onDelete: (Category) -> Unit // 🔴 NUOVO
 ) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
     private var expandedPosition: Int = -1
@@ -72,7 +72,6 @@ class CategoryAdapter(
             holder.editName.setText(category.name)
         }
 
-        // 🔴 FIX FATTO
         holder.editName.setSingleLine(true)
         holder.editName.imeOptions = EditorInfo.IME_ACTION_DONE
 
@@ -120,6 +119,12 @@ class CategoryAdapter(
 
             if (oldPos != -1) notifyItemChanged(oldPos)
             notifyItemChanged(position)
+        }
+
+        // 🔴 LONG PRESS → DELETE
+        holder.layoutHeader.setOnLongClickListener {
+            onDelete(category)
+            true
         }
 
         holder.recyclerIcons.layoutManager =

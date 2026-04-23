@@ -93,6 +93,9 @@ class CategoriesActivity : AppCompatActivity() {
             emptyList(),
             onUpdate = { updated ->
                 viewModel.update(updated)
+            },
+            onDelete = { category ->
+                showDeleteDialog(category)
             }
         )
 
@@ -103,11 +106,20 @@ class CategoriesActivity : AppCompatActivity() {
             adapter.updateData(it)
         }
 
-        // 🔴 INSERT DIALOG (FIX DEFINITIVO)
+        // 🔴 osservatore messaggi ViewModel
+        viewModel.operationResult.observe(this) { message ->
+            message?.let {
+                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                viewModel.clearMessage()
+            }
+        }
+
         fabAdd.setOnClickListener {
             showAddCategoryDialog()
         }
     }
+
+    // ---------------- INSERT ----------------
 
     private fun showAddCategoryDialog() {
 
@@ -167,6 +179,20 @@ class CategoriesActivity : AppCompatActivity() {
         }
 
         dialog.show()
+    }
+
+    // ---------------- DELETE ----------------
+
+    private fun showDeleteDialog(category: Category) {
+
+        AlertDialog.Builder(this)
+            .setTitle("Elimina categoria")
+            .setMessage("Sei sicuro di voler eliminare \"${category.name}\"?")
+            .setNegativeButton("Annulla", null)
+            .setPositiveButton("Elimina") { _, _ ->
+                viewModel.delete(category)
+            }
+            .show()
     }
 
     private fun adapterHasDuplicate(name: String): Boolean {
