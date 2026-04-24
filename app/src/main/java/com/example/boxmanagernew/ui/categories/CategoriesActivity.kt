@@ -8,6 +8,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
@@ -135,6 +136,7 @@ class CategoriesActivity : AppCompatActivity() {
 
         val editName = view.findViewById<EditText>(R.id.editCategoryName)
         val recyclerIcons = view.findViewById<RecyclerView>(R.id.recyclerIcons)
+        val textError = view.findViewById<TextView>(R.id.textError)
 
         val iconAdapter = IconAdapter(iconNames) {}
         recyclerIcons.layoutManager =
@@ -157,13 +159,17 @@ class CategoriesActivity : AppCompatActivity() {
                 val name = editName.text.toString().trim()
                 val selectedIcon = iconAdapter.getSelectedIcon()
 
+                textError.visibility = View.GONE
+
                 if (name.isEmpty()) {
-                    editName.error = "Nome obbligatorio"
+                    textError.text = "Nome obbligatorio"
+                    textError.visibility = View.VISIBLE
                     return@setOnClickListener
                 }
 
                 if (selectedIcon == null) {
-                    Toast.makeText(this, "Seleziona un'icona", Toast.LENGTH_SHORT).show()
+                    textError.text = "Seleziona un'icona"
+                    textError.visibility = View.VISIBLE
                     return@setOnClickListener
                 }
 
@@ -178,6 +184,9 @@ class CategoriesActivity : AppCompatActivity() {
                     if (success) {
                         hideKeyboard()
                         dialog.dismiss()
+                    } else {
+                        textError.text = "Categoria già esistente"
+                        textError.visibility = View.VISIBLE
                     }
                 }
             }

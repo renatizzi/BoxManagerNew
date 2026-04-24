@@ -6,6 +6,16 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+    <!-- 🔴 MESSAGGIO ERRORE -->
+    <TextView
+        android:id="@+id/textError"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#D32F2F"
+        android:textStyle="bold"
+        android:visibility="gone"
+        android:layout_marginBottom="8dp"/>
+
     <EditText
         android:id="@+id/editCategoryName"
         android:layout_width="match_parent"
@@ -26,4 +36,5 @@
         android:layout_height="72dp"
         android:layout_marginTop="8dp"
         android:overScrollMode="never"/>
+
 </LinearLayout>
