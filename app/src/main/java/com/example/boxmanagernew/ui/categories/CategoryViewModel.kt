@@ -3,7 +3,6 @@ package com.example.boxmanagernew.ui.categories
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.boxmanagernew.domain.model.Category
 import com.example.boxmanagernew.data.repository.CategoryRepositoryImpl
 import kotlinx.coroutines.Dispatchers
@@ -34,7 +33,6 @@ class CategoryViewModel(
         _operationResult.value = null
     }
 
-    // 🔴 ORA RESTITUISCE ESITO
     suspend fun insert(category: Category): Boolean {
         return withContext(Dispatchers.IO) {
             val success = repository.insert(category) ?: true
@@ -62,6 +60,13 @@ class CategoryViewModel(
                 _operationResult.postValue("Categoria in uso: eliminazione non consentita")
             }
             success
+        }
+    }
+
+    // 🔴 NUOVO METODO
+    suspend fun isCategoryUsed(categoryId: Int): Boolean {
+        return withContext(Dispatchers.IO) {
+            repository.isCategoryUsed(categoryId)
         }
     }
 }

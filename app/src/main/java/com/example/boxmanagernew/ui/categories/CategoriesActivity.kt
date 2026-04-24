@@ -101,8 +101,20 @@ class CategoriesActivity : AppCompatActivity() {
                 }
             },
             onDeleteRequest = { category ->
-                viewModel.selectCategory(category.id)
-                showDeleteDialog(category)
+                lifecycleScope.launch {
+                    val isUsed = viewModel.isCategoryUsed(category.id)
+
+                    if (isUsed) {
+                        Toast.makeText(
+                            this@CategoriesActivity,
+                            "Categoria in uso: eliminazione non consentita",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        viewModel.selectCategory(category.id)
+                        showDeleteDialog(category)
+                    }
+                }
             }
         )
 

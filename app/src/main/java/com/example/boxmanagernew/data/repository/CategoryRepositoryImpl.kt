@@ -24,13 +24,12 @@ class CategoryRepositoryImpl(
         }
     }
 
-    // 🔴 FIX: controllo duplicati
     suspend fun insert(category: Category): Boolean {
 
         val existing = categoryDao.getCategoryByName(category.name)
 
         return if (existing != null) {
-            false // duplicato
+            false
         } else {
             categoryDao.insert(
                 CategoryEntity(
@@ -43,7 +42,6 @@ class CategoryRepositoryImpl(
         }
     }
 
-    // 🔴 FIX: controllo duplicati anche su update
     suspend fun update(category: Category): Boolean {
 
         val existing = categoryDao.getCategoryByName(category.name)
@@ -78,5 +76,10 @@ class CategoryRepositoryImpl(
             )
             true
         }
+    }
+
+    // 🔴 NUOVO METODO
+    suspend fun isCategoryUsed(categoryId: Int): Boolean {
+        return boxDao.countBoxesByCategory(categoryId) > 0
     }
 }
