@@ -115,6 +115,19 @@ class CategoriesActivity : AppCompatActivity() {
                         showDeleteDialog(category)
                     }
                 }
+            },
+            onEditStart = { category ->
+                lifecycleScope.launch {
+                    val isUsed = viewModel.isCategoryUsed(category.id)
+
+                    if (isUsed) {
+                        Toast.makeText(
+                            this@CategoriesActivity,
+                            "Stai modificando una categoria utilizzata nei contenitori",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
             }
         )
 

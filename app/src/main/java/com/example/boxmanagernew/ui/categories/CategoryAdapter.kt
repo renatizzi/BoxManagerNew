@@ -19,12 +19,11 @@ import com.example.boxmanagernew.domain.model.Category
 class CategoryAdapter(
     private var items: List<Category>,
     private val onUpdate: (Category) -> Unit,
-    private val onDeleteRequest: (Category) -> Unit // 🔴 cambia nome: solo evento
+    private val onDeleteRequest: (Category) -> Unit,
+    private val onEditStart: (Category) -> Unit
 ) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
     private var expandedPosition: Int = -1
-
-    // 🔴 NUOVO: stato esterno
     private var selectedCategoryId: Int? = null
 
     fun updateSelection(id: Int?) {
@@ -35,10 +34,8 @@ class CategoryAdapter(
     inner class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textName: TextView = itemView.findViewById(R.id.textCategoryName)
         val imageIcon: ImageView = itemView.findViewById(R.id.imageCategoryIcon)
-
         val layoutHeader: LinearLayout = itemView.findViewById(R.id.layoutHeader)
         val layoutExpanded: LinearLayout = itemView.findViewById(R.id.layoutExpanded)
-
         val editName: EditText = itemView.findViewById(R.id.editCategoryName)
         val recyclerIcons: RecyclerView = itemView.findViewById(R.id.recyclerIcons)
     }
@@ -53,7 +50,6 @@ class CategoryAdapter(
 
         val category = items[position]
 
-        // 🔴 HIGHLIGHT basato su ID (COME OGGETTI)
         val isSelected = category.id == selectedCategoryId
         holder.layoutHeader.isSelected = isSelected
 
@@ -113,9 +109,12 @@ class CategoryAdapter(
 
             if (oldPos != -1) notifyItemChanged(oldPos)
             notifyItemChanged(currentPos)
+
+            if (expandedPosition == currentPos) {
+                onEditStart(items[currentPos])
+            }
         }
 
-        // 🔴 LONG PRESS → SOLO EVENTO (come oggetti)
         holder.layoutHeader.setOnLongClickListener {
             val currentPos = holder.bindingAdapterPosition
             if (currentPos == RecyclerView.NO_POSITION) return@setOnLongClickListener true
