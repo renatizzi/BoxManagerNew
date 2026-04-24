@@ -6,7 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.boxmanagernew.domain.model.Category
 import com.example.boxmanagernew.data.repository.CategoryRepositoryImpl
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class CategoryViewModel(
     private val repository: CategoryRepositoryImpl
@@ -18,7 +19,6 @@ class CategoryViewModel(
     private val _operationResult = MutableLiveData<String?>()
     val operationResult: LiveData<String?> = _operationResult
 
-    // 🔴 NUOVO: selezione singola
     private val _selectedCategory = MutableLiveData<Int?>()
     val selectedCategory: LiveData<Int?> = _selectedCategory
 
@@ -34,30 +34,34 @@ class CategoryViewModel(
         _operationResult.value = null
     }
 
-    fun insert(category: Category) {
-        viewModelScope.launch {
+    // 🔴 ORA RESTITUISCE ESITO
+    suspend fun insert(category: Category): Boolean {
+        return withContext(Dispatchers.IO) {
             val success = repository.insert(category) ?: true
             if (success == false) {
                 _operationResult.postValue("Categoria già esistente")
             }
+            success
         }
     }
 
-    fun update(category: Category) {
-        viewModelScope.launch {
+    suspend fun update(category: Category): Boolean {
+        return withContext(Dispatchers.IO) {
             val success = repository.update(category) ?: true
             if (success == false) {
                 _operationResult.postValue("Categoria già esistente")
             }
+            success
         }
     }
 
-    fun delete(category: Category) {
-        viewModelScope.launch {
+    suspend fun delete(category: Category): Boolean {
+        return withContext(Dispatchers.IO) {
             val success = repository.delete(category) ?: true
             if (success == false) {
                 _operationResult.postValue("Categoria in uso: eliminazione non consentita")
             }
+            success
         }
     }
 }

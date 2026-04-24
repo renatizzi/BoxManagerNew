@@ -13,6 +13,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.core.view.ViewCompat
@@ -24,6 +25,7 @@ import com.example.boxmanagernew.data.repository.CategoryRepositoryImpl
 import com.example.boxmanagernew.domain.model.Category
 import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.launch
 
 class CategoriesActivity : AppCompatActivity() {
 
@@ -93,7 +95,9 @@ class CategoriesActivity : AppCompatActivity() {
         adapter = CategoryAdapter(
             emptyList(),
             onUpdate = { updated ->
-                viewModel.update(updated)
+                lifecycleScope.launch {
+                    viewModel.update(updated)
+                }
             },
             onDeleteRequest = { category ->
                 viewModel.selectCategory(category.id)
@@ -163,15 +167,19 @@ class CategoriesActivity : AppCompatActivity() {
                     return@setOnClickListener
                 }
 
-                viewModel.insert(
-                    Category(
-                        name = name,
-                        icon = selectedIcon
+                lifecycleScope.launch {
+                    val success = viewModel.insert(
+                        Category(
+                            name = name,
+                            icon = selectedIcon
+                        )
                     )
-                )
 
-                hideKeyboard()
-                dialog.dismiss()
+                    if (success) {
+                        hideKeyboard()
+                        dialog.dismiss()
+                    }
+                }
             }
         }
 
@@ -187,8 +195,10 @@ class CategoriesActivity : AppCompatActivity() {
                 viewModel.clearSelection()
             }
             .setPositiveButton("Elimina") { _, _ ->
-                viewModel.delete(category)
-                viewModel.clearSelection()
+                lifecycleScope.launch {
+                    viewModel.delete(category)
+                    viewModel.clearSelection()
+                }
             }
             .setOnCancelListener {
                 viewModel.clearSelection()
