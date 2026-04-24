@@ -104,17 +104,14 @@ class CategoriesActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
-        // 🔴 UPDATE LISTA
         viewModel.categories.observe(this) {
             adapter.updateData(it)
         }
 
-        // 🔴 SELEZIONE (COME OGGETTI)
         viewModel.selectedCategory.observe(this) { id ->
             adapter.updateSelection(id)
         }
 
-        // 🔴 MESSAGGI
         viewModel.operationResult.observe(this) { message ->
             message?.let {
                 Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
@@ -166,12 +163,6 @@ class CategoriesActivity : AppCompatActivity() {
                     return@setOnClickListener
                 }
 
-                val duplicate = adapterHasDuplicate(name)
-                if (duplicate) {
-                    Toast.makeText(this, "Categoria già esistente", Toast.LENGTH_SHORT).show()
-                    return@setOnClickListener
-                }
-
                 viewModel.insert(
                     Category(
                         name = name,
@@ -203,11 +194,6 @@ class CategoriesActivity : AppCompatActivity() {
                 viewModel.clearSelection()
             }
             .show()
-    }
-
-    private fun adapterHasDuplicate(name: String): Boolean {
-        val current = viewModel.categories.value ?: return false
-        return current.any { it.name.equals(name, true) }
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
