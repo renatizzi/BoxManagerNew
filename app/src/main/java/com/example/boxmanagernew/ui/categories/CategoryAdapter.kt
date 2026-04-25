@@ -1,6 +1,8 @@
 package com.example.boxmanagernew.ui.categories
 
 import android.content.Context
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,9 +52,6 @@ class CategoryAdapter(
 
         val category = items[position]
 
-        val isSelected = category.id == selectedCategoryId
-        holder.layoutHeader.isSelected = isSelected
-
         holder.textName.text = category.name
 
         if (!holder.editName.hasFocus()) {
@@ -61,6 +60,15 @@ class CategoryAdapter(
 
         holder.editName.setSingleLine(true)
         holder.editName.imeOptions = EditorInfo.IME_ACTION_DONE
+
+        // 🔴 FIX: reset warning alla digitazione
+        holder.editName.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                onEditEnd()
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
 
         holder.editName.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -187,36 +195,6 @@ class CategoryAdapter(
             }
 
             override fun getItemCount(): Int = iconNames.size
-        }
-
-        holder.editName.setOnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus) {
-
-                val newName = holder.editName.text.toString().trim()
-
-                if (newName.isEmpty()) {
-                    holder.editName.error = "Nome obbligatorio"
-                    holder.editName.setText(category.name)
-                    onEditEnd()
-                    return@setOnFocusChangeListener
-                }
-
-                val duplicate = items.any {
-                    it.name.equals(newName, true) && it.id != category.id
-                }
-
-                if (duplicate) {
-                    holder.editName.setText(category.name)
-                    onEditEnd()
-                    return@setOnFocusChangeListener
-                }
-
-                if (newName != category.name) {
-                    onUpdate(category.copy(name = newName))
-                }
-
-                onEditEnd()
-            }
         }
     }
 
