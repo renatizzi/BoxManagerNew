@@ -28,7 +28,10 @@ class CategoryAdapter(
     private var expandedPosition: Int = -1
     private var selectedCategoryId: Int? = null
 
-    // 🔴 RIPRISTINATO
+    // 🔴 stato reale utente
+    private var hasUserModifiedName = false
+    private var isBinding = false
+
     fun updateSelection(id: Int?) {
         selectedCategoryId = id
         notifyDataSetChanged()
@@ -58,16 +61,21 @@ class CategoryAdapter(
 
         holder.textName.text = category.name
 
+        isBinding = true
         if (!holder.editName.hasFocus()) {
             holder.editName.setText(category.name)
         }
+        isBinding = false
 
         holder.editName.setSingleLine(true)
         holder.editName.imeOptions = EditorInfo.IME_ACTION_DONE
 
         holder.editName.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                onEditEnd()
+                if (!isBinding) {
+                    hasUserModifiedName = true
+                    onEditEnd()
+                }
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -125,6 +133,7 @@ class CategoryAdapter(
             notifyItemChanged(pos)
 
             if (expandedPosition == pos) {
+                hasUserModifiedName = false
                 onEditStart(items[pos])
             } else {
                 onEditEnd()
@@ -207,6 +216,36 @@ class CategoryAdapter(
             }
 
             override fun getItemCount(): Int = iconNames.size
+        }
+
+        holder.editName.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+
+                val pos = holder.bindingAdapterPosition
+                if (pos == RecyclerView.NO_POSITION) return@setOnFocusChangeListener
+
+                val current = items[pos]
+                val newName = holder.editName.text.toString().trim()
+
+                if (newName.isEmpty()) {
+                    holder.editName.error = "Nome obbligatorio"
+                    holder.editName.setText(current.name)
+                    return@setOnFocusChangeListener
+                }
+
+                val duplicate = items.any {
+                    it.name.equals(newName, true) && it.id != current.id
+                }
+
+                if (duplicate) {
+                    holder.editName.setText(current.name)
+                    return@setOnFocusChangeListener
+                }
+
+                if (newName != current.name) {
+                    onUpdate(current.copy(name = newName))
+                }
+            }
         }
     }
 
