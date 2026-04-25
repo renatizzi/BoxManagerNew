@@ -28,8 +28,8 @@ class CategoryAdapter(
     private var expandedPosition: Int = -1
     private var selectedCategoryId: Int? = null
 
-    // 🔴 stato reale utente
-    private var hasUserModifiedName = false
+    // 🔴 stato corretto
+    private var originalName: String? = null
     private var isBinding = false
 
     fun updateSelection(id: Int?) {
@@ -72,8 +72,19 @@ class CategoryAdapter(
 
         holder.editName.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                if (!isBinding) {
-                    hasUserModifiedName = true
+                if (isBinding) return
+
+                val currentText = s.toString().trim()
+                val original = originalName
+
+                if (original != null && currentText == original) {
+                    // 🔴 ritorno al valore originale → warning ON
+                    val pos = holder.bindingAdapterPosition
+                    if (pos != RecyclerView.NO_POSITION) {
+                        onEditStart(items[pos])
+                    }
+                } else {
+                    // 🔴 modifica reale → warning OFF
                     onEditEnd()
                 }
             }
@@ -133,7 +144,7 @@ class CategoryAdapter(
             notifyItemChanged(pos)
 
             if (expandedPosition == pos) {
-                hasUserModifiedName = false
+                originalName = items[pos].name // 🔴 salva stato reale
                 onEditStart(items[pos])
             } else {
                 onEditEnd()
