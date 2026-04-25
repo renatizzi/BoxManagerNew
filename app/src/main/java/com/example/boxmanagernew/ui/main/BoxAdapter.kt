@@ -110,7 +110,6 @@ class BoxAdapter(
 
     override fun getItemCount(): Int = items.size
 
-    // 🔴 DIFFUTIL
     fun updateData(newItems: List<Box>) {
         val diffCallback = BoxDiffCallback(items, newItems)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
@@ -121,18 +120,18 @@ class BoxAdapter(
 
     fun updateCategories(newCategories: List<CategoryEntity>) {
         categories = newCategories
-        notifyDataSetChanged() // UI change → consentito
+        notifyDataSetChanged()
     }
 
     fun updateSelection(selectedIds: Set<Int>, selectionMode: Boolean) {
         this.selectedIds = selectedIds
         this.selectionMode = selectionMode
-        notifyDataSetChanged() // UI state
+        notifyDataSetChanged()
     }
 
     fun updateQuery(query: String) {
         currentQuery = query
-        notifyDataSetChanged() // UI highlight
+        notifyDataSetChanged() // 🔴 FORZA rebind per highlight
     }
 
     // -------------------------
@@ -152,13 +151,10 @@ class BoxAdapter(
         }
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldList[oldItemPosition] == newList[newItemPosition]
+            // 🔴 FORZA aggiornamento UI (highlight dipende da stato esterno)
+            return false
         }
     }
-
-    // -------------------------
-    // HIGHLIGHT
-    // -------------------------
 
     private fun highlight(text: String): SpannableString {
         if (currentQuery.length < 3) return SpannableString(text)
