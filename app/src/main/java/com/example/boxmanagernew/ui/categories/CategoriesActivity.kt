@@ -124,7 +124,7 @@ class CategoriesActivity : AppCompatActivity() {
                 lifecycleScope.launch {
                     val isUsed = viewModel.isCategoryUsed(category.id)
                     if (isUsed) {
-                        showWarningMessage("Stai modificando una categoria utilizzata nei contenitori")
+                        showWarningMessage("Categoria in uso: modificandola, i contenitori verranno aggiornati")
                     } else {
                         showDefaultBar()
                     }
