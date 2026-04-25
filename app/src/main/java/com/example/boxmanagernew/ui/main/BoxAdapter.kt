@@ -11,6 +11,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.data.local.entity.CategoryEntity
@@ -50,17 +51,14 @@ class BoxAdapter(
     override fun onBindViewHolder(holder: BoxViewHolder, position: Int) {
         val box = items[position]
 
-        // NAME
         holder.textBoxName.text = highlight(box.name)
 
-        // CATEGORY + POSITION
         val category = categories.find { it.id == box.categoryId }
         val categoryName = category?.name ?: "Categoria sconosciuta"
         val positionText = box.position
 
         holder.textSubtitle.text = buildSubtitle(categoryName, positionText)
 
-        // ICON
         if (category != null) {
             val iconRes = IconMapper.getIconRes(category.icon)
             holder.imageCategory.setImageResource(iconRes)
@@ -68,12 +66,10 @@ class BoxAdapter(
             holder.imageCategory.setImageResource(R.drawable.ic_launcher_foreground)
         }
 
-        // SELECTION
         val isSelected = selectedIds.contains(box.id)
         holder.rootSelectable.isSelected = isSelected
         holder.textMenu.visibility = if (selectionMode) View.GONE else View.VISIBLE
 
-        // CLICK ICON
         holder.iconArea.setOnClickListener {
             holder.imageOpenBox.animate()
                 .alpha(0.3f)
@@ -89,14 +85,12 @@ class BoxAdapter(
             onClick(box)
         }
 
-        // SELECTION
         holder.contentArea.setOnClickListener { onToggleSelection(box) }
         holder.contentArea.setOnLongClickListener {
             onToggleSelection(box)
             true
         }
 
-        // MENU
         holder.textMenu.setOnClickListener { view ->
             val popup = PopupMenu(view.context, view)
             popup.menu.add("Modifica")
@@ -116,29 +110,54 @@ class BoxAdapter(
 
     override fun getItemCount(): Int = items.size
 
+    // 🔴 DIFFUTIL
     fun updateData(newItems: List<Box>) {
+        val diffCallback = BoxDiffCallback(items, newItems)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+
         items = newItems
-        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
     }
 
     fun updateCategories(newCategories: List<CategoryEntity>) {
         categories = newCategories
-        notifyDataSetChanged()
+        notifyDataSetChanged() // UI change → consentito
     }
 
     fun updateSelection(selectedIds: Set<Int>, selectionMode: Boolean) {
         this.selectedIds = selectedIds
         this.selectionMode = selectionMode
-        notifyDataSetChanged()
+        notifyDataSetChanged() // UI state
     }
 
     fun updateQuery(query: String) {
         currentQuery = query
-        notifyDataSetChanged()
+        notifyDataSetChanged() // UI highlight
     }
 
     // -------------------------
-    // HIGHLIGHT FUNCTIONS
+    // DIFF CALLBACK
+    // -------------------------
+
+    class BoxDiffCallback(
+        private val oldList: List<Box>,
+        private val newList: List<Box>
+    ) : DiffUtil.Callback() {
+
+        override fun getOldListSize(): Int = oldList.size
+        override fun getNewListSize(): Int = newList.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition].id == newList[newItemPosition].id
+        }
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition] == newList[newItemPosition]
+        }
+    }
+
+    // -------------------------
+    // HIGHLIGHT
     // -------------------------
 
     private fun highlight(text: String): SpannableString {
@@ -176,20 +195,17 @@ class BoxAdapter(
 
         val query = currentQuery.lowercase()
 
-        // CATEGORY
-        val catStart = 0
         val catEnd = category.length
 
         if (category.lowercase().contains(query)) {
             spannable.setSpan(
                 BackgroundColorSpan(Color.YELLOW),
-                catStart,
+                0,
                 catEnd,
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
             )
         }
 
-        // POSITION
         if (position.isNotBlank()) {
             val posStart = category.length + 3
             val posEnd = posStart + position.length
