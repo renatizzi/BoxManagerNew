@@ -28,6 +28,7 @@ class CategoryAdapter(
     private var expandedPosition: Int = -1
     private var selectedCategoryId: Int? = null
 
+    // 🔴 RIPRISTINATO
     fun updateSelection(id: Int?) {
         selectedCategoryId = id
         notifyDataSetChanged()
@@ -52,6 +53,9 @@ class CategoryAdapter(
 
         val category = items[position]
 
+        val isSelected = category.id == selectedCategoryId
+        holder.layoutHeader.isSelected = isSelected
+
         holder.textName.text = category.name
 
         if (!holder.editName.hasFocus()) {
@@ -61,7 +65,6 @@ class CategoryAdapter(
         holder.editName.setSingleLine(true)
         holder.editName.imeOptions = EditorInfo.IME_ACTION_DONE
 
-        // 🔴 FIX: reset warning alla digitazione
         holder.editName.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 onEditEnd()
@@ -73,6 +76,10 @@ class CategoryAdapter(
         holder.editName.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
 
+                val pos = holder.bindingAdapterPosition
+                if (pos == RecyclerView.NO_POSITION) return@setOnEditorActionListener true
+
+                val current = items[pos]
                 val newName = holder.editName.text.toString().trim()
 
                 if (newName.isEmpty()) {
@@ -81,17 +88,16 @@ class CategoryAdapter(
                 }
 
                 val duplicate = items.any {
-                    it.name.equals(newName, true) && it.id != category.id
+                    it.name.equals(newName, true) && it.id != current.id
                 }
 
                 if (duplicate) {
-                    holder.editName.setText(category.name)
-                    onEditEnd()
+                    holder.editName.setText(current.name)
                     return@setOnEditorActionListener true
                 }
 
-                if (newName != category.name) {
-                    onUpdate(category.copy(name = newName))
+                if (newName != current.name) {
+                    onUpdate(current.copy(name = newName))
                 }
 
                 val imm = holder.itemView.context
@@ -99,8 +105,6 @@ class CategoryAdapter(
                 imm.hideSoftInputFromWindow(holder.itemView.windowToken, 0)
 
                 holder.editName.clearFocus()
-                onEditEnd()
-
                 true
             } else false
         }
@@ -111,28 +115,27 @@ class CategoryAdapter(
         holder.layoutExpanded.visibility = if (isExpanded) View.VISIBLE else View.GONE
 
         holder.layoutHeader.setOnClickListener {
-            val currentPos = holder.bindingAdapterPosition
-            if (currentPos == RecyclerView.NO_POSITION) return@setOnClickListener
+            val pos = holder.bindingAdapterPosition
+            if (pos == RecyclerView.NO_POSITION) return@setOnClickListener
 
             val oldPos = expandedPosition
-            expandedPosition = if (currentPos == expandedPosition) -1 else currentPos
+            expandedPosition = if (pos == expandedPosition) -1 else pos
 
             if (oldPos != -1) notifyItemChanged(oldPos)
-            notifyItemChanged(currentPos)
+            notifyItemChanged(pos)
 
-            if (expandedPosition == currentPos) {
-                onEditStart(items[currentPos])
+            if (expandedPosition == pos) {
+                onEditStart(items[pos])
             } else {
                 onEditEnd()
             }
         }
 
         holder.layoutHeader.setOnLongClickListener {
-            val currentPos = holder.bindingAdapterPosition
-            if (currentPos == RecyclerView.NO_POSITION) return@setOnLongClickListener true
+            val pos = holder.bindingAdapterPosition
+            if (pos == RecyclerView.NO_POSITION) return@setOnLongClickListener true
 
-            onEditEnd()
-            onDeleteRequest(items[currentPos])
+            onDeleteRequest(items[pos])
             true
         }
 
@@ -169,11 +172,16 @@ class CategoryAdapter(
             }
 
             override fun onBindViewHolder(iconHolder: IconViewHolder, i: Int) {
+
+                val pos = holder.bindingAdapterPosition
+                if (pos == RecyclerView.NO_POSITION) return
+
+                val current = items[pos]
                 val iconName = iconNames[i]
 
                 iconHolder.image.setImageResource(IconMapper.getIconRes(iconName))
 
-                if (iconName == category.icon) {
+                if (iconName == current.icon) {
                     iconHolder.image.setBackgroundResource(R.drawable.bg_selected_item)
                 } else {
                     iconHolder.image.background = null
@@ -181,15 +189,19 @@ class CategoryAdapter(
 
                 iconHolder.image.setOnClickListener {
 
+                    val innerPos = holder.bindingAdapterPosition
+                    if (innerPos == RecyclerView.NO_POSITION) return@setOnClickListener
+
+                    val item = items[innerPos]
+
                     val imm = holder.itemView.context
                         .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(holder.itemView.windowToken, 0)
 
                     holder.editName.clearFocus()
-                    onEditEnd()
 
-                    if (iconName != category.icon) {
-                        onUpdate(category.copy(icon = iconName))
+                    if (iconName != item.icon) {
+                        onUpdate(item.copy(icon = iconName))
                     }
                 }
             }
