@@ -9,7 +9,6 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
@@ -26,12 +25,17 @@ import com.example.boxmanagernew.data.repository.CategoryRepositoryImpl
 import com.example.boxmanagernew.domain.model.Category
 import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.card.MaterialCardView
 import kotlinx.coroutines.launch
 
 class CategoriesActivity : AppCompatActivity() {
 
     private lateinit var viewModel: CategoryViewModel
     private lateinit var adapter: CategoryAdapter
+
+    private lateinit var contextCard: MaterialCardView
+    private lateinit var layoutSearchSort: View
+    private lateinit var textContextMessage: TextView
 
     private val iconNames = listOf(
         "outline_checkroom_24",
@@ -64,6 +68,7 @@ class CategoriesActivity : AppCompatActivity() {
             override fun handleOnBackPressed() {
                 viewModel.clearSelection()
                 hideKeyboard()
+                showDefaultBar()
                 finish()
             }
         })
@@ -80,6 +85,10 @@ class CategoriesActivity : AppCompatActivity() {
             )
             insets
         }
+
+        contextCard = findViewById(R.id.contextCard)
+        layoutSearchSort = findViewById(R.id.layoutSearchSort)
+        textContextMessage = findViewById(R.id.textContextMessage)
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewCategories)
         val fabAdd = findViewById<FloatingActionButton>(R.id.fabAddCategory)
@@ -105,11 +114,7 @@ class CategoriesActivity : AppCompatActivity() {
                     val isUsed = viewModel.isCategoryUsed(category.id)
 
                     if (isUsed) {
-                        Toast.makeText(
-                            this@CategoriesActivity,
-                            "Categoria in uso: eliminazione non consentita",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        showWarningMessage("Categoria in uso: eliminazione non consentita")
                     } else {
                         viewModel.selectCategory(category.id)
                         showDeleteDialog(category)
@@ -121,11 +126,9 @@ class CategoriesActivity : AppCompatActivity() {
                     val isUsed = viewModel.isCategoryUsed(category.id)
 
                     if (isUsed) {
-                        Toast.makeText(
-                            this@CategoriesActivity,
-                            "Stai modificando una categoria utilizzata nei contenitori",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        showWarningMessage("Stai modificando una categoria utilizzata nei contenitori")
+                    } else {
+                        showDefaultBar()
                     }
                 }
             }
@@ -142,16 +145,24 @@ class CategoriesActivity : AppCompatActivity() {
             adapter.updateSelection(id)
         }
 
-        viewModel.operationResult.observe(this) { message ->
-            message?.let {
-                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
-                viewModel.clearMessage()
-            }
-        }
-
         fabAdd.setOnClickListener {
             showAddCategoryDialog()
         }
+
+        showDefaultBar()
+    }
+
+    private fun showDefaultBar() {
+        layoutSearchSort.visibility = View.VISIBLE
+        textContextMessage.visibility = View.GONE
+        contextCard.strokeColor = getColor(android.R.color.transparent)
+    }
+
+    private fun showWarningMessage(text: String) {
+        layoutSearchSort.visibility = View.GONE
+        textContextMessage.visibility = View.VISIBLE
+        textContextMessage.text = text
+        contextCard.strokeColor = getColor(android.R.color.holo_red_dark)
     }
 
     private fun showAddCategoryDialog() {
@@ -227,15 +238,18 @@ class CategoriesActivity : AppCompatActivity() {
             .setMessage("Sei sicuro di voler eliminare \"${category.name}\"?")
             .setNegativeButton("Annulla") { _, _ ->
                 viewModel.clearSelection()
+                showDefaultBar()
             }
             .setPositiveButton("Elimina") { _, _ ->
                 lifecycleScope.launch {
                     viewModel.delete(category)
                     viewModel.clearSelection()
+                    showDefaultBar()
                 }
             }
             .setOnCancelListener {
                 viewModel.clearSelection()
+                showDefaultBar()
             }
             .show()
     }
