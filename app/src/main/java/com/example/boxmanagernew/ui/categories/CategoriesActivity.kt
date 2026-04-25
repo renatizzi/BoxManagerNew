@@ -112,7 +112,6 @@ class CategoriesActivity : AppCompatActivity() {
             onDeleteRequest = { category ->
                 lifecycleScope.launch {
                     val isUsed = viewModel.isCategoryUsed(category.id)
-
                     if (isUsed) {
                         showWarningMessage("Categoria in uso: eliminazione non consentita")
                     } else {
@@ -124,13 +123,15 @@ class CategoriesActivity : AppCompatActivity() {
             onEditStart = { category ->
                 lifecycleScope.launch {
                     val isUsed = viewModel.isCategoryUsed(category.id)
-
                     if (isUsed) {
                         showWarningMessage("Stai modificando una categoria utilizzata nei contenitori")
                     } else {
                         showDefaultBar()
                     }
                 }
+            },
+            onEditEnd = {
+                showDefaultBar()
             }
         )
 

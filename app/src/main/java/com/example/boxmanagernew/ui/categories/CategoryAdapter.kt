@@ -10,7 +10,6 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.boxmanagernew.R
@@ -20,7 +19,8 @@ class CategoryAdapter(
     private var items: List<Category>,
     private val onUpdate: (Category) -> Unit,
     private val onDeleteRequest: (Category) -> Unit,
-    private val onEditStart: (Category) -> Unit
+    private val onEditStart: (Category) -> Unit,
+    private val onEditEnd: () -> Unit
 ) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
     private var expandedPosition: Int = -1
@@ -77,7 +77,8 @@ class CategoryAdapter(
                 }
 
                 if (duplicate) {
-                    Toast.makeText(holder.itemView.context, "Categoria già esistente", Toast.LENGTH_SHORT).show()
+                    holder.editName.setText(category.name)
+                    onEditEnd()
                     return@setOnEditorActionListener true
                 }
 
@@ -90,6 +91,7 @@ class CategoryAdapter(
                 imm.hideSoftInputFromWindow(holder.itemView.windowToken, 0)
 
                 holder.editName.clearFocus()
+                onEditEnd()
 
                 true
             } else false
@@ -112,6 +114,8 @@ class CategoryAdapter(
 
             if (expandedPosition == currentPos) {
                 onEditStart(items[currentPos])
+            } else {
+                onEditEnd()
             }
         }
 
@@ -119,6 +123,7 @@ class CategoryAdapter(
             val currentPos = holder.bindingAdapterPosition
             if (currentPos == RecyclerView.NO_POSITION) return@setOnLongClickListener true
 
+            onEditEnd()
             onDeleteRequest(items[currentPos])
             true
         }
@@ -173,6 +178,7 @@ class CategoryAdapter(
                     imm.hideSoftInputFromWindow(holder.itemView.windowToken, 0)
 
                     holder.editName.clearFocus()
+                    onEditEnd()
 
                     if (iconName != category.icon) {
                         onUpdate(category.copy(icon = iconName))
@@ -183,7 +189,7 @@ class CategoryAdapter(
             override fun getItemCount(): Int = iconNames.size
         }
 
-        holder.editName.setOnFocusChangeListener { v, hasFocus ->
+        holder.editName.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
 
                 val newName = holder.editName.text.toString().trim()
@@ -191,6 +197,7 @@ class CategoryAdapter(
                 if (newName.isEmpty()) {
                     holder.editName.error = "Nome obbligatorio"
                     holder.editName.setText(category.name)
+                    onEditEnd()
                     return@setOnFocusChangeListener
                 }
 
@@ -199,14 +206,16 @@ class CategoryAdapter(
                 }
 
                 if (duplicate) {
-                    Toast.makeText(v.context, "Categoria già esistente", Toast.LENGTH_SHORT).show()
                     holder.editName.setText(category.name)
+                    onEditEnd()
                     return@setOnFocusChangeListener
                 }
 
                 if (newName != category.name) {
                     onUpdate(category.copy(name = newName))
                 }
+
+                onEditEnd()
             }
         }
     }
