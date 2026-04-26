@@ -26,8 +26,8 @@ class BoxViewModel(
     val currentQuery: LiveData<String> = _currentQuery
 
     private var lastSource: List<Box> = emptyList()
+    private var lastFiltered: List<Box> = emptyList()
 
-    // 🔴 FIX: categories reattivo
     private val _categories = MutableLiveData<List<CategoryEntity>>(emptyList())
     private val categories: List<CategoryEntity>
         get() = _categories.value ?: emptyList()
@@ -38,9 +38,13 @@ class BoxViewModel(
     private val _selectionMode = MutableLiveData(false)
     val selectionMode: LiveData<Boolean> = _selectionMode
 
+    // 🔴 NUOVO
+    private val _hasHiddenSelections = MutableLiveData(false)
+    val hasHiddenSelections: LiveData<Boolean> = _hasHiddenSelections
+
     init {
-        _boxes.addSource(source) { list ->
-            lastSource = list
+        _boxes.addSource(source) {
+            lastSource = it
             applyFilterAndSort()
         }
 
@@ -52,9 +56,12 @@ class BoxViewModel(
             applyFilterAndSort()
         }
 
-        // 🔴 FIX: trigger anche su categories
         _boxes.addSource(_categories) {
             applyFilterAndSort()
+        }
+
+        _boxes.addSource(_selectedItems) {
+            updateHiddenSelectionState()
         }
     }
 
@@ -136,7 +143,6 @@ class BoxViewModel(
 
         if (query.isNotBlank()) {
             result = result.filter { box ->
-
                 val categoryName = categories
                     .find { it.id == box.categoryId }
                     ?.name
@@ -153,6 +159,22 @@ class BoxViewModel(
         result = if (asc) result.sortedBy { it.name }
         else result.sortedByDescending { it.name }
 
+        lastFiltered = result
         _boxes.value = result
+
+        updateHiddenSelectionState()
+    }
+
+    private fun updateHiddenSelectionState() {
+        val selected = _selectedItems.value ?: emptySet()
+        if (selected.isEmpty()) {
+            _hasHiddenSelections.value = false
+            return
+        }
+
+        val visibleIds = lastFiltered.map { it.id }.toSet()
+        val hidden = selected.any { it !in visibleIds }
+
+        _hasHiddenSelections.value = hidden
     }
 }
