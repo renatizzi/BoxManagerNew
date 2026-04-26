@@ -1,8 +1,12 @@
 package com.example.boxmanagernew.ui.categories
 
 import android.content.Context
+import android.graphics.Color
 import android.text.Editable
+import android.text.SpannableString
+import android.text.Spanned
 import android.text.TextWatcher
+import android.text.style.BackgroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,12 +32,20 @@ class CategoryAdapter(
     private var expandedPosition: Int = -1
     private var selectedCategoryId: Int? = null
 
-    // 🔴 stato corretto
     private var originalName: String? = null
     private var isBinding = false
 
+    // 🔴 NUOVO
+    private var currentQuery: String = ""
+
     fun updateSelection(id: Int?) {
         selectedCategoryId = id
+        notifyDataSetChanged()
+    }
+
+    // 🔴 NUOVO
+    fun updateQuery(query: String) {
+        currentQuery = query
         notifyDataSetChanged()
     }
 
@@ -59,7 +71,8 @@ class CategoryAdapter(
         val isSelected = category.id == selectedCategoryId
         holder.layoutHeader.isSelected = isSelected
 
-        holder.textName.text = category.name
+        // 🔴 HIGHLIGHT
+        holder.textName.text = highlight(category.name)
 
         isBinding = true
         if (!holder.editName.hasFocus()) {
@@ -78,13 +91,11 @@ class CategoryAdapter(
                 val original = originalName
 
                 if (original != null && currentText == original) {
-                    // 🔴 ritorno al valore originale → warning ON
                     val pos = holder.bindingAdapterPosition
                     if (pos != RecyclerView.NO_POSITION) {
                         onEditStart(items[pos])
                     }
                 } else {
-                    // 🔴 modifica reale → warning OFF
                     onEditEnd()
                 }
             }
@@ -144,7 +155,7 @@ class CategoryAdapter(
             notifyItemChanged(pos)
 
             if (expandedPosition == pos) {
-                originalName = items[pos].name // 🔴 salva stato reale
+                originalName = items[pos].name
                 onEditStart(items[pos])
             } else {
                 onEditEnd()
@@ -165,21 +176,11 @@ class CategoryAdapter(
         holder.recyclerIcons.adapter = object : RecyclerView.Adapter<IconViewHolder>() {
 
             private val iconNames = listOf(
-                "outline_checkroom_24",
-                "outline_fastfood_24",
-                "outline_handyman_24",
-                "outline_carpenter_24",
-                "outline_ink_pen_24",
-                "outline_garage_money_24",
-                "outline_passport_24",
-                "outline_broadcast_on_home_24",
-                "outline_tools_power_drill_24",
-                "outline_photo_frame_24",
-                "outline_library_music_24",
-                "outline_box_24",
-                "outline_menu_book_24",
-                "outline_medical_services_24",
-                "outline_money_bag_24",
+                "outline_checkroom_24","outline_fastfood_24","outline_handyman_24",
+                "outline_carpenter_24","outline_ink_pen_24","outline_garage_money_24",
+                "outline_passport_24","outline_broadcast_on_home_24","outline_tools_power_drill_24",
+                "outline_photo_frame_24","outline_library_music_24","outline_box_24",
+                "outline_menu_book_24","outline_medical_services_24","outline_money_bag_24",
                 "outline_browse_24"
             )
 
@@ -268,4 +269,26 @@ class CategoryAdapter(
     }
 
     class IconViewHolder(val image: ImageView) : RecyclerView.ViewHolder(image)
+
+    // 🔴 HIGHLIGHT
+    private fun highlight(text: String): SpannableString {
+        if (currentQuery.length < 3) return SpannableString(text)
+
+        val lowerText = text.lowercase()
+        val lowerQuery = currentQuery.lowercase()
+
+        val start = lowerText.indexOf(lowerQuery)
+        if (start < 0) return SpannableString(text)
+
+        val end = start + lowerQuery.length
+
+        return SpannableString(text).apply {
+            setSpan(
+                BackgroundColorSpan(Color.YELLOW),
+                start,
+                end,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        }
+    }
 }

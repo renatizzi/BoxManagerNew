@@ -3,12 +3,14 @@ package com.example.boxmanagernew.ui.categories
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Button
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
@@ -24,6 +26,7 @@ import com.example.boxmanagernew.data.local.DatabaseProvider
 import com.example.boxmanagernew.data.repository.CategoryRepositoryImpl
 import com.example.boxmanagernew.domain.model.Category
 import com.example.boxmanagernew.ui.common.BottomNavManager
+import com.example.boxmanagernew.ui.common.UiUtils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.card.MaterialCardView
 import kotlinx.coroutines.launch
@@ -37,22 +40,15 @@ class CategoriesActivity : AppCompatActivity() {
     private lateinit var layoutSearchSort: View
     private lateinit var textContextMessage: TextView
 
+    private lateinit var editSearch: EditText
+    private lateinit var buttonSort: Button
+
     private val iconNames = listOf(
-        "outline_checkroom_24",
-        "outline_fastfood_24",
-        "outline_handyman_24",
-        "outline_carpenter_24",
-        "outline_ink_pen_24",
-        "outline_garage_money_24",
-        "outline_passport_24",
-        "outline_broadcast_on_home_24",
-        "outline_tools_power_drill_24",
-        "outline_photo_frame_24",
-        "outline_library_music_24",
-        "outline_box_24",
-        "outline_menu_book_24",
-        "outline_medical_services_24",
-        "outline_money_bag_24",
+        "outline_checkroom_24","outline_fastfood_24","outline_handyman_24",
+        "outline_carpenter_24","outline_ink_pen_24","outline_garage_money_24",
+        "outline_passport_24","outline_broadcast_on_home_24","outline_tools_power_drill_24",
+        "outline_photo_frame_24","outline_library_music_24","outline_box_24",
+        "outline_menu_book_24","outline_medical_services_24","outline_money_bag_24",
         "outline_browse_24"
     )
 
@@ -77,18 +73,16 @@ class CategoriesActivity : AppCompatActivity() {
 
         ViewCompat.setOnApplyWindowInsetsListener(root) { view, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            view.setPadding(
-                systemBars.left,
-                systemBars.top,
-                systemBars.right,
-                systemBars.bottom
-            )
+            view.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
         contextCard = findViewById(R.id.contextCard)
         layoutSearchSort = findViewById(R.id.layoutSearchSort)
         textContextMessage = findViewById(R.id.textContextMessage)
+
+        editSearch = findViewById(R.id.editTextSearchCategory)
+        buttonSort = findViewById(R.id.buttonSortCategory)
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewCategories)
         val fabAdd = findViewById<FloatingActionButton>(R.id.fabAddCategory)
@@ -105,9 +99,7 @@ class CategoriesActivity : AppCompatActivity() {
         adapter = CategoryAdapter(
             emptyList(),
             onUpdate = { updated ->
-                lifecycleScope.launch {
-                    viewModel.update(updated)
-                }
+                lifecycleScope.launch { viewModel.update(updated) }
             },
             onDeleteRequest = { category ->
                 lifecycleScope.launch {
@@ -142,8 +134,29 @@ class CategoriesActivity : AppCompatActivity() {
             adapter.updateData(it)
         }
 
-        viewModel.selectedCategory.observe(this) { id ->
-            adapter.updateSelection(id)
+        viewModel.selectedCategory.observe(this) {
+            adapter.updateSelection(it)
+        }
+
+        viewModel.isAscending.observe(this) {
+            UiUtils.updateSortButton(buttonSort, it)
+        }
+
+        // 🔴 FIX COMPLETO
+        editSearch.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val query = s.toString()
+                viewModel.filter(query)
+                adapter.updateQuery(query) // 🔴 QUESTO MANCAVA
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        buttonSort.setOnClickListener {
+            hideKeyboard()
+            editSearch.clearFocus()
+            viewModel.toggleSort()
         }
 
         fabAdd.setOnClickListener {
@@ -167,9 +180,7 @@ class CategoriesActivity : AppCompatActivity() {
     }
 
     private fun showAddCategoryDialog() {
-
-        val view = LayoutInflater.from(this)
-            .inflate(R.layout.dialog_add_category, null)
+        val view = layoutInflater.inflate(R.layout.dialog_add_category, null)
 
         val editName = view.findViewById<EditText>(R.id.editCategoryName)
         val recyclerIcons = view.findViewById<RecyclerView>(R.id.recyclerIcons)
@@ -188,7 +199,6 @@ class CategoriesActivity : AppCompatActivity() {
             .create()
 
         dialog.setOnShowListener {
-
             val btnAdd = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
 
             btnAdd.setOnClickListener {
@@ -212,10 +222,7 @@ class CategoriesActivity : AppCompatActivity() {
 
                 lifecycleScope.launch {
                     val success = viewModel.insert(
-                        Category(
-                            name = name,
-                            icon = selectedIcon
-                        )
+                        Category(name = name, icon = selectedIcon)
                     )
 
                     if (success) {
@@ -233,7 +240,6 @@ class CategoriesActivity : AppCompatActivity() {
     }
 
     private fun showDeleteDialog(category: Category) {
-
         AlertDialog.Builder(this)
             .setTitle("Elimina categoria")
             .setMessage("Sei sicuro di voler eliminare \"${category.name}\"?")
