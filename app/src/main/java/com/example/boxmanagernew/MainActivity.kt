@@ -173,11 +173,10 @@ class MainActivity : AppCompatActivity() {
 
             if (hasHidden) {
 
-                // 🔴 FIX tastiera
-                currentFocus?.let {
-                    hideKeyboard(it)
-                    it.clearFocus()
-                }
+                // 🔴 FIX DEFINITIVO tastiera
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(window.decorView.windowToken, 0)
+                editSearch.clearFocus()
 
                 editSearch.setText("")
                 viewModel.filter("")
@@ -209,7 +208,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         buttonSort.setOnClickListener {
-            hideKeyboard(it)
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(window.decorView.windowToken, 0)
             editSearch.clearFocus()
             viewModel.toggleSort()
         }
@@ -259,11 +259,6 @@ class MainActivity : AppCompatActivity() {
     private fun showAddDialog() {}
     private fun showEditDialog(box: com.example.boxmanagernew.domain.model.Box) {}
 
-    private fun hideKeyboard(view: View) {
-        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
-    }
-
     private fun showDeleteDialog(id: Int) {
         AlertDialog.Builder(this)
             .setTitle("Conferma eliminazione")
@@ -275,7 +270,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         if (currentFocus != null) {
-            hideKeyboard(currentFocus!!)
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(window.decorView.windowToken, 0)
             currentFocus?.clearFocus()
         }
         return super.dispatchTouchEvent(ev)
