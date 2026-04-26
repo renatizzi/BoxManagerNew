@@ -50,7 +50,7 @@
 
     </LinearLayout>
 
-    <!-- AREA CONTESTUALE -->
+    <!-- AREA CONTESTUALE (STABILE) -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/contextCard"
         android:layout_width="match_parent"
@@ -68,20 +68,24 @@
             android:layout_height="wrap_content"
             android:minHeight="72dp">
 
-            <!-- SEARCH / SORT -->
+            <!-- SEARCH / SORT (NON PIÙ GONE) -->
             <LinearLayout
                 android:id="@+id/layoutSearchSort"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="14dp">
+                android:padding="14dp"
+                android:visibility="visible"
+                android:alpha="1">
 
                 <EditText
                     android:id="@+id/editTextSearchCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Cerca per nome categoria"
-                    android:layout_marginBottom="8dp" />
+                    android:layout_marginBottom="8dp"
+                    android:imeOptions="actionDone"
+                    android:singleLine="true"/>
 
                 <Button
                     android:id="@+id/buttonSortCategory"
@@ -90,15 +94,16 @@
                     android:text="Ordina" />
             </LinearLayout>
 
-            <!-- MESSAGGIO -->
+            <!-- MESSAGGIO (OVERLAY) -->
             <TextView
                 android:id="@+id/textContextMessage"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:padding="14dp"
                 android:textSize="14sp"
                 android:textColor="#333333"
-                android:visibility="gone" />
+                android:visibility="gone"
+                android:background="#FFFFFF"/>
 
         </FrameLayout>
 

@@ -7,6 +7,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
@@ -142,16 +143,24 @@ class CategoriesActivity : AppCompatActivity() {
             UiUtils.updateSortButton(buttonSort, it)
         }
 
-        // 🔴 FIX COMPLETO
         editSearch.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 val query = s.toString()
                 viewModel.filter(query)
-                adapter.updateQuery(query) // 🔴 QUESTO MANCAVA
+                adapter.updateQuery(query)
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
+
+        // 🔴 FIX CORRETTO SU "FATTO"
+        editSearch.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                hideKeyboard()
+                editSearch.clearFocus()
+                true
+            } else false
+        }
 
         buttonSort.setOnClickListener {
             hideKeyboard()
