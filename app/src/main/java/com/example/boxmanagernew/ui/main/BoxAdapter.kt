@@ -85,11 +85,10 @@ class BoxAdapter(
             onClick(box)
         }
 
+        // 🔴 SELEZIONE SOLO TAP
         holder.contentArea.setOnClickListener { onToggleSelection(box) }
-        holder.contentArea.setOnLongClickListener {
-            onToggleSelection(box)
-            true
-        }
+
+        // 🔴 RIMOSSO LONG PRESS
 
         holder.textMenu.setOnClickListener { view ->
             val popup = PopupMenu(view.context, view)
@@ -131,12 +130,8 @@ class BoxAdapter(
 
     fun updateQuery(query: String) {
         currentQuery = query
-        notifyDataSetChanged() // 🔴 FORZA rebind per highlight
+        notifyDataSetChanged()
     }
-
-    // -------------------------
-    // DIFF CALLBACK
-    // -------------------------
 
     class BoxDiffCallback(
         private val oldList: List<Box>,
@@ -151,7 +146,6 @@ class BoxAdapter(
         }
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            // 🔴 FORZA aggiornamento UI (highlight dipende da stato esterno)
             return false
         }
     }

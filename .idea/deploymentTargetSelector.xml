@@ -4,10 +4,10 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2026-03-29T10:18:29.801147400Z">
+        <DropdownSelection timestamp="2026-04-27T14:27:18.854540100Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="PhysicalDevice" identifier="serial=RFCY11533YL" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\Dell XPS 15 7590\.android\avd\Medium_Phone.avd" />
             </handle>
           </Target>
         </DropdownSelection>
