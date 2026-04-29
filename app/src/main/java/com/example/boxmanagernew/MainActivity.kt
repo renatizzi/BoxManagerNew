@@ -43,13 +43,12 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: BoxViewModel
     private lateinit var adapter: BoxAdapter
+
     private lateinit var buttonDeleteSelected: Button
     private lateinit var textSelectionCount: TextView
     private lateinit var selectionBar: View
-    private lateinit var recyclerView: RecyclerView
 
     private lateinit var contextCard: MaterialCardView
-    private lateinit var layoutSearchSort: View
     private lateinit var textContextMessage: TextView
     private lateinit var editSearch: EditText
 
@@ -69,39 +68,36 @@ class MainActivity : AppCompatActivity() {
         }
 
         contextCard = findViewById(R.id.contextCard)
-        layoutSearchSort = findViewById(R.id.layoutSearchSort)
         textContextMessage = findViewById(R.id.textContextMessage)
-
         editSearch = findViewById(R.id.editTextSearch)
-        val buttonSort = findViewById<Button>(R.id.buttonSort)
+
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewBoxes)
         val fab = findViewById<FloatingActionButton>(R.id.fabAdd)
-        recyclerView = findViewById(R.id.recyclerViewBoxes)
 
         buttonDeleteSelected = findViewById(R.id.btnDeleteSelected)
         textSelectionCount = findViewById(R.id.textSelectionCount)
         selectionBar = findViewById(R.id.selectionBar)
 
         val db = DatabaseProvider.getDatabase(applicationContext)
-        val dao = db.boxDao()
-        val categoryDao = db.categoryDao()
-        val objectTypeDao = db.objectTypeDao()
-        val repository = BoxRepositoryImpl(dao)
+        val repository = BoxRepositoryImpl(db.boxDao())
 
         lifecycleScope.launch {
-            if (categoryDao.getCategoryByName("Generico") == null) {
-                categoryDao.insert(CategoryEntity(name = "Generico", icon = "outline_box_24"))
+            if (db.categoryDao().getCategoryByName("Generico") == null) {
+                db.categoryDao().insert(CategoryEntity(name = "Generico", icon = "outline_box_24"))
             }
-            if (objectTypeDao.getByName("Generico") == null) {
-                objectTypeDao.insert(ObjectTypeEntity(name = "Generico"))
+            if (db.objectTypeDao().getByName("Generico") == null) {
+                db.objectTypeDao().insert(ObjectTypeEntity(name = "Generico"))
             }
         }
 
-        adapter = BoxAdapter(emptyList(), emptyList(),
-            onClick = { box ->
-                if (viewModel.selectionMode.value == true) viewModel.toggleSelection(box)
+        adapter = BoxAdapter(
+            emptyList(),
+            emptyList(),
+            onClick = {
+                if (viewModel.selectionMode.value == true) viewModel.toggleSelection(it)
                 else startActivity(Intent(this, BoxDetailActivity::class.java).apply {
-                    putExtra("boxId", box.id)
-                    putExtra("boxName", box.name)
+                    putExtra("boxId", it.id)
+                    putExtra("boxName", it.name)
                 })
             },
             onEdit = { showEditDialog(it) },
@@ -112,19 +108,21 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
-        categoryDao.getAllCategories().observe(this) {
-            categories = it
-            adapter.updateCategories(it)
-            viewModel.setCategories(it)
-        }
-
         viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return BoxViewModel(repository) as T
             }
         })[BoxViewModel::class.java]
 
-        viewModel.boxes.observe(this) { adapter.updateData(it) }
+        db.categoryDao().getAllCategories().observe(this) {
+            categories = it
+            adapter.updateCategories(it)
+            viewModel.setCategories(it)
+        }
+
+        viewModel.boxes.observe(this) {
+            adapter.updateData(it)
+        }
 
         viewModel.selectedItems.observe(this) {
             selectionBar.visibility = if (it.isNotEmpty()) View.VISIBLE else View.GONE
@@ -132,27 +130,43 @@ class MainActivity : AppCompatActivity() {
             adapter.updateSelection(it, viewModel.selectionMode.value ?: false)
         }
 
+        // 🔴 MULTISELEZIONE → SOLO WARNING
+        viewModel.hasHiddenSelections.observe(this) { hidden ->
+            textContextMessage.visibility = if (hidden) View.VISIBLE else View.GONE
+
+            if (hidden) {
+                textContextMessage.text =
+                    "Alcuni elementi selezionati non sono visibili. Tocca qui per rimuovere il filtro."
+            }
+        }
+
+        contextCard.setOnClickListener {
+            editSearch.setText("")
+            viewModel.filter("")
+        }
+
+        // 🔴 MULTI ELIMINAZIONE → BLOCCO + MESSAGGIO STANDARD
         buttonDeleteSelected.setOnClickListener {
             val ids = viewModel.selectedItems.value?.toList() ?: return@setOnClickListener
 
             if (viewModel.hasHiddenSelections.value == true) {
-                AlertDialog.Builder(this)
-                    .setMessage("Sono presenti elementi selezionati non visibili. Rimuovere il filtro per procedere.")
-                    .setPositiveButton("OK", null)
-                    .show()
+                textContextMessage.visibility = View.VISIBLE
+                textContextMessage.text =
+                    "Impossibile eliminare: alcuni elementi selezionati non sono visibili. Tocca qui per rimuovere il filtro."
                 return@setOnClickListener
             }
 
             AlertDialog.Builder(this)
-                .setMessage("Conferma eliminazione?")
-                .setPositiveButton("Sì") { _, _ -> viewModel.deleteBoxes(ids) }
-                .setNegativeButton("No", null)
+                .setMessage("Conferma eliminazione? NO SI")
+                .setPositiveButton("SI") { _, _ -> viewModel.deleteBoxes(ids) }
+                .setNegativeButton("NO", null)
                 .show()
         }
 
         editSearch.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 viewModel.filter(s.toString())
+                adapter.updateQuery(s.toString())
             }
             override fun beforeTextChanged(s: CharSequence?, s1: Int, s2: Int, s3: Int) {}
             override fun onTextChanged(s: CharSequence?, s1: Int, s2: Int, s3: Int) {}
@@ -212,14 +226,6 @@ class MainActivity : AppCompatActivity() {
         dialog.setOnShowListener {
             val btn = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
 
-            name.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable?) {
-                    errorText.visibility = View.GONE
-                }
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            })
-
             btn.setOnClickListener {
                 val n = name.text.toString().trim()
 
@@ -277,14 +283,6 @@ class MainActivity : AppCompatActivity() {
         dialog.setOnShowListener {
             val btn = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
 
-            name.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable?) {
-                    errorText.visibility = View.GONE
-                }
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            })
-
             btn.setOnClickListener {
                 val n = name.text.toString().trim()
 
@@ -320,9 +318,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun showDeleteDialog(id: Int) {
         AlertDialog.Builder(this)
-            .setMessage("Conferma eliminazione?")
-            .setPositiveButton("Sì") { _, _ -> viewModel.deleteBox(id) }
-            .setNegativeButton("No", null)
+            .setMessage("Conferma eliminazione? NO SI")
+            .setPositiveButton("SI") { _, _ -> viewModel.deleteBox(id) }
+            .setNegativeButton("NO", null)
             .show()
     }
 
