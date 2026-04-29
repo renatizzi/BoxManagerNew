@@ -203,6 +203,14 @@ class MainActivity : AppCompatActivity() {
         dialog.setOnShowListener {
             val btn = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
 
+            name.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable?) {
+                    errorText.visibility = View.GONE
+                }
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            })
+
             btn.setOnClickListener {
                 val n = name.text.toString().trim()
 
@@ -259,6 +267,14 @@ class MainActivity : AppCompatActivity() {
 
         dialog.setOnShowListener {
             val btn = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+
+            name.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable?) {
+                    errorText.visibility = View.GONE
+                }
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            })
 
             btn.setOnClickListener {
                 val n = name.text.toString().trim()
