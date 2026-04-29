@@ -2,6 +2,7 @@ package com.example.boxmanagernew
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
 import android.text.InputType
@@ -138,18 +139,29 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // 🔴 FIX: reset filtro + clear selezione + chiusura tastiera
         contextCard.setOnClickListener {
             editSearch.setText("")
             viewModel.filter("")
+            viewModel.clearSelection()
+            hideKeyboard(editSearch)
         }
 
+        // 🔴 FIX: eliminazione con hidden
         buttonDeleteSelected.setOnClickListener {
             val ids = viewModel.selectedItems.value?.toList() ?: return@setOnClickListener
 
             if (viewModel.hasHiddenSelections.value == true) {
                 textContextMessage.text =
                     "Impossibile eliminare: alcuni elementi selezionati non sono visibili. Tocca qui per rimuovere il filtro."
+
                 contextCard.visibility = View.VISIBLE
+
+                editSearch.setText("")
+                viewModel.filter("")
+                viewModel.clearSelection()
+                hideKeyboard(editSearch)
+
                 return@setOnClickListener
             }
 
@@ -186,8 +198,25 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    // 🔴 FIX: chiusura tastiera tap fuori SENZA rompere click
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        if (ev.action == MotionEvent.ACTION_DOWN) {
+            val v = currentFocus
+            if (v is EditText) {
+                val outRect = Rect()
+                v.getGlobalVisibleRect(outRect)
+                if (!outRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
+                    v.clearFocus()
+                    hideKeyboard(v)
+                }
+            }
+        }
         return super.dispatchTouchEvent(ev)
+    }
+
+    private fun hideKeyboard(view: View) {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     private fun showAddDialog() {
