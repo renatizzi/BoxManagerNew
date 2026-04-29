@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- BASE (esistenti) -->
+    <!-- BASE (NON TOCCARE - richiesti dal tema) -->
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -9,6 +9,24 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- 🔴 NUOVA PALETTE (AGGIUNTA, NON SOSTITUZIONE) -->
+
+    <!-- BRAND -->
+    <color name="primary_gradient_start">#8E2DE2</color>
+    <color name="primary_gradient_end">#4A00E0</color>
+
+    <color name="primary_button">#6A1B9A</color>
+    <color name="primary_button_light">#8E2DE2</color>
+
+    <color name="fab_color">#7B1FA2</color>
+
+    <!-- CARD -->
+    <color name="card_background">#F2F2F2</color>
+
+    <!-- INPUT -->
+    <color name="input_line">#9E9E9E</color>
+    <color name="input_text">#444444</color>
 
     <!-- UI TEXT -->
     <color name="text_primary">#000000</color>
