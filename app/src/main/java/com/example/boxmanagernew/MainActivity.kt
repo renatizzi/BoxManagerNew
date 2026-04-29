@@ -134,6 +134,7 @@ class MainActivity : AppCompatActivity() {
 
         buttonDeleteSelected.setOnClickListener {
             val ids = viewModel.selectedItems.value?.toList() ?: return@setOnClickListener
+
             AlertDialog.Builder(this)
                 .setMessage("Conferma eliminazione?")
                 .setPositiveButton("Sì") { _, _ -> viewModel.deleteBoxes(ids) }
