@@ -135,6 +135,14 @@ class MainActivity : AppCompatActivity() {
         buttonDeleteSelected.setOnClickListener {
             val ids = viewModel.selectedItems.value?.toList() ?: return@setOnClickListener
 
+            if (viewModel.hasHiddenSelections.value == true) {
+                AlertDialog.Builder(this)
+                    .setMessage("Sono presenti elementi selezionati non visibili. Rimuovere il filtro per procedere.")
+                    .setPositiveButton("OK", null)
+                    .show()
+                return@setOnClickListener
+            }
+
             AlertDialog.Builder(this)
                 .setMessage("Conferma eliminazione?")
                 .setPositiveButton("Sì") { _, _ -> viewModel.deleteBoxes(ids) }
