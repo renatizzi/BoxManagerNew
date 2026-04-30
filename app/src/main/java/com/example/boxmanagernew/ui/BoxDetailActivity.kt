@@ -3,6 +3,7 @@ package com.example.boxmanagernew.ui.boxdetail
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,20 +16,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.data.local.AppDatabase
-import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
-import com.example.boxmanagernew.data.repository.CategoryRepositoryImpl
-import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
-import com.example.boxmanagernew.domain.model.ObjectWithType
-import com.example.boxmanagernew.ui.categories.CategoriesActivity
-import com.example.boxmanagernew.ui.categories.CategoryViewModel
-import com.example.boxmanagernew.ui.categories.IconMapper
+import com.example.boxmanagernew.data.repository.*
+import com.example.boxmanagernew.domain.model.Box
+import com.example.boxmanagernew.domain.model.Category
+import com.example.boxmanagernew.domain.model.Object
+import com.example.boxmanagernew.ui.categories.*
 import com.example.boxmanagernew.ui.common.BottomNavManager
-import com.example.boxmanagernew.ui.common.UiUtils
 import com.example.boxmanagernew.ui.main.BoxViewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -38,14 +37,20 @@ class BoxDetailActivity : AppCompatActivity() {
     private lateinit var objectViewModel: ObjectViewModel
     private lateinit var boxViewModel: BoxViewModel
     private lateinit var categoryViewModel: CategoryViewModel
-    private lateinit var adapter: ObjectAdapter
 
-    private lateinit var editSearch: EditText
-    private lateinit var buttonSort: Button
+    private lateinit var adapter: ObjectAdapter
 
     private lateinit var selectionBar: View
     private lateinit var textSelectionCount: TextView
     private lateinit var buttonDeleteSelected: Button
+    private lateinit var textObjectsTitle: TextView
+    private lateinit var editSearch: EditText
+    private lateinit var buttonSort: Button
+    private lateinit var contextCard: View
+    private lateinit var textContextMessage: TextView
+
+    private var currentBox: Box? = null
+    private var currentCategory: Category? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,10 +59,10 @@ class BoxDetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_box_detail)
 
         val root = findViewById<View>(android.R.id.content)
-        ViewCompat.setOnApplyWindowInsetsListener(root) { view, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            view.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        ViewCompat.setOnApplyWindowInsetsListener(root) { v, i ->
+            val s = i.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(s.left, s.top, s.right, s.bottom)
+            i
         }
 
         val textTitle = findViewById<TextView>(R.id.textTitle)
@@ -65,23 +70,18 @@ class BoxDetailActivity : AppCompatActivity() {
         val imageCategoryIcon = findViewById<ImageView>(R.id.imageCategoryIcon)
         val textPosition = findViewById<TextView>(R.id.textPosition)
         val textLastModified = findViewById<TextView>(R.id.textLastModified)
-        val textObjectsTitle = findViewById<TextView>(R.id.textObjectsTitle)
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerObjects)
-        val fabAdd = findViewById<com.google.android.material.floatingactionbutton.FloatingActionButton>(R.id.fabAddObject)
 
-        editSearch = findViewById(R.id.editSearchObjects)
-        buttonSort = findViewById(R.id.buttonSortObjects)
+        val recycler = findViewById<RecyclerView>(R.id.recyclerObjects)
+        val fab = findViewById<com.google.android.material.floatingactionbutton.FloatingActionButton>(R.id.fabAddObject)
 
         selectionBar = findViewById(R.id.selectionBar)
         textSelectionCount = findViewById(R.id.textSelectionCount)
         buttonDeleteSelected = findViewById(R.id.btnDeleteSelected)
-
-        BottomNavManager.setup(this, BottomNavManager.TAB_BOXES)
-
-        findViewById<TextView>(R.id.navBoxes).setOnClickListener { finish() }
-        findViewById<TextView>(R.id.navCategories).setOnClickListener {
-            startActivity(Intent(this, CategoriesActivity::class.java))
-        }
+        textObjectsTitle = findViewById(R.id.textObjectsTitle)
+        editSearch = findViewById(R.id.editSearchObjects)
+        buttonSort = findViewById(R.id.buttonSortObjects)
+        contextCard = findViewById(R.id.contextCard)
+        textContextMessage = findViewById(R.id.textContextMessage)
 
         val boxId = intent.getIntExtra("boxId", -1)
         val boxName = intent.getStringExtra("boxName") ?: "Contenitore"
@@ -89,30 +89,33 @@ class BoxDetailActivity : AppCompatActivity() {
 
         val db = AppDatabase.getDatabase(this)
 
-        val objectRepository = ObjectRepositoryImpl(db.objectDao(), db.objectTypeDao())
-        objectViewModel = ViewModelProvider(this, ObjectViewModelFactory(objectRepository))[ObjectViewModel::class.java]
+        val objectRepo = ObjectRepositoryImpl(db.objectDao(), db.objectTypeDao())
+        objectViewModel = ViewModelProvider(this, ObjectViewModelFactory(objectRepo))[ObjectViewModel::class.java]
 
-        val boxRepository = BoxRepositoryImpl(db.boxDao())
-        boxViewModel = BoxViewModel(boxRepository)
+        val boxRepo = BoxRepositoryImpl(db.boxDao())
+        boxViewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return BoxViewModel(boxRepo) as T
+            }
+        })[BoxViewModel::class.java]
 
-        val categoryRepository = CategoryRepositoryImpl(db.categoryDao(), db.boxDao())
-        categoryViewModel = CategoryViewModel(categoryRepository)
+        val categoryRepo = CategoryRepositoryImpl(db.categoryDao(), db.boxDao())
+        categoryViewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return CategoryViewModel(categoryRepo) as T
+            }
+        })[CategoryViewModel::class.java]
 
         adapter = ObjectAdapter(
-            items = emptyList(),
+            emptyList(),
             onClick = {},
-            onToggleSelection = { id -> objectViewModel.toggleSelection(id) },
-            onEdit = { id ->
-                val item = objectViewModel.objects.value?.find { it.obj.id == id }
-                if (item != null) showEditDialog(item)
-            },
-            onDelete = { id -> showDeleteDialog(id) }
+            onToggleSelection = { objectViewModel.toggleSelection(it) },
+            onEdit = { id -> showEditObjectDialog(id) },
+            onDelete = { id -> showDeleteObjectDialog(id) }
         )
 
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = adapter
-
-        val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+        recycler.layoutManager = LinearLayoutManager(this)
+        recycler.adapter = adapter
 
         objectViewModel.load(boxId)
 
@@ -121,64 +124,55 @@ class BoxDetailActivity : AppCompatActivity() {
             textObjectsTitle.text = "Lista Oggetti (${it.size})"
         }
 
-        objectViewModel.isAscending.observe(this) {
-            UiUtils.updateSortButton(buttonSort, it)
-        }
-
         objectViewModel.selectedItems.observe(this) {
-            val count = it.size
-            selectionBar.visibility = if (count > 0) View.VISIBLE else View.GONE
-            textSelectionCount.text =
-                if (count == 1) "1 selezionato" else "$count selezionati"
-
-            val mode = objectViewModel.selectionMode.value ?: false
-            adapter.updateSelection(it, mode)
+            selectionBar.visibility = if (it.isNotEmpty()) View.VISIBLE else View.GONE
+            textSelectionCount.text = "${it.size} selezionati"
+            adapter.updateSelection(it, objectViewModel.selectionMode.value ?: false)
         }
 
-        objectViewModel.selectionMode.observe(this) {
-            val selected = objectViewModel.selectedItems.value ?: emptySet()
-            adapter.updateSelection(selected, it)
-        }
-
-        // 🔴 FIX: eliminazione semplice multiselezione
         buttonDeleteSelected.setOnClickListener {
-            val ids = objectViewModel.selectedItems.value?.toList() ?: emptyList()
-            if (ids.isNotEmpty()) {
-                objectViewModel.deleteObjects(ids)
-            }
+            val ids = objectViewModel.selectedItems.value?.toList() ?: return@setOnClickListener
+
+            AlertDialog.Builder(this)
+                .setMessage("Conferma eliminazione?")
+                .setPositiveButton("SI") { _, _ ->
+                    objectViewModel.deleteObjects(ids)
+                }
+                .setNegativeButton("NO", null)
+                .show()
         }
 
         editSearch.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                val query = s.toString()
-                objectViewModel.filter(query)
-                adapter.updateFilterState(query.isNotBlank())
-                adapter.updateQuery(query)
+                objectViewModel.filter(s.toString())
+                adapter.updateQuery(s.toString())
+                adapter.updateFilterState(s.toString().isNotBlank())
             }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun beforeTextChanged(s: CharSequence?, s1: Int, s2: Int, s3: Int) {}
+            override fun onTextChanged(s: CharSequence?, s1: Int, s2: Int, s3: Int) {}
         })
 
         buttonSort.setOnClickListener {
-            hideKeyboard(it)
-            editSearch.clearFocus()
             objectViewModel.toggleSort()
         }
 
-        fabAdd.setOnClickListener {
-            showAddObjectDialog(boxId)
+        BottomNavManager.setup(this, BottomNavManager.TAB_BOXES)
+
+        boxViewModel.boxes.observe(this) { list ->
+            val box = list.find { it.id == boxId } ?: return@observe
+            currentBox = box
+            updateHeader(textCategory, imageCategoryIcon, textPosition, textLastModified)
         }
 
-        boxViewModel.boxes.observe(this) { boxes ->
-            val box = boxes.find { it.id == boxId } ?: return@observe
-            textPosition.text = box.position
-            textLastModified.text = dateFormat.format(Date(box.lastModified))
+        categoryViewModel.categories.observe(this) { list ->
+            val box = currentBox ?: return@observe
+            val category = list.find { it.id == box.categoryId } ?: return@observe
+            currentCategory = category
+            updateHeader(textCategory, imageCategoryIcon, textPosition, textLastModified)
+        }
 
-            categoryViewModel.categories.observe(this) { categories ->
-                val category = categories.find { it.id == box.categoryId } ?: return@observe
-                textCategory.text = category.name
-                imageCategoryIcon.setImageResource(IconMapper.getIconRes(category.icon))
-            }
+        fab.setOnClickListener {
+            showAddObjectDialog(boxId)
         }
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
@@ -190,191 +184,123 @@ class BoxDetailActivity : AppCompatActivity() {
         })
     }
 
-    private fun showAddObjectDialog(boxId: Int) {
+    private fun updateHeader(
+        textCategory: TextView,
+        imageCategoryIcon: ImageView,
+        textPosition: TextView,
+        textLastModified: TextView
+    ) {
+        val box = currentBox ?: return
+        val category = currentCategory ?: return
+
+        textCategory.text = category.name
+        imageCategoryIcon.setImageResource(IconMapper.getIconRes(category.icon))
+        textPosition.text = box.position
+
+        val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+        textLastModified.text = dateFormat.format(Date(box.lastModified))
+    }
+
+    private fun showDeleteObjectDialog(id: Int) {
+        AlertDialog.Builder(this)
+            .setMessage("Conferma eliminazione?")
+            .setPositiveButton("SI") { _, _ ->
+                val obj = objectViewModel.objects.value?.find { it.obj.id == id }?.obj ?: return@setPositiveButton
+                objectViewModel.deleteObject(obj)
+            }
+            .setNegativeButton("NO", null)
+            .show()
+    }
+
+    private fun showEditObjectDialog(id: Int) {
+        val item = objectViewModel.objects.value?.find { it.obj.id == id } ?: return
 
         val layout = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setPadding(40, 20, 40, 10)
         }
 
-        val errorText = TextView(this).apply {
-            setTextColor(getColor(android.R.color.holo_red_dark))
-            visibility = View.GONE
-            text = "Dato obbligatorio"
-        }
+        layout.addView(TextView(this).apply { text = "Nome" })
+        val inputName = EditText(this).apply { setText(item.typeName) }
 
-        val inputName = EditText(this).apply {
-            hint = "Nome oggetto"
-        }
+        layout.addView(TextView(this).apply { text = "Descrizione" })
+        val inputDescription = EditText(this).apply { setText(item.obj.description) }
 
-        val inputDescription = createSingleLineDescriptionInput(this, "Descrizione (opzionale)")
-
+        layout.addView(TextView(this).apply { text = "Quantità" })
         val inputQuantity = EditText(this).apply {
-            hint = "Quantità (opzionale)"
+            setText(item.obj.quantity?.toString() ?: "")
             inputType = android.text.InputType.TYPE_CLASS_NUMBER
         }
 
-        layout.addView(errorText)
         layout.addView(inputName)
         layout.addView(inputDescription)
         layout.addView(inputQuantity)
 
-        val dialog = AlertDialog.Builder(this)
+        AlertDialog.Builder(this)
+            .setTitle("Modifica oggetto")
+            .setView(layout)
+            .setPositiveButton("Salva") { _, _ ->
+                objectViewModel.updateObjectWithName(
+                    id,
+                    inputName.text.toString(),
+                    item.obj.boxId,
+                    inputDescription.text.toString().ifBlank { null },
+                    inputQuantity.text.toString().toIntOrNull()
+                )
+            }
+            .setNegativeButton("Annulla", null)
+            .show()
+    }
+
+    private fun showAddObjectDialog(boxId: Int) {
+        val layout = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(40, 20, 40, 10)
+        }
+
+        val inputName = EditText(this).apply { hint = "Nome" }
+        val inputDescription = EditText(this).apply { hint = "Descrizione" }
+        val inputQuantity = EditText(this).apply {
+            hint = "Quantità"
+            inputType = android.text.InputType.TYPE_CLASS_NUMBER
+        }
+
+        layout.addView(inputName)
+        layout.addView(inputDescription)
+        layout.addView(inputQuantity)
+
+        AlertDialog.Builder(this)
             .setTitle("Nuovo oggetto")
             .setView(layout)
-            .setNegativeButton("Annulla", null)
-            .setPositiveButton("Aggiungi", null)
-            .create()
-
-        dialog.setOnShowListener {
-            val btn = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-
-            inputName.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable?) {
-                    errorText.visibility = View.GONE
-                }
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            })
-
-            btn.setOnClickListener {
-                val name = inputName.text.toString().trim()
-
-                if (name.isEmpty()) {
-                    errorText.visibility = View.VISIBLE
-                    return@setOnClickListener
-                }
-
+            .setPositiveButton("Aggiungi") { _, _ ->
                 objectViewModel.addObject(
-                    name,
+                    inputName.text.toString(),
                     boxId,
                     inputDescription.text.toString().ifBlank { null },
                     inputQuantity.text.toString().toIntOrNull()
                 )
-
-                dialog.dismiss()
             }
-        }
-
-        dialog.show()
-    }
-
-    private fun showEditDialog(item: ObjectWithType) {
-        val layout = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(40, 20, 40, 10)
-        }
-
-        val errorText = TextView(this).apply {
-            setTextColor(getColor(android.R.color.holo_red_dark))
-            visibility = View.GONE
-            text = "Dato obbligatorio"
-        }
-
-        val inputName = EditText(this).apply {
-            hint = "Nome oggetto"
-            setText(item.typeName)
-        }
-
-        val inputDescription = createSingleLineDescriptionInput(this, "Descrizione").apply {
-            setText(item.obj.description)
-        }
-
-        val inputQuantity = EditText(this).apply {
-            hint = "Quantità"
-            inputType = android.text.InputType.TYPE_CLASS_NUMBER
-            setText(item.obj.quantity?.toString() ?: "")
-        }
-
-        layout.addView(errorText)
-        layout.addView(inputName)
-        layout.addView(inputDescription)
-        layout.addView(inputQuantity)
-
-        val dialog = AlertDialog.Builder(this)
-            .setTitle("Modifica oggetto")
-            .setView(layout)
             .setNegativeButton("Annulla", null)
-            .setPositiveButton("Salva", null)
-            .create()
-
-        dialog.setOnShowListener {
-            val btn = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-
-            inputName.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable?) {
-                    errorText.visibility = View.GONE
-                }
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            })
-
-            btn.setOnClickListener {
-                val name = inputName.text.toString().trim()
-
-                if (name.isEmpty()) {
-                    errorText.visibility = View.VISIBLE
-                    return@setOnClickListener
-                }
-
-                objectViewModel.updateObjectWithName(
-                    id = item.obj.id,
-                    name = name,
-                    boxId = item.obj.boxId,
-                    description = inputDescription.text.toString().ifBlank { null },
-                    quantity = inputQuantity.text.toString().toIntOrNull()
-                )
-
-                dialog.dismiss()
-            }
-        }
-
-        dialog.show()
-    }
-
-    private fun showDeleteDialog(id: Int) {
-        AlertDialog.Builder(this)
-            .setTitle("Conferma eliminazione")
-            .setMessage("Vuoi eliminare questo elemento?")
-            .setPositiveButton("Sì") { _, _ ->
-                val obj = objectViewModel.objects.value
-                    ?.find { it.obj.id == id }?.obj
-                if (obj != null) objectViewModel.deleteObject(obj)
-            }
-            .setNegativeButton("No", null)
             .show()
     }
 
-    private fun createSingleLineDescriptionInput(context: Context, hintText: String): EditText {
-        return EditText(context).apply {
-            hint = hintText
-            inputType = android.text.InputType.TYPE_CLASS_TEXT
-            maxLines = 1
-
-            addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable?) {
-                    if (s != null && s.contains("\n")) {
-                        val cleaned = s.toString().replace("\n", " ")
-                        setText(cleaned)
-                        setSelection(cleaned.length)
-                    }
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        if (ev.action == MotionEvent.ACTION_DOWN) {
+            val v = currentFocus
+            if (v is EditText) {
+                val r = Rect()
+                v.getGlobalVisibleRect(r)
+                if (!r.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
+                    v.clearFocus()
+                    hideKeyboard(v)
                 }
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            })
+            }
         }
+        return super.dispatchTouchEvent(ev)
     }
 
     private fun hideKeyboard(view: View) {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view.windowToken, 0)
-    }
-
-    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
-        if (currentFocus != null) {
-            hideKeyboard(currentFocus!!)
-            currentFocus?.clearFocus()
-        }
-        return super.dispatchTouchEvent(ev)
     }
 }

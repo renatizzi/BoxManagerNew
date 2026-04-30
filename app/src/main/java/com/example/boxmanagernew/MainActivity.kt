@@ -151,20 +151,17 @@ class MainActivity : AppCompatActivity() {
         buttonDeleteSelected.setOnClickListener {
             val ids = viewModel.selectedItems.value?.toList() ?: return@setOnClickListener
 
+            // 🔴 BLOCCO → SOLO CONTEXT CARD (NO DIALOG)
             if (viewModel.hasHiddenSelections.value == true) {
-                textContextMessage.text =
-                    "Impossibile eliminare: alcuni elementi selezionati non sono visibili. Tocca qui per rimuovere il filtro."
 
                 contextCard.visibility = View.VISIBLE
-
-                editSearch.setText("")
-                viewModel.filter("")
-                viewModel.clearSelection()
-                hideKeyboard(editSearch)
+                textContextMessage.text =
+                    "Impossibile eliminare: alcuni elementi selezionati non sono visibili. Tocca qui per rimuovere il filtro."
 
                 return@setOnClickListener
             }
 
+            // ✅ SOLO QUI dialog
             AlertDialog.Builder(this)
                 .setMessage("Conferma eliminazione?")
                 .setPositiveButton("SI") { _, _ -> viewModel.deleteBoxes(ids) }
@@ -181,7 +178,6 @@ class MainActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, s1: Int, s2: Int, s3: Int) {}
         })
 
-        // 🔴 ORDINAMENTO
         updateSortButton(true)
 
         buttonSort.setOnClickListener {

@@ -68,15 +68,11 @@ class ObjectAdapter(
         val isSelected = selectedIds.contains(id)
         holder.rootSelectable.isSelected = isSelected
 
+        // ✅ IDENTICO A CONTENITORI
         holder.textMenu.visibility = if (selectionMode) View.GONE else View.VISIBLE
 
         holder.contentArea.setOnClickListener {
             onToggleSelection(id)
-        }
-
-        holder.contentArea.setOnLongClickListener {
-            onToggleSelection(id)
-            true
         }
 
         holder.textMenu.setOnClickListener { view ->
@@ -123,12 +119,15 @@ class ObjectAdapter(
     }
 
     private fun highlight(text: String): SpannableString {
-        if (currentQuery.isBlank()) return SpannableString(text)
+        if (currentQuery.length < 3) return SpannableString(text)
 
-        val start = text.lowercase().indexOf(currentQuery.lowercase())
+        val lowerText = text.lowercase()
+        val lowerQuery = currentQuery.lowercase()
+
+        val start = lowerText.indexOf(lowerQuery)
         if (start < 0) return SpannableString(text)
 
-        val end = start + currentQuery.length
+        val end = start + lowerQuery.length
 
         return SpannableString(text).apply {
             setSpan(

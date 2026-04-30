@@ -1,10 +1,6 @@
 package com.example.boxmanagernew.ui.boxdetail
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.boxmanagernew.domain.model.Object
 import com.example.boxmanagernew.domain.model.ObjectWithType
 import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
@@ -26,23 +22,28 @@ class ObjectViewModel(
     private val _isAscending = MutableLiveData(true)
     val isAscending: LiveData<Boolean> = _isAscending
 
+    private val _hasHiddenSelections = MutableLiveData(false)
+    val hasHiddenSelections: LiveData<Boolean> = _hasHiddenSelections
+
     private var currentSource: LiveData<List<ObjectWithType>>? = null
     private var lastSource: List<ObjectWithType> = emptyList()
+    private var lastFiltered: List<ObjectWithType> = emptyList()
 
     private var currentQuery: String = ""
 
     fun load(boxId: Int) {
-
-        currentSource?.let {
-            _objects.removeSource(it)
-        }
+        currentSource?.let { _objects.removeSource(it) }
 
         val source = repository.getObjectsWithType(boxId)
         currentSource = source
 
-        _objects.addSource(source) { list ->
-            lastSource = list
+        _objects.addSource(source) {
+            lastSource = it
             applyFilterAndSort()
+        }
+
+        _objects.addSource(_selectedItems) {
+            updateHiddenSelectionState()
         }
     }
 
@@ -52,8 +53,7 @@ class ObjectViewModel(
     }
 
     fun toggleSort() {
-        val current = _isAscending.value ?: true
-        _isAscending.value = !current
+        _isAscending.value = !(_isAscending.value ?: true)
         applyFilterAndSort()
     }
 
@@ -62,34 +62,43 @@ class ObjectViewModel(
 
         if (currentQuery.isNotBlank()) {
             result = result.filter {
-                it.typeName.contains(currentQuery, ignoreCase = true) ||
-                        (it.obj.description?.contains(currentQuery, ignoreCase = true) == true)
+                it.typeName.contains(currentQuery, true) ||
+                        (it.obj.description?.contains(currentQuery, true) == true)
             }
         }
 
         val asc = _isAscending.value ?: true
 
-        result = if (asc) {
-            result.sortedBy { it.typeName }
-        } else {
-            result.sortedByDescending { it.typeName }
-        }
+        result = if (asc) result.sortedBy { it.typeName }
+        else result.sortedByDescending { it.typeName }
 
+        lastFiltered = result
         _objects.value = result
+
+        updateHiddenSelectionState()
     }
 
-    // 🔴 MODIFICA CHIAVE: ora lavora con ID
+    private fun updateHiddenSelectionState() {
+        val selected = _selectedItems.value ?: emptySet()
+        if (selected.isEmpty()) {
+            _hasHiddenSelections.value = false
+            return
+        }
+
+        val visibleIds = lastFiltered.map { it.obj.id }.toSet()
+        val hidden = selected.any { it !in visibleIds }
+
+        _hasHiddenSelections.value = hidden
+    }
+
     fun toggleSelection(id: Int) {
         val current = _selectedItems.value ?: emptySet()
         val updated = current.toMutableSet()
 
-        if (updated.contains(id)) {
-            updated.remove(id)
-        } else {
-            updated.add(id)
-        }
+        if (updated.contains(id)) updated.remove(id)
+        else updated.add(id)
 
-        _selectedItems.value = updated.toSet()
+        _selectedItems.value = updated
         _selectionMode.value = updated.isNotEmpty()
     }
 
@@ -101,67 +110,22 @@ class ObjectViewModel(
     fun deleteObjects(ids: List<Int>) {
         viewModelScope.launch {
             lastSource.forEach {
-                if (ids.contains(it.obj.id)) {
-                    repository.delete(it.obj)
-                }
+                if (ids.contains(it.obj.id)) repository.delete(it.obj)
             }
             clearSelection()
         }
     }
 
-    fun addObject(
-        name: String,
-        boxId: Int,
-        description: String?,
-        quantity: Int?
-    ) {
+    fun addObject(name: String, boxId: Int, description: String?, quantity: Int?) {
         if (name.isBlank()) return
-
         viewModelScope.launch {
-            repository.insertDynamic(
-                name = name,
-                boxId = boxId,
-                description = description,
-                quantity = quantity
-            )
+            repository.insertDynamic(name, boxId, description, quantity)
         }
     }
 
-    fun updateObjectWithName(
-        id: Int,
-        name: String,
-        boxId: Int,
-        description: String?,
-        quantity: Int?
-    ) {
+    fun updateObjectWithName(id: Int, name: String, boxId: Int, description: String?, quantity: Int?) {
         viewModelScope.launch {
-            repository.updateWithName(
-                id = id,
-                name = name,
-                boxId = boxId,
-                description = description,
-                quantity = quantity
-            )
-        }
-    }
-
-    fun updateObject(
-        id: Int,
-        typeObjectId: Int,
-        boxId: Int,
-        description: String?,
-        quantity: Int?
-    ) {
-        viewModelScope.launch {
-            repository.update(
-                Object(
-                    id = id,
-                    typeObjectId = typeObjectId,
-                    boxId = boxId,
-                    description = description,
-                    quantity = quantity
-                )
-            )
+            repository.updateWithName(id, name, boxId, description, quantity)
         }
     }
 
