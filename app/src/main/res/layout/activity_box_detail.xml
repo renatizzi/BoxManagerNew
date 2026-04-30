@@ -13,15 +13,26 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+        <!-- TITOLO -->
         <TextView
             android:id="@+id/textTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Contenitore"
+            android:text="Lista Oggetti"
             android:textSize="24sp"
             android:textStyle="bold" />
 
-        <!-- INFO BOX -->
+        <!-- 🔴 SOTTOTITOLO (NUOVO, NON IMPATTA ID ESISTENTI) -->
+        <TextView
+            android:id="@+id/textSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Contenuto del box"
+            android:textSize="14sp"
+            android:textColor="#777777"
+            android:layout_marginTop="4dp" />
+
+        <!-- INFO BOX (INVARIATO) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -89,7 +100,7 @@
             android:layout_marginTop="12dp"
             android:background="#DDDDDD" />
 
-        <!-- 🔴 CONTEXT AREA -->
+        <!-- CONTEXT AREA (INVARIATO) -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -101,7 +112,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <!-- SEARCH / SORT -->
                 <LinearLayout
                     android:id="@+id/layoutSearchSort"
                     android:layout_width="match_parent"
@@ -124,7 +134,6 @@
                         android:text="ORDINA ▲"/>
                 </LinearLayout>
 
-                <!-- CONTEXT CARD -->
                 <LinearLayout
                     android:id="@+id/contextCard"
                     android:layout_width="match_parent"
@@ -145,7 +154,7 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- HEADER LISTA -->
+        <!-- HEADER LISTA (INVARIATO per ora) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -193,7 +202,6 @@
                 android:text="Elimina selezionati" />
         </LinearLayout>
 
-        <!-- LISTA -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerObjects"
             android:layout_width="match_parent"
