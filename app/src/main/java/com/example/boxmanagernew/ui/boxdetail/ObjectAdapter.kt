@@ -68,8 +68,14 @@ class ObjectAdapter(
         val isSelected = selectedIds.contains(id)
         holder.rootSelectable.isSelected = isSelected
 
-        // ✅ IDENTICO A CONTENITORI
-        holder.textMenu.visibility = if (selectionMode) View.GONE else View.VISIBLE
+        // 🔴 FIX LOGICA MENU
+        val selectedCount = selectedIds.size
+
+        holder.textMenu.visibility = when {
+            selectedCount == 0 -> View.VISIBLE
+            selectedCount == 1 && isSelected -> View.VISIBLE
+            else -> View.GONE
+        }
 
         holder.contentArea.setOnClickListener {
             onToggleSelection(id)
