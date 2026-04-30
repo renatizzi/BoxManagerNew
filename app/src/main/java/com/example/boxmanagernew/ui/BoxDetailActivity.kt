@@ -121,7 +121,7 @@ class BoxDetailActivity : AppCompatActivity() {
 
         objectViewModel.objects.observe(this) {
             adapter.updateData(it)
-            textObjectsTitle.text = "Lista Oggetti (${it.size})"
+            textObjectsTitle.text = "N. Oggetti: ${it.size}"
         }
 
         objectViewModel.selectedItems.observe(this) {
