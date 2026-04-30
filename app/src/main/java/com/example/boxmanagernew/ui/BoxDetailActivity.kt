@@ -130,8 +130,33 @@ class BoxDetailActivity : AppCompatActivity() {
             adapter.updateSelection(it, objectViewModel.selectionMode.value ?: false)
         }
 
+        objectViewModel.hasHiddenSelections.observe(this) { hidden ->
+            contextCard.visibility = if (hidden) View.VISIBLE else View.GONE
+
+            if (hidden) {
+                textContextMessage.text =
+                    "Alcuni elementi selezionati non sono visibili. Tocca qui per rimuovere il filtro."
+            }
+        }
+
+        contextCard.setOnClickListener {
+            editSearch.setText("")
+            objectViewModel.filter("")
+            objectViewModel.clearSelection()
+            adapter.updateQuery("")
+            adapter.updateFilterState(false)
+            hideKeyboard(editSearch)
+        }
+
         buttonDeleteSelected.setOnClickListener {
             val ids = objectViewModel.selectedItems.value?.toList() ?: return@setOnClickListener
+
+            if (objectViewModel.hasHiddenSelections.value == true) {
+                contextCard.visibility = View.VISIBLE
+                textContextMessage.text =
+                    "Impossibile eliminare: alcuni elementi selezionati non sono visibili. Tocca qui per rimuovere il filtro."
+                return@setOnClickListener
+            }
 
             AlertDialog.Builder(this)
                 .setMessage("Conferma eliminazione?")
@@ -220,36 +245,52 @@ class BoxDetailActivity : AppCompatActivity() {
             setPadding(40, 20, 40, 10)
         }
 
-        layout.addView(TextView(this).apply { text = "Nome" })
+        val labelName = TextView(this).apply { text = "Nome" }
         val inputName = EditText(this).apply { setText(item.typeName) }
 
-        layout.addView(TextView(this).apply { text = "Descrizione" })
+        val labelDesc = TextView(this).apply { text = "Descrizione" }
         val inputDescription = EditText(this).apply { setText(item.obj.description) }
 
-        layout.addView(TextView(this).apply { text = "Quantità" })
+        val labelQty = TextView(this).apply { text = "Quantità" }
         val inputQuantity = EditText(this).apply {
             setText(item.obj.quantity?.toString() ?: "")
             inputType = android.text.InputType.TYPE_CLASS_NUMBER
         }
 
+        layout.addView(labelName)
         layout.addView(inputName)
+        layout.addView(labelDesc)
         layout.addView(inputDescription)
+        layout.addView(labelQty)
         layout.addView(inputQuantity)
 
-        AlertDialog.Builder(this)
+        val dialog = AlertDialog.Builder(this)
             .setTitle("Modifica oggetto")
             .setView(layout)
-            .setPositiveButton("Salva") { _, _ ->
+            .setPositiveButton("Salva", null)
+            .setNegativeButton("Annulla", null)
+            .create()
+
+        dialog.setOnShowListener {
+            val btn = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+
+            btn.setOnClickListener {
+                val name = inputName.text.toString().trim()
+                if (name.isEmpty()) return@setOnClickListener
+
                 objectViewModel.updateObjectWithName(
                     id,
-                    inputName.text.toString(),
+                    name,
                     item.obj.boxId,
                     inputDescription.text.toString().ifBlank { null },
                     inputQuantity.text.toString().toIntOrNull()
                 )
+
+                dialog.dismiss()
             }
-            .setNegativeButton("Annulla", null)
-            .show()
+        }
+
+        dialog.show()
     }
 
     private fun showAddObjectDialog(boxId: Int) {
