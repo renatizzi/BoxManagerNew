@@ -48,6 +48,7 @@ class BoxDetailActivity : AppCompatActivity() {
     private lateinit var buttonSort: Button
     private lateinit var contextCard: View
     private lateinit var textContextMessage: TextView
+    private lateinit var textSubtitle: TextView // 🔴 aggiunto
 
     private var currentBox: Box? = null
     private var currentCategory: Category? = null
@@ -66,6 +67,8 @@ class BoxDetailActivity : AppCompatActivity() {
         }
 
         val textTitle = findViewById<TextView>(R.id.textTitle)
+        textSubtitle = findViewById(R.id.textSubtitle) // 🔴 aggiunto
+
         val textCategory = findViewById<TextView>(R.id.textCategory)
         val imageCategoryIcon = findViewById<ImageView>(R.id.imageCategoryIcon)
         val textPosition = findViewById<TextView>(R.id.textPosition)
@@ -85,7 +88,32 @@ class BoxDetailActivity : AppCompatActivity() {
 
         val boxId = intent.getIntExtra("boxId", -1)
         val boxName = intent.getStringExtra("boxName") ?: "Contenitore"
-        textTitle.text = boxName
+
+        // 🔴 Titolo aggiornato
+        textTitle.text = "Lista Oggetti"
+
+        // 🔴 Sottotitolo dinamico (bold + size)
+        val base = "Contenuto del box "
+        val full = base + boxName
+
+        val spannable = android.text.SpannableString(full)
+        val start = base.length
+
+        spannable.setSpan(
+            android.text.style.StyleSpan(android.graphics.Typeface.BOLD),
+            start,
+            full.length,
+            android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        spannable.setSpan(
+            android.text.style.RelativeSizeSpan(1.1f),
+            start,
+            full.length,
+            android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        textSubtitle.text = spannable
 
         val db = AppDatabase.getDatabase(this)
 
