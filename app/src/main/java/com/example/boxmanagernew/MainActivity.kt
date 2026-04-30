@@ -51,6 +51,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var contextCard: View
     private lateinit var textContextMessage: TextView
     private lateinit var editSearch: EditText
+    private lateinit var buttonSort: Button
 
     private var categories: List<CategoryEntity> = emptyList()
 
@@ -70,6 +71,7 @@ class MainActivity : AppCompatActivity() {
         contextCard = findViewById(R.id.contextCard)
         textContextMessage = findViewById(R.id.textContextMessage)
         editSearch = findViewById(R.id.editTextSearch)
+        buttonSort = findViewById(R.id.buttonSort)
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewBoxes)
         val fab = findViewById<FloatingActionButton>(R.id.fabAdd)
@@ -139,7 +141,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // 🔴 FIX: reset filtro + clear selezione + chiusura tastiera
         contextCard.setOnClickListener {
             editSearch.setText("")
             viewModel.filter("")
@@ -147,7 +148,6 @@ class MainActivity : AppCompatActivity() {
             hideKeyboard(editSearch)
         }
 
-        // 🔴 FIX: eliminazione con hidden
         buttonDeleteSelected.setOnClickListener {
             val ids = viewModel.selectedItems.value?.toList() ?: return@setOnClickListener
 
@@ -181,6 +181,17 @@ class MainActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, s1: Int, s2: Int, s3: Int) {}
         })
 
+        // 🔴 ORDINAMENTO
+        updateSortButton(true)
+
+        buttonSort.setOnClickListener {
+            viewModel.toggleSort()
+        }
+
+        viewModel.isAscending.observe(this) { isAsc ->
+            updateSortButton(isAsc)
+        }
+
         fab.setOnClickListener { showAddDialog() }
 
         BottomNavManager.setup(this, BottomNavManager.TAB_BOXES)
@@ -198,7 +209,10 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    // 🔴 FIX: chiusura tastiera tap fuori SENZA rompere click
+    private fun updateSortButton(isAscending: Boolean) {
+        buttonSort.text = if (isAscending) "ORDINA ▲" else "ORDINA ▼"
+    }
+
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         if (ev.action == MotionEvent.ACTION_DOWN) {
             val v = currentFocus
