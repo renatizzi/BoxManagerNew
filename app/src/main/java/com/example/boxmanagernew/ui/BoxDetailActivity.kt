@@ -82,7 +82,6 @@ class BoxDetailActivity : AppCompatActivity() {
         textSelectionCount = findViewById(R.id.textSelectionCount)
         buttonDeleteSelected = findViewById(R.id.btnDeleteSelected)
         buttonMoveSelected = findViewById(R.id.btnMoveSelected)
-
         textObjectsTitle = findViewById(R.id.textObjectsTitle)
         editSearch = findViewById(R.id.editSearchObjects)
         buttonSort = findViewById(R.id.buttonSortObjects)
@@ -198,18 +197,20 @@ class BoxDetailActivity : AppCompatActivity() {
 
         buttonMoveSelected.setOnClickListener {
             val selected = objectViewModel.selectedItems.value ?: emptySet()
-            if (selected.isEmpty()) {
-                Toast.makeText(this, "Seleziona almeno un elemento", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
+            if (selected.isEmpty()) return@setOnClickListener
 
             val boxes = boxViewModel.boxes.value ?: emptyList()
             val availableBoxes = boxes.filter { it.id != boxId }
 
+            if (availableBoxes.isEmpty()) {
+                Toast.makeText(this, "Nessun contenitore disponibile", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             val names = availableBoxes.map { it.name }.toTypedArray()
 
             AlertDialog.Builder(this)
-                .setTitle("Sposta oggetti")
+                .setTitle("Scegli contenitore di destinazione")
                 .setItems(names) { _, which ->
                     val targetBox = availableBoxes[which]
 
