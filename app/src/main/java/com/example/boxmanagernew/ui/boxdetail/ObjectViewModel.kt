@@ -116,6 +116,17 @@ class ObjectViewModel(
         }
     }
 
+    // 🔴 NUOVO: MOVE OBJECTS
+    fun moveObjects(targetBoxId: Int) {
+        val ids = _selectedItems.value?.toList() ?: return
+        if (ids.isEmpty()) return
+
+        viewModelScope.launch {
+            repository.moveObjects(ids, targetBoxId)
+            clearSelection()
+        }
+    }
+
     fun addObject(name: String, boxId: Int, description: String?, quantity: Int?) {
         if (name.isBlank()) return
         viewModelScope.launch {

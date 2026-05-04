@@ -43,12 +43,13 @@ class BoxDetailActivity : AppCompatActivity() {
     private lateinit var selectionBar: View
     private lateinit var textSelectionCount: TextView
     private lateinit var buttonDeleteSelected: Button
+    private lateinit var buttonMoveSelected: Button
     private lateinit var textObjectsTitle: TextView
     private lateinit var editSearch: EditText
     private lateinit var buttonSort: Button
     private lateinit var contextCard: View
     private lateinit var textContextMessage: TextView
-    private lateinit var textSubtitle: TextView // 🔴 aggiunto
+    private lateinit var textSubtitle: TextView
 
     private var currentBox: Box? = null
     private var currentCategory: Category? = null
@@ -67,7 +68,7 @@ class BoxDetailActivity : AppCompatActivity() {
         }
 
         val textTitle = findViewById<TextView>(R.id.textTitle)
-        textSubtitle = findViewById(R.id.textSubtitle) // 🔴 aggiunto
+        textSubtitle = findViewById(R.id.textSubtitle)
 
         val textCategory = findViewById<TextView>(R.id.textCategory)
         val imageCategoryIcon = findViewById<ImageView>(R.id.imageCategoryIcon)
@@ -80,6 +81,8 @@ class BoxDetailActivity : AppCompatActivity() {
         selectionBar = findViewById(R.id.selectionBar)
         textSelectionCount = findViewById(R.id.textSelectionCount)
         buttonDeleteSelected = findViewById(R.id.btnDeleteSelected)
+        buttonMoveSelected = findViewById(R.id.btnMoveSelected)
+
         textObjectsTitle = findViewById(R.id.textObjectsTitle)
         editSearch = findViewById(R.id.editSearchObjects)
         buttonSort = findViewById(R.id.buttonSortObjects)
@@ -89,10 +92,8 @@ class BoxDetailActivity : AppCompatActivity() {
         val boxId = intent.getIntExtra("boxId", -1)
         val boxName = intent.getStringExtra("boxName") ?: "Contenitore"
 
-        // 🔴 Titolo aggiornato
         textTitle.text = "Lista Oggetti"
 
-        // 🔴 Sottotitolo dinamico (bold + size)
         val base = "Contenuto del box "
         val full = base + boxName
 
@@ -192,6 +193,34 @@ class BoxDetailActivity : AppCompatActivity() {
                     objectViewModel.deleteObjects(ids)
                 }
                 .setNegativeButton("NO", null)
+                .show()
+        }
+
+        buttonMoveSelected.setOnClickListener {
+            val selected = objectViewModel.selectedItems.value ?: emptySet()
+            if (selected.isEmpty()) {
+                Toast.makeText(this, "Seleziona almeno un elemento", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val boxes = boxViewModel.boxes.value ?: emptyList()
+            val availableBoxes = boxes.filter { it.id != boxId }
+
+            val names = availableBoxes.map { it.name }.toTypedArray()
+
+            AlertDialog.Builder(this)
+                .setTitle("Sposta oggetti")
+                .setItems(names) { _, which ->
+                    val targetBox = availableBoxes[which]
+
+                    AlertDialog.Builder(this)
+                        .setMessage("Conferma spostamento?")
+                        .setPositiveButton("SI") { _, _ ->
+                            objectViewModel.moveObjects(targetBox.id)
+                        }
+                        .setNegativeButton("NO", null)
+                        .show()
+                }
                 .show()
         }
 
