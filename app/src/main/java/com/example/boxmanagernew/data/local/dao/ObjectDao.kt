@@ -38,4 +38,12 @@ interface ObjectDao {
         WHERE o.boxId = :boxId
     """)
     fun getObjectsWithTypeByBox(boxId: Int): LiveData<List<ObjectWithTypeName>>
+
+    // 🔴 NUOVO: MOVE BATCH
+    @Query("""
+        UPDATE objects
+        SET boxId = :targetBoxId
+        WHERE id IN (:ids)
+    """)
+    suspend fun moveObjects(ids: List<Int>, targetBoxId: Int)
 }
