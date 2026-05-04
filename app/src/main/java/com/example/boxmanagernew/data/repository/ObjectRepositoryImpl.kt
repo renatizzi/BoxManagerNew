@@ -46,7 +46,6 @@ class ObjectRepositoryImpl(
         }
     }
 
-    // 🔥 INSERT DINAMICO (già esistente)
     suspend fun insertDynamic(
         name: String,
         boxId: Int,
@@ -75,7 +74,6 @@ class ObjectRepositoryImpl(
         )
     }
 
-    // 🔥 NUOVO: UPDATE CON NOME
     suspend fun updateWithName(
         id: Int,
         name: String,
@@ -139,6 +137,11 @@ class ObjectRepositoryImpl(
                 quantity = obj.quantity
             )
         )
+    }
+
+    // 🔴 NUOVO: MOVE BATCH
+    suspend fun moveObjects(ids: List<Int>, targetBoxId: Int) {
+        dao.moveObjects(ids, targetBoxId)
     }
 
     private fun normalize(input: String): String {
