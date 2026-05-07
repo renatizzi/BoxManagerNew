@@ -152,6 +152,12 @@ class BoxDetailActivity : AppCompatActivity() {
             textObjectsTitle.text = "N. Oggetti: ${it.size}"
         }
 
+        objectViewModel.isAscending.observe(this) { isAscending ->
+            buttonSort.text =
+                if (isAscending) "ORDINA ▲"
+                else "ORDINA ▼"
+        }
+
         objectViewModel.selectedItems.observe(this) {
             selectionBar.visibility = if (it.isNotEmpty()) View.VISIBLE else View.GONE
             textSelectionCount.text = "${it.size} selezionati"
