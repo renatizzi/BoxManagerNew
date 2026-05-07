@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#FAFAFA">
+    android:background="?attr/colorSurface">
 
     <!-- HEADER -->
     <LinearLayout
@@ -19,7 +19,8 @@
             android:layout_height="wrap_content"
             android:text="Impostazioni"
             android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/text_primary" />
 
         <TextView
             android:id="@+id/textSubtitle"
@@ -27,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="Setup Archivio"
-            android:textColor="#777777"
+            android:textColor="@color/text_secondary"
             android:textSize="13sp" />
 
     </LinearLayout>
@@ -46,6 +47,7 @@
             android:text="Nome utente"
             android:textStyle="bold"
             android:textSize="16sp"
+            android:textColor="@color/text_primary"
             android:layout_marginBottom="8dp" />
 
         <EditText
