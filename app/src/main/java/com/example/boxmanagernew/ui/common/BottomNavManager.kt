@@ -6,7 +6,9 @@ import android.view.View
 import com.example.boxmanagernew.MainActivity
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.ui.categories.CategoriesActivity
+import com.example.boxmanagernew.ui.dashboard.DashboardActivity
 import com.example.boxmanagernew.ui.settings.SettingsActivity
+import com.example.boxmanagernew.ui.utility.UtilityActivity
 
 object BottomNavManager {
 
@@ -28,7 +30,7 @@ object BottomNavManager {
 
             if (currentTab == TAB_DASHBOARD) return@setOnClickListener
 
-            val intent = Intent(activity, MainActivity::class.java).apply {
+            val intent = Intent(activity, DashboardActivity::class.java).apply {
                 flags =
                     Intent.FLAG_ACTIVITY_CLEAR_TOP or
                             Intent.FLAG_ACTIVITY_SINGLE_TOP
@@ -78,7 +80,16 @@ object BottomNavManager {
         }
 
         navUtility?.setOnClickListener {
-            // TODO UtilityActivity
+
+            if (currentTab == TAB_UTILITY) return@setOnClickListener
+
+            val intent = Intent(activity, UtilityActivity::class.java).apply {
+                flags =
+                    Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                            Intent.FLAG_ACTIVITY_SINGLE_TOP
+            }
+
+            activity.startActivity(intent)
         }
 
         navSettings?.setOnClickListener {

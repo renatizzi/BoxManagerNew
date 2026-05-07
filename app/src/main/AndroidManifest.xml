@@ -10,6 +10,7 @@
             android:name=".ui.boxdetail.BoxDetailActivity"
             android:windowSoftInputMode="adjustPan" />
 
+        <activity android:name=".ui.utility.UtilityActivity" />
         <activity android:name=".ui.categories.CategoriesActivity" />
         <activity android:name=".ui.dashboard.DashboardActivity" />
         <activity android:name=".ui.settings.SettingsActivity" />
@@ -20,6 +21,7 @@
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
