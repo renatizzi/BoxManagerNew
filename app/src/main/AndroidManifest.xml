@@ -11,12 +11,9 @@
             android:windowSoftInputMode="adjustPan" />
 
         <activity android:name=".ui.categories.CategoriesActivity" />
-        <activity android:name=".ui.dashboard.DashboardActivity" />
-        <activity android:name=".ui.settings.SettingsActivity" />
-        <activity android:name=".ui.utility.UtilityActivity" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.dashboard.DashboardActivity"
             android:exported="true">
 
             <intent-filter>
@@ -25,6 +22,13 @@
             </intent-filter>
 
         </activity>
+
+        <activity android:name=".ui.settings.SettingsActivity" />
+        <activity android:name=".ui.utility.UtilityActivity" />
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
 
     </application>
 
