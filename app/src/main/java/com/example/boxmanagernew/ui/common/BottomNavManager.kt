@@ -24,21 +24,56 @@ object BottomNavManager {
         val navSettings = activity.findViewById<View>(R.id.navSettings)
 
         navDashboard?.setOnClickListener {
-            if (currentTab != TAB_DASHBOARD) {
-                activity.startActivity(Intent(activity, MainActivity::class.java))
+
+            if (currentTab == TAB_DASHBOARD) return@setOnClickListener
+
+            val intent = Intent(activity, MainActivity::class.java).apply {
+                flags =
+                    Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                            Intent.FLAG_ACTIVITY_SINGLE_TOP
             }
+
+            activity.startActivity(intent)
         }
 
         navBoxes?.setOnClickListener {
-            if (currentTab != TAB_BOXES) {
-                activity.startActivity(Intent(activity, MainActivity::class.java))
+
+            if (currentTab == TAB_BOXES) {
+
+                if (activity !is MainActivity) {
+
+                    val intent = Intent(activity, MainActivity::class.java).apply {
+                        flags =
+                            Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                                    Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    }
+
+                    activity.startActivity(intent)
+                }
+
+                return@setOnClickListener
             }
+
+            val intent = Intent(activity, MainActivity::class.java).apply {
+                flags =
+                    Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                            Intent.FLAG_ACTIVITY_SINGLE_TOP
+            }
+
+            activity.startActivity(intent)
         }
 
         navCategories?.setOnClickListener {
-            if (currentTab != TAB_CATEGORIES) {
-                activity.startActivity(Intent(activity, CategoriesActivity::class.java))
+
+            if (currentTab == TAB_CATEGORIES) return@setOnClickListener
+
+            val intent = Intent(activity, CategoriesActivity::class.java).apply {
+                flags =
+                    Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                            Intent.FLAG_ACTIVITY_SINGLE_TOP
             }
+
+            activity.startActivity(intent)
         }
 
         navUtility?.setOnClickListener {
