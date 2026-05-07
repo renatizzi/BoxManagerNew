@@ -57,9 +57,7 @@ class BoxAdapter(
 
         val category = categories.find { it.id == box.categoryId }
 
-        val categoryName =
-            category?.name ?: "Categoria sconosciuta"
-
+        val categoryName = category?.name ?: "Categoria sconosciuta"
         val positionText = box.position
 
         holder.textSubtitle.text =
@@ -87,9 +85,15 @@ class BoxAdapter(
         val selectedCount = selectedIds.size
 
         holder.textMenu.visibility = when {
-            selectedCount == 0 -> View.VISIBLE
-            selectedCount == 1 && isSelected -> View.VISIBLE
-            else -> View.GONE
+
+            selectedCount == 0 ->
+                View.VISIBLE
+
+            selectedCount == 1 && isSelected ->
+                View.VISIBLE
+
+            else ->
+                View.GONE
         }
 
         holder.iconArea.setOnClickListener {
@@ -115,7 +119,8 @@ class BoxAdapter(
 
         holder.textMenu.setOnClickListener { view ->
 
-            val popup = PopupMenu(view.context, view)
+            val popup =
+                PopupMenu(view.context, view)
 
             popup.menu.add("Modifica")
             popup.menu.add("Elimina")
@@ -201,7 +206,13 @@ class BoxAdapter(
             newItemPosition: Int
         ): Boolean {
 
-            return false
+            val oldItem =
+                oldList[oldItemPosition]
+
+            val newItem =
+                newList[newItemPosition]
+
+            return oldItem == newItem
         }
     }
 
@@ -211,7 +222,8 @@ class BoxAdapter(
             return SpannableString(text)
         }
 
-        val lowerText = text.lowercase()
+        val lowerText =
+            text.lowercase()
 
         val lowerQuery =
             currentQuery.lowercase()
@@ -223,7 +235,8 @@ class BoxAdapter(
             return SpannableString(text)
         }
 
-        val end = start + lowerQuery.length
+        val end =
+            start + lowerQuery.length
 
         return SpannableString(text).apply {
 
@@ -258,7 +271,8 @@ class BoxAdapter(
         val query =
             currentQuery.lowercase()
 
-        val catEnd = category.length
+        val catEnd =
+            category.length
 
         if (category.lowercase().contains(query)) {
 
