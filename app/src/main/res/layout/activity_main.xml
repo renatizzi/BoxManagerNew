@@ -2,14 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/rootLayout"
+    android:id="@+id/rootContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="?attr/colorSurface">
 
-    <!-- HEADER -->
     <LinearLayout
+        android:id="@+id/headerContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -50,97 +50,114 @@
             app:tint="@android:color/white" />
     </LinearLayout>
 
-    <!-- CONTEXT AREA -->
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="12dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="3dp"
-        app:strokeWidth="0dp">
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="72dp">
-
-            <LinearLayout
-                android:id="@+id/layoutSearchSort"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="14dp">
-
-                <EditText
-                    android:id="@+id/editTextSearch"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Cerca per nome, categoria o posizione"
-                    android:layout_marginBottom="8dp"
-                    android:imeOptions="actionDone"
-                    android:singleLine="true" />
-
-                <Button
-                    android:id="@+id/buttonSort"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="ORDINA ▲" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/contextCard"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="14dp"
-                android:visibility="gone"
-                android:background="@drawable/bg_context_card"
-                android:elevation="6dp">
-
-                <TextView
-                    android:id="@+id/textContextMessage"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:textColor="@color/text_primary" />
-            </LinearLayout>
-
-        </FrameLayout>
-
-    </com.google.android.material.card.MaterialCardView>
-
-    <!-- SELECTION -->
     <LinearLayout
-        android:id="@+id/selectionBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingHorizontal="16dp"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/textSelectionCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="@color/text_primary" />
-
-        <Button
-            android:id="@+id/btnDeleteSelected"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Elimina selezionati" />
-    </LinearLayout>
-
-    <!-- LISTA -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewBoxes"
+        android:id="@+id/contentContainer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-    <include layout="@layout/layout_bottom_nav" />
+        <!-- CONTEXT AREA -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="12dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="3dp"
+            app:strokeWidth="0dp">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="72dp">
+
+                <LinearLayout
+                    android:id="@+id/layoutSearchSort"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <EditText
+                        android:id="@+id/editTextSearch"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Cerca per nome, categoria o posizione"
+                        android:layout_marginBottom="8dp"
+                        android:imeOptions="actionDone"
+                        android:singleLine="true" />
+
+                    <Button
+                        android:id="@+id/buttonSort"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="ORDINA ▲" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/contextCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="14dp"
+                    android:visibility="gone"
+                    android:background="@drawable/bg_context_card"
+                    android:elevation="6dp">
+
+                    <TextView
+                        android:id="@+id/textContextMessage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_primary" />
+                </LinearLayout>
+
+            </FrameLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- SELECTION -->
+        <LinearLayout
+            android:id="@+id/selectionBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/textSelectionCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@color/text_primary" />
+
+            <Button
+                android:id="@+id/btnDeleteSelected"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Elimina selezionati" />
+        </LinearLayout>
+
+        <!-- LISTA -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewBoxes"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/navContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include layout="@layout/layout_bottom_nav" />
+
+    </LinearLayout>
 
 </LinearLayout>
