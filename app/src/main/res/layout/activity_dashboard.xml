@@ -6,13 +6,39 @@
     android:orientation="vertical"
     android:background="#FAFAFA">
 
-    <!-- CONTENUTO -->
+    <!-- HEADER -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/textTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dashboard"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Panoramica Archivio"
+            android:textColor="#777777"
+            android:textSize="13sp" />
+
+    </LinearLayout>
+
+    <!-- BODY -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
@@ -23,7 +49,6 @@
 
     </LinearLayout>
 
-    <!-- 🔴 BOTTOM NAV CONDIVISA -->
     <include layout="@layout/layout_bottom_nav" />
 
 </LinearLayout>

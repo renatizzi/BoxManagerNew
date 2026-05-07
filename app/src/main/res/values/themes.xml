@@ -1,8 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="Theme.BoxManagerNew" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.BoxManager" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
 
-        <!-- 🔴 BRAND ALLINEATO A CATEGORIE -->
         <item name="colorPrimary">@color/primary_gradient_start</item>
         <item name="colorPrimaryVariant">@color/primary_gradient_end</item>
         <item name="colorOnPrimary">@color/white</item>
@@ -11,7 +10,6 @@
         <item name="colorSecondaryVariant">@color/primary_button_light</item>
         <item name="colorOnSecondary">@color/white</item>
 
-        <!-- STATUS BAR -->
         <item name="android:statusBarColor">@color/primary_gradient_end</item>
 
     </style>

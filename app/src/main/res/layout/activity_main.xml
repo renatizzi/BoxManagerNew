@@ -49,7 +49,7 @@
             app:tint="@android:color/white" />
     </LinearLayout>
 
-    <!-- 🔴 CONTEXT AREA ALLINEATA A CATEGORIE -->
+    <!-- CONTEXT AREA -->
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -64,7 +64,6 @@
             android:layout_height="wrap_content"
             android:minHeight="72dp">
 
-            <!-- SEARCH / SORT -->
             <LinearLayout
                 android:id="@+id/layoutSearchSort"
                 android:layout_width="match_parent"
@@ -79,16 +78,15 @@
                     android:hint="Cerca per nome, categoria o posizione"
                     android:layout_marginBottom="8dp"
                     android:imeOptions="actionDone"
-                    android:singleLine="true"/>
+                    android:singleLine="true" />
 
                 <Button
                     android:id="@+id/buttonSort"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="ORDINA ▲"/>
+                    android:text="ORDINA ▲" />
             </LinearLayout>
 
-            <!-- CONTEXT MESSAGE -->
             <LinearLayout
                 android:id="@+id/contextCard"
                 android:layout_width="match_parent"
@@ -104,7 +102,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
-                    android:textColor="#000000"/>
+                    android:textColor="#000000" />
             </LinearLayout>
 
         </FrameLayout>
@@ -125,7 +123,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
 
         <Button
             android:id="@+id/btnDeleteSelected"
@@ -139,8 +137,8 @@
         android:id="@+id/recyclerViewBoxes"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1" />
 
-    <include layout="@layout/layout_bottom_nav"/>
+    <include layout="@layout/layout_bottom_nav" />
 
 </LinearLayout>
