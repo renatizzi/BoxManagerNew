@@ -20,6 +20,7 @@ class ObjectAdapter(
     private val onClick: (Int) -> Unit,
     private val onToggleSelection: (Int) -> Unit,
     private val onEdit: (Int) -> Unit,
+    private val onMove: (Int) -> Unit,
     private val onDelete: (Int) -> Unit
 ) : RecyclerView.Adapter<ObjectAdapter.ObjectViewHolder>() {
 
@@ -68,7 +69,6 @@ class ObjectAdapter(
         val isSelected = selectedIds.contains(id)
         holder.rootSelectable.isSelected = isSelected
 
-        // 🔴 FIX LOGICA MENU
         val selectedCount = selectedIds.size
 
         holder.textMenu.visibility = when {
@@ -83,12 +83,15 @@ class ObjectAdapter(
 
         holder.textMenu.setOnClickListener { view ->
             val popup = PopupMenu(view.context, view)
+
             popup.menu.add("Modifica")
+            popup.menu.add("Sposta")
             popup.menu.add("Elimina")
 
             popup.setOnMenuItemClickListener {
                 when (it.title) {
                     "Modifica" -> onEdit(id)
+                    "Sposta" -> onMove(id)
                     "Elimina" -> onDelete(id)
                 }
                 true
