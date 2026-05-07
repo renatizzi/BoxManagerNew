@@ -6,6 +6,7 @@ import android.view.View
 import com.example.boxmanagernew.MainActivity
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.ui.categories.CategoriesActivity
+import com.example.boxmanagernew.ui.settings.SettingsActivity
 
 object BottomNavManager {
 
@@ -81,7 +82,16 @@ object BottomNavManager {
         }
 
         navSettings?.setOnClickListener {
-            // TODO SettingsActivity
+
+            if (currentTab == TAB_SETTINGS) return@setOnClickListener
+
+            val intent = Intent(activity, SettingsActivity::class.java).apply {
+                flags =
+                    Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                            Intent.FLAG_ACTIVITY_SINGLE_TOP
+            }
+
+            activity.startActivity(intent)
         }
 
         updateSelection(activity, currentTab)
