@@ -64,7 +64,9 @@ class MainActivity : AppCompatActivity() {
         val root = findViewById<View>(android.R.id.content)
 
         ViewCompat.setOnApplyWindowInsetsListener(root) { view, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+
+            val systemBars =
+                insets.getInsets(WindowInsetsCompat.Type.systemBars())
 
             view.setPadding(
                 systemBars.left,
@@ -81,19 +83,31 @@ class MainActivity : AppCompatActivity() {
         editSearch = findViewById(R.id.editTextSearch)
         buttonSort = findViewById(R.id.buttonSort)
 
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewBoxes)
-        val fab = findViewById<FloatingActionButton>(R.id.fabAdd)
+        val recyclerView =
+            findViewById<RecyclerView>(R.id.recyclerViewBoxes)
 
-        buttonDeleteSelected = findViewById(R.id.btnDeleteSelected)
-        textSelectionCount = findViewById(R.id.textSelectionCount)
-        selectionBar = findViewById(R.id.selectionBar)
+        val fab =
+            findViewById<FloatingActionButton>(R.id.fabAdd)
 
-        val db = DatabaseProvider.getDatabase(applicationContext)
-        val repository = BoxRepositoryImpl(db.boxDao())
+        buttonDeleteSelected =
+            findViewById(R.id.btnDeleteSelected)
+
+        textSelectionCount =
+            findViewById(R.id.textSelectionCount)
+
+        selectionBar =
+            findViewById(R.id.selectionBar)
+
+        val db =
+            DatabaseProvider.getDatabase(applicationContext)
+
+        val repository =
+            BoxRepositoryImpl(db.boxDao())
 
         lifecycleScope.launch {
 
             if (db.categoryDao().getCategoryByName("Generico") == null) {
+
                 db.categoryDao().insert(
                     CategoryEntity(
                         name = "Generico",
@@ -103,6 +117,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             if (db.objectTypeDao().getByName("Generico") == null) {
+
                 db.objectTypeDao().insert(
                     ObjectTypeEntity(name = "Generico")
                 )
@@ -112,33 +127,51 @@ class MainActivity : AppCompatActivity() {
         adapter = BoxAdapter(
             emptyList(),
             emptyList(),
+
             onClick = {
 
                 if (viewModel.selectionMode.value == true) {
+
                     viewModel.toggleSelection(it)
+
                 } else {
 
                     startActivity(
                         Intent(this, BoxDetailActivity::class.java).apply {
+
                             putExtra("boxId", it.id)
                             putExtra("boxName", it.name)
                         }
                     )
                 }
             },
-            onEdit = { showEditDialog(it) },
-            onDelete = { showDeleteDialog(it.id) },
-            onToggleSelection = { viewModel.toggleSelection(it) }
+
+            onEdit = {
+                showEditDialog(it)
+            },
+
+            onDelete = {
+                showDeleteDialog(it.id)
+            },
+
+            onToggleSelection = {
+                viewModel.toggleSelection(it)
+            }
         )
 
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager =
+            LinearLayoutManager(this)
+
         recyclerView.adapter = adapter
 
         viewModel = ViewModelProvider(
             this,
             object : ViewModelProvider.Factory {
 
-                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                override fun <T : ViewModel> create(
+                    modelClass: Class<T>
+                ): T {
+
                     return BoxViewModel(repository) as T
                 }
             }
@@ -154,13 +187,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewModel.boxes.observe(this) {
+
             adapter.updateData(it)
         }
 
         viewModel.selectedItems.observe(this) {
 
             selectionBar.visibility =
-                if (it.isNotEmpty()) View.VISIBLE else View.GONE
+                if (it.isNotEmpty()) View.VISIBLE
+                else View.GONE
 
             textSelectionCount.text =
                 "${it.size} selezionati"
@@ -174,7 +209,8 @@ class MainActivity : AppCompatActivity() {
         viewModel.hasHiddenSelections.observe(this) { hidden ->
 
             contextCard.visibility =
-                if (hidden) View.VISIBLE else View.GONE
+                if (hidden) View.VISIBLE
+                else View.GONE
 
             if (hidden) {
 
@@ -190,6 +226,8 @@ class MainActivity : AppCompatActivity() {
             viewModel.filter("")
 
             viewModel.clearSelection()
+
+            adapter.updateQuery("")
 
             hideKeyboard(editSearch)
         }
@@ -213,6 +251,7 @@ class MainActivity : AppCompatActivity() {
             AlertDialog.Builder(this)
                 .setMessage("Conferma eliminazione?")
                 .setPositiveButton("SI") { _, _ ->
+
                     viewModel.deleteBoxes(ids)
                 }
                 .setNegativeButton("NO", null)
@@ -248,22 +287,35 @@ class MainActivity : AppCompatActivity() {
         updateSortButton(true)
 
         buttonSort.setOnClickListener {
+
             viewModel.toggleSort()
         }
 
         viewModel.isAscending.observe(this) { isAsc ->
+
             updateSortButton(isAsc)
         }
 
         fab.setOnClickListener {
+
             showAddDialog()
         }
 
-        BottomNavManager.setup(this, BottomNavManager.TAB_BOXES)
+        BottomNavManager.setup(
+            this,
+            BottomNavManager.TAB_BOXES
+        )
 
-        findViewById<View>(R.id.navCategories).setOnClickListener {
-            startActivity(Intent(this, CategoriesActivity::class.java))
-        }
+        findViewById<View>(R.id.navCategories)
+            .setOnClickListener {
+
+                startActivity(
+                    Intent(
+                        this,
+                        CategoriesActivity::class.java
+                    )
+                )
+            }
 
         onBackPressedDispatcher.addCallback(
             this,
@@ -271,9 +323,15 @@ class MainActivity : AppCompatActivity() {
 
                 override fun handleOnBackPressed() {
 
-                    if ((viewModel.selectedItems.value ?: emptySet()).isNotEmpty()) {
+                    if (
+                        (viewModel.selectedItems.value ?: emptySet())
+                            .isNotEmpty()
+                    ) {
+
                         viewModel.clearSelection()
+
                     } else {
+
                         finish()
                     }
                 }
@@ -281,12 +339,21 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    private fun updateSortButton(isAscending: Boolean) {
+    private fun updateSortButton(
+        isAscending: Boolean
+    ) {
+
         buttonSort.text =
-            if (isAscending) "ORDINA ▲" else "ORDINA ▼"
+            if (isAscending) {
+                "ORDINA ▲"
+            } else {
+                "ORDINA ▼"
+            }
     }
 
-    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+    override fun dispatchTouchEvent(
+        ev: MotionEvent
+    ): Boolean {
 
         if (ev.action == MotionEvent.ACTION_DOWN) {
 
@@ -298,7 +365,12 @@ class MainActivity : AppCompatActivity() {
 
                 v.getGlobalVisibleRect(outRect)
 
-                if (!outRect.contains(ev.rawX.toInt(), ev.rawY.toInt())) {
+                if (
+                    !outRect.contains(
+                        ev.rawX.toInt(),
+                        ev.rawY.toInt()
+                    )
+                ) {
 
                     v.clearFocus()
 
@@ -313,10 +385,14 @@ class MainActivity : AppCompatActivity() {
     private fun hideKeyboard(view: View) {
 
         val imm =
-            getSystemService(Context.INPUT_METHOD_SERVICE)
-                    as InputMethodManager
+            getSystemService(
+                Context.INPUT_METHOD_SERVICE
+            ) as InputMethodManager
 
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
+        imm.hideSoftInputFromWindow(
+            view.windowToken,
+            0
+        )
     }
 
     private fun showAddDialog() {
@@ -327,7 +403,9 @@ class MainActivity : AppCompatActivity() {
 
         val errorText = TextView(this).apply {
 
-            setTextColor(getColor(android.R.color.holo_red_dark))
+            setTextColor(
+                getColor(android.R.color.holo_red_dark)
+            )
 
             visibility = View.GONE
 
@@ -346,12 +424,16 @@ class MainActivity : AppCompatActivity() {
         val date =
             view.findViewById<TextView>(R.id.textLastModified)
 
-        val container = view as LinearLayout
+        val container =
+            view as LinearLayout
 
         container.addView(errorText, 0)
 
-        name.inputType = InputType.TYPE_CLASS_TEXT
-        position.inputType = InputType.TYPE_CLASS_TEXT
+        name.inputType =
+            InputType.TYPE_CLASS_TEXT
+
+        position.inputType =
+            InputType.TYPE_CLASS_TEXT
 
         name.addTextChangedListener(
             noEnterWatcher(name, errorText)
@@ -364,21 +446,25 @@ class MainActivity : AppCompatActivity() {
         spinner.adapter =
             CategorySpinnerAdapter(this, categories)
 
-        val now = System.currentTimeMillis()
+        val now =
+            System.currentTimeMillis()
 
         date.text =
             "Ultima modifica: ${formatDate(now)}"
 
-        val dialog = AlertDialog.Builder(this)
-            .setView(view)
-            .setPositiveButton("Conferma", null)
-            .setNegativeButton("Annulla", null)
-            .create()
+        val dialog =
+            AlertDialog.Builder(this)
+                .setView(view)
+                .setPositiveButton("Conferma", null)
+                .setNegativeButton("Annulla", null)
+                .create()
 
         dialog.setOnShowListener {
 
             val btn =
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                dialog.getButton(
+                    AlertDialog.BUTTON_POSITIVE
+                )
 
             btn.setOnClickListener {
 
@@ -387,13 +473,15 @@ class MainActivity : AppCompatActivity() {
 
                 if (n.isEmpty()) {
 
-                    errorText.visibility = View.VISIBLE
+                    errorText.visibility =
+                        View.VISIBLE
 
                     return@setOnClickListener
                 }
 
                 val cat =
-                    spinner.selectedItem as CategoryEntity
+                    spinner.selectedItem
+                            as CategoryEntity
 
                 viewModel.addBox(
                     n,
@@ -416,7 +504,9 @@ class MainActivity : AppCompatActivity() {
 
         val errorText = TextView(this).apply {
 
-            setTextColor(getColor(android.R.color.holo_red_dark))
+            setTextColor(
+                getColor(android.R.color.holo_red_dark)
+            )
 
             visibility = View.GONE
 
@@ -435,7 +525,8 @@ class MainActivity : AppCompatActivity() {
         val date =
             view.findViewById<TextView>(R.id.textLastModified)
 
-        val container = view as LinearLayout
+        val container =
+            view as LinearLayout
 
         container.addView(errorText, 0)
 
@@ -460,22 +551,28 @@ class MainActivity : AppCompatActivity() {
             }
 
         if (index >= 0) {
+
             spinner.setSelection(index)
         }
 
         date.text =
-            "Ultima modifica: ${formatDate(box.lastModified)}"
+            "Ultima modifica: ${
+                formatDate(box.lastModified)
+            }"
 
-        val dialog = AlertDialog.Builder(this)
-            .setView(view)
-            .setPositiveButton("Conferma", null)
-            .setNegativeButton("Annulla", null)
-            .create()
+        val dialog =
+            AlertDialog.Builder(this)
+                .setView(view)
+                .setPositiveButton("Conferma", null)
+                .setNegativeButton("Annulla", null)
+                .create()
 
         dialog.setOnShowListener {
 
             val btn =
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                dialog.getButton(
+                    AlertDialog.BUTTON_POSITIVE
+                )
 
             btn.setOnClickListener {
 
@@ -484,13 +581,15 @@ class MainActivity : AppCompatActivity() {
 
                 if (n.isEmpty()) {
 
-                    errorText.visibility = View.VISIBLE
+                    errorText.visibility =
+                        View.VISIBLE
 
                     return@setOnClickListener
                 }
 
                 val cat =
-                    spinner.selectedItem as CategoryEntity
+                    spinner.selectedItem
+                            as CategoryEntity
 
                 viewModel.updateBox(
                     box.id,
@@ -511,6 +610,7 @@ class MainActivity : AppCompatActivity() {
         AlertDialog.Builder(this)
             .setMessage("Conferma eliminazione?")
             .setPositiveButton("SI") { _, _ ->
+
                 viewModel.deleteBox(id)
             }
             .setNegativeButton("NO", null)
@@ -524,19 +624,28 @@ class MainActivity : AppCompatActivity() {
 
         return object : TextWatcher {
 
-            override fun afterTextChanged(s: Editable?) {
+            override fun afterTextChanged(
+                s: Editable?
+            ) {
 
-                if (s != null && s.contains("\n")) {
+                if (
+                    s != null &&
+                    s.contains("\n")
+                ) {
 
                     val cleaned =
-                        s.toString().replace("\n", " ")
+                        s.toString()
+                            .replace("\n", " ")
 
                     editText.setText(cleaned)
 
-                    editText.setSelection(cleaned.length)
+                    editText.setSelection(
+                        cleaned.length
+                    )
                 }
 
-                error?.visibility = View.GONE
+                error?.visibility =
+                    View.GONE
             }
 
             override fun beforeTextChanged(
