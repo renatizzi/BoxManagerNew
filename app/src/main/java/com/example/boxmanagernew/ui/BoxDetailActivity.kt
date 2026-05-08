@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputType
 import android.text.TextWatcher
 import android.view.MotionEvent
 import android.view.View
@@ -17,19 +18,23 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.data.local.AppDatabase
+import com.example.boxmanagernew.data.local.entity.CategoryEntity
 import com.example.boxmanagernew.data.repository.*
 import com.example.boxmanagernew.domain.model.Box
 import com.example.boxmanagernew.domain.model.Category
 import com.example.boxmanagernew.domain.model.Object
+import com.example.boxmanagernew.ui.categories.CategorySpinnerAdapter
 import com.example.boxmanagernew.ui.categories.CategoryViewModel
 import com.example.boxmanagernew.ui.categories.IconMapper
 import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.example.boxmanagernew.ui.main.BoxViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -55,6 +60,8 @@ class BoxDetailActivity : AppCompatActivity() {
 
     private var currentBox: Box? = null
     private var currentCategory: Category? = null
+
+    private var categories: List<CategoryEntity> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -206,6 +213,10 @@ class BoxDetailActivity : AppCompatActivity() {
                 }
             )[CategoryViewModel::class.java]
 
+        db.categoryDao().getAllCategories().observe(this) {
+            categories = it
+        }
+
         adapter = ObjectAdapter(
             emptyList(),
 
@@ -221,63 +232,10 @@ class BoxDetailActivity : AppCompatActivity() {
 
             onMove = { id ->
 
-                val boxes =
-                    boxViewModel.boxes.value
-                        ?: emptyList()
+                objectViewModel.clearSelection()
+                objectViewModel.toggleSelection(id)
 
-                val availableBoxes =
-                    boxes.filter {
-                        it.id != boxId
-                    }
-
-                if (availableBoxes.isEmpty()) {
-
-                    Toast.makeText(
-                        this,
-                        "Nessun contenitore disponibile",
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                } else {
-
-                    val names =
-                        availableBoxes
-                            .map { it.name }
-                            .toTypedArray()
-
-                    AlertDialog.Builder(this)
-                        .setTitle(
-                            "Scegli contenitore di destinazione"
-                        )
-                        .setItems(names) { _, which ->
-
-                            val targetBox =
-                                availableBoxes[which]
-
-                            AlertDialog.Builder(this)
-                                .setMessage(
-                                    "Conferma spostamento?"
-                                )
-                                .setPositiveButton(
-                                    "SI"
-                                ) { _, _ ->
-
-                                    objectViewModel
-                                        .toggleSelection(id)
-
-                                    objectViewModel
-                                        .moveObjects(
-                                            targetBox.id
-                                        )
-                                }
-                                .setNegativeButton(
-                                    "NO",
-                                    null
-                                )
-                                .show()
-                        }
-                        .show()
-                }
+                showMoveDialog(boxId)
             },
 
             onDelete = { id ->
@@ -392,59 +350,7 @@ class BoxDetailActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val boxes =
-                boxViewModel.boxes.value
-                    ?: emptyList()
-
-            val availableBoxes =
-                boxes.filter {
-                    it.id != boxId
-                }
-
-            if (availableBoxes.isEmpty()) {
-
-                Toast.makeText(
-                    this,
-                    "Nessun contenitore disponibile",
-                    Toast.LENGTH_SHORT
-                ).show()
-
-                return@setOnClickListener
-            }
-
-            val names =
-                availableBoxes
-                    .map { it.name }
-                    .toTypedArray()
-
-            AlertDialog.Builder(this)
-                .setTitle(
-                    "Scegli contenitore di destinazione"
-                )
-                .setItems(names) { _, which ->
-
-                    val targetBox =
-                        availableBoxes[which]
-
-                    AlertDialog.Builder(this)
-                        .setMessage(
-                            "Conferma spostamento?"
-                        )
-                        .setPositiveButton(
-                            "SI"
-                        ) { _, _ ->
-
-                            objectViewModel.moveObjects(
-                                targetBox.id
-                            )
-                        }
-                        .setNegativeButton(
-                            "NO",
-                            null
-                        )
-                        .show()
-                }
-                .show()
+            showMoveDialog(boxId)
         }
 
         editSearch.addTextChangedListener(
@@ -523,7 +429,6 @@ class BoxDetailActivity : AppCompatActivity() {
                 it.find { cat ->
                     cat.id == box.categoryId
                 }
-                    ?: return@observe
 
             currentCategory = category
 
@@ -563,6 +468,152 @@ class BoxDetailActivity : AppCompatActivity() {
         )
     }
 
+    private fun showMoveDialog(currentBoxId: Int) {
+
+        val boxes =
+            boxViewModel.boxes.value
+                ?: emptyList()
+
+        val availableBoxes =
+            boxes.filter {
+                it.id != currentBoxId
+            }
+
+        val names =
+            mutableListOf<String>()
+
+        names.add("+ Nuovo contenitore")
+
+        availableBoxes.forEach {
+            names.add(it.name)
+        }
+
+        AlertDialog.Builder(this)
+            .setTitle(
+                "Scegli contenitore di destinazione"
+            )
+            .setItems(names.toTypedArray()) { _, which ->
+
+                if (which == 0) {
+
+                    showCreateBoxAndMoveDialog()
+
+                } else {
+
+                    val targetBox =
+                        availableBoxes[which - 1]
+
+                    AlertDialog.Builder(this)
+                        .setMessage(
+                            "Conferma spostamento?"
+                        )
+                        .setPositiveButton(
+                            "SI"
+                        ) { _, _ ->
+
+                            objectViewModel.moveObjects(
+                                targetBox.id
+                            )
+                        }
+                        .setNegativeButton(
+                            "NO",
+                            null
+                        )
+                        .show()
+                }
+            }
+            .show()
+    }
+
+    private fun showCreateBoxAndMoveDialog() {
+
+        val view =
+            layoutInflater.inflate(
+                R.layout.dialog_add_box,
+                null
+            )
+
+        val name =
+            view.findViewById<EditText>(R.id.editBoxName)
+
+        val spinner =
+            view.findViewById<Spinner>(R.id.spinnerCategory)
+
+        val position =
+            view.findViewById<EditText>(R.id.editPosition)
+
+        val date =
+            view.findViewById<TextView>(R.id.textLastModified)
+
+        spinner.adapter =
+            CategorySpinnerAdapter(this, categories)
+
+        val now =
+            System.currentTimeMillis()
+
+        date.text =
+            "Ultima modifica: ${
+                SimpleDateFormat(
+                    "dd/MM/yyyy HH:mm",
+                    Locale.getDefault()
+                ).format(Date(now))
+            }"
+
+        val dialog =
+            AlertDialog.Builder(this)
+                .setTitle("Nuovo contenitore")
+                .setView(view)
+                .setPositiveButton(
+                    "Conferma",
+                    null
+                )
+                .setNegativeButton(
+                    "Annulla",
+                    null
+                )
+                .create()
+
+        dialog.setOnShowListener {
+
+            val btn =
+                dialog.getButton(
+                    AlertDialog.BUTTON_POSITIVE
+                )
+
+            btn.setOnClickListener {
+
+                val boxName =
+                    name.text.toString().trim()
+
+                if (boxName.isEmpty()) {
+                    return@setOnClickListener
+                }
+
+                val category =
+                    spinner.selectedItem
+                            as CategoryEntity
+
+                lifecycleScope.launch {
+
+                    val newBoxId =
+                        boxViewModel.addBoxAndReturnId(
+                            boxName,
+                            category.id,
+                            position.text.toString()
+                        )
+
+                    objectViewModel.moveObjects(
+                        newBoxId
+                    )
+                }
+
+                dialog.dismiss()
+            }
+        }
+
+        dialog.show()
+    }
+
     private fun updateHeader(
         textCategory: TextView,
         imageCategoryIcon: ImageView,
@@ -572,16 +623,6 @@ class BoxDetailActivity : AppCompatActivity() {
 
         val box =
             currentBox ?: return
-
-        val category =
-            currentCategory ?: return
-
-        textCategory.text =
-            category.name
-
-        imageCategoryIcon.setImageResource(
-            IconMapper.getIconRes(category.icon)
-        )
 
         textPosition.text =
             box.position
@@ -596,6 +637,25 @@ class BoxDetailActivity : AppCompatActivity() {
             dateFormat.format(
                 Date(box.lastModified)
             )
+
+        val category =
+            currentCategory
+
+        if (category != null) {
+
+            textCategory.text =
+                category.name
+
+            imageCategoryIcon.setImageResource(
+                IconMapper.getIconRes(category.icon)
+            )
+
+        } else {
+
+            textCategory.text = ""
+
+            imageCategoryIcon.setImageDrawable(null)
+        }
     }
 
     private fun showDeleteObjectDialog(id: Int) {
@@ -675,7 +735,7 @@ class BoxDetailActivity : AppCompatActivity() {
                 )
 
                 inputType =
-                    android.text.InputType.TYPE_CLASS_NUMBER
+                    InputType.TYPE_CLASS_NUMBER
             }
 
         layout.addView(labelName)
@@ -766,7 +826,7 @@ class BoxDetailActivity : AppCompatActivity() {
                 hint = "Quantità"
 
                 inputType =
-                    android.text.InputType.TYPE_CLASS_NUMBER
+                    InputType.TYPE_CLASS_NUMBER
             }
 
         layout.addView(inputName)
