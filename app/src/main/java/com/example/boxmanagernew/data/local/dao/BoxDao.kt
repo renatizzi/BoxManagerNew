@@ -11,7 +11,7 @@ import com.example.boxmanagernew.data.local.entity.BoxEntity
 interface BoxDao {
 
     @Insert
-    suspend fun insert(box: BoxEntity)
+    suspend fun insert(box: BoxEntity): Long
 
     @Update
     suspend fun update(box: BoxEntity)

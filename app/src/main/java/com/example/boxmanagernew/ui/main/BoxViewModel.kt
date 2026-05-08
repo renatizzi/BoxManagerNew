@@ -14,32 +14,55 @@ class BoxViewModel(
     private val repository: BoxRepositoryImpl
 ) : ViewModel() {
 
-    private val source: LiveData<List<Box>> = repository.getAllBoxesLive()
+    private val source: LiveData<List<Box>> =
+        repository.getAllBoxesLive()
 
-    private val _boxes = MediatorLiveData<List<Box>>()
+    private val _boxes =
+        MediatorLiveData<List<Box>>()
+
     val boxes: LiveData<List<Box>> = _boxes
 
-    private val _isAscending = MutableLiveData(true)
-    val isAscending: LiveData<Boolean> = _isAscending
+    private val _isAscending =
+        MutableLiveData(true)
 
-    private val _currentQuery = MutableLiveData("")
-    val currentQuery: LiveData<String> = _currentQuery
+    val isAscending: LiveData<Boolean> =
+        _isAscending
 
-    private var lastSource: List<Box> = emptyList()
-    private var lastFiltered: List<Box> = emptyList()
+    private val _currentQuery =
+        MutableLiveData("")
 
-    private val _categories = MutableLiveData<List<CategoryEntity>>(emptyList())
+    val currentQuery: LiveData<String> =
+        _currentQuery
+
+    private var lastSource: List<Box> =
+        emptyList()
+
+    private var lastFiltered: List<Box> =
+        emptyList()
+
+    private val _categories =
+        MutableLiveData<List<CategoryEntity>>(emptyList())
+
     private val categories: List<CategoryEntity>
         get() = _categories.value ?: emptyList()
 
-    private val _selectedItems = MutableLiveData<Set<Int>>(emptySet())
-    val selectedItems: LiveData<Set<Int>> = _selectedItems
+    private val _selectedItems =
+        MutableLiveData<Set<Int>>(emptySet())
 
-    private val _selectionMode = MutableLiveData(false)
-    val selectionMode: LiveData<Boolean> = _selectionMode
+    val selectedItems: LiveData<Set<Int>> =
+        _selectedItems
 
-    private val _hasHiddenSelections = MutableLiveData(false)
-    val hasHiddenSelections: LiveData<Boolean> = _hasHiddenSelections
+    private val _selectionMode =
+        MutableLiveData(false)
+
+    val selectionMode: LiveData<Boolean> =
+        _selectionMode
+
+    private val _hasHiddenSelections =
+        MutableLiveData(false)
+
+    val hasHiddenSelections: LiveData<Boolean> =
+        _hasHiddenSelections
 
     init {
 
@@ -95,6 +118,24 @@ class BoxViewModel(
                 )
             )
         }
+    }
+
+    suspend fun addBoxAndReturnId(
+        name: String,
+        categoryId: Int,
+        position: String
+    ): Int {
+
+        return repository.insertBox(
+            Box(
+                id = 0,
+                name = name,
+                description = null,
+                categoryId = categoryId,
+                position = position,
+                lastModified = System.currentTimeMillis()
+            )
+        ).toInt()
     }
 
     fun updateBox(

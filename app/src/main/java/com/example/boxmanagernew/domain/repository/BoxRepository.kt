@@ -7,7 +7,7 @@ interface BoxRepository {
 
     fun getAllBoxesLive(): LiveData<List<Box>>
 
-    suspend fun insertBox(box: Box)
+    suspend fun insertBox(box: Box): Long
 
     suspend fun updateBox(box: Box)
 

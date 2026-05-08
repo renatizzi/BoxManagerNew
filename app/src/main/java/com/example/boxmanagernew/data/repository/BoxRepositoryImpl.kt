@@ -29,9 +29,9 @@ class BoxRepositoryImpl(
         }
     }
 
-    override suspend fun insertBox(box: Box) {
+    override suspend fun insertBox(box: Box): Long {
 
-        boxDao.insert(
+        return boxDao.insert(
             BoxEntity(
                 id = 0,
                 name = box.name,
