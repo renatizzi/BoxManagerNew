@@ -27,6 +27,7 @@ import com.example.boxmanagernew.data.local.DatabaseProvider
 import com.example.boxmanagernew.data.local.entity.CategoryEntity
 import com.example.boxmanagernew.data.local.entity.ObjectTypeEntity
 import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
+import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
 import com.example.boxmanagernew.domain.model.Box
 import com.example.boxmanagernew.ui.boxdetail.BoxDetailActivity
 import com.example.boxmanagernew.ui.categories.CategoriesActivity
@@ -252,14 +253,43 @@ class MainActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            AlertDialog.Builder(this)
-                .setMessage("Conferma eliminazione?")
-                .setPositiveButton("SI") { _, _ ->
+            lifecycleScope.launch {
 
-                    viewModel.deleteBoxes(ids)
+                val objectRepository =
+                    ObjectRepositoryImpl(
+                        db.objectDao(),
+                        db.objectTypeDao()
+                    )
+
+                var totalObjects = 0
+
+                ids.forEach { boxId ->
+
+                    totalObjects +=
+                        objectRepository.countObjectsByBox(boxId)
                 }
-                .setNegativeButton("NO", null)
-                .show()
+
+                val message =
+                    if (totalObjects > 0) {
+
+                        "I contenitori selezionati contengono $totalObjects oggetti.\n\n" +
+                                "L'eliminazione comporterà anche la perdita del contenuto.\n\n" +
+                                "Confermare?"
+
+                    } else {
+
+                        "Conferma eliminazione?"
+                    }
+
+                AlertDialog.Builder(this@MainActivity)
+                    .setMessage(message)
+                    .setPositiveButton("SI") { _, _ ->
+
+                        viewModel.deleteBoxes(ids)
+                    }
+                    .setNegativeButton("NO", null)
+                    .show()
+            }
         }
 
         buttonMoveSelected.setOnClickListener {
@@ -636,14 +666,43 @@ class MainActivity : AppCompatActivity() {
 
     private fun showDeleteDialog(id: Int) {
 
-        AlertDialog.Builder(this)
-            .setMessage("Conferma eliminazione?")
-            .setPositiveButton("SI") { _, _ ->
+        lifecycleScope.launch {
 
-                viewModel.deleteBox(id)
-            }
-            .setNegativeButton("NO", null)
-            .show()
+            val db =
+                DatabaseProvider.getDatabase(
+                    applicationContext
+                )
+
+            val objectRepository =
+                ObjectRepositoryImpl(
+                    db.objectDao(),
+                    db.objectTypeDao()
+                )
+
+            val objectCount =
+                objectRepository.countObjectsByBox(id)
+
+            val message =
+                if (objectCount > 0) {
+
+                    "Questo contenitore contiene $objectCount oggetti.\n\n" +
+                            "L'eliminazione comporterà anche la perdita del contenuto.\n\n" +
+                            "Confermare?"
+
+                } else {
+
+                    "Conferma eliminazione?"
+                }
+
+            AlertDialog.Builder(this@MainActivity)
+                .setMessage(message)
+                .setPositiveButton("SI") { _, _ ->
+
+                    viewModel.deleteBox(id)
+                }
+                .setNegativeButton("NO", null)
+                .show()
+        }
     }
 
     private fun noEnterWatcher(

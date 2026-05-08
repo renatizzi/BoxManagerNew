@@ -57,7 +57,10 @@ class ObjectRepositoryImpl(
         var type = typeDao.getByName(normalized)
 
         if (type == null) {
-            typeDao.insert(ObjectTypeEntity(name = normalized))
+            typeDao.insert(
+                ObjectTypeEntity(name = normalized)
+            )
+
             type = typeDao.getByName(normalized)
         }
 
@@ -86,7 +89,11 @@ class ObjectRepositoryImpl(
         var type = typeDao.getByName(normalized)
 
         if (type == null) {
-            typeDao.insert(ObjectTypeEntity(name = normalized))
+
+            typeDao.insert(
+                ObjectTypeEntity(name = normalized)
+            )
+
             type = typeDao.getByName(normalized)
         }
 
@@ -104,6 +111,7 @@ class ObjectRepositoryImpl(
     }
 
     override suspend fun insert(obj: Object) {
+
         dao.insert(
             ObjectEntity(
                 id = 0,
@@ -116,6 +124,7 @@ class ObjectRepositoryImpl(
     }
 
     override suspend fun update(obj: Object) {
+
         dao.update(
             ObjectEntity(
                 id = obj.id,
@@ -128,6 +137,7 @@ class ObjectRepositoryImpl(
     }
 
     override suspend fun delete(obj: Object) {
+
         dao.delete(
             ObjectEntity(
                 id = obj.id,
@@ -139,12 +149,26 @@ class ObjectRepositoryImpl(
         )
     }
 
-    // 🔴 NUOVO: MOVE BATCH
-    suspend fun moveObjects(ids: List<Int>, targetBoxId: Int) {
-        dao.moveObjects(ids, targetBoxId)
+    suspend fun moveObjects(
+        ids: List<Int>,
+        targetBoxId: Int
+    ) {
+
+        dao.moveObjects(
+            ids,
+            targetBoxId
+        )
+    }
+
+    suspend fun countObjectsByBox(
+        boxId: Int
+    ): Int {
+
+        return dao.countObjectsByBox(boxId)
     }
 
     private fun normalize(input: String): String {
+
         return input.trim().lowercase()
     }
 }
