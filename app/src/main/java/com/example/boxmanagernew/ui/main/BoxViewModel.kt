@@ -38,39 +38,52 @@ class BoxViewModel(
     private val _selectionMode = MutableLiveData(false)
     val selectionMode: LiveData<Boolean> = _selectionMode
 
-    // 🔴 NUOVO
     private val _hasHiddenSelections = MutableLiveData(false)
     val hasHiddenSelections: LiveData<Boolean> = _hasHiddenSelections
 
     init {
+
         _boxes.addSource(source) {
+
             lastSource = it
+
             applyFilterAndSort()
         }
 
         _boxes.addSource(_currentQuery) {
+
             applyFilterAndSort()
         }
 
         _boxes.addSource(_isAscending) {
+
             applyFilterAndSort()
         }
 
         _boxes.addSource(_categories) {
+
             applyFilterAndSort()
         }
 
         _boxes.addSource(_selectedItems) {
+
             updateHiddenSelectionState()
         }
     }
 
     fun setCategories(list: List<CategoryEntity>) {
+
         _categories.value = list
     }
 
-    fun addBox(name: String, categoryId: Int, position: String) {
+    fun addBox(
+        name: String,
+        categoryId: Int,
+        position: String
+    ) {
+
         viewModelScope.launch {
+
             repository.insertBox(
                 Box(
                     id = 0,
@@ -84,8 +97,15 @@ class BoxViewModel(
         }
     }
 
-    fun updateBox(id: Int, newName: String, categoryId: Int, position: String) {
+    fun updateBox(
+        id: Int,
+        newName: String,
+        categoryId: Int,
+        position: String
+    ) {
+
         viewModelScope.launch {
+
             repository.updateBox(
                 Box(
                     id = id,
@@ -100,80 +120,152 @@ class BoxViewModel(
     }
 
     fun deleteBox(id: Int) {
+
         viewModelScope.launch {
+
             repository.deleteBox(id)
+
             clearSelection()
         }
     }
 
     fun deleteBoxes(ids: List<Int>) {
+
         viewModelScope.launch {
-            ids.forEach { repository.deleteBox(it) }
+
+            ids.forEach {
+
+                repository.deleteBox(it)
+            }
+
+            clearSelection()
+        }
+    }
+
+    fun moveBoxes(newPosition: String) {
+
+        val ids =
+            _selectedItems.value?.toList()
+                ?: return
+
+        if (ids.isEmpty()) return
+
+        viewModelScope.launch {
+
+            repository.moveBoxes(
+                ids,
+                newPosition
+            )
+
             clearSelection()
         }
     }
 
     fun toggleSort() {
-        _isAscending.value = !(_isAscending.value ?: true)
+
+        _isAscending.value =
+            !(_isAscending.value ?: true)
     }
 
     fun filter(query: String) {
+
         _currentQuery.value = query
     }
 
     fun toggleSelection(box: Box) {
-        val current = _selectedItems.value ?: emptySet()
-        val updated = current.toMutableSet()
 
-        if (updated.contains(box.id)) updated.remove(box.id)
-        else updated.add(box.id)
+        val current =
+            _selectedItems.value ?: emptySet()
+
+        val updated =
+            current.toMutableSet()
+
+        if (updated.contains(box.id)) {
+            updated.remove(box.id)
+        } else {
+            updated.add(box.id)
+        }
 
         _selectedItems.value = updated
-        _selectionMode.value = updated.isNotEmpty()
+
+        _selectionMode.value =
+            updated.isNotEmpty()
     }
 
     fun clearSelection() {
+
         _selectedItems.value = emptySet()
+
         _selectionMode.value = false
     }
 
     private fun applyFilterAndSort() {
+
         var result = lastSource
-        val query = _currentQuery.value?.trim()?.lowercase() ?: ""
+
+        val query =
+            _currentQuery.value
+                ?.trim()
+                ?.lowercase()
+                ?: ""
 
         if (query.isNotBlank()) {
-            result = result.filter { box ->
-                val categoryName = categories
-                    .find { it.id == box.categoryId }
-                    ?.name
-                    ?.lowercase() ?: ""
 
-                box.name.lowercase().contains(query) ||
-                        box.position.lowercase().contains(query) ||
+            result = result.filter { box ->
+
+                val categoryName =
+                    categories
+                        .find {
+                            it.id == box.categoryId
+                        }
+                        ?.name
+                        ?.lowercase()
+                        ?: ""
+
+                box.name.lowercase()
+                    .contains(query) ||
+
+                        box.position.lowercase()
+                            .contains(query) ||
+
                         categoryName.contains(query)
             }
         }
 
-        val asc = _isAscending.value ?: true
+        val asc =
+            _isAscending.value ?: true
 
-        result = if (asc) result.sortedBy { it.name }
-        else result.sortedByDescending { it.name }
+        result =
+            if (asc) {
+                result.sortedBy { it.name }
+            } else {
+                result.sortedByDescending { it.name }
+            }
 
         lastFiltered = result
+
         _boxes.value = result
 
         updateHiddenSelectionState()
     }
 
     private fun updateHiddenSelectionState() {
-        val selected = _selectedItems.value ?: emptySet()
+
+        val selected =
+            _selectedItems.value ?: emptySet()
+
         if (selected.isEmpty()) {
+
             _hasHiddenSelections.value = false
+
             return
         }
 
-        val visibleIds = lastFiltered.map { it.id }.toSet()
-        val hidden = selected.any { it !in visibleIds }
+        val visibleIds =
+            lastFiltered.map { it.id }.toSet()
+
+        val hidden =
+            selected.any { it !in visibleIds }
 
         _hasHiddenSelections.value = hidden
     }

@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var adapter: BoxAdapter
 
     private lateinit var buttonDeleteSelected: Button
+    private lateinit var buttonMoveSelected: Button
     private lateinit var textSelectionCount: TextView
     private lateinit var selectionBar: View
 
@@ -91,6 +92,9 @@ class MainActivity : AppCompatActivity() {
 
         buttonDeleteSelected =
             findViewById(R.id.btnDeleteSelected)
+
+        buttonMoveSelected =
+            findViewById(R.id.btnMoveSelected)
 
         textSelectionCount =
             findViewById(R.id.textSelectionCount)
@@ -255,6 +259,31 @@ class MainActivity : AppCompatActivity() {
                     viewModel.deleteBoxes(ids)
                 }
                 .setNegativeButton("NO", null)
+                .show()
+        }
+
+        buttonMoveSelected.setOnClickListener {
+
+            val selected =
+                viewModel.selectedItems.value ?: emptySet()
+
+            if (selected.isEmpty()) {
+                return@setOnClickListener
+            }
+
+            val input = EditText(this)
+
+            AlertDialog.Builder(this)
+                .setTitle("Nuova posizione")
+                .setView(input)
+                .setPositiveButton("Conferma") { _, _ ->
+
+                    val newPosition =
+                        input.text.toString().trim()
+
+                    viewModel.moveBoxes(newPosition)
+                }
+                .setNegativeButton("Annulla", null)
                 .show()
         }
 

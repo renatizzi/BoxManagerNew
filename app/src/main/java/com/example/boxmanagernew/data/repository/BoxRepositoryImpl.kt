@@ -12,8 +12,11 @@ class BoxRepositoryImpl(
 ) : BoxRepository {
 
     override fun getAllBoxesLive(): LiveData<List<Box>> {
+
         return boxDao.getAllLive().map { list ->
+
             list.map { entity ->
+
                 Box(
                     id = entity.id,
                     name = entity.name,
@@ -27,6 +30,7 @@ class BoxRepositoryImpl(
     }
 
     override suspend fun insertBox(box: Box) {
+
         boxDao.insert(
             BoxEntity(
                 id = 0,
@@ -39,6 +43,7 @@ class BoxRepositoryImpl(
     }
 
     override suspend fun updateBox(box: Box) {
+
         boxDao.update(
             BoxEntity(
                 id = box.id,
@@ -51,6 +56,19 @@ class BoxRepositoryImpl(
     }
 
     override suspend fun deleteBox(id: Int) {
+
         boxDao.deleteById(id)
+    }
+
+    suspend fun moveBoxes(
+        ids: List<Int>,
+        newPosition: String
+    ) {
+
+        boxDao.moveBoxes(
+            ids,
+            newPosition,
+            System.currentTimeMillis()
+        )
     }
 }

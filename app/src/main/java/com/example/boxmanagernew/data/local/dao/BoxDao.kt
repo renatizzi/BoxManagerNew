@@ -22,7 +22,20 @@ interface BoxDao {
     @Query("DELETE FROM box WHERE id = :id")
     suspend fun deleteById(id: Int)
 
-    // 🔹 NUOVO: conteggio contenitori per categoria
     @Query("SELECT COUNT(*) FROM box WHERE categoryId = :categoryId")
     suspend fun countBoxesByCategory(categoryId: Int): Int
+
+    @Query(
+        """
+        UPDATE box
+        SET position = :newPosition,
+            lastModified = :timestamp
+        WHERE id IN (:ids)
+        """
+    )
+    suspend fun moveBoxes(
+        ids: List<Int>,
+        newPosition: String,
+        timestamp: Long
+    )
 }
