@@ -272,9 +272,7 @@ class MainActivity : AppCompatActivity() {
                 val message =
                     if (totalObjects > 0) {
 
-                        "I contenitori selezionati contengono $totalObjects oggetti.\n\n" +
-                                "L'eliminazione comporterà anche la perdita del contenuto.\n\n" +
-                                "Confermare?"
+                        "Confermi anche l'eliminazione degli oggetti contenuti?"
 
                     } else {
 
@@ -685,9 +683,7 @@ class MainActivity : AppCompatActivity() {
             val message =
                 if (objectCount > 0) {
 
-                    "Questo contenitore contiene $objectCount oggetti.\n\n" +
-                            "L'eliminazione comporterà anche la perdita del contenuto.\n\n" +
-                            "Confermare?"
+                    "Confermi anche l'eliminazione degli oggetti contenuti?"
 
                 } else {
 
