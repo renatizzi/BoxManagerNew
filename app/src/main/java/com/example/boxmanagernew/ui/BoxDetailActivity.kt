@@ -27,11 +27,11 @@ import com.example.boxmanagernew.data.local.entity.CategoryEntity
 import com.example.boxmanagernew.data.repository.*
 import com.example.boxmanagernew.domain.model.Box
 import com.example.boxmanagernew.domain.model.Category
-import com.example.boxmanagernew.domain.model.Object
 import com.example.boxmanagernew.ui.categories.CategorySpinnerAdapter
 import com.example.boxmanagernew.ui.categories.CategoryViewModel
 import com.example.boxmanagernew.ui.categories.IconMapper
 import com.example.boxmanagernew.ui.common.BottomNavManager
+import com.example.boxmanagernew.ui.common.TopBarUtils
 import com.example.boxmanagernew.ui.main.BoxViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
@@ -73,7 +73,9 @@ class BoxDetailActivity : AppCompatActivity() {
         val root = findViewById<View>(android.R.id.content)
 
         ViewCompat.setOnApplyWindowInsetsListener(root) { v, i ->
-            val s = i.getInsets(WindowInsetsCompat.Type.systemBars())
+
+            val s =
+                i.getInsets(WindowInsetsCompat.Type.systemBars())
 
             v.setPadding(
                 s.left,
@@ -85,21 +87,41 @@ class BoxDetailActivity : AppCompatActivity() {
             i
         }
 
-        val textTitle = findViewById<TextView>(R.id.textTitle)
+        TopBarUtils.bindTitle(
+            findViewById(R.id.textGlobalTitle)
+        )
 
-        textSubtitle = findViewById(R.id.textSubtitle)
+        TopBarUtils.bindSubtitle(
+            this,
+            findViewById(R.id.textGlobalSubtitle)
+        )
 
-        val textCategory = findViewById<TextView>(R.id.textCategory)
-        val imageCategoryIcon = findViewById<ImageView>(R.id.imageCategoryIcon)
-        val textPosition = findViewById<TextView>(R.id.textPosition)
-        val textLastModified = findViewById<TextView>(R.id.textLastModified)
+        val textTitle =
+            findViewById<TextView>(R.id.textTitle)
 
-        val recycler = findViewById<RecyclerView>(R.id.recyclerObjects)
+        textSubtitle =
+            findViewById(R.id.textSubtitle)
+
+        val textCategory =
+            findViewById<TextView>(R.id.textCategory)
+
+        val imageCategoryIcon =
+            findViewById<ImageView>(R.id.imageCategoryIcon)
+
+        val textPosition =
+            findViewById<TextView>(R.id.textPosition)
+
+        val textLastModified =
+            findViewById<TextView>(R.id.textLastModified)
+
+        val recycler =
+            findViewById<RecyclerView>(R.id.recyclerObjects)
 
         val fab =
             findViewById<FloatingActionButton>(R.id.fabAddObject)
 
-        selectionBar = findViewById(R.id.selectionBar)
+        selectionBar =
+            findViewById(R.id.selectionBar)
 
         textSelectionCount =
             findViewById(R.id.textSelectionCount)
@@ -132,15 +154,20 @@ class BoxDetailActivity : AppCompatActivity() {
             intent.getStringExtra("boxName")
                 ?: "Contenitore"
 
-        textTitle.text = "Lista Oggetti"
+        textTitle.text =
+            "Lista Oggetti"
 
-        val base = "Contenuto del box "
-        val full = base + boxName
+        val base =
+            "Contenuto del box "
+
+        val full =
+            base + boxName
 
         val spannable =
             android.text.SpannableString(full)
 
-        val start = base.length
+        val start =
+            base.length
 
         spannable.setSpan(
             android.text.style.StyleSpan(
@@ -158,9 +185,11 @@ class BoxDetailActivity : AppCompatActivity() {
             android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
         )
 
-        textSubtitle.text = spannable
+        textSubtitle.text =
+            spannable
 
-        val db = AppDatabase.getDatabase(this)
+        val db =
+            AppDatabase.getDatabase(this)
 
         val objectRepo =
             ObjectRepositoryImpl(
@@ -186,7 +215,9 @@ class BoxDetailActivity : AppCompatActivity() {
                         modelClass: Class<T>
                     ): T {
 
-                        return BoxViewModel(boxRepo) as T
+                        return BoxViewModel(
+                            boxRepo
+                        ) as T
                     }
                 }
             )[BoxViewModel::class.java]
@@ -214,39 +245,46 @@ class BoxDetailActivity : AppCompatActivity() {
             )[CategoryViewModel::class.java]
 
         db.categoryDao().getAllCategories().observe(this) {
+
             categories = it
         }
 
-        adapter = ObjectAdapter(
-            emptyList(),
+        adapter =
+            ObjectAdapter(
+                emptyList(),
 
-            onClick = {},
+                onClick = {},
 
-            onToggleSelection = {
-                objectViewModel.toggleSelection(it)
-            },
+                onToggleSelection = {
 
-            onEdit = { id ->
-                showEditObjectDialog(id)
-            },
+                    objectViewModel.toggleSelection(it)
+                },
 
-            onMove = { id ->
+                onEdit = { id ->
 
-                objectViewModel.clearSelection()
-                objectViewModel.toggleSelection(id)
+                    showEditObjectDialog(id)
+                },
 
-                showMoveDialog(boxId)
-            },
+                onMove = { id ->
 
-            onDelete = { id ->
-                showDeleteObjectDialog(id)
-            }
-        )
+                    objectViewModel.clearSelection()
+
+                    objectViewModel.toggleSelection(id)
+
+                    showMoveDialog(boxId)
+                },
+
+                onDelete = { id ->
+
+                    showDeleteObjectDialog(id)
+                }
+            )
 
         recycler.layoutManager =
             LinearLayoutManager(this)
 
-        recycler.adapter = adapter
+        recycler.adapter =
+            adapter
 
         objectViewModel.load(boxId)
 
@@ -261,15 +299,21 @@ class BoxDetailActivity : AppCompatActivity() {
         objectViewModel.isAscending.observe(this) {
 
             buttonSort.text =
-                if (it) "ORDINA ▲"
-                else "ORDINA ▼"
+                if (it) {
+                    "ORDINA ▲"
+                } else {
+                    "ORDINA ▼"
+                }
         }
 
         objectViewModel.selectedItems.observe(this) {
 
             selectionBar.visibility =
-                if (it.isNotEmpty()) View.VISIBLE
-                else View.GONE
+                if (it.isNotEmpty()) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
 
             textSelectionCount.text =
                 "${it.size} selezionati"
@@ -284,8 +328,11 @@ class BoxDetailActivity : AppCompatActivity() {
         objectViewModel.hasHiddenSelections.observe(this) {
 
             contextCard.visibility =
-                if (it) View.VISIBLE
-                else View.GONE
+                if (it) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
 
             if (it) {
 
@@ -347,6 +394,7 @@ class BoxDetailActivity : AppCompatActivity() {
                     ?: emptySet()
 
             if (selected.isEmpty()) {
+
                 return@setOnClickListener
             }
 
@@ -404,12 +452,13 @@ class BoxDetailActivity : AppCompatActivity() {
         boxViewModel.boxes.observe(this) {
 
             val box =
-                it.find { box ->
-                    box.id == boxId
+                it.find { item ->
+                    item.id == boxId
                 }
                     ?: return@observe
 
-            currentBox = box
+            currentBox =
+                box
 
             updateHeader(
                 textCategory,
@@ -430,7 +479,8 @@ class BoxDetailActivity : AppCompatActivity() {
                     cat.id == box.categoryId
                 }
 
-            currentCategory = category
+            currentCategory =
+                category
 
             updateHeader(
                 textCategory,
@@ -468,7 +518,9 @@ class BoxDetailActivity : AppCompatActivity() {
         )
     }
 
-    private fun showMoveDialog(currentBoxId: Int) {
+    private fun showMoveDialog(
+        currentBoxId: Int
+    ) {
 
         val boxes =
             boxViewModel.boxes.value
@@ -485,6 +537,7 @@ class BoxDetailActivity : AppCompatActivity() {
         names.add("+ Nuovo contenitore")
 
         availableBoxes.forEach {
+
             names.add(it.name)
         }
 
@@ -492,7 +545,9 @@ class BoxDetailActivity : AppCompatActivity() {
             .setTitle(
                 "Scegli contenitore di destinazione"
             )
-            .setItems(names.toTypedArray()) { _, which ->
+            .setItems(
+                names.toTypedArray()
+            ) { _, which ->
 
                 if (which == 0) {
 
@@ -534,19 +589,30 @@ class BoxDetailActivity : AppCompatActivity() {
             )
 
         val name =
-            view.findViewById<EditText>(R.id.editBoxName)
+            view.findViewById<EditText>(
+                R.id.editBoxName
+            )
 
         val spinner =
-            view.findViewById<Spinner>(R.id.spinnerCategory)
+            view.findViewById<Spinner>(
+                R.id.spinnerCategory
+            )
 
         val position =
-            view.findViewById<EditText>(R.id.editPosition)
+            view.findViewById<EditText>(
+                R.id.editPosition
+            )
 
         val date =
-            view.findViewById<TextView>(R.id.textLastModified)
+            view.findViewById<TextView>(
+                R.id.textLastModified
+            )
 
         spinner.adapter =
-            CategorySpinnerAdapter(this, categories)
+            CategorySpinnerAdapter(
+                this,
+                categories
+            )
 
         val now =
             System.currentTimeMillis()
@@ -561,7 +627,9 @@ class BoxDetailActivity : AppCompatActivity() {
 
         val dialog =
             AlertDialog.Builder(this)
-                .setTitle("Nuovo contenitore")
+                .setTitle(
+                    "Nuovo contenitore"
+                )
                 .setView(view)
                 .setPositiveButton(
                     "Conferma",
@@ -586,6 +654,7 @@ class BoxDetailActivity : AppCompatActivity() {
                     name.text.toString().trim()
 
                 if (boxName.isEmpty()) {
+
                     return@setOnClickListener
                 }
 
@@ -622,7 +691,8 @@ class BoxDetailActivity : AppCompatActivity() {
     ) {
 
         val box =
-            currentBox ?: return
+            currentBox
+                ?: return
 
         textPosition.text =
             box.position
@@ -647,22 +717,31 @@ class BoxDetailActivity : AppCompatActivity() {
                 category.name
 
             imageCategoryIcon.setImageResource(
-                IconMapper.getIconRes(category.icon)
+                IconMapper.getIconRes(
+                    category.icon
+                )
             )
 
         } else {
 
-            textCategory.text = ""
+            textCategory.text =
+                ""
 
             imageCategoryIcon.setImageDrawable(null)
         }
     }
 
-    private fun showDeleteObjectDialog(id: Int) {
+    private fun showDeleteObjectDialog(
+        id: Int
+    ) {
 
         AlertDialog.Builder(this)
-            .setMessage("Conferma eliminazione?")
-            .setPositiveButton("SI") { _, _ ->
+            .setMessage(
+                "Conferma eliminazione?"
+            )
+            .setPositiveButton(
+                "SI"
+            ) { _, _ ->
 
                 val obj =
                     objectViewModel.objects.value
@@ -674,11 +753,16 @@ class BoxDetailActivity : AppCompatActivity() {
 
                 objectViewModel.deleteObject(obj)
             }
-            .setNegativeButton("NO", null)
+            .setNegativeButton(
+                "NO",
+                null
+            )
             .show()
     }
 
-    private fun showEditObjectDialog(id: Int) {
+    private fun showEditObjectDialog(
+        id: Int
+    ) {
 
         val item =
             objectViewModel.objects.value
@@ -703,27 +787,35 @@ class BoxDetailActivity : AppCompatActivity() {
 
         val labelName =
             TextView(this).apply {
-                text = "Nome"
+
+                text =
+                    "Nome"
             }
 
         val inputName =
             EditText(this).apply {
+
                 setText(item.typeName)
             }
 
         val labelDesc =
             TextView(this).apply {
-                text = "Descrizione"
+
+                text =
+                    "Descrizione"
             }
 
         val inputDescription =
             EditText(this).apply {
+
                 setText(item.obj.description)
             }
 
         val labelQty =
             TextView(this).apply {
-                text = "Quantità"
+
+                text =
+                    "Quantità"
             }
 
         val inputQuantity =
@@ -749,7 +841,9 @@ class BoxDetailActivity : AppCompatActivity() {
 
         val dialog =
             AlertDialog.Builder(this)
-                .setTitle("Modifica oggetto")
+                .setTitle(
+                    "Modifica oggetto"
+                )
                 .setView(layout)
                 .setPositiveButton(
                     "Salva",
@@ -774,6 +868,7 @@ class BoxDetailActivity : AppCompatActivity() {
                     inputName.text.toString().trim()
 
                 if (name.isEmpty()) {
+
                     return@setOnClickListener
                 }
 
@@ -794,7 +889,9 @@ class BoxDetailActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    private fun showAddObjectDialog(boxId: Int) {
+    private fun showAddObjectDialog(
+        boxId: Int
+    ) {
 
         val layout =
             LinearLayout(this).apply {
@@ -812,18 +909,23 @@ class BoxDetailActivity : AppCompatActivity() {
 
         val inputName =
             EditText(this).apply {
-                hint = "Nome"
+
+                hint =
+                    "Nome"
             }
 
         val inputDescription =
             EditText(this).apply {
-                hint = "Descrizione"
+
+                hint =
+                    "Descrizione"
             }
 
         val inputQuantity =
             EditText(this).apply {
 
-                hint = "Quantità"
+                hint =
+                    "Quantità"
 
                 inputType =
                     InputType.TYPE_CLASS_NUMBER
@@ -834,9 +936,13 @@ class BoxDetailActivity : AppCompatActivity() {
         layout.addView(inputQuantity)
 
         AlertDialog.Builder(this)
-            .setTitle("Nuovo oggetto")
+            .setTitle(
+                "Nuovo oggetto"
+            )
             .setView(layout)
-            .setPositiveButton("Aggiungi") { _, _ ->
+            .setPositiveButton(
+                "Aggiungi"
+            ) { _, _ ->
 
                 objectViewModel.addObject(
                     inputName.text.toString(),
@@ -858,13 +964,18 @@ class BoxDetailActivity : AppCompatActivity() {
         ev: MotionEvent
     ): Boolean {
 
-        if (ev.action == MotionEvent.ACTION_DOWN) {
+        if (
+            ev.action ==
+            MotionEvent.ACTION_DOWN
+        ) {
 
-            val v = currentFocus
+            val v =
+                currentFocus
 
             if (v is EditText) {
 
-                val r = Rect()
+                val r =
+                    Rect()
 
                 v.getGlobalVisibleRect(r)
 
@@ -885,7 +996,9 @@ class BoxDetailActivity : AppCompatActivity() {
         return super.dispatchTouchEvent(ev)
     }
 
-    private fun hideKeyboard(view: View) {
+    private fun hideKeyboard(
+        view: View
+    ) {
 
         val imm =
             getSystemService(
