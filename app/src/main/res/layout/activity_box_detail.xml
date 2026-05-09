@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rootContainer"
     android:layout_width="match_parent"
@@ -7,14 +8,21 @@
     android:orientation="vertical"
     android:background="?attr/colorSurface">
 
+    <!-- GLOBAL TOP BAR -->
+    <include
+        android:id="@+id/globalTopBarInclude"
+        layout="@layout/layout_global_topbar" />
+
+    <!-- CONTENT -->
     <LinearLayout
         android:id="@+id/contentContainer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:paddingHorizontal="16dp">
 
+        <!-- HEADER -->
         <LinearLayout
             android:id="@+id/headerContainer"
             android:layout_width="match_parent"
@@ -101,6 +109,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/text_primary" />
                 </LinearLayout>
+
             </LinearLayout>
 
         </LinearLayout>
@@ -111,6 +120,7 @@
             android:layout_marginTop="12dp"
             android:background="@color/input_line" />
 
+        <!-- CONTEXT AREA -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -164,6 +174,7 @@
 
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- OBJECTS HEADER -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -189,6 +200,7 @@
                 app:tint="@android:color/white" />
         </LinearLayout>
 
+        <!-- SELECTION -->
         <LinearLayout
             android:id="@+id/selectionBar"
             android:layout_width="match_parent"
@@ -219,6 +231,7 @@
                 android:layout_marginTop="8dp" />
         </LinearLayout>
 
+        <!-- LIST -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerObjects"
             android:layout_width="match_parent"
@@ -228,6 +241,7 @@
 
     </LinearLayout>
 
+    <!-- BOTTOM NAV -->
     <LinearLayout
         android:id="@+id/navContainer"
         android:layout_width="match_parent"
