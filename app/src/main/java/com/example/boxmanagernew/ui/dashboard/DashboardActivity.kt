@@ -9,6 +9,7 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.ui.common.BottomNavManager
+import com.example.boxmanagernew.ui.common.TopBarUtils
 
 class DashboardActivity : AppCompatActivity() {
 
@@ -35,6 +36,15 @@ class DashboardActivity : AppCompatActivity() {
 
             insets
         }
+
+        TopBarUtils.bindTitle(
+            findViewById(R.id.textGlobalTitle)
+        )
+
+        TopBarUtils.bindSubtitle(
+            this,
+            findViewById(R.id.textGlobalSubtitle)
+        )
 
         findViewById<TextView>(R.id.textTitle).text =
             "Dashboard"

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rootContainer"
@@ -7,7 +8,11 @@
     android:orientation="vertical"
     android:background="?attr/colorSurface">
 
-    <!-- HEADER -->
+    <!-- GLOBAL TOP BAR -->
+    <include
+        layout="@layout/layout_global_topbar" />
+
+    <!-- PAGE HEADER -->
     <include
         android:id="@+id/headerInclude"
         layout="@layout/layout_page_header" />
@@ -31,6 +36,7 @@
 
     </LinearLayout>
 
+    <!-- BOTTOM NAV -->
     <LinearLayout
         android:id="@+id/navContainer"
         android:layout_width="match_parent"
