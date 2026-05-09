@@ -1,38 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rootContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="?attr/colorSurface">
 
-    <!-- HEADER -->
-    <LinearLayout
-        android:id="@+id/headerContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+    <!-- GLOBAL TOP BAR -->
+    <include
+        layout="@layout/layout_global_topbar" />
 
-        <TextView
-            android:id="@+id/textTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Utility"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:textColor="@color/text_primary" />
-
-        <TextView
-            android:id="@+id/textSubtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Import / Export Archivio"
-            android:textColor="@color/text_secondary"
-            android:textSize="13sp" />
-
-    </LinearLayout>
+    <!-- PAGE HEADER -->
+    <include
+        android:id="@+id/headerInclude"
+        layout="@layout/layout_page_header" />
 
     <!-- BODY -->
     <LinearLayout
@@ -53,6 +36,7 @@
 
     </LinearLayout>
 
+    <!-- BOTTOM NAV -->
     <LinearLayout
         android:id="@+id/navContainer"
         android:layout_width="match_parent"
