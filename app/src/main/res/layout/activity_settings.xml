@@ -7,32 +7,9 @@
     android:background="?attr/colorSurface">
 
     <!-- HEADER -->
-    <LinearLayout
-        android:id="@+id/headerContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
-
-        <TextView
-            android:id="@+id/textTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Impostazioni"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:textColor="@color/text_primary" />
-
-        <TextView
-            android:id="@+id/textSubtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Setup Archivio"
-            android:textColor="@color/text_secondary"
-            android:textSize="13sp" />
-
-    </LinearLayout>
+    <include
+        android:id="@+id/headerInclude"
+        layout="@layout/layout_page_header" />
 
     <!-- BODY -->
     <LinearLayout

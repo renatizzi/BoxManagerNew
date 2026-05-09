@@ -2,6 +2,7 @@ package com.example.boxmanagernew.ui.dashboard
 
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
@@ -14,25 +15,36 @@ class DashboardActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // 🔴 EDGE TO EDGE
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContentView(R.layout.activity_dashboard)
 
-        // 🔴 INSETS
         val root = findViewById<View>(android.R.id.content)
+
         ViewCompat.setOnApplyWindowInsetsListener(root) { view, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+
+            val systemBars =
+                insets.getInsets(WindowInsetsCompat.Type.systemBars())
+
             view.setPadding(
                 systemBars.left,
                 systemBars.top,
                 systemBars.right,
                 systemBars.bottom
             )
+
             insets
         }
 
-        // 🔴 Bottom Nav centralizzata
-        BottomNavManager.setup(this, BottomNavManager.TAB_DASHBOARD)
+        findViewById<TextView>(R.id.textTitle).text =
+            "Dashboard"
+
+        findViewById<TextView>(R.id.textSubtitle).text =
+            "Panoramica Archivio"
+
+        BottomNavManager.setup(
+            this,
+            BottomNavManager.TAB_DASHBOARD
+        )
     }
 }

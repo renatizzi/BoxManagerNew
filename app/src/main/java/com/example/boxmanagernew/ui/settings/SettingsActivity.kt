@@ -45,6 +45,12 @@ class SettingsActivity : AppCompatActivity() {
             insets
         }
 
+        findViewById<TextView>(R.id.textTitle).text =
+            "Impostazioni"
+
+        findViewById<TextView>(R.id.textSubtitle).text =
+            "Setup Archivio"
+
         val editUserName = findViewById<EditText>(R.id.editUserName)
         val buttonSave = findViewById<Button>(R.id.buttonSaveUser)
         val textSaveMessage = findViewById<TextView>(R.id.textSaveMessage)
