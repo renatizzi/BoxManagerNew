@@ -292,8 +292,7 @@ class BoxDetailActivity : AppCompatActivity() {
 
             adapter.updateData(it)
 
-            textObjectsTitle.text =
-                "N. Oggetti: ${it.size}"
+            updateObjectsTitle()
         }
 
         objectViewModel.isAscending.observe(this) {
@@ -315,8 +314,9 @@ class BoxDetailActivity : AppCompatActivity() {
                     View.GONE
                 }
 
-            textSelectionCount.text =
-                "${it.size} selezionati"
+            updateObjectsTitle()
+
+            textSelectionCount.text = ""
 
             adapter.updateSelection(
                 it,
@@ -348,6 +348,8 @@ class BoxDetailActivity : AppCompatActivity() {
             objectViewModel.filter("")
 
             objectViewModel.clearSelection()
+
+            updateObjectsTitle()
 
             adapter.updateQuery("")
 
@@ -516,6 +518,27 @@ class BoxDetailActivity : AppCompatActivity() {
                 }
             }
         )
+    }
+
+    private fun updateObjectsTitle() {
+
+        val totalObjects =
+            objectViewModel.objects.value?.size
+                ?: 0
+
+        val selectedCount =
+            objectViewModel.selectedItems.value?.size
+                ?: 0
+
+        textObjectsTitle.text =
+            if (selectedCount > 0) {
+
+                "N. Oggetti: $totalObjects di cui $selectedCount selezionati"
+
+            } else {
+
+                "N. Oggetti: $totalObjects"
+            }
     }
 
     private fun showMoveDialog(
