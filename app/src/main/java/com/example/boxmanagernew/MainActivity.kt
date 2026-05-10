@@ -91,7 +91,10 @@ class MainActivity : AppCompatActivity() {
             findViewById(R.id.textGlobalSubtitle)
         )
 
-        findViewById<TextView>(R.id.textTitle).text =
+        val textTitle =
+            findViewById<TextView>(R.id.textTitle)
+
+        textTitle.text =
             "Contenitori"
 
         findViewById<TextView>(R.id.textSubtitle).text =
@@ -240,6 +243,19 @@ class MainActivity : AppCompatActivity() {
         viewModel.boxes.observe(this) {
 
             adapter.updateData(it)
+
+            val selectedCount =
+                viewModel.selectedItems.value?.size ?: 0
+
+            textSelectionCount.text =
+                if (selectedCount > 0) {
+
+                    "N. Contenitori: ${it.size} di cui $selectedCount selezionati"
+
+                } else {
+
+                    "N. Contenitori: ${it.size}"
+                }
         }
 
         viewModel.selectedItems.observe(this) {
@@ -251,8 +267,18 @@ class MainActivity : AppCompatActivity() {
                     View.GONE
                 }
 
+            val totalBoxes =
+                viewModel.boxes.value?.size ?: 0
+
             textSelectionCount.text =
-                "${it.size} selezionati"
+                if (it.isNotEmpty()) {
+
+                    "N. Contenitori: $totalBoxes di cui ${it.size} selezionati"
+
+                } else {
+
+                    "N. Contenitori: $totalBoxes"
+                }
 
             adapter.updateSelection(
                 it,
@@ -363,6 +389,19 @@ class MainActivity : AppCompatActivity() {
                     ?: emptySet()
 
             if (selected.isEmpty()) {
+
+                return@setOnClickListener
+            }
+
+            if (
+                viewModel.hasHiddenSelections.value == true
+            ) {
+
+                contextCard.visibility =
+                    View.VISIBLE
+
+                textContextMessage.text =
+                    "Impossibile spostare: alcuni elementi selezionati non sono visibili. Tocca qui per rimuovere il filtro."
 
                 return@setOnClickListener
             }
