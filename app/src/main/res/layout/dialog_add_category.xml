@@ -1,40 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:paddingStart="20dp"
+    android:paddingTop="16dp"
+    android:paddingEnd="20dp"
+    android:paddingBottom="8dp">
 
-    <!-- 🔴 MESSAGGIO ERRORE -->
+    <!-- ERROR -->
     <TextView
         android:id="@+id/textError"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:textColor="#D32F2F"
+        android:textSize="14sp"
         android:textStyle="bold"
-        android:visibility="gone"
-        android:layout_marginBottom="8dp"/>
+        android:visibility="gone" />
 
+    <!-- NAME -->
     <EditText
         android:id="@+id/editCategoryName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Nome categoria"
         android:inputType="textCapWords"
-        android:maxLines="1"/>
+        android:maxLines="1"
+        android:minHeight="52dp" />
 
+    <!-- ICON LABEL -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="6dp"
         android:text="Seleziona icona"
-        android:layout_marginTop="12dp"/>
+        android:textColor="@color/text_primary"
+        android:textSize="14sp"
+        android:textStyle="bold" />
 
+    <!-- ICON LIST -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerIcons"
         android:layout_width="match_parent"
-        android:layout_height="72dp"
-        android:layout_marginTop="8dp"
-        android:overScrollMode="never"/>
+        android:layout_height="76dp"
+        android:layout_marginBottom="4dp"
+        android:overScrollMode="never" />
 
 </LinearLayout>

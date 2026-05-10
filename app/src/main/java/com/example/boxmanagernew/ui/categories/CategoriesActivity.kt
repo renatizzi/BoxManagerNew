@@ -56,18 +56,31 @@ class CategoriesActivity : AppCompatActivity() {
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
 
-        WindowCompat.setDecorFitsSystemWindows(window, false)
+        WindowCompat.setDecorFitsSystemWindows(
+            window,
+            false
+        )
 
-        setContentView(R.layout.activity_categories)
+        setContentView(
+            R.layout.activity_categories
+        )
 
-        val root = findViewById<View>(android.R.id.content)
+        val root =
+            findViewById<View>(
+                android.R.id.content
+            )
 
-        ViewCompat.setOnApplyWindowInsetsListener(root) { view, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(
+            root
+        ) { view, insets ->
 
             val systemBars =
-                insets.getInsets(WindowInsetsCompat.Type.systemBars())
+                insets.getInsets(
+                    WindowInsetsCompat.Type.systemBars()
+                )
 
             view.setPadding(
                 systemBars.left,
@@ -88,10 +101,14 @@ class CategoriesActivity : AppCompatActivity() {
             findViewById(R.id.textGlobalSubtitle)
         )
 
-        findViewById<TextView>(R.id.textTitle).text =
+        findViewById<TextView>(
+            R.id.textTitle
+        ).text =
             "Categorie"
 
-        findViewById<TextView>(R.id.textSubtitle).text =
+        findViewById<TextView>(
+            R.id.textSubtitle
+        ).text =
             "Classificazione Contenitori"
 
         BottomNavManager.setup(
@@ -106,6 +123,8 @@ class CategoriesActivity : AppCompatActivity() {
                 override fun handleOnBackPressed() {
 
                     viewModel.clearSelection()
+
+                    adapter.collapseExpanded()
 
                     hideKeyboard()
 
@@ -194,8 +213,12 @@ class CategoriesActivity : AppCompatActivity() {
 
                         if (isUsed) {
 
+                            viewModel.selectCategory(
+                                category.id
+                            )
+
                             showWarningMessage(
-                                "Categoria in uso: eliminazione non consentita"
+                                "Categoria in uso: eliminazione non consentita. Tocca qui per annullare."
                             )
 
                         } else {
@@ -221,7 +244,7 @@ class CategoriesActivity : AppCompatActivity() {
                         if (isUsed) {
 
                             showWarningMessage(
-                                "Categoria in uso: modificandola, i contenitori verranno aggiornati"
+                                "Categoria in uso: modificandola, i contenitori verranno aggiornati. Tocca qui per annullare."
                             )
 
                         } else {
@@ -316,7 +339,10 @@ class CategoriesActivity : AppCompatActivity() {
 
                 true
 
-            } else false
+            } else {
+
+                false
+            }
         }
 
         buttonSort.setOnClickListener {
@@ -331,6 +357,17 @@ class CategoriesActivity : AppCompatActivity() {
         fabAdd.setOnClickListener {
 
             showAddCategoryDialog()
+        }
+
+        contextCard.setOnClickListener {
+
+            adapter.collapseExpanded()
+
+            viewModel.clearSelection()
+
+            showDefaultBar()
+
+            hideKeyboard()
         }
 
         showDefaultBar()
@@ -427,7 +464,9 @@ class CategoriesActivity : AppCompatActivity() {
             btnAdd.setOnClickListener {
 
                 val name =
-                    editName.text.toString().trim()
+                    editName.text
+                        .toString()
+                        .trim()
 
                 val selectedIcon =
                     iconAdapter.getSelectedIcon()
@@ -493,20 +532,11 @@ class CategoriesActivity : AppCompatActivity() {
     ) {
 
         AlertDialog.Builder(this)
-            .setTitle("Elimina categoria")
             .setMessage(
-                "Sei sicuro di voler eliminare \"${category.name}\"?"
+                "Conferma eliminazione?"
             )
-            .setNegativeButton(
-                "Annulla"
-            ) { _, _ ->
-
-                viewModel.clearSelection()
-
-                showDefaultBar()
-            }
             .setPositiveButton(
-                "Elimina"
+                "SI"
             ) { _, _ ->
 
                 lifecycleScope.launch {
@@ -518,12 +548,10 @@ class CategoriesActivity : AppCompatActivity() {
                     showDefaultBar()
                 }
             }
-            .setOnCancelListener {
-
-                viewModel.clearSelection()
-
-                showDefaultBar()
-            }
+            .setNegativeButton(
+                "NO",
+                null
+            )
             .show()
     }
 
