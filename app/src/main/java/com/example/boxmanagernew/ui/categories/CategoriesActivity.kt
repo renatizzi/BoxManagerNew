@@ -44,6 +44,7 @@ class CategoriesActivity : AppCompatActivity() {
 
     private lateinit var editSearch: EditText
     private lateinit var buttonSort: Button
+    private lateinit var textCategoryCount: TextView
 
     private val iconNames = listOf(
         "outline_checkroom_24","outline_fastfood_24","outline_handyman_24",
@@ -129,6 +130,9 @@ class CategoriesActivity : AppCompatActivity() {
 
         buttonSort =
             findViewById(R.id.buttonSortCategory)
+
+        textCategoryCount =
+            findViewById(R.id.textCategoryCount)
 
         val recyclerView =
             findViewById<RecyclerView>(
@@ -242,6 +246,12 @@ class CategoriesActivity : AppCompatActivity() {
         viewModel.categories.observe(this) {
 
             adapter.updateData(it)
+        }
+
+        viewModel.allCategoriesCount.observe(this) {
+
+            textCategoryCount.text =
+                "N. Categorie: $it"
         }
 
         viewModel.selectedCategory.observe(this) {

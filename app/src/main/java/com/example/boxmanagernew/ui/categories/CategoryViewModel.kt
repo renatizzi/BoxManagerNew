@@ -20,6 +20,12 @@ class CategoryViewModel(
     private val _categories = MediatorLiveData<List<Category>>()
     val categories: LiveData<List<Category>> = _categories
 
+    private val _allCategoriesCount =
+        MutableLiveData(0)
+
+    val allCategoriesCount: LiveData<Int> =
+        _allCategoriesCount
+
     private val _isAscending = MutableLiveData(true)
     val isAscending: LiveData<Boolean> = _isAscending
 
@@ -35,94 +41,161 @@ class CategoryViewModel(
     val selectedCategory: LiveData<Int?> = _selectedCategory
 
     init {
+
         _categories.addSource(source) { list ->
+
             lastSource = list
+
+            _allCategoriesCount.value =
+                list.size
+
             applyFilterAndSort()
         }
 
         _categories.addSource(_currentQuery) {
+
             applyFilterAndSort()
         }
 
         _categories.addSource(_isAscending) {
+
             applyFilterAndSort()
         }
     }
 
     fun filter(query: String) {
+
         _currentQuery.value = query
     }
 
     fun toggleSort() {
-        _isAscending.value = !(_isAscending.value ?: true)
+
+        _isAscending.value =
+            !(_isAscending.value ?: true)
     }
 
     private fun applyFilterAndSort() {
+
         var result = lastSource
 
-        val query = _currentQuery.value?.trim()?.lowercase() ?: ""
+        val query =
+            _currentQuery.value
+                ?.trim()
+                ?.lowercase()
+                ?: ""
 
         if (query.isNotBlank()) {
+
             result = result.filter {
+
                 it.name.lowercase().contains(query)
             }
         }
 
-        val asc = _isAscending.value ?: true
+        val asc =
+            _isAscending.value ?: true
 
-        result = if (asc) {
-            result.sortedBy { it.name }
-        } else {
-            result.sortedByDescending { it.name }
-        }
+        result =
+            if (asc) {
+
+                result.sortedBy {
+                    it.name
+                }
+
+            } else {
+
+                result.sortedByDescending {
+                    it.name
+                }
+            }
 
         _categories.value = result
     }
 
     fun selectCategory(id: Int) {
+
         _selectedCategory.value = id
     }
 
     fun clearSelection() {
+
         _selectedCategory.value = null
     }
 
     fun clearMessage() {
+
         _operationResult.value = null
     }
 
-    suspend fun insert(category: Category): Boolean {
+    suspend fun insert(
+        category: Category
+    ): Boolean {
+
         return withContext(Dispatchers.IO) {
-            val success = repository.insert(category) ?: true
+
+            val success =
+                repository.insert(category)
+                    ?: true
+
             if (success == false) {
-                _operationResult.postValue("Categoria già esistente")
+
+                _operationResult.postValue(
+                    "Categoria già esistente"
+                )
             }
+
             success
         }
     }
 
-    suspend fun update(category: Category): Boolean {
+    suspend fun update(
+        category: Category
+    ): Boolean {
+
         return withContext(Dispatchers.IO) {
-            val success = repository.update(category) ?: true
+
+            val success =
+                repository.update(category)
+                    ?: true
+
             if (success == false) {
-                _operationResult.postValue("Categoria già esistente")
+
+                _operationResult.postValue(
+                    "Categoria già esistente"
+                )
             }
+
             success
         }
     }
 
-    suspend fun delete(category: Category): Boolean {
+    suspend fun delete(
+        category: Category
+    ): Boolean {
+
         return withContext(Dispatchers.IO) {
-            val success = repository.delete(category) ?: true
+
+            val success =
+                repository.delete(category)
+                    ?: true
+
             if (success == false) {
-                _operationResult.postValue("Categoria in uso: eliminazione non consentita")
+
+                _operationResult.postValue(
+                    "Categoria in uso: eliminazione non consentita"
+                )
             }
+
             success
         }
     }
 
-    suspend fun isCategoryUsed(categoryId: Int): Boolean {
+    suspend fun isCategoryUsed(
+        categoryId: Int
+    ): Boolean {
+
         return withContext(Dispatchers.IO) {
+
             repository.isCategoryUsed(categoryId)
         }
     }
