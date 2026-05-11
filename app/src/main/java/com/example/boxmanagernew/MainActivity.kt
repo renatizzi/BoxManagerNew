@@ -26,6 +26,7 @@ import com.example.boxmanagernew.ui.categories.CategoriesActivity
 import com.example.boxmanagernew.ui.categories.CategorySpinnerAdapter
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
+import com.example.boxmanagernew.ui.common.DialogUtils
 import com.example.boxmanagernew.ui.main.BoxAdapter
 import com.example.boxmanagernew.ui.main.BoxViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -322,31 +323,24 @@ class MainActivity : BaseActivity() {
                         )
                 }
 
-                val message =
-                    if (totalObjects > 0) {
+                if (totalObjects > 0) {
 
-                        "Confermi anche l'eliminazione degli oggetti contenuti?"
-
-                    } else {
-
-                        "Conferma eliminazione?"
-                    }
-
-                AlertDialog.Builder(
-                    this@MainActivity
-                )
-                    .setMessage(message)
-                    .setPositiveButton(
-                        "SI"
-                    ) { _, _ ->
+                    DialogUtils.showDeleteWithObjectsConfirmation(
+                        context = this@MainActivity
+                    ) {
 
                         viewModel.deleteBoxes(ids)
                     }
-                    .setNegativeButton(
-                        "NO",
-                        null
-                    )
-                    .show()
+
+                } else {
+
+                    DialogUtils.showDeleteConfirmation(
+                        context = this@MainActivity
+                    ) {
+
+                        viewModel.deleteBoxes(ids)
+                    }
+                }
             }
         }
 
@@ -806,31 +800,24 @@ class MainActivity : BaseActivity() {
                     id
                 )
 
-            val message =
-                if (objectCount > 0) {
+            if (objectCount > 0) {
 
-                    "Confermi anche l'eliminazione degli oggetti contenuti?"
-
-                } else {
-
-                    "Conferma eliminazione?"
-                }
-
-            AlertDialog.Builder(
-                this@MainActivity
-            )
-                .setMessage(message)
-                .setPositiveButton(
-                    "SI"
-                ) { _, _ ->
+                DialogUtils.showDeleteWithObjectsConfirmation(
+                    context = this@MainActivity
+                ) {
 
                     viewModel.deleteBox(id)
                 }
-                .setNegativeButton(
-                    "NO",
-                    null
-                )
-                .show()
+
+            } else {
+
+                DialogUtils.showDeleteConfirmation(
+                    context = this@MainActivity
+                ) {
+
+                    viewModel.deleteBox(id)
+                }
+            }
         }
     }
 
