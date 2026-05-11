@@ -1,6 +1,5 @@
 package com.example.boxmanagernew.ui.categories
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -21,6 +20,7 @@ import com.example.boxmanagernew.data.repository.CategoryRepositoryImpl
 import com.example.boxmanagernew.domain.model.Category
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
+import com.example.boxmanagernew.ui.common.DialogUtils
 import com.example.boxmanagernew.ui.common.UiUtils
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -375,7 +375,7 @@ class CategoriesActivity : BaseActivity() {
             iconAdapter
 
         val dialog =
-            AlertDialog.Builder(this)
+            androidx.appcompat.app.AlertDialog.Builder(this)
                 .setTitle("Nuova categoria")
                 .setView(view)
                 .setNegativeButton(
@@ -392,7 +392,7 @@ class CategoriesActivity : BaseActivity() {
 
             val btnAdd =
                 dialog.getButton(
-                    AlertDialog.BUTTON_POSITIVE
+                    androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE
                 )
 
             btnAdd.setOnClickListener {
@@ -520,7 +520,7 @@ class CategoriesActivity : BaseActivity() {
                 iconAdapter
 
             val dialog =
-                AlertDialog.Builder(this@CategoriesActivity)
+                androidx.appcompat.app.AlertDialog.Builder(this@CategoriesActivity)
                     .setTitle("Modifica categoria")
                     .setView(view)
                     .setNegativeButton(
@@ -539,7 +539,7 @@ class CategoriesActivity : BaseActivity() {
 
                 val btnSave =
                     dialog.getButton(
-                        AlertDialog.BUTTON_POSITIVE
+                        androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE
                     )
 
                 btnSave.setOnClickListener {
@@ -613,27 +613,16 @@ class CategoriesActivity : BaseActivity() {
         category: Category
     ) {
 
-        AlertDialog.Builder(this)
-            .setMessage(
-                "Conferma eliminazione?"
-            )
-            .setPositiveButton(
-                "SI"
-            ) { _, _ ->
+        DialogUtils.showDeleteConfirmation(
+            context = this
+        ) {
 
-                lifecycleScope.launch {
+            lifecycleScope.launch {
 
-                    viewModel.delete(category)
-
-                    resetUiState()
-                }
-            }
-            .setNegativeButton(
-                "NO"
-            ) { _, _ ->
+                viewModel.delete(category)
 
                 resetUiState()
             }
-            .show()
+        }
     }
 }
