@@ -1,7 +1,11 @@
 package com.example.boxmanagernew.data.local.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Update
 import com.example.boxmanagernew.data.local.entity.ObjectEntity
 
 data class ObjectWithTypeName(
@@ -25,7 +29,8 @@ interface ObjectDao {
     @Delete
     suspend fun delete(obj: ObjectEntity)
 
-    @Query("""
+    @Query(
+        """
         SELECT 
             o.id,
             o.typeObjectId,
@@ -36,23 +41,43 @@ interface ObjectDao {
         FROM objects o
         INNER JOIN object_types t ON o.typeObjectId = t.id
         WHERE o.boxId = :boxId
-    """)
-    fun getObjectsWithTypeByBox(boxId: Int): LiveData<List<ObjectWithTypeName>>
+        """
+    )
+    fun getObjectsWithTypeByBox(
+        boxId: Int
+    ): LiveData<List<ObjectWithTypeName>>
 
-    @Query("""
+    @Query(
+        """
+        SELECT *
+        FROM objects
+        WHERE boxId = :boxId
+        """
+    )
+    suspend fun getObjectsByBoxSync(
+        boxId: Int
+    ): List<ObjectEntity>
+
+    @Query(
+        """
         UPDATE objects
         SET boxId = :targetBoxId
         WHERE id IN (:ids)
-    """)
+        """
+    )
     suspend fun moveObjects(
         ids: List<Int>,
         targetBoxId: Int
     )
 
-    @Query("""
+    @Query(
+        """
         SELECT COUNT(*)
         FROM objects
         WHERE boxId = :boxId
-    """)
-    suspend fun countObjectsByBox(boxId: Int): Int
+        """
+    )
+    suspend fun countObjectsByBox(
+        boxId: Int
+    ): Int
 }

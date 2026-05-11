@@ -325,12 +325,64 @@ class MainActivity : BaseActivity() {
 
                 if (totalObjects > 0) {
 
-                    DialogUtils.showDeleteWithObjectsConfirmation(
-                        context = this@MainActivity
-                    ) {
+                    val firstDialog =
+                        AlertDialog.Builder(
+                            this@MainActivity
+                        )
+                            .setMessage(
+                                "Confermi anche l'eliminazione degli oggetti contenuti?"
+                            )
+                            .setPositiveButton(
+                                "SI"
+                            ) { _, _ ->
 
-                        viewModel.deleteBoxes(ids)
+                                viewModel.deleteBoxes(ids)
+                            }
+                            .setNegativeButton(
+                                "NO",
+                                null
+                            )
+                            .create()
+
+                    firstDialog.setOnShowListener {
+
+                        val noButton =
+                            firstDialog.getButton(
+                                AlertDialog.BUTTON_NEGATIVE
+                            )
+
+                        noButton.setOnClickListener {
+
+                            firstDialog.dismiss()
+
+                            window.decorView.post {
+
+                                AlertDialog.Builder(
+                                    this@MainActivity
+                                )
+                                    .setMessage(
+                                        "Vuoi spostare gli oggetti in un altro contenitore?"
+                                    )
+                                    .setPositiveButton(
+                                        "SI"
+                                    ) { _, _ ->
+
+                                        Toast.makeText(
+                                            this@MainActivity,
+                                            "TODO: selezione contenitore destinazione",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                    .setNegativeButton(
+                                        "ANNULLA",
+                                        null
+                                    )
+                                    .show()
+                            }
+                        }
                     }
+
+                    firstDialog.show()
 
                 } else {
 
@@ -802,12 +854,64 @@ class MainActivity : BaseActivity() {
 
             if (objectCount > 0) {
 
-                DialogUtils.showDeleteWithObjectsConfirmation(
-                    context = this@MainActivity
-                ) {
+                val firstDialog =
+                    AlertDialog.Builder(
+                        this@MainActivity
+                    )
+                        .setMessage(
+                            "Confermi anche l'eliminazione degli oggetti contenuti?"
+                        )
+                        .setPositiveButton(
+                            "SI"
+                        ) { _, _ ->
 
-                    viewModel.deleteBox(id)
+                            viewModel.deleteBox(id)
+                        }
+                        .setNegativeButton(
+                            "NO",
+                            null
+                        )
+                        .create()
+
+                firstDialog.setOnShowListener {
+
+                    val noButton =
+                        firstDialog.getButton(
+                            AlertDialog.BUTTON_NEGATIVE
+                        )
+
+                    noButton.setOnClickListener {
+
+                        firstDialog.dismiss()
+
+                        window.decorView.post {
+
+                            AlertDialog.Builder(
+                                this@MainActivity
+                            )
+                                .setMessage(
+                                    "Vuoi spostare gli oggetti in un altro contenitore?"
+                                )
+                                .setPositiveButton(
+                                    "SI"
+                                ) { _, _ ->
+
+                                    Toast.makeText(
+                                        this@MainActivity,
+                                        "TODO: selezione contenitore destinazione",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                                .setNegativeButton(
+                                    "ANNULLA",
+                                    null
+                                )
+                                .show()
+                        }
+                    }
                 }
+
+                firstDialog.show()
 
             } else {
 

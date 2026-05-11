@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.boxmanagernew.data.local.entity.CategoryEntity
 import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
+import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
 import com.example.boxmanagernew.domain.model.Box
 import kotlinx.coroutines.launch
 
@@ -197,6 +198,48 @@ class BoxViewModel(
                 ids,
                 newPosition
             )
+
+            clearSelection()
+        }
+    }
+
+    fun moveObjectsAndDeleteBoxes(
+        objectRepository: ObjectRepositoryImpl,
+        targetBoxId: Int
+    ) {
+
+        val ids =
+            _selectedItems.value?.toList()
+                ?: return
+
+        if (ids.isEmpty()) {
+            return
+        }
+
+        viewModelScope.launch {
+
+            ids.forEach { boxId ->
+
+                val objects =
+                    objectRepository
+                        .getObjectsByBoxSync(boxId)
+
+                val objectIds =
+                    objects.map { it.id }
+
+                if (objectIds.isNotEmpty()) {
+
+                    objectRepository.moveObjects(
+                        objectIds,
+                        targetBoxId
+                    )
+                }
+            }
+
+            ids.forEach { boxId ->
+
+                repository.deleteBox(boxId)
+            }
 
             clearSelection()
         }

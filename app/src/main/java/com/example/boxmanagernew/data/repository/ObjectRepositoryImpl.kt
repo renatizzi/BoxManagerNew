@@ -3,9 +3,9 @@ package com.example.boxmanagernew.data.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.example.boxmanagernew.data.local.dao.ObjectDao
-import com.example.boxmanagernew.data.local.dao.ObjectTypeDao
 import com.example.boxmanagernew.data.local.entity.ObjectEntity
 import com.example.boxmanagernew.data.local.entity.ObjectTypeEntity
+import com.example.boxmanagernew.data.local.dao.ObjectTypeDao
 import com.example.boxmanagernew.domain.model.Object
 import com.example.boxmanagernew.domain.model.ObjectWithType
 import com.example.boxmanagernew.domain.repository.ObjectRepository
@@ -15,35 +15,64 @@ class ObjectRepositoryImpl(
     private val typeDao: ObjectTypeDao
 ) : ObjectRepository {
 
-    override fun getObjectsByBox(boxId: Int): LiveData<List<Object>> {
-        return dao.getObjectsWithTypeByBox(boxId).map { list ->
-            list.map {
-                Object(
-                    id = it.id,
-                    typeObjectId = it.typeObjectId,
-                    boxId = it.boxId,
-                    description = it.description,
-                    quantity = it.quantity
-                )
+    override fun getObjectsByBox(
+        boxId: Int
+    ): LiveData<List<Object>> {
+
+        return dao.getObjectsWithTypeByBox(boxId)
+            .map { list ->
+
+                list.map { row ->
+
+                    Object(
+                        id = row.id,
+                        typeObjectId = row.typeObjectId,
+                        boxId = row.boxId,
+                        description = row.description,
+                        quantity = row.quantity
+                    )
+                }
             }
-        }
     }
 
-    override fun getObjectsWithType(boxId: Int): LiveData<List<ObjectWithType>> {
-        return dao.getObjectsWithTypeByBox(boxId).map { list ->
-            list.map {
-                ObjectWithType(
-                    obj = Object(
-                        id = it.id,
-                        typeObjectId = it.typeObjectId,
-                        boxId = it.boxId,
-                        description = it.description,
-                        quantity = it.quantity
-                    ),
-                    typeName = it.typeName
+    suspend fun getObjectsByBoxSync(
+        boxId: Int
+    ): List<Object> {
+
+        return dao.getObjectsByBoxSync(boxId)
+            .map { entity ->
+
+                Object(
+                    id = entity.id,
+                    typeObjectId = entity.typeObjectId,
+                    boxId = entity.boxId,
+                    description = entity.description,
+                    quantity = entity.quantity
                 )
             }
-        }
+    }
+
+    override fun getObjectsWithType(
+        boxId: Int
+    ): LiveData<List<ObjectWithType>> {
+
+        return dao.getObjectsWithTypeByBox(boxId)
+            .map { list ->
+
+                list.map { row ->
+
+                    ObjectWithType(
+                        obj = Object(
+                            id = row.id,
+                            typeObjectId = row.typeObjectId,
+                            boxId = row.boxId,
+                            description = row.description,
+                            quantity = row.quantity
+                        ),
+                        typeName = row.typeName
+                    )
+                }
+            }
     }
 
     suspend fun insertDynamic(
@@ -52,19 +81,27 @@ class ObjectRepositoryImpl(
         description: String?,
         quantity: Int?
     ) {
-        val normalized = normalize(name)
 
-        var type = typeDao.getByName(normalized)
+        val normalized =
+            normalize(name)
+
+        var type =
+            typeDao.getByName(normalized)
 
         if (type == null) {
+
             typeDao.insert(
-                ObjectTypeEntity(name = normalized)
+                ObjectTypeEntity(
+                    name = normalized
+                )
             )
 
-            type = typeDao.getByName(normalized)
+            type =
+                typeDao.getByName(normalized)
         }
 
-        val typeId = type?.id ?: return
+        val typeId =
+            type?.id ?: return
 
         dao.insert(
             ObjectEntity(
@@ -84,20 +121,27 @@ class ObjectRepositoryImpl(
         description: String?,
         quantity: Int?
     ) {
-        val normalized = normalize(name)
 
-        var type = typeDao.getByName(normalized)
+        val normalized =
+            normalize(name)
+
+        var type =
+            typeDao.getByName(normalized)
 
         if (type == null) {
 
             typeDao.insert(
-                ObjectTypeEntity(name = normalized)
+                ObjectTypeEntity(
+                    name = normalized
+                )
             )
 
-            type = typeDao.getByName(normalized)
+            type =
+                typeDao.getByName(normalized)
         }
 
-        val typeId = type?.id ?: return
+        val typeId =
+            type?.id ?: return
 
         dao.update(
             ObjectEntity(
@@ -110,7 +154,9 @@ class ObjectRepositoryImpl(
         )
     }
 
-    override suspend fun insert(obj: Object) {
+    override suspend fun insert(
+        obj: Object
+    ) {
 
         dao.insert(
             ObjectEntity(
@@ -123,7 +169,9 @@ class ObjectRepositoryImpl(
         )
     }
 
-    override suspend fun update(obj: Object) {
+    override suspend fun update(
+        obj: Object
+    ) {
 
         dao.update(
             ObjectEntity(
@@ -136,7 +184,9 @@ class ObjectRepositoryImpl(
         )
     }
 
-    override suspend fun delete(obj: Object) {
+    override suspend fun delete(
+        obj: Object
+    ) {
 
         dao.delete(
             ObjectEntity(
@@ -167,8 +217,12 @@ class ObjectRepositoryImpl(
         return dao.countObjectsByBox(boxId)
     }
 
-    private fun normalize(input: String): String {
+    private fun normalize(
+        input: String
+    ): String {
 
-        return input.trim().lowercase()
+        return input
+            .trim()
+            .lowercase()
     }
 }
