@@ -600,6 +600,22 @@ class MainActivity : BaseActivity() {
                     null
                 )
 
+        val errorText =
+            TextView(this).apply {
+
+                setTextColor(
+                    getColor(
+                        android.R.color.holo_red_dark
+                    )
+                )
+
+                visibility =
+                    View.GONE
+
+                text =
+                    "Dato obbligatorio"
+            }
+
         val name =
             view.findViewById<EditText>(
                 R.id.editBoxName
@@ -620,6 +636,14 @@ class MainActivity : BaseActivity() {
                 R.id.textLastModified
             )
 
+        val container =
+            view as LinearLayout
+
+        container.addView(
+            errorText,
+            0
+        )
+
         spinner.adapter =
             CategorySpinnerAdapter(
                 this,
@@ -635,9 +659,6 @@ class MainActivity : BaseActivity() {
 
         val dialog =
             AlertDialog.Builder(this)
-                .setTitle(
-                    "Nuovo contenitore"
-                )
                 .setView(view)
                 .setPositiveButton(
                     "Conferma",
@@ -662,6 +683,9 @@ class MainActivity : BaseActivity() {
                     name.text.toString().trim()
 
                 if (boxName.isEmpty()) {
+
+                    errorText.visibility =
+                        View.VISIBLE
 
                     return@setOnClickListener
                 }

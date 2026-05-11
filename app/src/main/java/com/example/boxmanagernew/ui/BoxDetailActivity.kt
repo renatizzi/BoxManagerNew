@@ -569,6 +569,22 @@ class BoxDetailActivity : BaseActivity() {
                 null
             )
 
+        val errorText =
+            TextView(this).apply {
+
+                setTextColor(
+                    getColor(
+                        android.R.color.holo_red_dark
+                    )
+                )
+
+                visibility =
+                    View.GONE
+
+                text =
+                    "Dato obbligatorio"
+            }
+
         val name =
             view.findViewById<EditText>(
                 R.id.editBoxName
@@ -588,6 +604,14 @@ class BoxDetailActivity : BaseActivity() {
             view.findViewById<TextView>(
                 R.id.textLastModified
             )
+
+        val container =
+            view as LinearLayout
+
+        container.addView(
+            errorText,
+            0
+        )
 
         spinner.adapter =
             CategorySpinnerAdapter(
@@ -636,6 +660,9 @@ class BoxDetailActivity : BaseActivity() {
 
                 if (boxName.isEmpty()) {
 
+                    errorText.visibility =
+                        View.VISIBLE
+
                     return@setOnClickListener
                 }
 
@@ -659,6 +686,35 @@ class BoxDetailActivity : BaseActivity() {
 
                 dialog.dismiss()
             }
+
+            name.addTextChangedListener(
+                object : TextWatcher {
+
+                    override fun afterTextChanged(
+                        s: Editable?
+                    ) {
+
+                        errorText.visibility =
+                            View.GONE
+                    }
+
+                    override fun beforeTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        count: Int,
+                        after: Int
+                    ) {
+                    }
+
+                    override fun onTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        before: Int,
+                        count: Int
+                    ) {
+                    }
+                }
+            )
         }
 
         dialog.show()
