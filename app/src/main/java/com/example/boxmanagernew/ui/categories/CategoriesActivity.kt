@@ -1,22 +1,15 @@
 package com.example.boxmanagernew.ui.categories
 
 import android.app.AlertDialog
-import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -26,14 +19,14 @@ import com.example.boxmanagernew.R
 import com.example.boxmanagernew.data.local.DatabaseProvider
 import com.example.boxmanagernew.data.repository.CategoryRepositoryImpl
 import com.example.boxmanagernew.domain.model.Category
+import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
-import com.example.boxmanagernew.ui.common.TopBarUtils
 import com.example.boxmanagernew.ui.common.UiUtils
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
 
-class CategoriesActivity : AppCompatActivity() {
+class CategoriesActivity : BaseActivity() {
 
     private lateinit var viewModel: CategoryViewModel
     private lateinit var adapter: CategoryAdapter
@@ -69,47 +62,13 @@ class CategoriesActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
 
-        WindowCompat.setDecorFitsSystemWindows(
-            window,
-            false
-        )
-
         setContentView(
             R.layout.activity_categories
         )
 
-        val root =
-            findViewById<View>(
-                android.R.id.content
-            )
+        setupEdgeToEdge()
 
-        ViewCompat.setOnApplyWindowInsetsListener(
-            root
-        ) { view, insets ->
-
-            val systemBars =
-                insets.getInsets(
-                    WindowInsetsCompat.Type.systemBars()
-                )
-
-            view.setPadding(
-                systemBars.left,
-                systemBars.top,
-                systemBars.right,
-                systemBars.bottom
-            )
-
-            insets
-        }
-
-        TopBarUtils.bindTitle(
-            findViewById(R.id.textGlobalTitle)
-        )
-
-        TopBarUtils.bindSubtitle(
-            this,
-            findViewById(R.id.textGlobalSubtitle)
-        )
+        setupTopBar()
 
         findViewById<TextView>(
             R.id.textTitle
@@ -271,10 +230,6 @@ class CategoriesActivity : AppCompatActivity() {
                     s: Editable?
                 ) {
 
-                    viewModel.clearSelection()
-
-                    showDefaultBar()
-
                     val query =
                         s.toString()
 
@@ -311,9 +266,7 @@ class CategoriesActivity : AppCompatActivity() {
                 EditorInfo.IME_ACTION_DONE
             ) {
 
-                hideKeyboard()
-
-                editSearch.clearFocus()
+                hideKeyboardAndClearFocus()
 
                 true
 
@@ -326,10 +279,6 @@ class CategoriesActivity : AppCompatActivity() {
         buttonSort.setOnClickListener {
 
             resetUiState()
-
-            hideKeyboard()
-
-            editSearch.clearFocus()
 
             viewModel.toggleSort()
         }
@@ -353,7 +302,7 @@ class CategoriesActivity : AppCompatActivity() {
 
         viewModel.clearSelection()
 
-        hideKeyboard()
+        hideKeyboardAndClearFocus()
 
         showDefaultBar()
     }
@@ -528,7 +477,6 @@ class CategoriesActivity : AppCompatActivity() {
                 showWarningMessage(
                     "Categoria in uso: modificandola, i contenitori verranno aggiornati. Tocca qui per annullare."
                 )
-
             }
 
             val view =
@@ -687,35 +635,5 @@ class CategoriesActivity : AppCompatActivity() {
                 resetUiState()
             }
             .show()
-    }
-
-    override fun dispatchTouchEvent(
-        ev: MotionEvent
-    ): Boolean {
-
-        if (currentFocus != null) {
-
-            hideKeyboard()
-
-            currentFocus?.clearFocus()
-        }
-
-        return super.dispatchTouchEvent(ev)
-    }
-
-    private fun hideKeyboard() {
-
-        val imm =
-            getSystemService(
-                Context.INPUT_METHOD_SERVICE
-            ) as InputMethodManager
-
-        currentFocus?.let {
-
-            imm.hideSoftInputFromWindow(
-                it.windowToken,
-                0
-            )
-        }
     }
 }
