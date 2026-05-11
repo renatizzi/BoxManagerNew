@@ -21,6 +21,7 @@ import com.example.boxmanagernew.data.local.entity.ObjectTypeEntity
 import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
 import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
 import com.example.boxmanagernew.domain.model.Box
+import com.example.boxmanagernew.domain.model.Object
 import com.example.boxmanagernew.ui.boxdetail.BoxDetailActivity
 import com.example.boxmanagernew.ui.categories.CategoriesActivity
 import com.example.boxmanagernew.ui.categories.CategorySpinnerAdapter
@@ -367,11 +368,10 @@ class MainActivity : BaseActivity() {
                                         "SI"
                                     ) { _, _ ->
 
-                                        Toast.makeText(
-                                            this@MainActivity,
-                                            "TODO: selezione contenitore destinazione",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
+                                        showDestinationBoxDialog(
+                                            sourceBoxIds = ids,
+                                            deleteAfterMove = true
+                                        )
                                     }
                                     .setNegativeButton(
                                         "ANNULLA",
@@ -533,6 +533,213 @@ class MainActivity : BaseActivity() {
                 }
             }
         )
+    }
+
+    private fun showDestinationBoxDialog(
+        sourceBoxIds: List<Int>,
+        deleteAfterMove: Boolean
+    ) {
+
+        val allBoxes =
+            viewModel.boxes.value ?: emptyList()
+
+        val availableBoxes =
+            allBoxes.filter {
+                !sourceBoxIds.contains(it.id)
+            }
+
+        val names =
+            mutableListOf<String>()
+
+        names.add("+ Nuovo contenitore")
+
+        availableBoxes.forEach {
+
+            names.add(it.name)
+        }
+
+        AlertDialog.Builder(this)
+            .setTitle(
+                "Scegli contenitore destinazione"
+            )
+            .setItems(
+                names.toTypedArray()
+            ) { _, which ->
+
+                if (which == 0) {
+
+                    showCreateDestinationBoxDialog(
+                        sourceBoxIds,
+                        deleteAfterMove
+                    )
+
+                } else {
+
+                    val targetBox =
+                        availableBoxes[which - 1]
+
+                    moveObjectsAndDeleteBoxes(
+                        sourceBoxIds,
+                        targetBox.id,
+                        deleteAfterMove
+                    )
+                }
+            }
+            .show()
+    }
+
+    private fun showCreateDestinationBoxDialog(
+        sourceBoxIds: List<Int>,
+        deleteAfterMove: Boolean
+    ) {
+
+        val view =
+            LayoutInflater.from(this)
+                .inflate(
+                    R.layout.dialog_add_box,
+                    null
+                )
+
+        val name =
+            view.findViewById<EditText>(
+                R.id.editBoxName
+            )
+
+        val spinner =
+            view.findViewById<Spinner>(
+                R.id.spinnerCategory
+            )
+
+        val position =
+            view.findViewById<EditText>(
+                R.id.editPosition
+            )
+
+        val date =
+            view.findViewById<TextView>(
+                R.id.textLastModified
+            )
+
+        spinner.adapter =
+            CategorySpinnerAdapter(
+                this,
+                categories
+            )
+
+        date.text =
+            "Ultima modifica: ${
+                formatDate(
+                    System.currentTimeMillis()
+                )
+            }"
+
+        val dialog =
+            AlertDialog.Builder(this)
+                .setTitle(
+                    "Nuovo contenitore"
+                )
+                .setView(view)
+                .setPositiveButton(
+                    "Conferma",
+                    null
+                )
+                .setNegativeButton(
+                    "Annulla",
+                    null
+                )
+                .create()
+
+        dialog.setOnShowListener {
+
+            val btn =
+                dialog.getButton(
+                    AlertDialog.BUTTON_POSITIVE
+                )
+
+            btn.setOnClickListener {
+
+                val boxName =
+                    name.text.toString().trim()
+
+                if (boxName.isEmpty()) {
+
+                    return@setOnClickListener
+                }
+
+                val category =
+                    spinner.selectedItem
+                            as CategoryEntity
+
+                lifecycleScope.launch {
+
+                    val newBoxId =
+                        viewModel.addBoxAndReturnId(
+                            boxName,
+                            category.id,
+                            position.text.toString()
+                        )
+
+                    moveObjectsAndDeleteBoxes(
+                        sourceBoxIds,
+                        newBoxId,
+                        deleteAfterMove
+                    )
+                }
+
+                dialog.dismiss()
+            }
+        }
+
+        dialog.show()
+    }
+
+    private fun moveObjectsAndDeleteBoxes(
+        sourceBoxIds: List<Int>,
+        targetBoxId: Int,
+        deleteAfterMove: Boolean
+    ) {
+
+        lifecycleScope.launch {
+
+            val db =
+                DatabaseProvider.getDatabase(
+                    applicationContext
+                )
+
+            val objectRepository =
+                ObjectRepositoryImpl(
+                    db.objectDao(),
+                    db.objectTypeDao()
+                )
+
+            val objectsToMove =
+                mutableListOf<Object>()
+
+            sourceBoxIds.forEach { boxId ->
+
+                val objects =
+                    objectRepository.getObjectsByBoxSync(
+                        boxId
+                    )
+
+                objectsToMove.addAll(objects)
+            }
+
+            objectsToMove.forEach { obj ->
+
+                objectRepository.moveObjects(
+                    listOf(obj.id),
+                    targetBoxId
+                )
+            }
+
+            if (deleteAfterMove) {
+
+                viewModel.deleteBoxes(
+                    sourceBoxIds
+                )
+            }
+        }
     }
 
     private fun updateSortButton(
@@ -896,11 +1103,10 @@ class MainActivity : BaseActivity() {
                                     "SI"
                                 ) { _, _ ->
 
-                                    Toast.makeText(
-                                        this@MainActivity,
-                                        "TODO: selezione contenitore destinazione",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                                    showDestinationBoxDialog(
+                                        sourceBoxIds = listOf(id),
+                                        deleteAfterMove = true
+                                    )
                                 }
                                 .setNegativeButton(
                                     "ANNULLA",
