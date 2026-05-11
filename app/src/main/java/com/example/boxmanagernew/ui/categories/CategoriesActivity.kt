@@ -47,11 +47,21 @@ class CategoriesActivity : AppCompatActivity() {
     private lateinit var textCategoryCount: TextView
 
     private val iconNames = listOf(
-        "outline_checkroom_24","outline_fastfood_24","outline_handyman_24",
-        "outline_carpenter_24","outline_ink_pen_24","outline_garage_money_24",
-        "outline_passport_24","outline_broadcast_on_home_24","outline_tools_power_drill_24",
-        "outline_photo_frame_24","outline_library_music_24","outline_box_24",
-        "outline_menu_book_24","outline_medical_services_24","outline_money_bag_24",
+        "outline_checkroom_24",
+        "outline_fastfood_24",
+        "outline_handyman_24",
+        "outline_carpenter_24",
+        "outline_ink_pen_24",
+        "outline_garage_money_24",
+        "outline_passport_24",
+        "outline_broadcast_on_home_24",
+        "outline_tools_power_drill_24",
+        "outline_photo_frame_24",
+        "outline_library_music_24",
+        "outline_box_24",
+        "outline_menu_book_24",
+        "outline_medical_services_24",
+        "outline_money_bag_24",
         "outline_browse_24"
     )
 
@@ -124,8 +134,6 @@ class CategoriesActivity : AppCompatActivity() {
 
                     viewModel.clearSelection()
 
-                    adapter.collapseExpanded()
-
                     hideKeyboard()
 
                     showDefaultBar()
@@ -192,17 +200,14 @@ class CategoriesActivity : AppCompatActivity() {
 
         adapter =
             CategoryAdapter(
-                emptyList(),
+                items = emptyList(),
 
-                onUpdate = { updated ->
+                onEdit = { category ->
 
-                    lifecycleScope.launch {
-
-                        viewModel.update(updated)
-                    }
+                    showEditCategoryDialog(category)
                 },
 
-                onDeleteRequest = { category ->
+                onDelete = { category ->
 
                     lifecycleScope.launch {
 
@@ -223,40 +228,9 @@ class CategoriesActivity : AppCompatActivity() {
 
                         } else {
 
-                            viewModel.selectCategory(
-                                category.id
-                            )
-
                             showDeleteDialog(category)
                         }
                     }
-                },
-
-                onEditStart = { category ->
-
-                    lifecycleScope.launch {
-
-                        val isUsed =
-                            viewModel.isCategoryUsed(
-                                category.id
-                            )
-
-                        if (isUsed) {
-
-                            showWarningMessage(
-                                "Categoria in uso: modificandola, i contenitori verranno aggiornati. Tocca qui per annullare."
-                            )
-
-                        } else {
-
-                            showDefaultBar()
-                        }
-                    }
-                },
-
-                onEditEnd = {
-
-                    showDefaultBar()
                 }
             )
 
@@ -360,8 +334,6 @@ class CategoriesActivity : AppCompatActivity() {
         }
 
         contextCard.setOnClickListener {
-
-            adapter.collapseExpanded()
 
             viewModel.clearSelection()
 
@@ -477,7 +449,7 @@ class CategoriesActivity : AppCompatActivity() {
                 if (name.isEmpty()) {
 
                     textError.text =
-                        "Nome obbligatorio"
+                        "Dato obbligatorio"
 
                     textError.visibility =
                         View.VISIBLE
@@ -525,6 +497,158 @@ class CategoriesActivity : AppCompatActivity() {
         }
 
         dialog.show()
+    }
+
+    private fun showEditCategoryDialog(
+        category: Category
+    ) {
+
+        lifecycleScope.launch {
+
+            val isUsed =
+                viewModel.isCategoryUsed(
+                    category.id
+                )
+
+            if (isUsed) {
+
+                showWarningMessage(
+                    "Categoria in uso: modificandola, i contenitori verranno aggiornati. Tocca qui per annullare."
+                )
+
+            } else {
+
+                showDefaultBar()
+            }
+
+            val view =
+                layoutInflater.inflate(
+                    R.layout.dialog_add_category,
+                    null
+                )
+
+            val editName =
+                view.findViewById<EditText>(
+                    R.id.editCategoryName
+                )
+
+            val recyclerIcons =
+                view.findViewById<RecyclerView>(
+                    R.id.recyclerIcons
+                )
+
+            val textError =
+                view.findViewById<TextView>(
+                    R.id.textError
+                )
+
+            editName.setText(category.name)
+
+            val iconAdapter =
+                IconAdapter(iconNames) {}
+
+            iconAdapter.setSelectedIcon(
+                category.icon
+            )
+
+            recyclerIcons.layoutManager =
+                LinearLayoutManager(
+                    this@CategoriesActivity,
+                    LinearLayoutManager.HORIZONTAL,
+                    false
+                )
+
+            recyclerIcons.adapter =
+                iconAdapter
+
+            val dialog =
+                AlertDialog.Builder(this@CategoriesActivity)
+                    .setTitle("Modifica categoria")
+                    .setView(view)
+                    .setNegativeButton(
+                        "Annulla",
+                        null
+                    )
+                    .setPositiveButton(
+                        "Salva",
+                        null
+                    )
+                    .create()
+
+            dialog.setOnShowListener {
+
+                val btnSave =
+                    dialog.getButton(
+                        AlertDialog.BUTTON_POSITIVE
+                    )
+
+                btnSave.setOnClickListener {
+
+                    val newName =
+                        editName.text
+                            .toString()
+                            .trim()
+
+                    val selectedIcon =
+                        iconAdapter.getSelectedIcon()
+
+                    textError.visibility =
+                        View.GONE
+
+                    if (newName.isEmpty()) {
+
+                        textError.text =
+                            "Dato obbligatorio"
+
+                        textError.visibility =
+                            View.VISIBLE
+
+                        return@setOnClickListener
+                    }
+
+                    if (selectedIcon == null) {
+
+                        textError.text =
+                            "Seleziona un'icona"
+
+                        textError.visibility =
+                            View.VISIBLE
+
+                        return@setOnClickListener
+                    }
+
+                    lifecycleScope.launch {
+
+                        val success =
+                            viewModel.update(
+                                category.copy(
+                                    name = newName,
+                                    icon = selectedIcon
+                                )
+                            )
+
+                        if (success) {
+
+                            hideKeyboard()
+
+                            dialog.dismiss()
+
+                            showDefaultBar()
+
+                        } else {
+
+                            textError.text =
+                                "Categoria già esistente"
+
+                            textError.visibility =
+                                View.VISIBLE
+                        }
+                    }
+                }
+            }
+
+            dialog.show()
+        }
     }
 
     private fun showDeleteDialog(
