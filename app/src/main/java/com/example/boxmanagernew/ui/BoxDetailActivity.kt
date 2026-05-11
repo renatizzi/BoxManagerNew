@@ -24,6 +24,7 @@ import com.example.boxmanagernew.ui.categories.CategoryViewModel
 import com.example.boxmanagernew.ui.categories.IconMapper
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
+import com.example.boxmanagernew.ui.common.DialogUtils
 import com.example.boxmanagernew.ui.main.BoxViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
@@ -347,14 +348,12 @@ class BoxDetailActivity : BaseActivity() {
                 return@setOnClickListener
             }
 
-            AlertDialog.Builder(this)
-                .setMessage("Conferma eliminazione?")
-                .setPositiveButton("SI") { _, _ ->
+            DialogUtils.showDeleteConfirmation(
+                context = this
+            ) {
 
-                    objectViewModel.deleteObjects(ids)
-                }
-                .setNegativeButton("NO", null)
-                .show()
+                objectViewModel.deleteObjects(ids)
+            }
         }
 
         buttonMoveSelected.setOnClickListener {
@@ -549,23 +548,14 @@ class BoxDetailActivity : BaseActivity() {
                     val targetBox =
                         availableBoxes[which - 1]
 
-                    AlertDialog.Builder(this)
-                        .setMessage(
-                            "Conferma spostamento?"
-                        )
-                        .setPositiveButton(
-                            "SI"
-                        ) { _, _ ->
+                    DialogUtils.showMoveConfirmation(
+                        context = this
+                    ) {
 
-                            objectViewModel.moveObjects(
-                                targetBox.id
-                            )
-                        }
-                        .setNegativeButton(
-                            "NO",
-                            null
+                        objectViewModel.moveObjects(
+                            targetBox.id
                         )
-                        .show()
+                    }
                 }
             }
             .show()
@@ -726,29 +716,20 @@ class BoxDetailActivity : BaseActivity() {
         id: Int
     ) {
 
-        AlertDialog.Builder(this)
-            .setMessage(
-                "Conferma eliminazione?"
-            )
-            .setPositiveButton(
-                "SI"
-            ) { _, _ ->
+        DialogUtils.showDeleteConfirmation(
+            context = this
+        ) {
 
-                val obj =
-                    objectViewModel.objects.value
-                        ?.find {
-                            it.obj.id == id
-                        }
-                        ?.obj
-                        ?: return@setPositiveButton
+            val obj =
+                objectViewModel.objects.value
+                    ?.find {
+                        it.obj.id == id
+                    }
+                    ?.obj
+                    ?: return@showDeleteConfirmation
 
-                objectViewModel.deleteObject(obj)
-            }
-            .setNegativeButton(
-                "NO",
-                null
-            )
-            .show()
+            objectViewModel.deleteObject(obj)
+        }
     }
 
     private fun showEditObjectDialog(
