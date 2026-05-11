@@ -1,23 +1,15 @@
 package com.example.boxmanagernew
 
-import android.content.Context
 import android.content.Intent
-import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -32,8 +24,8 @@ import com.example.boxmanagernew.domain.model.Box
 import com.example.boxmanagernew.ui.boxdetail.BoxDetailActivity
 import com.example.boxmanagernew.ui.categories.CategoriesActivity
 import com.example.boxmanagernew.ui.categories.CategorySpinnerAdapter
+import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
-import com.example.boxmanagernew.ui.common.TopBarUtils
 import com.example.boxmanagernew.ui.main.BoxAdapter
 import com.example.boxmanagernew.ui.main.BoxViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -41,7 +33,7 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     private lateinit var viewModel: BoxViewModel
     private lateinit var adapter: BoxAdapter
@@ -61,35 +53,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-
         setContentView(R.layout.activity_main)
 
-        val root = findViewById<View>(android.R.id.content)
+        setupEdgeToEdge()
 
-        ViewCompat.setOnApplyWindowInsetsListener(root) { view, insets ->
-
-            val systemBars =
-                insets.getInsets(WindowInsetsCompat.Type.systemBars())
-
-            view.setPadding(
-                systemBars.left,
-                systemBars.top,
-                systemBars.right,
-                systemBars.bottom
-            )
-
-            insets
-        }
-
-        TopBarUtils.bindTitle(
-            findViewById(R.id.textGlobalTitle)
-        )
-
-        TopBarUtils.bindSubtitle(
-            this,
-            findViewById(R.id.textGlobalSubtitle)
-        )
+        setupTopBar()
 
         val textTitle =
             findViewById<TextView>(R.id.textTitle)
@@ -531,57 +499,6 @@ class MainActivity : AppCompatActivity() {
             } else {
                 "ORDINA ▼"
             }
-    }
-
-    override fun dispatchTouchEvent(
-        ev: MotionEvent
-    ): Boolean {
-
-        if (
-            ev.action ==
-            MotionEvent.ACTION_DOWN
-        ) {
-
-            val v =
-                currentFocus
-
-            if (v is EditText) {
-
-                val outRect =
-                    Rect()
-
-                v.getGlobalVisibleRect(outRect)
-
-                if (
-                    !outRect.contains(
-                        ev.rawX.toInt(),
-                        ev.rawY.toInt()
-                    )
-                ) {
-
-                    v.clearFocus()
-
-                    hideKeyboard(v)
-                }
-            }
-        }
-
-        return super.dispatchTouchEvent(ev)
-    }
-
-    private fun hideKeyboard(
-        view: View
-    ) {
-
-        val imm =
-            getSystemService(
-                Context.INPUT_METHOD_SERVICE
-            ) as InputMethodManager
-
-        imm.hideSoftInputFromWindow(
-            view.windowToken,
-            0
-        )
     }
 
     private fun showAddDialog() {
