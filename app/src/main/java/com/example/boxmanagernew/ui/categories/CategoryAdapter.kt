@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.domain.model.Category
@@ -82,6 +83,9 @@ class CategoryAdapter(
 
         holder.contentArea.setOnClickListener {
 
+            val previousSelected =
+                selectedCategoryId
+
             selectedCategoryId =
                 if (selectedCategoryId == category.id) {
                     null
@@ -89,7 +93,26 @@ class CategoryAdapter(
                     category.id
                 }
 
-            notifyDataSetChanged()
+            previousSelected?.let { oldId ->
+
+                val oldIndex =
+                    items.indexOfFirst {
+                        it.id == oldId
+                    }
+
+                if (oldIndex != -1) {
+                    notifyItemChanged(oldIndex)
+                }
+            }
+
+            val newIndex =
+                items.indexOfFirst {
+                    it.id == selectedCategoryId
+                }
+
+            if (newIndex != -1) {
+                notifyItemChanged(newIndex)
+            }
         }
 
         holder.textMenu.setOnClickListener { view ->
@@ -121,9 +144,34 @@ class CategoryAdapter(
 
     fun updateSelection(id: Int?) {
 
+        val oldId =
+            selectedCategoryId
+
         selectedCategoryId = id
 
-        notifyDataSetChanged()
+        oldId?.let {
+
+            val oldIndex =
+                items.indexOfFirst { item ->
+                    item.id == it
+                }
+
+            if (oldIndex != -1) {
+                notifyItemChanged(oldIndex)
+            }
+        }
+
+        id?.let {
+
+            val newIndex =
+                items.indexOfFirst { item ->
+                    item.id == it
+                }
+
+            if (newIndex != -1) {
+                notifyItemChanged(newIndex)
+            }
+        }
     }
 
     fun updateQuery(query: String) {
@@ -137,9 +185,18 @@ class CategoryAdapter(
         newItems: List<Category>
     ) {
 
+        val diffCallback =
+            CategoryDiffCallback(
+                items,
+                newItems
+            )
+
+        val diffResult =
+            DiffUtil.calculateDiff(diffCallback)
+
         items = newItems
 
-        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
     }
 
     private fun highlight(
@@ -178,6 +235,36 @@ class CategoryAdapter(
                 end,
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
             )
+        }
+    }
+
+    class CategoryDiffCallback(
+        private val oldList: List<Category>,
+        private val newList: List<Category>
+    ) : DiffUtil.Callback() {
+
+        override fun getOldListSize(): Int =
+            oldList.size
+
+        override fun getNewListSize(): Int =
+            newList.size
+
+        override fun areItemsTheSame(
+            oldItemPosition: Int,
+            newItemPosition: Int
+        ): Boolean {
+
+            return oldList[oldItemPosition].id ==
+                    newList[newItemPosition].id
+        }
+
+        override fun areContentsTheSame(
+            oldItemPosition: Int,
+            newItemPosition: Int
+        ): Boolean {
+
+            return oldList[oldItemPosition] ==
+                    newList[newItemPosition]
         }
     }
 }

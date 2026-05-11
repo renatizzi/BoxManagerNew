@@ -132,11 +132,7 @@ class CategoriesActivity : AppCompatActivity() {
 
                 override fun handleOnBackPressed() {
 
-                    viewModel.clearSelection()
-
-                    hideKeyboard()
-
-                    showDefaultBar()
+                    resetUiState()
 
                     finish()
                 }
@@ -204,6 +200,8 @@ class CategoriesActivity : AppCompatActivity() {
 
                 onEdit = { category ->
 
+                    resetUiState()
+
                     showEditCategoryDialog(category)
                 },
 
@@ -227,6 +225,8 @@ class CategoriesActivity : AppCompatActivity() {
                             )
 
                         } else {
+
+                            resetUiState()
 
                             showDeleteDialog(category)
                         }
@@ -270,6 +270,10 @@ class CategoriesActivity : AppCompatActivity() {
                 override fun afterTextChanged(
                     s: Editable?
                 ) {
+
+                    viewModel.clearSelection()
+
+                    showDefaultBar()
 
                     val query =
                         s.toString()
@@ -321,6 +325,8 @@ class CategoriesActivity : AppCompatActivity() {
 
         buttonSort.setOnClickListener {
 
+            resetUiState()
+
             hideKeyboard()
 
             editSearch.clearFocus()
@@ -330,17 +336,24 @@ class CategoriesActivity : AppCompatActivity() {
 
         fabAdd.setOnClickListener {
 
+            resetUiState()
+
             showAddCategoryDialog()
         }
 
         contextCard.setOnClickListener {
 
-            viewModel.clearSelection()
-
-            showDefaultBar()
-
-            hideKeyboard()
+            resetUiState()
         }
+
+        showDefaultBar()
+    }
+
+    private fun resetUiState() {
+
+        viewModel.clearSelection()
+
+        hideKeyboard()
 
         showDefaultBar()
     }
@@ -480,7 +493,7 @@ class CategoriesActivity : AppCompatActivity() {
 
                     if (success) {
 
-                        hideKeyboard()
+                        resetUiState()
 
                         dialog.dismiss()
 
@@ -516,9 +529,6 @@ class CategoriesActivity : AppCompatActivity() {
                     "Categoria in uso: modificandola, i contenitori verranno aggiornati. Tocca qui per annullare."
                 )
 
-            } else {
-
-                showDefaultBar()
             }
 
             val view =
@@ -566,9 +576,11 @@ class CategoriesActivity : AppCompatActivity() {
                     .setTitle("Modifica categoria")
                     .setView(view)
                     .setNegativeButton(
-                        "Annulla",
-                        null
-                    )
+                        "Annulla"
+                    ) { _, _ ->
+
+                        resetUiState()
+                    }
                     .setPositiveButton(
                         "Salva",
                         null
@@ -629,11 +641,9 @@ class CategoriesActivity : AppCompatActivity() {
 
                         if (success) {
 
-                            hideKeyboard()
+                            resetUiState()
 
                             dialog.dismiss()
-
-                            showDefaultBar()
 
                         } else {
 
@@ -667,15 +677,15 @@ class CategoriesActivity : AppCompatActivity() {
 
                     viewModel.delete(category)
 
-                    viewModel.clearSelection()
-
-                    showDefaultBar()
+                    resetUiState()
                 }
             }
             .setNegativeButton(
-                "NO",
-                null
-            )
+                "NO"
+            ) { _, _ ->
+
+                resetUiState()
+            }
             .show()
     }
 
