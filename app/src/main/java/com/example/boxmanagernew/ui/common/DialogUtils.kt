@@ -104,6 +104,74 @@ object DialogUtils {
         )
     }
 
+    fun createBoxDialog(
+        context: Context,
+        categories: List<CategoryEntity>,
+        timestamp: Long,
+        box: Box? = null
+    ): BoxDialogViews {
+
+        val view =
+            inflateAddBoxDialog(context)
+
+        val views =
+            bindBoxDialogViews(
+                context,
+                view
+            )
+
+        setupBoxDialogInputs(
+            views.name,
+            views.position
+        )
+
+        setupBoxDialogWatchers(
+            views.name,
+            views.position,
+            views.errorText
+        )
+
+        setupCategorySpinner(
+            context,
+            views.spinner,
+            categories
+        )
+
+        setupLastModifiedText(
+            views.date,
+            timestamp
+        )
+
+        if (box != null) {
+
+            preloadEditBoxData(
+                views,
+                box,
+                categories
+            )
+        }
+
+        return views
+    }
+
+    fun createBoxConfirmDialog(
+        context: Context,
+        view: View
+    ): AlertDialog {
+
+        return AlertDialog.Builder(context)
+            .setView(view)
+            .setPositiveButton(
+                "Conferma",
+                null
+            )
+            .setNegativeButton(
+                "Annulla",
+                null
+            )
+            .create()
+    }
+
     fun setupBoxDialogInputs(
         name: EditText,
         position: EditText
@@ -169,48 +237,48 @@ object DialogUtils {
     }
 
     fun setupLastModifiedText(
-        date: TextView,
+        dateView: TextView,
         timestamp: Long
     ) {
 
-        date.text =
+        dateView.text =
             "Ultima modifica: ${
                 UiUtils.formatDate(timestamp)
             }"
     }
 
     fun preloadEditBoxData(
-        dialogViews: BoxDialogViews,
+        views: BoxDialogViews,
         box: Box,
         categories: List<CategoryEntity>
     ) {
 
-        dialogViews.name.setText(
+        views.name.setText(
             box.name
         )
 
-        dialogViews.position.setText(
+        views.position.setText(
             box.position
         )
 
         setupCategorySelection(
-            dialogViews.spinner,
+            views.spinner,
             categories,
             box.categoryId
         )
 
         setupLastModifiedText(
-            dialogViews.date,
+            views.date,
             box.lastModified
         )
     }
 
     fun validateRequiredName(
-        value: String,
+        name: String,
         errorText: TextView
     ): Boolean {
 
-        return if (value.isBlank()) {
+        return if (name.isEmpty()) {
 
             errorText.visibility =
                 View.VISIBLE
@@ -219,80 +287,29 @@ object DialogUtils {
 
         } else {
 
-            errorText.visibility =
-                View.GONE
-
             true
         }
     }
 
-    fun createBoxDialog(
-        context: Context,
-        categories: List<CategoryEntity>,
-        timestamp: Long,
-        box: Box? = null
-    ): BoxDialogViews {
+    fun setupDialogConfirmButton(
+        dialog: AlertDialog,
+        onConfirm: () -> Unit
+    ) {
 
-        val view =
-            inflateAddBoxDialog(context)
+        dialog.setOnShowListener {
 
-        val dialogViews =
-            bindBoxDialogViews(
-                context,
-                view
-            )
+            val btn =
+                dialog.getButton(
+                    AlertDialog.BUTTON_POSITIVE
+                )
 
-        setupBoxDialogInputs(
-            dialogViews.name,
-            dialogViews.position
-        )
+            btn.setOnClickListener {
 
-        setupBoxDialogWatchers(
-            dialogViews.name,
-            dialogViews.position,
-            dialogViews.errorText
-        )
-
-        setupCategorySpinner(
-            context,
-            dialogViews.spinner,
-            categories
-        )
-
-        setupLastModifiedText(
-            dialogViews.date,
-            timestamp
-        )
-
-        if (box != null) {
-
-            preloadEditBoxData(
-                dialogViews,
-                box,
-                categories
-            )
+                onConfirm()
+            }
         }
-
-        return dialogViews
     }
 
-    fun createBoxConfirmDialog(
-        context: Context,
-        view: View
-    ): AlertDialog {
-
-        return AlertDialog.Builder(context)
-            .setView(view)
-            .setPositiveButton(
-                "Conferma",
-                null
-            )
-            .setNegativeButton(
-                "Annulla",
-                null
-            )
-            .create()
-    }
     fun showMoveBoxesDialog(
         context: Context,
         onConfirm: (String) -> Unit
@@ -320,6 +337,62 @@ object DialogUtils {
             )
             .show()
     }
+
+    fun showObjectsDeleteDialog(
+        context: Context,
+        onDelete: () -> Unit,
+        onMoveObjects: () -> Unit
+    ) {
+
+        val firstDialog =
+            AlertDialog.Builder(context)
+                .setMessage(
+                    "Confermi anche l'eliminazione degli oggetti contenuti?"
+                )
+                .setPositiveButton(
+                    "SI"
+                ) { _, _ ->
+
+                    onDelete()
+                }
+                .setNegativeButton(
+                    "NO",
+                    null
+                )
+                .create()
+
+        firstDialog.setOnShowListener {
+
+            val noButton =
+                firstDialog.getButton(
+                    AlertDialog.BUTTON_NEGATIVE
+                )
+
+            noButton.setOnClickListener {
+
+                firstDialog.dismiss()
+
+                AlertDialog.Builder(context)
+                    .setMessage(
+                        "Vuoi spostare gli oggetti in un altro contenitore?"
+                    )
+                    .setPositiveButton(
+                        "SI"
+                    ) { _, _ ->
+
+                        onMoveObjects()
+                    }
+                    .setNegativeButton(
+                        "ANNULLA",
+                        null
+                    )
+                    .show()
+            }
+        }
+
+        firstDialog.show()
+    }
+
     fun showDeleteConfirmation(
         context: Context,
         onConfirm: () -> Unit
