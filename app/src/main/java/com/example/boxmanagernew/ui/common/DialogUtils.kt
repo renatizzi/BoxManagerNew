@@ -3,11 +3,24 @@ package com.example.boxmanagernew.ui.common
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.example.boxmanagernew.R
 
 object DialogUtils {
+
+    data class BoxDialogViews(
+        val view: View,
+        val errorText: TextView,
+        val name: EditText,
+        val spinner: Spinner,
+        val position: EditText,
+        val date: TextView,
+        val container: LinearLayout
+    )
 
     fun inflateAddBoxDialog(
         context: Context
@@ -38,6 +51,53 @@ object DialogUtils {
             text =
                 "Dato obbligatorio"
         }
+    }
+
+    fun bindBoxDialogViews(
+        context: Context,
+        view: View
+    ): BoxDialogViews {
+
+        val errorText =
+            createRequiredFieldErrorText(context)
+
+        val name =
+            view.findViewById<EditText>(
+                R.id.editBoxName
+            )
+
+        val spinner =
+            view.findViewById<Spinner>(
+                R.id.spinnerCategory
+            )
+
+        val position =
+            view.findViewById<EditText>(
+                R.id.editPosition
+            )
+
+        val date =
+            view.findViewById<TextView>(
+                R.id.textLastModified
+            )
+
+        val container =
+            view as LinearLayout
+
+        container.addView(
+            errorText,
+            0
+        )
+
+        return BoxDialogViews(
+            view = view,
+            errorText = errorText,
+            name = name,
+            spinner = spinner,
+            position = position,
+            date = date,
+            container = container
+        )
     }
 
     fun showDeleteConfirmation(
