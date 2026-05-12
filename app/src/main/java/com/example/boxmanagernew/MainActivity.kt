@@ -33,8 +33,6 @@ import com.example.boxmanagernew.ui.main.BoxAdapter
 import com.example.boxmanagernew.ui.main.BoxViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.*
 
 class MainActivity : BaseActivity() {
 
@@ -659,7 +657,7 @@ class MainActivity : BaseActivity() {
 
         date.text =
             "Ultima modifica: ${
-                formatDate(
+                UiUtils.formatDate(
                     System.currentTimeMillis()
                 )
             }"
@@ -857,7 +855,7 @@ class MainActivity : BaseActivity() {
 
         date.text =
             "Ultima modifica: ${
-                formatDate(now)
+                UiUtils.formatDate(now)
             }"
 
         val dialog =
@@ -1002,7 +1000,7 @@ class MainActivity : BaseActivity() {
 
         date.text =
             "Ultima modifica: ${
-                formatDate(box.lastModified)
+                UiUtils.formatDate(box.lastModified)
             }"
 
         val dialog =
@@ -1148,15 +1146,5 @@ class MainActivity : BaseActivity() {
                 }
             }
         }
-    }
-
-    private fun formatDate(
-        ts: Long
-    ): String {
-
-        return SimpleDateFormat(
-            "dd/MM/yyyy HH:mm",
-            Locale.getDefault()
-        ).format(Date(ts))
     }
 }

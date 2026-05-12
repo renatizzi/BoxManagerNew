@@ -6,6 +6,9 @@ import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 object UiUtils {
 
@@ -83,5 +86,17 @@ object UiUtils {
             ) {
             }
         }
+    }
+
+    fun formatDate(
+        ts: Long
+    ): String {
+
+        return SimpleDateFormat(
+            "dd/MM/yyyy HH:mm",
+            Locale.getDefault()
+        ).format(
+            Date(ts)
+        )
     }
 }
