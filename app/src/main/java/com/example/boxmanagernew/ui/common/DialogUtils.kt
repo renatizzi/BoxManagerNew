@@ -149,6 +149,17 @@ object DialogUtils {
             )
     }
 
+    fun setupLastModifiedText(
+        dateView: TextView,
+        timestamp: Long
+    ) {
+
+        dateView.text =
+            "Ultima modifica: ${
+                UiUtils.formatDate(timestamp)
+            }"
+    }
+
     fun showDeleteConfirmation(
         context: Context,
         onConfirm: () -> Unit

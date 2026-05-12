@@ -626,13 +626,10 @@ class MainActivity : BaseActivity() {
             spinner,
             categories
         )
-        date.text =
-            "Ultima modifica: ${
-                UiUtils.formatDate(
-                    System.currentTimeMillis()
-                )
-            }"
-
+        DialogUtils.setupLastModifiedText(
+            date,
+            System.currentTimeMillis()
+        )
         val dialog =
             AlertDialog.Builder(this)
                 .setView(view)
@@ -783,11 +780,10 @@ class MainActivity : BaseActivity() {
         )
         val now =
             System.currentTimeMillis()
-
-        date.text =
-            "Ultima modifica: ${
-                UiUtils.formatDate(now)
-            }"
+        DialogUtils.setupLastModifiedText(
+            date,
+            now
+        )
 
         val dialog =
             AlertDialog.Builder(this)
@@ -894,11 +890,10 @@ class MainActivity : BaseActivity() {
             spinner.setSelection(index)
         }
 
-        date.text =
-            "Ultima modifica: ${
-                UiUtils.formatDate(box.lastModified)
-            }"
-
+        DialogUtils.setupLastModifiedText(
+            date,
+            box.lastModified
+        )
         val dialog =
             AlertDialog.Builder(this)
                 .setView(view)
