@@ -293,7 +293,33 @@ object DialogUtils {
             )
             .create()
     }
+    fun showMoveBoxesDialog(
+        context: Context,
+        onConfirm: (String) -> Unit
+    ) {
 
+        val input =
+            EditText(context)
+
+        AlertDialog.Builder(context)
+            .setTitle(
+                "Nuova posizione"
+            )
+            .setView(input)
+            .setPositiveButton(
+                "Conferma"
+            ) { _, _ ->
+
+                onConfirm(
+                    input.text.toString().trim()
+                )
+            }
+            .setNegativeButton(
+                "Annulla",
+                null
+            )
+            .show()
+    }
     fun showDeleteConfirmation(
         context: Context,
         onConfirm: () -> Unit

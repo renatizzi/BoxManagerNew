@@ -420,30 +420,15 @@ class MainActivity : BaseActivity() {
                 return@setOnClickListener
             }
 
-            val input =
-                EditText(this)
+            DialogUtils.showMoveBoxesDialog(
+                context = this
+            ) { newPosition ->
 
-            AlertDialog.Builder(this)
-                .setTitle("Nuova posizione")
-                .setView(input)
-                .setPositiveButton(
-                    "Conferma"
-                ) { _, _ ->
-
-                    val newPosition =
-                        input.text.toString().trim()
-
-                    viewModel.moveBoxes(
-                        newPosition
-                    )
-                }
-                .setNegativeButton(
-                    "Annulla",
-                    null
+                viewModel.moveBoxes(
+                    newPosition
                 )
-                .show()
+            }
         }
-
         editSearch.addTextChangedListener(
             object : TextWatcher {
 
