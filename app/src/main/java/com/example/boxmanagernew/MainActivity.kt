@@ -803,60 +803,19 @@ class MainActivity : BaseActivity() {
         box: Box
     ) {
 
-        val view =
-            DialogUtils.inflateAddBoxDialog(this)
         val dialogViews =
-            DialogUtils.bindBoxDialogViews(
-                this,
-                view
+            DialogUtils.createBoxDialog(
+                context = this,
+                categories = categories,
+                timestamp = box.lastModified,
+                box = box
             )
 
-        val errorText =
-            dialogViews.errorText
-
-        val name =
-            dialogViews.name
-
-        val spinner =
-            dialogViews.spinner
-
-        val position =
-            dialogViews.position
-
-        val date =
-            dialogViews.date
-        DialogUtils.setupBoxDialogInputs(
-            name,
-            position
-        )
-        DialogUtils.preloadEditBoxData(
-            dialogViews,
-            box,
-            categories
-        )
-        DialogUtils.setupBoxDialogWatchers(
-            name,
-            position,
-            errorText
-        )
-
-        DialogUtils.setupCategorySpinner(
-            this,
-            spinner,
-            categories
-        )
         val dialog =
-            AlertDialog.Builder(this)
-                .setView(view)
-                .setPositiveButton(
-                    "Conferma",
-                    null
-                )
-                .setNegativeButton(
-                    "Annulla",
-                    null
-                )
-                .create()
+            DialogUtils.createBoxConfirmDialog(
+                context = this,
+                view = dialogViews.view
+            )
 
         dialog.setOnShowListener {
 
@@ -868,26 +827,30 @@ class MainActivity : BaseActivity() {
             btn.setOnClickListener {
 
                 val n =
-                    name.text.toString().trim()
+                    dialogViews.name.text
+                        .toString()
+                        .trim()
 
                 if (
                     !DialogUtils.validateRequiredName(
                         n,
-                        errorText
+                        dialogViews.errorText
                     )
                 ) {
 
                     return@setOnClickListener
                 }
+
                 val cat =
-                    spinner.selectedItem
+                    dialogViews.spinner.selectedItem
                             as CategoryEntity
 
                 viewModel.updateBox(
                     box.id,
                     n,
                     cat.id,
-                    position.text.toString()
+                    dialogViews.position.text
+                        .toString()
                 )
 
                 dialog.dismiss()
@@ -896,7 +859,6 @@ class MainActivity : BaseActivity() {
 
         dialog.show()
     }
-
     private fun showDeleteDialog(
         id: Int
     ) {
