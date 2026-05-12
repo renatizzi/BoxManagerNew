@@ -28,6 +28,7 @@ import com.example.boxmanagernew.ui.categories.CategorySpinnerAdapter
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.example.boxmanagernew.ui.common.DialogUtils
+import com.example.boxmanagernew.ui.common.UiUtils
 import com.example.boxmanagernew.ui.main.BoxAdapter
 import com.example.boxmanagernew.ui.main.BoxViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -478,7 +479,10 @@ class MainActivity : BaseActivity() {
             }
         )
 
-        updateSortButton(true)
+        UiUtils.updateSortButton(
+            buttonSort,
+            true
+        )
 
         buttonSort.setOnClickListener {
 
@@ -487,7 +491,10 @@ class MainActivity : BaseActivity() {
 
         viewModel.isAscending.observe(this) {
 
-            updateSortButton(it)
+            UiUtils.updateSortButton(
+                buttonSort,
+                it
+            )
         }
 
         fab.setOnClickListener {
@@ -764,18 +771,6 @@ class MainActivity : BaseActivity() {
                 )
             }
         }
-    }
-
-    private fun updateSortButton(
-        isAscending: Boolean
-    ) {
-
-        buttonSort.text =
-            if (isAscending) {
-                "ORDINA ▲"
-            } else {
-                "ORDINA ▼"
-            }
     }
 
     private fun showAddDialog() {
