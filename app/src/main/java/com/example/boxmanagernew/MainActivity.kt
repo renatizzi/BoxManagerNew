@@ -3,9 +3,7 @@ package com.example.boxmanagernew
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
-import android.text.InputType
 import android.text.TextWatcher
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
@@ -24,11 +22,9 @@ import com.example.boxmanagernew.domain.model.Box
 import com.example.boxmanagernew.domain.model.Object
 import com.example.boxmanagernew.ui.boxdetail.BoxDetailActivity
 import com.example.boxmanagernew.ui.categories.CategoriesActivity
-import com.example.boxmanagernew.ui.categories.CategorySpinnerAdapter
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.example.boxmanagernew.ui.common.DialogUtils
-import com.example.boxmanagernew.ui.common.DialogUtils.createRequiredFieldErrorText
 import com.example.boxmanagernew.ui.common.UiUtils
 import com.example.boxmanagernew.ui.main.BoxAdapter
 import com.example.boxmanagernew.ui.main.BoxViewModel
@@ -326,63 +322,22 @@ class MainActivity : BaseActivity() {
 
                 if (totalObjects > 0) {
 
-                    val firstDialog =
-                        AlertDialog.Builder(
-                            this@MainActivity
-                        )
-                            .setMessage(
-                                "Confermi anche l'eliminazione degli oggetti contenuti?"
+                    DialogUtils.showObjectsDeleteDialog(
+                        context = this@MainActivity,
+
+                        onDelete = {
+
+                            viewModel.deleteBoxes(ids)
+                        },
+
+                        onMoveObjects = {
+
+                            showDestinationBoxDialog(
+                                sourceBoxIds = ids,
+                                deleteAfterMove = true
                             )
-                            .setPositiveButton(
-                                "SI"
-                            ) { _, _ ->
-
-                                viewModel.deleteBoxes(ids)
-                            }
-                            .setNegativeButton(
-                                "NO",
-                                null
-                            )
-                            .create()
-
-                    firstDialog.setOnShowListener {
-
-                        val noButton =
-                            firstDialog.getButton(
-                                AlertDialog.BUTTON_NEGATIVE
-                            )
-
-                        noButton.setOnClickListener {
-
-                            firstDialog.dismiss()
-
-                            window.decorView.post {
-
-                                AlertDialog.Builder(
-                                    this@MainActivity
-                                )
-                                    .setMessage(
-                                        "Vuoi spostare gli oggetti in un altro contenitore?"
-                                    )
-                                    .setPositiveButton(
-                                        "SI"
-                                    ) { _, _ ->
-
-                                        showDestinationBoxDialog(
-                                            sourceBoxIds = ids,
-                                            deleteAfterMove = true
-                                        )
-                                    }
-                                    .setNegativeButton(
-                                        "ANNULLA",
-                                        null
-                                    )
-                                    .show()
-                            }
                         }
-                    }
-
-                    firstDialog.show()
+                    )
 
                 } else {
 
@@ -429,6 +384,7 @@ class MainActivity : BaseActivity() {
                 )
             }
         }
+
         editSearch.addTextChangedListener(
             object : TextWatcher {
 
@@ -584,49 +540,18 @@ class MainActivity : BaseActivity() {
         deleteAfterMove: Boolean
     ) {
 
-        val view =
-            DialogUtils.inflateAddBoxDialog(this)
         val dialogViews =
-            DialogUtils.bindBoxDialogViews(
-                this,
-                view
+            DialogUtils.createBoxDialog(
+                context = this,
+                categories = categories,
+                timestamp = System.currentTimeMillis()
             )
 
-        val errorText =
-            dialogViews.errorText
-
-        val name =
-            dialogViews.name
-
-        val spinner =
-            dialogViews.spinner
-
-        val position =
-            dialogViews.position
-
-        val date =
-            dialogViews.date
-        DialogUtils.setupCategorySpinner(
-            this,
-            spinner,
-            categories
-        )
-        DialogUtils.setupLastModifiedText(
-            date,
-            System.currentTimeMillis()
-        )
         val dialog =
-            AlertDialog.Builder(this)
-                .setView(view)
-                .setPositiveButton(
-                    "Conferma",
-                    null
-                )
-                .setNegativeButton(
-                    "Annulla",
-                    null
-                )
-                .create()
+            DialogUtils.createBoxConfirmDialog(
+                context = this,
+                view = dialogViews.view
+            )
 
         dialog.setOnShowListener {
 
@@ -638,19 +563,22 @@ class MainActivity : BaseActivity() {
             btn.setOnClickListener {
 
                 val boxName =
-                    name.text.toString().trim()
+                    dialogViews.name.text
+                        .toString()
+                        .trim()
 
                 if (
                     !DialogUtils.validateRequiredName(
                         boxName,
-                        errorText
+                        dialogViews.errorText
                     )
                 ) {
 
                     return@setOnClickListener
                 }
+
                 val category =
-                    spinner.selectedItem
+                    dialogViews.spinner.selectedItem
                             as CategoryEntity
 
                 lifecycleScope.launch {
@@ -659,7 +587,7 @@ class MainActivity : BaseActivity() {
                         viewModel.addBoxAndReturnId(
                             boxName,
                             category.id,
-                            position.text.toString()
+                            dialogViews.position.text.toString()
                         )
 
                     moveObjectsAndDeleteBoxes(
@@ -784,6 +712,7 @@ class MainActivity : BaseActivity() {
 
         dialog.show()
     }
+
     private fun showEditDialog(
         box: Box
     ) {
@@ -844,6 +773,7 @@ class MainActivity : BaseActivity() {
 
         dialog.show()
     }
+
     private fun showDeleteDialog(
         id: Int
     ) {
