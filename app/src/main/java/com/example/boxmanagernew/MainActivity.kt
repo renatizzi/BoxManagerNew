@@ -741,6 +741,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun showAddDialog() {
+
         val now =
             System.currentTimeMillis()
 
@@ -751,33 +752,11 @@ class MainActivity : BaseActivity() {
                 timestamp = now
             )
 
-        val view =
-            dialogViews.view
-
-        val errorText =
-            dialogViews.errorText
-
-        val name =
-            dialogViews.name
-
-        val spinner =
-            dialogViews.spinner
-
-        val position =
-            dialogViews.position
-
         val dialog =
-            AlertDialog.Builder(this)
-                .setView(view)
-                .setPositiveButton(
-                    "Conferma",
-                    null
-                )
-                .setNegativeButton(
-                    "Annulla",
-                    null
-                )
-                .create()
+            DialogUtils.createBoxConfirmDialog(
+                context = this,
+                view = dialogViews.view
+            )
 
         dialog.setOnShowListener {
 
@@ -789,25 +768,29 @@ class MainActivity : BaseActivity() {
             btn.setOnClickListener {
 
                 val n =
-                    name.text.toString().trim()
+                    dialogViews.name.text
+                        .toString()
+                        .trim()
 
                 if (
                     !DialogUtils.validateRequiredName(
                         n,
-                        errorText
+                        dialogViews.errorText
                     )
                 ) {
 
                     return@setOnClickListener
                 }
+
                 val cat =
-                    spinner.selectedItem
+                    dialogViews.spinner.selectedItem
                             as CategoryEntity
 
                 viewModel.addBox(
                     n,
                     cat.id,
-                    position.text.toString()
+                    dialogViews.position.text
+                        .toString()
                 )
 
                 dialog.dismiss()
@@ -816,21 +799,17 @@ class MainActivity : BaseActivity() {
 
         dialog.show()
     }
-
     private fun showEditDialog(
         box: Box
     ) {
 
-        val dialogViews =
-            DialogUtils.createBoxDialog(
-                context = this,
-                categories = categories,
-                timestamp = box.lastModified,
-                box = box
-            )
-
         val view =
-            dialogViews.view
+            DialogUtils.inflateAddBoxDialog(this)
+        val dialogViews =
+            DialogUtils.bindBoxDialogViews(
+                this,
+                view
+            )
 
         val errorText =
             dialogViews.errorText
@@ -843,6 +822,29 @@ class MainActivity : BaseActivity() {
 
         val position =
             dialogViews.position
+
+        val date =
+            dialogViews.date
+        DialogUtils.setupBoxDialogInputs(
+            name,
+            position
+        )
+        DialogUtils.preloadEditBoxData(
+            dialogViews,
+            box,
+            categories
+        )
+        DialogUtils.setupBoxDialogWatchers(
+            name,
+            position,
+            errorText
+        )
+
+        DialogUtils.setupCategorySpinner(
+            this,
+            spinner,
+            categories
+        )
         val dialog =
             AlertDialog.Builder(this)
                 .setView(view)

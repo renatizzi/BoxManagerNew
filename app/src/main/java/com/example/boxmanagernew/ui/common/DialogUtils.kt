@@ -104,56 +104,6 @@ object DialogUtils {
         )
     }
 
-    fun createBoxDialog(
-        context: Context,
-        categories: List<CategoryEntity>,
-        timestamp: Long,
-        box: Box? = null
-    ): BoxDialogViews {
-
-        val view =
-            inflateAddBoxDialog(context)
-
-        val views =
-            bindBoxDialogViews(
-                context,
-                view
-            )
-
-        setupBoxDialogInputs(
-            views.name,
-            views.position
-        )
-
-        setupBoxDialogWatchers(
-            views.name,
-            views.position,
-            views.errorText
-        )
-
-        setupCategorySpinner(
-            context,
-            views.spinner,
-            categories
-        )
-
-        setupLastModifiedText(
-            views.date,
-            timestamp
-        )
-
-        if (box != null) {
-
-            preloadEditBoxData(
-                views,
-                box,
-                categories
-            )
-        }
-
-        return views
-    }
-
     fun setupBoxDialogInputs(
         name: EditText,
         position: EditText
@@ -219,48 +169,48 @@ object DialogUtils {
     }
 
     fun setupLastModifiedText(
-        dateView: TextView,
+        date: TextView,
         timestamp: Long
     ) {
 
-        dateView.text =
+        date.text =
             "Ultima modifica: ${
                 UiUtils.formatDate(timestamp)
             }"
     }
 
     fun preloadEditBoxData(
-        views: BoxDialogViews,
+        dialogViews: BoxDialogViews,
         box: Box,
         categories: List<CategoryEntity>
     ) {
 
-        views.name.setText(
+        dialogViews.name.setText(
             box.name
         )
 
-        views.position.setText(
+        dialogViews.position.setText(
             box.position
         )
 
         setupCategorySelection(
-            views.spinner,
+            dialogViews.spinner,
             categories,
             box.categoryId
         )
 
         setupLastModifiedText(
-            views.date,
+            dialogViews.date,
             box.lastModified
         )
     }
 
     fun validateRequiredName(
-        name: String,
+        value: String,
         errorText: TextView
     ): Boolean {
 
-        return if (name.isEmpty()) {
+        return if (value.isBlank()) {
 
             errorText.visibility =
                 View.VISIBLE
@@ -269,8 +219,79 @@ object DialogUtils {
 
         } else {
 
+            errorText.visibility =
+                View.GONE
+
             true
         }
+    }
+
+    fun createBoxDialog(
+        context: Context,
+        categories: List<CategoryEntity>,
+        timestamp: Long,
+        box: Box? = null
+    ): BoxDialogViews {
+
+        val view =
+            inflateAddBoxDialog(context)
+
+        val dialogViews =
+            bindBoxDialogViews(
+                context,
+                view
+            )
+
+        setupBoxDialogInputs(
+            dialogViews.name,
+            dialogViews.position
+        )
+
+        setupBoxDialogWatchers(
+            dialogViews.name,
+            dialogViews.position,
+            dialogViews.errorText
+        )
+
+        setupCategorySpinner(
+            context,
+            dialogViews.spinner,
+            categories
+        )
+
+        setupLastModifiedText(
+            dialogViews.date,
+            timestamp
+        )
+
+        if (box != null) {
+
+            preloadEditBoxData(
+                dialogViews,
+                box,
+                categories
+            )
+        }
+
+        return dialogViews
+    }
+
+    fun createBoxConfirmDialog(
+        context: Context,
+        view: View
+    ): AlertDialog {
+
+        return AlertDialog.Builder(context)
+            .setView(view)
+            .setPositiveButton(
+                "Conferma",
+                null
+            )
+            .setNegativeButton(
+                "Annulla",
+                null
+            )
+            .create()
     }
 
     fun showDeleteConfirmation(
