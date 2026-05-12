@@ -747,36 +747,26 @@ class MainActivity : BaseActivity() {
 
         val view =
             DialogUtils.inflateAddBoxDialog(this)
-        val errorText =
-            createRequiredFieldErrorText(this)
-        val name =
-            view.findViewById<EditText>(
-                R.id.editBoxName
+        val dialogViews =
+            DialogUtils.bindBoxDialogViews(
+                this,
+                view
             )
+
+        val errorText =
+            dialogViews.errorText
+
+        val name =
+            dialogViews.name
 
         val spinner =
-            view.findViewById<Spinner>(
-                R.id.spinnerCategory
-            )
+            dialogViews.spinner
 
         val position =
-            view.findViewById<EditText>(
-                R.id.editPosition
-            )
+            dialogViews.position
 
         val date =
-            view.findViewById<TextView>(
-                R.id.textLastModified
-            )
-
-        val container =
-            view as LinearLayout
-
-        container.addView(
-            errorText,
-            0
-        )
-
+            dialogViews.date
         name.inputType =
             InputType.TYPE_CLASS_TEXT
 
