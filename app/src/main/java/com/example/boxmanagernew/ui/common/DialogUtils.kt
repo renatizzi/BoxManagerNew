@@ -149,6 +149,24 @@ object DialogUtils {
             )
     }
 
+    fun setupCategorySelection(
+        spinner: Spinner,
+        categories: List<CategoryEntity>,
+        categoryId: Int
+    ) {
+
+        val index =
+            categories.indexOfFirst {
+
+                it.id == categoryId
+            }
+
+        if (index >= 0) {
+
+            spinner.setSelection(index)
+        }
+    }
+
     fun setupLastModifiedText(
         dateView: TextView,
         timestamp: Long

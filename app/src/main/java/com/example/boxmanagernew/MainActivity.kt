@@ -879,17 +879,11 @@ class MainActivity : BaseActivity() {
             spinner,
             categories
         )
-        val index =
-            categories.indexOfFirst {
-
-                it.id == box.categoryId
-            }
-
-        if (index >= 0) {
-
-            spinner.setSelection(index)
-        }
-
+        DialogUtils.setupCategorySelection(
+            spinner,
+            categories,
+            box.categoryId
+        )
         DialogUtils.setupLastModifiedText(
             date,
             box.lastModified
