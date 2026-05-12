@@ -1,9 +1,31 @@
 package com.example.boxmanagernew.ui.common
 
 import android.content.Context
+import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 
 object DialogUtils {
+
+    fun createRequiredFieldErrorText(
+        context: Context
+    ): TextView {
+
+        return TextView(context).apply {
+
+            setTextColor(
+                context.getColor(
+                    android.R.color.holo_red_dark
+                )
+            )
+
+            visibility =
+                View.GONE
+
+            text =
+                "Dato obbligatorio"
+        }
+    }
 
     fun showDeleteConfirmation(
         context: Context,

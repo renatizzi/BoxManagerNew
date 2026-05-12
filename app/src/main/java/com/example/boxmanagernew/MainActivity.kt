@@ -28,6 +28,7 @@ import com.example.boxmanagernew.ui.categories.CategorySpinnerAdapter
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.example.boxmanagernew.ui.common.DialogUtils
+import com.example.boxmanagernew.ui.common.DialogUtils.createRequiredFieldErrorText
 import com.example.boxmanagernew.ui.common.UiUtils
 import com.example.boxmanagernew.ui.main.BoxAdapter
 import com.example.boxmanagernew.ui.main.BoxViewModel
@@ -606,20 +607,7 @@ class MainActivity : BaseActivity() {
                 )
 
         val errorText =
-            TextView(this).apply {
-
-                setTextColor(
-                    getColor(
-                        android.R.color.holo_red_dark
-                    )
-                )
-
-                visibility =
-                    View.GONE
-
-                text =
-                    "Dato obbligatorio"
-            }
+            createRequiredFieldErrorText(this)
 
         val name =
             view.findViewById<EditText>(
@@ -781,21 +769,7 @@ class MainActivity : BaseActivity() {
                 )
 
         val errorText =
-            TextView(this).apply {
-
-                setTextColor(
-                    getColor(
-                        android.R.color.holo_red_dark
-                    )
-                )
-
-                visibility =
-                    View.GONE
-
-                text =
-                    "Dato obbligatorio"
-            }
-
+            createRequiredFieldErrorText(this)
         val name =
             view.findViewById<EditText>(
                 R.id.editBoxName
@@ -920,21 +894,7 @@ class MainActivity : BaseActivity() {
                 )
 
         val errorText =
-            TextView(this).apply {
-
-                setTextColor(
-                    getColor(
-                        android.R.color.holo_red_dark
-                    )
-                )
-
-                visibility =
-                    View.GONE
-
-                text =
-                    "Dato obbligatorio"
-            }
-
+            createRequiredFieldErrorText(this)
         val name =
             view.findViewById<EditText>(
                 R.id.editBoxName
