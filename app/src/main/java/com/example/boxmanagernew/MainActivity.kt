@@ -600,12 +600,7 @@ class MainActivity : BaseActivity() {
     ) {
 
         val view =
-            LayoutInflater.from(this)
-                .inflate(
-                    R.layout.dialog_add_box,
-                    null
-                )
-
+            DialogUtils.inflateAddBoxDialog(this)
         val errorText =
             createRequiredFieldErrorText(this)
 
@@ -762,12 +757,7 @@ class MainActivity : BaseActivity() {
     private fun showAddDialog() {
 
         val view =
-            LayoutInflater.from(this)
-                .inflate(
-                    R.layout.dialog_add_box,
-                    null
-                )
-
+            DialogUtils.inflateAddBoxDialog(this)
         val errorText =
             createRequiredFieldErrorText(this)
         val name =
@@ -887,12 +877,7 @@ class MainActivity : BaseActivity() {
     ) {
 
         val view =
-            LayoutInflater.from(this)
-                .inflate(
-                    R.layout.dialog_add_box,
-                    null
-                )
-
+            DialogUtils.inflateAddBoxDialog(this)
         val errorText =
             createRequiredFieldErrorText(this)
         val name =

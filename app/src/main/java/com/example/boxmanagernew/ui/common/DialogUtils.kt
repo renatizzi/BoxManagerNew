@@ -1,11 +1,24 @@
 package com.example.boxmanagernew.ui.common
 
 import android.content.Context
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import com.example.boxmanagernew.R
 
 object DialogUtils {
+
+    fun inflateAddBoxDialog(
+        context: Context
+    ): View {
+
+        return LayoutInflater.from(context)
+            .inflate(
+                R.layout.dialog_add_box,
+                null
+            )
+    }
 
     fun createRequiredFieldErrorText(
         context: Context
