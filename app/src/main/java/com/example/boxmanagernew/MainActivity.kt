@@ -833,14 +833,14 @@ class MainActivity : BaseActivity() {
             InputType.TYPE_CLASS_TEXT
 
         name.addTextChangedListener(
-            noEnterWatcher(
+            UiUtils.noEnterWatcher(
                 name,
                 errorText
             )
         )
 
         position.addTextChangedListener(
-            noEnterWatcher(
+            UiUtils.noEnterWatcher(
                 position,
                 null
             )
@@ -970,14 +970,14 @@ class MainActivity : BaseActivity() {
         position.setText(box.position)
 
         name.addTextChangedListener(
-            noEnterWatcher(
+            UiUtils.noEnterWatcher(
                 name,
                 errorText
             )
         )
 
         position.addTextChangedListener(
-            noEnterWatcher(
+            UiUtils.noEnterWatcher(
                 position,
                 null
             )
@@ -1146,58 +1146,6 @@ class MainActivity : BaseActivity() {
 
                     viewModel.deleteBox(id)
                 }
-            }
-        }
-    }
-
-    private fun noEnterWatcher(
-        editText: EditText,
-        error: TextView?
-    ): TextWatcher {
-
-        return object : TextWatcher {
-
-            override fun afterTextChanged(
-                s: Editable?
-            ) {
-
-                if (
-                    s != null &&
-                    s.contains("\n")
-                ) {
-
-                    val cleaned =
-                        s.toString()
-                            .replace(
-                                "\n",
-                                " "
-                            )
-
-                    editText.setText(cleaned)
-
-                    editText.setSelection(
-                        cleaned.length
-                    )
-                }
-
-                error?.visibility =
-                    View.GONE
-            }
-
-            override fun beforeTextChanged(
-                s: CharSequence?,
-                start: Int,
-                count: Int,
-                after: Int
-            ) {
-            }
-
-            override fun onTextChanged(
-                s: CharSequence?,
-                start: Int,
-                before: Int,
-                count: Int
-            ) {
             }
         }
     }

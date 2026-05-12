@@ -1,7 +1,11 @@
 package com.example.boxmanagernew.ui.common
 
 import android.graphics.Typeface
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
 
 object UiUtils {
 
@@ -27,5 +31,57 @@ object UiUtils {
             null,
             Typeface.BOLD
         )
+    }
+
+    fun noEnterWatcher(
+        editText: EditText,
+        error: TextView?
+    ): TextWatcher {
+
+        return object : TextWatcher {
+
+            override fun afterTextChanged(
+                s: Editable?
+            ) {
+
+                if (
+                    s != null &&
+                    s.contains("\n")
+                ) {
+
+                    val cleaned =
+                        s.toString()
+                            .replace(
+                                "\n",
+                                " "
+                            )
+
+                    editText.setText(cleaned)
+
+                    editText.setSelection(
+                        cleaned.length
+                    )
+                }
+
+                error?.visibility =
+                    TextView.GONE
+            }
+
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+            }
+
+            override fun onTextChanged(
+                s: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int
+            ) {
+            }
+        }
     }
 }
