@@ -104,6 +104,56 @@ object DialogUtils {
         )
     }
 
+    fun createBoxDialog(
+        context: Context,
+        categories: List<CategoryEntity>,
+        timestamp: Long,
+        box: Box? = null
+    ): BoxDialogViews {
+
+        val view =
+            inflateAddBoxDialog(context)
+
+        val views =
+            bindBoxDialogViews(
+                context,
+                view
+            )
+
+        setupBoxDialogInputs(
+            views.name,
+            views.position
+        )
+
+        setupBoxDialogWatchers(
+            views.name,
+            views.position,
+            views.errorText
+        )
+
+        setupCategorySpinner(
+            context,
+            views.spinner,
+            categories
+        )
+
+        setupLastModifiedText(
+            views.date,
+            timestamp
+        )
+
+        if (box != null) {
+
+            preloadEditBoxData(
+                views,
+                box,
+                categories
+            )
+        }
+
+        return views
+    }
+
     fun setupBoxDialogInputs(
         name: EditText,
         position: EditText

@@ -741,14 +741,18 @@ class MainActivity : BaseActivity() {
     }
 
     private fun showAddDialog() {
+        val now =
+            System.currentTimeMillis()
+
+        val dialogViews =
+            DialogUtils.createBoxDialog(
+                context = this,
+                categories = categories,
+                timestamp = now
+            )
 
         val view =
-            DialogUtils.inflateAddBoxDialog(this)
-        val dialogViews =
-            DialogUtils.bindBoxDialogViews(
-                this,
-                view
-            )
+            dialogViews.view
 
         val errorText =
             dialogViews.errorText
@@ -761,30 +765,6 @@ class MainActivity : BaseActivity() {
 
         val position =
             dialogViews.position
-
-        val date =
-            dialogViews.date
-        DialogUtils.setupBoxDialogInputs(
-            name,
-            position
-        )
-
-        DialogUtils.setupBoxDialogWatchers(
-            name,
-            position,
-            errorText
-        )
-        DialogUtils.setupCategorySpinner(
-            this,
-            spinner,
-            categories
-        )
-        val now =
-            System.currentTimeMillis()
-        DialogUtils.setupLastModifiedText(
-            date,
-            now
-        )
 
         val dialog =
             AlertDialog.Builder(this)
@@ -841,13 +821,16 @@ class MainActivity : BaseActivity() {
         box: Box
     ) {
 
-        val view =
-            DialogUtils.inflateAddBoxDialog(this)
         val dialogViews =
-            DialogUtils.bindBoxDialogViews(
-                this,
-                view
+            DialogUtils.createBoxDialog(
+                context = this,
+                categories = categories,
+                timestamp = box.lastModified,
+                box = box
             )
+
+        val view =
+            dialogViews.view
 
         val errorText =
             dialogViews.errorText
@@ -860,29 +843,6 @@ class MainActivity : BaseActivity() {
 
         val position =
             dialogViews.position
-
-        val date =
-            dialogViews.date
-        DialogUtils.setupBoxDialogInputs(
-            name,
-            position
-        )
-        DialogUtils.preloadEditBoxData(
-            dialogViews,
-            box,
-            categories
-        )
-        DialogUtils.setupBoxDialogWatchers(
-            name,
-            position,
-            errorText
-        )
-
-        DialogUtils.setupCategorySpinner(
-            this,
-            spinner,
-            categories
-        )
         val dialog =
             AlertDialog.Builder(this)
                 .setView(view)
