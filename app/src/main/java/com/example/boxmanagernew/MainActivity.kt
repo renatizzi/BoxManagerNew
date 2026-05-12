@@ -621,12 +621,11 @@ class MainActivity : BaseActivity() {
 
         val date =
             dialogViews.date
-        spinner.adapter =
-            CategorySpinnerAdapter(
-                this,
-                categories
-            )
-
+        DialogUtils.setupCategorySpinner(
+            this,
+            spinner,
+            categories
+        )
         date.text =
             "Ultima modifica: ${
                 UiUtils.formatDate(
@@ -767,32 +766,21 @@ class MainActivity : BaseActivity() {
 
         val date =
             dialogViews.date
-        name.inputType =
-            InputType.TYPE_CLASS_TEXT
-
-        position.inputType =
-            InputType.TYPE_CLASS_TEXT
-
-        name.addTextChangedListener(
-            UiUtils.noEnterWatcher(
-                name,
-                errorText
-            )
+        DialogUtils.setupBoxDialogInputs(
+            name,
+            position
         )
 
-        position.addTextChangedListener(
-            UiUtils.noEnterWatcher(
-                position,
-                null
-            )
+        DialogUtils.setupBoxDialogWatchers(
+            name,
+            position,
+            errorText
         )
-
-        spinner.adapter =
-            CategorySpinnerAdapter(
-                this,
-                categories
-            )
-
+        DialogUtils.setupCategorySpinner(
+            this,
+            spinner,
+            categories
+        )
         val now =
             System.currentTimeMillis()
 
@@ -857,60 +845,44 @@ class MainActivity : BaseActivity() {
 
         val view =
             DialogUtils.inflateAddBoxDialog(this)
-        val errorText =
-            createRequiredFieldErrorText(this)
-        val name =
-            view.findViewById<EditText>(
-                R.id.editBoxName
+        val dialogViews =
+            DialogUtils.bindBoxDialogViews(
+                this,
+                view
             )
+
+        val errorText =
+            dialogViews.errorText
+
+        val name =
+            dialogViews.name
 
         val spinner =
-            view.findViewById<Spinner>(
-                R.id.spinnerCategory
-            )
+            dialogViews.spinner
 
         val position =
-            view.findViewById<EditText>(
-                R.id.editPosition
-            )
+            dialogViews.position
 
         val date =
-            view.findViewById<TextView>(
-                R.id.textLastModified
-            )
-
-        val container =
-            view as LinearLayout
-
-        container.addView(
-            errorText,
-            0
+            dialogViews.date
+        DialogUtils.setupBoxDialogInputs(
+            name,
+            position
         )
-
         name.setText(box.name)
 
         position.setText(box.position)
-
-        name.addTextChangedListener(
-            UiUtils.noEnterWatcher(
-                name,
-                errorText
-            )
+        DialogUtils.setupBoxDialogWatchers(
+            name,
+            position,
+            errorText
         )
 
-        position.addTextChangedListener(
-            UiUtils.noEnterWatcher(
-                position,
-                null
-            )
+        DialogUtils.setupCategorySpinner(
+            this,
+            spinner,
+            categories
         )
-
-        spinner.adapter =
-            CategorySpinnerAdapter(
-                this,
-                categories
-            )
-
         val index =
             categories.indexOfFirst {
 

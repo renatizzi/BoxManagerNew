@@ -1,6 +1,7 @@
 package com.example.boxmanagernew.ui.common
 
 import android.content.Context
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
@@ -9,6 +10,8 @@ import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.example.boxmanagernew.R
+import com.example.boxmanagernew.data.local.entity.CategoryEntity
+import com.example.boxmanagernew.ui.categories.CategorySpinnerAdapter
 
 object DialogUtils {
 
@@ -98,6 +101,52 @@ object DialogUtils {
             date = date,
             container = container
         )
+    }
+
+    fun setupBoxDialogInputs(
+        name: EditText,
+        position: EditText
+    ) {
+
+        name.inputType =
+            InputType.TYPE_CLASS_TEXT
+
+        position.inputType =
+            InputType.TYPE_CLASS_TEXT
+    }
+
+    fun setupBoxDialogWatchers(
+        name: EditText,
+        position: EditText,
+        errorText: TextView
+    ) {
+
+        name.addTextChangedListener(
+            UiUtils.noEnterWatcher(
+                name,
+                errorText
+            )
+        )
+
+        position.addTextChangedListener(
+            UiUtils.noEnterWatcher(
+                position,
+                null
+            )
+        )
+    }
+
+    fun setupCategorySpinner(
+        context: Context,
+        spinner: Spinner,
+        categories: List<CategoryEntity>
+    ) {
+
+        spinner.adapter =
+            CategorySpinnerAdapter(
+                context,
+                categories
+            )
     }
 
     fun showDeleteConfirmation(
