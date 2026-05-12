@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.data.local.entity.CategoryEntity
+import com.example.boxmanagernew.domain.model.Box
 import com.example.boxmanagernew.ui.categories.CategorySpinnerAdapter
 
 object DialogUtils {
@@ -176,6 +177,32 @@ object DialogUtils {
             "Ultima modifica: ${
                 UiUtils.formatDate(timestamp)
             }"
+    }
+
+    fun preloadEditBoxData(
+        views: BoxDialogViews,
+        box: Box,
+        categories: List<CategoryEntity>
+    ) {
+
+        views.name.setText(
+            box.name
+        )
+
+        views.position.setText(
+            box.position
+        )
+
+        setupCategorySelection(
+            views.spinner,
+            categories,
+            box.categoryId
+        )
+
+        setupLastModifiedText(
+            views.date,
+            box.lastModified
+        )
     }
 
     fun showDeleteConfirmation(

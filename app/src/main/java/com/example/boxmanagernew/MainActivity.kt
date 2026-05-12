@@ -865,9 +865,11 @@ class MainActivity : BaseActivity() {
             name,
             position
         )
-        name.setText(box.name)
-
-        position.setText(box.position)
+        DialogUtils.preloadEditBoxData(
+            dialogViews,
+            box,
+            categories
+        )
         DialogUtils.setupBoxDialogWatchers(
             name,
             position,
@@ -878,15 +880,6 @@ class MainActivity : BaseActivity() {
             this,
             spinner,
             categories
-        )
-        DialogUtils.setupCategorySelection(
-            spinner,
-            categories,
-            box.categoryId
-        )
-        DialogUtils.setupLastModifiedText(
-            date,
-            box.lastModified
         )
         val dialog =
             AlertDialog.Builder(this)
