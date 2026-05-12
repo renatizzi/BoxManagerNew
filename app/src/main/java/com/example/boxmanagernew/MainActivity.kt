@@ -655,14 +655,15 @@ class MainActivity : BaseActivity() {
                 val boxName =
                     name.text.toString().trim()
 
-                if (boxName.isEmpty()) {
-
-                    errorText.visibility =
-                        View.VISIBLE
+                if (
+                    !DialogUtils.validateRequiredName(
+                        boxName,
+                        errorText
+                    )
+                ) {
 
                     return@setOnClickListener
                 }
-
                 val category =
                     spinner.selectedItem
                             as CategoryEntity
@@ -810,14 +811,15 @@ class MainActivity : BaseActivity() {
                 val n =
                     name.text.toString().trim()
 
-                if (n.isEmpty()) {
-
-                    errorText.visibility =
-                        View.VISIBLE
+                if (
+                    !DialogUtils.validateRequiredName(
+                        n,
+                        errorText
+                    )
+                ) {
 
                     return@setOnClickListener
                 }
-
                 val cat =
                     spinner.selectedItem
                             as CategoryEntity
@@ -906,14 +908,15 @@ class MainActivity : BaseActivity() {
                 val n =
                     name.text.toString().trim()
 
-                if (n.isEmpty()) {
-
-                    errorText.visibility =
-                        View.VISIBLE
+                if (
+                    !DialogUtils.validateRequiredName(
+                        n,
+                        errorText
+                    )
+                ) {
 
                     return@setOnClickListener
                 }
-
                 val cat =
                     spinner.selectedItem
                             as CategoryEntity

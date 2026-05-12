@@ -205,6 +205,24 @@ object DialogUtils {
         )
     }
 
+    fun validateRequiredName(
+        name: String,
+        errorText: TextView
+    ): Boolean {
+
+        return if (name.isEmpty()) {
+
+            errorText.visibility =
+                View.VISIBLE
+
+            false
+
+        } else {
+
+            true
+        }
+    }
+
     fun showDeleteConfirmation(
         context: Context,
         onConfirm: () -> Unit
