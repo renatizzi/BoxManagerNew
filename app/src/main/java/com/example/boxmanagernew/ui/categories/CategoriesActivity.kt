@@ -1,8 +1,6 @@
 package com.example.boxmanagernew.ui.categories
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
@@ -39,6 +37,9 @@ class CategoriesActivity : BaseActivity() {
     private lateinit var buttonSort: Button
     private lateinit var textCategoryCount: TextView
 
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var fabAdd: FloatingActionButton
+
     private val iconNames = listOf(
         "outline_checkroom_24",
         "outline_fastfood_24",
@@ -70,32 +71,42 @@ class CategoriesActivity : BaseActivity() {
 
         setupTopBar()
 
-        findViewById<TextView>(
-            R.id.textTitle
-        ).text =
-            "Categorie"
-
-        findViewById<TextView>(
-            R.id.textSubtitle
-        ).text =
-            "Classificazione Contenitori"
+        setupViews()
 
         BottomNavManager.setup(
             this,
             BottomNavManager.TAB_CATEGORIES
         )
 
-        onBackPressedDispatcher.addCallback(
-            this,
-            object : OnBackPressedCallback(true) {
+        setupBackNavigation()
 
-                override fun handleOnBackPressed() {
+        val db =
+            DatabaseProvider.getDatabase(
+                applicationContext
+            )
 
-                    resetUiState()
+        val repository =
+            CategoryRepositoryImpl(
+                db.categoryDao(),
+                db.boxDao()
+            )
 
-                    finish()
-                }
-            }
+        setupViewModel(repository)
+
+        setupAdapter()
+
+        observeData()
+
+        setupListeners()
+
+        showDefaultBar()
+    }
+
+    private fun setupViews() {
+
+        setupPageHeader(
+            title = "Categorie",
+            subtitle = "Classificazione Contenitori"
         )
 
         contextCard =
@@ -116,26 +127,32 @@ class CategoriesActivity : BaseActivity() {
         textCategoryCount =
             findViewById(R.id.textCategoryCount)
 
-        val recyclerView =
-            findViewById<RecyclerView>(
-                R.id.recyclerViewCategories
-            )
+        recyclerView =
+            findViewById(R.id.recyclerViewCategories)
 
-        val fabAdd =
-            findViewById<FloatingActionButton>(
-                R.id.fabAddCategory
-            )
+        fabAdd =
+            findViewById(R.id.fabAddCategory)
+    }
 
-        val db =
-            DatabaseProvider.getDatabase(
-                applicationContext
-            )
+    private fun setupBackNavigation() {
 
-        val repository =
-            CategoryRepositoryImpl(
-                db.categoryDao(),
-                db.boxDao()
-            )
+        onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
+
+                override fun handleOnBackPressed() {
+
+                    resetUiState()
+
+                    finish()
+                }
+            }
+        )
+    }
+
+    private fun setupViewModel(
+        repository: CategoryRepositoryImpl
+    ) {
 
         viewModel =
             ViewModelProvider(
@@ -152,6 +169,9 @@ class CategoriesActivity : BaseActivity() {
                     }
                 }
             )[CategoryViewModel::class.java]
+    }
+
+    private fun setupAdapter() {
 
         adapter =
             CategoryAdapter(
@@ -198,6 +218,9 @@ class CategoriesActivity : BaseActivity() {
 
         recyclerView.adapter =
             adapter
+    }
+
+    private fun observeData() {
 
         viewModel.categories.observe(this) {
 
@@ -222,37 +245,27 @@ class CategoriesActivity : BaseActivity() {
                 it
             )
         }
+    }
 
-        editSearch.addTextChangedListener(
-            object : TextWatcher {
+    private fun setupListeners() {
 
-                override fun afterTextChanged(
-                    s: Editable?
-                ) {
+        UiUtils.setupSearchAndSort(
+            search = editSearch,
+            sortButton = buttonSort,
+            isAscending = true,
 
-                    val query =
-                        s.toString()
+            onSearchChanged = { query ->
 
-                    viewModel.filter(query)
+                viewModel.filter(query)
 
-                    adapter.updateQuery(query)
-                }
+                adapter.updateQuery(query)
+            },
 
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int
-                ) {
-                }
+            onSortClicked = {
 
-                override fun onTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    before: Int,
-                    count: Int
-                ) {
-                }
+                resetUiState()
+
+                viewModel.toggleSort()
             }
         )
 
@@ -276,13 +289,6 @@ class CategoriesActivity : BaseActivity() {
             }
         }
 
-        buttonSort.setOnClickListener {
-
-            resetUiState()
-
-            viewModel.toggleSort()
-        }
-
         fabAdd.setOnClickListener {
 
             resetUiState()
@@ -294,8 +300,6 @@ class CategoriesActivity : BaseActivity() {
 
             resetUiState()
         }
-
-        showDefaultBar()
     }
 
     private fun resetUiState() {
