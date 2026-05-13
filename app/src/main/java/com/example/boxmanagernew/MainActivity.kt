@@ -57,10 +57,28 @@ class MainActivity : BaseActivity() {
 
         setupTopBar()
 
-        val textTitle =
-            findViewById<TextView>(R.id.textTitle)
+        setupViews()
 
-        textTitle.text =
+        val db =
+            DatabaseProvider.getDatabase(applicationContext)
+
+        val repository =
+            BoxRepositoryImpl(db.boxDao())
+
+        initializeDefaultData(db)
+
+        setupAdapter()
+
+        setupViewModel(repository)
+
+        observeData(db)
+
+        setupListeners()
+    }
+
+    private fun setupViews() {
+
+        findViewById<TextView>(R.id.textTitle).text =
             "Contenitori"
 
         findViewById<TextView>(R.id.textSubtitle).text =
@@ -78,12 +96,6 @@ class MainActivity : BaseActivity() {
         buttonSort =
             findViewById(R.id.buttonSort)
 
-        val recyclerView =
-            findViewById<RecyclerView>(R.id.recyclerViewBoxes)
-
-        val fab =
-            findViewById<FloatingActionButton>(R.id.fabAdd)
-
         buttonDeleteSelected =
             findViewById(R.id.btnDeleteSelected)
 
@@ -95,12 +107,11 @@ class MainActivity : BaseActivity() {
 
         selectionBar =
             findViewById(R.id.selectionBar)
+    }
 
-        val db =
-            DatabaseProvider.getDatabase(applicationContext)
-
-        val repository =
-            BoxRepositoryImpl(db.boxDao())
+    private fun initializeDefaultData(
+        db: com.example.boxmanagernew.data.local.AppDatabase
+    ) {
 
         lifecycleScope.launch {
 
@@ -129,6 +140,9 @@ class MainActivity : BaseActivity() {
                 )
             }
         }
+    }
+
+    private fun setupAdapter() {
 
         adapter =
             BoxAdapter(
@@ -145,17 +159,7 @@ class MainActivity : BaseActivity() {
 
                     } else {
 
-                        startActivity(
-                            Intent(
-                                this,
-                                BoxDetailActivity::class.java
-                            ).apply {
-
-                                putExtra("boxId", it.id)
-
-                                putExtra("boxName", it.name)
-                            }
-                        )
+                        openBoxDetail(it)
                     }
                 },
 
@@ -175,11 +179,21 @@ class MainActivity : BaseActivity() {
                 }
             )
 
-        recyclerView.layoutManager =
-            LinearLayoutManager(this)
+        findViewById<RecyclerView>(
+            R.id.recyclerViewBoxes
+        ).apply {
 
-        recyclerView.adapter =
-            adapter
+            layoutManager =
+                LinearLayoutManager(this@MainActivity)
+
+            adapter =
+                this@MainActivity.adapter
+        }
+    }
+
+    private fun setupViewModel(
+        repository: BoxRepositoryImpl
+    ) {
 
         viewModel =
             ViewModelProvider(
@@ -196,6 +210,11 @@ class MainActivity : BaseActivity() {
                     }
                 }
             )[BoxViewModel::class.java]
+    }
+
+    private fun observeData(
+        db: com.example.boxmanagernew.data.local.AppDatabase
+    ) {
 
         db.categoryDao().getAllCategories().observe(this) {
 
@@ -210,18 +229,10 @@ class MainActivity : BaseActivity() {
 
             adapter.updateData(it)
 
-            val selectedCount =
-                viewModel.selectedItems.value?.size ?: 0
-
-            textSelectionCount.text =
-                if (selectedCount > 0) {
-
-                    "N. Contenitori: ${it.size} di cui $selectedCount selezionati"
-
-                } else {
-
-                    "N. Contenitori: ${it.size}"
-                }
+            updateSelectionCounter(
+                viewModel.selectedItems.value?.size ?: 0,
+                it.size
+            )
         }
 
         viewModel.selectedItems.observe(this) {
@@ -233,18 +244,10 @@ class MainActivity : BaseActivity() {
                     View.GONE
                 }
 
-            val totalBoxes =
+            updateSelectionCounter(
+                it.size,
                 viewModel.boxes.value?.size ?: 0
-
-            textSelectionCount.text =
-                if (it.isNotEmpty()) {
-
-                    "N. Contenitori: $totalBoxes di cui ${it.size} selezionati"
-
-                } else {
-
-                    "N. Contenitori: $totalBoxes"
-                }
+            )
 
             adapter.updateSelection(
                 it,
@@ -270,119 +273,30 @@ class MainActivity : BaseActivity() {
             }
         }
 
+        viewModel.isAscending.observe(this) {
+
+            UiUtils.updateSortButton(
+                buttonSort,
+                it
+            )
+        }
+    }
+
+    private fun setupListeners() {
+
         contextCard.setOnClickListener {
 
-            editSearch.setText("")
-
-            viewModel.filter("")
-
-            viewModel.clearSelection()
-
-            adapter.updateQuery("")
-
-            hideKeyboard(editSearch)
+            clearFilterAndSelection()
         }
 
         buttonDeleteSelected.setOnClickListener {
 
-            val ids =
-                viewModel.selectedItems.value?.toList()
-                    ?: return@setOnClickListener
-
-            if (
-                viewModel.hasHiddenSelections.value == true
-            ) {
-
-                contextCard.visibility =
-                    View.VISIBLE
-
-                textContextMessage.text =
-                    "Impossibile eliminare: alcuni elementi selezionati non sono visibili. Tocca qui per rimuovere il filtro."
-
-                return@setOnClickListener
-            }
-
-            lifecycleScope.launch {
-
-                val objectRepository =
-                    ObjectRepositoryImpl(
-                        db.objectDao(),
-                        db.objectTypeDao()
-                    )
-
-                var totalObjects = 0
-
-                ids.forEach { boxId ->
-
-                    totalObjects +=
-                        objectRepository.countObjectsByBox(
-                            boxId
-                        )
-                }
-
-                if (totalObjects > 0) {
-
-                    DialogUtils.showObjectsDeleteDialog(
-                        context = this@MainActivity,
-
-                        onDelete = {
-
-                            viewModel.deleteBoxes(ids)
-                        },
-
-                        onMoveObjects = {
-
-                            showDestinationBoxDialog(
-                                sourceBoxIds = ids,
-                                deleteAfterMove = true
-                            )
-                        }
-                    )
-
-                } else {
-
-                    DialogUtils.showDeleteConfirmation(
-                        context = this@MainActivity
-                    ) {
-
-                        viewModel.deleteBoxes(ids)
-                    }
-                }
-            }
+            handleDeleteSelected()
         }
 
         buttonMoveSelected.setOnClickListener {
 
-            val selected =
-                viewModel.selectedItems.value
-                    ?: emptySet()
-
-            if (selected.isEmpty()) {
-
-                return@setOnClickListener
-            }
-
-            if (
-                viewModel.hasHiddenSelections.value == true
-            ) {
-
-                contextCard.visibility =
-                    View.VISIBLE
-
-                textContextMessage.text =
-                    "Impossibile spostare: alcuni elementi selezionati non sono visibili. Tocca qui per rimuovere il filtro."
-
-                return@setOnClickListener
-            }
-
-            DialogUtils.showMoveBoxesDialog(
-                context = this
-            ) { newPosition ->
-
-                viewModel.moveBoxes(
-                    newPosition
-                )
-            }
+            handleMoveSelected()
         }
 
         editSearch.addTextChangedListener(
@@ -429,15 +343,9 @@ class MainActivity : BaseActivity() {
             viewModel.toggleSort()
         }
 
-        viewModel.isAscending.observe(this) {
-
-            UiUtils.updateSortButton(
-                buttonSort,
-                it
-            )
-        }
-
-        fab.setOnClickListener {
+        findViewById<FloatingActionButton>(
+            R.id.fabAdd
+        ).setOnClickListener {
 
             showAddDialog()
         }
@@ -480,6 +388,159 @@ class MainActivity : BaseActivity() {
                 }
             }
         )
+    }
+
+    private fun openBoxDetail(
+        box: Box
+    ) {
+
+        startActivity(
+            Intent(
+                this,
+                BoxDetailActivity::class.java
+            ).apply {
+
+                putExtra("boxId", box.id)
+
+                putExtra("boxName", box.name)
+            }
+        )
+    }
+
+    private fun clearFilterAndSelection() {
+
+        editSearch.setText("")
+
+        viewModel.filter("")
+
+        viewModel.clearSelection()
+
+        adapter.updateQuery("")
+
+        hideKeyboard(editSearch)
+    }
+
+    private fun updateSelectionCounter(
+        selectedCount: Int,
+        totalBoxes: Int
+    ) {
+
+        textSelectionCount.text =
+            if (selectedCount > 0) {
+
+                "N. Contenitori: $totalBoxes di cui $selectedCount selezionati"
+
+            } else {
+
+                "N. Contenitori: $totalBoxes"
+            }
+    }
+
+    private fun handleDeleteSelected() {
+
+        val ids =
+            viewModel.selectedItems.value?.toList()
+                ?: return
+
+        if (
+            viewModel.hasHiddenSelections.value == true
+        ) {
+
+            contextCard.visibility =
+                View.VISIBLE
+
+            textContextMessage.text =
+                "Impossibile eliminare: alcuni elementi selezionati non sono visibili. Tocca qui per rimuovere il filtro."
+
+            return
+        }
+
+        lifecycleScope.launch {
+
+            val db =
+                DatabaseProvider.getDatabase(
+                    applicationContext
+                )
+
+            val objectRepository =
+                ObjectRepositoryImpl(
+                    db.objectDao(),
+                    db.objectTypeDao()
+                )
+
+            var totalObjects = 0
+
+            ids.forEach { boxId ->
+
+                totalObjects +=
+                    objectRepository.countObjectsByBox(
+                        boxId
+                    )
+            }
+
+            if (totalObjects > 0) {
+
+                DialogUtils.showObjectsDeleteDialog(
+                    context = this@MainActivity,
+
+                    onDelete = {
+
+                        viewModel.deleteBoxes(ids)
+                    },
+
+                    onMoveObjects = {
+
+                        showDestinationBoxDialog(
+                            sourceBoxIds = ids,
+                            deleteAfterMove = true
+                        )
+                    }
+                )
+
+            } else {
+
+                DialogUtils.showDeleteConfirmation(
+                    context = this@MainActivity
+                ) {
+
+                    viewModel.deleteBoxes(ids)
+                }
+            }
+        }
+    }
+
+    private fun handleMoveSelected() {
+
+        val selected =
+            viewModel.selectedItems.value
+                ?: emptySet()
+
+        if (selected.isEmpty()) {
+
+            return
+        }
+
+        if (
+            viewModel.hasHiddenSelections.value == true
+        ) {
+
+            contextCard.visibility =
+                View.VISIBLE
+
+            textContextMessage.text =
+                "Impossibile spostare: alcuni elementi selezionati non sono visibili. Tocca qui per rimuovere il filtro."
+
+            return
+        }
+
+        DialogUtils.showMoveBoxesDialog(
+            context = this
+        ) { newPosition ->
+
+            viewModel.moveBoxes(
+                newPosition
+            )
+        }
     }
 
     private fun showDestinationBoxDialog(
