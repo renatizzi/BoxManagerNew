@@ -606,35 +606,14 @@ class MainActivity : BaseActivity() {
                 timestamp = System.currentTimeMillis()
             )
 
-        val dialog =
-            DialogUtils.createBoxConfirmDialog(
-                context = this,
-                view = dialogViews.view
-            )
-
-        dialog.setOnShowListener {
-
-            val btn =
-                dialog.getButton(
-                    AlertDialog.BUTTON_POSITIVE
-                )
-
-            btn.setOnClickListener {
+        showBoxDialog(
+            dialogViews = dialogViews,
+            onConfirm = {
 
                 val boxName =
                     dialogViews.name.text
                         .toString()
                         .trim()
-
-                if (
-                    !DialogUtils.validateRequiredName(
-                        boxName,
-                        dialogViews.errorText
-                    )
-                ) {
-
-                    return@setOnClickListener
-                }
 
                 val category =
                     dialogViews.spinner.selectedItem
@@ -655,12 +634,8 @@ class MainActivity : BaseActivity() {
                         deleteAfterMove
                     )
                 }
-
-                dialog.dismiss()
             }
-        }
-
-        dialog.show()
+        )
     }
 
     private fun moveObjectsAndDeleteBoxes(
@@ -714,45 +689,21 @@ class MainActivity : BaseActivity() {
 
     private fun showAddDialog() {
 
-        val now =
-            System.currentTimeMillis()
-
         val dialogViews =
             DialogUtils.createBoxDialog(
                 context = this,
                 categories = categories,
-                timestamp = now
+                timestamp = System.currentTimeMillis()
             )
 
-        val dialog =
-            DialogUtils.createBoxConfirmDialog(
-                context = this,
-                view = dialogViews.view
-            )
-
-        dialog.setOnShowListener {
-
-            val btn =
-                dialog.getButton(
-                    AlertDialog.BUTTON_POSITIVE
-                )
-
-            btn.setOnClickListener {
+        showBoxDialog(
+            dialogViews = dialogViews,
+            onConfirm = {
 
                 val n =
                     dialogViews.name.text
                         .toString()
                         .trim()
-
-                if (
-                    !DialogUtils.validateRequiredName(
-                        n,
-                        dialogViews.errorText
-                    )
-                ) {
-
-                    return@setOnClickListener
-                }
 
                 val cat =
                     dialogViews.spinner.selectedItem
@@ -764,12 +715,8 @@ class MainActivity : BaseActivity() {
                     dialogViews.position.text
                         .toString()
                 )
-
-                dialog.dismiss()
             }
-        }
-
-        dialog.show()
+        )
     }
 
     private fun showEditDialog(
@@ -784,35 +731,14 @@ class MainActivity : BaseActivity() {
                 box = box
             )
 
-        val dialog =
-            DialogUtils.createBoxConfirmDialog(
-                context = this,
-                view = dialogViews.view
-            )
-
-        dialog.setOnShowListener {
-
-            val btn =
-                dialog.getButton(
-                    AlertDialog.BUTTON_POSITIVE
-                )
-
-            btn.setOnClickListener {
+        showBoxDialog(
+            dialogViews = dialogViews,
+            onConfirm = {
 
                 val n =
                     dialogViews.name.text
                         .toString()
                         .trim()
-
-                if (
-                    !DialogUtils.validateRequiredName(
-                        n,
-                        dialogViews.errorText
-                    )
-                ) {
-
-                    return@setOnClickListener
-                }
 
                 val cat =
                     dialogViews.spinner.selectedItem
@@ -825,9 +751,43 @@ class MainActivity : BaseActivity() {
                     dialogViews.position.text
                         .toString()
                 )
-
-                dialog.dismiss()
             }
+        )
+    }
+
+    private fun showBoxDialog(
+        dialogViews: DialogUtils.BoxDialogViews,
+        onConfirm: () -> Unit
+    ) {
+
+        val dialog =
+            DialogUtils.createBoxConfirmDialog(
+                context = this,
+                view = dialogViews.view
+            )
+
+        DialogUtils.setupDialogConfirmButton(
+            dialog = dialog
+        ) {
+
+            val name =
+                dialogViews.name.text
+                    .toString()
+                    .trim()
+
+            if (
+                !DialogUtils.validateRequiredName(
+                    name,
+                    dialogViews.errorText
+                )
+            ) {
+
+                return@setupDialogConfirmButton
+            }
+
+            onConfirm()
+
+            dialog.dismiss()
         }
 
         dialog.show()
