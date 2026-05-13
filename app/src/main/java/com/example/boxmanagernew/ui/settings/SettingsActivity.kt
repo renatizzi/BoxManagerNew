@@ -4,72 +4,67 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.boxmanagernew.R
+import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
-import com.example.boxmanagernew.ui.common.TopBarUtils
 
-class SettingsActivity : AppCompatActivity() {
+class SettingsActivity : BaseActivity() {
 
     companion object {
-        const val PREFS = "boxmanager_settings"
-        const val KEY_USERNAME = "username"
+
+        const val PREFS =
+            "boxmanager_settings"
+
+        const val KEY_USERNAME =
+            "username"
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private lateinit var editUserName: EditText
+    private lateinit var buttonSave: Button
+    private lateinit var textSaveMessage: View
 
-        WindowCompat.setDecorFitsSystemWindows(window, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+
+        super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_settings)
 
-        val root = findViewById<View>(android.R.id.content)
+        setupEdgeToEdge()
 
-        ViewCompat.setOnApplyWindowInsetsListener(root) { view, insets ->
+        setupTopBar()
 
-            val systemBars =
-                insets.getInsets(WindowInsetsCompat.Type.systemBars())
+        setupViews()
 
-            view.setPadding(
-                systemBars.left,
-                systemBars.top,
-                systemBars.right,
-                systemBars.bottom
-            )
+        loadPreferences()
 
-            insets
-        }
+        setupListeners()
 
-        TopBarUtils.bindTitle(
-            findViewById(R.id.textGlobalTitle)
-        )
-
-        TopBarUtils.bindSubtitle(
+        BottomNavManager.setup(
             this,
-            findViewById(R.id.textGlobalSubtitle)
+            BottomNavManager.TAB_SETTINGS
+        )
+    }
+
+    private fun setupViews() {
+
+        setupPageHeader(
+            title = "Impostazioni",
+            subtitle = "Setup Archivio"
         )
 
-        findViewById<TextView>(R.id.textTitle).text =
-            "Impostazioni"
+        editUserName =
+            findViewById(R.id.editUserName)
 
-        findViewById<TextView>(R.id.textSubtitle).text =
-            "Setup Archivio"
+        buttonSave =
+            findViewById(R.id.buttonSaveUser)
 
-        val editUserName =
-            findViewById<EditText>(R.id.editUserName)
+        textSaveMessage =
+            findViewById(R.id.textSaveMessage)
+    }
 
-        val buttonSave =
-            findViewById<Button>(R.id.buttonSaveUser)
-
-        val textSaveMessage =
-            findViewById<TextView>(R.id.textSaveMessage)
+    private fun loadPreferences() {
 
         val prefs =
             getSharedPreferences(
@@ -78,62 +73,63 @@ class SettingsActivity : AppCompatActivity() {
             )
 
         editUserName.setText(
-            prefs.getString(KEY_USERNAME, "")
+            prefs.getString(
+                KEY_USERNAME,
+                ""
+            )
         )
+    }
 
-        editUserName.setOnEditorActionListener { _, actionId, _ ->
+    private fun setupListeners() {
 
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
+        editUserName.setOnEditorActionListener {
+                _,
+                actionId,
+                _ ->
 
-                hideKeyboard()
+            if (
+                actionId ==
+                EditorInfo.IME_ACTION_DONE
+            ) {
 
-                editUserName.clearFocus()
+                hideKeyboardAndClearFocus()
 
                 true
 
-            } else false
+            } else {
+
+                false
+            }
         }
 
         buttonSave.setOnClickListener {
 
-            val value =
-                editUserName.text.toString().trim()
-
-            prefs.edit()
-                .putString(KEY_USERNAME, value)
-                .apply()
-
-            TopBarUtils.bindSubtitle(
-                this,
-                findViewById(R.id.textGlobalSubtitle)
-            )
-
-            hideKeyboard()
-
-            editUserName.clearFocus()
-
-            textSaveMessage.visibility = View.VISIBLE
+            saveUsername()
         }
-
-        BottomNavManager.setup(
-            this,
-            BottomNavManager.TAB_SETTINGS
-        )
     }
 
-    private fun hideKeyboard() {
+    private fun saveUsername() {
 
-        val imm =
-            getSystemService(
-                Context.INPUT_METHOD_SERVICE
-            ) as InputMethodManager
+        val value =
+            editUserName.text
+                .toString()
+                .trim()
 
-        currentFocus?.let {
-
-            imm.hideSoftInputFromWindow(
-                it.windowToken,
-                0
+        getSharedPreferences(
+            PREFS,
+            Context.MODE_PRIVATE
+        ).edit()
+            .putString(
+                KEY_USERNAME,
+                value
             )
-        }
+            .apply()
+
+        refreshTopBar()
+
+        hideKeyboardAndClearFocus()
+
+        textSaveMessage.visibility =
+            View.VISIBLE
     }
 }
