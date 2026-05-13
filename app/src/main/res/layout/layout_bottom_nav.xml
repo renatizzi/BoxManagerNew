@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/bottomNav"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -8,7 +10,9 @@
     android:elevation="8dp"
     android:weightSum="5"
     android:paddingTop="8dp"
-    android:paddingBottom="8dp">
+    android:paddingBottom="8dp"
+    android:paddingStart="4dp"
+    android:paddingEnd="4dp">
 
     <TextView
         android:id="@+id/navDashboard"
@@ -17,10 +21,13 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="Dashboard"
+        android:textStyle="bold"
+        android:textSize="13sp"
         android:textColor="@color/text_secondary"
         android:clickable="true"
         android:focusable="true"
-        android:foreground="?attr/selectableItemBackground" />
+        android:foreground="?attr/selectableItemBackground"
+        android:background="?attr/colorSurface" />
 
     <TextView
         android:id="@+id/navBoxes"
@@ -29,10 +36,13 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="Contenitori"
+        android:textStyle="bold"
+        android:textSize="13sp"
         android:textColor="@color/text_secondary"
         android:clickable="true"
         android:focusable="true"
-        android:foreground="?attr/selectableItemBackground" />
+        android:foreground="?attr/selectableItemBackground"
+        android:background="?attr/colorSurface" />
 
     <TextView
         android:id="@+id/navCategories"
@@ -41,10 +51,13 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="Categorie"
+        android:textStyle="bold"
+        android:textSize="13sp"
         android:textColor="@color/text_secondary"
         android:clickable="true"
         android:focusable="true"
-        android:foreground="?attr/selectableItemBackground" />
+        android:foreground="?attr/selectableItemBackground"
+        android:background="?attr/colorSurface" />
 
     <TextView
         android:id="@+id/navUtility"
@@ -53,10 +66,13 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="Utility"
+        android:textStyle="bold"
+        android:textSize="13sp"
         android:textColor="@color/text_secondary"
         android:clickable="true"
         android:focusable="true"
-        android:foreground="?attr/selectableItemBackground" />
+        android:foreground="?attr/selectableItemBackground"
+        android:background="?attr/colorSurface" />
 
     <TextView
         android:id="@+id/navSettings"
@@ -65,10 +81,12 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="⚙"
+        android:textStyle="bold"
         android:textSize="20sp"
         android:textColor="@color/text_secondary"
         android:clickable="true"
         android:focusable="true"
-        android:foreground="?attr/selectableItemBackground" />
+        android:foreground="?attr/selectableItemBackground"
+        android:background="?attr/colorSurface" />
 
 </LinearLayout>

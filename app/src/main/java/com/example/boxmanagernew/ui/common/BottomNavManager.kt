@@ -2,7 +2,9 @@ package com.example.boxmanagernew.ui.common
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Typeface
 import android.view.View
+import android.widget.TextView
 import com.example.boxmanagernew.MainActivity
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.ui.categories.CategoriesActivity
@@ -18,25 +20,46 @@ object BottomNavManager {
     const val TAB_UTILITY = 3
     const val TAB_SETTINGS = 4
 
-    fun setup(activity: Activity, currentTab: Int) {
+    fun setup(
+        activity: Activity,
+        currentTab: Int
+    ) {
 
-        val navDashboard = activity.findViewById<View>(R.id.navDashboard)
-        val navBoxes = activity.findViewById<View>(R.id.navBoxes)
-        val navCategories = activity.findViewById<View>(R.id.navCategories)
-        val navUtility = activity.findViewById<View>(R.id.navUtility)
-        val navSettings = activity.findViewById<View>(R.id.navSettings)
+        val navDashboard =
+            activity.findViewById<View>(
+                R.id.navDashboard
+            )
+
+        val navBoxes =
+            activity.findViewById<View>(
+                R.id.navBoxes
+            )
+
+        val navCategories =
+            activity.findViewById<View>(
+                R.id.navCategories
+            )
+
+        val navUtility =
+            activity.findViewById<View>(
+                R.id.navUtility
+            )
+
+        val navSettings =
+            activity.findViewById<View>(
+                R.id.navSettings
+            )
 
         navDashboard?.setOnClickListener {
 
-            if (currentTab == TAB_DASHBOARD) return@setOnClickListener
-
-            val intent = Intent(activity, DashboardActivity::class.java).apply {
-                flags =
-                    Intent.FLAG_ACTIVITY_CLEAR_TOP or
-                            Intent.FLAG_ACTIVITY_SINGLE_TOP
+            if (currentTab == TAB_DASHBOARD) {
+                return@setOnClickListener
             }
 
-            activity.startActivity(intent)
+            openActivity(
+                activity,
+                DashboardActivity::class.java
+            )
         }
 
         navBoxes?.setOnClickListener {
@@ -45,81 +68,124 @@ object BottomNavManager {
 
                 if (activity !is MainActivity) {
 
-                    val intent = Intent(activity, MainActivity::class.java).apply {
-                        flags =
-                            Intent.FLAG_ACTIVITY_CLEAR_TOP or
-                                    Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    }
-
-                    activity.startActivity(intent)
+                    openActivity(
+                        activity,
+                        MainActivity::class.java
+                    )
                 }
 
                 return@setOnClickListener
             }
 
-            val intent = Intent(activity, MainActivity::class.java).apply {
-                flags =
-                    Intent.FLAG_ACTIVITY_CLEAR_TOP or
-                            Intent.FLAG_ACTIVITY_SINGLE_TOP
-            }
-
-            activity.startActivity(intent)
+            openActivity(
+                activity,
+                MainActivity::class.java
+            )
         }
 
         navCategories?.setOnClickListener {
 
-            if (currentTab == TAB_CATEGORIES) return@setOnClickListener
-
-            val intent = Intent(activity, CategoriesActivity::class.java).apply {
-                flags =
-                    Intent.FLAG_ACTIVITY_CLEAR_TOP or
-                            Intent.FLAG_ACTIVITY_SINGLE_TOP
+            if (currentTab == TAB_CATEGORIES) {
+                return@setOnClickListener
             }
 
-            activity.startActivity(intent)
+            openActivity(
+                activity,
+                CategoriesActivity::class.java
+            )
         }
 
         navUtility?.setOnClickListener {
 
-            if (currentTab == TAB_UTILITY) return@setOnClickListener
-
-            val intent = Intent(activity, UtilityActivity::class.java).apply {
-                flags =
-                    Intent.FLAG_ACTIVITY_CLEAR_TOP or
-                            Intent.FLAG_ACTIVITY_SINGLE_TOP
+            if (currentTab == TAB_UTILITY) {
+                return@setOnClickListener
             }
 
-            activity.startActivity(intent)
+            openActivity(
+                activity,
+                UtilityActivity::class.java
+            )
         }
 
         navSettings?.setOnClickListener {
 
-            if (currentTab == TAB_SETTINGS) return@setOnClickListener
+            if (currentTab == TAB_SETTINGS) {
+                return@setOnClickListener
+            }
 
-            val intent = Intent(activity, SettingsActivity::class.java).apply {
+            openActivity(
+                activity,
+                SettingsActivity::class.java
+            )
+        }
+
+        updateSelection(
+            activity,
+            currentTab
+        )
+    }
+
+    private fun openActivity(
+        activity: Activity,
+        target: Class<*>
+    ) {
+
+        val intent =
+            Intent(activity, target).apply {
+
                 flags =
                     Intent.FLAG_ACTIVITY_CLEAR_TOP or
                             Intent.FLAG_ACTIVITY_SINGLE_TOP
             }
 
-            activity.startActivity(intent)
-        }
-
-        updateSelection(activity, currentTab)
+        activity.startActivity(intent)
     }
 
-    private fun updateSelection(activity: Activity, currentTab: Int) {
+    private fun updateSelection(
+        activity: Activity,
+        currentTab: Int
+    ) {
 
         val tabs = listOf(
-            activity.findViewById<View>(R.id.navDashboard),
-            activity.findViewById<View>(R.id.navBoxes),
-            activity.findViewById<View>(R.id.navCategories),
-            activity.findViewById<View>(R.id.navUtility),
-            activity.findViewById<View>(R.id.navSettings)
+            activity.findViewById<TextView>(
+                R.id.navDashboard
+            ),
+            activity.findViewById<TextView>(
+                R.id.navBoxes
+            ),
+            activity.findViewById<TextView>(
+                R.id.navCategories
+            ),
+            activity.findViewById<TextView>(
+                R.id.navUtility
+            ),
+            activity.findViewById<TextView>(
+                R.id.navSettings
+            )
         )
 
         tabs.forEachIndexed { index, view ->
-            view?.alpha = if (index == currentTab) 1f else 0.5f
+
+            view ?: return@forEachIndexed
+
+            val selected =
+                index == currentTab
+
+            view.alpha =
+                if (selected) {
+                    1f
+                } else {
+                    0.55f
+                }
+
+            view.setTypeface(
+                null,
+                if (selected) {
+                    Typeface.BOLD
+                } else {
+                    Typeface.NORMAL
+                }
+            )
         }
     }
 }
