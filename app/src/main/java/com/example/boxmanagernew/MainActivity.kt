@@ -44,6 +44,9 @@ class MainActivity : BaseActivity() {
     private lateinit var editSearch: EditText
     private lateinit var buttonSort: Button
 
+    private lateinit var recyclerViewBoxes: RecyclerView
+    private lateinit var fabAdd: FloatingActionButton
+
     private var categories: List<CategoryEntity> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -105,6 +108,12 @@ class MainActivity : BaseActivity() {
 
         selectionBar =
             findViewById(R.id.selectionBar)
+
+        recyclerViewBoxes =
+            findViewById(R.id.recyclerViewBoxes)
+
+        fabAdd =
+            findViewById(R.id.fabAdd)
     }
 
     private fun initializeDefaultData(
@@ -177,16 +186,16 @@ class MainActivity : BaseActivity() {
                 }
             )
 
-        findViewById<RecyclerView>(
-            R.id.recyclerViewBoxes
-        ).apply {
+        setupRecyclerView()
+    }
 
-            layoutManager =
-                LinearLayoutManager(this@MainActivity)
+    private fun setupRecyclerView() {
 
-            adapter =
-                this@MainActivity.adapter
-        }
+        recyclerViewBoxes.layoutManager =
+            LinearLayoutManager(this)
+
+        recyclerViewBoxes.adapter =
+            adapter
     }
 
     private fun setupViewModel(
@@ -313,12 +322,7 @@ class MainActivity : BaseActivity() {
             }
         )
 
-        findViewById<FloatingActionButton>(
-            R.id.fabAdd
-        ).setOnClickListener {
-
-            showAddDialog()
-        }
+        setupFab()
 
         BottomNavManager.setup(
             this,
@@ -358,6 +362,14 @@ class MainActivity : BaseActivity() {
                 }
             }
         )
+    }
+
+    private fun setupFab() {
+
+        fabAdd.setOnClickListener {
+
+            showAddDialog()
+        }
     }
 
     private fun openBoxDetail(
