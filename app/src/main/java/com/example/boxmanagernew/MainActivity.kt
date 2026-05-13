@@ -798,63 +798,22 @@ class MainActivity : BaseActivity() {
 
             if (objectCount > 0) {
 
-                val firstDialog =
-                    AlertDialog.Builder(
-                        this@MainActivity
-                    )
-                        .setMessage(
-                            "Confermi anche l'eliminazione degli oggetti contenuti?"
+                DialogUtils.showObjectsDeleteDialog(
+                    context = this@MainActivity,
+
+                    onDelete = {
+
+                        viewModel.deleteBox(id)
+                    },
+
+                    onMoveObjects = {
+
+                        showDestinationBoxDialog(
+                            sourceBoxIds = listOf(id),
+                            deleteAfterMove = true
                         )
-                        .setPositiveButton(
-                            "SI"
-                        ) { _, _ ->
-
-                            viewModel.deleteBox(id)
-                        }
-                        .setNegativeButton(
-                            "NO",
-                            null
-                        )
-                        .create()
-
-                firstDialog.setOnShowListener {
-
-                    val noButton =
-                        firstDialog.getButton(
-                            AlertDialog.BUTTON_NEGATIVE
-                        )
-
-                    noButton.setOnClickListener {
-
-                        firstDialog.dismiss()
-
-                        window.decorView.post {
-
-                            AlertDialog.Builder(
-                                this@MainActivity
-                            )
-                                .setMessage(
-                                    "Vuoi spostare gli oggetti in un altro contenitore?"
-                                )
-                                .setPositiveButton(
-                                    "SI"
-                                ) { _, _ ->
-
-                                    showDestinationBoxDialog(
-                                        sourceBoxIds = listOf(id),
-                                        deleteAfterMove = true
-                                    )
-                                }
-                                .setNegativeButton(
-                                    "ANNULLA",
-                                    null
-                                )
-                                .show()
-                        }
                     }
-                }
-
-                firstDialog.show()
+                )
 
             } else {
 
