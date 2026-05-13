@@ -2,10 +2,12 @@ package com.example.boxmanagernew.ui.common
 
 import android.content.Context
 import android.graphics.Rect
+import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
@@ -13,6 +15,13 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.boxmanagernew.R
 
 abstract class BaseActivity : AppCompatActivity() {
+
+    override fun onResume() {
+
+        super.onResume()
+
+        refreshTopBar()
+    }
 
     protected fun setupEdgeToEdge() {
 
@@ -48,14 +57,59 @@ abstract class BaseActivity : AppCompatActivity() {
 
     protected fun setupTopBar() {
 
-        TopBarUtils.bindTitle(
-            findViewById(R.id.textGlobalTitle)
-        )
+        val title =
+            findViewById<TextView>(
+                R.id.textGlobalTitle
+            )
 
-        TopBarUtils.bindSubtitle(
-            this,
-            findViewById(R.id.textGlobalSubtitle)
-        )
+        val subtitle =
+            findViewById<TextView>(
+                R.id.textGlobalSubtitle
+            )
+
+        if (
+            title != null &&
+            subtitle != null
+        ) {
+
+            TopBarUtils.bindTopBar(
+                this,
+                title,
+                subtitle
+            )
+        }
+    }
+
+    protected fun setupPageHeader(
+        title: String,
+        subtitle: String
+    ) {
+
+        findViewById<TextView>(
+            R.id.textTitle
+        )?.text =
+            title
+
+        findViewById<TextView>(
+            R.id.textSubtitle
+        )?.text =
+            subtitle
+    }
+
+    protected fun refreshTopBar() {
+
+        val subtitle =
+            findViewById<TextView>(
+                R.id.textGlobalSubtitle
+            )
+
+        subtitle?.let {
+
+            TopBarUtils.bindSubtitle(
+                this,
+                it
+            )
+        }
     }
 
     protected fun hideKeyboard(

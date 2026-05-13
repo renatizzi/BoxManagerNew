@@ -79,11 +79,10 @@ class MainActivity : BaseActivity() {
 
     private fun setupViews() {
 
-        findViewById<TextView>(R.id.textTitle).text =
-            "Contenitori"
-
-        findViewById<TextView>(R.id.textSubtitle).text =
-            "Gestione Contenitori e loro contenuti"
+        setupPageHeader(
+            title = "Contenitori",
+            subtitle = "Gestione Contenitori e loro contenuti"
+        )
 
         contextCard =
             findViewById(R.id.contextCard)
