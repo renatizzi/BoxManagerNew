@@ -2,8 +2,6 @@ package com.example.boxmanagernew
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
@@ -297,48 +295,23 @@ class MainActivity : BaseActivity() {
             handleMoveSelected()
         }
 
-        editSearch.addTextChangedListener(
-            object : TextWatcher {
+        UiUtils.setupSearchAndSort(
+            search = editSearch,
+            sortButton = buttonSort,
+            isAscending = true,
 
-                override fun afterTextChanged(
-                    s: Editable?
-                ) {
+            onSearchChanged = { query ->
 
-                    val query =
-                        s.toString()
+                viewModel.filter(query)
 
-                    viewModel.filter(query)
+                adapter.updateQuery(query)
+            },
 
-                    adapter.updateQuery(query)
-                }
+            onSortClicked = {
 
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    s1: Int,
-                    s2: Int,
-                    s3: Int
-                ) {
-                }
-
-                override fun onTextChanged(
-                    s: CharSequence?,
-                    s1: Int,
-                    s2: Int,
-                    s3: Int
-                ) {
-                }
+                viewModel.toggleSort()
             }
         )
-
-        UiUtils.updateSortButton(
-            buttonSort,
-            true
-        )
-
-        buttonSort.setOnClickListener {
-
-            viewModel.toggleSort()
-        }
 
         findViewById<FloatingActionButton>(
             R.id.fabAdd

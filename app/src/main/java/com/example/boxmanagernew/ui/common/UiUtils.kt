@@ -13,6 +13,21 @@ import java.util.Locale
 
 object UiUtils {
 
+    private const val SORT_ASC =
+        "▲"
+
+    private const val SORT_DESC =
+        "▼"
+
+    private const val SORT_LABEL =
+        "ORDINA"
+
+    private const val SORT_TEXT_SIZE =
+        18f
+
+    private const val DATE_PATTERN =
+        "dd/MM/yyyy HH:mm"
+
     fun updateSortButton(
         button: Button,
         isAscending: Boolean
@@ -20,21 +35,70 @@ object UiUtils {
 
         val arrow =
             if (isAscending) {
-                "▲"
+                SORT_ASC
             } else {
-                "▼"
+                SORT_DESC
             }
 
         button.text =
-            "ORDINA $arrow"
+            "$SORT_LABEL $arrow"
 
         button.textSize =
-            18f
+            SORT_TEXT_SIZE
 
         button.setTypeface(
             null,
             Typeface.BOLD
         )
+    }
+
+    fun setupSearchAndSort(
+        search: EditText,
+        sortButton: Button,
+        isAscending: Boolean,
+        onSearchChanged: (String) -> Unit,
+        onSortClicked: () -> Unit
+    ) {
+
+        search.addTextChangedListener(
+            object : TextWatcher {
+
+                override fun afterTextChanged(
+                    s: Editable?
+                ) {
+
+                    onSearchChanged(
+                        s.toString()
+                    )
+                }
+
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                }
+
+                override fun onTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    before: Int,
+                    count: Int
+                ) {
+                }
+            }
+        )
+
+        updateSortButton(
+            sortButton,
+            isAscending
+        )
+
+        sortButton.setOnClickListener {
+
+            onSortClicked()
+        }
     }
 
     fun showContextMessage(
@@ -115,7 +179,7 @@ object UiUtils {
     ): String {
 
         return SimpleDateFormat(
-            "dd/MM/yyyy HH:mm",
+            DATE_PATTERN,
             Locale.getDefault()
         ).format(
             Date(ts)
