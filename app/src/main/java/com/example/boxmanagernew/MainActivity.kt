@@ -49,6 +49,7 @@ class MainActivity : BaseActivity() {
     private var categories: List<CategoryEntity> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
@@ -259,17 +260,15 @@ class MainActivity : BaseActivity() {
             this
         ) { hidden ->
 
-            contextCard.visibility =
-                if (hidden) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
-
             if (hidden) {
 
-                textContextMessage.text =
+                showContextMessage(
                     "Alcuni elementi selezionati non sono visibili. Tocca qui per rimuovere il filtro."
+                )
+
+            } else {
+
+                hideContextMessage()
             }
         }
 
@@ -306,13 +305,12 @@ class MainActivity : BaseActivity() {
                     s: Editable?
                 ) {
 
-                    viewModel.filter(
+                    val query =
                         s.toString()
-                    )
 
-                    adapter.updateQuery(
-                        s.toString()
-                    )
+                    viewModel.filter(query)
+
+                    adapter.updateQuery(query)
                 }
 
                 override fun beforeTextChanged(
@@ -418,6 +416,26 @@ class MainActivity : BaseActivity() {
         adapter.updateQuery("")
 
         hideKeyboard(editSearch)
+
+        hideContextMessage()
+    }
+
+    private fun showContextMessage(
+        message: String
+    ) {
+
+        UiUtils.showContextMessage(
+            contextCard,
+            textContextMessage,
+            message
+        )
+    }
+
+    private fun hideContextMessage() {
+
+        UiUtils.hideContextMessage(
+            contextCard
+        )
     }
 
     private fun updateSelectionCounter(
@@ -446,11 +464,9 @@ class MainActivity : BaseActivity() {
             viewModel.hasHiddenSelections.value == true
         ) {
 
-            contextCard.visibility =
-                View.VISIBLE
-
-            textContextMessage.text =
+            showContextMessage(
                 "Impossibile eliminare: alcuni elementi selezionati non sono visibili. Tocca qui per rimuovere il filtro."
+            )
 
             return
         }
@@ -524,11 +540,9 @@ class MainActivity : BaseActivity() {
             viewModel.hasHiddenSelections.value == true
         ) {
 
-            contextCard.visibility =
-                View.VISIBLE
-
-            textContextMessage.text =
+            showContextMessage(
                 "Impossibile spostare: alcuni elementi selezionati non sono visibili. Tocca qui per rimuovere il filtro."
+            )
 
             return
         }

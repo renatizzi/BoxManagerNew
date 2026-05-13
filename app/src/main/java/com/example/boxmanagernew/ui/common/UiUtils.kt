@@ -3,6 +3,7 @@ package com.example.boxmanagernew.ui.common
 import android.graphics.Typeface
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -36,6 +37,27 @@ object UiUtils {
         )
     }
 
+    fun showContextMessage(
+        contextCard: View,
+        messageView: TextView,
+        message: String
+    ) {
+
+        contextCard.visibility =
+            View.VISIBLE
+
+        messageView.text =
+            message
+    }
+
+    fun hideContextMessage(
+        contextCard: View
+    ) {
+
+        contextCard.visibility =
+            View.GONE
+    }
+
     fun noEnterWatcher(
         editText: EditText,
         error: TextView?
@@ -67,7 +89,7 @@ object UiUtils {
                 }
 
                 error?.visibility =
-                    TextView.GONE
+                    View.GONE
             }
 
             override fun beforeTextChanged(
