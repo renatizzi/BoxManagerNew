@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -186,30 +187,7 @@ class CategoriesActivity : BaseActivity() {
 
                 onDelete = { category ->
 
-                    lifecycleScope.launch {
-
-                        val isUsed =
-                            viewModel.isCategoryUsed(
-                                category.id
-                            )
-
-                        if (isUsed) {
-
-                            viewModel.selectCategory(
-                                category.id
-                            )
-
-                            showWarningMessage(
-                                "Categoria in uso: eliminazione non consentita. Tocca qui per annullare."
-                            )
-
-                        } else {
-
-                            resetUiState()
-
-                            showDeleteDialog(category)
-                        }
-                    }
+                    handleDeleteCategory(category)
                 }
             )
 
@@ -302,6 +280,36 @@ class CategoriesActivity : BaseActivity() {
         }
     }
 
+    private fun handleDeleteCategory(
+        category: Category
+    ) {
+
+        lifecycleScope.launch {
+
+            val isUsed =
+                viewModel.isCategoryUsed(
+                    category.id
+                )
+
+            if (isUsed) {
+
+                viewModel.selectCategory(
+                    category.id
+                )
+
+                showWarningMessage(
+                    "Categoria in uso: eliminazione non consentita. Tocca qui per annullare."
+                )
+
+            } else {
+
+                resetUiState()
+
+                showDeleteDialog(category)
+            }
+        }
+    }
+
     private fun resetUiState() {
 
         viewModel.clearSelection()
@@ -344,6 +352,112 @@ class CategoriesActivity : BaseActivity() {
 
     private fun showAddCategoryDialog() {
 
+        val dialogViews =
+            createCategoryDialog()
+
+        val dialog =
+            createCategoryAlertDialog(
+                title = "Nuova categoria",
+                view = dialogViews.view,
+                positiveText = "Aggiungi"
+            )
+
+        setupCategoryDialogConfirm(
+            dialog = dialog,
+            editName = dialogViews.editName,
+            iconAdapter = dialogViews.iconAdapter,
+            textError = dialogViews.textError
+        ) { name, icon ->
+
+            lifecycleScope.launch {
+
+                val success =
+                    viewModel.insert(
+                        Category(
+                            name = name,
+                            icon = icon
+                        )
+                    )
+
+                handleCategoryDialogResult(
+                    success = success,
+                    dialog = dialog,
+                    textError = dialogViews.textError
+                )
+            }
+        }
+
+        dialog.show()
+    }
+
+    private fun showEditCategoryDialog(
+        category: Category
+    ) {
+
+        lifecycleScope.launch {
+
+            val isUsed =
+                viewModel.isCategoryUsed(
+                    category.id
+                )
+
+            if (isUsed) {
+
+                showWarningMessage(
+                    "Categoria in uso: modificandola, i contenitori verranno aggiornati. Tocca qui per annullare."
+                )
+            }
+
+            val dialogViews =
+                createCategoryDialog(
+                    category
+                )
+
+            val dialog =
+                createCategoryAlertDialog(
+                    title = "Modifica categoria",
+                    view = dialogViews.view,
+                    positiveText = "Salva"
+                )
+
+            dialog.setOnDismissListener {
+
+                resetUiState()
+            }
+
+            setupCategoryDialogConfirm(
+                dialog = dialog,
+                editName = dialogViews.editName,
+                iconAdapter = dialogViews.iconAdapter,
+                textError = dialogViews.textError
+            ) { name, icon ->
+
+                lifecycleScope.launch {
+
+                    val success =
+                        viewModel.update(
+                            category.copy(
+                                name = name,
+                                icon = icon
+                            )
+                        )
+
+                    handleCategoryDialogResult(
+                        success = success,
+                        dialog = dialog,
+                        textError = dialogViews.textError
+                    )
+                }
+            }
+
+            dialog.show()
+        }
+    }
+
+    private fun createCategoryDialog(
+        category: Category? = null
+    ): CategoryDialogViews {
+
         val view =
             layoutInflater.inflate(
                 R.layout.dialog_add_category,
@@ -378,28 +492,64 @@ class CategoriesActivity : BaseActivity() {
         recyclerIcons.adapter =
             iconAdapter
 
-        val dialog =
-            androidx.appcompat.app.AlertDialog.Builder(this)
-                .setTitle("Nuova categoria")
-                .setView(view)
-                .setNegativeButton(
-                    "Annulla",
-                    null
-                )
-                .setPositiveButton(
-                    "Aggiungi",
-                    null
-                )
-                .create()
+        if (category != null) {
+
+            editName.setText(
+                category.name
+            )
+
+            iconAdapter.setSelectedIcon(
+                category.icon
+            )
+        }
+
+        return CategoryDialogViews(
+            view = view,
+            editName = editName,
+            textError = textError,
+            iconAdapter = iconAdapter
+        )
+    }
+
+    private fun createCategoryAlertDialog(
+        title: String,
+        view: View,
+        positiveText: String
+    ): AlertDialog {
+
+        return AlertDialog.Builder(this)
+            .setTitle(title)
+            .setView(view)
+            .setNegativeButton(
+                "Annulla",
+                null
+            )
+            .setPositiveButton(
+                positiveText,
+                null
+            )
+            .create()
+    }
+
+    private fun setupCategoryDialogConfirm(
+        dialog: AlertDialog,
+        editName: EditText,
+        iconAdapter: IconAdapter,
+        textError: TextView,
+        onValid: (
+            name: String,
+            icon: String
+        ) -> Unit
+    ) {
 
         dialog.setOnShowListener {
 
-            val btnAdd =
+            val button =
                 dialog.getButton(
-                    androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE
+                    AlertDialog.BUTTON_POSITIVE
                 )
 
-            btnAdd.setOnClickListener {
+            button.setOnClickListener {
 
                 val name =
                     editName.text
@@ -434,182 +584,33 @@ class CategoriesActivity : BaseActivity() {
                     return@setOnClickListener
                 }
 
-                lifecycleScope.launch {
-
-                    val success =
-                        viewModel.insert(
-                            Category(
-                                name = name,
-                                icon = selectedIcon
-                            )
-                        )
-
-                    if (success) {
-
-                        resetUiState()
-
-                        dialog.dismiss()
-
-                    } else {
-
-                        textError.text =
-                            "Categoria già esistente"
-
-                        textError.visibility =
-                            View.VISIBLE
-                    }
-                }
+                onValid(
+                    name,
+                    selectedIcon
+                )
             }
         }
-
-        dialog.show()
     }
 
-    private fun showEditCategoryDialog(
-        category: Category
+    private fun handleCategoryDialogResult(
+        success: Boolean,
+        dialog: AlertDialog,
+        textError: TextView
     ) {
 
-        lifecycleScope.launch {
+        if (success) {
 
-            val isUsed =
-                viewModel.isCategoryUsed(
-                    category.id
-                )
+            resetUiState()
 
-            if (isUsed) {
+            dialog.dismiss()
 
-                showWarningMessage(
-                    "Categoria in uso: modificandola, i contenitori verranno aggiornati. Tocca qui per annullare."
-                )
-            }
+        } else {
 
-            val view =
-                layoutInflater.inflate(
-                    R.layout.dialog_add_category,
-                    null
-                )
+            textError.text =
+                "Categoria già esistente"
 
-            val editName =
-                view.findViewById<EditText>(
-                    R.id.editCategoryName
-                )
-
-            val recyclerIcons =
-                view.findViewById<RecyclerView>(
-                    R.id.recyclerIcons
-                )
-
-            val textError =
-                view.findViewById<TextView>(
-                    R.id.textError
-                )
-
-            editName.setText(category.name)
-
-            val iconAdapter =
-                IconAdapter(iconNames) {}
-
-            iconAdapter.setSelectedIcon(
-                category.icon
-            )
-
-            recyclerIcons.layoutManager =
-                LinearLayoutManager(
-                    this@CategoriesActivity,
-                    LinearLayoutManager.HORIZONTAL,
-                    false
-                )
-
-            recyclerIcons.adapter =
-                iconAdapter
-
-            val dialog =
-                androidx.appcompat.app.AlertDialog.Builder(this@CategoriesActivity)
-                    .setTitle("Modifica categoria")
-                    .setView(view)
-                    .setNegativeButton(
-                        "Annulla"
-                    ) { _, _ ->
-
-                        resetUiState()
-                    }
-                    .setPositiveButton(
-                        "Salva",
-                        null
-                    )
-                    .create()
-
-            dialog.setOnShowListener {
-
-                val btnSave =
-                    dialog.getButton(
-                        androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE
-                    )
-
-                btnSave.setOnClickListener {
-
-                    val newName =
-                        editName.text
-                            .toString()
-                            .trim()
-
-                    val selectedIcon =
-                        iconAdapter.getSelectedIcon()
-
-                    textError.visibility =
-                        View.GONE
-
-                    if (newName.isEmpty()) {
-
-                        textError.text =
-                            "Dato obbligatorio"
-
-                        textError.visibility =
-                            View.VISIBLE
-
-                        return@setOnClickListener
-                    }
-
-                    if (selectedIcon == null) {
-
-                        textError.text =
-                            "Seleziona un'icona"
-
-                        textError.visibility =
-                            View.VISIBLE
-
-                        return@setOnClickListener
-                    }
-
-                    lifecycleScope.launch {
-
-                        val success =
-                            viewModel.update(
-                                category.copy(
-                                    name = newName,
-                                    icon = selectedIcon
-                                )
-                            )
-
-                        if (success) {
-
-                            resetUiState()
-
-                            dialog.dismiss()
-
-                        } else {
-
-                            textError.text =
-                                "Categoria già esistente"
-
-                            textError.visibility =
-                                View.VISIBLE
-                        }
-                    }
-                }
-            }
-
-            dialog.show()
+            textError.visibility =
+                View.VISIBLE
         }
     }
 
@@ -629,4 +630,11 @@ class CategoriesActivity : BaseActivity() {
             }
         }
     }
+
+    private data class CategoryDialogViews(
+        val view: View,
+        val editName: EditText,
+        val textError: TextView,
+        val iconAdapter: IconAdapter
+    )
 }
