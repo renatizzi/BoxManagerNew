@@ -787,7 +787,6 @@ class BoxDetailActivity : BaseActivity() {
             objectViewModel.deleteObject(obj)
         }
     }
-
     private fun showEditObjectDialog(
         id: Int
     ) {
@@ -801,13 +800,13 @@ class BoxDetailActivity : BaseActivity() {
 
         val view =
             layoutInflater.inflate(
-                R.layout.dialog_add_object,
+                R.layout.dialog_edit_object,
                 null
             )
 
         val textError =
             view.findViewById<TextView>(
-                R.id.textErrorObject
+                R.id.textErrorEditObject
             )
 
         val inputName =
