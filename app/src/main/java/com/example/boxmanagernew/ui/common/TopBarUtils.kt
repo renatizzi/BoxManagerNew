@@ -2,6 +2,7 @@ package com.example.boxmanagernew.ui.common
 
 import android.content.Context
 import android.widget.TextView
+import androidx.core.graphics.toColorInt
 import com.example.boxmanagernew.ui.settings.SettingsActivity
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -24,7 +25,10 @@ object TopBarUtils {
         subtitleView: TextView
     ) {
 
-        bindTitle(titleView)
+        bindTitle(
+            context,
+            titleView
+        )
 
         bindSubtitle(
             context,
@@ -39,14 +43,27 @@ object TopBarUtils {
 
         subtitleView.text =
             buildSubtitle(context)
+
+        subtitleView.setTextColor(
+            ThemeManager.getTopBarSubtitle(
+                context
+            )
+        )
     }
 
     fun bindTitle(
+        context: Context,
         titleView: TextView
     ) {
 
         titleView.text =
             APP_TITLE
+
+        titleView.setTextColor(
+            ThemeManager.getTopBarTitle(
+                context
+            )
+        )
     }
 
     fun buildSubtitle(

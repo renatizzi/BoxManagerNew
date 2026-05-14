@@ -3,10 +3,9 @@ package com.example.boxmanagernew.ui.common
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Typeface
-import android.util.TypedValue
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import com.example.boxmanagernew.MainActivity
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.ui.categories.CategoriesActivity
@@ -121,6 +120,10 @@ object BottomNavManager {
             )
         }
 
+        applyShellColors(
+            activity
+        )
+
         updateSelection(
             activity,
             currentTab
@@ -143,21 +146,35 @@ object BottomNavManager {
         activity.startActivity(intent)
     }
 
+    private fun applyShellColors(
+        activity: Activity
+    ) {
+
+        val bottomNav =
+            activity.findViewById<LinearLayout>(
+                R.id.bottomNav
+            )
+
+        bottomNav?.setBackgroundColor(
+            ThemeManager.getBottomNavBackground(
+                activity
+            )
+        )
+    }
+
     private fun updateSelection(
         activity: Activity,
         currentTab: Int
     ) {
 
         val activeColor =
-            resolveThemeColor(
-                activity,
-                R.attr.bottomNavActiveColor
+            ThemeManager.getBottomNavActive(
+                activity
             )
 
         val inactiveColor =
-            resolveThemeColor(
-                activity,
-                R.attr.bottomNavInactiveColor
+            ThemeManager.getBottomNavInactive(
+                activity
             )
 
         val tabs = listOf(
@@ -203,33 +220,6 @@ object BottomNavManager {
             )
 
             view.alpha = 1f
-        }
-    }
-
-    private fun resolveThemeColor(
-        activity: Activity,
-        attr: Int
-    ): Int {
-
-        val typedValue =
-            TypedValue()
-
-        activity.theme.resolveAttribute(
-            attr,
-            typedValue,
-            true
-        )
-
-        return if (typedValue.resourceId != 0) {
-
-            ContextCompat.getColor(
-                activity,
-                typedValue.resourceId
-            )
-
-        } else {
-
-            typedValue.data
         }
     }
 }

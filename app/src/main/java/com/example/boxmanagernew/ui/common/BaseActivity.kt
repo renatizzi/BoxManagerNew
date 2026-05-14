@@ -13,14 +13,26 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.boxmanagernew.R
+import com.google.android.material.card.MaterialCardView
 
 abstract class BaseActivity : AppCompatActivity() {
+
+    override fun onCreate(
+        savedInstanceState: Bundle?
+    ) {
+
+        super.onCreate(savedInstanceState)
+
+        ThemeManager.initializeDefaults(
+            this
+        )
+    }
 
     override fun onResume() {
 
         super.onResume()
 
-        refreshTopBar()
+        refreshAppShell()
     }
 
     protected fun setupEdgeToEdge() {
@@ -67,6 +79,11 @@ abstract class BaseActivity : AppCompatActivity() {
                 R.id.textGlobalSubtitle
             )
 
+        val topBar =
+            findViewById<MaterialCardView>(
+                R.id.globalTopBar
+            )
+
         if (
             title != null &&
             subtitle != null
@@ -78,6 +95,12 @@ abstract class BaseActivity : AppCompatActivity() {
                 subtitle
             )
         }
+
+        topBar?.setCardBackgroundColor(
+            ThemeManager.getTopBarBackground(
+                this
+            )
+        )
     }
 
     protected fun setupPageHeader(
@@ -98,10 +121,28 @@ abstract class BaseActivity : AppCompatActivity() {
 
     protected fun refreshTopBar() {
 
+        val title =
+            findViewById<TextView>(
+                R.id.textGlobalTitle
+            )
+
         val subtitle =
             findViewById<TextView>(
                 R.id.textGlobalSubtitle
             )
+
+        val topBar =
+            findViewById<MaterialCardView>(
+                R.id.globalTopBar
+            )
+
+        title?.let {
+
+            TopBarUtils.bindTitle(
+                this,
+                it
+            )
+        }
 
         subtitle?.let {
 
@@ -110,6 +151,17 @@ abstract class BaseActivity : AppCompatActivity() {
                 it
             )
         }
+
+        topBar?.setCardBackgroundColor(
+            ThemeManager.getTopBarBackground(
+                this
+            )
+        )
+    }
+
+    protected fun refreshAppShell() {
+
+        refreshTopBar()
     }
 
     protected fun hideKeyboard(
