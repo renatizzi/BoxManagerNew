@@ -3,8 +3,10 @@ package com.example.boxmanagernew.ui.common
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Typeface
+import android.util.TypedValue
 import android.view.View
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.example.boxmanagernew.MainActivity
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.ui.categories.CategoriesActivity
@@ -146,6 +148,18 @@ object BottomNavManager {
         currentTab: Int
     ) {
 
+        val activeColor =
+            resolveThemeColor(
+                activity,
+                R.attr.bottomNavActiveColor
+            )
+
+        val inactiveColor =
+            resolveThemeColor(
+                activity,
+                R.attr.bottomNavInactiveColor
+            )
+
         val tabs = listOf(
             activity.findViewById<TextView>(
                 R.id.navDashboard
@@ -171,12 +185,13 @@ object BottomNavManager {
             val selected =
                 index == currentTab
 
-            view.alpha =
+            view.setTextColor(
                 if (selected) {
-                    1f
+                    activeColor
                 } else {
-                    0.55f
+                    inactiveColor
                 }
+            )
 
             view.setTypeface(
                 null,
@@ -186,6 +201,35 @@ object BottomNavManager {
                     Typeface.NORMAL
                 }
             )
+
+            view.alpha = 1f
+        }
+    }
+
+    private fun resolveThemeColor(
+        activity: Activity,
+        attr: Int
+    ): Int {
+
+        val typedValue =
+            TypedValue()
+
+        activity.theme.resolveAttribute(
+            attr,
+            typedValue,
+            true
+        )
+
+        return if (typedValue.resourceId != 0) {
+
+            ContextCompat.getColor(
+                activity,
+                typedValue.resourceId
+            )
+
+        } else {
+
+            typedValue.data
         }
     }
 }

@@ -6,18 +6,18 @@
     android:id="@+id/globalTopBar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="16dp"
-    app:cardCornerRadius="20dp"
-    app:cardElevation="4dp"
+    android:layout_margin="12dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="3dp"
     app:strokeWidth="0dp"
-    app:cardBackgroundColor="?attr/colorPrimary">
+    app:cardBackgroundColor="?attr/topBarBackgroundColor">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:padding="16dp">
+        android:padding="12dp">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -30,18 +30,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="BoxManager"
-                android:textColor="@android:color/white"
+                android:textColor="?attr/topBarTitleColor"
                 android:textStyle="bold"
-                android:textSize="22sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/textGlobalSubtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="2dp"
                 android:text="Utente • 00/00/0000 00:00"
-                android:textColor="@android:color/white"
-                android:textSize="13sp" />
+                android:textColor="?attr/topBarSubtitleColor"
+                android:textSize="11sp" />
 
         </LinearLayout>
 
@@ -50,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Dark"
-            android:textColor="@android:color/white" />
+            android:textColor="?attr/topBarTitleColor" />
 
     </LinearLayout>
 

@@ -6,13 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="?attr/colorSurface"
-    android:elevation="8dp"
+    android:background="?attr/bottomNavBackgroundColor"
+    android:elevation="6dp"
     android:weightSum="5"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp"
-    android:paddingStart="4dp"
-    android:paddingEnd="4dp">
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp"
+    android:paddingStart="2dp"
+    android:paddingEnd="2dp">
 
     <TextView
         android:id="@+id/navDashboard"
@@ -22,12 +22,12 @@
         android:gravity="center"
         android:text="Dashboard"
         android:textStyle="bold"
-        android:textSize="13sp"
-        android:textColor="@color/text_secondary"
+        android:textSize="12sp"
+        android:textColor="?attr/bottomNavInactiveColor"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?attr/selectableItemBackground"
-        android:background="?attr/colorSurface" />
+        android:background="?attr/bottomNavBackgroundColor" />
 
     <TextView
         android:id="@+id/navBoxes"
@@ -37,12 +37,12 @@
         android:gravity="center"
         android:text="Contenitori"
         android:textStyle="bold"
-        android:textSize="13sp"
-        android:textColor="@color/text_secondary"
+        android:textSize="12sp"
+        android:textColor="?attr/bottomNavInactiveColor"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?attr/selectableItemBackground"
-        android:background="?attr/colorSurface" />
+        android:background="?attr/bottomNavBackgroundColor" />
 
     <TextView
         android:id="@+id/navCategories"
@@ -52,12 +52,12 @@
         android:gravity="center"
         android:text="Categorie"
         android:textStyle="bold"
-        android:textSize="13sp"
-        android:textColor="@color/text_secondary"
+        android:textSize="12sp"
+        android:textColor="?attr/bottomNavInactiveColor"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?attr/selectableItemBackground"
-        android:background="?attr/colorSurface" />
+        android:background="?attr/bottomNavBackgroundColor" />
 
     <TextView
         android:id="@+id/navUtility"
@@ -67,12 +67,12 @@
         android:gravity="center"
         android:text="Utility"
         android:textStyle="bold"
-        android:textSize="13sp"
-        android:textColor="@color/text_secondary"
+        android:textSize="12sp"
+        android:textColor="?attr/bottomNavInactiveColor"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?attr/selectableItemBackground"
-        android:background="?attr/colorSurface" />
+        android:background="?attr/bottomNavBackgroundColor" />
 
     <TextView
         android:id="@+id/navSettings"
@@ -82,11 +82,11 @@
         android:gravity="center"
         android:text="⚙"
         android:textStyle="bold"
-        android:textSize="20sp"
-        android:textColor="@color/text_secondary"
+        android:textSize="18sp"
+        android:textColor="?attr/bottomNavInactiveColor"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?attr/selectableItemBackground"
-        android:background="?attr/colorSurface" />
+        android:background="?attr/bottomNavBackgroundColor" />
 
 </LinearLayout>

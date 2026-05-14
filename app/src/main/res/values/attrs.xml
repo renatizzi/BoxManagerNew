@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <!-- TOP BAR -->
+
+    <attr
+        name="topBarBackgroundColor"
+        format="color" />
+
+    <attr
+        name="topBarTitleColor"
+        format="color" />
+
+    <attr
+        name="topBarSubtitleColor"
+        format="color" />
+
+    <!-- BOTTOM NAV -->
+
+    <attr
+        name="bottomNavBackgroundColor"
+        format="color" />
+
+    <attr
+        name="bottomNavActiveColor"
+        format="color" />
+
+    <attr
+        name="bottomNavInactiveColor"
+        format="color" />
+
+</resources>
