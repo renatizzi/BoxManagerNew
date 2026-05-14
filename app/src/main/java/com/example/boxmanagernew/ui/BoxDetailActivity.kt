@@ -799,80 +799,51 @@ class BoxDetailActivity : BaseActivity() {
                 }
                 ?: return
 
-        val layout =
-            LinearLayout(this).apply {
+        val view =
+            layoutInflater.inflate(
+                R.layout.dialog_add_object,
+                null
+            )
 
-                orientation =
-                    LinearLayout.VERTICAL
-
-                setPadding(
-                    40,
-                    20,
-                    40,
-                    10
-                )
-            }
-
-        val labelName =
-            TextView(this).apply {
-
-                text =
-                    "Nome"
-            }
+        val textError =
+            view.findViewById<TextView>(
+                R.id.textErrorObject
+            )
 
         val inputName =
-            EditText(this).apply {
-
-                setText(item.typeName)
-            }
-
-        val labelDesc =
-            TextView(this).apply {
-
-                text =
-                    "Descrizione"
-            }
+            view.findViewById<EditText>(
+                R.id.editObjectName
+            )
 
         val inputDescription =
-            EditText(this).apply {
-
-                setText(item.obj.description)
-            }
-
-        val labelQty =
-            TextView(this).apply {
-
-                text =
-                    "Quantità"
-            }
+            view.findViewById<EditText>(
+                R.id.editObjectDescription
+            )
 
         val inputQuantity =
-            EditText(this).apply {
+            view.findViewById<EditText>(
+                R.id.editObjectQuantity
+            )
 
-                setText(
-                    item.obj.quantity?.toString()
-                        ?: ""
-                )
+        inputName.setText(
+            item.typeName
+        )
 
-                inputType =
-                    InputType.TYPE_CLASS_NUMBER
-            }
+        inputDescription.setText(
+            item.obj.description
+        )
 
-        layout.addView(labelName)
-        layout.addView(inputName)
-
-        layout.addView(labelDesc)
-        layout.addView(inputDescription)
-
-        layout.addView(labelQty)
-        layout.addView(inputQuantity)
+        inputQuantity.setText(
+            item.obj.quantity?.toString()
+                ?: ""
+        )
 
         val dialog =
             AlertDialog.Builder(this)
                 .setTitle(
                     "Modifica oggetto"
                 )
-                .setView(layout)
+                .setView(view)
                 .setPositiveButton(
                     "Salva",
                     null
@@ -893,9 +864,13 @@ class BoxDetailActivity : BaseActivity() {
             btn.setOnClickListener {
 
                 val name =
-                    inputName.text.toString().trim()
+                    inputName.text.toString()
+                        .trim()
 
                 if (name.isEmpty()) {
+
+                    textError.visibility =
+                        View.VISIBLE
 
                     return@setOnClickListener
                 }
@@ -912,6 +887,35 @@ class BoxDetailActivity : BaseActivity() {
 
                 dialog.dismiss()
             }
+
+            inputName.addTextChangedListener(
+                object : TextWatcher {
+
+                    override fun afterTextChanged(
+                        s: Editable?
+                    ) {
+
+                        textError.visibility =
+                            View.GONE
+                    }
+
+                    override fun beforeTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        count: Int,
+                        after: Int
+                    ) {
+                    }
+
+                    override fun onTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        before: Int,
+                        count: Int
+                    ) {
+                    }
+                }
+            )
         }
 
         dialog.show()
@@ -921,70 +925,111 @@ class BoxDetailActivity : BaseActivity() {
         boxId: Int
     ) {
 
-        val layout =
-            LinearLayout(this).apply {
+        val view =
+            layoutInflater.inflate(
+                R.layout.dialog_add_object,
+                null
+            )
 
-                orientation =
-                    LinearLayout.VERTICAL
-
-                setPadding(
-                    40,
-                    20,
-                    40,
-                    10
-                )
-            }
+        val textError =
+            view.findViewById<TextView>(
+                R.id.textErrorObject
+            )
 
         val inputName =
-            EditText(this).apply {
-
-                hint =
-                    "Nome"
-            }
+            view.findViewById<EditText>(
+                R.id.editObjectName
+            )
 
         val inputDescription =
-            EditText(this).apply {
-
-                hint =
-                    "Descrizione"
-            }
+            view.findViewById<EditText>(
+                R.id.editObjectDescription
+            )
 
         val inputQuantity =
-            EditText(this).apply {
-
-                hint =
-                    "Quantità"
-
-                inputType =
-                    InputType.TYPE_CLASS_NUMBER
-            }
-
-        layout.addView(inputName)
-        layout.addView(inputDescription)
-        layout.addView(inputQuantity)
-
-        AlertDialog.Builder(this)
-            .setTitle(
-                "Nuovo oggetto"
+            view.findViewById<EditText>(
+                R.id.editObjectQuantity
             )
-            .setView(layout)
-            .setPositiveButton(
-                "Aggiungi"
-            ) { _, _ ->
+
+        val dialog =
+            AlertDialog.Builder(this)
+                .setTitle(
+                    "Nuovo oggetto"
+                )
+                .setView(view)
+                .setPositiveButton(
+                    "Aggiungi",
+                    null
+                )
+                .setNegativeButton(
+                    "Annulla",
+                    null
+                )
+                .create()
+
+        dialog.setOnShowListener {
+
+            val btn =
+                dialog.getButton(
+                    AlertDialog.BUTTON_POSITIVE
+                )
+
+            btn.setOnClickListener {
+
+                val name =
+                    inputName.text.toString()
+                        .trim()
+
+                if (name.isEmpty()) {
+
+                    textError.visibility =
+                        View.VISIBLE
+
+                    return@setOnClickListener
+                }
 
                 objectViewModel.addObject(
-                    inputName.text.toString(),
+                    name,
                     boxId,
                     inputDescription.text.toString()
                         .ifBlank { null },
                     inputQuantity.text.toString()
                         .toIntOrNull()
                 )
+
+                dialog.dismiss()
             }
-            .setNegativeButton(
-                "Annulla",
-                null
+
+            inputName.addTextChangedListener(
+                object : TextWatcher {
+
+                    override fun afterTextChanged(
+                        s: Editable?
+                    ) {
+
+                        textError.visibility =
+                            View.GONE
+                    }
+
+                    override fun beforeTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        count: Int,
+                        after: Int
+                    ) {
+                    }
+
+                    override fun onTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        before: Int,
+                        count: Int
+                    ) {
+                    }
+                }
             )
-            .show()
+        }
+
+        dialog.show()
     }
 }
