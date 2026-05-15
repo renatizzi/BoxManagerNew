@@ -2,7 +2,6 @@ package com.example.boxmanagernew.ui.settings
 
 import android.content.Context
 import android.content.res.Configuration
-import android.graphics.Typeface
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -10,7 +9,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
@@ -40,11 +38,15 @@ class SettingsActivity : BaseActivity() {
     private var currentPalette =
         ThemeManager.PALETTE_ORANGE
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(
+        savedInstanceState: Bundle?
+    ) {
 
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_settings)
+        setContentView(
+            R.layout.activity_settings
+        )
 
         setupEdgeToEdge()
 
@@ -64,35 +66,51 @@ class SettingsActivity : BaseActivity() {
             this,
             BottomNavManager.TAB_SETTINGS
         )
+
+        refreshAppShell()
     }
 
     private fun setupViews() {
 
         setupPageHeader(
-            title = "Impostazioni",
-            subtitle = "Setup Archivio"
+            "Impostazioni",
+            "Setup Archivio"
         )
 
         editUserName =
-            findViewById(R.id.editUserName)
+            findViewById(
+                R.id.editUserName
+            )
 
         buttonSave =
-            findViewById(R.id.buttonSaveUser)
+            findViewById(
+                R.id.buttonSaveUser
+            )
 
         textSaveMessage =
-            findViewById(R.id.textSaveMessage)
+            findViewById(
+                R.id.textSaveMessage
+            )
 
         paletteOrange =
-            findViewById(R.id.paletteOrange)
+            findViewById(
+                R.id.paletteOrange
+            )
 
         paletteBlue =
-            findViewById(R.id.paletteBlue)
+            findViewById(
+                R.id.paletteBlue
+            )
 
         paletteGreen =
-            findViewById(R.id.paletteGreen)
+            findViewById(
+                R.id.paletteGreen
+            )
 
         textCurrentTheme =
-            findViewById(R.id.textCurrentTheme)
+            findViewById(
+                R.id.textCurrentTheme
+            )
     }
 
     private fun loadPreferences() {
@@ -127,10 +145,7 @@ class SettingsActivity : BaseActivity() {
 
                 true
 
-            } else {
-
-                false
-            }
+            } else false
         }
 
         buttonSave.setOnClickListener {
@@ -141,9 +156,10 @@ class SettingsActivity : BaseActivity() {
 
     private fun setupPaletteSelector() {
 
-        selectPalette(
-            ThemeManager.PALETTE_ORANGE
-        )
+        currentPalette =
+            detectCurrentPalette()
+
+        updatePaletteSelection()
 
         paletteOrange.setOnClickListener {
 
@@ -167,6 +183,26 @@ class SettingsActivity : BaseActivity() {
         }
     }
 
+    private fun detectCurrentPalette(): String {
+
+        val color =
+            ThemeManager.getAccentDarkColor(
+                this
+            )
+
+        return when (color) {
+
+            0xFF0D47A1.toInt() ->
+                ThemeManager.PALETTE_BLUE
+
+            0xFF1B5E20.toInt() ->
+                ThemeManager.PALETTE_GREEN
+
+            else ->
+                ThemeManager.PALETTE_ORANGE
+        }
+    }
+
     private fun selectPalette(
         palette: String
     ) {
@@ -179,7 +215,7 @@ class SettingsActivity : BaseActivity() {
             palette
         )
 
-        refreshTopBar()
+        refreshAppShell()
 
         BottomNavManager.setup(
             this,
@@ -203,24 +239,23 @@ class SettingsActivity : BaseActivity() {
             paletteGreen
         )
 
-        val selectedView =
-            when (currentPalette) {
+        val selected = when (
+            currentPalette
+        ) {
 
-                ThemeManager.PALETTE_BLUE ->
-                    paletteBlue
+            ThemeManager.PALETTE_BLUE ->
+                paletteBlue
 
-                ThemeManager.PALETTE_GREEN ->
-                    paletteGreen
+            ThemeManager.PALETTE_GREEN ->
+                paletteGreen
 
-                else ->
-                    paletteOrange
-            }
+            else ->
+                paletteOrange
+        }
 
-        selectedView.setBackgroundResource(
+        selected.setBackgroundResource(
             R.drawable.bg_context_card
         )
-
-        selectedView.alpha = 1f
     }
 
     private fun resetPalette(
@@ -230,31 +265,26 @@ class SettingsActivity : BaseActivity() {
         view.setBackgroundResource(
             R.drawable.bg_box_selector
         )
-
-        view.alpha = 0.92f
     }
 
     private fun updateThemeLabel() {
 
-        val currentNightMode =
+        val mode =
             resources.configuration.uiMode and
                     Configuration.UI_MODE_NIGHT_MASK
 
-        val themeName =
+        textCurrentTheme.text =
             if (
-                currentNightMode ==
+                mode ==
                 Configuration.UI_MODE_NIGHT_YES
             ) {
 
-                "Dark"
+                "Tema corrente: Dark"
 
             } else {
 
-                "Light"
+                "Tema corrente: Light"
             }
-
-        textCurrentTheme.text =
-            "Tema corrente: $themeName"
     }
 
     private fun saveUsername() {

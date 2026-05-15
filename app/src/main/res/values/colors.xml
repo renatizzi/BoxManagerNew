@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- BASE (NON TOCCARE - richiesti dal tema) -->
+    <!-- BASE MATERIAL -->
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -10,16 +10,16 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <!-- 🔴 NUOVA PALETTE (AGGIUNTA, NON SOSTITUZIONE) -->
+    <!-- DEFAULT PALETTE = ARANCIONE -->
 
     <!-- BRAND -->
-    <color name="primary_gradient_start">#8E2DE2</color>
-    <color name="primary_gradient_end">#4A00E0</color>
+    <color name="primary_gradient_start">#E67E22</color>
+    <color name="primary_gradient_end">#D35400</color>
 
-    <color name="primary_button">#6A1B9A</color>
-    <color name="primary_button_light">#8E2DE2</color>
+    <color name="primary_button">#A04000</color>
+    <color name="primary_button_light">#F39C12</color>
 
-    <color name="fab_color">#7B1FA2</color>
+    <color name="fab_color">#A04000</color>
 
     <!-- CARD -->
     <color name="card_background">#F2F2F2</color>
@@ -36,7 +36,7 @@
     <color name="icon_tint">#555555</color>
 
     <!-- SELECTION -->
-    <color name="selection_background">#E3F2FD</color>
-    <color name="selection_stroke">#2196F3</color>
+    <color name="selection_background">#FFE0B2</color>
+    <color name="selection_stroke">#E67E22</color>
 
 </resources>

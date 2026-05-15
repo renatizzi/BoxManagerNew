@@ -18,7 +18,6 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.boxmanagernew.R
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.switchmaterial.SwitchMaterial
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -56,16 +55,16 @@ abstract class BaseActivity : AppCompatActivity() {
             root
         ) { view, insets ->
 
-            val systemBars =
+            val bars =
                 insets.getInsets(
                     WindowInsetsCompat.Type.systemBars()
                 )
 
             view.setPadding(
-                systemBars.left,
-                systemBars.top,
-                systemBars.right,
-                systemBars.bottom
+                bars.left,
+                bars.top,
+                bars.right,
+                bars.bottom
             )
 
             insets
@@ -73,6 +72,16 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     protected fun setupTopBar() {
+
+        refreshTopBar()
+    }
+
+    protected fun refreshTopBar() {
+
+        val topBar =
+            findViewById<MaterialCardView>(
+                R.id.globalTopBar
+            )
 
         val title =
             findViewById<TextView>(
@@ -84,10 +93,23 @@ abstract class BaseActivity : AppCompatActivity() {
                 R.id.textGlobalSubtitle
             )
 
-        val topBar =
-            findViewById<MaterialCardView>(
-                R.id.globalTopBar
+        topBar?.setCardBackgroundColor(
+            ThemeManager.getTopBarBackground(
+                this
             )
+        )
+
+        title?.setTextColor(
+            ThemeManager.getTopBarTitle(
+                this
+            )
+        )
+
+        subtitle?.setTextColor(
+            ThemeManager.getTopBarSubtitle(
+                this
+            )
+        )
 
         if (
             title != null &&
@@ -100,12 +122,6 @@ abstract class BaseActivity : AppCompatActivity() {
                 subtitle
             )
         }
-
-        topBar?.setCardBackgroundColor(
-            ThemeManager.getTopBarBackground(
-                this
-            )
-        )
     }
 
     protected fun setupPageHeader(
@@ -115,53 +131,11 @@ abstract class BaseActivity : AppCompatActivity() {
 
         findViewById<TextView>(
             R.id.textTitle
-        )?.text =
-            title
+        )?.text = title
 
         findViewById<TextView>(
             R.id.textSubtitle
-        )?.text =
-            subtitle
-    }
-
-    protected fun refreshTopBar() {
-
-        val title =
-            findViewById<TextView>(
-                R.id.textGlobalTitle
-            )
-
-        val subtitle =
-            findViewById<TextView>(
-                R.id.textGlobalSubtitle
-            )
-
-        val topBar =
-            findViewById<MaterialCardView>(
-                R.id.globalTopBar
-            )
-
-        title?.let {
-
-            TopBarUtils.bindTitle(
-                this,
-                it
-            )
-        }
-
-        subtitle?.let {
-
-            TopBarUtils.bindSubtitle(
-                this,
-                it
-            )
-        }
-
-        topBar?.setCardBackgroundColor(
-            ThemeManager.getTopBarBackground(
-                this
-            )
-        )
+        )?.text = subtitle
     }
 
     protected fun refreshAppShell() {
@@ -181,20 +155,9 @@ abstract class BaseActivity : AppCompatActivity() {
     ) {
 
         val accent =
-            ThemeManager.getAccentColor(
-                this
-            )
-
-        val accentDark =
             ThemeManager.getAccentDarkColor(
                 this
             )
-
-        val white =
-            0xFFFFFFFF.toInt()
-
-        val disabled =
-            0xFFBDBDBD.toInt()
 
         for (i in 0 until viewGroup.childCount) {
 
@@ -207,7 +170,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
                     child.backgroundTintList =
                         ColorStateList.valueOf(
-                            accentDark
+                            accent
                         )
                 }
 
@@ -215,38 +178,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
                     child.backgroundTintList =
                         ColorStateList.valueOf(
-                            accentDark
-                        )
-                }
-
-                is SwitchMaterial -> {
-
-                    child.thumbTintList =
-                        ColorStateList(
-                            arrayOf(
-                                intArrayOf(
-                                    android.R.attr.state_checked
-                                ),
-                                intArrayOf()
-                            ),
-                            intArrayOf(
-                                white,
-                                white
-                            )
-                        )
-
-                    child.trackTintList =
-                        ColorStateList(
-                            arrayOf(
-                                intArrayOf(
-                                    android.R.attr.state_checked
-                                ),
-                                intArrayOf()
-                            ),
-                            intArrayOf(
-                                accentDark,
-                                disabled
-                            )
+                            accent
                         )
                 }
             }
@@ -262,9 +194,7 @@ abstract class BaseActivity : AppCompatActivity() {
         view: View?
     ) {
 
-        if (view == null) {
-            return
-        }
+        if (view == null) return
 
         val imm =
             getSystemService(
@@ -304,7 +234,9 @@ abstract class BaseActivity : AppCompatActivity() {
                 val rect =
                     Rect()
 
-                view.getGlobalVisibleRect(rect)
+                view.getGlobalVisibleRect(
+                    rect
+                )
 
                 if (
                     !rect.contains(
@@ -313,13 +245,17 @@ abstract class BaseActivity : AppCompatActivity() {
                     )
                 ) {
 
-                    hideKeyboard(view)
+                    hideKeyboard(
+                        view
+                    )
 
                     view.clearFocus()
                 }
             }
         }
 
-        return super.dispatchTouchEvent(ev)
+        return super.dispatchTouchEvent(
+            ev
+        )
     }
 }
