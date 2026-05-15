@@ -1,7 +1,9 @@
 package com.example.boxmanagernew.ui.settings
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.content.res.Configuration
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -9,6 +11,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
@@ -239,23 +242,48 @@ class SettingsActivity : BaseActivity() {
             paletteGreen
         )
 
-        val selected = when (
-            currentPalette
-        ) {
+        val selected =
+            when (currentPalette) {
 
-            ThemeManager.PALETTE_BLUE ->
-                paletteBlue
+                ThemeManager.PALETTE_BLUE ->
+                    paletteBlue
 
-            ThemeManager.PALETTE_GREEN ->
-                paletteGreen
+                ThemeManager.PALETTE_GREEN ->
+                    paletteGreen
 
-            else ->
-                paletteOrange
-        }
+                else ->
+                    paletteOrange
+            }
 
-        selected.setBackgroundResource(
-            R.drawable.bg_context_card
-        )
+        val borderColor =
+            ThemeManager.getAccentDarkColor(
+                this
+            )
+
+        val drawable =
+            GradientDrawable().apply {
+
+                shape =
+                    GradientDrawable.RECTANGLE
+
+                cornerRadius =
+                    16f
+
+                setColor(
+                    ContextCompat.getColor(
+                        this@SettingsActivity,
+                        android.R.color.white
+                    )
+                )
+
+                setStroke(
+                    6,
+                    borderColor
+                )
+            }
+
+        selected.background =
+            drawable
     }
 
     private fun resetPalette(
