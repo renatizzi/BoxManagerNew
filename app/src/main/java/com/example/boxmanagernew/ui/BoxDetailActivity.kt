@@ -68,9 +68,7 @@ class BoxDetailActivity : BaseActivity() {
         val textTitle =
             findViewById<TextView>(R.id.textTitle)
 
-        textSubtitle =
-            findViewById(R.id.textSubtitle)
-
+        initViews()
         val textCategory =
             findViewById<TextView>(R.id.textCategory)
 
@@ -492,6 +490,13 @@ class BoxDetailActivity : BaseActivity() {
                 textLastModified
             )
         }
+    }
+    private fun initViews() {
+
+        textSubtitle =
+            findViewById(R.id.textSubtitle)
+
+
     }
     private fun updateObjectsTitle() {
 
