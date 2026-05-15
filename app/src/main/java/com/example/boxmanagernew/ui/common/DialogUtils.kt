@@ -49,11 +49,8 @@ object DialogUtils {
                 )
             )
 
-            visibility =
-                View.GONE
-
-            text =
-                "Dato obbligatorio"
+            visibility = View.GONE
+            text = "Dato obbligatorio"
         }
     }
 
@@ -88,10 +85,7 @@ object DialogUtils {
         val container =
             view as LinearLayout
 
-        container.addView(
-            errorText,
-            0
-        )
+        container.addView(errorText, 0)
 
         return BoxDialogViews(
             view = view,
@@ -226,12 +220,10 @@ object DialogUtils {
 
         val index =
             categories.indexOfFirst {
-
                 it.id == categoryId
             }
 
         if (index >= 0) {
-
             spinner.setSelection(index)
         }
     }
@@ -253,13 +245,8 @@ object DialogUtils {
         categories: List<CategoryEntity>
     ) {
 
-        views.name.setText(
-            box.name
-        )
-
-        views.position.setText(
-            box.position
-        )
+        views.name.setText(box.name)
+        views.position.setText(box.position)
 
         setupCategorySelection(
             views.spinner,
@@ -286,7 +273,6 @@ object DialogUtils {
             false
 
         } else {
-
             true
         }
     }
@@ -298,12 +284,9 @@ object DialogUtils {
 
         dialog.setOnShowListener {
 
-            val btn =
-                dialog.getButton(
-                    AlertDialog.BUTTON_POSITIVE
-                )
-
-            btn.setOnClickListener {
+            dialog.getButton(
+                AlertDialog.BUTTON_POSITIVE
+            ).setOnClickListener {
 
                 onConfirm()
             }
@@ -319,9 +302,7 @@ object DialogUtils {
             EditText(context)
 
         AlertDialog.Builder(context)
-            .setTitle(
-                "Nuova posizione"
-            )
+            .setTitle("Nuova posizione")
             .setView(input)
             .setPositiveButton(
                 "Conferma"
@@ -363,12 +344,9 @@ object DialogUtils {
 
         firstDialog.setOnShowListener {
 
-            val noButton =
-                firstDialog.getButton(
-                    AlertDialog.BUTTON_NEGATIVE
-                )
-
-            noButton.setOnClickListener {
+            firstDialog.getButton(
+                AlertDialog.BUTTON_NEGATIVE
+            ).setOnClickListener {
 
                 firstDialog.dismiss()
 
