@@ -26,41 +26,38 @@ object DialogUtils {
         val container: LinearLayout
     )
 
-    fun inflateAddBoxDialog(
-        context: Context
-    ): View {
+    data class ObjectDialogViews(
+        val view: View,
+        val errorText: TextView,
+        val name: EditText,
+        val description: EditText,
+        val quantity: EditText
+    )
 
-        return LayoutInflater.from(context)
-            .inflate(
-                R.layout.dialog_add_box,
-                null
-            )
-    }
-
-    fun createRequiredFieldErrorText(
-        context: Context
-    ): TextView {
-
-        return TextView(context).apply {
-
-            setTextColor(
-                context.getColor(
-                    android.R.color.holo_red_dark
-                )
-            )
-
-            visibility = View.GONE
-            text = "Dato obbligatorio"
-        }
-    }
-
-    fun bindBoxDialogViews(
+    fun createBoxDialog(
         context: Context,
-        view: View
+        categories: List<CategoryEntity>,
+        timestamp: Long,
+        box: Box? = null
     ): BoxDialogViews {
 
-        val errorText =
-            createRequiredFieldErrorText(context)
+        val view =
+            LayoutInflater.from(context)
+                .inflate(
+                    R.layout.dialog_add_box,
+                    null
+                )
+
+        val error =
+            TextView(context).apply {
+                text = "Dato obbligatorio"
+                visibility = View.GONE
+                setTextColor(
+                    context.getColor(
+                        android.R.color.holo_red_dark
+                    )
+                )
+            }
 
         val name =
             view.findViewById<EditText>(
@@ -85,67 +82,99 @@ object DialogUtils {
         val container =
             view as LinearLayout
 
-        container.addView(errorText, 0)
-
-        return BoxDialogViews(
-            view = view,
-            errorText = errorText,
-            name = name,
-            spinner = spinner,
-            position = position,
-            date = date,
-            container = container
-        )
-    }
-
-    fun createBoxDialog(
-        context: Context,
-        categories: List<CategoryEntity>,
-        timestamp: Long,
-        box: Box? = null
-    ): BoxDialogViews {
-
-        val view =
-            inflateAddBoxDialog(context)
-
-        val views =
-            bindBoxDialogViews(
-                context,
-                view
-            )
-
-        setupBoxDialogInputs(
-            views.name,
-            views.position
-        )
-
-        setupBoxDialogWatchers(
-            views.name,
-            views.position,
-            views.errorText
-        )
+        container.addView(error, 0)
 
         setupCategorySpinner(
             context,
-            views.spinner,
+            spinner,
             categories
         )
 
-        setupLastModifiedText(
-            views.date,
-            timestamp
-        )
+        date.text =
+            "Ultima modifica: ${
+                UiUtils.formatDate(timestamp)
+            }"
 
         if (box != null) {
 
-            preloadEditBoxData(
-                views,
-                box,
-                categories
+            name.setText(box.name)
+
+            position.setText(
+                box.position
             )
+
+            val index =
+                categories.indexOfFirst {
+                    it.id == box.categoryId
+                }
+
+            if (index >= 0) {
+                spinner.setSelection(index)
+            }
         }
 
-        return views
+        return BoxDialogViews(
+            view,
+            error,
+            name,
+            spinner,
+            position,
+            date,
+            container
+        )
+    }
+
+    fun createObjectDialog(
+        context: Context,
+        layout: Int,
+        nameValue: String = "",
+        descriptionValue: String? = null,
+        quantityValue: Int? = null
+    ): ObjectDialogViews {
+
+        val view =
+            LayoutInflater.from(context)
+                .inflate(layout, null)
+
+        val error =
+            view.findViewById<TextView>(
+                if (
+                    layout ==
+                    R.layout.dialog_edit_object
+                )
+                    R.id.textErrorEditObject
+                else
+                    R.id.textErrorObject
+            )
+
+        val name =
+            view.findViewById<EditText>(
+                R.id.editObjectName
+            )
+
+        val description =
+            view.findViewById<EditText>(
+                R.id.editObjectDescription
+            )
+
+        val quantity =
+            view.findViewById<EditText>(
+                R.id.editObjectQuantity
+            )
+
+        name.setText(nameValue)
+        description.setText(descriptionValue)
+        quantity.setText(
+            quantityValue?.toString() ?: ""
+        )
+
+        return ObjectDialogViews(
+            view,
+            error,
+            name,
+            description,
+            quantity
+        )
     }
 
     fun createBoxConfirmDialog(
@@ -166,117 +195,6 @@ object DialogUtils {
             .create()
     }
 
-    fun setupBoxDialogInputs(
-        name: EditText,
-        position: EditText
-    ) {
-
-        name.inputType =
-            InputType.TYPE_CLASS_TEXT
-
-        position.inputType =
-            InputType.TYPE_CLASS_TEXT
-    }
-
-    fun setupBoxDialogWatchers(
-        name: EditText,
-        position: EditText,
-        errorText: TextView
-    ) {
-
-        name.addTextChangedListener(
-            UiUtils.noEnterWatcher(
-                name,
-                errorText
-            )
-        )
-
-        position.addTextChangedListener(
-            UiUtils.noEnterWatcher(
-                position,
-                null
-            )
-        )
-    }
-
-    fun setupCategorySpinner(
-        context: Context,
-        spinner: Spinner,
-        categories: List<CategoryEntity>
-    ) {
-
-        spinner.adapter =
-            CategorySpinnerAdapter(
-                context,
-                categories
-            )
-    }
-
-    fun setupCategorySelection(
-        spinner: Spinner,
-        categories: List<CategoryEntity>,
-        categoryId: Int
-    ) {
-
-        val index =
-            categories.indexOfFirst {
-                it.id == categoryId
-            }
-
-        if (index >= 0) {
-            spinner.setSelection(index)
-        }
-    }
-
-    fun setupLastModifiedText(
-        dateView: TextView,
-        timestamp: Long
-    ) {
-
-        dateView.text =
-            "Ultima modifica: ${
-                UiUtils.formatDate(timestamp)
-            }"
-    }
-
-    fun preloadEditBoxData(
-        views: BoxDialogViews,
-        box: Box,
-        categories: List<CategoryEntity>
-    ) {
-
-        views.name.setText(box.name)
-        views.position.setText(box.position)
-
-        setupCategorySelection(
-            views.spinner,
-            categories,
-            box.categoryId
-        )
-
-        setupLastModifiedText(
-            views.date,
-            box.lastModified
-        )
-    }
-
-    fun validateRequiredName(
-        name: String,
-        errorText: TextView
-    ): Boolean {
-
-        return if (name.isEmpty()) {
-
-            errorText.visibility =
-                View.VISIBLE
-
-            false
-
-        } else {
-            true
-        }
-    }
-
     fun setupDialogConfirmButton(
         dialog: AlertDialog,
         onConfirm: () -> Unit
@@ -293,6 +211,23 @@ object DialogUtils {
         }
     }
 
+    fun validateRequiredName(
+        name: String,
+        errorText: TextView
+    ): Boolean {
+
+        return if (
+            name.trim().isEmpty()
+        ) {
+
+            errorText.visibility =
+                View.VISIBLE
+
+            false
+
+        } else true
+    }
+
     fun showMoveBoxesDialog(
         context: Context,
         onConfirm: (String) -> Unit
@@ -301,15 +236,21 @@ object DialogUtils {
         val input =
             EditText(context)
 
+        input.inputType =
+            InputType.TYPE_CLASS_TEXT
+
         AlertDialog.Builder(context)
-            .setTitle("Nuova posizione")
+            .setTitle(
+                "Nuova posizione"
+            )
             .setView(input)
             .setPositiveButton(
                 "Conferma"
             ) { _, _ ->
 
                 onConfirm(
-                    input.text.toString().trim()
+                    input.text.toString()
+                        .trim()
                 )
             }
             .setNegativeButton(
@@ -325,50 +266,21 @@ object DialogUtils {
         onMoveObjects: () -> Unit
     ) {
 
-        val firstDialog =
-            AlertDialog.Builder(context)
-                .setMessage(
-                    "Confermi anche l'eliminazione degli oggetti contenuti?"
-                )
-                .setPositiveButton(
-                    "SI"
-                ) { _, _ ->
-
-                    onDelete()
-                }
-                .setNegativeButton(
-                    "NO",
-                    null
-                )
-                .create()
-
-        firstDialog.setOnShowListener {
-
-            firstDialog.getButton(
-                AlertDialog.BUTTON_NEGATIVE
-            ).setOnClickListener {
-
-                firstDialog.dismiss()
-
-                AlertDialog.Builder(context)
-                    .setMessage(
-                        "Vuoi spostare gli oggetti in un altro contenitore?"
-                    )
-                    .setPositiveButton(
-                        "SI"
-                    ) { _, _ ->
-
-                        onMoveObjects()
-                    }
-                    .setNegativeButton(
-                        "ANNULLA",
-                        null
-                    )
-                    .show()
+        AlertDialog.Builder(context)
+            .setMessage(
+                "Confermi anche l'eliminazione degli oggetti contenuti?"
+            )
+            .setPositiveButton(
+                "SI"
+            ) { _, _ ->
+                onDelete()
             }
-        }
-
-        firstDialog.show()
+            .setNegativeButton(
+                "NO"
+            ) { _, _ ->
+                onMoveObjects()
+            }
+            .show()
     }
 
     fun showDeleteConfirmation(
@@ -383,29 +295,6 @@ object DialogUtils {
             .setPositiveButton(
                 "SI"
             ) { _, _ ->
-
-                onConfirm()
-            }
-            .setNegativeButton(
-                "NO",
-                null
-            )
-            .show()
-    }
-
-    fun showDeleteWithObjectsConfirmation(
-        context: Context,
-        onConfirm: () -> Unit
-    ) {
-
-        AlertDialog.Builder(context)
-            .setMessage(
-                "Confermi anche l'eliminazione degli oggetti contenuti?"
-            )
-            .setPositiveButton(
-                "SI"
-            ) { _, _ ->
-
                 onConfirm()
             }
             .setNegativeButton(
@@ -427,7 +316,6 @@ object DialogUtils {
             .setPositiveButton(
                 "SI"
             ) { _, _ ->
-
                 onConfirm()
             }
             .setNegativeButton(
@@ -435,5 +323,18 @@ object DialogUtils {
                 null
             )
             .show()
+    }
+
+    fun setupCategorySpinner(
+        context: Context,
+        spinner: Spinner,
+        categories: List<CategoryEntity>
+    ) {
+
+        spinner.adapter =
+            CategorySpinnerAdapter(
+                context,
+                categories
+            )
     }
 }
