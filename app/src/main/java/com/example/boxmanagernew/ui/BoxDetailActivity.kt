@@ -257,59 +257,13 @@ class BoxDetailActivity : BaseActivity() {
 
         objectViewModel.load(boxId)
 
-        objectViewModel.objects.observe(this) {
-
-            adapter.updateData(it)
-
-            updateObjectsTitle()
-        }
-
-        objectViewModel.isAscending.observe(this) {
-
-            buttonSort.text =
-                if (it) {
-                    "ORDINA ▲"
-                } else {
-                    "ORDINA ▼"
-                }
-        }
-
-        objectViewModel.selectedItems.observe(this) {
-
-            selectionBar.visibility =
-                if (it.isNotEmpty()) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
-
-            updateObjectsTitle()
-
-            textSelectionCount.text = ""
-
-            adapter.updateSelection(
-                it,
-                objectViewModel.selectionMode.value
-                    ?: false
-            )
-        }
-
-        objectViewModel.hasHiddenSelections.observe(this) {
-
-            contextCard.visibility =
-                if (it) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
-
-            if (it) {
-
-                textContextMessage.text =
-                    "Alcuni elementi selezionati non sono visibili. Tocca qui per rimuovere il filtro."
-            }
-        }
-
+        setupObservers(
+            boxId,
+            textCategory,
+            imageCategoryIcon,
+            textPosition,
+            textLastModified
+        )
         contextCard.setOnClickListener {
 
             editSearch.setText("")
@@ -419,49 +373,7 @@ class BoxDetailActivity : BaseActivity() {
 
         refreshAppShell()
 
-        boxViewModel.boxes.observe(this) {
-
-            val box =
-                it.find { item ->
-                    item.id == boxId
-                }
-                    ?: return@observe
-
-            currentBox =
-                box
-
-            updateHeader(
-                textCategory,
-                imageCategoryIcon,
-                textPosition,
-                textLastModified
-            )
-        }
-
-        categoryViewModel.categories.observe(this) {
-
-            val box =
-                currentBox
-                    ?: return@observe
-
-            val category =
-                it.find { cat ->
-                    cat.id == box.categoryId
-                }
-
-            currentCategory =
-                category
-
-            updateHeader(
-                textCategory,
-                imageCategoryIcon,
-                textPosition,
-                textLastModified
-            )
-        }
-
         fab.setOnClickListener {
-
             showAddObjectDialog(boxId)
         }
 
@@ -488,6 +400,99 @@ class BoxDetailActivity : BaseActivity() {
         )
     }
 
+    private fun setupObservers(
+        boxId: Int,
+        textCategory: TextView,
+        imageCategoryIcon: ImageView,
+        textPosition: TextView,
+        textLastModified: TextView
+    ) {
+
+        objectViewModel.objects.observe(this) {
+
+            adapter.updateData(it)
+
+            updateObjectsTitle()
+        }
+
+        objectViewModel.isAscending.observe(this) {
+
+            buttonSort.text =
+                if (it) "ORDINA ▲"
+                else "ORDINA ▼"
+        }
+
+        objectViewModel.selectedItems.observe(this) {
+
+            selectionBar.visibility =
+                if (it.isNotEmpty())
+                    View.VISIBLE
+                else
+                    View.GONE
+
+            updateObjectsTitle()
+
+            textSelectionCount.text = ""
+
+            adapter.updateSelection(
+                it,
+                objectViewModel.selectionMode.value
+                    ?: false
+            )
+        }
+
+        objectViewModel.hasHiddenSelections.observe(this) {
+
+            contextCard.visibility =
+                if (it) View.VISIBLE
+                else View.GONE
+
+            if (it) {
+
+                textContextMessage.text =
+                    "Alcuni elementi selezionati non sono visibili. Tocca qui per rimuovere il filtro."
+            }
+        }
+
+        boxViewModel.boxes.observe(this) {
+
+            val box =
+                it.find { item ->
+                    item.id == boxId
+                }
+                    ?: return@observe
+
+            currentBox = box
+
+            updateHeader(
+                textCategory,
+                imageCategoryIcon,
+                textPosition,
+                textLastModified
+            )
+        }
+
+        categoryViewModel.categories.observe(this) {
+
+            val box =
+                currentBox
+                    ?: return@observe
+
+            val category =
+                it.find {
+                    it.id == box.categoryId
+                }
+
+            currentCategory = category
+
+            updateHeader(
+                textCategory,
+                imageCategoryIcon,
+                textPosition,
+                textLastModified
+            )
+        }
+    }
     private fun updateObjectsTitle() {
 
         val totalObjects =
