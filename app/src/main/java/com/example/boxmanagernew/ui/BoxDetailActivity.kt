@@ -412,11 +412,12 @@ class BoxDetailActivity : BaseActivity() {
 
             objectViewModel.toggleSort()
         }
-
         BottomNavManager.setup(
             this,
             BottomNavManager.TAB_BOXES
         )
+
+        refreshAppShell()
 
         boxViewModel.boxes.observe(this) {
 

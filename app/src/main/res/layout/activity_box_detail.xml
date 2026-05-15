@@ -10,7 +10,6 @@
 
     <!-- GLOBAL TOP BAR -->
     <include
-        android:id="@+id/globalTopBarInclude"
         layout="@layout/layout_global_topbar" />
 
     <!-- CONTENT -->
