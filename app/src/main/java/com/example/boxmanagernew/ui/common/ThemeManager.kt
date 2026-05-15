@@ -28,57 +28,150 @@ object ThemeManager {
     private const val KEY_BOTTOMNAV_INACTIVE =
         "bottomnav_inactive"
 
+    private const val KEY_ACCENT =
+        "accent"
+
+    private const val KEY_ACCENT_DARK =
+        "accent_dark"
+
+    const val PALETTE_ORANGE =
+        "palette_orange"
+
+    const val PALETTE_BLUE =
+        "palette_blue"
+
+    const val PALETTE_GREEN =
+        "palette_green"
+
     fun initializeDefaults(
         context: Context
     ) {
 
         val prefs =
-            context.getSharedPreferences(
-                PREFS,
-                Context.MODE_PRIVATE
-            )
+            getPrefs(context)
 
         if (!prefs.contains(KEY_TOPBAR_BG)) {
 
-            prefs.edit()
-                .putInt(
-                    KEY_TOPBAR_BG,
-                    getDefaultTopBarBackground(
-                        context
-                    )
-                )
-                .putInt(
-                    KEY_TOPBAR_TITLE,
-                    getDefaultTopBarTitle(
-                        context
-                    )
-                )
-                .putInt(
-                    KEY_TOPBAR_SUBTITLE,
-                    getDefaultTopBarSubtitle(
-                        context
-                    )
-                )
-                .putInt(
-                    KEY_BOTTOMNAV_BG,
-                    getDefaultBottomNavBackground(
-                        context
-                    )
-                )
-                .putInt(
-                    KEY_BOTTOMNAV_ACTIVE,
-                    getDefaultBottomNavActive(
-                        context
-                    )
-                )
-                .putInt(
-                    KEY_BOTTOMNAV_INACTIVE,
-                    getDefaultBottomNavInactive(
-                        context
-                    )
-                )
-                .apply()
+            applyPalette(
+                context,
+                PALETTE_ORANGE
+            )
         }
+    }
+
+    fun applyPalette(
+        context: Context,
+        palette: String
+    ) {
+
+        val prefs =
+            getPrefs(context)
+
+        val topBar =
+            when (palette) {
+
+                PALETTE_BLUE ->
+                    0xFF1565C0.toInt()
+
+                PALETTE_GREEN ->
+                    0xFF2E7D32.toInt()
+
+                else ->
+                    0xFFE67E22.toInt()
+            }
+
+        val accent =
+            when (palette) {
+
+                PALETTE_BLUE ->
+                    0xFF42A5F5.toInt()
+
+                PALETTE_GREEN ->
+                    0xFF66BB6A.toInt()
+
+                else ->
+                    0xFFF39C12.toInt()
+            }
+
+        val accentDark =
+            when (palette) {
+
+                PALETTE_BLUE ->
+                    0xFF0D47A1.toInt()
+
+                PALETTE_GREEN ->
+                    0xFF1B5E20.toInt()
+
+                else ->
+                    0xFFA04000.toInt()
+            }
+
+        prefs.edit()
+            .putInt(
+                KEY_TOPBAR_BG,
+                topBar
+            )
+            .putInt(
+                KEY_TOPBAR_TITLE,
+                0xFFFFFFFF.toInt()
+            )
+            .putInt(
+                KEY_TOPBAR_SUBTITLE,
+                0xFFFFFFFF.toInt()
+            )
+            .putInt(
+                KEY_BOTTOMNAV_BG,
+                getDefaultBottomNavBackground(
+                    context
+                )
+            )
+            .putInt(
+                KEY_BOTTOMNAV_ACTIVE,
+                accentDark
+            )
+            .putInt(
+                KEY_BOTTOMNAV_INACTIVE,
+                getDefaultBottomNavInactive(
+                    context
+                )
+            )
+            .putInt(
+                KEY_ACCENT,
+                accent
+            )
+            .putInt(
+                KEY_ACCENT_DARK,
+                accentDark
+            )
+            .apply()
+    }
+
+    @ColorInt
+    fun getAccentColor(
+        context: Context
+    ): Int {
+
+        return getPrefs(context)
+            .getInt(
+                KEY_ACCENT,
+                getDefaultAccent(
+                    context
+                )
+            )
+    }
+
+    @ColorInt
+    fun getAccentDarkColor(
+        context: Context
+    ): Int {
+
+        return getPrefs(context)
+            .getInt(
+                KEY_ACCENT_DARK,
+                getDefaultAccentDark(
+                    context
+                )
+            )
     }
 
     @ColorInt
@@ -172,6 +265,28 @@ object ThemeManager {
             PREFS,
             Context.MODE_PRIVATE
         )
+
+    @ColorInt
+    private fun getDefaultAccent(
+        context: Context
+    ): Int {
+
+        return ContextCompat.getColor(
+            context,
+            R.color.primary_button_light
+        )
+    }
+
+    @ColorInt
+    private fun getDefaultAccentDark(
+        context: Context
+    ): Int {
+
+        return ContextCompat.getColor(
+            context,
+            R.color.primary_button
+        )
+    }
 
     @ColorInt
     private fun getDefaultTopBarBackground(

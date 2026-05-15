@@ -32,16 +32,15 @@
                 android:text="BoxManager"
                 android:textColor="?attr/topBarTitleColor"
                 android:textStyle="bold"
-                android:textSize="18sp" />
+                android:textSize="18sp"/>
 
             <TextView
                 android:id="@+id/textGlobalSubtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:text="Utente • 00/00/0000 00:00"
-                android:textColor="?attr/topBarSubtitleColor"
-                android:textSize="11sp" />
+                android:textSize="11sp"
+                android:textColor="?attr/topBarSubtitleColor"/>
 
         </LinearLayout>
 
@@ -50,7 +49,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Dark"
-            android:textColor="?attr/topBarTitleColor" />
+            android:textColor="?attr/topBarTitleColor"
+            app:thumbTint="@color/switch_thumb_selector"
+            app:trackTint="@color/switch_track_selector"/>
 
     </LinearLayout>
 

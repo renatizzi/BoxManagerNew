@@ -1,11 +1,14 @@
 package com.example.boxmanagernew.ui.common
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +17,8 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.boxmanagernew.R
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.switchmaterial.SwitchMaterial
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -162,6 +167,95 @@ abstract class BaseActivity : AppCompatActivity() {
     protected fun refreshAppShell() {
 
         refreshTopBar()
+
+        val root =
+            findViewById<ViewGroup>(
+                android.R.id.content
+            )
+
+        applyRuntimeTheme(root)
+    }
+
+    private fun applyRuntimeTheme(
+        viewGroup: ViewGroup
+    ) {
+
+        val accent =
+            ThemeManager.getAccentColor(
+                this
+            )
+
+        val accentDark =
+            ThemeManager.getAccentDarkColor(
+                this
+            )
+
+        val white =
+            0xFFFFFFFF.toInt()
+
+        val disabled =
+            0xFFBDBDBD.toInt()
+
+        for (i in 0 until viewGroup.childCount) {
+
+            val child =
+                viewGroup.getChildAt(i)
+
+            when (child) {
+
+                is Button -> {
+
+                    child.backgroundTintList =
+                        ColorStateList.valueOf(
+                            accentDark
+                        )
+                }
+
+                is FloatingActionButton -> {
+
+                    child.backgroundTintList =
+                        ColorStateList.valueOf(
+                            accentDark
+                        )
+                }
+
+                is SwitchMaterial -> {
+
+                    child.thumbTintList =
+                        ColorStateList(
+                            arrayOf(
+                                intArrayOf(
+                                    android.R.attr.state_checked
+                                ),
+                                intArrayOf()
+                            ),
+                            intArrayOf(
+                                white,
+                                white
+                            )
+                        )
+
+                    child.trackTintList =
+                        ColorStateList(
+                            arrayOf(
+                                intArrayOf(
+                                    android.R.attr.state_checked
+                                ),
+                                intArrayOf()
+                            ),
+                            intArrayOf(
+                                accentDark,
+                                disabled
+                            )
+                        )
+                }
+            }
+
+            if (child is ViewGroup) {
+
+                applyRuntimeTheme(child)
+            }
+        }
     }
 
     protected fun hideKeyboard(
