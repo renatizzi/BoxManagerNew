@@ -84,6 +84,20 @@ object DialogUtils {
 
         container.addView(error, 0)
 
+        name.addTextChangedListener(
+            UiUtils.noEnterWatcher(
+                name,
+                error
+            )
+        )
+
+        position.addTextChangedListener(
+            UiUtils.noEnterWatcher(
+                position,
+                null
+            )
+        )
+
         setupCategorySpinner(
             context,
             spinner,
@@ -162,10 +176,36 @@ object DialogUtils {
                 R.id.editObjectQuantity
             )
 
+        name.addTextChangedListener(
+            UiUtils.noEnterWatcher(
+                name,
+                error
+            )
+        )
+
+        description.addTextChangedListener(
+            UiUtils.noEnterWatcher(
+                description,
+                null
+            )
+        )
+
+        quantity.addTextChangedListener(
+            UiUtils.noEnterWatcher(
+                quantity,
+                null
+            )
+        )
+
         name.setText(nameValue)
-        description.setText(descriptionValue)
+
+        description.setText(
+            descriptionValue
+        )
+
         quantity.setText(
-            quantityValue?.toString() ?: ""
+            quantityValue?.toString()
+                ?: ""
         )
 
         return ObjectDialogViews(
@@ -238,6 +278,13 @@ object DialogUtils {
 
         input.inputType =
             InputType.TYPE_CLASS_TEXT
+
+        input.addTextChangedListener(
+            UiUtils.noEnterWatcher(
+                input,
+                null
+            )
+        )
 
         AlertDialog.Builder(context)
             .setTitle(
