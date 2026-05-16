@@ -574,163 +574,63 @@ class BoxDetailActivity : BaseActivity() {
 
     private fun showCreateBoxAndMoveDialog() {
 
-        val view =
-            layoutInflater.inflate(
-                R.layout.dialog_add_box,
-                null
+        val dialogViews =
+            DialogUtils.createBoxDialog(
+                context = this,
+                categories = categories,
+                timestamp =
+                    System.currentTimeMillis()
             )
-
-        val errorText =
-            TextView(this).apply {
-
-                setTextColor(
-                    getColor(
-                        android.R.color.holo_red_dark
-                    )
-                )
-
-                visibility =
-                    View.GONE
-
-                text =
-                    "Dato obbligatorio"
-            }
-
-        val name =
-            view.findViewById<EditText>(
-                R.id.editBoxName
-            )
-
-        val spinner =
-            view.findViewById<Spinner>(
-                R.id.spinnerCategory
-            )
-
-        val position =
-            view.findViewById<EditText>(
-                R.id.editPosition
-            )
-
-        val date =
-            view.findViewById<TextView>(
-                R.id.textLastModified
-            )
-
-        val container =
-            view as LinearLayout
-
-        container.addView(
-            errorText,
-            0
-        )
-
-        spinner.adapter =
-            CategorySpinnerAdapter(
-                this,
-                categories
-            )
-
-        val now =
-            System.currentTimeMillis()
-
-        date.text =
-            "Ultima modifica: ${
-                SimpleDateFormat(
-                    "dd/MM/yyyy HH:mm",
-                    Locale.getDefault()
-                ).format(Date(now))
-            }"
 
         val dialog =
-            AlertDialog.Builder(this)
-                .setTitle(
-                    "Nuovo contenitore"
+            DialogUtils.createBoxConfirmDialog(
+                context = this,
+                view = dialogViews.view
+            )
+
+        DialogUtils.setupDialogConfirmButton(
+            dialog = dialog
+        ) {
+
+            val boxName =
+                dialogViews.name.text
+                    .toString()
+                    .trim()
+
+            if (
+                !DialogUtils.validateRequiredName(
+                    boxName,
+                    dialogViews.errorText
                 )
-                .setView(view)
-                .setPositiveButton(
-                    "Conferma",
-                    null
-                )
-                .setNegativeButton(
-                    "Annulla",
-                    null
-                )
-                .create()
+            ) {
 
-        dialog.setOnShowListener {
-
-            val btn =
-                dialog.getButton(
-                    AlertDialog.BUTTON_POSITIVE
-                )
-
-            btn.setOnClickListener {
-
-                val boxName =
-                    name.text.toString().trim()
-
-                if (boxName.isEmpty()) {
-
-                    errorText.visibility =
-                        View.VISIBLE
-
-                    return@setOnClickListener
-                }
-
-                val category =
-                    spinner.selectedItem
-                            as CategoryEntity
-
-                lifecycleScope.launch {
-
-                    val newBoxId =
-                        boxViewModel.addBoxAndReturnId(
-                            boxName,
-                            category.id,
-                            position.text.toString()
-                        )
-
-                    objectViewModel.moveObjects(
-                        newBoxId
-                    )
-                }
-
-                dialog.dismiss()
+                return@setupDialogConfirmButton
             }
 
-            name.addTextChangedListener(
-                object : TextWatcher {
+            val category =
+                dialogViews.spinner.selectedItem
+                        as CategoryEntity
 
-                    override fun afterTextChanged(
-                        s: Editable?
-                    ) {
+            lifecycleScope.launch {
 
-                        errorText.visibility =
-                            View.GONE
-                    }
+                val newBoxId =
+                    boxViewModel.addBoxAndReturnId(
+                        boxName,
+                        category.id,
+                        dialogViews.position.text
+                            .toString()
+                    )
 
-                    override fun beforeTextChanged(
-                        s: CharSequence?,
-                        start: Int,
-                        count: Int,
-                        after: Int
-                    ) {
-                    }
+                objectViewModel.moveObjects(
+                    newBoxId
+                )
+            }
 
-                    override fun onTextChanged(
-                        s: CharSequence?,
-                        start: Int,
-                        before: Int,
-                        count: Int
-                    ) {
-                    }
-                }
-            )
+            dialog.dismiss()
         }
 
         dialog.show()
     }
-
     private fun updateHeader(
         textCategory: TextView,
         imageCategoryIcon: ImageView,
