@@ -198,15 +198,8 @@ object DialogUtils {
         )
 
         name.setText(nameValue)
-
-        description.setText(
-            descriptionValue
-        )
-
-        quantity.setText(
-            quantityValue?.toString()
-                ?: ""
-        )
+        description.setText(descriptionValue)
+        quantity.setText(quantityValue?.toString() ?: "")
 
         return ObjectDialogViews(
             view,
@@ -224,14 +217,8 @@ object DialogUtils {
 
         return AlertDialog.Builder(context)
             .setView(view)
-            .setPositiveButton(
-                "Conferma",
-                null
-            )
-            .setNegativeButton(
-                "Annulla",
-                null
-            )
+            .setPositiveButton("Conferma", null)
+            .setNegativeButton("Annulla", null)
             .create()
     }
 
@@ -260,6 +247,10 @@ object DialogUtils {
             name.trim().isEmpty()
         ) {
 
+            FeedbackUtils.alert(
+                errorText.context
+            )
+
             errorText.visibility =
                 View.VISIBLE
 
@@ -287,23 +278,14 @@ object DialogUtils {
         )
 
         AlertDialog.Builder(context)
-            .setTitle(
-                "Nuova posizione"
-            )
+            .setTitle("Nuova posizione")
             .setView(input)
-            .setPositiveButton(
-                "Conferma"
-            ) { _, _ ->
-
+            .setPositiveButton("Conferma") { _, _ ->
                 onConfirm(
-                    input.text.toString()
-                        .trim()
+                    input.text.toString().trim()
                 )
             }
-            .setNegativeButton(
-                "Annulla",
-                null
-            )
+            .setNegativeButton("Annulla", null)
             .show()
     }
 
@@ -317,14 +299,10 @@ object DialogUtils {
             .setMessage(
                 "Confermi anche l'eliminazione degli oggetti contenuti?"
             )
-            .setPositiveButton(
-                "SI"
-            ) { _, _ ->
+            .setPositiveButton("SI") { _, _ ->
                 onDelete()
             }
-            .setNegativeButton(
-                "NO"
-            ) { _, _ ->
+            .setNegativeButton("NO") { _, _ ->
                 onMoveObjects()
             }
             .show()
@@ -336,18 +314,11 @@ object DialogUtils {
     ) {
 
         AlertDialog.Builder(context)
-            .setMessage(
-                "Conferma eliminazione?"
-            )
-            .setPositiveButton(
-                "SI"
-            ) { _, _ ->
+            .setMessage("Conferma eliminazione?")
+            .setPositiveButton("SI") { _, _ ->
                 onConfirm()
             }
-            .setNegativeButton(
-                "NO",
-                null
-            )
+            .setNegativeButton("NO", null)
             .show()
     }
 
@@ -357,18 +328,11 @@ object DialogUtils {
     ) {
 
         AlertDialog.Builder(context)
-            .setMessage(
-                "Conferma spostamento?"
-            )
-            .setPositiveButton(
-                "SI"
-            ) { _, _ ->
+            .setMessage("Conferma spostamento?")
+            .setPositiveButton("SI") { _, _ ->
                 onConfirm()
             }
-            .setNegativeButton(
-                "NO",
-                null
-            )
+            .setNegativeButton("NO", null)
             .show()
     }
 
