@@ -935,38 +935,16 @@ class BoxDetailActivity : BaseActivity() {
         boxId: Int
     ) {
 
-        val view =
-            layoutInflater.inflate(
-                R.layout.dialog_add_object,
-                null
-            )
-
-        val textError =
-            view.findViewById<TextView>(
-                R.id.textErrorObject
-            )
-
-        val inputName =
-            view.findViewById<EditText>(
-                R.id.editObjectName
-            )
-
-        val inputDescription =
-            view.findViewById<EditText>(
-                R.id.editObjectDescription
-            )
-
-        val inputQuantity =
-            view.findViewById<EditText>(
-                R.id.editObjectQuantity
+        val dialogViews =
+            DialogUtils.createObjectDialog(
+                context = this,
+                layout = R.layout.dialog_add_object
             )
 
         val dialog =
             AlertDialog.Builder(this)
-                .setTitle(
-                    "Nuovo oggetto"
-                )
-                .setView(view)
+                .setTitle("Nuovo oggetto")
+                .setView(dialogViews.view)
                 .setPositiveButton(
                     "Aggiungi",
                     null
@@ -979,45 +957,45 @@ class BoxDetailActivity : BaseActivity() {
 
         dialog.setOnShowListener {
 
-            val btn =
-                dialog.getButton(
-                    AlertDialog.BUTTON_POSITIVE
-                )
-
-            btn.setOnClickListener {
+            dialog.getButton(
+                AlertDialog.BUTTON_POSITIVE
+            ).setOnClickListener {
 
                 val name =
-                    inputName.text.toString()
+                    dialogViews.name.text
+                        .toString()
                         .trim()
 
-                if (name.isEmpty()) {
-
-                    textError.visibility =
-                        View.VISIBLE
-
+                if (
+                    !DialogUtils.validateRequiredName(
+                        name,
+                        dialogViews.errorText
+                    )
+                ) {
                     return@setOnClickListener
                 }
 
                 objectViewModel.addObject(
                     name,
                     boxId,
-                    inputDescription.text.toString()
+                    dialogViews.description.text
+                        .toString()
                         .ifBlank { null },
-                    inputQuantity.text.toString()
+                    dialogViews.quantity.text
+                        .toString()
                         .toIntOrNull()
                 )
 
                 dialog.dismiss()
             }
 
-            inputName.addTextChangedListener(
+            dialogViews.name.addTextChangedListener(
                 object : TextWatcher {
 
                     override fun afterTextChanged(
                         s: Editable?
                     ) {
-
-                        textError.visibility =
+                        dialogViews.errorText.visibility =
                             View.GONE
                     }
 
@@ -1026,16 +1004,14 @@ class BoxDetailActivity : BaseActivity() {
                         start: Int,
                         count: Int,
                         after: Int
-                    ) {
-                    }
+                    ) {}
 
                     override fun onTextChanged(
                         s: CharSequence?,
                         start: Int,
                         before: Int,
                         count: Int
-                    ) {
-                    }
+                    ) {}
                 }
             )
         }
