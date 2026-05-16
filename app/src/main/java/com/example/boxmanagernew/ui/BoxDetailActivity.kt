@@ -25,6 +25,7 @@ import com.example.boxmanagernew.ui.categories.IconMapper
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.example.boxmanagernew.ui.common.DialogUtils
+import com.example.boxmanagernew.ui.common.FeedbackUtils
 import com.example.boxmanagernew.ui.main.BoxViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
@@ -285,11 +286,12 @@ class BoxDetailActivity : BaseActivity() {
                 objectViewModel.selectedItems.value
                     ?.toList()
                     ?: return@setOnClickListener
-
             if (
                 objectViewModel
                     .hasHiddenSelections.value == true
             ) {
+
+                FeedbackUtils.alert(this)
 
                 contextCard.visibility =
                     View.VISIBLE
