@@ -20,6 +20,7 @@ import com.example.boxmanagernew.domain.model.Category
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.example.boxmanagernew.ui.common.DialogUtils
+import com.example.boxmanagernew.ui.common.FeedbackUtils
 import com.example.boxmanagernew.ui.common.UiUtils
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -61,17 +62,12 @@ class CategoriesActivity : BaseActivity() {
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
 
-        setContentView(
-            R.layout.activity_categories
-        )
+        setContentView(R.layout.activity_categories)
 
         setupEdgeToEdge()
-
         setupTopBar()
-
         setupViews()
 
         BottomNavManager.setup(
@@ -93,11 +89,8 @@ class CategoriesActivity : BaseActivity() {
             )
 
         setupViewModel(repository)
-
         setupAdapter()
-
         observeData()
-
         setupListeners()
 
         showDefaultBar()
@@ -110,29 +103,14 @@ class CategoriesActivity : BaseActivity() {
             subtitle = "Classificazione Contenitori"
         )
 
-        contextCard =
-            findViewById(R.id.contextCard)
-
-        layoutSearchSort =
-            findViewById(R.id.layoutSearchSort)
-
-        textContextMessage =
-            findViewById(R.id.textContextMessage)
-
-        editSearch =
-            findViewById(R.id.editTextSearchCategory)
-
-        buttonSort =
-            findViewById(R.id.buttonSortCategory)
-
-        textCategoryCount =
-            findViewById(R.id.textCategoryCount)
-
-        recyclerView =
-            findViewById(R.id.recyclerViewCategories)
-
-        fabAdd =
-            findViewById(R.id.fabAddCategory)
+        contextCard = findViewById(R.id.contextCard)
+        layoutSearchSort = findViewById(R.id.layoutSearchSort)
+        textContextMessage = findViewById(R.id.textContextMessage)
+        editSearch = findViewById(R.id.editTextSearchCategory)
+        buttonSort = findViewById(R.id.buttonSortCategory)
+        textCategoryCount = findViewById(R.id.textCategoryCount)
+        recyclerView = findViewById(R.id.recyclerViewCategories)
+        fabAdd = findViewById(R.id.fabAddCategory)
     }
 
     private fun setupBackNavigation() {
@@ -140,11 +118,8 @@ class CategoriesActivity : BaseActivity() {
         onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
-
                 override fun handleOnBackPressed() {
-
                     resetUiState()
-
                     finish()
                 }
             }
@@ -159,7 +134,6 @@ class CategoriesActivity : BaseActivity() {
             ViewModelProvider(
                 this,
                 object : ViewModelProvider.Factory {
-
                     override fun <T : ViewModel> create(
                         modelClass: Class<T>
                     ): T {
@@ -179,14 +153,11 @@ class CategoriesActivity : BaseActivity() {
                 items = emptyList(),
 
                 onEdit = { category ->
-
                     resetUiState()
-
                     showEditCategoryDialog(category)
                 },
 
                 onDelete = { category ->
-
                     handleDeleteCategory(category)
                 }
             )
@@ -201,23 +172,19 @@ class CategoriesActivity : BaseActivity() {
     private fun observeData() {
 
         viewModel.categories.observe(this) {
-
             adapter.updateData(it)
         }
 
         viewModel.allCategoriesCount.observe(this) {
-
             textCategoryCount.text =
                 "N. Categorie: $it"
         }
 
         viewModel.selectedCategory.observe(this) {
-
             adapter.updateSelection(it)
         }
 
         viewModel.isAscending.observe(this) {
-
             UiUtils.updateSortButton(
                 buttonSort,
                 it
@@ -233,49 +200,30 @@ class CategoriesActivity : BaseActivity() {
             isAscending = true,
 
             onSearchChanged = { query ->
-
                 viewModel.filter(query)
-
                 adapter.updateQuery(query)
             },
 
             onSortClicked = {
-
                 resetUiState()
-
                 viewModel.toggleSort()
             }
         )
 
-        editSearch.setOnEditorActionListener {
-                _,
-                actionId,
-                _ ->
+        editSearch.setOnEditorActionListener { _, actionId, _ ->
 
-            if (
-                actionId ==
-                EditorInfo.IME_ACTION_DONE
-            ) {
-
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
                 hideKeyboardAndClearFocus()
-
                 true
-
-            } else {
-
-                false
-            }
+            } else false
         }
 
         fabAdd.setOnClickListener {
-
             resetUiState()
-
             showAddCategoryDialog()
         }
 
         contextCard.setOnClickListener {
-
             resetUiState()
         }
     }
@@ -304,18 +252,14 @@ class CategoriesActivity : BaseActivity() {
             } else {
 
                 resetUiState()
-
                 showDeleteDialog(category)
             }
         }
     }
 
     private fun resetUiState() {
-
         viewModel.clearSelection()
-
         hideKeyboardAndClearFocus()
-
         showDefaultBar()
     }
 
@@ -380,9 +324,9 @@ class CategoriesActivity : BaseActivity() {
                     )
 
                 handleCategoryDialogResult(
-                    success = success,
-                    dialog = dialog,
-                    textError = dialogViews.textError
+                    success,
+                    dialog,
+                    dialogViews.textError
                 )
             }
         }
@@ -396,40 +340,25 @@ class CategoriesActivity : BaseActivity() {
 
         lifecycleScope.launch {
 
-            val isUsed =
-                viewModel.isCategoryUsed(
-                    category.id
-                )
-
-            if (isUsed) {
-
-                showWarningMessage(
-                    "Categoria in uso: modificandola, i contenitori verranno aggiornati. Tocca qui per annullare."
-                )
-            }
-
             val dialogViews =
-                createCategoryDialog(
-                    category
-                )
+                createCategoryDialog(category)
 
             val dialog =
                 createCategoryAlertDialog(
-                    title = "Modifica categoria",
-                    view = dialogViews.view,
-                    positiveText = "Salva"
+                    "Modifica categoria",
+                    dialogViews.view,
+                    "Salva"
                 )
 
             dialog.setOnDismissListener {
-
                 resetUiState()
             }
 
             setupCategoryDialogConfirm(
-                dialog = dialog,
-                editName = dialogViews.editName,
-                iconAdapter = dialogViews.iconAdapter,
-                textError = dialogViews.textError
+                dialog,
+                dialogViews.editName,
+                dialogViews.iconAdapter,
+                dialogViews.textError
             ) { name, icon ->
 
                 lifecycleScope.launch {
@@ -443,9 +372,9 @@ class CategoriesActivity : BaseActivity() {
                         )
 
                     handleCategoryDialogResult(
-                        success = success,
-                        dialog = dialog,
-                        textError = dialogViews.textError
+                        success,
+                        dialog,
+                        dialogViews.textError
                     )
                 }
             }
@@ -493,21 +422,15 @@ class CategoriesActivity : BaseActivity() {
             iconAdapter
 
         if (category != null) {
-
-            editName.setText(
-                category.name
-            )
-
-            iconAdapter.setSelectedIcon(
-                category.icon
-            )
+            editName.setText(category.name)
+            iconAdapter.setSelectedIcon(category.icon)
         }
 
         return CategoryDialogViews(
-            view = view,
-            editName = editName,
-            textError = textError,
-            iconAdapter = iconAdapter
+            view,
+            editName,
+            textError,
+            iconAdapter
         )
     }
 
@@ -520,14 +443,8 @@ class CategoriesActivity : BaseActivity() {
         return AlertDialog.Builder(this)
             .setTitle(title)
             .setView(view)
-            .setNegativeButton(
-                "Annulla",
-                null
-            )
-            .setPositiveButton(
-                positiveText,
-                null
-            )
+            .setNegativeButton("Annulla", null)
+            .setPositiveButton(positiveText, null)
             .create()
     }
 
@@ -536,10 +453,7 @@ class CategoriesActivity : BaseActivity() {
         editName: EditText,
         iconAdapter: IconAdapter,
         textError: TextView,
-        onValid: (
-            name: String,
-            icon: String
-        ) -> Unit
+        onValid: (name: String, icon: String) -> Unit
     ) {
 
         dialog.setOnShowListener {
@@ -552,9 +466,7 @@ class CategoriesActivity : BaseActivity() {
             button.setOnClickListener {
 
                 val name =
-                    editName.text
-                        .toString()
-                        .trim()
+                    editName.text.toString().trim()
 
                 val selectedIcon =
                     iconAdapter.getSelectedIcon()
@@ -563,6 +475,10 @@ class CategoriesActivity : BaseActivity() {
                     View.GONE
 
                 if (name.isEmpty()) {
+
+                    FeedbackUtils.alert(
+                        this@CategoriesActivity
+                    )
 
                     textError.text =
                         "Dato obbligatorio"
@@ -574,6 +490,10 @@ class CategoriesActivity : BaseActivity() {
                 }
 
                 if (selectedIcon == null) {
+
+                    FeedbackUtils.alert(
+                        this@CategoriesActivity
+                    )
 
                     textError.text =
                         "Seleziona un'icona"
@@ -601,7 +521,6 @@ class CategoriesActivity : BaseActivity() {
         if (success) {
 
             resetUiState()
-
             dialog.dismiss()
 
         } else {
@@ -625,7 +544,6 @@ class CategoriesActivity : BaseActivity() {
             lifecycleScope.launch {
 
                 viewModel.delete(category)
-
                 resetUiState()
             }
         }

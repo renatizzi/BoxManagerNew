@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission
+        android:name="android.permission.VIBRATE"/>
 
     <application
         android:allowBackup="true"
@@ -12,30 +16,34 @@
             android:name=".ui.boxdetail.BoxDetailActivity"
             android:windowSoftInputMode="adjustPan" />
 
-        <activity android:name=".ui.categories.CategoriesActivity" />
+        <activity
+            android:name=".ui.categories.CategoriesActivity" />
 
         <activity
             android:name=".ui.dashboard.DashboardActivity"
             android:exported="true">
 
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+
+                <action
+                    android:name="android.intent.action.MAIN"/>
 
                 <category
-                    android:name="android.intent.category.LAUNCHER" />
+                    android:name="android.intent.category.LAUNCHER"/>
+
             </intent-filter>
 
         </activity>
 
         <activity
-            android:name=".ui.settings.SettingsActivity" />
+            android:name=".ui.settings.SettingsActivity"/>
 
         <activity
-            android:name=".ui.utility.UtilityActivity" />
+            android:name=".ui.utility.UtilityActivity"/>
 
         <activity
             android:name=".MainActivity"
-            android:exported="false" />
+            android:exported="false"/>
 
     </application>
 
