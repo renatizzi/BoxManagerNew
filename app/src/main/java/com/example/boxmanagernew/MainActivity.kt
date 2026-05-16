@@ -23,6 +23,7 @@ import com.example.boxmanagernew.ui.categories.CategoriesActivity
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.example.boxmanagernew.ui.common.DialogUtils
+import com.example.boxmanagernew.ui.common.FeedbackUtils
 import com.example.boxmanagernew.ui.common.UiUtils
 import com.example.boxmanagernew.ui.main.BoxAdapter
 import com.example.boxmanagernew.ui.main.BoxViewModel
@@ -443,10 +444,11 @@ class MainActivity : BaseActivity() {
         val ids =
             viewModel.selectedItems.value?.toList()
                 ?: return
-
         if (
             viewModel.hasHiddenSelections.value == true
         ) {
+
+            FeedbackUtils.alert(this)
 
             showContextMessage(
                 "Impossibile eliminare: alcuni elementi selezionati non sono visibili. Tocca qui per rimuovere il filtro."
@@ -523,6 +525,8 @@ class MainActivity : BaseActivity() {
         if (
             viewModel.hasHiddenSelections.value == true
         ) {
+
+            FeedbackUtils.alert(this)
 
             showContextMessage(
                 "Impossibile spostare: alcuni elementi selezionati non sono visibili. Tocca qui per rimuovere il filtro."
