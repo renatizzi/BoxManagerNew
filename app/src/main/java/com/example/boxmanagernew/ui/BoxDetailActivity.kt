@@ -809,51 +809,25 @@ class BoxDetailActivity : BaseActivity() {
                 }
                 ?: return
 
-        val view =
-            layoutInflater.inflate(
-                R.layout.dialog_edit_object,
-                null
+        val dialogViews =
+            DialogUtils.createObjectDialog(
+                context = this,
+                layout = R.layout.dialog_edit_object,
+                nameValue = item.typeName,
+                descriptionValue =
+                    item.obj.description,
+                quantityValue =
+                    item.obj.quantity
             )
-
-        val textError =
-            view.findViewById<TextView>(
-                R.id.textErrorEditObject
-            )
-
-        val inputName =
-            view.findViewById<EditText>(
-                R.id.editObjectName
-            )
-
-        val inputDescription =
-            view.findViewById<EditText>(
-                R.id.editObjectDescription
-            )
-
-        val inputQuantity =
-            view.findViewById<EditText>(
-                R.id.editObjectQuantity
-            )
-
-        inputName.setText(
-            item.typeName
-        )
-
-        inputDescription.setText(
-            item.obj.description
-        )
-
-        inputQuantity.setText(
-            item.obj.quantity?.toString()
-                ?: ""
-        )
 
         val dialog =
             AlertDialog.Builder(this)
                 .setTitle(
                     "Modifica oggetto"
                 )
-                .setView(view)
+                .setView(
+                    dialogViews.view
+                )
                 .setPositiveButton(
                     "Salva",
                     null
@@ -866,21 +840,21 @@ class BoxDetailActivity : BaseActivity() {
 
         dialog.setOnShowListener {
 
-            val btn =
-                dialog.getButton(
-                    AlertDialog.BUTTON_POSITIVE
-                )
-
-            btn.setOnClickListener {
+            dialog.getButton(
+                AlertDialog.BUTTON_POSITIVE
+            ).setOnClickListener {
 
                 val name =
-                    inputName.text.toString()
+                    dialogViews.name.text
+                        .toString()
                         .trim()
 
-                if (name.isEmpty()) {
-
-                    textError.visibility =
-                        View.VISIBLE
+                if (
+                    !DialogUtils.validateRequiredName(
+                        name,
+                        dialogViews.errorText
+                    )
+                ) {
 
                     return@setOnClickListener
                 }
@@ -889,48 +863,50 @@ class BoxDetailActivity : BaseActivity() {
                     id,
                     name,
                     item.obj.boxId,
-                    inputDescription.text.toString()
+                    dialogViews.description.text
+                        .toString()
                         .ifBlank { null },
-                    inputQuantity.text.toString()
+                    dialogViews.quantity.text
+                        .toString()
                         .toIntOrNull()
                 )
 
                 dialog.dismiss()
             }
 
-            inputName.addTextChangedListener(
-                object : TextWatcher {
+            dialogViews.name
+                .addTextChangedListener(
 
-                    override fun afterTextChanged(
-                        s: Editable?
-                    ) {
+                    object : TextWatcher {
 
-                        textError.visibility =
-                            View.GONE
+                        override fun afterTextChanged(
+                            s: Editable?
+                        ) {
+
+                            dialogViews.errorText
+                                .visibility =
+                                View.GONE
+                        }
+
+                        override fun beforeTextChanged(
+                            s: CharSequence?,
+                            start: Int,
+                            count: Int,
+                            after: Int
+                        ) {}
+
+                        override fun onTextChanged(
+                            s: CharSequence?,
+                            start: Int,
+                            before: Int,
+                            count: Int
+                        ) {}
                     }
-
-                    override fun beforeTextChanged(
-                        s: CharSequence?,
-                        start: Int,
-                        count: Int,
-                        after: Int
-                    ) {
-                    }
-
-                    override fun onTextChanged(
-                        s: CharSequence?,
-                        start: Int,
-                        before: Int,
-                        count: Int
-                    ) {
-                    }
-                }
-            )
+                )
         }
 
         dialog.show()
     }
-
     private fun showAddObjectDialog(
         boxId: Int
     ) {
