@@ -1,9 +1,11 @@
 package com.example.boxmanagernew.ui.common
 
 import android.content.Context
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Rect
 import android.os.Bundle
+import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -12,14 +14,24 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.boxmanagernew.MainActivity
 import com.example.boxmanagernew.R
+import com.example.boxmanagernew.ui.categories.CategoriesActivity
+import com.example.boxmanagernew.ui.dashboard.DashboardActivity
+import com.example.boxmanagernew.ui.settings.SettingsActivity
+import com.example.boxmanagernew.ui.utility.UtilityActivity
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlin.math.abs
 
 abstract class BaseActivity : AppCompatActivity() {
+
+    private lateinit var gestureDetector:
+            GestureDetectorCompat
 
     override fun onCreate(
         savedInstanceState: Bundle?
@@ -27,9 +39,9 @@ abstract class BaseActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
 
-        ThemeManager.initializeDefaults(
-            this
-        )
+        ThemeManager.initializeDefaults(this)
+
+        setupSwipeNavigation()
     }
 
     override fun onResume() {
@@ -37,6 +49,123 @@ abstract class BaseActivity : AppCompatActivity() {
         super.onResume()
 
         refreshAppShell()
+    }
+
+    private fun setupSwipeNavigation() {
+
+        gestureDetector =
+            GestureDetectorCompat(
+                this,
+                object :
+                    GestureDetector.SimpleOnGestureListener() {
+
+                    private val SWIPE_THRESHOLD =
+                        180
+
+                    private val SWIPE_VELOCITY =
+                        180
+
+                    override fun onFling(
+                        e1: MotionEvent?,
+                        e2: MotionEvent,
+                        velocityX: Float,
+                        velocityY: Float
+                    ): Boolean {
+
+                        if (e1 == null) return false
+
+                        val diffX =
+                            e2.x - e1.x
+
+                        val diffY =
+                            e2.y - e1.y
+
+                        if (
+                            abs(diffX) > abs(diffY) &&
+                            abs(diffX) > SWIPE_THRESHOLD &&
+                            abs(velocityX) > SWIPE_VELOCITY
+                        ) {
+
+                            if (diffX > 0) {
+
+                                navigatePrevious()
+
+                            } else {
+
+                                navigateNext()
+                            }
+
+                            return true
+                        }
+
+                        return false
+                    }
+                }
+            )
+    }
+
+    private fun navigateNext() {
+
+        when (this) {
+
+            is DashboardActivity ->
+                openSwipe(MainActivity::class.java)
+
+            is MainActivity ->
+                openSwipe(CategoriesActivity::class.java)
+
+            is CategoriesActivity ->
+                openSwipe(UtilityActivity::class.java)
+
+            is UtilityActivity ->
+                openSwipe(SettingsActivity::class.java)
+
+            is SettingsActivity ->
+                return
+        }
+    }
+
+    private fun navigatePrevious() {
+
+        when (this) {
+
+            is SettingsActivity ->
+                openSwipe(UtilityActivity::class.java)
+
+            is UtilityActivity ->
+                openSwipe(CategoriesActivity::class.java)
+
+            is CategoriesActivity ->
+                openSwipe(MainActivity::class.java)
+
+            is MainActivity ->
+                openSwipe(DashboardActivity::class.java)
+
+            is DashboardActivity ->
+                return
+        }
+    }
+
+    private fun openSwipe(
+        target: Class<*>
+    ) {
+
+        if (
+            this::class.java == target
+        ) return
+
+        startActivity(
+            Intent(this, target).apply {
+                flags =
+                    Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                            Intent.FLAG_ACTIVITY_SINGLE_TOP
+            }
+        )
+
+        overridePendingTransition(
+            android.R.anim.fade_in,
+            android.R.anim.fade_out
+        )
     }
 
     protected fun setupEdgeToEdge() {
@@ -94,21 +223,15 @@ abstract class BaseActivity : AppCompatActivity() {
             )
 
         topBar?.setCardBackgroundColor(
-            ThemeManager.getTopBarBackground(
-                this
-            )
+            ThemeManager.getTopBarBackground(this)
         )
 
         title?.setTextColor(
-            ThemeManager.getTopBarTitle(
-                this
-            )
+            ThemeManager.getTopBarTitle(this)
         )
 
         subtitle?.setTextColor(
-            ThemeManager.getTopBarSubtitle(
-                this
-            )
+            ThemeManager.getTopBarSubtitle(this)
         )
 
         if (
@@ -155,9 +278,7 @@ abstract class BaseActivity : AppCompatActivity() {
     ) {
 
         val accent =
-            ThemeManager.getAccentDarkColor(
-                this
-            )
+            ThemeManager.getAccentDarkColor(this)
 
         for (i in 0 until viewGroup.childCount) {
 
@@ -166,21 +287,13 @@ abstract class BaseActivity : AppCompatActivity() {
 
             when (child) {
 
-                is Button -> {
-
+                is Button ->
                     child.backgroundTintList =
-                        ColorStateList.valueOf(
-                            accent
-                        )
-                }
+                        ColorStateList.valueOf(accent)
 
-                is FloatingActionButton -> {
-
+                is FloatingActionButton ->
                     child.backgroundTintList =
-                        ColorStateList.valueOf(
-                            accent
-                        )
-                }
+                        ColorStateList.valueOf(accent)
             }
 
             if (child is ViewGroup) {
@@ -221,6 +334,8 @@ abstract class BaseActivity : AppCompatActivity() {
         ev: MotionEvent
     ): Boolean {
 
+        gestureDetector.onTouchEvent(ev)
+
         if (
             ev.action ==
             MotionEvent.ACTION_DOWN
@@ -234,9 +349,7 @@ abstract class BaseActivity : AppCompatActivity() {
                 val rect =
                     Rect()
 
-                view.getGlobalVisibleRect(
-                    rect
-                )
+                view.getGlobalVisibleRect(rect)
 
                 if (
                     !rect.contains(
@@ -245,17 +358,13 @@ abstract class BaseActivity : AppCompatActivity() {
                     )
                 ) {
 
-                    hideKeyboard(
-                        view
-                    )
+                    hideKeyboard(view)
 
                     view.clearFocus()
                 }
             }
         }
 
-        return super.dispatchTouchEvent(
-            ev
-        )
+        return super.dispatchTouchEvent(ev)
     }
 }
