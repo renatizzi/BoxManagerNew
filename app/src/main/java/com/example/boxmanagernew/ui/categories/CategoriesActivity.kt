@@ -17,11 +17,7 @@ import com.example.boxmanagernew.R
 import com.example.boxmanagernew.data.local.DatabaseProvider
 import com.example.boxmanagernew.data.repository.CategoryRepositoryImpl
 import com.example.boxmanagernew.domain.model.Category
-import com.example.boxmanagernew.ui.common.BaseActivity
-import com.example.boxmanagernew.ui.common.BottomNavManager
-import com.example.boxmanagernew.ui.common.DialogUtils
-import com.example.boxmanagernew.ui.common.FeedbackUtils
-import com.example.boxmanagernew.ui.common.UiUtils
+import com.example.boxmanagernew.ui.common.*
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
@@ -30,79 +26,46 @@ class CategoriesActivity : BaseActivity() {
 
     private lateinit var viewModel: CategoryViewModel
     private lateinit var adapter: CategoryAdapter
-
     private lateinit var contextCard: MaterialCardView
     private lateinit var layoutSearchSort: View
     private lateinit var textContextMessage: TextView
-
     private lateinit var editSearch: EditText
     private lateinit var buttonSort: Button
     private lateinit var textCategoryCount: TextView
-
     private lateinit var recyclerView: RecyclerView
     private lateinit var fabAdd: FloatingActionButton
 
     private val iconNames = listOf(
-        "outline_checkroom_24",
-        "outline_fastfood_24",
-        "outline_handyman_24",
-        "outline_carpenter_24",
-        "outline_ink_pen_24",
-        "outline_garage_money_24",
-        "outline_passport_24",
-        "outline_broadcast_on_home_24",
-        "outline_tools_power_drill_24",
-        "outline_photo_frame_24",
-        "outline_library_music_24",
-        "outline_box_24",
-        "outline_menu_book_24",
-        "outline_medical_services_24",
-        "outline_money_bag_24",
+        "outline_checkroom_24","outline_fastfood_24","outline_handyman_24",
+        "outline_carpenter_24","outline_ink_pen_24","outline_garage_money_24",
+        "outline_passport_24","outline_broadcast_on_home_24","outline_tools_power_drill_24",
+        "outline_photo_frame_24","outline_library_music_24","outline_box_24",
+        "outline_menu_book_24","outline_medical_services_24","outline_money_bag_24",
         "outline_browse_24"
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_categories)
-
         setupEdgeToEdge()
         setupTopBar()
         setupViews()
 
-        BottomNavManager.setup(
-            this,
-            BottomNavManager.TAB_CATEGORIES
-        )
-
+        BottomNavManager.setup(this, BottomNavManager.TAB_CATEGORIES)
         setupBackNavigation()
 
-        val db =
-            DatabaseProvider.getDatabase(
-                applicationContext
-            )
-
-        val repository =
-            CategoryRepositoryImpl(
-                db.categoryDao(),
-                db.boxDao()
-            )
+        val db = DatabaseProvider.getDatabase(applicationContext)
+        val repository = CategoryRepositoryImpl(db.categoryDao(), db.boxDao())
 
         setupViewModel(repository)
         setupAdapter()
         observeData()
         setupListeners()
-
         showDefaultBar()
     }
 
     private fun setupViews() {
-
-        setupPageHeader(
-            title = "Categorie",
-            subtitle = "Classificazione Contenitori"
-        )
-
+        setupPageHeader("Categorie","Classificazione Contenitori")
         contextCard = findViewById(R.id.contextCard)
         layoutSearchSort = findViewById(R.id.layoutSearchSort)
         textContextMessage = findViewById(R.id.textContextMessage)
@@ -114,143 +77,67 @@ class CategoriesActivity : BaseActivity() {
     }
 
     private fun setupBackNavigation() {
-
-        onBackPressedDispatcher.addCallback(
-            this,
+        onBackPressedDispatcher.addCallback(this,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    resetUiState()
-                    finish()
+                    resetUiState(); finish()
                 }
-            }
-        )
+            })
     }
 
-    private fun setupViewModel(
-        repository: CategoryRepositoryImpl
-    ) {
-
-        viewModel =
-            ViewModelProvider(
-                this,
-                object : ViewModelProvider.Factory {
-                    override fun <T : ViewModel> create(
-                        modelClass: Class<T>
-                    ): T {
-
-                        return CategoryViewModel(
-                            repository
-                        ) as T
-                    }
+    private fun setupViewModel(repository: CategoryRepositoryImpl) {
+        viewModel = ViewModelProvider(this,
+            object : ViewModelProvider.Factory {
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                    return CategoryViewModel(repository) as T
                 }
-            )[CategoryViewModel::class.java]
+            })[CategoryViewModel::class.java]
     }
 
     private fun setupAdapter() {
-
-        adapter =
-            CategoryAdapter(
-                items = emptyList(),
-
-                onEdit = { category ->
-                    resetUiState()
-                    showEditCategoryDialog(category)
-                },
-
-                onDelete = { category ->
-                    handleDeleteCategory(category)
-                }
-            )
-
-        recyclerView.layoutManager =
-            LinearLayoutManager(this)
-
-        recyclerView.adapter =
-            adapter
+        adapter = CategoryAdapter(
+            emptyList(),
+            onEdit = { resetUiState(); showEditCategoryDialog(it) },
+            onDelete = { handleDeleteCategory(it) }
+        )
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = adapter
     }
 
     private fun observeData() {
-
-        viewModel.categories.observe(this) {
-            adapter.updateData(it)
-        }
-
-        viewModel.allCategoriesCount.observe(this) {
-            textCategoryCount.text =
-                "N. Categorie: $it"
-        }
-
-        viewModel.selectedCategory.observe(this) {
-            adapter.updateSelection(it)
-        }
-
-        viewModel.isAscending.observe(this) {
-            UiUtils.updateSortButton(
-                buttonSort,
-                it
-            )
-        }
+        viewModel.categories.observe(this){ adapter.updateData(it) }
+        viewModel.allCategoriesCount.observe(this){ textCategoryCount.text = "N. Categorie: $it" }
+        viewModel.selectedCategory.observe(this){ adapter.updateSelection(it) }
+        viewModel.isAscending.observe(this){ UiUtils.updateSortButton(buttonSort,it) }
     }
 
     private fun setupListeners() {
-
         UiUtils.setupSearchAndSort(
-            search = editSearch,
-            sortButton = buttonSort,
-            isAscending = true,
-
-            onSearchChanged = { query ->
-                viewModel.filter(query)
-                adapter.updateQuery(query)
-            },
-
-            onSortClicked = {
-                resetUiState()
-                viewModel.toggleSort()
-            }
+            editSearch, buttonSort, true,
+            { q -> viewModel.filter(q); adapter.updateQuery(q) },
+            { resetUiState(); viewModel.toggleSort() }
         )
 
-        editSearch.setOnEditorActionListener { _, actionId, _ ->
-
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                hideKeyboardAndClearFocus()
-                true
-            } else false
+        editSearch.setOnEditorActionListener { _, id, _ ->
+            if (id == EditorInfo.IME_ACTION_DONE) { hideKeyboardAndClearFocus(); true } else false
         }
 
-        fabAdd.setOnClickListener {
-            resetUiState()
-            showAddCategoryDialog()
-        }
-
-        contextCard.setOnClickListener {
-            resetUiState()
-        }
+        fabAdd.setOnClickListener { resetUiState(); showAddCategoryDialog() }
+        contextCard.setOnClickListener { resetUiState() }
     }
 
-    private fun handleDeleteCategory(
-        category: Category
-    ) {
-
+    private fun handleDeleteCategory(category: Category) {
         lifecycleScope.launch {
-
-            val isUsed =
-                viewModel.isCategoryUsed(
-                    category.id
-                )
+            val isUsed = viewModel.isCategoryUsed(category.id)
 
             if (isUsed) {
-
-                viewModel.selectCategory(
-                    category.id
-                )
+                FeedbackUtils.alert(this@CategoriesActivity)
+                viewModel.selectCategory(category.id)
 
                 showWarningMessage(
                     "Categoria in uso: eliminazione non consentita. Tocca qui per annullare."
                 )
-
             } else {
-
                 resetUiState()
                 showDeleteDialog(category)
             }
@@ -264,285 +151,138 @@ class CategoriesActivity : BaseActivity() {
     }
 
     private fun showDefaultBar() {
-
-        layoutSearchSort.visibility =
-            View.VISIBLE
-
-        textContextMessage.visibility =
-            View.GONE
-
-        contextCard.strokeColor =
-            getColor(android.R.color.transparent)
+        layoutSearchSort.visibility = View.VISIBLE
+        textContextMessage.visibility = View.GONE
+        contextCard.strokeColor = getColor(android.R.color.transparent)
     }
 
-    private fun showWarningMessage(
-        text: String
-    ) {
-
-        layoutSearchSort.visibility =
-            View.GONE
-
-        textContextMessage.visibility =
-            View.VISIBLE
-
-        textContextMessage.text =
-            text
-
-        contextCard.strokeColor =
-            getColor(
-                android.R.color.holo_red_dark
-            )
+    private fun showWarningMessage(text: String) {
+        layoutSearchSort.visibility = View.GONE
+        textContextMessage.visibility = View.VISIBLE
+        textContextMessage.text = text
+        contextCard.strokeColor = getColor(android.R.color.holo_red_dark)
     }
 
     private fun showAddCategoryDialog() {
+        val d = createCategoryDialog()
+        val dialog = createCategoryAlertDialog("Nuova categoria", d.view, "Aggiungi")
 
-        val dialogViews =
-            createCategoryDialog()
-
-        val dialog =
-            createCategoryAlertDialog(
-                title = "Nuova categoria",
-                view = dialogViews.view,
-                positiveText = "Aggiungi"
-            )
-
-        setupCategoryDialogConfirm(
-            dialog = dialog,
-            editName = dialogViews.editName,
-            iconAdapter = dialogViews.iconAdapter,
-            textError = dialogViews.textError
-        ) { name, icon ->
-
+        setupCategoryDialogConfirm(dialog,d.editName,d.iconAdapter,d.textError){ name, icon ->
             lifecycleScope.launch {
-
-                val success =
-                    viewModel.insert(
-                        Category(
-                            name = name,
-                            icon = icon
-                        )
-                    )
-
                 handleCategoryDialogResult(
-                    success,
+                    viewModel.insert(Category(name=name, icon=icon)),
                     dialog,
-                    dialogViews.textError
+                    d.textError
                 )
             }
         }
-
         dialog.show()
     }
 
-    private fun showEditCategoryDialog(
-        category: Category
-    ) {
-
+    private fun showEditCategoryDialog(category: Category) {
         lifecycleScope.launch {
 
-            val dialogViews =
-                createCategoryDialog(category)
-
-            val dialog =
-                createCategoryAlertDialog(
-                    "Modifica categoria",
-                    dialogViews.view,
-                    "Salva"
+            if (viewModel.isCategoryUsed(category.id)) {
+                FeedbackUtils.alert(this@CategoriesActivity)
+                showWarningMessage(
+                    "Categoria in uso: modificandola, i contenitori verranno aggiornati. Tocca qui per annullare."
                 )
-
-            dialog.setOnDismissListener {
-                resetUiState()
             }
 
-            setupCategoryDialogConfirm(
-                dialog,
-                dialogViews.editName,
-                dialogViews.iconAdapter,
-                dialogViews.textError
-            ) { name, icon ->
+            val d = createCategoryDialog(category)
+            val dialog = createCategoryAlertDialog("Modifica categoria", d.view, "Salva")
 
+            dialog.setOnDismissListener { resetUiState() }
+
+            setupCategoryDialogConfirm(dialog,d.editName,d.iconAdapter,d.textError){ name, icon ->
                 lifecycleScope.launch {
-
-                    val success =
-                        viewModel.update(
-                            category.copy(
-                                name = name,
-                                icon = icon
-                            )
-                        )
-
                     handleCategoryDialogResult(
-                        success,
+                        viewModel.update(category.copy(name=name, icon=icon)),
                         dialog,
-                        dialogViews.textError
+                        d.textError
                     )
                 }
             }
-
             dialog.show()
         }
     }
 
-    private fun createCategoryDialog(
-        category: Category? = null
-    ): CategoryDialogViews {
+    private fun createCategoryDialog(category: Category? = null): CategoryDialogViews {
+        val view = layoutInflater.inflate(R.layout.dialog_add_category,null)
+        val edit = view.findViewById<EditText>(R.id.editCategoryName)
+        val recycler = view.findViewById<RecyclerView>(R.id.recyclerIcons)
+        val error = view.findViewById<TextView>(R.id.textError)
+        val iconAdapter = IconAdapter(iconNames){}
 
-        val view =
-            layoutInflater.inflate(
-                R.layout.dialog_add_category,
-                null
-            )
+        recycler.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
+        recycler.adapter = iconAdapter
 
-        val editName =
-            view.findViewById<EditText>(
-                R.id.editCategoryName
-            )
-
-        val recyclerIcons =
-            view.findViewById<RecyclerView>(
-                R.id.recyclerIcons
-            )
-
-        val textError =
-            view.findViewById<TextView>(
-                R.id.textError
-            )
-
-        val iconAdapter =
-            IconAdapter(iconNames) {}
-
-        recyclerIcons.layoutManager =
-            LinearLayoutManager(
-                this,
-                LinearLayoutManager.HORIZONTAL,
-                false
-            )
-
-        recyclerIcons.adapter =
-            iconAdapter
-
-        if (category != null) {
-            editName.setText(category.name)
-            iconAdapter.setSelectedIcon(category.icon)
+        category?.let {
+            edit.setText(it.name)
+            iconAdapter.setSelectedIcon(it.icon)
         }
 
-        return CategoryDialogViews(
-            view,
-            editName,
-            textError,
-            iconAdapter
-        )
+        return CategoryDialogViews(view,edit,error,iconAdapter)
     }
 
-    private fun createCategoryAlertDialog(
-        title: String,
-        view: View,
-        positiveText: String
-    ): AlertDialog {
-
-        return AlertDialog.Builder(this)
+    private fun createCategoryAlertDialog(title:String, view:View, positive:String): AlertDialog =
+        AlertDialog.Builder(this)
             .setTitle(title)
             .setView(view)
-            .setNegativeButton("Annulla", null)
-            .setPositiveButton(positiveText, null)
+            .setNegativeButton("Annulla",null)
+            .setPositiveButton(positive,null)
             .create()
-    }
 
     private fun setupCategoryDialogConfirm(
         dialog: AlertDialog,
         editName: EditText,
         iconAdapter: IconAdapter,
         textError: TextView,
-        onValid: (name: String, icon: String) -> Unit
+        onValid:(String,String)->Unit
     ) {
-
         dialog.setOnShowListener {
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
 
-            val button =
-                dialog.getButton(
-                    AlertDialog.BUTTON_POSITIVE
-                )
-
-            button.setOnClickListener {
-
-                val name =
-                    editName.text.toString().trim()
-
-                val selectedIcon =
-                    iconAdapter.getSelectedIcon()
-
-                textError.visibility =
-                    View.GONE
+                val name = editName.text.toString().trim()
+                val icon = iconAdapter.getSelectedIcon()
+                textError.visibility = View.GONE
 
                 if (name.isEmpty()) {
-
-                    FeedbackUtils.alert(
-                        this@CategoriesActivity
-                    )
-
-                    textError.text =
-                        "Dato obbligatorio"
-
-                    textError.visibility =
-                        View.VISIBLE
-
+                    FeedbackUtils.alert(this)
+                    textError.text = "Dato obbligatorio"
+                    textError.visibility = View.VISIBLE
                     return@setOnClickListener
                 }
 
-                if (selectedIcon == null) {
-
-                    FeedbackUtils.alert(
-                        this@CategoriesActivity
-                    )
-
-                    textError.text =
-                        "Seleziona un'icona"
-
-                    textError.visibility =
-                        View.VISIBLE
-
+                if (icon == null) {
+                    FeedbackUtils.alert(this)
+                    textError.text = "Seleziona un'icona"
+                    textError.visibility = View.VISIBLE
                     return@setOnClickListener
                 }
 
-                onValid(
-                    name,
-                    selectedIcon
-                )
+                onValid(name, icon)
             }
         }
     }
 
     private fun handleCategoryDialogResult(
-        success: Boolean,
-        dialog: AlertDialog,
-        textError: TextView
-    ) {
-
-        if (success) {
-
+        success:Boolean,
+        dialog:AlertDialog,
+        textError:TextView
+    ){
+        if(success){
             resetUiState()
             dialog.dismiss()
-
         } else {
-
-            textError.text =
-                "Categoria già esistente"
-
-            textError.visibility =
-                View.VISIBLE
+            textError.text = "Categoria già esistente"
+            textError.visibility = View.VISIBLE
         }
     }
 
-    private fun showDeleteDialog(
-        category: Category
-    ) {
-
-        DialogUtils.showDeleteConfirmation(
-            context = this
-        ) {
-
+    private fun showDeleteDialog(category: Category) {
+        DialogUtils.showDeleteConfirmation(this) {
             lifecycleScope.launch {
-
                 viewModel.delete(category)
                 resetUiState()
             }
