@@ -90,7 +90,6 @@
                             android:layout_height="wrap_content"/>
 
                     </LinearLayout>
-
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
@@ -154,7 +153,6 @@
                             android:layout_height="wrap_content"/>
 
                     </LinearLayout>
-
                 </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
@@ -162,7 +160,7 @@
             <!-- RICERCA -->
 
             <TextView
-                android:layout_marginTop="18dp"
+                android:layout_marginTop="14dp"
                 android:text="🔎 Ricerca archivio"
                 android:textStyle="bold"
                 android:textSize="18sp"
@@ -172,25 +170,26 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="6dp"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="2dp">
 
                 <LinearLayout
-                    android:padding="12dp"
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="48dp">
+                        android:layout_height="42dp">
 
                         <TextView
-                            android:layout_width="120dp"
+                            android:layout_width="118dp"
                             android:layout_height="match_parent"
                             android:text="Ambito di ricerca"
                             android:textStyle="bold"
+                            android:textSize="13sp"
                             android:gravity="center"
                             android:background="#F5F1FA"/>
 
@@ -199,15 +198,14 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:layout_marginStart="8dp"/>
-
+                            android:layout_marginStart="6dp"/>
                     </LinearLayout>
 
                     <EditText
                         android:id="@+id/editSearch"
                         android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:layout_marginTop="12dp"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="8dp"
                         android:hint="Cerca..."
                         android:drawableEnd="@android:drawable/ic_btn_speak_now"/>
 
@@ -231,6 +229,7 @@
                 android:layout_marginTop="4dp"
                 android:columnCount="2">
 
+                <!-- 4 box invariati -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
                     android:layout_height="74dp"
@@ -238,16 +237,7 @@
                     android:layout_margin="4dp"
                     app:cardCornerRadius="22dp"
                     app:cardElevation="2dp">
-
-                    <TextView
-                        android:text="☁ Backup"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="?attr/colorSecondary"
-                        android:gravity="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
-
+                    <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:text="☁ Backup" android:textStyle="bold" android:textSize="16sp" android:textColor="?attr/colorSecondary"/>
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
@@ -257,16 +247,7 @@
                     android:layout_margin="4dp"
                     app:cardCornerRadius="22dp"
                     app:cardElevation="2dp">
-
-                    <TextView
-                        android:text="↺ Riprist."
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="?attr/colorSecondary"
-                        android:gravity="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
-
+                    <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:text="↺ Riprist." android:textStyle="bold" android:textSize="16sp" android:textColor="?attr/colorSecondary"/>
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
@@ -276,16 +257,7 @@
                     android:layout_margin="4dp"
                     app:cardCornerRadius="22dp"
                     app:cardElevation="2dp">
-
-                    <TextView
-                        android:text="🛠 Utility"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="?attr/colorSecondary"
-                        android:gravity="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
-
+                    <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:text="🛠 Utility" android:textStyle="bold" android:textSize="16sp" android:textColor="?attr/colorSecondary"/>
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
@@ -295,16 +267,7 @@
                     android:layout_margin="4dp"
                     app:cardCornerRadius="22dp"
                     app:cardElevation="2dp">
-
-                    <TextView
-                        android:text="▣ QR"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="?attr/colorSecondary"
-                        android:gravity="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
-
+                    <TextView android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:text="▣ QR" android:textStyle="bold" android:textSize="16sp" android:textColor="?attr/colorSecondary"/>
                 </com.google.android.material.card.MaterialCardView>
 
             </GridLayout>
