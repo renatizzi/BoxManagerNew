@@ -21,7 +21,8 @@
 
         <activity
             android:name=".ui.dashboard.DashboardActivity"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
 
             <intent-filter>
 

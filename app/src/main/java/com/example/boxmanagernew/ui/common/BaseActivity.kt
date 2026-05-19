@@ -87,11 +87,8 @@ abstract class BaseActivity : AppCompatActivity() {
                         ) {
 
                             if (diffX > 0) {
-
                                 navigatePrevious()
-
                             } else {
-
                                 navigateNext()
                             }
 
@@ -184,16 +181,24 @@ abstract class BaseActivity : AppCompatActivity() {
             root
         ) { view, insets ->
 
-            val bars =
+            val systemBars =
                 insets.getInsets(
                     WindowInsetsCompat.Type.systemBars()
                 )
 
+            val ime =
+                insets.getInsets(
+                    WindowInsetsCompat.Type.ime()
+                )
+
             view.setPadding(
-                bars.left,
-                bars.top,
-                bars.right,
-                bars.bottom
+                systemBars.left,
+                systemBars.top,
+                systemBars.right,
+                maxOf(
+                    systemBars.bottom,
+                    ime.bottom
+                )
             )
 
             insets
@@ -294,10 +299,22 @@ abstract class BaseActivity : AppCompatActivity() {
                 is FloatingActionButton ->
                     child.backgroundTintList =
                         ColorStateList.valueOf(accent)
+
+                is TextView -> {
+                    if (
+                        child.text.toString().contains("Contenitori") ||
+                        child.text.toString().contains("Categorie") ||
+                        child.text.toString().contains("Backup") ||
+                        child.text.toString().contains("Riprist") ||
+                        child.text.toString().contains("Utility") ||
+                        child.text.toString().contains("QR")
+                    ) {
+                        child.setTextColor(accent)
+                    }
+                }
             }
 
             if (child is ViewGroup) {
-
                 applyRuntimeTheme(child)
             }
         }

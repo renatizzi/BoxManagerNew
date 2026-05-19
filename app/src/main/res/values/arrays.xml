@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="dashboard_search_scope">
+        <item>Tutto archivio</item>
+        <item>Contenitori</item>
+        <item>Oggetti</item>
+        <item>Categorie</item>
+        <item>Posizione</item>
+    </string-array>
+
+</resources>

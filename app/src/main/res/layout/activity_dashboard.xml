@@ -14,54 +14,60 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:overScrollMode="never">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingHorizontal="16dp"
+            android:paddingBottom="4dp">
 
             <!-- KPI -->
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp">
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
-                    android:layout_height="170dp"
+                    android:layout_height="168dp"
                     android:layout_weight="1"
                     android:layout_marginEnd="6dp"
-                    app:cardCornerRadius="18dp">
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="4dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
-                        android:padding="12dp">
+                        android:padding="14dp">
 
                         <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="📦 Contenitori"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="?attr/colorSecondary"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:textColor="?attr/colorSecondary"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="64dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
                             android:gravity="center_vertical">
 
                             <TextView
                                 android:layout_width="0dp"
+                                android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="128"
-                                android:textSize="28sp"
-                                android:textStyle="bold"
-                                android:layout_height="wrap_content"/>
+                                android:textSize="30sp"
+                                android:textStyle="bold"/>
 
                             <com.google.android.material.floatingactionbutton.FloatingActionButton
                                 android:layout_width="56dp"
@@ -90,41 +96,44 @@
                             android:layout_height="wrap_content"/>
 
                     </LinearLayout>
+
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
-                    android:layout_height="170dp"
+                    android:layout_height="168dp"
                     android:layout_weight="1"
                     android:layout_marginStart="6dp"
-                    app:cardCornerRadius="18dp">
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="4dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
-                        android:padding="12dp">
+                        android:padding="14dp">
 
                         <TextView
                             android:text="🏷 Categorie"
+                            android:textColor="?attr/colorSecondary"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="?attr/colorSecondary"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="64dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
                             android:gravity="center_vertical">
 
                             <TextView
                                 android:layout_width="0dp"
+                                android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="15"
-                                android:textSize="28sp"
-                                android:textStyle="bold"
-                                android:layout_height="wrap_content"/>
+                                android:textSize="30sp"
+                                android:textStyle="bold"/>
 
                             <com.google.android.material.floatingactionbutton.FloatingActionButton
                                 android:layout_width="56dp"
@@ -153,14 +162,16 @@
                             android:layout_height="wrap_content"/>
 
                     </LinearLayout>
+
                 </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
 
-            <!-- RICERCA -->
+
+            <!-- Ricerca -->
 
             <TextView
-                android:layout_marginTop="26dp"
+                android:layout_marginTop="18dp"
                 android:text="🔎 Ricerca archivio"
                 android:textStyle="bold"
                 android:textSize="18sp"
@@ -172,55 +183,37 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 app:cardCornerRadius="20dp"
-                app:cardElevation="2dp">
+                app:cardElevation="4dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="10dp">
+                    android:padding="14dp">
 
-                    <LinearLayout
+                    <Spinner
+                        android:id="@+id/spinnerSearchScope"
                         android:layout_width="match_parent"
-                        android:layout_height="44dp">
-
-                        <TextView
-                            android:layout_width="118dp"
-                            android:layout_height="match_parent"
-                            android:text="Ambito di ricerca"
-                            android:textStyle="bold"
-                            android:textSize="13sp"
-                            android:gravity="center"
-                            android:background="#F5F1FA"/>
-
-                        <Spinner
-                            android:id="@+id/spinnerSearchScope"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:layout_marginStart="6dp"/>
-
-                    </LinearLayout>
+                        android:layout_height="48dp"
+                        android:entries="@array/dashboard_search_scope"/>
 
                     <EditText
                         android:id="@+id/editSearch"
                         android:layout_width="match_parent"
-                        android:layout_height="54dp"
-                        android:minHeight="54dp"
-                        android:gravity="center_vertical"
-                        android:paddingStart="14dp"
-                        android:paddingEnd="14dp"
-                        android:inputType="text"
-                        android:singleLine="true"
+                        android:layout_height="52dp"
                         android:layout_marginTop="10dp"
+                        android:background="@drawable/bg_search_rounded"
                         android:hint="Cerca..."
+                        android:singleLine="true"
+                        android:imeOptions="actionDone"
                         android:drawableEnd="@android:drawable/ic_btn_speak_now"/>
 
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- ACCESSO RAPIDO -->
+
+            <!-- Accesso rapido -->
 
             <TextView
                 android:layout_marginTop="18dp"
@@ -233,75 +226,86 @@
             <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
                 android:columnCount="2">
 
+                <!-- Backup -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
-                    android:layout_height="74dp"
+                    android:layout_height="78dp"
                     android:layout_columnWeight="1"
-                    android:layout_margin="4dp"
-                    app:cardCornerRadius="22dp">
+                    android:layout_margin="6dp"
+                    app:cardCornerRadius="18dp"
+                    app:cardElevation="3dp">
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
                         android:text="☁ Backup"
+                        android:textSize="17sp"
                         android:textStyle="bold"
-                        android:textSize="16sp"
-                        android:textColor="?attr/colorSecondary"/>
+                        android:textColor="?attr/colorSecondary"
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
                 </com.google.android.material.card.MaterialCardView>
 
+                <!-- Riprist -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
-                    android:layout_height="74dp"
+                    android:layout_height="78dp"
                     android:layout_columnWeight="1"
-                    android:layout_margin="4dp"
-                    app:cardCornerRadius="22dp">
+                    android:layout_margin="6dp"
+                    app:cardCornerRadius="18dp"
+                    app:cardElevation="3dp">
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
                         android:text="↺ Riprist."
+                        android:textSize="17sp"
                         android:textStyle="bold"
-                        android:textSize="16sp"
-                        android:textColor="?attr/colorSecondary"/>
+                        android:textColor="?attr/colorSecondary"
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
                 </com.google.android.material.card.MaterialCardView>
 
+                <!-- Utility -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
-                    android:layout_height="74dp"
+                    android:layout_height="78dp"
                     android:layout_columnWeight="1"
-                    android:layout_margin="4dp"
-                    app:cardCornerRadius="22dp">
+                    android:layout_margin="6dp"
+                    app:cardCornerRadius="18dp"
+                    app:cardElevation="3dp">
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
                         android:text="🛠 Utility"
+                        android:textSize="17sp"
                         android:textStyle="bold"
-                        android:textSize="16sp"
-                        android:textColor="?attr/colorSecondary"/>
+                        android:textColor="?attr/colorSecondary"
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
                 </com.google.android.material.card.MaterialCardView>
 
+                <!-- QR -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
-                    android:layout_height="74dp"
+                    android:layout_height="78dp"
                     android:layout_columnWeight="1"
-                    android:layout_margin="4dp"
-                    app:cardCornerRadius="22dp">
+                    android:layout_margin="6dp"
+                    app:cardCornerRadius="18dp"
+                    app:cardElevation="3dp">
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
                         android:text="▣ QR"
+                        android:textSize="17sp"
                         android:textStyle="bold"
-                        android:textSize="16sp"
-                        android:textColor="?attr/colorSecondary"/>
+                        android:textColor="?attr/colorSecondary"
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
                 </com.google.android.material.card.MaterialCardView>
 
             </GridLayout>
