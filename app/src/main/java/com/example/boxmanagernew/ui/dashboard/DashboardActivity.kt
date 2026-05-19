@@ -112,6 +112,16 @@ class DashboardActivity : BaseActivity() {
                 R.id.textCategoriesCount
             )
 
+        val textEmptyBoxes =
+            findViewById<TextView>(
+                R.id.textEmptyBoxes
+            )
+
+        val textUsedCategories =
+            findViewById<TextView>(
+                R.id.textUsedCategories
+            )
+
         db.boxDao()
             .getAllLive()
             .observe(this) {
@@ -126,6 +136,22 @@ class DashboardActivity : BaseActivity() {
 
                 textCategories.text =
                     it.size.toString()
+            }
+
+        db.boxDao()
+            .getEmptyBoxesCount()
+            .observe(this) {
+
+                textEmptyBoxes.text =
+                    it.toString()
+            }
+
+        db.boxDao()
+            .getUsedCategoriesCount()
+            .observe(this) {
+
+                textUsedCategories.text =
+                    it.toString()
             }
     }
 }

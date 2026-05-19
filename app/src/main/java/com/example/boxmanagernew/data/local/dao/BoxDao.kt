@@ -16,14 +16,29 @@ interface BoxDao {
     @Update
     suspend fun update(box: BoxEntity)
 
-    @Query("SELECT * FROM box ORDER BY lastModified DESC")
-    fun getAllLive(): LiveData<List<BoxEntity>>
+    @Query(
+        "SELECT * FROM box ORDER BY lastModified DESC"
+    )
+    fun getAllLive():
+            LiveData<List<BoxEntity>>
 
-    @Query("DELETE FROM box WHERE id = :id")
-    suspend fun deleteById(id: Int)
+    @Query(
+        "DELETE FROM box WHERE id = :id"
+    )
+    suspend fun deleteById(
+        id: Int
+    )
 
-    @Query("SELECT COUNT(*) FROM box WHERE categoryId = :categoryId")
-    suspend fun countBoxesByCategory(categoryId: Int): Int
+    @Query(
+        """
+        SELECT COUNT(*)
+        FROM box
+        WHERE categoryId = :categoryId
+        """
+    )
+    suspend fun countBoxesByCategory(
+        categoryId: Int
+    ): Int
 
     @Query(
         """
@@ -38,4 +53,26 @@ interface BoxDao {
         newPosition: String,
         timestamp: Long
     )
+
+    @Query(
+        """
+        SELECT COUNT(*)
+        FROM box b
+        LEFT JOIN objects o
+            ON o.boxId = b.id
+        GROUP BY b.id
+        HAVING COUNT(o.id)=0
+        """
+    )
+    fun getEmptyBoxesCount():
+            LiveData<Int>
+
+    @Query(
+        """
+        SELECT COUNT(DISTINCT categoryId)
+        FROM box
+        """
+    )
+    fun getUsedCategoriesCount():
+            LiveData<Int>
 }
