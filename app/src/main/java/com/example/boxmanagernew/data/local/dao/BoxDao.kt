@@ -57,11 +57,14 @@ interface BoxDao {
     @Query(
         """
         SELECT COUNT(*)
-        FROM box b
-        LEFT JOIN objects o
-            ON o.boxId = b.id
-        GROUP BY b.id
-        HAVING COUNT(o.id)=0
+        FROM (
+            SELECT b.id
+            FROM box b
+            LEFT JOIN objects o
+                ON o.boxId = b.id
+            GROUP BY b.id
+            HAVING COUNT(o.id)=0
+        )
         """
     )
     fun getEmptyBoxesCount():
