@@ -77,6 +77,7 @@
                                 android:id="@+id/fabAddBox"
                                 android:layout_width="56dp"
                                 android:layout_height="56dp"
+                                android:layout_marginStart="4dp"
                                 android:src="@android:drawable/ic_input_add"
                                 app:backgroundTint="?attr/colorSecondary"/>
 
@@ -87,19 +88,29 @@
                             android:layout_height="1dp"
                             android:background="#22000000"/>
 
-                        <TextView
-                            android:text="di cui vuoti"
-                            android:textStyle="bold"
-                            android:layout_marginTop="8dp"
+                        <LinearLayout
+                            android:id="@+id/layoutEmptyBoxes"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:paddingTop="8dp">
 
-                        <TextView
-                            android:id="@+id/textEmptyBoxes"
-                            android:text="12"
-                            android:textSize="20sp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            <TextView
+                                android:text="di cui vuoti"
+                                android:textStyle="bold"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+                            <TextView
+                                android:id="@+id/textEmptyBoxes"
+                                android:text="12"
+                                android:textSize="20sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -149,6 +160,7 @@
                                 android:id="@+id/fabAddCategory"
                                 android:layout_width="56dp"
                                 android:layout_height="56dp"
+                                android:layout_marginStart="4dp"
                                 android:src="@android:drawable/ic_input_add"
                                 app:backgroundTint="?attr/colorSecondary"/>
 
@@ -159,19 +171,29 @@
                             android:layout_height="1dp"
                             android:background="#22000000"/>
 
-                        <TextView
-                            android:text="di cui in uso"
-                            android:textStyle="bold"
-                            android:layout_marginTop="8dp"
+                        <LinearLayout
+                            android:id="@+id/layoutUsedCategories"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:paddingTop="8dp">
 
-                        <TextView
-                            android:id="@+id/textUsedCategories"
-                            android:text="5"
-                            android:textSize="20sp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            <TextView
+                                android:text="di cui in uso"
+                                android:textStyle="bold"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+                            <TextView
+                                android:id="@+id/textUsedCategories"
+                                android:text="5"
+                                android:textSize="20sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -179,7 +201,7 @@
 
             </LinearLayout>
 
-            <!-- Ricerca -->
+            <!-- Ricerca (INVARIATA) -->
 
             <TextView
                 android:layout_marginTop="18dp"
@@ -247,13 +269,11 @@
 
                     <TextView
                         android:text="☁ Backup"
-                        android:textSize="18sp"
-                        android:gravity="center"
-                        android:textStyle="bold"
                         android:textColor="?attr/colorSecondary"
+                        android:textStyle="bold"
+                        android:gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
-
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
@@ -265,33 +285,12 @@
                     app:cardCornerRadius="18dp">
 
                     <TextView
-                        android:text="↺ Riprist."
-                        android:textSize="18sp"
-                        android:gravity="center"
-                        android:textStyle="bold"
+                        android:text="↺ Ripristino"
                         android:textColor="?attr/colorSecondary"
+                        android:textStyle="bold"
+                        android:gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardUtility"
-                    android:layout_width="0dp"
-                    android:layout_height="78dp"
-                    android:layout_columnWeight="1"
-                    android:layout_margin="6dp"
-                    app:cardCornerRadius="18dp">
-
-                    <TextView
-                        android:text="🛠 Utility"
-                        android:textSize="18sp"
-                        android:gravity="center"
-                        android:textStyle="bold"
-                        android:textColor="?attr/colorSecondary"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
-
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
@@ -304,13 +303,28 @@
 
                     <TextView
                         android:text="▣ QR"
-                        android:textSize="18sp"
-                        android:gravity="center"
-                        android:textStyle="bold"
                         android:textColor="?attr/colorSecondary"
+                        android:textStyle="bold"
+                        android:gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
+                </com.google.android.material.card.MaterialCardView>
 
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardTools"
+                    android:layout_width="0dp"
+                    android:layout_height="78dp"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="6dp"
+                    app:cardCornerRadius="18dp">
+
+                    <TextView
+                        android:text="🛠 Altri strumenti"
+                        android:textColor="?attr/colorSecondary"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
                 </com.google.android.material.card.MaterialCardView>
 
             </GridLayout>

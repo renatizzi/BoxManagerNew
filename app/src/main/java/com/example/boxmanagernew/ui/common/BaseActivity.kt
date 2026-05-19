@@ -306,7 +306,7 @@ abstract class BaseActivity : AppCompatActivity() {
                         child.text.toString().contains("Categorie") ||
                         child.text.toString().contains("Backup") ||
                         child.text.toString().contains("Riprist") ||
-                        child.text.toString().contains("Utility") ||
+                        child.text.toString().contains("Altri strumenti") ||
                         child.text.toString().contains("QR")
                     ) {
                         child.setTextColor(accent)
