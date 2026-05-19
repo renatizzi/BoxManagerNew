@@ -1,10 +1,16 @@
 package com.example.boxmanagernew.ui.dashboard
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
+import com.example.boxmanagernew.MainActivity
 import com.example.boxmanagernew.R
+import com.example.boxmanagernew.data.local.DatabaseProvider
+import com.example.boxmanagernew.ui.categories.CategoriesActivity
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
+import com.google.android.material.card.MaterialCardView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class DashboardActivity : BaseActivity() {
 
@@ -18,15 +24,108 @@ class DashboardActivity : BaseActivity() {
 
         setupTopBar()
 
-        findViewById<TextView>(R.id.textTitle).text =
+        findViewById<TextView>(
+            R.id.textTitle
+        ).text =
             "Dashboard"
 
-        findViewById<TextView>(R.id.textSubtitle).text =
+        findViewById<TextView>(
+            R.id.textSubtitle
+        ).text =
             "Panoramica Archivio"
+
+        setupDashboardActions()
+
+        loadKpiData()
 
         BottomNavManager.setup(
             this,
             BottomNavManager.TAB_DASHBOARD
         )
+    }
+
+    private fun setupDashboardActions() {
+
+        findViewById<MaterialCardView>(
+            R.id.cardBoxes
+        ).setOnClickListener {
+
+            startActivity(
+                Intent(
+                    this,
+                    MainActivity::class.java
+                )
+            )
+        }
+
+        findViewById<FloatingActionButton>(
+            R.id.fabAddBox
+        ).setOnClickListener {
+
+            startActivity(
+                Intent(
+                    this,
+                    MainActivity::class.java
+                )
+            )
+        }
+
+        findViewById<MaterialCardView>(
+            R.id.cardCategories
+        ).setOnClickListener {
+
+            startActivity(
+                Intent(
+                    this,
+                    CategoriesActivity::class.java
+                )
+            )
+        }
+
+        findViewById<FloatingActionButton>(
+            R.id.fabAddCategory
+        ).setOnClickListener {
+
+            startActivity(
+                Intent(
+                    this,
+                    CategoriesActivity::class.java
+                )
+            )
+        }
+    }
+
+    private fun loadKpiData() {
+
+        val db =
+            DatabaseProvider.getDatabase(
+                applicationContext
+            )
+
+        val textBoxes =
+            findViewById<TextView>(
+                R.id.textBoxesCount
+            )
+
+        val textCategories =
+            findViewById<TextView>(
+                R.id.textCategoriesCount
+            )
+
+        db.boxDao()
+            .getAllLive()
+            .observe(this) {
+
+                textBoxes.text =
+                    it.size.toString()
+            }
+
+        db.categoryDao()
+            .getAllCategories()
+            .observe(this) {
+
+                textCategories.text =
+                    it.size.toString()
+            }
     }
 }
