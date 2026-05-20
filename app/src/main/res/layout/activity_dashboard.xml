@@ -23,34 +23,33 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingHorizontal="16dp"
-            android:paddingBottom="4dp">
+            android:paddingBottom="8dp">
 
-            <!-- KPI -->
+            <!-- KPI CONGELATI -->
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="4dp">
+                android:orientation="horizontal">
+
+                <!-- CONTENITORI -->
 
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardBoxes"
                     android:layout_width="0dp"
-                    android:layout_height="168dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginEnd="6dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:cardCornerRadius="20dp"
+                    android:layout_marginEnd="8dp"
+                    app:cardCornerRadius="24dp"
                     app:cardElevation="4dp">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:padding="18dp"
                         android:orientation="vertical"
-                        android:padding="14dp">
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
                         <TextView
+                            android:id="@+id/titleBoxes"
                             android:text="📦 Contenitori"
                             android:textSize="18sp"
                             android:textStyle="bold"
@@ -58,142 +57,154 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
 
+                        <Space android:layout_width="match_parent" android:layout_height="18dp"/>
+
                         <LinearLayout
+                            android:id="@+id/openBoxes"
                             android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical">
+                            android:layout_height="wrap_content">
 
                             <TextView
-                                android:id="@+id/textBoxesCount"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="128"
-                                android:textSize="30sp"
-                                android:textStyle="bold"/>
+                                android:text="Totale archivio"/>
 
-                            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                                android:id="@+id/fabAddBox"
-                                android:layout_width="56dp"
-                                android:layout_height="56dp"
-                                android:layout_marginStart="4dp"
-                                android:src="@android:drawable/ic_input_add"
-                                app:backgroundTint="?attr/colorSecondary"/>
+                            <TextView
+                                android:text="›"
+                                android:textSize="26sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
 
                         </LinearLayout>
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="#22000000"/>
+                        <TextView
+                            android:id="@+id/textBoxesCount"
+                            android:text="0"
+                            android:textSize="22sp"
+                            android:textStyle="bold"
+                            android:layout_marginTop="6dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <Space android:layout_width="match_parent" android:layout_height="12dp"/>
 
                         <LinearLayout
                             android:id="@+id/layoutEmptyBoxes"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:paddingTop="8dp">
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
                             <TextView
-                                android:text="di cui vuoti"
-                                android:textStyle="bold"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="di cui vuoti"/>
 
                             <TextView
-                                android:id="@+id/textEmptyBoxes"
-                                android:text="12"
-                                android:textSize="20sp"
+                                android:text="›"
+                                android:textSize="26sp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
 
                         </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/textEmptyBoxes"
+                            android:text="0"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:layout_marginTop="6dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
 
                     </LinearLayout>
 
                 </com.google.android.material.card.MaterialCardView>
 
+                <!-- CATEGORIE -->
+
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardCategories"
                     android:layout_width="0dp"
-                    android:layout_height="168dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginStart="6dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:cardCornerRadius="20dp"
+                    android:layout_marginStart="8dp"
+                    app:cardCornerRadius="24dp"
                     app:cardElevation="4dp">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:padding="18dp"
                         android:orientation="vertical"
-                        android:padding="14dp">
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
                         <TextView
+                            android:id="@+id/titleCategories"
                             android:text="🏷 Categorie"
-                            android:textColor="?attr/colorSecondary"
                             android:textSize="18sp"
                             android:textStyle="bold"
+                            android:textColor="?attr/colorSecondary"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
 
+                        <Space android:layout_width="match_parent" android:layout_height="18dp"/>
+
                         <LinearLayout
+                            android:id="@+id/openCategories"
                             android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical">
+                            android:layout_height="wrap_content">
 
                             <TextView
-                                android:id="@+id/textCategoriesCount"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="15"
-                                android:textSize="30sp"
-                                android:textStyle="bold"/>
+                                android:text="Totale categorie"/>
 
-                            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                                android:id="@+id/fabAddCategory"
-                                android:layout_width="56dp"
-                                android:layout_height="56dp"
-                                android:layout_marginStart="4dp"
-                                android:src="@android:drawable/ic_input_add"
-                                app:backgroundTint="?attr/colorSecondary"/>
+                            <TextView
+                                android:text="›"
+                                android:textSize="26sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
 
                         </LinearLayout>
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="#22000000"/>
+                        <TextView
+                            android:id="@+id/textCategoriesCount"
+                            android:text="0"
+                            android:textSize="22sp"
+                            android:textStyle="bold"
+                            android:layout_marginTop="6dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                        <Space android:layout_width="match_parent" android:layout_height="12dp"/>
 
                         <LinearLayout
                             android:id="@+id/layoutUsedCategories"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:paddingTop="8dp">
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
                             <TextView
-                                android:text="di cui in uso"
-                                android:textStyle="bold"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="di cui in uso"/>
 
                             <TextView
-                                android:id="@+id/textUsedCategories"
-                                android:text="5"
-                                android:textSize="20sp"
+                                android:text="›"
+                                android:textSize="26sp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
 
                         </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/textUsedCategories"
+                            android:text="0"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:layout_marginTop="6dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
 
                     </LinearLayout>
 
@@ -201,13 +212,13 @@
 
             </LinearLayout>
 
-            <!-- Ricerca (INVARIATA) -->
+            <!-- RICERCA RIPRISTINATA -->
 
             <TextView
-                android:layout_marginTop="18dp"
                 android:text="🔎 Ricerca archivio"
                 android:textStyle="bold"
                 android:textSize="18sp"
+                android:layout_marginTop="14dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -219,10 +230,10 @@
                 app:cardElevation="4dp">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:padding="14dp"
                     android:orientation="vertical"
-                    android:padding="14dp">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                     <Spinner
                         android:id="@+id/spinnerSearchScope"
@@ -237,20 +248,20 @@
                         android:layout_marginTop="10dp"
                         android:background="@drawable/bg_search_rounded"
                         android:hint="Cerca..."
-                        android:singleLine="true"
-                        android:drawableEnd="@android:drawable/ic_btn_speak_now"/>
+                        android:drawableEnd="@android:drawable/ic_btn_speak_now"
+                        android:singleLine="true"/>
 
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Accesso rapido -->
+            <!-- ACCESSO RAPIDO -->
 
             <TextView
-                android:layout_marginTop="18dp"
                 android:text="⚡ Accesso rapido"
                 android:textStyle="bold"
                 android:textSize="18sp"
+                android:layout_marginTop="14dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -259,72 +270,78 @@
                 android:layout_height="wrap_content"
                 android:columnCount="2">
 
+                <!-- 70dp -->
+
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardBackup"
                     android:layout_width="0dp"
-                    android:layout_height="78dp"
+                    android:layout_height="70dp"
                     android:layout_columnWeight="1"
-                    android:layout_margin="6dp"
-                    app:cardCornerRadius="18dp">
+                    android:layout_margin="4dp">
 
                     <TextView
                         android:text="☁ Backup"
+                        android:textSize="18sp"
                         android:textColor="?attr/colorSecondary"
                         android:textStyle="bold"
                         android:gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
+
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardRestore"
                     android:layout_width="0dp"
-                    android:layout_height="78dp"
+                    android:layout_height="70dp"
                     android:layout_columnWeight="1"
-                    android:layout_margin="6dp"
-                    app:cardCornerRadius="18dp">
+                    android:layout_margin="4dp">
 
                     <TextView
                         android:text="↺ Ripristino"
+                        android:textSize="18sp"
                         android:textColor="?attr/colorSecondary"
                         android:textStyle="bold"
                         android:gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
+
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardQr"
                     android:layout_width="0dp"
-                    android:layout_height="78dp"
+                    android:layout_height="70dp"
                     android:layout_columnWeight="1"
-                    android:layout_margin="6dp"
-                    app:cardCornerRadius="18dp">
+                    android:layout_margin="4dp">
 
                     <TextView
                         android:text="▣ QR"
+                        android:textSize="18sp"
                         android:textColor="?attr/colorSecondary"
                         android:textStyle="bold"
                         android:gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
+
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardTools"
                     android:layout_width="0dp"
-                    android:layout_height="78dp"
+                    android:layout_height="70dp"
                     android:layout_columnWeight="1"
-                    android:layout_margin="6dp"
-                    app:cardCornerRadius="18dp">
+                    android:layout_margin="4dp">
 
                     <TextView
                         android:text="🛠 Altri strumenti"
+                        android:textSize="18sp"
                         android:textColor="?attr/colorSecondary"
                         android:textStyle="bold"
                         android:gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
+
                 </com.google.android.material.card.MaterialCardView>
 
             </GridLayout>

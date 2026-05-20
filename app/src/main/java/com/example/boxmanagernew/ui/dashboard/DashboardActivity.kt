@@ -2,23 +2,29 @@ package com.example.boxmanagernew.ui.dashboard
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import com.example.boxmanagernew.MainActivity
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.data.local.DatabaseProvider
 import com.example.boxmanagernew.ui.categories.CategoriesActivity
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
-import com.google.android.material.card.MaterialCardView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class DashboardActivity : BaseActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(
+        savedInstanceState: Bundle?
+    ) {
 
-        super.onCreate(savedInstanceState)
+        super.onCreate(
+            savedInstanceState
+        )
 
-        setContentView(R.layout.activity_dashboard)
+        setContentView(
+            R.layout.activity_dashboard
+        )
 
         setupEdgeToEdge()
 
@@ -46,8 +52,8 @@ class DashboardActivity : BaseActivity() {
 
     private fun setupDashboardActions() {
 
-        findViewById<MaterialCardView>(
-            R.id.cardBoxes
+        findViewById<LinearLayout>(
+            R.id.openBoxes
         ).setOnClickListener {
 
             startActivity(
@@ -58,20 +64,8 @@ class DashboardActivity : BaseActivity() {
             )
         }
 
-        findViewById<FloatingActionButton>(
-            R.id.fabAddBox
-        ).setOnClickListener {
-
-            startActivity(
-                Intent(
-                    this,
-                    MainActivity::class.java
-                )
-            )
-        }
-
-        findViewById<MaterialCardView>(
-            R.id.cardCategories
+        findViewById<LinearLayout>(
+            R.id.openCategories
         ).setOnClickListener {
 
             startActivity(
@@ -82,16 +76,26 @@ class DashboardActivity : BaseActivity() {
             )
         }
 
-        findViewById<FloatingActionButton>(
-            R.id.fabAddCategory
+        findViewById<LinearLayout>(
+            R.id.layoutEmptyBoxes
         ).setOnClickListener {
 
-            startActivity(
-                Intent(
-                    this,
-                    CategoriesActivity::class.java
-                )
-            )
+            Toast.makeText(
+                this,
+                "Filtro contenitori vuoti (test)",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
+        findViewById<LinearLayout>(
+            R.id.layoutUsedCategories
+        ).setOnClickListener {
+
+            Toast.makeText(
+                this,
+                "Filtro categorie in uso (test)",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
