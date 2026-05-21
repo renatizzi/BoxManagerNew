@@ -11,25 +11,36 @@ class BoxRepositoryImpl(
     private val boxDao: BoxDao
 ) : BoxRepository {
 
-    override fun getAllBoxesLive(): LiveData<List<Box>> {
+    override fun getAllBoxesLive():
+            LiveData<List<Box>> {
 
-        return boxDao.getAllLive().map { list ->
+        return boxDao
+            .getAllLive()
+            .map { list ->
 
-            list.map { entity ->
+                list.map { entity ->
 
-                Box(
-                    id = entity.id,
-                    name = entity.name,
-                    description = null,
-                    categoryId = entity.categoryId,
-                    position = entity.position,
-                    lastModified = entity.lastModified
-                )
+                    Box(
+                        id = entity.id,
+                        name = entity.name,
+                        description = null,
+                        categoryId = entity.categoryId,
+                        position = entity.position,
+                        lastModified = entity.lastModified
+                    )
+                }
             }
-        }
     }
 
-    override suspend fun insertBox(box: Box): Long {
+    suspend fun getEmptyBoxIds():
+            List<Int> {
+
+        return boxDao.getEmptyBoxIds()
+    }
+
+    override suspend fun insertBox(
+        box: Box
+    ): Long {
 
         return boxDao.insert(
             BoxEntity(
@@ -42,7 +53,9 @@ class BoxRepositoryImpl(
         )
     }
 
-    override suspend fun updateBox(box: Box) {
+    override suspend fun updateBox(
+        box: Box
+    ) {
 
         boxDao.update(
             BoxEntity(
@@ -55,7 +68,9 @@ class BoxRepositoryImpl(
         )
     }
 
-    override suspend fun deleteBox(id: Int) {
+    override suspend fun deleteBox(
+        id: Int
+    ) {
 
         boxDao.deleteById(id)
     }

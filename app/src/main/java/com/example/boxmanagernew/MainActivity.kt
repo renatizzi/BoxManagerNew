@@ -69,7 +69,6 @@ class MainActivity : BaseActivity() {
             BoxRepositoryImpl(db.boxDao())
 
         initializeDefaultData(db)
-
         setupAdapter()
 
         setupViewModel(repository)
@@ -77,6 +76,25 @@ class MainActivity : BaseActivity() {
         observeData(db)
 
         setupListeners()
+
+        intent.getStringExtra(
+            "dashboardFilter"
+        )?.let { filter ->
+
+            viewModel.filter(filter)
+
+            adapter.updateQuery("")
+
+            if (
+                filter ==
+                BoxViewModel.FILTER_EMPTY_BOXES
+            ) {
+
+                showContextMessage(
+                    "Filtro attivo: contenitori vuoti. Tocca qui per rimuovere."
+                )
+            }
+        }
     }
 
     private fun setupViews() {

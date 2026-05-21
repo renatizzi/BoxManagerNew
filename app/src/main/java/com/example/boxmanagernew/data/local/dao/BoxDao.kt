@@ -56,6 +56,19 @@ interface BoxDao {
 
     @Query(
         """
+        SELECT b.id
+        FROM box b
+        LEFT JOIN objects o
+            ON o.boxId = b.id
+        GROUP BY b.id
+        HAVING COUNT(o.id)=0
+        """
+    )
+    suspend fun getEmptyBoxIds():
+            List<Int>
+
+    @Query(
+        """
         SELECT COUNT(*)
         FROM (
             SELECT b.id

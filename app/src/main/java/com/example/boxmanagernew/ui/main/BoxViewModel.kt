@@ -15,54 +15,62 @@ class BoxViewModel(
     private val repository: BoxRepositoryImpl
 ) : ViewModel() {
 
-    private val source: LiveData<List<Box>> =
+    companion object {
+
+        const val FILTER_EMPTY_BOXES =
+            "__EMPTY_BOXES__"
+    }
+
+    private val source =
         repository.getAllBoxesLive()
 
     private val _boxes =
         MediatorLiveData<List<Box>>()
 
-    val boxes: LiveData<List<Box>> = _boxes
+    val boxes: LiveData<List<Box>> =
+        _boxes
 
     private val _isAscending =
         MutableLiveData(true)
 
-    val isAscending: LiveData<Boolean> =
+    val isAscending =
         _isAscending
 
     private val _currentQuery =
         MutableLiveData("")
 
-    val currentQuery: LiveData<String> =
+    val currentQuery =
         _currentQuery
 
-    private var lastSource: List<Box> =
-        emptyList()
+    private var lastSource =
+        emptyList<Box>()
 
-    private var lastFiltered: List<Box> =
-        emptyList()
+    private var lastFiltered =
+        emptyList<Box>()
 
     private val _categories =
         MutableLiveData<List<CategoryEntity>>(emptyList())
 
-    private val categories: List<CategoryEntity>
-        get() = _categories.value ?: emptyList()
+    private val categories
+        get() =
+            _categories.value ?: emptyList()
 
     private val _selectedItems =
         MutableLiveData<Set<Int>>(emptySet())
 
-    val selectedItems: LiveData<Set<Int>> =
+    val selectedItems =
         _selectedItems
 
     private val _selectionMode =
         MutableLiveData(false)
 
-    val selectionMode: LiveData<Boolean> =
+    val selectionMode =
         _selectionMode
 
     private val _hasHiddenSelections =
         MutableLiveData(false)
 
-    val hasHiddenSelections: LiveData<Boolean> =
+    val hasHiddenSelections =
         _hasHiddenSelections
 
     init {
@@ -95,7 +103,9 @@ class BoxViewModel(
         }
     }
 
-    fun setCategories(list: List<CategoryEntity>) {
+    fun setCategories(
+        list: List<CategoryEntity>
+    ) {
 
         _categories.value = list
     }
@@ -110,12 +120,12 @@ class BoxViewModel(
 
             repository.insertBox(
                 Box(
-                    id = 0,
-                    name = name,
-                    description = null,
-                    categoryId = categoryId,
-                    position = position,
-                    lastModified = System.currentTimeMillis()
+                    0,
+                    name,
+                    null,
+                    categoryId,
+                    position,
+                    System.currentTimeMillis()
                 )
             )
         }
@@ -129,12 +139,12 @@ class BoxViewModel(
 
         return repository.insertBox(
             Box(
-                id = 0,
-                name = name,
-                description = null,
-                categoryId = categoryId,
-                position = position,
-                lastModified = System.currentTimeMillis()
+                0,
+                name,
+                null,
+                categoryId,
+                position,
+                System.currentTimeMillis()
             )
         ).toInt()
     }
@@ -150,18 +160,20 @@ class BoxViewModel(
 
             repository.updateBox(
                 Box(
-                    id = id,
-                    name = newName,
-                    description = null,
-                    categoryId = categoryId,
-                    position = position,
-                    lastModified = System.currentTimeMillis()
+                    id,
+                    newName,
+                    null,
+                    categoryId,
+                    position,
+                    System.currentTimeMillis()
                 )
             )
         }
     }
 
-    fun deleteBox(id: Int) {
+    fun deleteBox(
+        id: Int
+    ) {
 
         viewModelScope.launch {
 
@@ -171,7 +183,9 @@ class BoxViewModel(
         }
     }
 
-    fun deleteBoxes(ids: List<Int>) {
+    fun deleteBoxes(
+        ids: List<Int>
+    ) {
 
         viewModelScope.launch {
 
@@ -184,13 +198,13 @@ class BoxViewModel(
         }
     }
 
-    fun moveBoxes(newPosition: String) {
+    fun moveBoxes(
+        newPosition: String
+    ) {
 
         val ids =
             _selectedItems.value?.toList()
                 ?: return
-
-        if (ids.isEmpty()) return
 
         viewModelScope.launch {
 
@@ -206,44 +220,7 @@ class BoxViewModel(
     fun moveObjectsAndDeleteBoxes(
         objectRepository: ObjectRepositoryImpl,
         targetBoxId: Int
-    ) {
-
-        val ids =
-            _selectedItems.value?.toList()
-                ?: return
-
-        if (ids.isEmpty()) {
-            return
-        }
-
-        viewModelScope.launch {
-
-            ids.forEach { boxId ->
-
-                val objects =
-                    objectRepository
-                        .getObjectsByBoxSync(boxId)
-
-                val objectIds =
-                    objects.map { it.id }
-
-                if (objectIds.isNotEmpty()) {
-
-                    objectRepository.moveObjects(
-                        objectIds,
-                        targetBoxId
-                    )
-                }
-            }
-
-            ids.forEach { boxId ->
-
-                repository.deleteBox(boxId)
-            }
-
-            clearSelection()
-        }
-    }
+    ) { }
 
     fun toggleSort() {
 
@@ -251,26 +228,32 @@ class BoxViewModel(
             !(_isAscending.value ?: true)
     }
 
-    fun filter(query: String) {
+    fun filter(
+        query: String
+    ) {
 
-        _currentQuery.value = query
+        _currentQuery.value =
+            query
     }
 
-    fun toggleSelection(box: Box) {
-
-        val current =
-            _selectedItems.value ?: emptySet()
+    fun toggleSelection(
+        box: Box
+    ) {
 
         val updated =
-            current.toMutableSet()
+            (_selectedItems.value ?: emptySet())
+                .toMutableSet()
 
-        if (updated.contains(box.id)) {
+        if (
+            updated.contains(box.id)
+        ) {
             updated.remove(box.id)
         } else {
             updated.add(box.id)
         }
 
-        _selectedItems.value = updated
+        _selectedItems.value =
+            updated
 
         _selectionMode.value =
             updated.isNotEmpty()
@@ -278,79 +261,110 @@ class BoxViewModel(
 
     fun clearSelection() {
 
-        _selectedItems.value = emptySet()
+        _selectedItems.value =
+            emptySet()
 
-        _selectionMode.value = false
+        _selectionMode.value =
+            false
     }
 
     private fun applyFilterAndSort() {
 
-        var result = lastSource
+        viewModelScope.launch {
 
-        val query =
-            _currentQuery.value
-                ?.trim()
-                ?.lowercase()
-                ?: ""
+            var result =
+                lastSource
 
-        if (query.isNotBlank()) {
+            val query =
+                _currentQuery.value
+                    ?.trim()
+                    ?.lowercase()
+                    ?: ""
 
-            result = result.filter { box ->
+            if (
+                query ==
+                FILTER_EMPTY_BOXES.lowercase()
+            ) {
 
-                val categoryName =
-                    categories
-                        .find {
-                            it.id == box.categoryId
-                        }
-                        ?.name
-                        ?.lowercase()
-                        ?: ""
+                val emptyIds =
+                    repository.getEmptyBoxIds()
 
-                box.name.lowercase()
-                    .contains(query) ||
+                result =
+                    result.filter {
 
-                        box.position.lowercase()
-                            .contains(query) ||
+                        emptyIds.contains(
+                            it.id
+                        )
+                    }
 
-                        categoryName.contains(query)
+            } else if (
+                query.isNotBlank()
+            ) {
+
+                result =
+                    result.filter { box ->
+
+                        val category =
+                            categories.find {
+                                it.id ==
+                                        box.categoryId
+                            }?.name
+                                ?.lowercase()
+                                ?: ""
+
+                        box.name
+                            .lowercase()
+                            .contains(query)
+
+                                ||
+
+                                box.position
+                                    .lowercase()
+                                    .contains(query)
+
+                                ||
+
+                                category
+                                    .contains(query)
+                    }
             }
+
+            result =
+                if (
+                    _isAscending.value == true
+                ) {
+
+                    result.sortedBy {
+                        it.name
+                    }
+
+                } else {
+
+                    result.sortedByDescending {
+                        it.name
+                    }
+                }
+
+            lastFiltered =
+                result
+
+            _boxes.postValue(
+                result
+            )
+
+            updateHiddenSelectionState()
         }
-
-        val asc =
-            _isAscending.value ?: true
-
-        result =
-            if (asc) {
-                result.sortedBy { it.name }
-            } else {
-                result.sortedByDescending { it.name }
-            }
-
-        lastFiltered = result
-
-        _boxes.value = result
-
-        updateHiddenSelectionState()
     }
 
     private fun updateHiddenSelectionState() {
 
-        val selected =
-            _selectedItems.value ?: emptySet()
+        val visible =
+            lastFiltered
+                .map { it.id }
+                .toSet()
 
-        if (selected.isEmpty()) {
-
-            _hasHiddenSelections.value = false
-
-            return
-        }
-
-        val visibleIds =
-            lastFiltered.map { it.id }.toSet()
-
-        val hidden =
-            selected.any { it !in visibleIds }
-
-        _hasHiddenSelections.value = hidden
+        _hasHiddenSelections.value =
+            (_selectedItems.value ?: emptySet())
+                .any { it !in visible }
     }
 }

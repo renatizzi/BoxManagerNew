@@ -12,6 +12,7 @@ import com.example.boxmanagernew.data.local.DatabaseProvider
 import com.example.boxmanagernew.ui.categories.CategoriesActivity
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
+import com.example.boxmanagernew.ui.main.BoxViewModel
 import com.example.boxmanagernew.ui.utility.UtilityActivity
 
 class DashboardActivity : BaseActivity() {
@@ -20,9 +21,7 @@ class DashboardActivity : BaseActivity() {
         savedInstanceState: Bundle?
     ) {
 
-        super.onCreate(
-            savedInstanceState
-        )
+        super.onCreate(savedInstanceState)
 
         setContentView(
             R.layout.activity_dashboard
@@ -77,11 +76,18 @@ class DashboardActivity : BaseActivity() {
             R.id.layoutEmptyBoxes
         ).setOnClickListener {
 
-            Toast.makeText(
-                this,
-                "Filtro contenitori vuoti: prossimo step",
-                Toast.LENGTH_SHORT
-            ).show()
+            startActivity(
+                Intent(
+                    this,
+                    MainActivity::class.java
+                ).apply {
+
+                    putExtra(
+                        "dashboardFilter",
+                        BoxViewModel.FILTER_EMPTY_BOXES
+                    )
+                }
+            )
         }
 
         findViewById<LinearLayout>(
@@ -151,31 +157,13 @@ class DashboardActivity : BaseActivity() {
                 applicationContext
             )
 
-        val textBoxes =
-            findViewById<TextView>(
-                R.id.textBoxesCount
-            )
-
-        val textCategories =
-            findViewById<TextView>(
-                R.id.textCategoriesCount
-            )
-
-        val textEmptyBoxes =
-            findViewById<TextView>(
-                R.id.textEmptyBoxes
-            )
-
-        val textUsedCategories =
-            findViewById<TextView>(
-                R.id.textUsedCategories
-            )
-
         db.boxDao()
             .getAllLive()
             .observe(this) {
 
-                textBoxes.text =
+                findViewById<TextView>(
+                    R.id.textBoxesCount
+                ).text =
                     it.size.toString()
             }
 
@@ -183,7 +171,9 @@ class DashboardActivity : BaseActivity() {
             .getAllCategories()
             .observe(this) {
 
-                textCategories.text =
+                findViewById<TextView>(
+                    R.id.textCategoriesCount
+                ).text =
                     it.size.toString()
             }
 
@@ -191,7 +181,9 @@ class DashboardActivity : BaseActivity() {
             .getEmptyBoxesCount()
             .observe(this) {
 
-                textEmptyBoxes.text =
+                findViewById<TextView>(
+                    R.id.textEmptyBoxes
+                ).text =
                     it.toString()
             }
 
@@ -199,7 +191,9 @@ class DashboardActivity : BaseActivity() {
             .getUsedCategoriesCount()
             .observe(this) {
 
-                textUsedCategories.text =
+                findViewById<TextView>(
+                    R.id.textUsedCategories
+                ).text =
                     it.toString()
             }
     }
