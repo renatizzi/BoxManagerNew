@@ -264,6 +264,7 @@
                 android:columnCount="2">
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardBackup"
                     android:layout_width="0dp"
                     android:layout_height="70dp"
                     android:layout_columnWeight="1"
@@ -280,6 +281,7 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardRestore"
                     android:layout_width="0dp"
                     android:layout_height="70dp"
                     android:layout_columnWeight="1"
@@ -296,6 +298,7 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardQr"
                     android:layout_width="0dp"
                     android:layout_height="70dp"
                     android:layout_columnWeight="1"
@@ -312,6 +315,7 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardTools"
                     android:layout_width="0dp"
                     android:layout_height="70dp"
                     android:layout_columnWeight="1"
