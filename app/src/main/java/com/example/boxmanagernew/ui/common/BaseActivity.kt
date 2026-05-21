@@ -97,12 +97,6 @@ abstract class BaseActivity : AppCompatActivity() {
                 object :
                     GestureDetector.SimpleOnGestureListener() {
 
-                    private val SWIPE_THRESHOLD =
-                        180
-
-                    private val SWIPE_VELOCITY =
-                        180
-
                     override fun onFling(
                         e1: MotionEvent?,
                         e2: MotionEvent,
@@ -121,8 +115,8 @@ abstract class BaseActivity : AppCompatActivity() {
 
                         if (
                             abs(diffX) > abs(diffY) &&
-                            abs(diffX) > SWIPE_THRESHOLD &&
-                            abs(velocityX) > SWIPE_VELOCITY
+                            abs(diffX) > 180 &&
+                            abs(velocityX) > 180
                         ) {
 
                             if (diffX > 0)
@@ -244,10 +238,8 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
-    protected fun setupTopBar() {
-
+    protected fun setupTopBar() =
         refreshTopBar()
-    }
 
     protected fun refreshTopBar() {
 
@@ -340,15 +332,16 @@ abstract class BaseActivity : AppCompatActivity() {
                 android.R.id.content
             )
 
-        applyRuntimeTheme(root)
+        applyRuntimeTheme(
+            root,
+            accent
+        )
     }
 
     private fun applyRuntimeTheme(
-        viewGroup: ViewGroup
+        viewGroup: ViewGroup,
+        accent: Int
     ) {
-
-        val accent =
-            ThemeManager.getAccentDarkColor(this)
 
         for (i in 0 until viewGroup.childCount) {
 
@@ -364,10 +357,37 @@ abstract class BaseActivity : AppCompatActivity() {
                 is FloatingActionButton ->
                     child.backgroundTintList =
                         ColorStateList.valueOf(accent)
+
+                is TextView -> {
+
+                    val dashboardActivities =
+                        listOf(
+                            "📦 Contenitori",
+                            "🏷 Categorie",
+                            "☁ Backup",
+                            "↺ Ripristino",
+                            "▣ QR",
+                            "🛠 Altri strumenti"
+                        )
+
+                    if (
+                        dashboardActivities.contains(
+                            child.text.toString()
+                        )
+                    ) {
+
+                        child.setTextColor(
+                            accent
+                        )
+                    }
+                }
             }
 
             if (child is ViewGroup) {
-                applyRuntimeTheme(child)
+                applyRuntimeTheme(
+                    child,
+                    accent
+                )
             }
         }
     }

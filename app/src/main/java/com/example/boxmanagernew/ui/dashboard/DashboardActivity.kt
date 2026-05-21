@@ -30,15 +30,10 @@ class DashboardActivity : BaseActivity() {
 
         setupTopBar()
 
-        findViewById<TextView>(
-            R.id.textTitle
-        ).text =
-            "Dashboard"
-
-        findViewById<TextView>(
-            R.id.textSubtitle
-        ).text =
-            "Panoramica Archivio"
+        setupPageHeader(
+            title = "Dashboard",
+            subtitle = "Panoramica Archivio"
+        )
 
         setupDashboardActions()
 
