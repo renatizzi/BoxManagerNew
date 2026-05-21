@@ -34,6 +34,9 @@ object ThemeManager {
     private const val KEY_ACCENT_DARK =
         "accent_dark"
 
+    private const val KEY_CURRENT_PALETTE =
+        "current_palette"
+
     const val PALETTE_ORANGE =
         "palette_orange"
 
@@ -50,7 +53,11 @@ object ThemeManager {
         val prefs =
             getPrefs(context)
 
-        if (!prefs.contains(KEY_TOPBAR_BG)) {
+        if (
+            !prefs.contains(
+                KEY_CURRENT_PALETTE
+            )
+        ) {
 
             applyPalette(
                 context,
@@ -107,6 +114,10 @@ object ThemeManager {
             }
 
         prefs.edit()
+            .putString(
+                KEY_CURRENT_PALETTE,
+                palette
+            )
             .putInt(
                 KEY_TOPBAR_BG,
                 topBar
@@ -146,117 +157,97 @@ object ThemeManager {
             .apply()
     }
 
+    fun getCurrentPalette(
+        context: Context
+    ): String {
+
+        return getPrefs(context)
+            .getString(
+                KEY_CURRENT_PALETTE,
+                PALETTE_ORANGE
+            )
+            ?: PALETTE_ORANGE
+    }
+
     @ColorInt
     fun getAccentColor(
         context: Context
-    ): Int {
-
-        return getPrefs(context)
+    ): Int =
+        getPrefs(context)
             .getInt(
                 KEY_ACCENT,
-                getDefaultAccent(
-                    context
-                )
+                getDefaultAccent(context)
             )
-    }
 
     @ColorInt
     fun getAccentDarkColor(
         context: Context
-    ): Int {
-
-        return getPrefs(context)
+    ): Int =
+        getPrefs(context)
             .getInt(
                 KEY_ACCENT_DARK,
-                getDefaultAccentDark(
-                    context
-                )
+                getDefaultAccentDark(context)
             )
-    }
 
     @ColorInt
     fun getTopBarBackground(
         context: Context
-    ): Int {
-
-        return getPrefs(context)
+    ): Int =
+        getPrefs(context)
             .getInt(
                 KEY_TOPBAR_BG,
-                getDefaultTopBarBackground(
-                    context
-                )
+                getDefaultTopBarBackground(context)
             )
-    }
 
     @ColorInt
     fun getTopBarTitle(
         context: Context
-    ): Int {
-
-        return getPrefs(context)
+    ): Int =
+        getPrefs(context)
             .getInt(
                 KEY_TOPBAR_TITLE,
-                getDefaultTopBarTitle(
-                    context
-                )
+                getDefaultTopBarTitle(context)
             )
-    }
 
     @ColorInt
     fun getTopBarSubtitle(
         context: Context
-    ): Int {
-
-        return getPrefs(context)
+    ): Int =
+        getPrefs(context)
             .getInt(
                 KEY_TOPBAR_SUBTITLE,
-                getDefaultTopBarSubtitle(
-                    context
-                )
+                getDefaultTopBarSubtitle(context)
             )
-    }
 
     @ColorInt
     fun getBottomNavBackground(
         context: Context
-    ): Int {
-
-        return getPrefs(context)
+    ): Int =
+        getPrefs(context)
             .getInt(
                 KEY_BOTTOMNAV_BG,
-                getDefaultBottomNavBackground(
-                    context
-                )
+                getDefaultBottomNavBackground(context)
             )
-    }
 
     @ColorInt
     fun getBottomNavActive(
         context: Context
-    ): Int {
-
-        return getPrefs(context)
+    ): Int =
+        getPrefs(context)
             .getInt(
                 KEY_BOTTOMNAV_ACTIVE,
-                getDefaultBottomNavActive(
-                    context
-                )
+                getDefaultBottomNavActive(context)
             )
-    }
 
     @ColorInt
     fun getBottomNavInactive(
         context: Context
-    ): Int {
-
-        return getPrefs(context)
+    ): Int =
+        getPrefs(context)
             .getInt(
                 KEY_BOTTOMNAV_INACTIVE,
-                getDefaultBottomNavInactive(
-                    context
-                )
+                getDefaultBottomNavInactive(context)
             )
-    }
 
     private fun getPrefs(
         context: Context
@@ -269,88 +260,72 @@ object ThemeManager {
     @ColorInt
     private fun getDefaultAccent(
         context: Context
-    ): Int {
-
-        return ContextCompat.getColor(
+    ) =
+        ContextCompat.getColor(
             context,
             R.color.primary_button_light
         )
-    }
 
     @ColorInt
     private fun getDefaultAccentDark(
         context: Context
-    ): Int {
-
-        return ContextCompat.getColor(
+    ) =
+        ContextCompat.getColor(
             context,
             R.color.primary_button
         )
-    }
 
     @ColorInt
     private fun getDefaultTopBarBackground(
         context: Context
-    ): Int {
-
-        return ContextCompat.getColor(
+    ) =
+        ContextCompat.getColor(
             context,
             R.color.primary_gradient_start
         )
-    }
 
     @ColorInt
     private fun getDefaultTopBarTitle(
         context: Context
-    ): Int {
-
-        return ContextCompat.getColor(
+    ) =
+        ContextCompat.getColor(
             context,
             android.R.color.white
         )
-    }
 
     @ColorInt
     private fun getDefaultTopBarSubtitle(
         context: Context
-    ): Int {
-
-        return ContextCompat.getColor(
+    ) =
+        ContextCompat.getColor(
             context,
             android.R.color.white
         )
-    }
 
     @ColorInt
     private fun getDefaultBottomNavBackground(
         context: Context
-    ): Int {
-
-        return ContextCompat.getColor(
+    ) =
+        ContextCompat.getColor(
             context,
             R.color.card_background
         )
-    }
 
     @ColorInt
     private fun getDefaultBottomNavActive(
         context: Context
-    ): Int {
-
-        return ContextCompat.getColor(
+    ) =
+        ContextCompat.getColor(
             context,
             R.color.primary_button
         )
-    }
 
     @ColorInt
     private fun getDefaultBottomNavInactive(
         context: Context
-    ): Int {
-
-        return ContextCompat.getColor(
+    ) =
+        ContextCompat.getColor(
             context,
             R.color.text_secondary
         )
-    }
 }

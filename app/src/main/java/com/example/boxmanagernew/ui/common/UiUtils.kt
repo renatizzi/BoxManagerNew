@@ -13,20 +13,11 @@ import java.util.Locale
 
 object UiUtils {
 
-    private const val SORT_ASC =
-        "▲"
-
-    private const val SORT_DESC =
-        "▼"
-
-    private const val SORT_LABEL =
-        "ORDINA"
-
-    private const val SORT_TEXT_SIZE =
-        18f
-
-    private const val DATE_PATTERN =
-        "dd/MM/yyyy HH:mm"
+    private const val SORT_ASC = "▲"
+    private const val SORT_DESC = "▼"
+    private const val SORT_LABEL = "ORDINA"
+    private const val SORT_TEXT_SIZE = 18f
+    private const val DATE_PATTERN = "dd/MM/yyyy HH:mm"
 
     fun updateSortButton(
         button: Button,
@@ -34,11 +25,8 @@ object UiUtils {
     ) {
 
         val arrow =
-            if (isAscending) {
-                SORT_ASC
-            } else {
-                SORT_DESC
-            }
+            if (isAscending) SORT_ASC
+            else SORT_DESC
 
         button.text =
             "$SORT_LABEL $arrow"
@@ -50,6 +38,13 @@ object UiUtils {
             null,
             Typeface.BOLD
         )
+
+        button.backgroundTintList =
+            android.content.res.ColorStateList.valueOf(
+                ThemeManager.getAccentDarkColor(
+                    button.context
+                )
+            )
     }
 
     fun setupSearchAndSort(
@@ -77,16 +72,14 @@ object UiUtils {
                     start: Int,
                     count: Int,
                     after: Int
-                ) {
-                }
+                ) {}
 
                 override fun onTextChanged(
                     s: CharSequence?,
                     start: Int,
                     before: Int,
                     count: Int
-                ) {
-                }
+                ) {}
             }
         )
 
@@ -98,6 +91,11 @@ object UiUtils {
         sortButton.setOnClickListener {
 
             onSortClicked()
+
+            updateSortButton(
+                sortButton,
+                !isAscending
+            )
         }
     }
 
@@ -140,12 +138,11 @@ object UiUtils {
 
                     val cleaned =
                         s.toString()
-                            .replace(
-                                "\n",
-                                " "
-                            )
+                            .replace("\n"," ")
 
-                    editText.setText(cleaned)
+                    editText.setText(
+                        cleaned
+                    )
 
                     editText.setSelection(
                         cleaned.length
@@ -161,16 +158,14 @@ object UiUtils {
                 start: Int,
                 count: Int,
                 after: Int
-            ) {
-            }
+            ) {}
 
             override fun onTextChanged(
                 s: CharSequence?,
                 start: Int,
                 before: Int,
                 count: Int
-            ) {
-            }
+            ) {}
         }
     }
 

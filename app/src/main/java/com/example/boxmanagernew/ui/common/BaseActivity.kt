@@ -49,6 +49,44 @@ abstract class BaseActivity : AppCompatActivity() {
         super.onResume()
 
         refreshAppShell()
+
+        refreshBottomNav()
+    }
+
+    private fun refreshBottomNav() {
+
+        when (this) {
+
+            is DashboardActivity ->
+                BottomNavManager.setup(
+                    this,
+                    BottomNavManager.TAB_DASHBOARD
+                )
+
+            is MainActivity ->
+                BottomNavManager.setup(
+                    this,
+                    BottomNavManager.TAB_BOXES
+                )
+
+            is CategoriesActivity ->
+                BottomNavManager.setup(
+                    this,
+                    BottomNavManager.TAB_CATEGORIES
+                )
+
+            is UtilityActivity ->
+                BottomNavManager.setup(
+                    this,
+                    BottomNavManager.TAB_UTILITY
+                )
+
+            is SettingsActivity ->
+                BottomNavManager.setup(
+                    this,
+                    BottomNavManager.TAB_SETTINGS
+                )
+        }
     }
 
     private fun setupSwipeNavigation() {
@@ -72,7 +110,8 @@ abstract class BaseActivity : AppCompatActivity() {
                         velocityY: Float
                     ): Boolean {
 
-                        if (e1 == null) return false
+                        if (e1 == null)
+                            return false
 
                         val diffX =
                             e2.x - e1.x
@@ -86,11 +125,10 @@ abstract class BaseActivity : AppCompatActivity() {
                             abs(velocityX) > SWIPE_VELOCITY
                         ) {
 
-                            if (diffX > 0) {
+                            if (diffX > 0)
                                 navigatePrevious()
-                            } else {
+                            else
                                 navigateNext()
-                            }
 
                             return true
                         }
@@ -153,6 +191,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
         startActivity(
             Intent(this, target).apply {
+
                 flags =
                     Intent.FLAG_ACTIVITY_CLEAR_TOP or
                             Intent.FLAG_ACTIVITY_SINGLE_TOP
@@ -257,18 +296,44 @@ abstract class BaseActivity : AppCompatActivity() {
         subtitle: String
     ) {
 
+        val accent =
+            ThemeManager.getAccentDarkColor(this)
+
         findViewById<TextView>(
             R.id.textTitle
-        )?.text = title
+        )?.apply {
+
+            text = title
+            setTextColor(accent)
+        }
 
         findViewById<TextView>(
             R.id.textSubtitle
-        )?.text = subtitle
+        )?.apply {
+
+            text = subtitle
+            setTextColor(accent)
+            alpha = 0.75f
+        }
     }
 
     protected fun refreshAppShell() {
 
         refreshTopBar()
+
+        val accent =
+            ThemeManager.getAccentDarkColor(this)
+
+        findViewById<TextView>(
+            R.id.textTitle
+        )?.setTextColor(accent)
+
+        findViewById<TextView>(
+            R.id.textSubtitle
+        )?.apply {
+            setTextColor(accent)
+            alpha = 0.75f
+        }
 
         val root =
             findViewById<ViewGroup>(
@@ -299,19 +364,6 @@ abstract class BaseActivity : AppCompatActivity() {
                 is FloatingActionButton ->
                     child.backgroundTintList =
                         ColorStateList.valueOf(accent)
-
-                is TextView -> {
-                    if (
-                        child.text.toString().contains("Contenitori") ||
-                        child.text.toString().contains("Categorie") ||
-                        child.text.toString().contains("Backup") ||
-                        child.text.toString().contains("Riprist") ||
-                        child.text.toString().contains("Altri strumenti") ||
-                        child.text.toString().contains("QR")
-                    ) {
-                        child.setTextColor(accent)
-                    }
-                }
             }
 
             if (child is ViewGroup) {
