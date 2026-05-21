@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.boxmanagernew.domain.model.Category
 import com.example.boxmanagernew.data.repository.CategoryRepositoryImpl
 import kotlinx.coroutines.Dispatchers
@@ -14,40 +13,59 @@ class CategoryViewModel(
     private val repository: CategoryRepositoryImpl
 ) : ViewModel() {
 
-    private val source: LiveData<List<Category>> =
+    companion object {
+
+        const val FILTER_USED =
+            "__USED_CATEGORIES__"
+    }
+
+    private val source =
         repository.getAllCategories()
 
-    private val _categories = MediatorLiveData<List<Category>>()
-    val categories: LiveData<List<Category>> = _categories
+    private val _categories =
+        MediatorLiveData<List<Category>>()
+
+    val categories =
+        _categories
 
     private val _allCategoriesCount =
         MutableLiveData(0)
 
-    val allCategoriesCount: LiveData<Int> =
+    val allCategoriesCount =
         _allCategoriesCount
 
-    private val _isAscending = MutableLiveData(true)
-    val isAscending: LiveData<Boolean> = _isAscending
+    private val _isAscending =
+        MutableLiveData(true)
 
-    private val _currentQuery = MutableLiveData("")
-    val currentQuery: LiveData<String> = _currentQuery
+    val isAscending =
+        _isAscending
 
-    private var lastSource: List<Category> = emptyList()
+    private val _currentQuery =
+        MutableLiveData("")
 
-    private val _operationResult = MutableLiveData<String?>()
-    val operationResult: LiveData<String?> = _operationResult
+    private var lastSource =
+        emptyList<Category>()
 
-    private val _selectedCategory = MutableLiveData<Int?>()
-    val selectedCategory: LiveData<Int?> = _selectedCategory
+    private val _operationResult =
+        MutableLiveData<String?>()
+
+    val operationResult =
+        _operationResult
+
+    private val _selectedCategory =
+        MutableLiveData<Int?>()
+
+    val selectedCategory =
+        _selectedCategory
 
     init {
 
-        _categories.addSource(source) { list ->
+        _categories.addSource(source) {
 
-            lastSource = list
+            lastSource = it
 
             _allCategoriesCount.value =
-                list.size
+                it.size
 
             applyFilterAndSort()
         }
@@ -63,9 +81,12 @@ class CategoryViewModel(
         }
     }
 
-    fun filter(query: String) {
+    fun filter(
+        query: String
+    ) {
 
-        _currentQuery.value = query
+        _currentQuery.value =
+            query
     }
 
     fun toggleSort() {
@@ -76,7 +97,8 @@ class CategoryViewModel(
 
     private fun applyFilterAndSort() {
 
-        var result = lastSource
+        var result =
+            lastSource
 
         val query =
             _currentQuery.value
@@ -84,19 +106,43 @@ class CategoryViewModel(
                 ?.lowercase()
                 ?: ""
 
-        if (query.isNotBlank()) {
+        if (
+            query ==
+            FILTER_USED.lowercase()
+        ) {
 
-            result = result.filter {
+            result =
+                result.filter {
 
-                it.name.lowercase().contains(query)
-            }
+                    runCatching {
+
+                        kotlinx.coroutines.runBlocking {
+
+                            repository.isCategoryUsed(
+                                it.id
+                            )
+                        }
+
+                    }.getOrDefault(false)
+                }
+
+        } else if (
+            query.isNotBlank()
+        ) {
+
+            result =
+                result.filter {
+
+                    it.name
+                        .lowercase()
+                        .contains(query)
+                }
         }
 
-        val asc =
-            _isAscending.value ?: true
-
         result =
-            if (asc) {
+            if (
+                _isAscending.value == true
+            ) {
 
                 result.sortedBy {
                     it.name
@@ -109,94 +155,64 @@ class CategoryViewModel(
                 }
             }
 
-        _categories.value = result
+        _categories.value =
+            result
     }
 
-    fun selectCategory(id: Int) {
+    fun selectCategory(
+        id: Int
+    ) {
 
-        _selectedCategory.value = id
+        _selectedCategory.value =
+            id
     }
 
     fun clearSelection() {
 
-        _selectedCategory.value = null
+        _selectedCategory.value =
+            null
     }
 
     fun clearMessage() {
 
-        _operationResult.value = null
+        _operationResult.value =
+            null
     }
 
     suspend fun insert(
         category: Category
-    ): Boolean {
+    ): Boolean =
+        withContext(Dispatchers.IO) {
 
-        return withContext(Dispatchers.IO) {
-
-            val success =
-                repository.insert(category)
-                    ?: true
-
-            if (success == false) {
-
-                _operationResult.postValue(
-                    "Categoria già esistente"
-                )
-            }
-
-            success
+            repository.insert(category)
+                ?: true
         }
-    }
 
     suspend fun update(
         category: Category
-    ): Boolean {
+    ): Boolean =
+        withContext(Dispatchers.IO) {
 
-        return withContext(Dispatchers.IO) {
-
-            val success =
-                repository.update(category)
-                    ?: true
-
-            if (success == false) {
-
-                _operationResult.postValue(
-                    "Categoria già esistente"
-                )
-            }
-
-            success
+            repository.update(category)
+                ?: true
         }
-    }
 
     suspend fun delete(
         category: Category
-    ): Boolean {
+    ): Boolean =
+        withContext(Dispatchers.IO) {
 
-        return withContext(Dispatchers.IO) {
-
-            val success =
-                repository.delete(category)
-                    ?: true
-
-            if (success == false) {
-
-                _operationResult.postValue(
-                    "Categoria in uso: eliminazione non consentita"
-                )
-            }
-
-            success
+            repository.delete(category)
+                ?: true
         }
-    }
 
     suspend fun isCategoryUsed(
         categoryId: Int
-    ): Boolean {
+    ): Boolean =
+        withContext(Dispatchers.IO) {
 
-        return withContext(Dispatchers.IO) {
-
-            repository.isCategoryUsed(categoryId)
+            repository.isCategoryUsed(
+                categoryId
+            )
         }
-    }
 }

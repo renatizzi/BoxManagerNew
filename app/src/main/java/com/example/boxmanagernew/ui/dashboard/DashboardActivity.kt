@@ -4,12 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.cardview.widget.CardView
 import com.example.boxmanagernew.MainActivity
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.data.local.DatabaseProvider
 import com.example.boxmanagernew.ui.categories.CategoriesActivity
+import com.example.boxmanagernew.ui.categories.CategoryViewModel
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.example.boxmanagernew.ui.main.BoxViewModel
@@ -94,11 +94,18 @@ class DashboardActivity : BaseActivity() {
             R.id.layoutUsedCategories
         ).setOnClickListener {
 
-            Toast.makeText(
-                this,
-                "Filtro categorie in uso: prossimo step",
-                Toast.LENGTH_SHORT
-            ).show()
+            startActivity(
+                Intent(
+                    this,
+                    CategoriesActivity::class.java
+                ).apply {
+
+                    putExtra(
+                        "dashboardFilter",
+                        CategoryViewModel.FILTER_USED
+                    )
+                }
+            )
         }
 
         findViewById<CardView>(

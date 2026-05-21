@@ -56,12 +56,24 @@ class CategoriesActivity : BaseActivity() {
 
         val db = DatabaseProvider.getDatabase(applicationContext)
         val repository = CategoryRepositoryImpl(db.categoryDao(), db.boxDao())
-
         setupViewModel(repository)
         setupAdapter()
         observeData()
         setupListeners()
         showDefaultBar()
+
+        intent.getStringExtra(
+            "dashboardFilter"
+        )?.let { filter ->
+
+            if (
+                filter ==
+                CategoryViewModel.FILTER_USED
+            ) {
+
+                viewModel.filter(filter)
+            }
+        }
     }
 
     private fun setupViews() {
