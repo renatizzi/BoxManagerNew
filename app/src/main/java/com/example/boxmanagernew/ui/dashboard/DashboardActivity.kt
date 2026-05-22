@@ -2,7 +2,10 @@ package com.example.boxmanagernew.ui.dashboard
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.inputmethod.EditorInfo
+import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.Spinner
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import com.example.boxmanagernew.MainActivity
@@ -38,12 +41,134 @@ class DashboardActivity : BaseActivity() {
 
         setupDashboardActions()
 
+        setupSearch()
+
         loadKpiData()
 
         BottomNavManager.setup(
             this,
             BottomNavManager.TAB_DASHBOARD
         )
+    }
+
+    private fun setupSearch() {
+
+        val editSearch =
+            findViewById<EditText>(
+                R.id.editSearch
+            )
+
+        val spinner =
+            findViewById<Spinner>(
+                R.id.spinnerSearchScope
+            )
+
+        editSearch.setOnEditorActionListener {
+                _, actionId, _ ->
+
+            if (
+                actionId ==
+                EditorInfo.IME_ACTION_DONE
+            ) {
+
+                val query =
+                    editSearch.text
+                        .toString()
+                        .trim()
+
+                if (
+                    query.isBlank()
+                ) {
+
+                    return@setOnEditorActionListener true
+                }
+
+                when (
+                    spinner.selectedItemPosition
+                ) {
+
+                    // Tutto archivio (temporaneo)
+                    0 -> {
+
+                        startActivity(
+                            Intent(
+                                this,
+                                MainActivity::class.java
+                            ).apply {
+
+                                putExtra(
+                                    "dashboardSearchQuery",
+                                    query
+                                )
+                            }
+                        )
+                    }
+
+                    // Contenitori
+                    1 -> {
+
+                        startActivity(
+                            Intent(
+                                this,
+                                MainActivity::class.java
+                            ).apply {
+
+                                putExtra(
+                                    "dashboardSearchQuery",
+                                    query
+                                )
+                            }
+                        )
+                    }
+
+                    // Oggetti
+                    2 -> {
+
+                        // Placeholder
+                    }
+
+                    // Categorie
+                    3 -> {
+
+                        startActivity(
+                            Intent(
+                                this,
+                                CategoriesActivity::class.java
+                            ).apply {
+
+                                putExtra(
+                                    "dashboardSearchQuery",
+                                    query
+                                )
+                            }
+                        )
+                    }
+
+                    // Posizione
+                    4 -> {
+
+                        startActivity(
+                            Intent(
+                                this,
+                                MainActivity::class.java
+                            ).apply {
+
+                                putExtra(
+                                    "dashboardSearchQuery",
+                                    query
+                                )
+                            }
+                        )
+                    }
+                }
+
+                true
+
+            } else {
+
+                false
+            }
+        }
     }
 
     private fun setupDashboardActions() {

@@ -95,6 +95,20 @@ class MainActivity : BaseActivity() {
                 )
             }
         }
+        intent.getStringExtra(
+            "dashboardSearchQuery"
+        )?.let { query ->
+
+            viewModel.filter(query)
+
+            adapter.updateQuery(query)
+
+            editSearch.setText(query)
+
+            showContextMessage(
+                "Ricerca Dashboard attiva. Tocca qui per rimuovere."
+            )
+        }
     }
 
     private fun setupViews() {
