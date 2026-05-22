@@ -104,10 +104,6 @@ class MainActivity : BaseActivity() {
             adapter.updateQuery(query)
 
             editSearch.setText(query)
-
-            showContextMessage(
-                "Ricerca Dashboard attiva. Tocca qui per rimuovere."
-            )
         }
     }
 

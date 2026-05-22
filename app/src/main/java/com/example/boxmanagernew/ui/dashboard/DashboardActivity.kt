@@ -82,7 +82,11 @@ class DashboardActivity : BaseActivity() {
 
                     return@setOnEditorActionListener true
                 }
+                editSearch.clearFocus()
 
+                hideKeyboard(editSearch)
+
+                editSearch.setText("")
                 when (
                     spinner.selectedItemPosition
                 ) {

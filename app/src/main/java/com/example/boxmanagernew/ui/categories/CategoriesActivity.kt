@@ -47,6 +47,7 @@ class CategoriesActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_categories)
+
         setupEdgeToEdge()
         setupTopBar()
         setupViews()
@@ -54,8 +55,15 @@ class CategoriesActivity : BaseActivity() {
         BottomNavManager.setup(this, BottomNavManager.TAB_CATEGORIES)
         setupBackNavigation()
 
-        val db = DatabaseProvider.getDatabase(applicationContext)
-        val repository = CategoryRepositoryImpl(db.categoryDao(), db.boxDao())
+        val db =
+            DatabaseProvider.getDatabase(applicationContext)
+
+        val repository =
+            CategoryRepositoryImpl(
+                db.categoryDao(),
+                db.boxDao()
+            )
+
         setupViewModel(repository)
         setupAdapter()
         observeData()
@@ -74,175 +82,411 @@ class CategoriesActivity : BaseActivity() {
                 viewModel.filter(filter)
             }
         }
+        intent.getStringExtra(
+            "dashboardSearchQuery"
+        )?.let { query ->
+
+            viewModel.filter(query)
+
+            adapter.updateQuery(query)
+
+            editSearch.setText(query)
+        }
     }
 
     private fun setupViews() {
-        setupPageHeader("Categorie","Classificazione Contenitori")
-        contextCard = findViewById(R.id.contextCard)
-        layoutSearchSort = findViewById(R.id.layoutSearchSort)
-        textContextMessage = findViewById(R.id.textContextMessage)
-        editSearch = findViewById(R.id.editTextSearchCategory)
-        buttonSort = findViewById(R.id.buttonSortCategory)
-        textCategoryCount = findViewById(R.id.textCategoryCount)
-        recyclerView = findViewById(R.id.recyclerViewCategories)
-        fabAdd = findViewById(R.id.fabAddCategory)
+        setupPageHeader(
+            "Categorie",
+            "Classificazione Contenitori"
+        )
+
+        contextCard =
+            findViewById(R.id.contextCard)
+
+        layoutSearchSort =
+            findViewById(R.id.layoutSearchSort)
+
+        textContextMessage =
+            findViewById(R.id.textContextMessage)
+
+        editSearch =
+            findViewById(R.id.editTextSearchCategory)
+
+        buttonSort =
+            findViewById(R.id.buttonSortCategory)
+
+        textCategoryCount =
+            findViewById(R.id.textCategoryCount)
+
+        recyclerView =
+            findViewById(R.id.recyclerViewCategories)
+
+        fabAdd =
+            findViewById(R.id.fabAddCategory)
     }
 
     private fun setupBackNavigation() {
-        onBackPressedDispatcher.addCallback(this,
+        onBackPressedDispatcher.addCallback(
+            this,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    resetUiState(); finish()
+                    resetUiState()
+                    finish()
                 }
             })
     }
 
-    private fun setupViewModel(repository: CategoryRepositoryImpl) {
-        viewModel = ViewModelProvider(this,
-            object : ViewModelProvider.Factory {
-                override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    return CategoryViewModel(repository) as T
+    private fun setupViewModel(
+        repository: CategoryRepositoryImpl
+    ) {
+
+        viewModel =
+            ViewModelProvider(
+                this,
+                object : ViewModelProvider.Factory {
+                    override fun <T : ViewModel> create(
+                        modelClass: Class<T>
+                    ): T {
+
+                        return CategoryViewModel(
+                            repository
+                        ) as T
+                    }
                 }
-            })[CategoryViewModel::class.java]
+            )[CategoryViewModel::class.java]
     }
 
     private fun setupAdapter() {
-        adapter = CategoryAdapter(
-            emptyList(),
-            onEdit = { resetUiState(); showEditCategoryDialog(it) },
-            onDelete = { handleDeleteCategory(it) }
-        )
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = adapter
+
+        adapter =
+            CategoryAdapter(
+                emptyList(),
+                onEdit = {
+                    resetUiState()
+                    showEditCategoryDialog(it)
+                },
+                onDelete = {
+                    handleDeleteCategory(it)
+                }
+            )
+
+        recyclerView.layoutManager =
+            LinearLayoutManager(this)
+
+        recyclerView.adapter =
+            adapter
     }
 
     private fun observeData() {
-        viewModel.categories.observe(this){ adapter.updateData(it) }
-        viewModel.allCategoriesCount.observe(this){ textCategoryCount.text = "N. Categorie: $it" }
-        viewModel.selectedCategory.observe(this){ adapter.updateSelection(it) }
-        viewModel.isAscending.observe(this){ UiUtils.updateSortButton(buttonSort,it) }
+
+        viewModel.categories.observe(this) {
+            adapter.updateData(it)
+        }
+
+        viewModel.allCategoriesCount.observe(this) {
+            textCategoryCount.text =
+                "N. Categorie: $it"
+        }
+
+        viewModel.selectedCategory.observe(this) {
+            adapter.updateSelection(it)
+        }
+
+        viewModel.isAscending.observe(this) {
+            UiUtils.updateSortButton(
+                buttonSort,
+                it
+            )
+        }
     }
 
     private fun setupListeners() {
+
         UiUtils.setupSearchAndSort(
-            editSearch, buttonSort, true,
-            { q -> viewModel.filter(q); adapter.updateQuery(q) },
-            { resetUiState(); viewModel.toggleSort() }
+            editSearch,
+            buttonSort,
+            true,
+            { q ->
+                viewModel.filter(q)
+                adapter.updateQuery(q)
+            },
+            {
+                resetUiState()
+                viewModel.toggleSort()
+            }
         )
 
-        editSearch.setOnEditorActionListener { _, id, _ ->
-            if (id == EditorInfo.IME_ACTION_DONE) { hideKeyboardAndClearFocus(); true } else false
+        editSearch.setOnEditorActionListener {
+                _, id, _ ->
+
+            if (
+                id ==
+                EditorInfo.IME_ACTION_DONE
+            ) {
+
+                hideKeyboardAndClearFocus()
+                true
+
+            } else false
         }
 
-        fabAdd.setOnClickListener { resetUiState(); showAddCategoryDialog() }
-        contextCard.setOnClickListener { resetUiState() }
+        fabAdd.setOnClickListener {
+            resetUiState()
+            showAddCategoryDialog()
+        }
+
+        contextCard.setOnClickListener {
+            resetUiState()
+        }
     }
 
-    private fun handleDeleteCategory(category: Category) {
+    private fun handleDeleteCategory(
+        category: Category
+    ) {
+
         lifecycleScope.launch {
-            val isUsed = viewModel.isCategoryUsed(category.id)
+
+            val isUsed =
+                viewModel.isCategoryUsed(
+                    category.id
+                )
 
             if (isUsed) {
-                FeedbackUtils.alert(this@CategoriesActivity)
-                viewModel.selectCategory(category.id)
+
+                FeedbackUtils.alert(
+                    this@CategoriesActivity
+                )
+
+                viewModel.selectCategory(
+                    category.id
+                )
 
                 showWarningMessage(
                     "Categoria in uso: eliminazione non consentita. Tocca qui per annullare."
                 )
+
             } else {
+
                 resetUiState()
+
                 showDeleteDialog(category)
             }
         }
     }
 
     private fun resetUiState() {
+
         viewModel.clearSelection()
+
         hideKeyboardAndClearFocus()
+
         showDefaultBar()
     }
 
     private fun showDefaultBar() {
-        layoutSearchSort.visibility = View.VISIBLE
-        textContextMessage.visibility = View.GONE
-        contextCard.strokeColor = getColor(android.R.color.transparent)
+
+        layoutSearchSort.visibility =
+            View.VISIBLE
+
+        textContextMessage.visibility =
+            View.GONE
+
+        contextCard.strokeColor =
+            getColor(
+                android.R.color.transparent
+            )
     }
 
-    private fun showWarningMessage(text: String) {
-        layoutSearchSort.visibility = View.GONE
-        textContextMessage.visibility = View.VISIBLE
-        textContextMessage.text = text
-        contextCard.strokeColor = getColor(android.R.color.holo_red_dark)
+    private fun showWarningMessage(
+        text: String
+    ) {
+
+        layoutSearchSort.visibility =
+            View.GONE
+
+        textContextMessage.visibility =
+            View.VISIBLE
+
+        textContextMessage.text =
+            text
+
+        contextCard.strokeColor =
+            getColor(
+                android.R.color.holo_red_dark
+            )
     }
 
     private fun showAddCategoryDialog() {
-        val d = createCategoryDialog()
-        val dialog = createCategoryAlertDialog("Nuova categoria", d.view, "Aggiungi")
 
-        setupCategoryDialogConfirm(dialog,d.editName,d.iconAdapter,d.textError){ name, icon ->
+        val d =
+            createCategoryDialog()
+
+        val dialog =
+            createCategoryAlertDialog(
+                "Nuova categoria",
+                d.view,
+                "Aggiungi"
+            )
+
+        setupCategoryDialogConfirm(
+            dialog,
+            d.editName,
+            d.iconAdapter,
+            d.textError
+        ) { name, icon ->
+
             lifecycleScope.launch {
+
                 handleCategoryDialogResult(
-                    viewModel.insert(Category(name=name, icon=icon)),
+                    viewModel.insert(
+                        Category(
+                            name = name,
+                            icon = icon
+                        )
+                    ),
                     dialog,
                     d.textError
                 )
             }
         }
+
         dialog.show()
     }
 
-    private fun showEditCategoryDialog(category: Category) {
+    private fun showEditCategoryDialog(
+        category: Category
+    ) {
+
         lifecycleScope.launch {
 
-            if (viewModel.isCategoryUsed(category.id)) {
-                FeedbackUtils.alert(this@CategoriesActivity)
+            if (
+                viewModel.isCategoryUsed(
+                    category.id
+                )
+            ) {
+
+                FeedbackUtils.alert(
+                    this@CategoriesActivity
+                )
+
                 showWarningMessage(
                     "Categoria in uso: modificandola, i contenitori verranno aggiornati. Tocca qui per annullare."
                 )
             }
 
-            val d = createCategoryDialog(category)
-            val dialog = createCategoryAlertDialog("Modifica categoria", d.view, "Salva")
+            val d =
+                createCategoryDialog(
+                    category
+                )
 
-            dialog.setOnDismissListener { resetUiState() }
+            val dialog =
+                createCategoryAlertDialog(
+                    "Modifica categoria",
+                    d.view,
+                    "Salva"
+                )
 
-            setupCategoryDialogConfirm(dialog,d.editName,d.iconAdapter,d.textError){ name, icon ->
+            dialog.setOnDismissListener {
+                resetUiState()
+            }
+
+            setupCategoryDialogConfirm(
+                dialog,
+                d.editName,
+                d.iconAdapter,
+                d.textError
+            ) { name, icon ->
+
                 lifecycleScope.launch {
+
                     handleCategoryDialogResult(
-                        viewModel.update(category.copy(name=name, icon=icon)),
+                        viewModel.update(
+                            category.copy(
+                                name = name,
+                                icon = icon
+                            )
+                        ),
                         dialog,
                         d.textError
                     )
                 }
             }
+
             dialog.show()
         }
     }
 
-    private fun createCategoryDialog(category: Category? = null): CategoryDialogViews {
-        val view = layoutInflater.inflate(R.layout.dialog_add_category,null)
-        val edit = view.findViewById<EditText>(R.id.editCategoryName)
-        val recycler = view.findViewById<RecyclerView>(R.id.recyclerIcons)
-        val error = view.findViewById<TextView>(R.id.textError)
-        val iconAdapter = IconAdapter(iconNames){}
+    private fun createCategoryDialog(
+        category: Category? = null
+    ): CategoryDialogViews {
 
-        recycler.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
-        recycler.adapter = iconAdapter
+        val view =
+            layoutInflater.inflate(
+                R.layout.dialog_add_category,
+                null
+            )
+
+        val edit =
+            view.findViewById<EditText>(
+                R.id.editCategoryName
+            )
+
+        val recycler =
+            view.findViewById<RecyclerView>(
+                R.id.recyclerIcons
+            )
+
+        val error =
+            view.findViewById<TextView>(
+                R.id.textError
+            )
+
+        val iconAdapter =
+            IconAdapter(iconNames){}
+
+        recycler.layoutManager =
+            LinearLayoutManager(
+                this,
+                LinearLayoutManager.HORIZONTAL,
+                false
+            )
+
+        recycler.adapter =
+            iconAdapter
 
         category?.let {
+
             edit.setText(it.name)
-            iconAdapter.setSelectedIcon(it.icon)
+
+            iconAdapter.setSelectedIcon(
+                it.icon
+            )
         }
 
-        return CategoryDialogViews(view,edit,error,iconAdapter)
+        return CategoryDialogViews(
+            view,
+            edit,
+            error,
+            iconAdapter
+        )
     }
 
-    private fun createCategoryAlertDialog(title:String, view:View, positive:String): AlertDialog =
+    private fun createCategoryAlertDialog(
+        title:String,
+        view:View,
+        positive:String
+    ): AlertDialog =
         AlertDialog.Builder(this)
             .setTitle(title)
             .setView(view)
-            .setNegativeButton("Annulla",null)
-            .setPositiveButton(positive,null)
+            .setNegativeButton(
+                "Annulla",
+                null
+            )
+            .setPositiveButton(
+                positive,
+                null
+            )
             .create()
 
     private fun setupCategoryDialogConfirm(
@@ -252,28 +496,58 @@ class CategoriesActivity : BaseActivity() {
         textError: TextView,
         onValid:(String,String)->Unit
     ) {
+
         dialog.setOnShowListener {
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
 
-                val name = editName.text.toString().trim()
-                val icon = iconAdapter.getSelectedIcon()
-                textError.visibility = View.GONE
+            dialog.getButton(
+                AlertDialog.BUTTON_POSITIVE
+            ).setOnClickListener {
 
-                if (name.isEmpty()) {
+                val name =
+                    editName.text
+                        .toString()
+                        .trim()
+
+                val icon =
+                    iconAdapter.getSelectedIcon()
+
+                textError.visibility =
+                    View.GONE
+
+                if (
+                    name.isEmpty()
+                ) {
+
                     FeedbackUtils.alert(this)
-                    textError.text = "Dato obbligatorio"
-                    textError.visibility = View.VISIBLE
+
+                    textError.text =
+                        "Dato obbligatorio"
+
+                    textError.visibility =
+                        View.VISIBLE
+
                     return@setOnClickListener
                 }
 
-                if (icon == null) {
+                if (
+                    icon == null
+                ) {
+
                     FeedbackUtils.alert(this)
-                    textError.text = "Seleziona un'icona"
-                    textError.visibility = View.VISIBLE
+
+                    textError.text =
+                        "Seleziona un'icona"
+
+                    textError.visibility =
+                        View.VISIBLE
+
                     return@setOnClickListener
                 }
 
-                onValid(name, icon)
+                onValid(
+                    name,
+                    icon
+                )
             }
         }
     }
@@ -283,19 +557,35 @@ class CategoriesActivity : BaseActivity() {
         dialog:AlertDialog,
         textError:TextView
     ){
+
         if(success){
+
             resetUiState()
+
             dialog.dismiss()
+
         } else {
-            textError.text = "Categoria già esistente"
-            textError.visibility = View.VISIBLE
+
+            textError.text =
+                "Categoria già esistente"
+
+            textError.visibility =
+                View.VISIBLE
         }
     }
 
-    private fun showDeleteDialog(category: Category) {
-        DialogUtils.showDeleteConfirmation(this) {
+    private fun showDeleteDialog(
+        category: Category
+    ) {
+
+        DialogUtils.showDeleteConfirmation(
+            this
+        ) {
+
             lifecycleScope.launch {
+
                 viewModel.delete(category)
+
                 resetUiState()
             }
         }
