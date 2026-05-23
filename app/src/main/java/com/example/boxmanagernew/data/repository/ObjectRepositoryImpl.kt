@@ -3,11 +3,12 @@ package com.example.boxmanagernew.data.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.example.boxmanagernew.data.local.dao.ObjectDao
+import com.example.boxmanagernew.data.local.dao.ObjectTypeDao
 import com.example.boxmanagernew.data.local.entity.ObjectEntity
 import com.example.boxmanagernew.data.local.entity.ObjectTypeEntity
-import com.example.boxmanagernew.data.local.dao.ObjectTypeDao
 import com.example.boxmanagernew.domain.model.Object
 import com.example.boxmanagernew.domain.model.ObjectWithType
+import com.example.boxmanagernew.domain.model.SearchResult
 import com.example.boxmanagernew.domain.repository.ObjectRepository
 
 class ObjectRepositoryImpl(
@@ -35,23 +36,6 @@ class ObjectRepositoryImpl(
             }
     }
 
-    suspend fun getObjectsByBoxSync(
-        boxId: Int
-    ): List<Object> {
-
-        return dao.getObjectsByBoxSync(boxId)
-            .map { entity ->
-
-                Object(
-                    id = entity.id,
-                    typeObjectId = entity.typeObjectId,
-                    boxId = entity.boxId,
-                    description = entity.description,
-                    quantity = entity.quantity
-                )
-            }
-    }
-
     override fun getObjectsWithType(
         boxId: Int
     ): LiveData<List<ObjectWithType>> {
@@ -72,6 +56,30 @@ class ObjectRepositoryImpl(
                         typeName = row.typeName
                     )
                 }
+            }
+    }
+
+    suspend fun searchObjects(
+        query: String
+    ): List<SearchResult> {
+
+        return dao.searchObjects(query)
+    }
+
+    suspend fun getObjectsByBoxSync(
+        boxId: Int
+    ): List<Object> {
+
+        return dao.getObjectsByBoxSync(boxId)
+            .map {
+
+                Object(
+                    id = it.id,
+                    typeObjectId = it.typeObjectId,
+                    boxId = it.boxId,
+                    description = it.description,
+                    quantity = it.quantity
+                )
             }
     }
 
@@ -214,7 +222,9 @@ class ObjectRepositoryImpl(
         boxId: Int
     ): Int {
 
-        return dao.countObjectsByBox(boxId)
+        return dao.countObjectsByBox(
+            boxId
+        )
     }
 
     private fun normalize(

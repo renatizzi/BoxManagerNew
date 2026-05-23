@@ -16,6 +16,7 @@ import com.example.boxmanagernew.ui.categories.CategoryViewModel
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.example.boxmanagernew.ui.main.BoxViewModel
+import com.example.boxmanagernew.ui.search.SearchResultActivity
 import com.example.boxmanagernew.ui.utility.UtilityActivity
 
 class DashboardActivity : BaseActivity() {
@@ -63,6 +64,8 @@ class DashboardActivity : BaseActivity() {
                 R.id.spinnerSearchScope
             )
 
+        spinner.setSelection(0)
+
         editSearch.setOnEditorActionListener {
                 _, actionId, _ ->
 
@@ -82,16 +85,20 @@ class DashboardActivity : BaseActivity() {
 
                     return@setOnEditorActionListener true
                 }
+
+                val selected =
+                    spinner.selectedItemPosition
+
                 editSearch.clearFocus()
 
                 hideKeyboard(editSearch)
 
                 editSearch.setText("")
-                when (
-                    spinner.selectedItemPosition
-                ) {
 
-                    // Tutto archivio (temporaneo)
+                spinner.setSelection(0)
+
+                when (selected) {
+
                     0 -> {
 
                         startActivity(
@@ -108,7 +115,6 @@ class DashboardActivity : BaseActivity() {
                         )
                     }
 
-                    // Contenitori
                     1 -> {
 
                         startActivity(
@@ -125,13 +131,22 @@ class DashboardActivity : BaseActivity() {
                         )
                     }
 
-                    // Oggetti
                     2 -> {
 
-                        // Placeholder
+                        startActivity(
+                            Intent(
+                                this,
+                                SearchResultActivity::class.java
+                            ).apply {
+
+                                putExtra(
+                                    "dashboardSearchQuery",
+                                    query
+                                )
+                            }
+                        )
                     }
 
-                    // Categorie
                     3 -> {
 
                         startActivity(
@@ -148,7 +163,6 @@ class DashboardActivity : BaseActivity() {
                         )
                     }
 
-                    // Posizione
                     4 -> {
 
                         startActivity(
