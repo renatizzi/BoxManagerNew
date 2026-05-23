@@ -9,6 +9,7 @@ import android.text.style.BackgroundColorSpan
 import android.text.style.StyleSpan
 import android.view.Gravity
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
@@ -23,9 +24,7 @@ import kotlinx.coroutines.launch
 
 class SearchResultActivity : BaseActivity() {
 
-    override fun onCreate(
-        savedInstanceState: Bundle?
-    ) {
+    override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
 
@@ -34,7 +33,6 @@ class SearchResultActivity : BaseActivity() {
         )
 
         setupEdgeToEdge()
-
         setupTopBar()
 
         setupPageHeader(
@@ -70,14 +68,13 @@ class SearchResultActivity : BaseActivity() {
                     db.objectTypeDao()
                 )
 
-            val results =
-                repo.searchObjects(query)
-                    .sortedBy {
-                        it.boxName.lowercase()
-                    }
-
-            results
-                .groupBy { it.boxId }
+            repo.searchObjects(query)
+                .sortedBy {
+                    it.boxName.lowercase()
+                }
+                .groupBy {
+                    it.boxId
+                }
                 .forEach { (_, items) ->
 
                     addGroup(
@@ -97,8 +94,7 @@ class SearchResultActivity : BaseActivity() {
         db: com.example.boxmanagernew.data.local.AppDatabase
     ) {
 
-        val first =
-            items.first()
+        val first = items.first()
 
         val category =
             db.categoryDao()
@@ -119,12 +115,7 @@ class SearchResultActivity : BaseActivity() {
                 orientation =
                     LinearLayout.VERTICAL
 
-                setPadding(
-                    28,
-                    28,
-                    28,
-                    28
-                )
+                setPadding(24,24,24,24)
             }
 
         val top =
@@ -146,9 +137,7 @@ class SearchResultActivity : BaseActivity() {
                     )
 
                 s.setSpan(
-                    StyleSpan(
-                        Typeface.BOLD
-                    ),
+                    StyleSpan(Typeface.BOLD),
                     2,
                     s.length,
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -165,11 +154,32 @@ class SearchResultActivity : BaseActivity() {
             }
 
         val toggle =
-            TextView(this).apply {
+            FrameLayout(this).apply {
 
-                text = "˄"
+                layoutParams =
+                    LinearLayout.LayoutParams(
+                        96,
+                        96
+                    )
 
-                textSize = 22f
+                foreground =
+                    getDrawable(
+                        android.R.drawable.list_selector_background
+                    )
+
+                addView(
+                    TextView(context).apply {
+
+                        text = "˄"
+                        textSize = 22f
+                        gravity =
+                            Gravity.CENTER
+                    },
+                    FrameLayout.LayoutParams(
+                        FrameLayout.LayoutParams.MATCH_PARENT,
+                        FrameLayout.LayoutParams.MATCH_PARENT
+                    )
+                )
             }
 
         top.addView(title)
@@ -181,7 +191,6 @@ class SearchResultActivity : BaseActivity() {
 
             body.addView(
                 TextView(this).apply {
-
                     text = it
                 }
             )
@@ -201,10 +210,7 @@ class SearchResultActivity : BaseActivity() {
 
             categoryView
                 .setCompoundDrawablesWithIntrinsicBounds(
-                    iconRes,
-                    0,
-                    0,
-                    0
+                    iconRes,0,0,0
                 )
         }
 
@@ -230,18 +236,22 @@ class SearchResultActivity : BaseActivity() {
 
         toggle.setOnClickListener {
 
+            val text =
+                toggle.getChildAt(0)
+                        as TextView
+
             objects.visibility =
                 if (
                     objects.visibility ==
                     View.VISIBLE
                 ) {
 
-                    toggle.text = "˅"
+                    text.text = "˅"
                     View.GONE
 
                 } else {
 
-                    toggle.text = "˄"
+                    text.text = "˄"
                     View.VISIBLE
                 }
         }
@@ -270,23 +280,57 @@ class SearchResultActivity : BaseActivity() {
 
         return CardView(this).apply {
 
+            radius = 12f
             useCompatPadding = true
 
-            val body =
+            val root =
+                LinearLayout(context).apply {
+
+                    orientation =
+                        LinearLayout.HORIZONTAL
+
+                    gravity =
+                        Gravity.CENTER_VERTICAL
+
+                    setPadding(
+                        20,20,20,20
+                    )
+                }
+
+            val icon =
+                FrameLayout(context).apply {
+
+                    addView(
+                        TextView(context).apply {
+
+                            text = "🧱"
+                            textSize = 18f
+                            gravity =
+                                Gravity.CENTER
+                        }
+                    )
+
+                    layoutParams =
+                        LinearLayout.LayoutParams(
+                            64,64
+                        )
+                }
+
+            val content =
                 LinearLayout(context).apply {
 
                     orientation =
                         LinearLayout.VERTICAL
 
-                    setPadding(
-                        24,
-                        24,
-                        24,
-                        24
-                    )
+                    layoutParams =
+                        LinearLayout.LayoutParams(
+                            0,
+                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                            1f
+                        )
                 }
 
-            body.addView(
+            content.addView(
                 TextView(context).apply {
 
                     text =
@@ -294,12 +338,17 @@ class SearchResultActivity : BaseActivity() {
                             item.objectName,
                             query
                         )
+
+                    setTypeface(
+                        null,
+                        Typeface.BOLD
+                    )
                 }
             )
 
             item.description?.let {
 
-                body.addView(
+                content.addView(
                     TextView(context).apply {
 
                         text =
@@ -307,22 +356,37 @@ class SearchResultActivity : BaseActivity() {
                                 it,
                                 query
                             )
+
+                        textSize = 11f
                     }
                 )
             }
 
             item.quantity?.let {
 
-                body.addView(
+                content.addView(
                     TextView(context).apply {
 
                         text =
                             "Quantità: $it"
+
+                        textSize = 11f
                     }
                 )
             }
 
-            addView(body)
+            val menu =
+                TextView(context).apply {
+
+                    text = "⋮"
+                    textSize = 18f
+                }
+
+            root.addView(icon)
+            root.addView(content)
+            root.addView(menu)
+
+            addView(root)
         }
     }
 
