@@ -42,7 +42,7 @@ class SearchResultActivity : BaseActivity() {
 
         BottomNavManager.setup(
             this,
-            BottomNavManager.TAB_DASHBOARD
+            BottomNavManager.TAB_BOXES
         )
 
         val query =
@@ -104,28 +104,20 @@ class SearchResultActivity : BaseActivity() {
 
         val card =
             CardView(this).apply {
-
                 radius = 18f
                 useCompatPadding = true
             }
 
         val body =
             LinearLayout(this).apply {
-
-                orientation =
-                    LinearLayout.VERTICAL
-
+                orientation = LinearLayout.VERTICAL
                 setPadding(24,24,24,24)
             }
 
         val top =
             LinearLayout(this).apply {
-
-                orientation =
-                    LinearLayout.HORIZONTAL
-
-                gravity =
-                    Gravity.CENTER_VERTICAL
+                orientation = LinearLayout.HORIZONTAL
+                gravity = Gravity.CENTER_VERTICAL
             }
 
         val title =
@@ -172,8 +164,7 @@ class SearchResultActivity : BaseActivity() {
 
                         text = "˄"
                         textSize = 22f
-                        gravity =
-                            Gravity.CENTER
+                        gravity = Gravity.CENTER
                     },
                     FrameLayout.LayoutParams(
                         FrameLayout.LayoutParams.MATCH_PARENT,
@@ -221,15 +212,12 @@ class SearchResultActivity : BaseActivity() {
 
         body.addView(
             TextView(this).apply {
-
-                text =
-                    "📍 ${first.boxPosition}"
+                text = "📍 ${first.boxPosition}"
             }
         )
 
         val objects =
             LinearLayout(this).apply {
-
                 orientation =
                     LinearLayout.VERTICAL
             }
@@ -241,10 +229,7 @@ class SearchResultActivity : BaseActivity() {
                         as TextView
 
             objects.visibility =
-                if (
-                    objects.visibility ==
-                    View.VISIBLE
-                ) {
+                if (objects.visibility == View.VISIBLE) {
 
                     text.text = "˅"
                     View.GONE
@@ -346,45 +331,8 @@ class SearchResultActivity : BaseActivity() {
                 }
             )
 
-            item.description?.let {
-
-                content.addView(
-                    TextView(context).apply {
-
-                        text =
-                            highlight(
-                                it,
-                                query
-                            )
-
-                        textSize = 11f
-                    }
-                )
-            }
-
-            item.quantity?.let {
-
-                content.addView(
-                    TextView(context).apply {
-
-                        text =
-                            "Quantità: $it"
-
-                        textSize = 11f
-                    }
-                )
-            }
-
-            val menu =
-                TextView(context).apply {
-
-                    text = "⋮"
-                    textSize = 18f
-                }
-
             root.addView(icon)
             root.addView(content)
-            root.addView(menu)
 
             addView(root)
         }
@@ -404,9 +352,8 @@ class SearchResultActivity : BaseActivity() {
         val t =
             text.lowercase()
 
-        if (
-            q.length < 3
-        ) return result
+        if (q.length < 3)
+            return result
 
         val exact =
             t.indexOf(q)
@@ -427,23 +374,20 @@ class SearchResultActivity : BaseActivity() {
 
         var common = 0
 
-        val max =
+        while (
+            common <
             minOf(
                 q.length,
                 t.length
-            )
-
-        while (
-            common < max &&
-            q[common] == t[common]
+            ) &&
+            q[common] ==
+            t[common]
         ) {
 
             common++
         }
 
-        if (
-            common >= 3
-        ) {
+        if (common >= 3) {
 
             result.setSpan(
                 BackgroundColorSpan(
