@@ -25,147 +25,308 @@ class ObjectAdapter(
 ) : RecyclerView.Adapter<ObjectAdapter.ObjectViewHolder>() {
 
     private var selectedIds: Set<Int> = emptySet()
-    private var selectionMode: Boolean = false
-    private var isFilterActive: Boolean = false
-    private var currentQuery: String = ""
+    private var selectionMode = false
+    private var isFilterActive = false
+    private var currentQuery = ""
 
-    inner class ObjectViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val rootSelectable: View = itemView.findViewById(R.id.rootSelectable)
-        val iconArea: FrameLayout = itemView.findViewById(R.id.iconArea)
-        val contentArea: View = itemView.findViewById(R.id.contentArea)
-        val textName: TextView = itemView.findViewById(R.id.textName)
-        val textDescription: TextView = itemView.findViewById(R.id.textDescription)
-        val textQuantity: TextView = itemView.findViewById(R.id.textQuantity)
-        val textMenu: TextView = itemView.findViewById(R.id.textMenu)
+    inner class ObjectViewHolder(
+        itemView: View
+    ) : RecyclerView.ViewHolder(itemView) {
+
+        val rootSelectable: View =
+            itemView.findViewById(
+                R.id.rootSelectable
+            )
+
+        val iconArea: FrameLayout =
+            itemView.findViewById(
+                R.id.iconArea
+            )
+
+        val contentArea: View =
+            itemView.findViewById(
+                R.id.contentArea
+            )
+
+        val textName: TextView =
+            itemView.findViewById(
+                R.id.textName
+            )
+
+        val textDescription: TextView =
+            itemView.findViewById(
+                R.id.textDescription
+            )
+
+        val textQuantity: TextView =
+            itemView.findViewById(
+                R.id.textQuantity
+            )
+
+        val textMenu: TextView =
+            itemView.findViewById(
+                R.id.textMenu
+            )
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ObjectViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_object, parent, false)
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): ObjectViewHolder {
+
+        val view =
+            LayoutInflater.from(
+                parent.context
+            ).inflate(
+                R.layout.item_object,
+                parent,
+                false
+            )
+
         return ObjectViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ObjectViewHolder, position: Int) {
-        val item = items[position]
-        val id = item.obj.id
+    override fun onBindViewHolder(
+        holder: ObjectViewHolder,
+        position: Int
+    ) {
 
-        holder.textName.text = highlight(item.typeName)
+        val item =
+            items[position]
 
-        if (item.obj.description.isNullOrEmpty()) {
-            holder.textDescription.visibility = View.GONE
+        val id =
+            item.obj.id
+
+        holder.textName.text =
+            highlight(item.typeName)
+
+        if (
+            item.obj.description
+                .isNullOrEmpty()
+        ) {
+
+            holder.textDescription.visibility =
+                View.GONE
+
         } else {
-            holder.textDescription.visibility = View.VISIBLE
-            holder.textDescription.text = highlight(item.obj.description ?: "")
-            holder.textDescription.maxLines = if (isFilterActive) 2 else 1
+
+            holder.textDescription.visibility =
+                View.VISIBLE
+
+            holder.textDescription.text =
+                highlight(
+                    item.obj.description ?: ""
+                )
+
+            holder.textDescription.maxLines =
+                if (isFilterActive) 2
+                else 1
         }
 
-        if (item.obj.quantity == null) {
-            holder.textQuantity.visibility = View.GONE
+        if (
+            item.obj.quantity == null
+        ) {
+
+            holder.textQuantity.visibility =
+                View.GONE
+
         } else {
-            holder.textQuantity.visibility = View.VISIBLE
-            holder.textQuantity.text = "Quantità: ${item.obj.quantity}"
+
+            holder.textQuantity.visibility =
+                View.VISIBLE
+
+            holder.textQuantity.text =
+                "Quantità: ${item.obj.quantity}"
         }
 
-        val isSelected = selectedIds.contains(id)
-        holder.rootSelectable.isSelected = isSelected
+        val isSelected =
+            selectedIds.contains(id)
 
-        val selectedCount = selectedIds.size
+        holder.rootSelectable.isSelected =
+            isSelected
 
-        holder.textMenu.visibility = when {
-            selectedCount == 0 -> View.VISIBLE
-            selectedCount == 1 && isSelected -> View.VISIBLE
-            else -> View.GONE
-        }
+        val selectedCount =
+            selectedIds.size
 
-        holder.contentArea.setOnClickListener {
-            onToggleSelection(id)
-        }
+        holder.textMenu.visibility =
+            when {
 
-        holder.textMenu.setOnClickListener { view ->
-            val popup = PopupMenu(view.context, view)
+                selectedCount == 0 ->
+                    View.VISIBLE
 
-            popup.menu.add("Modifica")
-            popup.menu.add("Sposta")
-            popup.menu.add("Elimina")
+                selectedCount == 1 &&
+                        isSelected ->
+                    View.VISIBLE
 
-            popup.setOnMenuItemClickListener {
-                when (it.title) {
-                    "Modifica" -> onEdit(id)
-                    "Sposta" -> onMove(id)
-                    "Elimina" -> onDelete(id)
-                }
-                true
+                else ->
+                    View.GONE
             }
 
-            popup.show()
-        }
+        holder.contentArea
+            .setOnClickListener {
+
+                onToggleSelection(id)
+            }
+
+        holder.textMenu
+            .setOnClickListener { view ->
+
+                val popup =
+                    PopupMenu(
+                        view.context,
+                        view
+                    )
+
+                popup.menu.add("Modifica")
+                popup.menu.add("Sposta")
+                popup.menu.add("Elimina")
+
+                popup.setOnMenuItemClickListener {
+
+                    when (it.title) {
+
+                        "Modifica" ->
+                            onEdit(id)
+
+                        "Sposta" ->
+                            onMove(id)
+
+                        "Elimina" ->
+                            onDelete(id)
+                    }
+
+                    true
+                }
+
+                popup.show()
+            }
     }
 
-    override fun getItemCount(): Int = items.size
+    override fun getItemCount() =
+        items.size
 
-    fun updateData(newItems: List<ObjectWithType>) {
-        val diffCallback = ObjectDiffCallback(items, newItems)
-        val diffResult = DiffUtil.calculateDiff(diffCallback)
+    fun updateData(
+        newItems: List<ObjectWithType>
+    ) {
 
-        items = newItems
-        diffResult.dispatchUpdatesTo(this)
-    }
-
-    fun updateSelection(selectedIds: Set<Int>, selectionMode: Boolean) {
-        this.selectedIds = selectedIds
-        this.selectionMode = selectionMode
-        notifyDataSetChanged()
-    }
-
-    fun updateFilterState(isFilterActive: Boolean) {
-        this.isFilterActive = isFilterActive
-        notifyDataSetChanged()
-    }
-
-    fun updateQuery(query: String) {
-        currentQuery = query
-        notifyDataSetChanged()
-    }
-
-    private fun highlight(text: String): SpannableString {
-        if (currentQuery.length < 3) return SpannableString(text)
-
-        val lowerText = text.lowercase()
-        val lowerQuery = currentQuery.lowercase()
-
-        val start = lowerText.indexOf(lowerQuery)
-        if (start < 0) return SpannableString(text)
-
-        val end = start + lowerQuery.length
-
-        return SpannableString(text).apply {
-            setSpan(
-                BackgroundColorSpan(Color.YELLOW),
-                start,
-                end,
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        val diff =
+            DiffUtil.calculateDiff(
+                ObjectDiffCallback(
+                    items,
+                    newItems
+                )
             )
+
+        items =
+            newItems
+
+        diff.dispatchUpdatesTo(this)
+    }
+
+    fun updateSelection(
+        selectedIds: Set<Int>,
+        selectionMode: Boolean
+    ) {
+
+        this.selectedIds =
+            selectedIds
+
+        this.selectionMode =
+            selectionMode
+
+        notifyDataSetChanged()
+    }
+
+    fun updateFilterState(
+        active: Boolean
+    ) {
+
+        isFilterActive =
+            active
+
+        notifyDataSetChanged()
+    }
+
+    fun updateQuery(
+        query: String
+    ) {
+
+        currentQuery =
+            query
+
+        notifyDataSetChanged()
+    }
+
+    private fun highlight(
+        text: String
+    ): SpannableString {
+
+        val result =
+            SpannableString(text)
+
+        val tokens =
+            currentQuery
+                .lowercase()
+                .split("\\s+".toRegex())
+                .filter {
+                    it.length >= 3
+                }
+
+        val target =
+            text.lowercase()
+
+        tokens.forEach { token ->
+
+            val start =
+                target.indexOf(token)
+
+            if (start >= 0) {
+
+                result.setSpan(
+                    BackgroundColorSpan(
+                        Color.YELLOW
+                    ),
+                    start,
+                    start + token.length,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+            }
         }
+
+        return result
     }
 
     class ObjectDiffCallback(
-        private val oldList: List<ObjectWithType>,
-        private val newList: List<ObjectWithType>
+        private val oldList:
+        List<ObjectWithType>,
+
+        private val newList:
+        List<ObjectWithType>
+
     ) : DiffUtil.Callback() {
 
-        override fun getOldListSize(): Int = oldList.size
-        override fun getNewListSize(): Int = newList.size
+        override fun getOldListSize() =
+            oldList.size
 
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldList[oldItemPosition].obj.id == newList[newItemPosition].obj.id
-        }
+        override fun getNewListSize() =
+            newList.size
 
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            val oldItem = oldList[oldItemPosition]
-            val newItem = newList[newItemPosition]
+        override fun areItemsTheSame(
+            oldPos: Int,
+            newPos: Int
+        ) =
+            oldList[oldPos]
+                .obj.id ==
+                    newList[newPos]
+                        .obj.id
 
-            return oldItem.obj == newItem.obj &&
-                    oldItem.typeName == newItem.typeName
+        override fun areContentsTheSame(
+            oldPos: Int,
+            newPos: Int
+        ): Boolean {
+
+            return oldList[oldPos] ==
+                    newList[newPos]
         }
     }
 }

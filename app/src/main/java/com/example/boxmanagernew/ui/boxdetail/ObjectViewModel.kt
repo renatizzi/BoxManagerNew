@@ -48,7 +48,7 @@ class ObjectViewModel(
     }
 
     fun filter(query: String) {
-        currentQuery = query
+        currentQuery = query.trim()
         applyFilterAndSort()
     }
 
@@ -58,19 +58,45 @@ class ObjectViewModel(
     }
 
     private fun applyFilterAndSort() {
+
         var result = lastSource
 
         if (currentQuery.isNotBlank()) {
-            result = result.filter {
-                it.typeName.contains(currentQuery, true) ||
-                        (it.obj.description?.contains(currentQuery, true) == true)
-            }
+
+            val words =
+                currentQuery
+                    .lowercase()
+                    .split("\\s+".toRegex())
+                    .filter { it.isNotBlank() }
+
+            result =
+                result.filter { item ->
+
+                    val searchable =
+                        buildString {
+
+                            append(item.typeName)
+                            append(" ")
+
+                            item.obj.description?.let {
+                                append(it)
+                            }
+                        }.lowercase()
+
+                    words.all {
+                        searchable.contains(it)
+                    }
+                }
         }
 
-        val asc = _isAscending.value ?: true
+        val asc =
+            _isAscending.value ?: true
 
-        result = if (asc) result.sortedBy { it.typeName }
-        else result.sortedByDescending { it.typeName }
+        result =
+            if (asc)
+                result.sortedBy { it.typeName }
+            else
+                result.sortedByDescending { it.typeName }
 
         lastFiltered = result
         _objects.value = result
@@ -79,70 +105,152 @@ class ObjectViewModel(
     }
 
     private fun updateHiddenSelectionState() {
-        val selected = _selectedItems.value ?: emptySet()
+
+        val selected =
+            _selectedItems.value
+                ?: emptySet()
+
         if (selected.isEmpty()) {
-            _hasHiddenSelections.value = false
+
+            _hasHiddenSelections.value =
+                false
+
             return
         }
 
-        val visibleIds = lastFiltered.map { it.obj.id }.toSet()
-        val hidden = selected.any { it !in visibleIds }
+        val visibleIds =
+            lastFiltered
+                .map { it.obj.id }
+                .toSet()
 
-        _hasHiddenSelections.value = hidden
+        _hasHiddenSelections.value =
+            selected.any {
+                it !in visibleIds
+            }
     }
 
     fun toggleSelection(id: Int) {
-        val current = _selectedItems.value ?: emptySet()
-        val updated = current.toMutableSet()
 
-        if (updated.contains(id)) updated.remove(id)
-        else updated.add(id)
+        val current =
+            _selectedItems.value
+                ?: emptySet()
 
-        _selectedItems.value = updated
-        _selectionMode.value = updated.isNotEmpty()
+        val updated =
+            current.toMutableSet()
+
+        if (updated.contains(id))
+            updated.remove(id)
+        else
+            updated.add(id)
+
+        _selectedItems.value =
+            updated
+
+        _selectionMode.value =
+            updated.isNotEmpty()
     }
 
     fun clearSelection() {
-        _selectedItems.value = emptySet()
-        _selectionMode.value = false
+
+        _selectedItems.value =
+            emptySet()
+
+        _selectionMode.value =
+            false
     }
 
     fun deleteObjects(ids: List<Int>) {
+
         viewModelScope.launch {
+
             lastSource.forEach {
-                if (ids.contains(it.obj.id)) repository.delete(it.obj)
+
+                if (
+                    ids.contains(it.obj.id)
+                ) {
+
+                    repository.delete(
+                        it.obj
+                    )
+                }
             }
+
             clearSelection()
         }
     }
 
-    // 🔴 NUOVO: MOVE OBJECTS
-    fun moveObjects(targetBoxId: Int) {
-        val ids = _selectedItems.value?.toList() ?: return
-        if (ids.isEmpty()) return
+    fun moveObjects(
+        targetBoxId: Int
+    ) {
+
+        val ids =
+            _selectedItems.value
+                ?.toList()
+                ?: return
+
+        if (ids.isEmpty())
+            return
 
         viewModelScope.launch {
-            repository.moveObjects(ids, targetBoxId)
+
+            repository.moveObjects(
+                ids,
+                targetBoxId
+            )
+
             clearSelection()
         }
     }
 
-    fun addObject(name: String, boxId: Int, description: String?, quantity: Int?) {
-        if (name.isBlank()) return
+    fun addObject(
+        name: String,
+        boxId: Int,
+        description: String?,
+        quantity: Int?
+    ) {
+
+        if (name.isBlank())
+            return
+
         viewModelScope.launch {
-            repository.insertDynamic(name, boxId, description, quantity)
+
+            repository.insertDynamic(
+                name,
+                boxId,
+                description,
+                quantity
+            )
         }
     }
 
-    fun updateObjectWithName(id: Int, name: String, boxId: Int, description: String?, quantity: Int?) {
+    fun updateObjectWithName(
+        id: Int,
+        name: String,
+        boxId: Int,
+        description: String?,
+        quantity: Int?
+    ) {
+
         viewModelScope.launch {
-            repository.updateWithName(id, name, boxId, description, quantity)
+
+            repository.updateWithName(
+                id,
+                name,
+                boxId,
+                description,
+                quantity
+            )
         }
     }
 
-    fun deleteObject(obj: Object) {
+    fun deleteObject(
+        obj: Object
+    ) {
+
         viewModelScope.launch {
+
             repository.delete(obj)
+
             clearSelection()
         }
     }

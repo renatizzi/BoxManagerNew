@@ -28,9 +28,7 @@ class SearchResultActivity : BaseActivity() {
 
         super.onCreate(savedInstanceState)
 
-        setContentView(
-            R.layout.activity_search_result
-        )
+        setContentView(R.layout.activity_search_result)
 
         setupEdgeToEdge()
         setupTopBar()
@@ -110,14 +108,23 @@ class SearchResultActivity : BaseActivity() {
 
         val body =
             LinearLayout(this).apply {
-                orientation = LinearLayout.VERTICAL
-                setPadding(24,24,24,24)
+
+                orientation =
+                    LinearLayout.VERTICAL
+
+                setPadding(
+                    24,24,24,24
+                )
             }
 
         val top =
             LinearLayout(this).apply {
-                orientation = LinearLayout.HORIZONTAL
-                gravity = Gravity.CENTER_VERTICAL
+
+                orientation =
+                    LinearLayout.HORIZONTAL
+
+                gravity =
+                    Gravity.CENTER_VERTICAL
             }
 
         val title =
@@ -154,22 +161,14 @@ class SearchResultActivity : BaseActivity() {
                         96
                     )
 
-                foreground =
-                    getDrawable(
-                        android.R.drawable.list_selector_background
-                    )
-
                 addView(
                     TextView(context).apply {
 
                         text = "˄"
                         textSize = 22f
-                        gravity = Gravity.CENTER
-                    },
-                    FrameLayout.LayoutParams(
-                        FrameLayout.LayoutParams.MATCH_PARENT,
-                        FrameLayout.LayoutParams.MATCH_PARENT
-                    )
+                        gravity =
+                            Gravity.CENTER
+                    }
                 )
             }
 
@@ -177,15 +176,6 @@ class SearchResultActivity : BaseActivity() {
         top.addView(toggle)
 
         body.addView(top)
-
-        first.boxDescription?.let {
-
-            body.addView(
-                TextView(this).apply {
-                    text = it
-                }
-            )
-        }
 
         val categoryView =
             TextView(this)
@@ -201,7 +191,10 @@ class SearchResultActivity : BaseActivity() {
 
             categoryView
                 .setCompoundDrawablesWithIntrinsicBounds(
-                    iconRes,0,0,0
+                    iconRes,
+                    0,
+                    0,
+                    0
                 )
         }
 
@@ -211,13 +204,17 @@ class SearchResultActivity : BaseActivity() {
         body.addView(categoryView)
 
         body.addView(
+
             TextView(this).apply {
-                text = "📍 ${first.boxPosition}"
+
+                text =
+                    "📍 ${first.boxPosition}"
             }
         )
 
         val objects =
             LinearLayout(this).apply {
+
                 orientation =
                     LinearLayout.VERTICAL
             }
@@ -229,7 +226,11 @@ class SearchResultActivity : BaseActivity() {
                         as TextView
 
             objects.visibility =
-                if (objects.visibility == View.VISIBLE) {
+
+                if (
+                    objects.visibility ==
+                    View.VISIBLE
+                ) {
 
                     text.text = "˅"
                     View.GONE
@@ -278,7 +279,10 @@ class SearchResultActivity : BaseActivity() {
                         Gravity.CENTER_VERTICAL
 
                     setPadding(
-                        20,20,20,20
+                        20,
+                        20,
+                        20,
+                        20
                     )
                 }
 
@@ -290,14 +294,13 @@ class SearchResultActivity : BaseActivity() {
 
                             text = "🧱"
                             textSize = 18f
-                            gravity =
-                                Gravity.CENTER
                         }
                     )
 
                     layoutParams =
                         LinearLayout.LayoutParams(
-                            64,64
+                            64,
+                            64
                         )
                 }
 
@@ -316,6 +319,7 @@ class SearchResultActivity : BaseActivity() {
                 }
 
             content.addView(
+
                 TextView(context).apply {
 
                     text =
@@ -324,10 +328,44 @@ class SearchResultActivity : BaseActivity() {
                             query
                         )
 
+                    textSize = 16f
+
                     setTypeface(
                         null,
                         Typeface.BOLD
                     )
+                }
+            )
+
+            content.addView(
+
+                TextView(context).apply {
+
+                    text =
+                        if (
+                            item.description
+                                .isNullOrBlank()
+                        ) "-"
+                        else
+                            highlight(
+                                item.description,
+                                query
+                            )
+
+                    textSize = 13f
+                    alpha = 0.65f
+                }
+            )
+
+            content.addView(
+
+                TextView(context).apply {
+
+                    text =
+                        "Quantità: ${item.quantity ?: "-"}"
+
+                    textSize = 13f
+                    alpha = 0.65f
                 }
             )
 
@@ -346,57 +384,32 @@ class SearchResultActivity : BaseActivity() {
         val result =
             SpannableString(text)
 
-        val q =
-            query.trim().lowercase()
+        val tokens =
+            query.lowercase()
+                .split("\\s+".toRegex())
+                .filter {
+                    it.length >= 3
+                }
 
-        val t =
+        val target =
             text.lowercase()
 
-        if (q.length < 3)
-            return result
+        tokens.forEach {
 
-        val exact =
-            t.indexOf(q)
+            val start =
+                target.indexOf(it)
 
-        if (exact >= 0) {
+            if (start >= 0) {
 
-            result.setSpan(
-                BackgroundColorSpan(
-                    Color.YELLOW
-                ),
-                exact,
-                exact + q.length,
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
-
-            return result
-        }
-
-        var common = 0
-
-        while (
-            common <
-            minOf(
-                q.length,
-                t.length
-            ) &&
-            q[common] ==
-            t[common]
-        ) {
-
-            common++
-        }
-
-        if (common >= 3) {
-
-            result.setSpan(
-                BackgroundColorSpan(
-                    Color.YELLOW
-                ),
-                0,
-                common,
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
+                result.setSpan(
+                    BackgroundColorSpan(
+                        Color.YELLOW
+                    ),
+                    start,
+                    start + it.length,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+            }
         }
 
         return result

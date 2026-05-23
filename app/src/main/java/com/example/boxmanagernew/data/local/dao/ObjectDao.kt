@@ -1,11 +1,7 @@
 package com.example.boxmanagernew.data.local.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import com.example.boxmanagernew.data.local.entity.ObjectEntity
 import com.example.boxmanagernew.domain.model.SearchResult
 
@@ -60,38 +56,17 @@ interface ObjectDao {
             b.position AS boxPosition,
             c.name AS categoryName,
             NULL AS boxDescription
+
         FROM objects o
+
         INNER JOIN object_types t
             ON t.id = o.typeObjectId
+
         INNER JOIN box b
             ON b.id = o.boxId
+
         LEFT JOIN categories c
             ON c.id = b.categoryId
-        WHERE (
-
-            LOWER(t.name)
-            LIKE '%' || LOWER(:query) || '%'
-
-            OR
-
-            LOWER(t.name)
-            LIKE '%' || LOWER(:altQuery) || '%'
-
-            OR
-
-            LOWER(t.name)
-            LIKE '%' || LOWER(:altQuery2) || '%'
-        )
-
-        OR
-
-        LOWER(
-            IFNULL(
-                o.description,
-                ''
-            )
-        )
-        LIKE '%' || LOWER(:query) || '%'
 
         ORDER BY
             b.name ASC,
@@ -99,9 +74,6 @@ interface ObjectDao {
         """
     )
     suspend fun searchObjects(
-        query: String,
-        altQuery: String,
-        altQuery2: String
     ): List<SearchResult>
 
     @Query(

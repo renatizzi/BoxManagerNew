@@ -10,6 +10,7 @@ import com.example.boxmanagernew.domain.model.Object
 import com.example.boxmanagernew.domain.model.ObjectWithType
 import com.example.boxmanagernew.domain.model.SearchResult
 import com.example.boxmanagernew.domain.repository.ObjectRepository
+import java.text.Normalizer
 
 class ObjectRepositoryImpl(
     private val dao: ObjectDao,
@@ -21,6 +22,13 @@ class ObjectRepositoryImpl(
             "usb","hdmi","wifi","tv","pc","ssd","hdd",
             "bluetooth","ethernet","gps","dvd","ram",
             "cpu","gpu","lcd","oled"
+        )
+
+    private val ignoredWords =
+        setOf(
+            "a","ad","da","di","del","della",
+            "dello","dei","degli","con",
+            "per","in","su","al","alla"
         )
 
     override fun getObjectsByBox(
@@ -53,17 +61,14 @@ class ObjectRepositoryImpl(
                 rows.map {
 
                     ObjectWithType(
-                        obj =
-                            Object(
-                                it.id,
-                                it.typeObjectId,
-                                it.boxId,
-                                it.description,
-                                it.quantity
-                            ),
-
-                        typeName =
-                            it.typeName
+                        Object(
+                            it.id,
+                            it.typeObjectId,
+                            it.boxId,
+                            it.description,
+                            it.quantity
+                        ),
+                        it.typeName
                     )
                 }
             }
@@ -73,20 +78,72 @@ class ObjectRepositoryImpl(
         query: String
     ): List<SearchResult> {
 
-        val q =
-            query.trim().lowercase()
+        val tokens =
+            normalize(query)
+                .split(" ")
+                .filter {
+                    it.isNotBlank() &&
+                            it !in ignoredWords
+                }
 
-        val alt1 =
-            singularPluralVariant(q)
+        if (tokens.isEmpty())
+            return emptyList()
 
-        val alt2 =
-            irregularVariant(q)
+        return dao.searchObjects()
+            .filter { row ->
 
-        return dao.searchObjects(
-            q,
-            alt1,
-            alt2
-        )
+                val searchable =
+                    normalize(
+                        buildString {
+
+                            append(row.objectName)
+                            append(" ")
+                            append(
+                                row.description ?: ""
+                            )
+                        }
+                    )
+
+                tokens.all {
+
+                    val singular =
+                        singularPluralVariant(it)
+
+                    val irregular =
+                        irregularVariant(it)
+
+                    searchable.contains(it) ||
+                            searchable.contains(singular) ||
+                            searchable.contains(irregular)
+                }
+            }
+    }
+
+    private fun normalize(
+        value: String
+    ): String {
+
+        return Normalizer
+            .normalize(
+                value.lowercase().trim(),
+                Normalizer.Form.NFD
+            )
+            .replace(
+                "\\p{InCombiningDiacriticalMarks}+"
+                    .toRegex(),
+                ""
+            )
+            .replace(
+                "[^a-z0-9 ]"
+                    .toRegex(),
+                " "
+            )
+            .replace(
+                "\\s+"
+                    .toRegex(),
+                " "
+            )
+            .trim()
     }
 
     private fun singularPluralVariant(
@@ -101,25 +158,24 @@ class ObjectRepositoryImpl(
         return when {
 
             value.endsWith("a") ->
-                value.dropLast(1) + "e"
+                value.dropLast(1)+"e"
 
             value.endsWith("e") ->
-                value.dropLast(1) + "i"
+                value.dropLast(1)+"i"
 
             value.endsWith("o") ->
-                value.dropLast(1) + "i"
+                value.dropLast(1)+"i"
 
             value.endsWith("i") ->
-                value.dropLast(1) + "e"
+                value.dropLast(1)+"e"
 
-            else ->
-                value
+            else -> value
         }
     }
 
     private fun irregularVariant(
-        value: String
-    ): String {
+        value:String
+    ):String{
 
         return when(value){
 
@@ -137,28 +193,29 @@ class ObjectRepositoryImpl(
     }
 
     suspend fun getObjectsByBoxSync(
-        boxId: Int
-    ): List<Object> {
+        boxId:Int
+    ):List<Object>{
 
-        return dao.getObjectsByBoxSync(boxId)
-            .map {
+        return dao.getObjectsByBoxSync(
+            boxId
+        ).map {
 
-                Object(
-                    it.id,
-                    it.typeObjectId,
-                    it.boxId,
-                    it.description,
-                    it.quantity
-                )
-            }
+            Object(
+                it.id,
+                it.typeObjectId,
+                it.boxId,
+                it.description,
+                it.quantity
+            )
+        }
     }
 
     suspend fun insertDynamic(
-        name: String,
-        boxId: Int,
-        description: String?,
-        quantity: Int?
-    ) {
+        name:String,
+        boxId:Int,
+        description:String?,
+        quantity:Int?
+    ){
 
         val normalized =
             normalize(name)
@@ -166,11 +223,11 @@ class ObjectRepositoryImpl(
         var type =
             typeDao.getByName(normalized)
 
-        if (type == null) {
+        if(type==null){
 
             typeDao.insert(
                 ObjectTypeEntity(
-                    name = normalized
+                    name=normalized
                 )
             )
 
@@ -248,14 +305,5 @@ class ObjectRepositoryImpl(
         return dao.countObjectsByBox(
             boxId
         )
-    }
-
-    private fun normalize(
-        input:String
-    ):String{
-
-        return input
-            .trim()
-            .lowercase()
     }
 }
