@@ -395,31 +395,66 @@ class SearchResultActivity : BaseActivity() {
         query: String
     ): SpannableString {
 
-        if (
-            query.length < 3
-        ) return SpannableString(text)
+        val result =
+            SpannableString(text)
 
-        val start =
+        val q =
+            query.trim().lowercase()
+
+        val t =
             text.lowercase()
-                .indexOf(
-                    query.lowercase()
-                )
 
         if (
-            start < 0
-        ) return SpannableString(text)
+            q.length < 3
+        ) return result
 
-        return SpannableString(text)
-            .apply {
+        val exact =
+            t.indexOf(q)
 
-                setSpan(
-                    BackgroundColorSpan(
-                        Color.YELLOW
-                    ),
-                    start,
-                    start + query.length,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
-            }
+        if (exact >= 0) {
+
+            result.setSpan(
+                BackgroundColorSpan(
+                    Color.YELLOW
+                ),
+                exact,
+                exact + q.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+
+            return result
+        }
+
+        var common = 0
+
+        val max =
+            minOf(
+                q.length,
+                t.length
+            )
+
+        while (
+            common < max &&
+            q[common] == t[common]
+        ) {
+
+            common++
+        }
+
+        if (
+            common >= 3
+        ) {
+
+            result.setSpan(
+                BackgroundColorSpan(
+                    Color.YELLOW
+                ),
+                0,
+                common,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        }
+
+        return result
     }
 }

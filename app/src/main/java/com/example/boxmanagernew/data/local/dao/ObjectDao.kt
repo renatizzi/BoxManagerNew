@@ -32,7 +32,7 @@ interface ObjectDao {
 
     @Query(
         """
-        SELECT 
+        SELECT
             o.id,
             o.typeObjectId,
             o.boxId,
@@ -67,16 +67,41 @@ interface ObjectDao {
             ON b.id = o.boxId
         LEFT JOIN categories c
             ON c.id = b.categoryId
-        WHERE
-            LOWER(t.name) LIKE '%' || LOWER(:query) || '%'
-            OR LOWER(IFNULL(o.description,'')) LIKE '%' || LOWER(:query) || '%'
+        WHERE (
+
+            LOWER(t.name)
+            LIKE '%' || LOWER(:query) || '%'
+
+            OR
+
+            LOWER(t.name)
+            LIKE '%' || LOWER(:altQuery) || '%'
+
+            OR
+
+            LOWER(t.name)
+            LIKE '%' || LOWER(:altQuery2) || '%'
+        )
+
+        OR
+
+        LOWER(
+            IFNULL(
+                o.description,
+                ''
+            )
+        )
+        LIKE '%' || LOWER(:query) || '%'
+
         ORDER BY
             b.name ASC,
             t.name ASC
         """
     )
     suspend fun searchObjects(
-        query: String
+        query: String,
+        altQuery: String,
+        altQuery2: String
     ): List<SearchResult>
 
     @Query(

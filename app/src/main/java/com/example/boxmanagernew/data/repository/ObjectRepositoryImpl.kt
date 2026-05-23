@@ -16,21 +16,28 @@ class ObjectRepositoryImpl(
     private val typeDao: ObjectTypeDao
 ) : ObjectRepository {
 
+    private val excluded =
+        setOf(
+            "usb","hdmi","wifi","tv","pc","ssd","hdd",
+            "bluetooth","ethernet","gps","dvd","ram",
+            "cpu","gpu","lcd","oled"
+        )
+
     override fun getObjectsByBox(
         boxId: Int
     ): LiveData<List<Object>> {
 
         return dao.getObjectsWithTypeByBox(boxId)
-            .map { list ->
+            .map { rows ->
 
-                list.map { row ->
+                rows.map {
 
                     Object(
-                        id = row.id,
-                        typeObjectId = row.typeObjectId,
-                        boxId = row.boxId,
-                        description = row.description,
-                        quantity = row.quantity
+                        it.id,
+                        it.typeObjectId,
+                        it.boxId,
+                        it.description,
+                        it.quantity
                     )
                 }
             }
@@ -41,19 +48,22 @@ class ObjectRepositoryImpl(
     ): LiveData<List<ObjectWithType>> {
 
         return dao.getObjectsWithTypeByBox(boxId)
-            .map { list ->
+            .map { rows ->
 
-                list.map { row ->
+                rows.map {
 
                     ObjectWithType(
-                        obj = Object(
-                            id = row.id,
-                            typeObjectId = row.typeObjectId,
-                            boxId = row.boxId,
-                            description = row.description,
-                            quantity = row.quantity
-                        ),
-                        typeName = row.typeName
+                        obj =
+                            Object(
+                                it.id,
+                                it.typeObjectId,
+                                it.boxId,
+                                it.description,
+                                it.quantity
+                            ),
+
+                        typeName =
+                            it.typeName
                     )
                 }
             }
@@ -63,7 +73,67 @@ class ObjectRepositoryImpl(
         query: String
     ): List<SearchResult> {
 
-        return dao.searchObjects(query)
+        val q =
+            query.trim().lowercase()
+
+        val alt1 =
+            singularPluralVariant(q)
+
+        val alt2 =
+            irregularVariant(q)
+
+        return dao.searchObjects(
+            q,
+            alt1,
+            alt2
+        )
+    }
+
+    private fun singularPluralVariant(
+        value: String
+    ): String {
+
+        if (
+            value.length < 5 ||
+            excluded.contains(value)
+        ) return value
+
+        return when {
+
+            value.endsWith("a") ->
+                value.dropLast(1) + "e"
+
+            value.endsWith("e") ->
+                value.dropLast(1) + "i"
+
+            value.endsWith("o") ->
+                value.dropLast(1) + "i"
+
+            value.endsWith("i") ->
+                value.dropLast(1) + "e"
+
+            else ->
+                value
+        }
+    }
+
+    private fun irregularVariant(
+        value: String
+    ): String {
+
+        return when(value){
+
+            "mano" -> "mani"
+            "mani" -> "mano"
+
+            "uomo" -> "uomini"
+            "uomini" -> "uomo"
+
+            "uovo" -> "uova"
+            "uova" -> "uovo"
+
+            else -> value
+        }
     }
 
     suspend fun getObjectsByBoxSync(
@@ -74,11 +144,11 @@ class ObjectRepositoryImpl(
             .map {
 
                 Object(
-                    id = it.id,
-                    typeObjectId = it.typeObjectId,
-                    boxId = it.boxId,
-                    description = it.description,
-                    quantity = it.quantity
+                    it.id,
+                    it.typeObjectId,
+                    it.boxId,
+                    it.description,
+                    it.quantity
                 )
             }
     }
@@ -108,27 +178,24 @@ class ObjectRepositoryImpl(
                 typeDao.getByName(normalized)
         }
 
-        val typeId =
-            type?.id ?: return
-
         dao.insert(
             ObjectEntity(
-                id = 0,
-                typeObjectId = typeId,
-                boxId = boxId,
-                description = description,
-                quantity = quantity
+                0,
+                type?.id ?: return,
+                boxId,
+                description,
+                quantity
             )
         )
     }
 
     suspend fun updateWithName(
-        id: Int,
-        name: String,
-        boxId: Int,
-        description: String?,
-        quantity: Int?
-    ) {
+        id:Int,
+        name:String,
+        boxId:Int,
+        description:String?,
+        quantity:Int?
+    ){
 
         val normalized =
             normalize(name)
@@ -136,11 +203,11 @@ class ObjectRepositoryImpl(
         var type =
             typeDao.getByName(normalized)
 
-        if (type == null) {
+        if(type==null){
 
             typeDao.insert(
                 ObjectTypeEntity(
-                    name = normalized
+                    name=normalized
                 )
             )
 
@@ -148,69 +215,25 @@ class ObjectRepositoryImpl(
                 typeDao.getByName(normalized)
         }
 
-        val typeId =
-            type?.id ?: return
-
         dao.update(
             ObjectEntity(
-                id = id,
-                typeObjectId = typeId,
-                boxId = boxId,
-                description = description,
-                quantity = quantity
+                id,
+                type?.id ?: return,
+                boxId,
+                description,
+                quantity
             )
         )
     }
 
-    override suspend fun insert(
-        obj: Object
-    ) {
-
-        dao.insert(
-            ObjectEntity(
-                id = 0,
-                typeObjectId = obj.typeObjectId,
-                boxId = obj.boxId,
-                description = obj.description,
-                quantity = obj.quantity
-            )
-        )
-    }
-
-    override suspend fun update(
-        obj: Object
-    ) {
-
-        dao.update(
-            ObjectEntity(
-                id = obj.id,
-                typeObjectId = obj.typeObjectId,
-                boxId = obj.boxId,
-                description = obj.description,
-                quantity = obj.quantity
-            )
-        )
-    }
-
-    override suspend fun delete(
-        obj: Object
-    ) {
-
-        dao.delete(
-            ObjectEntity(
-                id = obj.id,
-                typeObjectId = obj.typeObjectId,
-                boxId = obj.boxId,
-                description = obj.description,
-                quantity = obj.quantity
-            )
-        )
-    }
+    override suspend fun insert(obj:Object){}
+    override suspend fun update(obj:Object){}
+    override suspend fun delete(obj:Object){}
 
     suspend fun moveObjects(
         ids: List<Int>,
         targetBoxId: Int
-    ) {
+    ){
 
         dao.moveObjects(
             ids,
@@ -219,8 +242,8 @@ class ObjectRepositoryImpl(
     }
 
     suspend fun countObjectsByBox(
-        boxId: Int
-    ): Int {
+        boxId:Int
+    ):Int{
 
         return dao.countObjectsByBox(
             boxId
@@ -228,8 +251,8 @@ class ObjectRepositoryImpl(
     }
 
     private fun normalize(
-        input: String
-    ): String {
+        input:String
+    ):String{
 
         return input
             .trim()
