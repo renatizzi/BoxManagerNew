@@ -64,7 +64,9 @@ class DashboardActivity : BaseActivity() {
                 R.id.spinnerSearchScope
             )
 
-        spinner.setSelection(0)
+        spinner.post {
+            spinner.setSelection(0)
+        }
 
         editSearch.setOnEditorActionListener {
                 _, actionId, _ ->
@@ -99,23 +101,7 @@ class DashboardActivity : BaseActivity() {
 
                 when (selected) {
 
-                    0 -> {
-
-                        startActivity(
-                            Intent(
-                                this,
-                                MainActivity::class.java
-                            ).apply {
-
-                                putExtra(
-                                    "dashboardSearchQuery",
-                                    query
-                                )
-                            }
-                        )
-                    }
-
-                    1 -> {
+                    0,1,4 -> {
 
                         startActivity(
                             Intent(
@@ -153,22 +139,6 @@ class DashboardActivity : BaseActivity() {
                             Intent(
                                 this,
                                 CategoriesActivity::class.java
-                            ).apply {
-
-                                putExtra(
-                                    "dashboardSearchQuery",
-                                    query
-                                )
-                            }
-                        )
-                    }
-
-                    4 -> {
-
-                        startActivity(
-                            Intent(
-                                this,
-                                MainActivity::class.java
                             ).apply {
 
                                 putExtra(
