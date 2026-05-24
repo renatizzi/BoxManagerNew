@@ -299,9 +299,17 @@ class LocationsActivity : BaseActivity() {
 
             lifecycleScope.launch {
 
-                viewModel.delete(
-                    location
-                )
+                val deleted =
+                    viewModel.delete(
+                        location
+                    )
+
+                if (!deleted) {
+
+                    FeedbackUtils.alert(
+                        this@LocationsActivity
+                    )
+                }
             }
         }
     }
