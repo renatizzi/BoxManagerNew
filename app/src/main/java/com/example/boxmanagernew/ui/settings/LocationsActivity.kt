@@ -1,54 +1,47 @@
 package com.example.boxmanagernew.ui.settings
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.TextView
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.widget.TextView
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.data.local.DatabaseProvider
 import com.example.boxmanagernew.data.repository.LocationRepositoryImpl
 import com.example.boxmanagernew.ui.common.BaseActivity
+import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class LocationsActivity : BaseActivity() {
 
-    private lateinit var viewModel:
-            LocationViewModel
-
-    private lateinit var adapter:
-            LocationAdapter
-
-    private lateinit var recycler:
-            RecyclerView
-
-    private lateinit var counter:
-            TextView
-
-    private lateinit var fab:
-            FloatingActionButton
+    private lateinit var viewModel: LocationViewModel
+    private lateinit var adapter: LocationAdapter
+    private lateinit var recycler: RecyclerView
+    private lateinit var counter: TextView
+    private lateinit var fab: FloatingActionButton
 
     override fun onCreate(
         savedInstanceState: Bundle?
     ) {
 
-        super.onCreate(
-            savedInstanceState
-        )
+        super.onCreate(savedInstanceState)
 
         setContentView(
             R.layout.activity_locations
         )
 
         setupEdgeToEdge()
-
         setupTopBar()
 
         setupPageHeader(
-            "Luoghi",
+            "Posizione",
             "Luoghi abituali di custodia"
+        )
+
+        BottomNavManager.setup(
+            this,
+            BottomNavManager.TAB_SETTINGS
         )
 
         recycler =
@@ -85,8 +78,7 @@ class LocationsActivity : BaseActivity() {
 
                     override fun <T : ViewModel>
                             create(
-                        modelClass:
-                        Class<T>
+                        modelClass: Class<T>
                     ): T {
 
                         return LocationViewModel(
@@ -109,14 +101,14 @@ class LocationsActivity : BaseActivity() {
         recycler.adapter =
             adapter
 
-        viewModel.locations.observe(
-            this
-        ) {
+        viewModel.locations.observe(this) {
 
             adapter.updateData(it)
 
             counter.text =
                 "N. Luoghi: ${it.size}"
         }
+
+        refreshAppShell()
     }
 }

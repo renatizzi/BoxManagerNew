@@ -1,7 +1,7 @@
 package com.example.boxmanagernew.ui.settings
 
 import android.content.Context
-import android.content.res.ColorStateList
+import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
@@ -37,6 +37,7 @@ class SettingsActivity : BaseActivity() {
     private lateinit var paletteGreen: LinearLayout
 
     private lateinit var textCurrentTheme: TextView
+    private lateinit var cardLocations: View
 
     private var currentPalette =
         ThemeManager.PALETTE_ORANGE
@@ -52,17 +53,11 @@ class SettingsActivity : BaseActivity() {
         )
 
         setupEdgeToEdge()
-
         setupTopBar()
-
         setupViews()
-
         loadPreferences()
-
         setupListeners()
-
         setupPaletteSelector()
-
         updateThemeLabel()
 
         BottomNavManager.setup(
@@ -81,39 +76,28 @@ class SettingsActivity : BaseActivity() {
         )
 
         editUserName =
-            findViewById(
-                R.id.editUserName
-            )
+            findViewById(R.id.editUserName)
 
         buttonSave =
-            findViewById(
-                R.id.buttonSaveUser
-            )
+            findViewById(R.id.buttonSaveUser)
 
         textSaveMessage =
-            findViewById(
-                R.id.textSaveMessage
-            )
+            findViewById(R.id.textSaveMessage)
 
         paletteOrange =
-            findViewById(
-                R.id.paletteOrange
-            )
+            findViewById(R.id.paletteOrange)
 
         paletteBlue =
-            findViewById(
-                R.id.paletteBlue
-            )
+            findViewById(R.id.paletteBlue)
 
         paletteGreen =
-            findViewById(
-                R.id.paletteGreen
-            )
+            findViewById(R.id.paletteGreen)
 
         textCurrentTheme =
-            findViewById(
-                R.id.textCurrentTheme
-            )
+            findViewById(R.id.textCurrentTheme)
+
+        cardLocations =
+            findViewById(R.id.cardLocations)
     }
 
     private fun loadPreferences() {
@@ -145,15 +129,23 @@ class SettingsActivity : BaseActivity() {
             ) {
 
                 hideKeyboardAndClearFocus()
-
                 true
 
             } else false
         }
 
         buttonSave.setOnClickListener {
-
             saveUsername()
+        }
+
+        cardLocations.setOnClickListener {
+
+            startActivity(
+                Intent(
+                    this,
+                    LocationsActivity::class.java
+                )
+            )
         }
     }
 
@@ -165,21 +157,18 @@ class SettingsActivity : BaseActivity() {
         updatePaletteSelection()
 
         paletteOrange.setOnClickListener {
-
             selectPalette(
                 ThemeManager.PALETTE_ORANGE
             )
         }
 
         paletteBlue.setOnClickListener {
-
             selectPalette(
                 ThemeManager.PALETTE_BLUE
             )
         }
 
         paletteGreen.setOnClickListener {
-
             selectPalette(
                 ThemeManager.PALETTE_GREEN
             )
@@ -189,9 +178,7 @@ class SettingsActivity : BaseActivity() {
     private fun detectCurrentPalette(): String {
 
         val color =
-            ThemeManager.getAccentDarkColor(
-                this
-            )
+            ThemeManager.getAccentDarkColor(this)
 
         return when (color) {
 
@@ -230,17 +217,9 @@ class SettingsActivity : BaseActivity() {
 
     private fun updatePaletteSelection() {
 
-        resetPalette(
-            paletteOrange
-        )
-
-        resetPalette(
-            paletteBlue
-        )
-
-        resetPalette(
-            paletteGreen
-        )
+        resetPalette(paletteOrange)
+        resetPalette(paletteBlue)
+        resetPalette(paletteGreen)
 
         val selected =
             when (currentPalette) {
@@ -254,11 +233,6 @@ class SettingsActivity : BaseActivity() {
                 else ->
                     paletteOrange
             }
-
-        val borderColor =
-            ThemeManager.getAccentDarkColor(
-                this
-            )
 
         val drawable =
             GradientDrawable().apply {
@@ -278,7 +252,9 @@ class SettingsActivity : BaseActivity() {
 
                 setStroke(
                     6,
-                    borderColor
+                    ThemeManager.getAccentDarkColor(
+                        this@SettingsActivity
+                    )
                 )
             }
 
@@ -306,11 +282,8 @@ class SettingsActivity : BaseActivity() {
                 mode ==
                 Configuration.UI_MODE_NIGHT_YES
             ) {
-
                 "Tema corrente: Dark"
-
             } else {
-
                 "Tema corrente: Light"
             }
     }
@@ -333,7 +306,6 @@ class SettingsActivity : BaseActivity() {
             .apply()
 
         refreshTopBar()
-
         hideKeyboardAndClearFocus()
 
         textSaveMessage.visibility =
