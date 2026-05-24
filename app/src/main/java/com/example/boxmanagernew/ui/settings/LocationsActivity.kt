@@ -191,7 +191,9 @@ class LocationsActivity : BaseActivity() {
 
                     } else {
 
-                        FeedbackUtils.alert(this@LocationsActivity)
+                        FeedbackUtils.alert(
+                            this@LocationsActivity
+                        )
 
                         error.text =
                             "Posizione già esistente"
@@ -270,7 +272,9 @@ class LocationsActivity : BaseActivity() {
 
                     } else {
 
-                        FeedbackUtils.alert(this@LocationsActivity)
+                        FeedbackUtils.alert(
+                            this@LocationsActivity
+                        )
 
                         error.text =
                             "Posizione già esistente"

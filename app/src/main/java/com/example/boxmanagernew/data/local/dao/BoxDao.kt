@@ -11,10 +11,14 @@ import com.example.boxmanagernew.data.local.entity.BoxEntity
 interface BoxDao {
 
     @Insert
-    suspend fun insert(box: BoxEntity): Long
+    suspend fun insert(
+        box: BoxEntity
+    ): Long
 
     @Update
-    suspend fun update(box: BoxEntity)
+    suspend fun update(
+        box: BoxEntity
+    )
 
     @Query(
         "SELECT * FROM box ORDER BY lastModified DESC"
@@ -38,6 +42,17 @@ interface BoxDao {
     )
     suspend fun countBoxesByCategory(
         categoryId: Int
+    ): Int
+
+    @Query(
+        """
+        SELECT COUNT(*)
+        FROM box
+        WHERE LOWER(position)=LOWER(:position)
+        """
+    )
+    suspend fun countBoxesByPosition(
+        position: String
     ): Int
 
     @Query(

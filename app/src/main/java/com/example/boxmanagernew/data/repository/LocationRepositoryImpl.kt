@@ -90,14 +90,23 @@ class LocationRepositoryImpl(
         location: Location
     ): Boolean {
 
-        val entity =
+        val usedCount =
+            boxDao.countBoxesByPosition(
+                location.name
+            )
+
+        if (
+            usedCount > 0
+        ) {
+
+            return false
+        }
+
+        locationDao.delete(
             LocationEntity(
                 id = location.id,
                 name = location.name
             )
-
-        locationDao.delete(
-            entity
         )
 
         return true
