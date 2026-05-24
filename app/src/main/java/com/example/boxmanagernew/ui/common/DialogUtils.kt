@@ -12,7 +12,9 @@ import androidx.appcompat.app.AlertDialog
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.data.local.entity.CategoryEntity
 import com.example.boxmanagernew.domain.model.Box
+import com.example.boxmanagernew.domain.model.Location
 import com.example.boxmanagernew.ui.categories.CategorySpinnerAdapter
+import com.example.boxmanagernew.ui.settings.LocationSpinnerAdapter
 
 object DialogUtils {
 
@@ -21,7 +23,7 @@ object DialogUtils {
         val errorText: TextView,
         val name: EditText,
         val spinner: Spinner,
-        val position: EditText,
+        val position: Spinner,
         val date: TextView,
         val container: LinearLayout
     )
@@ -38,7 +40,8 @@ object DialogUtils {
         context: Context,
         categories: List<CategoryEntity>,
         timestamp: Long,
-        box: Box? = null
+        box: Box? = null,
+        locations: List<Location> = emptyList()
     ): BoxDialogViews {
 
         val view =
@@ -70,8 +73,8 @@ object DialogUtils {
             )
 
         val position =
-            view.findViewById<EditText>(
-                R.id.editPosition
+            view.findViewById<Spinner>(
+                R.id.spinnerLocation
             )
 
         val date =
@@ -91,18 +94,21 @@ object DialogUtils {
             )
         )
 
-        position.addTextChangedListener(
-            UiUtils.noEnterWatcher(
-                position,
-                null
-            )
-        )
-
         setupCategorySpinner(
             context,
             spinner,
             categories
         )
+
+        position.adapter =
+            LocationSpinnerAdapter(
+                context,
+                locations
+            )
+
+        if (locations.isNotEmpty()) {
+            position.setSelection(0)
+        }
 
         date.text =
             "Ultima modifica: ${
@@ -113,17 +119,22 @@ object DialogUtils {
 
             name.setText(box.name)
 
-            position.setText(
-                box.position
-            )
-
-            val index =
+            val categoryIndex =
                 categories.indexOfFirst {
                     it.id == box.categoryId
                 }
 
-            if (index >= 0) {
-                spinner.setSelection(index)
+            if (categoryIndex >= 0) {
+                spinner.setSelection(categoryIndex)
+            }
+
+            val locationIndex =
+                locations.indexOfFirst {
+                    it.name == box.position
+                }
+
+            if (locationIndex >= 0) {
+                position.setSelection(locationIndex)
             }
         }
 

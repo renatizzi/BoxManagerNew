@@ -619,7 +619,7 @@ class BoxDetailActivity : BaseActivity() {
                     boxViewModel.addBoxAndReturnId(
                         boxName,
                         category.id,
-                        dialogViews.position.text
+                        dialogViews.position.selectedItem
                             .toString()
                     )
 

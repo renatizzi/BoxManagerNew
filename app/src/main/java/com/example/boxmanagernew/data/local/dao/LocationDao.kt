@@ -36,6 +36,16 @@ interface LocationDao {
         """
         SELECT *
         FROM locations
+        ORDER BY name ASC
+        """
+    )
+    fun getAllLocationsSync():
+            List<LocationEntity>
+
+    @Query(
+        """
+        SELECT *
+        FROM locations
         WHERE LOWER(name)=LOWER(:name)
         LIMIT 1
         """

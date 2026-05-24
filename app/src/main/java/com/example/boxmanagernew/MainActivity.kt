@@ -18,6 +18,7 @@ import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
 import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
 import com.example.boxmanagernew.domain.model.Box
 import com.example.boxmanagernew.domain.model.Object
+import com.example.boxmanagernew.domain.model.Location
 import com.example.boxmanagernew.ui.boxdetail.BoxDetailActivity
 import com.example.boxmanagernew.ui.categories.CategoriesActivity
 import com.example.boxmanagernew.ui.common.BaseActivity
@@ -49,7 +50,8 @@ class MainActivity : BaseActivity() {
     private lateinit var fabAdd: FloatingActionButton
 
     private var categories: List<CategoryEntity> = emptyList()
-
+    private var locations: List<Location> =
+        emptyList()
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -260,7 +262,19 @@ class MainActivity : BaseActivity() {
 
             viewModel.setCategories(it)
         }
+        db.locationDao()
+            .getAllLocations()
+            .observe(this) {
 
+                locations =
+                    it.map { location ->
+
+                        Location(
+                            id = location.id,
+                            name = location.name
+                        )
+                    }
+            }
         viewModel.boxes.observe(this) {
 
             adapter.updateData(it)
@@ -635,9 +649,9 @@ class MainActivity : BaseActivity() {
             DialogUtils.createBoxDialog(
                 context = this,
                 categories = categories,
+                locations = locations,
                 timestamp = System.currentTimeMillis()
             )
-
         showBoxDialog(
             dialogViews = dialogViews,
             onConfirm = {
@@ -657,7 +671,8 @@ class MainActivity : BaseActivity() {
                         viewModel.addBoxAndReturnId(
                             boxName,
                             category.id,
-                            dialogViews.position.text.toString()
+                            (dialogViews.position.selectedItem as Location)
+                                .name
                         )
 
                     moveObjectsAndDeleteBoxes(
@@ -725,6 +740,7 @@ class MainActivity : BaseActivity() {
             DialogUtils.createBoxDialog(
                 context = this,
                 categories = categories,
+                locations = locations,
                 timestamp = System.currentTimeMillis()
             )
 
@@ -744,8 +760,8 @@ class MainActivity : BaseActivity() {
                 viewModel.addBox(
                     n,
                     cat.id,
-                    dialogViews.position.text
-                        .toString()
+                    (dialogViews.position.selectedItem as Location)
+                        .name
                 )
             }
         )
@@ -759,6 +775,7 @@ class MainActivity : BaseActivity() {
             DialogUtils.createBoxDialog(
                 context = this,
                 categories = categories,
+                locations = locations,
                 timestamp = box.lastModified,
                 box = box
             )
@@ -780,9 +797,9 @@ class MainActivity : BaseActivity() {
                     box.id,
                     n,
                     cat.id,
-                    dialogViews.position.text
-                        .toString()
-                )
+                    (dialogViews.position.selectedItem as Location)
+                        .name
+                 )
             }
         )
     }

@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="16dp">
 
-    <!-- NOME -->
     <EditText
         android:id="@+id/editBoxName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Nome contenitore" />
 
-    <!-- CATEGORIA -->
     <Spinner
         android:id="@+id/spinnerCategory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp" />
 
-    <!-- POSIZIONE -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,17 +29,14 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginEnd="8dp"
-            android:src="@drawable/ic_place" />
+            android:src="@drawable/ic_place"/>
 
-        <EditText
-            android:id="@+id/editPosition"
+        <Spinner
+            android:id="@+id/spinnerLocation"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Posizione"
-            android:background="@null" />
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 
-    <!-- DATA ULTIMA MODIFICA -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -53,13 +48,13 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginEnd="8dp"
-            android:src="@android:drawable/ic_menu_my_calendar" />
+            android:src="@android:drawable/ic_menu_my_calendar"/>
 
         <TextView
             android:id="@+id/textLastModified"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ultima modifica" />
+            android:text="Ultima modifica"/>
     </LinearLayout>
 
 </LinearLayout>
