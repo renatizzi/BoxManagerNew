@@ -31,17 +31,13 @@ class LocationsActivity : BaseActivity() {
     private lateinit var recycler: RecyclerView
     private lateinit var counter: TextView
     private lateinit var fab: FloatingActionButton
-
     private lateinit var contextCard: MaterialCardView
     private lateinit var textContextMessage: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
 
-        setContentView(
-            R.layout.activity_locations
-        )
+        setContentView(R.layout.activity_locations)
 
         setupEdgeToEdge()
         setupTopBar()
@@ -57,33 +53,23 @@ class LocationsActivity : BaseActivity() {
         )
 
         contextCard =
-            findViewById(
-                R.id.contextCard
-            )
+            findViewById(R.id.contextCard)
 
         textContextMessage =
-            findViewById(
-                R.id.textContextMessage
-            )
+            findViewById(R.id.textContextMessage)
 
         contextCard.setOnClickListener {
             hideWarning()
         }
 
         recycler =
-            findViewById(
-                R.id.recyclerViewLocations
-            )
+            findViewById(R.id.recyclerViewLocations)
 
         counter =
-            findViewById(
-                R.id.textLocationCount
-            )
+            findViewById(R.id.textLocationCount)
 
         fab =
-            findViewById(
-                R.id.fabAddLocation
-            )
+            findViewById(R.id.fabAddLocation)
 
         val db =
             DatabaseProvider.getDatabase(
@@ -100,7 +86,6 @@ class LocationsActivity : BaseActivity() {
             ViewModelProvider(
                 this,
                 object : ViewModelProvider.Factory {
-
                     override fun <T : ViewModel>
                             create(
                         modelClass: Class<T>
@@ -132,20 +117,16 @@ class LocationsActivity : BaseActivity() {
         }
 
         viewModel.locations.observe(this) {
-
             adapter.updateData(it)
-
             counter.text =
                 "N. Posizioni: ${it.size}"
         }
 
         hideWarning()
-
         refreshAppShell()
     }
 
     private fun hideWarning() {
-
         contextCard.visibility =
             View.GONE
     }
@@ -153,7 +134,6 @@ class LocationsActivity : BaseActivity() {
     private fun showWarning(
         text: String
     ) {
-
         textContextMessage.text =
             text
 
@@ -165,22 +145,13 @@ class LocationsActivity : BaseActivity() {
 
     private fun createErrorText() =
         TextView(this).apply {
-
-            visibility =
-                TextView.GONE
-
-            setTextColor(
-                Color.RED
-            )
+            visibility = View.GONE
+            setTextColor(Color.RED)
         }
 
     private fun showAddDialog() {
-
-        val input =
-            EditText(this)
-
-        val error =
-            createErrorText()
+        val input = EditText(this)
+        val error = createErrorText()
 
         val container =
             LinearLayout(this).apply {
@@ -194,18 +165,11 @@ class LocationsActivity : BaseActivity() {
             AlertDialog.Builder(this)
                 .setTitle("Nuova posizione")
                 .setView(container)
-                .setNegativeButton(
-                    "Annulla",
-                    null
-                )
-                .setPositiveButton(
-                    "Aggiungi",
-                    null
-                )
+                .setNegativeButton("Annulla", null)
+                .setPositiveButton("Aggiungi", null)
                 .create()
 
         dialog.setOnShowListener {
-
             dialog.getButton(
                 AlertDialog.BUTTON_POSITIVE
             ).setOnClickListener {
@@ -216,9 +180,7 @@ class LocationsActivity : BaseActivity() {
                         viewModel.insert(
                             Location(
                                 name =
-                                    input.text
-                                        .toString()
-                                        .trim()
+                                    input.text.toString().trim()
                             )
                         )
 
@@ -248,13 +210,8 @@ class LocationsActivity : BaseActivity() {
     private fun showEditDialog(
         location: Location
     ) {
-
-        val input =
-            EditText(this)
-
-        input.setText(
-            location.name
-        )
+        val input = EditText(this)
+        input.setText(location.name)
 
         val error =
             createErrorText()
@@ -269,22 +226,13 @@ class LocationsActivity : BaseActivity() {
 
         val dialog =
             AlertDialog.Builder(this)
-                .setTitle(
-                    "Modifica posizione"
-                )
+                .setTitle("Modifica posizione")
                 .setView(container)
-                .setNegativeButton(
-                    "Annulla",
-                    null
-                )
-                .setPositiveButton(
-                    "Salva",
-                    null
-                )
+                .setNegativeButton("Annulla", null)
+                .setPositiveButton("Salva", null)
                 .create()
 
         dialog.setOnShowListener {
-
             dialog.getButton(
                 AlertDialog.BUTTON_POSITIVE
             ).setOnClickListener {
@@ -295,9 +243,7 @@ class LocationsActivity : BaseActivity() {
                         viewModel.update(
                             location.copy(
                                 name =
-                                    input.text
-                                        .toString()
-                                        .trim()
+                                    input.text.toString().trim()
                             )
                         )
 
@@ -328,21 +274,29 @@ class LocationsActivity : BaseActivity() {
         location: Location
     ) {
 
-        DialogUtils.showDeleteConfirmation(
-            this
-        ) {
+        lifecycleScope.launch {
 
-            lifecycleScope.launch {
+            val deleted =
+                viewModel.delete(
+                    location
+                )
 
-                val deleted =
+            if (!deleted) {
+
+                showWarning(
+                    "Posizione in uso: eliminazione non consentita.\nTocca qui per annullare."
+                )
+
+                return@launch
+            }
+
+            DialogUtils.showDeleteConfirmation(
+                this@LocationsActivity
+            ) {
+
+                lifecycleScope.launch {
                     viewModel.delete(
                         location
-                    )
-
-                if (!deleted) {
-
-                    showWarning(
-                        "Posizione in uso: eliminazione non consentita.\nTocca qui per annullare."
                     )
                 }
             }
