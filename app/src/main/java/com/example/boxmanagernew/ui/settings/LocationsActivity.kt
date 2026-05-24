@@ -2,6 +2,7 @@ package com.example.boxmanagernew.ui.settings
 
 import android.graphics.Color
 import android.os.Bundle
+import android.view.View
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -19,6 +20,7 @@ import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.example.boxmanagernew.ui.common.DialogUtils
 import com.example.boxmanagernew.ui.common.FeedbackUtils
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
 
@@ -29,6 +31,9 @@ class LocationsActivity : BaseActivity() {
     private lateinit var recycler: RecyclerView
     private lateinit var counter: TextView
     private lateinit var fab: FloatingActionButton
+
+    private lateinit var contextCard: MaterialCardView
+    private lateinit var textContextMessage: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -50,6 +55,20 @@ class LocationsActivity : BaseActivity() {
             this,
             BottomNavManager.TAB_SETTINGS
         )
+
+        contextCard =
+            findViewById(
+                R.id.contextCard
+            )
+
+        textContextMessage =
+            findViewById(
+                R.id.textContextMessage
+            )
+
+        contextCard.setOnClickListener {
+            hideWarning()
+        }
 
         recycler =
             findViewById(
@@ -108,6 +127,7 @@ class LocationsActivity : BaseActivity() {
             adapter
 
         fab.setOnClickListener {
+            hideWarning()
             showAddDialog()
         }
 
@@ -119,7 +139,28 @@ class LocationsActivity : BaseActivity() {
                 "N. Posizioni: ${it.size}"
         }
 
+        hideWarning()
+
         refreshAppShell()
+    }
+
+    private fun hideWarning() {
+
+        contextCard.visibility =
+            View.GONE
+    }
+
+    private fun showWarning(
+        text: String
+    ) {
+
+        textContextMessage.text =
+            text
+
+        contextCard.visibility =
+            View.VISIBLE
+
+        FeedbackUtils.alert(this)
     }
 
     private fun createErrorText() =
@@ -143,19 +184,15 @@ class LocationsActivity : BaseActivity() {
 
         val container =
             LinearLayout(this).apply {
-
                 orientation =
                     LinearLayout.VERTICAL
-
                 addView(input)
                 addView(error)
             }
 
         val dialog =
             AlertDialog.Builder(this)
-                .setTitle(
-                    "Nuova posizione"
-                )
+                .setTitle("Nuova posizione")
                 .setView(container)
                 .setNegativeButton(
                     "Annulla",
@@ -224,10 +261,8 @@ class LocationsActivity : BaseActivity() {
 
         val container =
             LinearLayout(this).apply {
-
                 orientation =
                     LinearLayout.VERTICAL
-
                 addView(input)
                 addView(error)
             }
@@ -306,8 +341,8 @@ class LocationsActivity : BaseActivity() {
 
                 if (!deleted) {
 
-                    FeedbackUtils.alert(
-                        this@LocationsActivity
+                    showWarning(
+                        "Posizione in uso: eliminazione non consentita.\nTocca qui per annullare."
                     )
                 }
             }
