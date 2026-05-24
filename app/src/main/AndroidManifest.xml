@@ -17,10 +17,13 @@
 
         <activity
             android:name=".ui.boxdetail.BoxDetailActivity"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"/>
 
         <activity
-            android:name=".ui.categories.CategoriesActivity" />
+            android:name=".ui.categories.CategoriesActivity"/>
+
+        <activity
+            android:name=".ui.settings.LocationsActivity"/>
 
         <activity
             android:name=".ui.dashboard.DashboardActivity"
