@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import com.example.boxmanagernew.R
 import com.example.boxmanagernew.domain.model.Location
 
 class LocationSpinnerAdapter(
@@ -67,6 +66,21 @@ class LocationSpinnerAdapter(
 
         text.text =
             items[position].name
+
+        val padding =
+            (16 * context.resources.displayMetrics.density)
+                .toInt()
+
+        text.setPadding(
+            padding,
+            padding,
+            padding,
+            padding
+        )
+
+        text.minHeight =
+            (56 * context.resources.displayMetrics.density)
+                .toInt()
 
         return view
     }
