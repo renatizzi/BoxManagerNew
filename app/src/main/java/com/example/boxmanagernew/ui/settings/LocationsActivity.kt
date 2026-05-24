@@ -1,17 +1,26 @@
 package com.example.boxmanagernew.ui.settings
 
+import android.graphics.Color
 import android.os.Bundle
+import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.data.local.DatabaseProvider
 import com.example.boxmanagernew.data.repository.LocationRepositoryImpl
+import com.example.boxmanagernew.domain.model.Location
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
+import com.example.boxmanagernew.ui.common.DialogUtils
+import com.example.boxmanagernew.ui.common.FeedbackUtils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.launch
 
 class LocationsActivity : BaseActivity() {
 
@@ -21,9 +30,7 @@ class LocationsActivity : BaseActivity() {
     private lateinit var counter: TextView
     private lateinit var fab: FloatingActionButton
 
-    override fun onCreate(
-        savedInstanceState: Bundle?
-    ) {
+    override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
 
@@ -73,8 +80,7 @@ class LocationsActivity : BaseActivity() {
         viewModel =
             ViewModelProvider(
                 this,
-                object :
-                    ViewModelProvider.Factory {
+                object : ViewModelProvider.Factory {
 
                     override fun <T : ViewModel>
                             create(
@@ -91,8 +97,8 @@ class LocationsActivity : BaseActivity() {
         adapter =
             LocationAdapter(
                 emptyList(),
-                {},
-                {}
+                { showEditDialog(it) },
+                { showDeleteDialog(it) }
             )
 
         recycler.layoutManager =
@@ -101,14 +107,198 @@ class LocationsActivity : BaseActivity() {
         recycler.adapter =
             adapter
 
+        fab.setOnClickListener {
+            showAddDialog()
+        }
+
         viewModel.locations.observe(this) {
 
             adapter.updateData(it)
 
             counter.text =
-                "N. Luoghi: ${it.size}"
+                "N. Posizioni: ${it.size}"
         }
 
         refreshAppShell()
+    }
+
+    private fun createErrorText() =
+        TextView(this).apply {
+
+            visibility =
+                TextView.GONE
+
+            setTextColor(
+                Color.RED
+            )
+        }
+
+    private fun showAddDialog() {
+
+        val input =
+            EditText(this)
+
+        val error =
+            createErrorText()
+
+        val container =
+            LinearLayout(this).apply {
+
+                orientation =
+                    LinearLayout.VERTICAL
+
+                addView(input)
+                addView(error)
+            }
+
+        val dialog =
+            AlertDialog.Builder(this)
+                .setTitle(
+                    "Nuova posizione"
+                )
+                .setView(container)
+                .setNegativeButton(
+                    "Annulla",
+                    null
+                )
+                .setPositiveButton(
+                    "Aggiungi",
+                    null
+                )
+                .create()
+
+        dialog.setOnShowListener {
+
+            dialog.getButton(
+                AlertDialog.BUTTON_POSITIVE
+            ).setOnClickListener {
+
+                lifecycleScope.launch {
+
+                    val ok =
+                        viewModel.insert(
+                            Location(
+                                name =
+                                    input.text
+                                        .toString()
+                                        .trim()
+                            )
+                        )
+
+                    if (ok) {
+
+                        dialog.dismiss()
+
+                    } else {
+
+                        FeedbackUtils.alert(this@LocationsActivity)
+
+                        error.text =
+                            "Posizione già esistente"
+
+                        error.visibility =
+                            TextView.VISIBLE
+                    }
+                }
+            }
+        }
+
+        dialog.show()
+    }
+
+    private fun showEditDialog(
+        location: Location
+    ) {
+
+        val input =
+            EditText(this)
+
+        input.setText(
+            location.name
+        )
+
+        val error =
+            createErrorText()
+
+        val container =
+            LinearLayout(this).apply {
+
+                orientation =
+                    LinearLayout.VERTICAL
+
+                addView(input)
+                addView(error)
+            }
+
+        val dialog =
+            AlertDialog.Builder(this)
+                .setTitle(
+                    "Modifica posizione"
+                )
+                .setView(container)
+                .setNegativeButton(
+                    "Annulla",
+                    null
+                )
+                .setPositiveButton(
+                    "Salva",
+                    null
+                )
+                .create()
+
+        dialog.setOnShowListener {
+
+            dialog.getButton(
+                AlertDialog.BUTTON_POSITIVE
+            ).setOnClickListener {
+
+                lifecycleScope.launch {
+
+                    val ok =
+                        viewModel.update(
+                            location.copy(
+                                name =
+                                    input.text
+                                        .toString()
+                                        .trim()
+                            )
+                        )
+
+                    if (ok) {
+
+                        dialog.dismiss()
+
+                    } else {
+
+                        FeedbackUtils.alert(this@LocationsActivity)
+
+                        error.text =
+                            "Posizione già esistente"
+
+                        error.visibility =
+                            TextView.VISIBLE
+                    }
+                }
+            }
+        }
+
+        dialog.show()
+    }
+
+    private fun showDeleteDialog(
+        location: Location
+    ) {
+
+        DialogUtils.showDeleteConfirmation(
+            this
+        ) {
+
+            lifecycleScope.launch {
+
+                viewModel.delete(
+                    location
+                )
+            }
+        }
     }
 }

@@ -90,6 +90,16 @@ class LocationRepositoryImpl(
         location: Location
     ): Boolean {
 
+        val entity =
+            LocationEntity(
+                id = location.id,
+                name = location.name
+            )
+
+        locationDao.delete(
+            entity
+        )
+
         return true
     }
 }
