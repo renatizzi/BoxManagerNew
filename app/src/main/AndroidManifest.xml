@@ -13,6 +13,9 @@
         android:theme="@style/Theme.BoxManager">
 
         <activity
+            android:name=".ui.globalsearch.GlobalSearchActivity"/>
+
+        <activity
             android:name=".ui.search.SearchResultActivity"/>
 
         <activity

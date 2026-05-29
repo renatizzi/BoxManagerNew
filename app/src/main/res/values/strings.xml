@@ -1,3 +1,33 @@
 <resources>
+
     <string name="app_name">BoxManager</string>
+
+    <string name="global_search_title">
+        Ricerca avanzata archivio
+    </string>
+
+    <string name="global_search_subtitle">
+        Come trovare con semplici domande
+    </string>
+
+    <string name="global_search_intro">
+        Qui puoi cercare contenitori, oggetti, categorie o posizioni formulando una domanda in modo naturale. Se il risultato non è quello atteso, prova a riformulare la richiesta usando termini diversi.
+    </string>
+
+    <string name="global_search_hint">
+        Scrivi una domanda...
+    </string>
+
+    <string name="global_search_processing">
+        Sto analizzando la richiesta...
+    </string>
+
+    <string name="global_search_fallback">
+        Non riesco a capire esattamente quello che stai cercando. Prova a formulare la richiesta con parole più chiare.
+    </string>
+
+    <string name="global_search_goodbye">
+        Tocca qui per tornare alla Dashboard
+    </string>
+
 </resources>

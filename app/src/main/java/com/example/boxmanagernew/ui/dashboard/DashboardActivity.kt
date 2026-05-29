@@ -15,6 +15,7 @@ import com.example.boxmanagernew.ui.categories.CategoriesActivity
 import com.example.boxmanagernew.ui.categories.CategoryViewModel
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
+import com.example.boxmanagernew.ui.globalsearch.GlobalSearchActivity
 import com.example.boxmanagernew.ui.main.BoxViewModel
 import com.example.boxmanagernew.ui.search.SearchResultActivity
 import com.example.boxmanagernew.ui.utility.UtilityActivity
@@ -101,7 +102,23 @@ class DashboardActivity : BaseActivity() {
 
                 when (selected) {
 
-                    0,1,4 -> {
+                    0 -> {
+
+                        startActivity(
+                            Intent(
+                                this,
+                                GlobalSearchActivity::class.java
+                            ).apply {
+
+                                putExtra(
+                                    "dashboardSearchQuery",
+                                    query
+                                )
+                            }
+                        )
+                    }
+
+                    1,4 -> {
 
                         startActivity(
                             Intent(

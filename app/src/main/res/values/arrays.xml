@@ -2,7 +2,7 @@
 <resources>
 
     <string-array name="dashboard_search_scope">
-        <item>Tutto archivio</item>
+        <item>Ricerca avanzata</item>
         <item>Contenitori</item>
         <item>Oggetti</item>
         <item>Categorie</item>
