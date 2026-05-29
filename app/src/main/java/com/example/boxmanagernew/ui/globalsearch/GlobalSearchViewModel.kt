@@ -3,20 +3,21 @@ package com.example.boxmanagernew.ui.globalsearch
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.boxmanagernew.domain.search.model.SearchMessage
 
 class GlobalSearchViewModel : ViewModel() {
 
     private val _messages =
-        MutableLiveData<List<String>>(
+        MutableLiveData<List<SearchMessage>>(
             emptyList()
         )
 
     val messages:
-            LiveData<List<String>> =
+            LiveData<List<SearchMessage>> =
         _messages
 
     fun setMessages(
-        messages: List<String>
+        messages: List<SearchMessage>
     ) {
 
         _messages.value =

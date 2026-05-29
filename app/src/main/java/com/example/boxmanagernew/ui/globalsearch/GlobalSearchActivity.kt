@@ -1,6 +1,9 @@
 package com.example.boxmanagernew.ui.globalsearch
 
+import android.graphics.Typeface
 import android.os.Bundle
+import android.widget.EditText
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -40,6 +43,32 @@ class GlobalSearchActivity : BaseActivity() {
             BottomNavManager.TAB_DASHBOARD
         )
 
+        val editQuestion =
+            findViewById<EditText>(
+                R.id.editQuestion
+            )
+
+        editQuestion.setTypeface(
+            null,
+            Typeface.ITALIC
+        )
+
+        editQuestion.setTextColor(
+            ContextCompat.getColor(
+                this,
+                R.color.primary_button
+            )
+        )
+
+        val initialQuery =
+            intent.getStringExtra(
+                "dashboardSearchQuery"
+            ) ?: ""
+
+        editQuestion.setText(
+            initialQuery
+        )
+
         viewModel =
             ViewModelProvider(this)[
                 GlobalSearchViewModel::class.java
@@ -59,11 +88,6 @@ class GlobalSearchActivity : BaseActivity() {
                 GlobalSearchAdapter(it)
         }
 
-        viewModel.setMessages(
-            listOf(
-                "Dove ho messo il trapano?",
-                "Il trapano si trova nel contenitore Garage 1."
-            )
-        )
+        viewModel.clear()
     }
 }
