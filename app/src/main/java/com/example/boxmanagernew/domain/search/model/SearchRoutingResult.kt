@@ -8,5 +8,7 @@ data class SearchRoutingResult(
 
     val requiresClarification: Boolean,
 
-    val clarificationType: SearchClarificationType
+    val clarificationType: SearchClarificationType,
+
+    val isFallback: Boolean
 )

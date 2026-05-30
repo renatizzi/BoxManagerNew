@@ -160,6 +160,9 @@ class GlobalSearchEngine {
         val analysis =
             analyze(question)
 
+        val isFallback =
+            analysis.patternId == null
+
         val engineType =
             when (
                 analysis.classification
@@ -177,7 +180,8 @@ class GlobalSearchEngine {
             engineType = engineType,
             requiresClarification = false,
             clarificationType =
-                SearchClarificationType.NONE
+                SearchClarificationType.NONE,
+            isFallback = isFallback
         )
     }
 }
