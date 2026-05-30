@@ -1,6 +1,7 @@
 package com.example.boxmanagernew.domain.search
 
 import com.example.boxmanagernew.domain.search.model.CoreEntityType
+import com.example.boxmanagernew.domain.search.model.SearchAnalysisResult
 import com.example.boxmanagernew.domain.search.model.SearchClassification
 import com.example.boxmanagernew.domain.search.model.SearchFulcrum
 import com.example.boxmanagernew.domain.search.model.SearchInterpretation
@@ -171,5 +172,28 @@ class GlobalSearchEngine {
         return detectPattern(
             question
         )?.classification
+    }
+
+    fun analyze(
+        question: String
+    ): SearchAnalysisResult {
+
+        val pattern =
+            detectPattern(question)
+
+        return SearchAnalysisResult(
+            interpretation =
+                pattern?.interpretation,
+            recognizedEntities =
+                identifyCoreEntities(question),
+            dominantFulcrum =
+                pattern?.dominantFulcrum,
+            satisfiability =
+                pattern?.satisfiability,
+            classification =
+                pattern?.classification,
+            patternId =
+                pattern?.id
+        )
     }
 }
