@@ -119,6 +119,13 @@ class GlobalSearchActivity : BaseActivity() {
                     )
                 )
 
+                viewModel.addMessage(
+                    SearchMessage(
+                        text = "Sto analizzando la richiesta...",
+                        fromUser = false
+                    )
+                )
+
                 editQuestion.setText("")
 
                 true
