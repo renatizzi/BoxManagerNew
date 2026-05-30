@@ -24,6 +24,23 @@ class GlobalSearchViewModel : ViewModel() {
             messages
     }
 
+    fun addMessage(
+        message: SearchMessage
+    ) {
+
+        val current =
+            _messages.value
+                ?.toMutableList()
+                ?: mutableListOf()
+
+        current.add(
+            message
+        )
+
+        _messages.value =
+            current
+    }
+
     fun clear() {
 
         _messages.value =

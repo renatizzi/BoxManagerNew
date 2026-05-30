@@ -2,12 +2,14 @@ package com.example.boxmanagernew.ui.globalsearch
 
 import android.graphics.Typeface
 import android.os.Bundle
+import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.boxmanagernew.R
+import com.example.boxmanagernew.domain.search.model.SearchMessage
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
 
@@ -89,5 +91,42 @@ class GlobalSearchActivity : BaseActivity() {
         }
 
         viewModel.clear()
+
+        editQuestion.setOnEditorActionListener {
+                _, actionId, _ ->
+
+            if (
+                actionId ==
+                EditorInfo.IME_ACTION_DONE
+            ) {
+
+                val question =
+                    editQuestion.text
+                        .toString()
+                        .trim()
+
+                if (
+                    question.isBlank()
+                ) {
+
+                    return@setOnEditorActionListener true
+                }
+
+                viewModel.addMessage(
+                    SearchMessage(
+                        text = question,
+                        fromUser = true
+                    )
+                )
+
+                editQuestion.setText("")
+
+                true
+
+            } else {
+
+                false
+            }
+        }
     }
 }

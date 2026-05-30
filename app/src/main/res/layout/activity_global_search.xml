@@ -62,7 +62,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="52dp"
                     android:layout_margin="12dp"
-                    android:hint="@string/global_search_hint"
                     android:singleLine="true" />
 
             </com.google.android.material.card.MaterialCardView>
