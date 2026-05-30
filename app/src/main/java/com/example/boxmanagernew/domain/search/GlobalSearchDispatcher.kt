@@ -1,6 +1,7 @@
 package com.example.boxmanagernew.domain.search
 
 import com.example.boxmanagernew.domain.search.model.SearchClarificationType
+import com.example.boxmanagernew.domain.search.model.SearchEngineType
 import com.example.boxmanagernew.domain.search.model.SearchResponse
 
 class GlobalSearchDispatcher(
@@ -9,18 +10,24 @@ class GlobalSearchDispatcher(
         GlobalSearchEngine(),
 
     private val router: SearchRouter =
-        SearchRouter()
+        SearchRouter(),
+
+    private val engineA: SearchEngineA =
+        SearchEngineA()
 ) {
 
     fun dispatch(
         question: String
     ): SearchResponse {
 
+        val analysis =
+            engine.analyze(
+                question
+            )
+
         val routingResult =
             router.route(
-                engine.analyze(
-                    question
-                )
+                analysis
             )
 
         if (
@@ -48,10 +55,21 @@ class GlobalSearchDispatcher(
             )
         }
 
-        return SearchResponse(
-            success = true,
-            message =
-                "Richiesta riconosciuta e instradata verso il motore corretto."
-        )
+        return when (
+            routingResult.engineType
+        ) {
+
+            SearchEngineType.ENGINE_A ->
+                engineA.execute(
+                    analysis
+                )
+
+            SearchEngineType.ENGINE_B ->
+                SearchResponse(
+                    success = false,
+                    message =
+                        "Motore B non ancora disponibile."
+                )
+        }
     }
 }
