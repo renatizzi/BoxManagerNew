@@ -5,15 +5,20 @@ import com.example.boxmanagernew.domain.search.model.SearchRoutingResult
 class GlobalSearchDispatcher(
 
     private val engine: GlobalSearchEngine =
-        GlobalSearchEngine()
+        GlobalSearchEngine(),
+
+    private val router: SearchRouter =
+        SearchRouter()
 ) {
 
     fun dispatch(
         question: String
     ): SearchRoutingResult {
 
-        return engine.route(
-            question
+        return router.route(
+            engine.analyze(
+                question
+            )
         )
     }
 }
