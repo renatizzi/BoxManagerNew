@@ -1,6 +1,6 @@
 package com.example.boxmanagernew.domain.search
 
-import com.example.boxmanagernew.domain.search.model.SearchStrategy
+import com.example.boxmanagernew.domain.search.model.SearchRoutingResult
 
 class GlobalSearchDispatcher(
 
@@ -10,9 +10,9 @@ class GlobalSearchDispatcher(
 
     fun dispatch(
         question: String
-    ): SearchStrategy {
+    ): SearchRoutingResult {
 
-        return engine.determineStrategy(
+        return engine.route(
             question
         )
     }
