@@ -12,11 +12,16 @@ class SearchRouter {
         analysis: SearchAnalysisResult
     ): SearchRoutingResult {
 
+        val hasRecognizedEntities =
+            analysis.recognizedEntities.isNotEmpty()
+
         val isFallback =
-            analysis.patternId == null
+            analysis.patternId == null &&
+                    !hasRecognizedEntities
 
         val requiresClarification =
-            analysis.patternId == null
+            analysis.patternId == null &&
+                    hasRecognizedEntities
 
         val clarificationType =
             if (requiresClarification) {
