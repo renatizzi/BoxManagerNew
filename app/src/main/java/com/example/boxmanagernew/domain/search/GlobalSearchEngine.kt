@@ -3,9 +3,12 @@ package com.example.boxmanagernew.domain.search
 import com.example.boxmanagernew.domain.search.model.CoreEntityType
 import com.example.boxmanagernew.domain.search.model.SearchAnalysisResult
 import com.example.boxmanagernew.domain.search.model.SearchClassification
+import com.example.boxmanagernew.domain.search.model.SearchClarificationType
+import com.example.boxmanagernew.domain.search.model.SearchEngineType
 import com.example.boxmanagernew.domain.search.model.SearchFulcrum
 import com.example.boxmanagernew.domain.search.model.SearchInterpretation
 import com.example.boxmanagernew.domain.search.model.SearchQuestionPattern
+import com.example.boxmanagernew.domain.search.model.SearchRoutingResult
 import com.example.boxmanagernew.domain.search.model.SearchSatisfiability
 import com.example.boxmanagernew.domain.search.model.SearchStrategy
 
@@ -19,65 +22,19 @@ class GlobalSearchEngine {
 
     private val stopWords =
         setOf(
-            "a",
-            "ad",
-            "al",
-            "alla",
-            "allo",
-            "che",
-            "con",
-            "da",
-            "del",
-            "della",
-            "dello",
-            "dei",
-            "degli",
-            "delle",
-            "di",
-            "dove",
-            "e",
-            "gli",
-            "ha",
-            "hai",
-            "ho",
-            "i",
-            "il",
-            "in",
-            "l",
-            "la",
-            "le",
-            "li",
-            "lo",
-            "messo",
-            "nel",
-            "nella",
-            "nello",
-            "nei",
-            "negli",
-            "nelle",
-            "per",
-            "quale",
-            "quali",
-            "quanto",
-            "quanti",
-            "sei",
-            "si",
-            "sono",
-            "su",
-            "tra",
-            "un",
-            "una",
-            "uno"
+            "a","ad","al","alla","allo","che","con","da","del",
+            "della","dello","dei","degli","delle","di","dove",
+            "e","gli","ha","hai","ho","i","il","in","l","la",
+            "le","li","lo","messo","nel","nella","nello","nei",
+            "negli","nelle","per","quale","quali","quanto",
+            "quanti","sei","si","sono","su","tra","un","una","uno"
         )
 
     fun determineStrategy(
         question: String
     ): SearchStrategy {
 
-        if (
-            question.isBlank()
-        ) {
-
+        if (question.isBlank()) {
             return SearchStrategy.FALLBACK
         }
 
@@ -111,7 +68,6 @@ class GlobalSearchEngine {
             question
         )
             .mapNotNull {
-
                 synonymRepository
                     .getCoreEntityType(it)
             }
@@ -194,6 +150,34 @@ class GlobalSearchEngine {
                 pattern?.classification,
             patternId =
                 pattern?.id
+        )
+    }
+
+    fun route(
+        question: String
+    ): SearchRoutingResult {
+
+        val analysis =
+            analyze(question)
+
+        val engineType =
+            when (
+                analysis.classification
+            ) {
+
+                SearchClassification.ENGINE_B ->
+                    SearchEngineType.ENGINE_B
+
+                else ->
+                    SearchEngineType.ENGINE_A
+            }
+
+        return SearchRoutingResult(
+            analysis = analysis,
+            engineType = engineType,
+            requiresClarification = false,
+            clarificationType =
+                SearchClarificationType.NONE
         )
     }
 }
