@@ -12,6 +12,9 @@ class GlobalSearchDispatcher(
     private val router: SearchRouter =
         SearchRouter(),
 
+    private val evaluator: SearchSatisfiabilityEvaluator =
+        SearchSatisfiabilityEvaluator(),
+
     private val engineA: SearchEngineA =
         SearchEngineA()
 ) {
@@ -25,9 +28,15 @@ class GlobalSearchDispatcher(
                 question
             )
 
+        val satisfiabilityResult =
+            evaluator.evaluate(
+                analysis
+            )
+
         val routingResult =
             router.route(
-                analysis
+                analysis,
+                satisfiabilityResult
             )
 
         if (

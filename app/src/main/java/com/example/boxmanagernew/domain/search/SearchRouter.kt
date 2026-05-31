@@ -2,14 +2,15 @@ package com.example.boxmanagernew.domain.search
 
 import com.example.boxmanagernew.domain.search.model.SearchAnalysisResult
 import com.example.boxmanagernew.domain.search.model.SearchClassification
-import com.example.boxmanagernew.domain.search.model.SearchClarificationType
 import com.example.boxmanagernew.domain.search.model.SearchEngineType
 import com.example.boxmanagernew.domain.search.model.SearchRoutingResult
+import com.example.boxmanagernew.domain.search.model.SearchSatisfiabilityResult
 
 class SearchRouter {
 
     fun route(
-        analysis: SearchAnalysisResult
+        analysis: SearchAnalysisResult,
+        satisfiabilityResult: SearchSatisfiabilityResult
     ): SearchRoutingResult {
 
         val hasRecognizedEntities =
@@ -19,23 +20,9 @@ class SearchRouter {
             analysis.patternId == null &&
                     !hasRecognizedEntities
 
-        val requiresClarification =
-            analysis.patternId == null &&
-                    hasRecognizedEntities
-
-        val clarificationType =
-            if (requiresClarification) {
-
-                SearchClarificationType.GENERIC_REQUEST
-
-            } else {
-
-                SearchClarificationType.NONE
-            }
-
         val engineType =
             when (
-                analysis.classification
+                satisfiabilityResult.finalClassification
             ) {
 
                 SearchClassification.ENGINE_B ->
@@ -49,9 +36,9 @@ class SearchRouter {
             analysis = analysis,
             engineType = engineType,
             requiresClarification =
-                requiresClarification,
+                satisfiabilityResult.requiresClarification,
             clarificationType =
-                clarificationType,
+                satisfiabilityResult.clarificationType,
             isFallback =
                 isFallback
         )
