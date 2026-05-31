@@ -118,15 +118,6 @@ class GlobalSearchEngine {
         )?.satisfiability
     }
 
-    fun determineClassification(
-        question: String
-    ): SearchClassification? {
-
-        return detectPattern(
-            question
-        )?.classification
-    }
-
     fun analyze(
         question: String
     ): SearchAnalysisResult {
