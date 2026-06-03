@@ -1,19 +1,36 @@
 package com.example.boxmanagernew.domain.search
 
+import com.example.boxmanagernew.domain.search.model.CoreEntityType
+import com.example.boxmanagernew.domain.search.model.SearchAnalysisResult
+import com.example.boxmanagernew.domain.search.model.SearchClassification
 import com.example.boxmanagernew.domain.search.model.SearchClarificationType
-import com.example.boxmanagernew.domain.search.model.SearchEngineType
+import com.example.boxmanagernew.domain.search.model.SearchInterpretation
 import com.example.boxmanagernew.domain.search.model.SearchResponse
+import com.example.boxmanagernew.domain.search.model.SearchSatisfiability
 
 class GlobalSearchDispatcher(
 
-    private val engine: GlobalSearchEngine =
-        GlobalSearchEngine(),
+    private val normalizer: SearchNormalizer =
+        SearchNormalizer(),
 
-    private val router: SearchRouter =
-        SearchRouter(),
+    private val tokenizer: SearchTokenizer =
+        SearchTokenizer(),
 
-    private val evaluator: SearchSatisfiabilityEvaluator =
-        SearchSatisfiabilityEvaluator(),
+    private val corePipeline: SearchCoreNormalizationPipeline =
+        SearchCoreNormalizationPipeline(),
+
+    private val archiveLookup: SearchArchiveLookup =
+        SearchArchiveLookup(),
+
+    private val entityRecognizer: SearchEntityRecognizer =
+        SearchEntityRecognizer(),
+
+    private val fulcrumResolver: SearchFulcrumResolver =
+        SearchFulcrumResolver(),
+
+    private val evaluatorV2:
+    SearchSatisfiabilityEvaluatorV2 =
+        SearchSatisfiabilityEvaluatorV2(),
 
     private val engineA: SearchEngineA =
         SearchEngineA()
@@ -23,24 +40,51 @@ class GlobalSearchDispatcher(
         question: String
     ): SearchResponse {
 
-        val analysis =
-            engine.analyze(
+        val normalizedQuestion =
+            normalizer.normalize(
                 question
             )
 
-        val satisfiabilityResult =
-            evaluator.evaluate(
-                analysis
+        val tokenizedQuestion =
+            tokenizer.tokenize(
+                normalizedQuestion
             )
 
-        val routingResult =
-            router.route(
-                analysis,
-                satisfiabilityResult
+        val coreNormalizationResult =
+            corePipeline.normalize(
+                tokenizedQuestion
+            )
+        val lookupResult =
+            archiveLookup.lookup(
+                searchText =
+                    coreNormalizationResult
+                        .normalizedQuestion
+            )
+
+        val recognizedEntitiesResult =
+            entityRecognizer.recognize(
+                lookupResult
+            )
+
+        val fulcrumResult =
+            fulcrumResolver.resolve(
+                recognizedEntitiesResult
+            )
+
+        val satisfiabilityResult =
+            evaluatorV2.evaluate(
+                com.example.boxmanagernew.domain.search.model.SearchSatisfiabilityInput(
+                    fulcrumResult =
+                        fulcrumResult,
+                    recognizedEntitiesResult =
+                        recognizedEntitiesResult
+                )
             )
 
         if (
-            routingResult.isFallback
+            recognizedEntitiesResult
+                .recognizedEntities
+                .isEmpty()
         ) {
 
             return SearchResponse(
@@ -51,7 +95,8 @@ class GlobalSearchDispatcher(
         }
 
         if (
-            routingResult.requiresClarification
+            satisfiabilityResult
+                .requiresClarification
         ) {
 
             return SearchResponse(
@@ -65,15 +110,40 @@ class GlobalSearchDispatcher(
         }
 
         return when (
-            routingResult.engineType
+            satisfiabilityResult
+                .finalClassification
         ) {
 
-            SearchEngineType.ENGINE_A ->
+            SearchClassification.ENGINE_A -> {
+
+                val analysis =
+                    SearchAnalysisResult(
+                        interpretation =
+                            SearchInterpretation.UNKNOWN,
+                        recognizedEntities =
+                            recognizedEntitiesResult
+                                .recognizedEntities
+                                .map {
+                                    it.entityType
+                                }
+                                .toSet(),
+                        dominantFulcrum =
+                            fulcrumResult.fulcrum,
+                        satisfiability =
+                            SearchSatisfiability
+                                .SATISFIABLE_BY_ENGINE_A,
+                        classification =
+                            SearchClassification
+                                .ENGINE_A,
+                        patternId = null
+                    )
+
                 engineA.execute(
                     analysis
                 )
+            }
 
-            SearchEngineType.ENGINE_B ->
+            SearchClassification.ENGINE_B ->
                 SearchResponse(
                     success = false,
                     message =

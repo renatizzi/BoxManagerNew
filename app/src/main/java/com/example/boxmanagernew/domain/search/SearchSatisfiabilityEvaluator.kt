@@ -1,69 +1,84 @@
 package com.example.boxmanagernew.domain.search
 
+import com.example.boxmanagernew.domain.search.model.CoreEntityType
 import com.example.boxmanagernew.domain.search.model.SearchAnalysisResult
-import com.example.boxmanagernew.domain.search.model.SearchClassification
-import com.example.boxmanagernew.domain.search.model.SearchClarificationType
-import com.example.boxmanagernew.domain.search.model.SearchSatisfiability
+import com.example.boxmanagernew.domain.search.model.SearchArchiveLookupResult
+import com.example.boxmanagernew.domain.search.model.SearchArchiveScope
+import com.example.boxmanagernew.domain.search.model.SearchArchiveScopeMatch
+import com.example.boxmanagernew.domain.search.model.SearchRecognizedEntitiesResult
+import com.example.boxmanagernew.domain.search.model.SearchRecognizedEntity
+import com.example.boxmanagernew.domain.search.model.SearchSatisfiabilityInput
 import com.example.boxmanagernew.domain.search.model.SearchSatisfiabilityResult
 
-class SearchSatisfiabilityEvaluator {
+class SearchSatisfiabilityEvaluator(
+
+    private val evaluatorV2:
+    SearchSatisfiabilityEvaluatorV2 =
+        SearchSatisfiabilityEvaluatorV2()
+) {
 
     fun evaluate(
         analysis: SearchAnalysisResult
     ): SearchSatisfiabilityResult {
 
-        val hasRecognizedEntities =
-            analysis.recognizedEntities.isNotEmpty()
+        val recognizedEntities =
+            analysis.recognizedEntities.map {
 
-        val isPatternMissing =
-            analysis.patternId == null
+                SearchRecognizedEntity(
+                    entityType = it,
+                    scope =
+                        when (it) {
 
-        val isFallback =
-            isPatternMissing &&
-                    !hasRecognizedEntities
+                            CoreEntityType.OBJECT ->
+                                SearchArchiveScope.OBJECT
 
-        val requiresClarification =
-            isPatternMissing &&
-                    hasRecognizedEntities
+                            CoreEntityType.BOX ->
+                                SearchArchiveScope.BOX
 
-        val clarificationType =
-            if (requiresClarification) {
-                SearchClarificationType.GENERIC_REQUEST
-            } else {
-                SearchClarificationType.NONE
+                            CoreEntityType.LOCATION ->
+                                SearchArchiveScope.LOCATION
+
+                            CoreEntityType.CATEGORY ->
+                                SearchArchiveScope.CATEGORY
+                        },
+                    matchCount = 1
+                )
             }
 
-        val finalClassification =
-            when (analysis.satisfiability) {
+        val recognizedEntitiesResult =
+            SearchRecognizedEntitiesResult(
+                recognizedEntities =
+                    recognizedEntities
+            )
 
-                SearchSatisfiability.REQUIRES_ENGINE_B ->
-                    SearchClassification.ENGINE_B
+        val lookupResult =
+            SearchArchiveLookupResult(
+                scopeMatches =
+                    recognizedEntities.map {
 
-                SearchSatisfiability.SATISFIABLE_BY_ENGINE_A ->
-                    SearchClassification.ENGINE_A
+                        SearchArchiveScopeMatch(
+                            scope = it.scope,
+                            matchCount = it.matchCount
+                        )
+                    }
+            )
 
-                SearchSatisfiability.UNSATISFIABLE ->
-                    SearchClassification.ENGINE_A
+        val fulcrumResult =
+            SearchFulcrumResolver()
+                .resolve(
+                    SearchEntityRecognizer()
+                        .recognize(
+                            lookupResult
+                        )
+                )
 
-                null ->
-                    SearchClassification.ENGINE_A
-            }
-
-        return SearchSatisfiabilityResult(
-            finalClassification =
-                finalClassification,
-            satisfiableByEngineA =
-                analysis.satisfiability ==
-                        SearchSatisfiability.SATISFIABLE_BY_ENGINE_A,
-            satisfiableByEngineB =
-                analysis.satisfiability ==
-                        SearchSatisfiability.REQUIRES_ENGINE_B,
-            requiresClarification =
-                requiresClarification,
-            clarificationType =
-                clarificationType,
-            matchedPatternId =
-                analysis.patternId
+        return evaluatorV2.evaluate(
+            SearchSatisfiabilityInput(
+                fulcrumResult =
+                    fulcrumResult,
+                recognizedEntitiesResult =
+                    recognizedEntitiesResult
+            )
         )
     }
 }

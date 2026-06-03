@@ -11,8 +11,7 @@ class SearchEngineA {
 
         return SearchResponse(
             success = true,
-            message =
-                "Per vedere il risultato della ricerca tocca qui."
+            message = "ENGINE_A_RESULT"
         )
     }
 }

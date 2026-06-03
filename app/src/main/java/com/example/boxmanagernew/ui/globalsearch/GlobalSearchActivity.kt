@@ -1,21 +1,28 @@
 package com.example.boxmanagernew.ui.globalsearch
 
+import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.boxmanagernew.R
+import com.example.boxmanagernew.domain.search.GlobalSearchDispatcher
 import com.example.boxmanagernew.domain.search.model.SearchMessage
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
+import com.example.boxmanagernew.ui.search.SearchResultActivity
 
 class GlobalSearchActivity : BaseActivity() {
 
     private lateinit var viewModel: GlobalSearchViewModel
+
+    private val dispatcher =
+        GlobalSearchDispatcher()
 
     override fun onCreate(
         savedInstanceState: Bundle?
@@ -112,6 +119,12 @@ class GlobalSearchActivity : BaseActivity() {
                     return@setOnEditorActionListener true
                 }
 
+                Toast.makeText(
+                    this,
+                    "FASE A OK - Conferma intercettata",
+                    Toast.LENGTH_SHORT
+                ).show()
+
                 viewModel.addMessage(
                     SearchMessage(
                         text = question,
@@ -119,12 +132,45 @@ class GlobalSearchActivity : BaseActivity() {
                     )
                 )
 
-                viewModel.addMessage(
-                    SearchMessage(
-                        text = "Sto analizzando la richiesta...",
-                        fromUser = false
+                Toast.makeText(
+                    this,
+                    "FASE B OK - Dispatcher chiamato",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                val response =
+                    dispatcher.dispatch(
+                        question
                     )
-                )
+
+                if (
+                    response.success &&
+                    response.message ==
+                    "ENGINE_A_RESULT"
+                ) {
+
+                    startActivity(
+                        Intent(
+                            this,
+                            SearchResultActivity::class.java
+                        ).apply {
+
+                            putExtra(
+                                "dashboardSearchQuery",
+                                question
+                            )
+                        }
+                    )
+
+                } else {
+
+                    viewModel.addMessage(
+                        SearchMessage(
+                            text = response.message,
+                            fromUser = false
+                        )
+                    )
+                }
 
                 editQuestion.setText("")
 
