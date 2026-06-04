@@ -10,19 +10,12 @@ import com.example.boxmanagernew.domain.model.Object
 import com.example.boxmanagernew.domain.model.ObjectWithType
 import com.example.boxmanagernew.domain.model.SearchResult
 import com.example.boxmanagernew.domain.repository.ObjectRepository
-import java.text.Normalizer
+import com.example.boxmanagernew.util.CanonicalNormalizer
 
 class ObjectRepositoryImpl(
     private val dao: ObjectDao,
     private val typeDao: ObjectTypeDao
 ) : ObjectRepository {
-
-    private val excluded =
-        setOf(
-            "usb","hdmi","wifi","tv","pc","ssd","hdd",
-            "bluetooth","ethernet","gps","dvd","ram",
-            "cpu","gpu","lcd","oled"
-        )
 
     private val ignoredWords =
         setOf(
@@ -79,7 +72,7 @@ class ObjectRepositoryImpl(
     ): List<SearchResult> {
 
         val tokens =
-            normalize(query)
+            CanonicalNormalizer.normalize(query)
                 .split(" ")
                 .filter {
                     it.isNotBlank() &&
@@ -93,103 +86,36 @@ class ObjectRepositoryImpl(
             .filter { row ->
 
                 val searchable =
-                    normalize(
+                    CanonicalNormalizer.canonical(
                         buildString {
-
                             append(row.objectName)
                             append(" ")
-                            append(
-                                row.description ?: ""
-                            )
+                            append(row.description ?: "")
                         }
                     )
 
-                tokens.all {
+                tokens.all { token ->
 
                     val singular =
-                        singularPluralVariant(it)
+                        CanonicalNormalizer
+                            .singularPluralVariant(token)
 
                     val irregular =
-                        irregularVariant(it)
+                        CanonicalNormalizer
+                            .irregularVariant(token)
 
-                    searchable.contains(it) ||
-                            searchable.contains(singular) ||
-                            searchable.contains(irregular)
+                    val variants =
+                        setOf(
+                            CanonicalNormalizer.canonical(token),
+                            CanonicalNormalizer.canonical(singular),
+                            CanonicalNormalizer.canonical(irregular)
+                        )
+
+                    variants.any {
+                        searchable.contains(it)
+                    }
                 }
             }
-    }
-
-    private fun normalize(
-        value: String
-    ): String {
-
-        return Normalizer
-            .normalize(
-                value.lowercase().trim(),
-                Normalizer.Form.NFD
-            )
-            .replace(
-                "\\p{InCombiningDiacriticalMarks}+"
-                    .toRegex(),
-                ""
-            )
-            .replace(
-                "[^a-z0-9 ]"
-                    .toRegex(),
-                " "
-            )
-            .replace(
-                "\\s+"
-                    .toRegex(),
-                " "
-            )
-            .trim()
-    }
-
-    private fun singularPluralVariant(
-        value: String
-    ): String {
-
-        if (
-            value.length < 5 ||
-            excluded.contains(value)
-        ) return value
-
-        return when {
-
-            value.endsWith("a") ->
-                value.dropLast(1)+"e"
-
-            value.endsWith("e") ->
-                value.dropLast(1)+"i"
-
-            value.endsWith("o") ->
-                value.dropLast(1)+"i"
-
-            value.endsWith("i") ->
-                value.dropLast(1)+"e"
-
-            else -> value
-        }
-    }
-
-    private fun irregularVariant(
-        value:String
-    ):String{
-
-        return when(value){
-
-            "mano" -> "mani"
-            "mani" -> "mano"
-
-            "uomo" -> "uomini"
-            "uomini" -> "uomo"
-
-            "uovo" -> "uova"
-            "uova" -> "uovo"
-
-            else -> value
-        }
     }
 
     suspend fun getObjectsByBoxSync(
@@ -217,22 +143,19 @@ class ObjectRepositoryImpl(
         quantity:Int?
     ){
 
-        val normalized =
-            normalize(name)
-
         var type =
-            typeDao.getByName(normalized)
+            typeDao.getByName(name)
 
         if(type==null){
 
             typeDao.insert(
                 ObjectTypeEntity(
-                    name=normalized
+                    name=name
                 )
             )
 
             type =
-                typeDao.getByName(normalized)
+                typeDao.getByName(name)
         }
 
         dao.insert(
@@ -254,22 +177,19 @@ class ObjectRepositoryImpl(
         quantity:Int?
     ){
 
-        val normalized =
-            normalize(name)
-
         var type =
-            typeDao.getByName(normalized)
+            typeDao.getByName(name)
 
         if(type==null){
 
             typeDao.insert(
                 ObjectTypeEntity(
-                    name=normalized
+                    name=name
                 )
             )
 
             type =
-                typeDao.getByName(normalized)
+                typeDao.getByName(name)
         }
 
         dao.update(
