@@ -1,11 +1,11 @@
 package com.example.boxmanagernew.ui.categories
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.boxmanagernew.domain.model.Category
 import com.example.boxmanagernew.data.repository.CategoryRepositoryImpl
+import com.example.boxmanagernew.util.CanonicalNormalizer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -103,12 +103,11 @@ class CategoryViewModel(
         val query =
             _currentQuery.value
                 ?.trim()
-                ?.lowercase()
                 ?: ""
 
         if (
             query ==
-            FILTER_USED.lowercase()
+            FILTER_USED
         ) {
 
             result =
@@ -130,12 +129,21 @@ class CategoryViewModel(
             query.isNotBlank()
         ) {
 
+            val canonicalQuery =
+                CanonicalNormalizer.canonical(
+                    query
+                )
+
             result =
                 result.filter {
 
-                    it.name
-                        .lowercase()
-                        .contains(query)
+                    CanonicalNormalizer
+                        .canonical(
+                            it.name
+                        )
+                        .contains(
+                            canonicalQuery
+                        )
                 }
         }
 

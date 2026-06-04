@@ -9,6 +9,7 @@ import com.example.boxmanagernew.data.local.entity.CategoryEntity
 import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
 import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
 import com.example.boxmanagernew.domain.model.Box
+import com.example.boxmanagernew.util.CanonicalNormalizer
 import kotlinx.coroutines.launch
 
 class BoxViewModel(
@@ -278,12 +279,11 @@ class BoxViewModel(
             val query =
                 _currentQuery.value
                     ?.trim()
-                    ?.lowercase()
                     ?: ""
 
             if (
                 query ==
-                FILTER_EMPTY_BOXES.lowercase()
+                FILTER_EMPTY_BOXES
             ) {
 
                 val emptyIds =
@@ -301,6 +301,11 @@ class BoxViewModel(
                 query.isNotBlank()
             ) {
 
+                val canonicalQuery =
+                    CanonicalNormalizer.canonical(
+                        query
+                    )
+
                 result =
                     result.filter { box ->
 
@@ -309,23 +314,22 @@ class BoxViewModel(
                                 it.id ==
                                         box.categoryId
                             }?.name
-                                ?.lowercase()
                                 ?: ""
 
-                        box.name
-                            .lowercase()
-                            .contains(query)
+                        val searchable =
+                            CanonicalNormalizer.canonical(
+                                buildString {
+                                    append(box.name)
+                                    append(" ")
+                                    append(box.position)
+                                    append(" ")
+                                    append(category)
+                                }
+                            )
 
-                                ||
-
-                                box.position
-                                    .lowercase()
-                                    .contains(query)
-
-                                ||
-
-                                category
-                                    .contains(query)
+                        searchable.contains(
+                            canonicalQuery
+                        )
                     }
             }
 
