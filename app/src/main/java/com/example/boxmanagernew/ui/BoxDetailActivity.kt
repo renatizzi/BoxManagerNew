@@ -117,10 +117,13 @@ class BoxDetailActivity : BaseActivity() {
 
         val boxId =
             intent.getIntExtra("boxId", -1)
-
         val boxName =
             intent.getStringExtra("boxName")
                 ?: "Contenitore"
+
+        val initialSearchQuery =
+            intent.getStringExtra("searchQuery")
+                ?: ""
 
         textTitle.text =
             "Lista Oggetti"
@@ -184,7 +187,8 @@ class BoxDetailActivity : BaseActivity() {
                     ): T {
 
                         return BoxViewModel(
-                            boxRepo
+                            boxRepo,
+                            objectRepo
                         ) as T
                     }
                 }
@@ -253,8 +257,26 @@ class BoxDetailActivity : BaseActivity() {
 
         recycler.adapter =
             adapter
-
         objectViewModel.load(boxId)
+
+        if (initialSearchQuery.isNotBlank()) {
+
+            editSearch.setText(
+                initialSearchQuery
+            )
+
+            objectViewModel.filter(
+                initialSearchQuery
+            )
+
+            adapter.updateQuery(
+                initialSearchQuery
+            )
+
+            adapter.updateFilterState(
+                true
+            )
+        }
 
         setupObservers(
             boxId,

@@ -13,7 +13,8 @@ import com.example.boxmanagernew.util.CanonicalNormalizer
 import kotlinx.coroutines.launch
 
 class BoxViewModel(
-    private val repository: BoxRepositoryImpl
+    private val repository: BoxRepositoryImpl,
+    private val objectRepository: ObjectRepositoryImpl
 ) : ViewModel() {
 
     companion object {
@@ -306,6 +307,12 @@ class BoxViewModel(
                         query
                     )
 
+                val matchingBoxIds =
+                    objectRepository
+                        .searchObjects(query)
+                        .map { it.boxId }
+                        .toSet()
+
                 result =
                     result.filter { box ->
 
@@ -329,7 +336,10 @@ class BoxViewModel(
 
                         searchable.contains(
                             canonicalQuery
-                        )
+                        ) ||
+                                matchingBoxIds.contains(
+                                    box.id
+                                )
                     }
             }
 

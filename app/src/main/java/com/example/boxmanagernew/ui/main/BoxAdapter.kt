@@ -271,33 +271,34 @@ class BoxAdapter(
         val query =
             currentQuery.lowercase()
 
-        val catEnd =
-            category.length
+        val categoryStart = 0
+        val categoryMatch =
+            category.lowercase().indexOf(query)
 
-        if (category.lowercase().contains(query)) {
+        if (categoryMatch >= 0) {
 
             spannable.setSpan(
                 BackgroundColorSpan(Color.YELLOW),
-                0,
-                catEnd,
+                categoryStart + categoryMatch,
+                categoryStart + categoryMatch + query.length,
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
             )
         }
 
         if (position.isNotBlank()) {
 
-            val posStart =
+            val positionStart =
                 category.length + 3
 
-            val posEnd =
-                posStart + position.length
+            val positionMatch =
+                position.lowercase().indexOf(query)
 
-            if (position.lowercase().contains(query)) {
+            if (positionMatch >= 0) {
 
                 spannable.setSpan(
                     BackgroundColorSpan(Color.YELLOW),
-                    posStart,
-                    posEnd,
+                    positionStart + positionMatch,
+                    positionStart + positionMatch + query.length,
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
                 )
             }

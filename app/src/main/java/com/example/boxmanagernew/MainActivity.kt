@@ -69,11 +69,18 @@ class MainActivity : BaseActivity() {
 
         val repository =
             BoxRepositoryImpl(db.boxDao())
-
+        val objectRepository =
+            ObjectRepositoryImpl(
+                db.objectDao(),
+                db.objectTypeDao()
+            )
         initializeDefaultData(db)
         setupAdapter()
 
-        setupViewModel(repository)
+        setupViewModel(
+            repository,
+            objectRepository
+        )
 
         observeData(db)
 
@@ -230,9 +237,9 @@ class MainActivity : BaseActivity() {
     }
 
     private fun setupViewModel(
-        repository: BoxRepositoryImpl
+        repository: BoxRepositoryImpl,
+        objectRepository: ObjectRepositoryImpl
     ) {
-
         viewModel =
             ViewModelProvider(
                 this,
@@ -241,9 +248,9 @@ class MainActivity : BaseActivity() {
                     override fun <T : ViewModel> create(
                         modelClass: Class<T>
                     ): T {
-
                         return BoxViewModel(
-                            repository
+                            repository,
+                            objectRepository
                         ) as T
                     }
                 }
@@ -428,6 +435,11 @@ class MainActivity : BaseActivity() {
                 putExtra("boxId", box.id)
 
                 putExtra("boxName", box.name)
+
+                putExtra(
+                    "searchQuery",
+                    viewModel.currentQuery.value ?: ""
+                )
             }
         )
     }
