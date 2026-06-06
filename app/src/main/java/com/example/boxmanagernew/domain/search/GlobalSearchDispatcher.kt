@@ -7,6 +7,7 @@ import com.example.boxmanagernew.domain.search.model.SearchClarificationType
 import com.example.boxmanagernew.domain.search.model.SearchInterpretation
 import com.example.boxmanagernew.domain.search.model.SearchResponse
 import com.example.boxmanagernew.domain.search.model.SearchSatisfiability
+import com.example.boxmanagernew.domain.search.model.SearchSatisfiabilityInput
 
 class GlobalSearchDispatcher(
 
@@ -18,6 +19,9 @@ class GlobalSearchDispatcher(
 
     private val corePipeline: SearchCoreNormalizationPipeline =
         SearchCoreNormalizationPipeline(),
+
+    private val interpreter: SearchInterpreter =
+        SearchInterpreter(),
 
     private val archiveLookup: SearchArchiveLookup =
         SearchArchiveLookup(),
@@ -54,6 +58,12 @@ class GlobalSearchDispatcher(
             corePipeline.normalize(
                 tokenizedQuestion
             )
+
+        val interpretation =
+            interpreter.interpret(
+                coreNormalizationResult
+            )
+
         val lookupResult =
             archiveLookup.lookup(
                 searchText =
@@ -73,7 +83,7 @@ class GlobalSearchDispatcher(
 
         val satisfiabilityResult =
             evaluatorV2.evaluate(
-                com.example.boxmanagernew.domain.search.model.SearchSatisfiabilityInput(
+                SearchSatisfiabilityInput(
                     fulcrumResult =
                         fulcrumResult,
                     recognizedEntitiesResult =
@@ -119,7 +129,7 @@ class GlobalSearchDispatcher(
                 val analysis =
                     SearchAnalysisResult(
                         interpretation =
-                            SearchInterpretation.UNKNOWN,
+                            interpretation,
                         recognizedEntities =
                             recognizedEntitiesResult
                                 .recognizedEntities

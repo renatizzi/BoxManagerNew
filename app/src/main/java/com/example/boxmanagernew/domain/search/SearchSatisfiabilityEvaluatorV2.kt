@@ -11,20 +11,32 @@ class SearchSatisfiabilityEvaluatorV2 {
         input: SearchSatisfiabilityInput
     ): SearchSatisfiabilityResult {
 
-        val engineA =
+        val recognizedEntities =
+            input
+                .recognizedEntitiesResult
+                .recognizedEntities
+
+        val hasRecognizedEntities =
+            recognizedEntities.isNotEmpty()
+
+        val hasFulcrum =
             input.fulcrumResult.fulcrum != null
+
+        val satisfiableByEngineA =
+            hasRecognizedEntities &&
+                    hasFulcrum
 
         return SearchSatisfiabilityResult(
             finalClassification =
-                if (engineA) {
+                if (satisfiableByEngineA) {
                     SearchClassification.ENGINE_A
                 } else {
                     SearchClassification.ENGINE_B
                 },
             satisfiableByEngineA =
-                engineA,
+                satisfiableByEngineA,
             satisfiableByEngineB =
-                !engineA,
+                !satisfiableByEngineA,
             requiresClarification =
                 false,
             clarificationType =
