@@ -8,6 +8,14 @@ import com.example.boxmanagernew.domain.search.model.SearchSatisfiabilityResult
 
 class SearchSatisfiabilityEvaluatorV2 {
 
+    companion object {
+
+        private const val INDICATORS_WEIGHT = 25
+        private const val ENTITIES_WEIGHT = 25
+        private const val FULCRUM_WEIGHT = 25
+        private const val SATISFIABILITY_WEIGHT = 25
+    }
+
     fun evaluate(
         input: SearchSatisfiabilityInput
     ): SearchSatisfiabilityResult {
@@ -40,22 +48,7 @@ class SearchSatisfiabilityEvaluatorV2 {
         input: SearchSatisfiabilityInput
     ): SearchSatisfiabilityResult? {
 
-        val hasEntities =
-            input.recognizedEntitiesResult
-                .recognizedEntities
-                .isNotEmpty()
-
-        val hasFulcrum =
-            input.fulcrumResult.fulcrum != null
-
-        return if (
-            hasEntities &&
-            hasFulcrum
-        ) {
-            null
-        } else {
-            null
-        }
+        return null
     }
 
     private fun evaluateS2(
@@ -73,7 +66,8 @@ class SearchSatisfiabilityEvaluatorV2 {
 
         val dominantPattern =
             selectDominantPattern(
-                candidatePatterns
+                candidates = candidatePatterns,
+                input = input
             )
 
         return SearchSatisfiabilityResult(
@@ -148,35 +142,54 @@ class SearchSatisfiabilityEvaluatorV2 {
     }
 
     private fun selectDominantPattern(
-        candidates: List<SearchQuestionPattern>
+        candidates: List<SearchQuestionPattern>,
+        input: SearchSatisfiabilityInput
     ): SearchQuestionPattern {
 
-        val engineACandidates =
-            candidates.filter {
-                it.supportsEngineA
-            }
-
-        return engineACandidates
+        return candidates
             .maxByOrNull {
-                calculateEvidenceScore(it)
+                calculateEvidenceScore(
+                    pattern = it,
+                    input = input
+                )
             }
             ?: candidates.first()
     }
 
     private fun calculateEvidenceScore(
-        pattern: SearchQuestionPattern
+        pattern: SearchQuestionPattern,
+        input: SearchSatisfiabilityInput
     ): Int {
 
         var score = 0
 
         if (
-            pattern.supportsEngineA
+            findLexicalIndicators(input)
+                .isNotEmpty()
         ) {
-            score += 3
+            score += INDICATORS_WEIGHT
         }
 
-        score +=
-            pattern.involvedEntities.size
+        if (
+            pattern.involvedEntities
+                .isNotEmpty()
+        ) {
+            score += ENTITIES_WEIGHT
+        }
+
+        if (
+            pattern.dominantFulcrum != null
+        ) {
+            score += FULCRUM_WEIGHT
+        }
+
+        if (
+            pattern.supportsEngineA ||
+            pattern.classification ==
+            SearchClassification.ENGINE_B
+        ) {
+            score += SATISFIABILITY_WEIGHT
+        }
 
         return score
     }
