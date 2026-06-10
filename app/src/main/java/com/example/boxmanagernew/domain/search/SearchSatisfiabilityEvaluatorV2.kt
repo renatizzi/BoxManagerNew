@@ -1,9 +1,7 @@
 package com.example.boxmanagernew.domain.search
 
-import com.example.boxmanagernew.domain.search.model.CoreEntityType
 import com.example.boxmanagernew.domain.search.model.SearchClassification
 import com.example.boxmanagernew.domain.search.model.SearchClarificationType
-import com.example.boxmanagernew.domain.search.model.SearchFulcrum
 import com.example.boxmanagernew.domain.search.model.SearchQuestionPattern
 import com.example.boxmanagernew.domain.search.model.SearchSatisfiabilityInput
 import com.example.boxmanagernew.domain.search.model.SearchSatisfiabilityResult
@@ -42,122 +40,62 @@ class SearchSatisfiabilityEvaluatorV2 {
         input: SearchSatisfiabilityInput
     ): SearchSatisfiabilityResult? {
 
-        val recognizedEntities =
-            input
-                .recognizedEntitiesResult
+        val hasEntities =
+            input.recognizedEntitiesResult
                 .recognizedEntities
-
-        val hasRecognizedEntities =
-            recognizedEntities.isNotEmpty()
+                .isNotEmpty()
 
         val hasFulcrum =
             input.fulcrumResult.fulcrum != null
 
-        if (
-            !hasRecognizedEntities ||
-            !hasFulcrum
+        return if (
+            hasEntities &&
+            hasFulcrum
         ) {
-            return null
+            null
+        } else {
+            null
         }
-
-        return SearchSatisfiabilityResult(
-            finalClassification =
-                SearchClassification.ENGINE_A,
-            satisfiableByEngineA =
-                true,
-            satisfiableByEngineB =
-                false,
-            requiresClarification =
-                false,
-            clarificationType =
-                SearchClarificationType.NONE,
-            matchedPatternId =
-                findMatchingPattern(input)?.id
-        )
     }
 
     private fun evaluateS2(
         input: SearchSatisfiabilityInput
     ): SearchSatisfiabilityResult? {
 
-        val fulcrum =
-            input.fulcrumResult.fulcrum
-                ?: return null
-
-        val entityTypes =
-            input
-                .recognizedEntitiesResult
-                .recognizedEntities
-                .map {
-                    it.entityType
-                }
-                .toSet()
-
-        val isF1 =
-            fulcrum == SearchFulcrum.OBJECT &&
-                    entityTypes.contains(
-                        CoreEntityType.OBJECT
-                    )
-
-        val isF2 =
-            fulcrum == SearchFulcrum.BOX &&
-                    entityTypes.containsAll(
-                        setOf(
-                            CoreEntityType.BOX,
-                            CoreEntityType.OBJECT
-                        )
-                    )
-
-        val isF3 =
-            fulcrum == SearchFulcrum.LOCATION &&
-                    entityTypes.containsAll(
-                        setOf(
-                            CoreEntityType.LOCATION,
-                            CoreEntityType.BOX
-                        )
-                    )
-
-        val isF4 =
-            fulcrum == SearchFulcrum.BOX &&
-                    entityTypes.contains(
-                        CoreEntityType.OBJECT
-                    )
+        val candidatePatterns =
+            findCandidatePatterns(input)
 
         if (
-            !isF1 &&
-            !isF2 &&
-            !isF3 &&
-            !isF4
+            candidatePatterns.isEmpty()
         ) {
             return null
         }
 
+        val dominantPattern =
+            selectDominantPattern(
+                candidatePatterns
+            )
+
         return SearchSatisfiabilityResult(
             finalClassification =
-                SearchClassification.ENGINE_A,
+                dominantPattern.classification,
             satisfiableByEngineA =
-                true,
+                dominantPattern.supportsEngineA,
             satisfiableByEngineB =
-                false,
+                dominantPattern.classification ==
+                        SearchClassification.ENGINE_B,
             requiresClarification =
                 false,
             clarificationType =
                 SearchClarificationType.NONE,
             matchedPatternId =
-                findMatchingPattern(input)?.id
+                dominantPattern.id
         )
     }
 
     private fun evaluateS4(
         input: SearchSatisfiabilityInput
     ): SearchSatisfiabilityResult? {
-
-        /*
-         * S4 predisposta secondo Blueprint.
-         * Nessuna chiarificazione preventiva.
-         * Attivazione reale rinviata alla disponibilità
-         * di evidenze concorrenti sufficienti.
-         */
 
         return null
     }
@@ -181,26 +119,72 @@ class SearchSatisfiabilityEvaluatorV2 {
         )
     }
 
-    private fun findMatchingPattern(
+    private fun findCandidatePatterns(
         input: SearchSatisfiabilityInput
-    ): SearchQuestionPattern? {
+    ): List<SearchQuestionPattern> {
 
         val fulcrum =
             input.fulcrumResult.fulcrum
 
+        val entityTypes =
+            input
+                .recognizedEntitiesResult
+                .recognizedEntities
+                .map {
+                    it.entityType
+                }
+                .toSet()
+
         return input
             .matchedPatterns
-            .firstOrNull {
+            .filter { pattern ->
 
-                it.dominantFulcrum ==
-                        fulcrum
+                pattern.dominantFulcrum ==
+                        fulcrum &&
+                        entityTypes.containsAll(
+                            pattern.involvedEntities
+                        )
             }
+    }
+
+    private fun selectDominantPattern(
+        candidates: List<SearchQuestionPattern>
+    ): SearchQuestionPattern {
+
+        val engineACandidates =
+            candidates.filter {
+                it.supportsEngineA
+            }
+
+        return engineACandidates
+            .maxByOrNull {
+                calculateEvidenceScore(it)
+            }
+            ?: candidates.first()
+    }
+
+    private fun calculateEvidenceScore(
+        pattern: SearchQuestionPattern
+    ): Int {
+
+        var score = 0
+
+        if (
+            pattern.supportsEngineA
+        ) {
+            score += 3
+        }
+
+        score +=
+            pattern.involvedEntities.size
+
+        return score
     }
 
     private fun findLexicalIndicators(
         input: SearchSatisfiabilityInput
     ): List<String> {
 
-        return emptyList()
+        return input.lexicalIndicators
     }
 }

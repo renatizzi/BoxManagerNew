@@ -13,6 +13,30 @@ class SearchNormalizer {
                 .trim()
                 .lowercase()
                 .replace(
+                    Regex("\\bdov['’]è\\b"),
+                    "dove è"
+                )
+                .replace(
+                    Regex("\\bqual è\\b"),
+                    "quale è"
+                )
+                .replace(
+                    Regex("\\bcom['’]è\\b"),
+                    "come è"
+                )
+                .replace(
+                    Regex("\\bcos['’]è\\b"),
+                    "cosa è"
+                )
+                .replace(
+                    Regex("\\bc['’]è\\b"),
+                    "ci è"
+                )
+                .replace(
+                    Regex("\\bs['’]è\\b"),
+                    "si è"
+                )
+                .replace(
                     Regex("\\s+"),
                     " "
                 )

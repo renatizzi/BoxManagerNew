@@ -20,9 +20,10 @@ class SearchEngineA {
     ): SearchResponse {
 
         val operationalQuery =
-            extractOperationalQuery(
-                analysis.originalQuery
-            )
+            analysis.operationalQuery
+                ?: extractOperationalQuery(
+                    analysis.originalQuery
+                )
 
         return SearchResponse(
             success = true,
@@ -36,8 +37,39 @@ class SearchEngineA {
         query: String
     ): String {
 
-        return query
-            .lowercase()
+        val canonicalQuery =
+            query
+                .trim()
+                .lowercase()
+                .replace('’', '\'')
+                .replace('ʼ', '\'')
+                .replace('`', '\'')
+                .replace(
+                    Regex("\\bdov'\\s*è\\b"),
+                    "dove è"
+                )
+                .replace(
+                    Regex("\\bqual\\s+è\\b"),
+                    "quale è"
+                )
+                .replace(
+                    Regex("\\bcom'\\s*è\\b"),
+                    "come è"
+                )
+                .replace(
+                    Regex("\\bcos'\\s*è\\b"),
+                    "cosa è"
+                )
+                .replace(
+                    Regex("\\bc'\\s*è\\b"),
+                    "ci è"
+                )
+                .replace(
+                    Regex("\\bs'\\s*è\\b"),
+                    "si è"
+                )
+
+        return canonicalQuery
             .replace(
                 Regex("[^a-zàèéìòù0-9 ]"),
                 " "
