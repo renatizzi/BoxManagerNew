@@ -2,11 +2,20 @@ package com.example.boxmanagernew.domain.search.model
 
 data class SearchSatisfiabilityInput(
 
-    val fulcrumResult: SearchFulcrumResult,
+    val originalQuestion: String,
+
+    val interpretation:
+    SearchInterpretation?,
+
+    val fulcrumResult:
+    SearchFulcrumResult,
 
     val recognizedEntitiesResult:
     SearchRecognizedEntitiesResult,
 
     val matchedPatterns:
-    List<SearchQuestionPattern> = emptyList()
+    List<SearchQuestionPattern> = emptyList(),
+
+    val lexicalIndicators:
+    List<String> = emptyList()
 )

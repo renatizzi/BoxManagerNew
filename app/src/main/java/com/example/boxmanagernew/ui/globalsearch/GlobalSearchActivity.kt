@@ -163,7 +163,8 @@ class GlobalSearchActivity : BaseActivity() {
 
                             putExtra(
                                 "dashboardSearchQuery",
-                                question
+                                response.operationalQuery
+                                    ?: question
                             )
                         }
                     )

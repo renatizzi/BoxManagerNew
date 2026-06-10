@@ -74,6 +74,10 @@ class SearchSatisfiabilityEvaluator(
 
         return evaluatorV2.evaluate(
             SearchSatisfiabilityInput(
+                originalQuestion =
+                    analysis.originalQuery,
+                interpretation =
+                    analysis.interpretation,
                 fulcrumResult =
                     fulcrumResult,
                 recognizedEntitiesResult =

@@ -6,6 +6,8 @@ data class SearchResponse(
 
     val message: String,
 
+    val operationalQuery: String? = null,
+
     val requiresClarification: Boolean = false,
 
     val clarificationType: SearchClarificationType =

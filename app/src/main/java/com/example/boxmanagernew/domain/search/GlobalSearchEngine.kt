@@ -2,7 +2,6 @@ package com.example.boxmanagernew.domain.search
 
 import com.example.boxmanagernew.domain.search.model.CoreEntityType
 import com.example.boxmanagernew.domain.search.model.SearchAnalysisResult
-import com.example.boxmanagernew.domain.search.model.SearchClassification
 import com.example.boxmanagernew.domain.search.model.SearchFulcrum
 import com.example.boxmanagernew.domain.search.model.SearchInterpretation
 import com.example.boxmanagernew.domain.search.model.SearchQuestionPattern
@@ -123,13 +122,21 @@ class GlobalSearchEngine {
     ): SearchAnalysisResult {
 
         val pattern =
-            detectPattern(question)
+            detectPattern(
+                question
+            )
 
         return SearchAnalysisResult(
+            originalQuery =
+                question,
+            operationalQuery =
+                null,
             interpretation =
                 pattern?.interpretation,
             recognizedEntities =
-                identifyCoreEntities(question),
+                identifyCoreEntities(
+                    question
+                ),
             dominantFulcrum =
                 pattern?.dominantFulcrum,
             satisfiability =

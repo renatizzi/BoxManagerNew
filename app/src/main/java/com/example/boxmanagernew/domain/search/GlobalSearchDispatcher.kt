@@ -99,6 +99,10 @@ class GlobalSearchDispatcher(
         val satisfiabilityResult =
             evaluatorV2.evaluate(
                 SearchSatisfiabilityInput(
+                    originalQuestion =
+                        question,
+                    interpretation =
+                        interpretation,
                     fulcrumResult =
                         fulcrumResult,
                     recognizedEntitiesResult =
@@ -145,6 +149,10 @@ class GlobalSearchDispatcher(
 
                 val analysis =
                     SearchAnalysisResult(
+                        originalQuery =
+                            question,
+                        operationalQuery =
+                            null,
                         interpretation =
                             interpretation,
                         recognizedEntities =
