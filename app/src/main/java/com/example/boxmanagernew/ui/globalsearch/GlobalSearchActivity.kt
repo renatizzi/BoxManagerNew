@@ -143,6 +143,12 @@ class GlobalSearchActivity : BaseActivity() {
                         question
                     )
 
+                Toast.makeText(
+                    this,
+                    "DISPATCH => success=${response.success} message=${response.message}",
+                    Toast.LENGTH_LONG
+                ).show()
+
                 if (
                     response.success &&
                     response.message ==

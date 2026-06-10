@@ -5,5 +5,8 @@ data class SearchSatisfiabilityInput(
     val fulcrumResult: SearchFulcrumResult,
 
     val recognizedEntitiesResult:
-    SearchRecognizedEntitiesResult
+    SearchRecognizedEntitiesResult,
+
+    val matchedPatterns:
+    List<SearchQuestionPattern> = emptyList()
 )

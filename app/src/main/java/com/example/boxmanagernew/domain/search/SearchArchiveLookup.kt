@@ -4,7 +4,11 @@ import com.example.boxmanagernew.domain.search.model.SearchArchiveLookupResult
 import com.example.boxmanagernew.domain.search.model.SearchArchiveScope
 import com.example.boxmanagernew.domain.search.model.SearchArchiveScopeMatch
 
-class SearchArchiveLookup {
+class SearchArchiveLookup(
+
+    private val gateway: SearchArchiveGateway =
+        SearchArchiveGateway()
+) {
 
     fun lookup(
         searchText: String
@@ -24,15 +28,26 @@ class SearchArchiveLookup {
             )
         }
 
-        return SearchArchiveLookupResult(
-            scopeMatches =
-                listOf(
-                    SearchArchiveScopeMatch(
-                        scope =
-                            SearchArchiveScope.OBJECT,
-                        matchCount = 1
-                    )
+        val matches =
+            mutableListOf<SearchArchiveScopeMatch>()
+
+        if (
+            gateway.hasMatches(
+                normalized
+            )
+        ) {
+
+            matches.add(
+                SearchArchiveScopeMatch(
+                    scope =
+                        SearchArchiveScope.OBJECT,
+                    matchCount = 1
                 )
+            )
+        }
+
+        return SearchArchiveLookupResult(
+            scopeMatches = matches
         )
     }
 }

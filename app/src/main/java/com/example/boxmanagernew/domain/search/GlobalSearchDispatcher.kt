@@ -1,10 +1,8 @@
 package com.example.boxmanagernew.domain.search
 
-import com.example.boxmanagernew.domain.search.model.CoreEntityType
 import com.example.boxmanagernew.domain.search.model.SearchAnalysisResult
 import com.example.boxmanagernew.domain.search.model.SearchClassification
 import com.example.boxmanagernew.domain.search.model.SearchClarificationType
-import com.example.boxmanagernew.domain.search.model.SearchInterpretation
 import com.example.boxmanagernew.domain.search.model.SearchResponse
 import com.example.boxmanagernew.domain.search.model.SearchSatisfiability
 import com.example.boxmanagernew.domain.search.model.SearchSatisfiabilityInput
@@ -31,6 +29,9 @@ class GlobalSearchDispatcher(
 
     private val fulcrumResolver: SearchFulcrumResolver =
         SearchFulcrumResolver(),
+
+    private val questionRepository: SearchQuestionRepository =
+        SearchQuestionRepository(),
 
     private val evaluatorV2:
     SearchSatisfiabilityEvaluatorV2 =
@@ -71,6 +72,17 @@ class GlobalSearchDispatcher(
                         .normalizedQuestion
             )
 
+        if (
+            !lookupResult.hasMatches
+        ) {
+
+            return SearchResponse(
+                success = false,
+                message =
+                    "LOOKUP hasMatches=false matches=0"
+            )
+        }
+
         val recognizedEntitiesResult =
             entityRecognizer.recognize(
                 lookupResult
@@ -81,13 +93,18 @@ class GlobalSearchDispatcher(
                 recognizedEntitiesResult
             )
 
+        val matchedPatterns =
+            questionRepository.getPatterns()
+
         val satisfiabilityResult =
             evaluatorV2.evaluate(
                 SearchSatisfiabilityInput(
                     fulcrumResult =
                         fulcrumResult,
                     recognizedEntitiesResult =
-                        recognizedEntitiesResult
+                        recognizedEntitiesResult,
+                    matchedPatterns =
+                        matchedPatterns
                 )
             )
 
@@ -145,7 +162,9 @@ class GlobalSearchDispatcher(
                         classification =
                             SearchClassification
                                 .ENGINE_A,
-                        patternId = null
+                        patternId =
+                            satisfiabilityResult
+                                .matchedPatternId
                     )
 
                 engineA.execute(
