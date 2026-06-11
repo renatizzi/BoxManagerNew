@@ -135,9 +135,11 @@ class SearchSatisfiabilityEvaluatorV2 {
         var score = 0
 
         if (
-            input.lexicalIndicators.any {
-                pattern.variants.contains(it)
-            }
+            input.lexicalIndicatorGroups
+                .values
+                .any {
+                    it.isNotEmpty()
+                }
         ) {
             score += INDICATORS_WEIGHT
         }

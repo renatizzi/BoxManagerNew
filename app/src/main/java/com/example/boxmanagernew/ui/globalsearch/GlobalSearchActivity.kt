@@ -119,12 +119,6 @@ class GlobalSearchActivity : BaseActivity() {
                     return@setOnEditorActionListener true
                 }
 
-                Toast.makeText(
-                    this,
-                    "FASE A OK - Conferma intercettata",
-                    Toast.LENGTH_SHORT
-                ).show()
-
                 viewModel.addMessage(
                     SearchMessage(
                         text = question,
@@ -132,51 +126,69 @@ class GlobalSearchActivity : BaseActivity() {
                     )
                 )
 
-                Toast.makeText(
-                    this,
-                    "FASE B OK - Dispatcher chiamato",
-                    Toast.LENGTH_SHORT
-                ).show()
-
                 val response =
                     dispatcher.dispatch(
                         question
                     )
 
-                Toast.makeText(
-                    this,
-                    "DISPATCH => success=${response.success} message=${response.message}",
-                    Toast.LENGTH_LONG
-                ).show()
+                when {
 
-                if (
-                    response.success &&
-                    response.message ==
-                    "ENGINE_A_RESULT"
-                ) {
+                    response.requiresClarification -> {
 
-                    startActivity(
-                        Intent(
+                        Toast.makeText(
                             this,
-                            SearchResultActivity::class.java
-                        ).apply {
+                            "RICHIESTA_DA_PRECISARE",
+                            Toast.LENGTH_LONG
+                        ).show()
 
-                            putExtra(
-                                "dashboardSearchQuery",
-                                response.operationalQuery
-                                    ?: question
+                        viewModel.addMessage(
+                            SearchMessage(
+                                text = response.message,
+                                fromUser = false
                             )
-                        }
-                    )
-
-                } else {
-
-                    viewModel.addMessage(
-                        SearchMessage(
-                            text = response.message,
-                            fromUser = false
                         )
-                    )
+                    }
+
+                    response.success &&
+                            response.message ==
+                            "ENGINE_A_RESULT" -> {
+
+                        Toast.makeText(
+                            this,
+                            "DELEGA_STANDARD",
+                            Toast.LENGTH_LONG
+                        ).show()
+
+                        startActivity(
+                            Intent(
+                                this,
+                                SearchResultActivity::class.java
+                            ).apply {
+
+                                putExtra(
+                                    "dashboardSearchQuery",
+                                    response.operationalQuery
+                                        ?: question
+                                )
+                            }
+                        )
+                    }
+
+                    else -> {
+
+                        Toast.makeText(
+                            this,
+                            "NON_GESTITA",
+                            Toast.LENGTH_LONG
+                        ).show()
+
+                        viewModel.addMessage(
+                            SearchMessage(
+                                text = response.message,
+                                fromUser = false
+                            )
+                        )
+                    }
                 }
 
                 editQuestion.setText("")

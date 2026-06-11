@@ -17,5 +17,8 @@ data class SearchSatisfiabilityInput(
     List<SearchQuestionPattern> = emptyList(),
 
     val lexicalIndicators:
-    List<String> = emptyList()
+    List<String> = emptyList(),
+
+    val lexicalIndicatorGroups:
+    Map<String, Set<String>> = emptyMap()
 )

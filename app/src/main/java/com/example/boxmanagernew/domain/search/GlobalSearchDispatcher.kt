@@ -18,6 +18,10 @@ class GlobalSearchDispatcher(
     private val corePipeline: SearchCoreNormalizationPipeline =
         SearchCoreNormalizationPipeline(),
 
+    private val lexicalIndicatorMatrix:
+    SearchLexicalIndicatorMatrix =
+        SearchLexicalIndicatorMatrix(),
+
     private val interpreter: SearchInterpreter =
         SearchInterpreter(),
 
@@ -60,6 +64,13 @@ class GlobalSearchDispatcher(
                 tokenizedQuestion
             )
 
+        val lexicalIndicatorGroups =
+            lexicalIndicatorMatrix
+                .findIndicators(
+                    coreNormalizationResult
+                        .normalizedQuestion
+                )
+
         val interpretation =
             interpreter.interpret(
                 coreNormalizationResult
@@ -96,21 +107,6 @@ class GlobalSearchDispatcher(
         val matchedPatterns =
             questionRepository.getPatterns()
 
-        val lexicalIndicators =
-            matchedPatterns
-                .flatMap {
-                    it.variants
-                }
-                .distinct()
-                .filter { indicator ->
-
-                    normalizedQuestion
-                        .normalizedQuestion
-                        .contains(
-                            indicator.lowercase()
-                        )
-                }
-
         val satisfiabilityResult =
             evaluatorV2.evaluate(
                 SearchSatisfiabilityInput(
@@ -125,7 +121,9 @@ class GlobalSearchDispatcher(
                     matchedPatterns =
                         matchedPatterns,
                     lexicalIndicators =
-                        lexicalIndicators
+                        emptyList(),
+                    lexicalIndicatorGroups =
+                        lexicalIndicatorGroups
                 )
             )
 

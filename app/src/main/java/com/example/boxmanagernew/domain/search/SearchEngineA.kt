@@ -3,12 +3,17 @@ package com.example.boxmanagernew.domain.search
 import com.example.boxmanagernew.domain.search.model.SearchAnalysisResult
 import com.example.boxmanagernew.domain.search.model.SearchResponse
 
-class SearchEngineA {
+class SearchEngineA(
+
+    private val lexicalMatrix:
+    SearchLexicalIndicatorMatrix =
+        SearchLexicalIndicatorMatrix()
+) {
 
     private val stopWords =
         setOf(
             "a","ad","al","alla","allo","che","con","da","del",
-            "della","dello","dei","degli","delle","di","dove",
+            "della","dello","dei","degli","delle","di",
             "e","gli","ha","hai","ho","i","il","in","l","la",
             "le","li","lo","messo","nel","nella","nello","nei",
             "negli","nelle","per","quale","quali","quanto",
@@ -45,7 +50,7 @@ class SearchEngineA {
                 .replace('ʼ', '\'')
                 .replace('`', '\'')
                 .replace(
-                    Regex("\\bdov'\\s*è\\b"),
+                    Regex("\\bdov'\\s*[èe]'?\\b"),
                     "dove è"
                 )
                 .replace(
@@ -53,7 +58,15 @@ class SearchEngineA {
                     "quale è"
                 )
                 .replace(
+                    Regex("\\bqual\\s+e'\\b"),
+                    "quale è"
+                )
+                .replace(
                     Regex("\\bcom'\\s*è\\b"),
+                    "come è"
+                )
+                .replace(
+                    Regex("\\bcom'\\s*e'\\b"),
                     "come è"
                 )
                 .replace(
@@ -61,13 +74,36 @@ class SearchEngineA {
                     "cosa è"
                 )
                 .replace(
+                    Regex("\\bcos'\\s*e'\\b"),
+                    "cosa è"
+                )
+                .replace(
                     Regex("\\bc'\\s*è\\b"),
+                    "ci è"
+                )
+                .replace(
+                    Regex("\\bc'\\s*e'\\b"),
                     "ci è"
                 )
                 .replace(
                     Regex("\\bs'\\s*è\\b"),
                     "si è"
                 )
+                .replace(
+                    Regex("\\bs'\\s*e'\\b"),
+                    "si è"
+                )
+
+        val indicators =
+            lexicalMatrix.findIndicators(
+                canonicalQuery
+            )
+
+        val simpleSearchIndicators =
+            indicators[
+                SearchLexicalIndicatorMatrix
+                    .SIMPLE_SEARCH
+            ] ?: emptySet()
 
         return canonicalQuery
             .replace(
@@ -80,6 +116,9 @@ class SearchEngineA {
             }
             .filterNot {
                 stopWords.contains(it)
+            }
+            .filterNot {
+                simpleSearchIndicators.contains(it)
             }
             .joinToString(" ")
     }
