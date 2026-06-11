@@ -96,6 +96,21 @@ class GlobalSearchDispatcher(
         val matchedPatterns =
             questionRepository.getPatterns()
 
+        val lexicalIndicators =
+            matchedPatterns
+                .flatMap {
+                    it.variants
+                }
+                .distinct()
+                .filter { indicator ->
+
+                    normalizedQuestion
+                        .normalizedQuestion
+                        .contains(
+                            indicator.lowercase()
+                        )
+                }
+
         val satisfiabilityResult =
             evaluatorV2.evaluate(
                 SearchSatisfiabilityInput(
@@ -108,7 +123,9 @@ class GlobalSearchDispatcher(
                     recognizedEntitiesResult =
                         recognizedEntitiesResult,
                     matchedPatterns =
-                        matchedPatterns
+                        matchedPatterns,
+                    lexicalIndicators =
+                        lexicalIndicators
                 )
             )
 

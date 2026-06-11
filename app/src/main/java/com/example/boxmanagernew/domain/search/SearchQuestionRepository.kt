@@ -19,12 +19,10 @@ class SearchQuestionRepository {
                 id = "PATTERN_001",
                 variants = listOf(
                     "cerca",
-                    "dove ho messo",
                     "dov'è",
                     "dove si trova",
                     "in quale contenitore trovo",
-                    "trova",
-                    "dove ho conservato"
+                    "trova"
                 ),
                 involvedEntities = setOf(
                     CoreEntityType.OBJECT
@@ -128,7 +126,6 @@ class SearchQuestionRepository {
             SearchQuestionPattern(
                 id = "PATTERN_006",
                 variants = listOf(
-                    "dove ho conservato",
                     "in quali luoghi ho conservato",
                     "elenco dei posti dove sono conservati"
                 ),
