@@ -11,6 +11,66 @@ object CanonicalNormalizer {
             "cpu","gpu","lcd","oled"
         )
 
+    private val irregulars =
+        mapOf(
+            "mano" to "mani",
+            "mani" to "mano",
+
+            "uomo" to "uomini",
+            "uomini" to "uomo",
+
+            "uovo" to "uova",
+            "uova" to "uovo",
+
+            "dito" to "dita",
+            "dita" to "dito",
+
+            "braccio" to "braccia",
+            "braccia" to "braccio",
+
+            "ginocchio" to "ginocchia",
+            "ginocchia" to "ginocchio",
+
+            "osso" to "ossa",
+            "ossa" to "osso",
+
+            "labbro" to "labbra",
+            "labbra" to "labbro",
+
+            "lenzuolo" to "lenzuola",
+            "lenzuola" to "lenzuolo",
+
+            "muro" to "mura",
+            "mura" to "muro",
+
+            "urlo" to "urla",
+            "urla" to "urlo",
+
+            "grido" to "grida",
+            "grida" to "grido",
+
+            "forbice" to "forbici",
+            "forbici" to "forbice",
+
+            "occhiale" to "occhiali",
+            "occhiali" to "occhiale",
+
+            "pantalone" to "pantaloni",
+            "pantaloni" to "pantalone",
+
+            "chiave" to "chiavi",
+            "chiavi" to "chiave",
+
+            "camicia" to "camicie",
+            "camicie" to "camicia",
+
+            "valigia" to "valigie",
+            "valigie" to "valigia",
+
+            "ciliegia" to "ciliegie",
+            "ciliegie" to "ciliegia"
+        )
+
     fun canonical(
         value: String
     ): String {
@@ -50,26 +110,60 @@ object CanonicalNormalizer {
         value: String
     ): String {
 
+        val normalized =
+            value.lowercase()
+
         if (
-            value.length < 5 ||
-            excluded.contains(value)
-        ) return value
+            normalized.length < 5 ||
+            excluded.contains(normalized)
+        ) {
+            return normalized
+        }
+
+        irregulars[normalized]?.let {
+            return it
+        }
 
         return when {
 
-            value.endsWith("a") ->
-                value.dropLast(1) + "e"
+            normalized.endsWith("a") ->
+                normalized.dropLast(1) + "e"
 
-            value.endsWith("e") ->
-                value.dropLast(1) + "i"
+            normalized.endsWith("e") -> {
 
-            value.endsWith("o") ->
-                value.dropLast(1) + "i"
+                val singularA =
+                    normalized.dropLast(1) + "a"
 
-            value.endsWith("i") ->
-                value.dropLast(1) + "e"
+                if (
+                    singularA.length >= 5
+                ) {
+                    singularA
+                } else {
+                    normalized.dropLast(1) + "i"
+                }
+            }
 
-            else -> value
+            normalized.endsWith("o") ->
+                normalized.dropLast(1) + "i"
+
+            normalized.endsWith("i") -> {
+
+                val singularO =
+                    normalized.dropLast(1) + "o"
+
+                val singularE =
+                    normalized.dropLast(1) + "e"
+
+                if (
+                    singularO.length >= 5
+                ) {
+                    singularO
+                } else {
+                    singularE
+                }
+            }
+
+            else -> normalized
         }
     }
 
@@ -77,18 +171,8 @@ object CanonicalNormalizer {
         value: String
     ): String {
 
-        return when (value) {
-
-            "mano" -> "mani"
-            "mani" -> "mano"
-
-            "uomo" -> "uomini"
-            "uomini" -> "uomo"
-
-            "uovo" -> "uova"
-            "uova" -> "uovo"
-
-            else -> value
-        }
+        return irregulars[
+            value.lowercase()
+        ] ?: value
     }
 }
