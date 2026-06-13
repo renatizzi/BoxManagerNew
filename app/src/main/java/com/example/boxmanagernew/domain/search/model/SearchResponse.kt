@@ -11,5 +11,7 @@ data class SearchResponse(
     val requiresClarification: Boolean = false,
 
     val clarificationType: SearchClarificationType =
-        SearchClarificationType.NONE
+        SearchClarificationType.NONE,
+
+    val debugMarker: String? = null
 )

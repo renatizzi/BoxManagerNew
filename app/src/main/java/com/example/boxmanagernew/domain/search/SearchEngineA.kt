@@ -34,7 +34,9 @@ class SearchEngineA(
             success = true,
             message = "ENGINE_A_RESULT",
             operationalQuery =
-                operationalQuery
+                operationalQuery,
+            debugMarker =
+                "[M6] OPQ=$operationalQuery"
         )
     }
 

@@ -40,7 +40,15 @@ class SearchRouter {
             clarificationType =
                 satisfiabilityResult.clarificationType,
             isFallback =
-                isFallback
+                isFallback,
+            debugMarker =
+                "[M5] " +
+                        "ROUTING=$engineType " +
+                        "FALLBACK=$isFallback " +
+                        "CLARIFY=${
+                            satisfiabilityResult
+                                .requiresClarification
+                        }"
         )
     }
 }

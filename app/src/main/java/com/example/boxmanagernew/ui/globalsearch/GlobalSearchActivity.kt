@@ -119,6 +119,12 @@ class GlobalSearchActivity : BaseActivity() {
                     return@setOnEditorActionListener true
                 }
 
+                Toast.makeText(
+                    this,
+                    "[M1] QUESTION=$question",
+                    Toast.LENGTH_LONG
+                ).show()
+
                 viewModel.addMessage(
                     SearchMessage(
                         text = question,
@@ -130,6 +136,15 @@ class GlobalSearchActivity : BaseActivity() {
                     dispatcher.dispatch(
                         question
                     )
+
+                response.debugMarker?.let {
+
+                    Toast.makeText(
+                        this,
+                        it,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
 
                 when {
 

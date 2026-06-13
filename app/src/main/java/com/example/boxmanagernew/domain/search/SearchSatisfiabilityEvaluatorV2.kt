@@ -45,6 +45,78 @@ class SearchSatisfiabilityEvaluatorV2 {
         return evaluateS3()
     }
 
+    fun buildM4Marker(
+        input: SearchSatisfiabilityInput,
+        pattern: SearchQuestionPattern
+    ): String {
+
+        val indicatorsScore =
+            if (
+                input.lexicalIndicatorGroups
+                    .values
+                    .any {
+                        it.isNotEmpty()
+                    }
+            ) {
+                INDICATORS_WEIGHT
+            } else {
+                0
+            }
+
+        val recognizedEntities =
+            input
+                .recognizedEntitiesResult
+                .recognizedEntities
+                .map {
+                    it.entityType
+                }
+                .toSet()
+
+        val entitiesScore =
+            if (
+                recognizedEntities.containsAll(
+                    pattern.involvedEntities
+                )
+            ) {
+                ENTITIES_WEIGHT
+            } else {
+                0
+            }
+
+        val fulcrumScore =
+            if (
+                input.fulcrumResult.fulcrum ==
+                pattern.dominantFulcrum
+            ) {
+                FULCRUM_WEIGHT
+            } else {
+                0
+            }
+
+        val satisfiabilityScore =
+            if (
+                pattern.supportsEngineA ||
+                pattern.classification ==
+                SearchClassification.ENGINE_B
+            ) {
+                SATISFIABILITY_WEIGHT
+            } else {
+                0
+            }
+
+        return "[M4] " +
+                "IND=$indicatorsScore " +
+                "ENT=$entitiesScore " +
+                "FUL=$fulcrumScore " +
+                "SAT=$satisfiabilityScore " +
+                "TOT=${
+                    indicatorsScore +
+                            entitiesScore +
+                            fulcrumScore +
+                            satisfiabilityScore
+                }"
+    }
+
     private fun evaluateS1(
         input: SearchSatisfiabilityInput
     ): SearchSatisfiabilityResult? {

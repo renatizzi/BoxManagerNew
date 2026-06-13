@@ -41,6 +41,9 @@ class GlobalSearchDispatcher(
     SearchSatisfiabilityEvaluatorV2 =
         SearchSatisfiabilityEvaluatorV2(),
 
+    private val router: SearchRouter =
+        SearchRouter(),
+
     private val engineA: SearchEngineA =
         SearchEngineA()
 ) {
@@ -76,6 +79,12 @@ class GlobalSearchDispatcher(
                 coreNormalizationResult
             )
 
+        val m3Marker =
+            interpreter.buildM3Marker(
+                coreNormalizationResult,
+                interpretation
+            )
+
         val lookupResult =
             archiveLookup.lookup(
                 searchText =
@@ -90,7 +99,9 @@ class GlobalSearchDispatcher(
             return SearchResponse(
                 success = false,
                 message =
-                    "LOOKUP hasMatches=false matches=0"
+                    "LOOKUP hasMatches=false matches=0",
+                debugMarker =
+                    m3Marker
             )
         }
 
@@ -107,25 +118,43 @@ class GlobalSearchDispatcher(
         val matchedPatterns =
             questionRepository.getPatterns()
 
+        val satisfiabilityInput =
+            SearchSatisfiabilityInput(
+                originalQuestion =
+                    question,
+                interpretation =
+                    interpretation,
+                fulcrumResult =
+                    fulcrumResult,
+                recognizedEntitiesResult =
+                    recognizedEntitiesResult,
+                matchedPatterns =
+                    matchedPatterns,
+                lexicalIndicators =
+                    emptyList(),
+                lexicalIndicatorGroups =
+                    lexicalIndicatorGroups
+            )
+
         val satisfiabilityResult =
             evaluatorV2.evaluate(
-                SearchSatisfiabilityInput(
-                    originalQuestion =
-                        question,
-                    interpretation =
-                        interpretation,
-                    fulcrumResult =
-                        fulcrumResult,
-                    recognizedEntitiesResult =
-                        recognizedEntitiesResult,
-                    matchedPatterns =
-                        matchedPatterns,
-                    lexicalIndicators =
-                        emptyList(),
-                    lexicalIndicatorGroups =
-                        lexicalIndicatorGroups
-                )
+                satisfiabilityInput
             )
+
+        val dominantPattern =
+            matchedPatterns.firstOrNull()
+
+        val m4Marker =
+            if (
+                dominantPattern != null
+            ) {
+                evaluatorV2.buildM4Marker(
+                    satisfiabilityInput,
+                    dominantPattern
+                )
+            } else {
+                "[M4] IND=0 ENT=0 FUL=0 SAT=0 TOT=0"
+            }
 
         if (
             recognizedEntitiesResult
@@ -136,7 +165,9 @@ class GlobalSearchDispatcher(
             return SearchResponse(
                 success = false,
                 message =
-                    "Non ho compreso la richiesta."
+                    "Non ho compreso la richiesta.",
+                debugMarker =
+                    m4Marker
             )
         }
 
@@ -151,7 +182,9 @@ class GlobalSearchDispatcher(
                     "Puoi formulare la richiesta in modo più preciso?",
                 requiresClarification = true,
                 clarificationType =
-                    SearchClarificationType.GENERIC_REQUEST
+                    SearchClarificationType.GENERIC_REQUEST,
+                debugMarker =
+                    m4Marker
             )
         }
 
@@ -190,6 +223,11 @@ class GlobalSearchDispatcher(
                                 .matchedPatternId
                     )
 
+                router.route(
+                    analysis,
+                    satisfiabilityResult
+                )
+
                 engineA.execute(
                     analysis
                 )
@@ -199,7 +237,9 @@ class GlobalSearchDispatcher(
                 SearchResponse(
                     success = false,
                     message =
-                        "Motore B non ancora disponibile."
+                        "Motore B non ancora disponibile.",
+                    debugMarker =
+                        m4Marker
                 )
         }
     }

@@ -10,5 +10,7 @@ data class SearchRoutingResult(
 
     val clarificationType: SearchClarificationType,
 
-    val isFallback: Boolean
+    val isFallback: Boolean,
+
+    val debugMarker: String? = null
 )

@@ -1,5 +1,6 @@
 package com.example.boxmanagernew.data.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.example.boxmanagernew.data.local.dao.ObjectDao
@@ -79,43 +80,52 @@ class ObjectRepositoryImpl(
                             it !in ignoredWords
                 }
 
-        if (tokens.isEmpty())
+        if (tokens.isEmpty()) {
             return emptyList()
+        }
 
-        return dao.searchObjects()
-            .filter { row ->
+        val results =
+            dao.searchObjects()
+                .filter { row ->
 
-                val searchable =
-                    CanonicalNormalizer.canonical(
-                        buildString {
-                            append(row.objectName)
-                            append(" ")
-                            append(row.description ?: "")
-                        }
-                    )
-
-                tokens.all { token ->
-
-                    val singular =
-                        CanonicalNormalizer
-                            .singularPluralVariant(token)
-
-                    val irregular =
-                        CanonicalNormalizer
-                            .irregularVariant(token)
-
-                    val variants =
-                        setOf(
-                            CanonicalNormalizer.canonical(token),
-                            CanonicalNormalizer.canonical(singular),
-                            CanonicalNormalizer.canonical(irregular)
+                    val searchable =
+                        CanonicalNormalizer.canonical(
+                            buildString {
+                                append(row.objectName)
+                                append(" ")
+                                append(row.description ?: "")
+                            }
                         )
 
-                    variants.any {
-                        searchable.contains(it)
+                    tokens.all { token ->
+
+                        val singular =
+                            CanonicalNormalizer
+                                .singularPluralVariant(token)
+
+                        val irregular =
+                            CanonicalNormalizer
+                                .irregularVariant(token)
+
+                        val variants =
+                            setOf(
+                                CanonicalNormalizer.canonical(token),
+                                CanonicalNormalizer.canonical(singular),
+                                CanonicalNormalizer.canonical(irregular)
+                            )
+
+                        variants.any {
+                            searchable.contains(it)
+                        }
                     }
                 }
-            }
+
+        Log.d(
+            "BOX_M8",
+            "[M8] TOKENS=${tokens.size} MATCHES=${results.size}"
+        )
+
+        return results
     }
 
     suspend fun getObjectsByBoxSync(

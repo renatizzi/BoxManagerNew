@@ -1,5 +1,6 @@
 package com.example.boxmanagernew.ui.search
 
+import android.widget.Toast
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
@@ -65,8 +66,16 @@ class SearchResultActivity : BaseActivity() {
                     db.objectDao(),
                     db.objectTypeDao()
                 )
+            val results =
+                repo.searchObjects(query)
 
-            repo.searchObjects(query)
+            Toast.makeText(
+                this@SearchResultActivity,
+                "[M7] QUERY=$query RESULTS=${results.size}",
+                Toast.LENGTH_LONG
+            ).show()
+
+            results
                 .sortedBy {
                     it.boxName.lowercase()
                 }
@@ -93,7 +102,10 @@ class SearchResultActivity : BaseActivity() {
     ) {
 
         val first = items.first()
-
+        android.util.Log.d(
+            "BOX_M9",
+            "[M9] GROUPS=1 ITEMS=${items.size}"
+        )
         val category =
             db.categoryDao()
                 .getCategoryByName(
@@ -265,7 +277,20 @@ class SearchResultActivity : BaseActivity() {
     ): CardView {
 
         return CardView(this).apply {
-
+            android.util.Log.d(
+                "BOX_M10",
+                "[M10] CARDS=1 HIGHLIGHT=${
+                    query.lowercase()
+                        .split("\\s+".toRegex())
+                        .filter { it.length >= 3 }
+                        .any {
+                            item.objectName.lowercase().contains(it) ||
+                                    (item.description ?: "")
+                                        .lowercase()
+                                        .contains(it)
+                        }
+                }"
+            )
             radius = 12f
             useCompatPadding = true
 

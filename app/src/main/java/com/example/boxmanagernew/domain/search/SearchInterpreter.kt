@@ -48,4 +48,14 @@ class SearchInterpreter {
             }
         }
     }
+
+    fun buildM3Marker(
+        result: SearchCoreNormalizationResult,
+        interpretation: SearchInterpretation
+    ): String {
+
+        return "[M3] " +
+                "QUESTION=${result.normalizedQuestion} " +
+                "INTERPRETATION=$interpretation"
+    }
 }
