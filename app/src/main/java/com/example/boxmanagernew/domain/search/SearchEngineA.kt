@@ -15,9 +15,60 @@ class SearchEngineA(
             "a","ad","al","alla","allo","che","con","da","del",
             "della","dello","dei","degli","delle","di",
             "e","gli","ha","hai","ho","i","il","in","l","la",
-            "le","li","lo","messo","nel","nella","nello","nei",
+            "le","li","lo","nel","nella","nello","nei",
             "negli","nelle","per","quale","quali","quanto",
             "quanti","sei","si","sono","su","tra","un","una","uno"
+        )
+
+    private val archivalVerbs =
+        setOf(
+            "mettere",
+            "messo",
+            "messa",
+            "messi",
+            "messe",
+
+            "conservare",
+            "conservato",
+            "conservata",
+            "conservati",
+            "conservate",
+
+            "riporre",
+            "riposto",
+            "riposta",
+            "riposti",
+            "riposte",
+
+            "collocare",
+            "collocato",
+            "collocata",
+            "collocati",
+            "collocate",
+
+            "depositare",
+            "depositato",
+            "depositata",
+            "depositati",
+            "depositate",
+
+            "sistemare",
+            "sistemato",
+            "sistemata",
+            "sistemati",
+            "sistemate",
+
+            "custodire",
+            "custodito",
+            "custodita",
+            "custoditi",
+            "custodite",
+
+            "archiviare",
+            "archiviato",
+            "archiviata",
+            "archiviati",
+            "archiviate"
         )
 
     fun execute(
@@ -118,6 +169,9 @@ class SearchEngineA(
             }
             .filterNot {
                 stopWords.contains(it)
+            }
+            .filterNot {
+                archivalVerbs.contains(it)
             }
             .filterNot {
                 simpleSearchIndicators.contains(it)
