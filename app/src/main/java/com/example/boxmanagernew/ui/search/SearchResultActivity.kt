@@ -66,12 +66,13 @@ class SearchResultActivity : BaseActivity() {
                     db.objectDao(),
                     db.objectTypeDao()
                 )
+
             val results =
                 repo.searchObjects(query)
 
             Toast.makeText(
                 this@SearchResultActivity,
-                "[M7] QUERY=$query RESULTS=${results.size}",
+                "[M9] QUERY=$query RESULTS=${results.size}",
                 Toast.LENGTH_LONG
             ).show()
 
@@ -102,10 +103,12 @@ class SearchResultActivity : BaseActivity() {
     ) {
 
         val first = items.first()
+
         android.util.Log.d(
             "BOX_M9",
             "[M9] GROUPS=1 ITEMS=${items.size}"
         )
+
         val category =
             db.categoryDao()
                 .getCategoryByName(
@@ -277,6 +280,7 @@ class SearchResultActivity : BaseActivity() {
     ): CardView {
 
         return CardView(this).apply {
+
             android.util.Log.d(
                 "BOX_M10",
                 "[M10] CARDS=1 HIGHLIGHT=${
@@ -291,6 +295,7 @@ class SearchResultActivity : BaseActivity() {
                         }
                 }"
             )
+
             radius = 12f
             useCompatPadding = true
 

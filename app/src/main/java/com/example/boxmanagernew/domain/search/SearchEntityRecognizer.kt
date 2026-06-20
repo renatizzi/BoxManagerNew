@@ -43,4 +43,16 @@ class SearchEntityRecognizer {
                 recognizedEntities
         )
     }
+
+    fun buildT2Marker(
+        result: SearchRecognizedEntitiesResult
+    ): String {
+
+        return "[T2] ENTITIES=" +
+                result.recognizedEntities.joinToString(
+                    separator = "|"
+                ) {
+                    it.entityType.name
+                }
+    }
 }

@@ -86,8 +86,10 @@ class SearchEngineA(
             message = "ENGINE_A_RESULT",
             operationalQuery =
                 operationalQuery,
+            dominantFulcrum =
+                analysis.dominantFulcrum,
             debugMarker =
-                "[M6] OPQ=$operationalQuery"
+                "[M9] QUERY=$operationalQuery"
         )
     }
 

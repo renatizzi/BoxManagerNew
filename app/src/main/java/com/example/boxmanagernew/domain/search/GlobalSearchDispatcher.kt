@@ -79,11 +79,11 @@ class GlobalSearchDispatcher(
                 coreNormalizationResult
             )
 
-        val m3Marker =
-            interpreter.buildM3Marker(
-                coreNormalizationResult,
-                interpretation
-            )
+        val d1Marker =
+            "[D1] INTERPRETATION=$interpretation"
+
+        val d2Marker =
+            "[D2] INTERPRETATION_REASON=TO_BE_IMPLEMENTED"
 
         val lookupResult =
             archiveLookup.lookup(
@@ -101,7 +101,12 @@ class GlobalSearchDispatcher(
                 message =
                     "LOOKUP hasMatches=false matches=0",
                 debugMarker =
-                    m3Marker
+                    listOf(
+                        "[M1] QUESTION=${coreNormalizationResult.normalizedQuestion}",
+                        "[M2] INDICATORS=$lexicalIndicatorGroups",
+                        d1Marker,
+                        d2Marker
+                    ).joinToString("\n")
             )
         }
 
@@ -110,10 +115,22 @@ class GlobalSearchDispatcher(
                 lookupResult
             )
 
+        val m3Marker =
+            "[M3] ENTITIES=${
+                recognizedEntitiesResult
+                    .recognizedEntities
+            }"
+
         val fulcrumResult =
             fulcrumResolver.resolve(
                 recognizedEntitiesResult
             )
+
+        val m5Marker =
+            "[M5] FULCRUM=${fulcrumResult.fulcrum}"
+
+        val d3Marker =
+            "[D3] FULCRUM_REASON=${fulcrumResult.reason}"
 
         val matchedPatterns =
             questionRepository.getPatterns()
@@ -141,20 +158,18 @@ class GlobalSearchDispatcher(
                 satisfiabilityInput
             )
 
-        val dominantPattern =
-            matchedPatterns.firstOrNull()
-
         val m4Marker =
-            if (
-                dominantPattern != null
-            ) {
-                evaluatorV2.buildM4Marker(
-                    satisfiabilityInput,
-                    dominantPattern
-                )
-            } else {
-                "[M4] IND=0 ENT=0 FUL=0 SAT=0 TOT=0"
-            }
+            "[M4] PATTERN=${satisfiabilityResult.matchedPatternId}"
+
+        val m6Marker =
+            "[M6] SATISFIABILITY=${
+                satisfiabilityResult.satisfiableByEngineA
+            }"
+
+        val m7Marker =
+            "[M7] CLASSIFICATION=${
+                satisfiabilityResult.finalClassification
+            }"
 
         if (
             recognizedEntitiesResult
@@ -167,7 +182,18 @@ class GlobalSearchDispatcher(
                 message =
                     "Non ho compreso la richiesta.",
                 debugMarker =
-                    m4Marker
+                    listOf(
+                        "[M1] QUESTION=${coreNormalizationResult.normalizedQuestion}",
+                        "[M2] INDICATORS=$lexicalIndicatorGroups",
+                        m3Marker,
+                        m4Marker,
+                        m5Marker,
+                        m6Marker,
+                        m7Marker,
+                        d1Marker,
+                        d2Marker,
+                        d3Marker
+                    ).joinToString("\n")
             )
         }
 
@@ -184,7 +210,18 @@ class GlobalSearchDispatcher(
                 clarificationType =
                     SearchClarificationType.GENERIC_REQUEST,
                 debugMarker =
-                    m4Marker
+                    listOf(
+                        "[M1] QUESTION=${coreNormalizationResult.normalizedQuestion}",
+                        "[M2] INDICATORS=$lexicalIndicatorGroups",
+                        m3Marker,
+                        m4Marker,
+                        m5Marker,
+                        m6Marker,
+                        m7Marker,
+                        d1Marker,
+                        d2Marker,
+                        d3Marker
+                    ).joinToString("\n")
             )
         }
 
@@ -223,13 +260,32 @@ class GlobalSearchDispatcher(
                                 .matchedPatternId
                     )
 
-                router.route(
-                    analysis,
-                    satisfiabilityResult
-                )
+                val routingResult =
+                    router.route(
+                        analysis,
+                        satisfiabilityResult
+                    )
 
-                engineA.execute(
-                    analysis
+                val response =
+                    engineA.execute(
+                        analysis
+                    )
+
+                response.copy(
+                    debugMarker =
+                        listOf(
+                            "[M1] QUESTION=${coreNormalizationResult.normalizedQuestion}",
+                            "[M2] INDICATORS=$lexicalIndicatorGroups",
+                            m3Marker,
+                            m4Marker,
+                            m5Marker,
+                            m6Marker,
+                            m7Marker,
+                            routingResult.debugMarker ?: "",
+                            d1Marker,
+                            d2Marker,
+                            d3Marker
+                        ).joinToString("\n")
                 )
             }
 
@@ -239,7 +295,18 @@ class GlobalSearchDispatcher(
                     message =
                         "Motore B non ancora disponibile.",
                     debugMarker =
-                        m4Marker
+                        listOf(
+                            "[M1] QUESTION=${coreNormalizationResult.normalizedQuestion}",
+                            "[M2] INDICATORS=$lexicalIndicatorGroups",
+                            m3Marker,
+                            m4Marker,
+                            m5Marker,
+                            m6Marker,
+                            m7Marker,
+                            d1Marker,
+                            d2Marker,
+                            d3Marker
+                        ).joinToString("\n")
                 )
         }
     }

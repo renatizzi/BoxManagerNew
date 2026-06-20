@@ -49,13 +49,20 @@ class SearchInterpreter {
         }
     }
 
-    fun buildM3Marker(
+    fun buildD1Marker(
+        interpretation: SearchInterpretation
+    ): String {
+
+        return "[D1] INTERPRETATION=$interpretation"
+    }
+
+    fun buildD2Marker(
         result: SearchCoreNormalizationResult,
         interpretation: SearchInterpretation
     ): String {
 
-        return "[M3] " +
+        return "[D2] " +
                 "QUESTION=${result.normalizedQuestion} " +
-                "INTERPRETATION=$interpretation"
+                "REASON=$interpretation"
     }
 }

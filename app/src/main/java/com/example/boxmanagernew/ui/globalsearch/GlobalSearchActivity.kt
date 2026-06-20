@@ -12,9 +12,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.domain.search.GlobalSearchDispatcher
+import com.example.boxmanagernew.domain.search.model.SearchFulcrum
 import com.example.boxmanagernew.domain.search.model.SearchMessage
+import com.example.boxmanagernew.ui.categories.CategoriesActivity
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
+import com.example.boxmanagernew.MainActivity
 import com.example.boxmanagernew.ui.search.SearchResultActivity
 
 class GlobalSearchActivity : BaseActivity() {
@@ -119,12 +122,6 @@ class GlobalSearchActivity : BaseActivity() {
                     return@setOnEditorActionListener true
                 }
 
-                Toast.makeText(
-                    this,
-                    "[M1] QUESTION=$question",
-                    Toast.LENGTH_LONG
-                ).show()
-
                 viewModel.addMessage(
                     SearchMessage(
                         text = question,
@@ -139,11 +136,12 @@ class GlobalSearchActivity : BaseActivity() {
 
                 response.debugMarker?.let {
 
-                    Toast.makeText(
-                        this,
-                        it,
-                        Toast.LENGTH_LONG
-                    ).show()
+                    viewModel.addMessage(
+                        SearchMessage(
+                            text = it,
+                            fromUser = false
+                        )
+                    )
                 }
 
                 when {
@@ -163,29 +161,16 @@ class GlobalSearchActivity : BaseActivity() {
                             )
                         )
                     }
-
                     response.success &&
                             response.message ==
                             "ENGINE_A_RESULT" -> {
 
-                        Toast.makeText(
-                            this,
-                            "DELEGA_STANDARD",
-                            Toast.LENGTH_LONG
-                        ).show()
-
-                        startActivity(
-                            Intent(
-                                this,
-                                SearchResultActivity::class.java
-                            ).apply {
-
-                                putExtra(
-                                    "dashboardSearchQuery",
-                                    response.operationalQuery
-                                        ?: question
-                                )
-                            }
+                        viewModel.addMessage(
+                            SearchMessage(
+                                text =
+                                    "[DEBUG] NAVIGAZIONE BLOCCATA",
+                                fromUser = false
+                            )
                         )
                     }
 

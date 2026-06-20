@@ -13,5 +13,7 @@ data class SearchResponse(
     val clarificationType: SearchClarificationType =
         SearchClarificationType.NONE,
 
+    val dominantFulcrum: SearchFulcrum? = null,
+
     val debugMarker: String? = null
 )
