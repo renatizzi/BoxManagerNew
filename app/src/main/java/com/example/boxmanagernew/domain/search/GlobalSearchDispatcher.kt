@@ -120,12 +120,13 @@ class GlobalSearchDispatcher(
                 recognizedEntitiesResult
                     .recognizedEntities
             }"
-
         val fulcrumResult =
             fulcrumResolver.resolve(
-                recognizedEntitiesResult
+                interpretation =
+                    interpretation,
+                recognizedEntitiesResult =
+                    recognizedEntitiesResult
             )
-
         val m5Marker =
             "[M5] FULCRUM=${fulcrumResult.fulcrum}"
 

@@ -3,13 +3,45 @@ package com.example.boxmanagernew.domain.search
 import com.example.boxmanagernew.domain.search.model.CoreEntityType
 import com.example.boxmanagernew.domain.search.model.SearchFulcrum
 import com.example.boxmanagernew.domain.search.model.SearchFulcrumResult
+import com.example.boxmanagernew.domain.search.model.SearchInterpretation
 import com.example.boxmanagernew.domain.search.model.SearchRecognizedEntitiesResult
 
 class SearchFulcrumResolver {
 
     fun resolve(
+        interpretation: SearchInterpretation,
         recognizedEntitiesResult: SearchRecognizedEntitiesResult
     ): SearchFulcrumResult {
+
+        when (interpretation) {
+
+            SearchInterpretation.FIND_OBJECT ->
+                return SearchFulcrumResult(
+                    fulcrum = SearchFulcrum.OBJECT,
+                    reason = "INTERPRETATION_PRIORITY"
+                )
+
+            SearchInterpretation.FIND_BOX ->
+                return SearchFulcrumResult(
+                    fulcrum = SearchFulcrum.BOX,
+                    reason = "INTERPRETATION_PRIORITY"
+                )
+
+            SearchInterpretation.FIND_LOCATION ->
+                return SearchFulcrumResult(
+                    fulcrum = SearchFulcrum.LOCATION,
+                    reason = "INTERPRETATION_PRIORITY"
+                )
+
+            SearchInterpretation.FIND_CATEGORY ->
+                return SearchFulcrumResult(
+                    fulcrum = SearchFulcrum.CATEGORY,
+                    reason = "INTERPRETATION_PRIORITY"
+                )
+
+            SearchInterpretation.UNKNOWN -> {
+            }
+        }
 
         val recognizedEntities =
             recognizedEntitiesResult.recognizedEntities

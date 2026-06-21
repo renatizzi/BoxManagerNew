@@ -5,6 +5,8 @@ import com.example.boxmanagernew.domain.search.model.SearchAnalysisResult
 import com.example.boxmanagernew.domain.search.model.SearchArchiveLookupResult
 import com.example.boxmanagernew.domain.search.model.SearchArchiveScope
 import com.example.boxmanagernew.domain.search.model.SearchArchiveScopeMatch
+import com.example.boxmanagernew.domain.search.model.SearchFulcrumResult
+import com.example.boxmanagernew.domain.search.model.SearchInterpretation
 import com.example.boxmanagernew.domain.search.model.SearchRecognizedEntitiesResult
 import com.example.boxmanagernew.domain.search.model.SearchRecognizedEntity
 import com.example.boxmanagernew.domain.search.model.SearchSatisfiabilityInput
@@ -63,9 +65,14 @@ class SearchSatisfiabilityEvaluator(
                     }
             )
 
+        val interpretation =
+            analysis.interpretation
+                ?: SearchInterpretation.UNKNOWN
+
         val fulcrumResult =
             SearchFulcrumResolver()
                 .resolve(
+                    interpretation,
                     SearchEntityRecognizer()
                         .recognize(
                             lookupResult
@@ -77,7 +84,7 @@ class SearchSatisfiabilityEvaluator(
                 originalQuestion =
                     analysis.originalQuery,
                 interpretation =
-                    analysis.interpretation,
+                    interpretation,
                 fulcrumResult =
                     fulcrumResult,
                 recognizedEntitiesResult =
