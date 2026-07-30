@@ -80,6 +80,16 @@ interface ObjectDao {
         """
         SELECT *
         FROM objects
+        ORDER BY id ASC
+        """
+    )
+    suspend fun getAllSync():
+            List<ObjectEntity>
+
+    @Query(
+        """
+        SELECT *
+        FROM objects
         WHERE boxId = :boxId
         """
     )

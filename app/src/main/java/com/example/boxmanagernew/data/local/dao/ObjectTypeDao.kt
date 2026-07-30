@@ -13,6 +13,9 @@ interface ObjectTypeDao {
     @Query("SELECT * FROM object_types ORDER BY name ASC")
     fun getAllTypes(): LiveData<List<ObjectTypeEntity>>
 
+    @Query("SELECT * FROM object_types ORDER BY name ASC")
+    suspend fun getAllTypesSync(): List<ObjectTypeEntity>
+
     @Query("SELECT * FROM object_types WHERE name = :name LIMIT 1")
     suspend fun getByName(name: String): ObjectTypeEntity?
 }

@@ -68,6 +68,15 @@ class ObjectRepositoryImpl(
             }
     }
 
+    /**
+     * API sincrona dedicata al modulo Backup.
+     */
+    suspend fun getAllObjectEntitiesSync():
+            List<ObjectEntity> {
+
+        return dao.getAllSync()
+    }
+
     suspend fun searchObjects(
         query: String
     ): List<SearchResult> {

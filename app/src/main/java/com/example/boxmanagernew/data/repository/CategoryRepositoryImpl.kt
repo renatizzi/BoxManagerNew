@@ -2,8 +2,8 @@ package com.example.boxmanagernew.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
-import com.example.boxmanagernew.data.local.dao.CategoryDao
 import com.example.boxmanagernew.data.local.dao.BoxDao
+import com.example.boxmanagernew.data.local.dao.CategoryDao
 import com.example.boxmanagernew.data.local.entity.CategoryEntity
 import com.example.boxmanagernew.domain.model.Category
 
@@ -22,6 +22,15 @@ class CategoryRepositoryImpl(
                 )
             }
         }
+    }
+
+    /**
+     * API sincrona dedicata al modulo Backup.
+     */
+    suspend fun getAllCategoryEntitiesSync():
+            List<CategoryEntity> {
+
+        return categoryDao.getAllSync()
     }
 
     suspend fun insert(category: Category): Boolean {
@@ -78,7 +87,6 @@ class CategoryRepositoryImpl(
         }
     }
 
-    // 🔴 NUOVO METODO
     suspend fun isCategoryUsed(categoryId: Int): Boolean {
         return boxDao.countBoxesByCategory(categoryId) > 0
     }

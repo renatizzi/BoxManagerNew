@@ -27,6 +27,12 @@ interface BoxDao {
             LiveData<List<BoxEntity>>
 
     @Query(
+        "SELECT * FROM box ORDER BY lastModified DESC"
+    )
+    suspend fun getAllSync():
+            List<BoxEntity>
+
+    @Query(
         "DELETE FROM box WHERE id = :id"
     )
     suspend fun deleteById(

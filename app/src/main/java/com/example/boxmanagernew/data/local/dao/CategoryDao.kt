@@ -25,6 +25,14 @@ interface CategoryDao {
     fun getAllCategories(): LiveData<List<CategoryEntity>>
 
     @Query("""
+        SELECT * FROM categories
+        ORDER BY
+            CASE WHEN name = 'Miscellanea' THEN 1 ELSE 0 END,
+            name ASC
+    """)
+    suspend fun getAllSync(): List<CategoryEntity>
+
+    @Query("""
         SELECT * FROM categories 
         WHERE LOWER(name) = LOWER(:name) 
         LIMIT 1

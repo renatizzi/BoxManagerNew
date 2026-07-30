@@ -30,32 +30,57 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <Button
-                android:id="@+id/btnBackup"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nome file"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary" />
+
+            <EditText
+                android:id="@+id/etBackupFileName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="💾 Backup" />
+                android:hint="BCK_GGMMAA_HHMM"
+                android:inputType="text" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Cartella destinazione"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary" />
+
+            <EditText
+                android:id="@+id/etBackupFolder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:hint="Nessuna cartella selezionata" />
 
             <Button
-                android:id="@+id/btnRestore"
+                android:id="@+id/btnBrowse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Sfoglia" />
+
+            <TextView
+                android:id="@+id/tvMessages"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="🔄 Ripristino" />
+                android:layout_marginTop="24dp"
+                android:minHeight="48dp"
+                android:textColor="@color/text_secondary" />
 
             <Button
-                android:id="@+id/btnImport"
+                android:id="@+id/btnCreateBackup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="📥 Importa dati" />
-
-            <Button
-                android:id="@+id/btnQr"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="📱 QR" />
+                android:layout_marginTop="24dp"
+                android:enabled="false"
+                android:text="Crea Backup" />
 
         </LinearLayout>
 

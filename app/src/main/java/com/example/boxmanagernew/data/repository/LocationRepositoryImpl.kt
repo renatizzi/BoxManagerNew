@@ -29,6 +29,15 @@ class LocationRepositoryImpl(
             }
     }
 
+    /**
+     * API sincrona dedicata al modulo Backup.
+     */
+    suspend fun getAllLocationEntitiesSync():
+            List<LocationEntity> {
+
+        return locationDao.getAllLocationsSync()
+    }
+
     suspend fun insert(
         location: Location
     ): Boolean {

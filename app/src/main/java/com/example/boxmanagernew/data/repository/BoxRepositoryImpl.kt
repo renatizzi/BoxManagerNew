@@ -32,6 +32,12 @@ class BoxRepositoryImpl(
             }
     }
 
+    suspend fun getAllBoxEntitiesSync():
+            List<BoxEntity> {
+
+        return boxDao.getAllSync()
+    }
+
     suspend fun getEmptyBoxIds():
             List<Int> {
 

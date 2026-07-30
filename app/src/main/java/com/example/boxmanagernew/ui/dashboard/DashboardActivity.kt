@@ -15,6 +15,7 @@ import com.example.boxmanagernew.ui.categories.CategoriesActivity
 import com.example.boxmanagernew.ui.categories.CategoryViewModel
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
+import com.example.boxmanagernew.ui.backup.BackupActivity
 import com.example.boxmanagernew.ui.globalsearch.GlobalSearchActivity
 import com.example.boxmanagernew.ui.main.BoxViewModel
 import com.example.boxmanagernew.ui.search.SearchResultActivity
@@ -245,7 +246,7 @@ class DashboardActivity : BaseActivity() {
             startActivity(
                 Intent(
                     this,
-                    UtilityActivity::class.java
+                    BackupActivity::class.java
                 )
             )
         }
@@ -253,7 +254,6 @@ class DashboardActivity : BaseActivity() {
         findViewById<CardView>(
             R.id.cardRestore
         ).setOnClickListener {
-
             startActivity(
                 Intent(
                     this,
