@@ -1,21 +1,11 @@
 package com.example.boxmanagernew.ui.backup
 
-/*
- FULL REPLACE - FASE 5
- Stato: Prima integrazione operativa
-
- Responsabilità:
- - Orchestrazione del backup.
- - Raccolta dati dai Repository.
- - Invocazione esclusiva di BackupFacade.
- - Nessuna dipendenza dal SAF.
-*/
-
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.boxmanagernew.backup.facade.BackupFacade
+import com.example.boxmanagernew.backup.model.BackupArchive
 import com.example.boxmanagernew.data.local.dao.ObjectTypeDao
 import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
 import com.example.boxmanagernew.data.repository.CategoryRepositoryImpl
@@ -108,7 +98,7 @@ class BackupViewModel(
                     }
 
                 _message.value =
-                    "Backup generato."
+                    buildBackupSummary(archive)
 
                 onCompleted(archive)
 
@@ -143,5 +133,32 @@ class BackupViewModel(
             )
 
         return "BCK_${formatter.format(Date())}"
+    }
+
+    private fun buildBackupSummary(
+        archive: String
+    ): String {
+
+        return buildString {
+
+            appendLine("Backup completato")
+            appendLine()
+
+            appendLine(
+                "Formato: ${BackupArchive.CURRENT_FORMAT_VERSION}"
+            )
+
+            appendLine(
+                "Dimensione: ${archive.length} caratteri"
+            )
+
+            appendLine(
+                "Nome file: ${_fileName.value.orEmpty()}"
+            )
+
+            appendLine(
+                "Destinazione: ${_selectedFolder.value.orEmpty()}"
+            )
+        }
     }
 }

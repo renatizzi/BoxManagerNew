@@ -8,19 +8,12 @@ import com.example.boxmanagernew.data.local.entity.LocationEntity
 import com.example.boxmanagernew.data.local.entity.ObjectEntity
 import com.example.boxmanagernew.data.local.entity.ObjectTypeEntity
 
-/**
- * Orchestratore del modulo Backup.
- *
- * Coordina le operazioni senza conoscere
- * Repository, DAO o Room.
- */
 class BackupCoordinator(
 
-    private val mapper: BackupMapper =
-        BackupMapper(),
+    private val mapper: BackupMapper = BackupMapper(),
 
-    private val exporter: BackupExporter =
-        BackupExporter()
+    private val exporter: BackupExporter = BackupExporter()
+
 ) {
 
     fun exportArchive(
@@ -31,17 +24,14 @@ class BackupCoordinator(
         objectTypes: List<ObjectTypeEntity>
     ): String {
 
-        val archive =
-            mapper.buildArchive(
-                boxes = boxes,
-                objects = objects,
-                categories = categories,
-                locations = locations,
-                objectTypes = objectTypes
-            )
-
-        return exporter.export(
-            archive
+        val archive = mapper.buildArchive(
+            boxes = boxes,
+            objects = objects,
+            categories = categories,
+            locations = locations,
+            objectTypes = objectTypes
         )
+
+        return exporter.export(archive)
     }
 }

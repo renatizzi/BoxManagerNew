@@ -1,14 +1,5 @@
 package com.example.boxmanagernew.ui.backup
 
-/*
- FULL REPLACE - PROTOTIPO 6
- Obiettivo:
- - Mantiene il SAF del prototipo 5.
- - Prepara il flusso di esportazione reale.
- - Invoca il ViewModel e mostra il messaggio restituito.
- - La scrittura fisica del file ZIP sarà completata nel prototipo successivo.
-*/
-
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -134,9 +125,8 @@ class BackupActivity : BaseActivity() {
         }
 
         btnCreateBackup.setOnClickListener {
-            viewModel.exportBackup { archive ->
-                tvMessages.text =
-                    "Archivio generato (${archive.length} caratteri)."
+            viewModel.exportBackup { summary ->
+                tvMessages.text = summary
             }
         }
     }
