@@ -43,16 +43,18 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
+
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.0")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
+
     // ROOM
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
+
     ksp(libs.room.compiler)
 
     testImplementation(libs.junit)

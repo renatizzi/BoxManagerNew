@@ -1,5 +1,6 @@
 package com.example.boxmanagernew.backup.checksum
 
+import com.example.boxmanagernew.backup.constants.BackupConstants
 import java.io.InputStream
 import java.security.MessageDigest
 
@@ -19,7 +20,9 @@ object BackupChecksum {
             MessageDigest.getInstance("SHA-256")
 
         val buffer =
-            ByteArray(DEFAULT_BUFFER_SIZE)
+            ByteArray(
+                BackupConstants.DEFAULT_BUFFER_SIZE
+            )
 
         var read =
             inputStream.read(buffer)

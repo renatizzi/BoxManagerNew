@@ -367,7 +367,7 @@ abstract class BaseActivity : AppCompatActivity() {
                             "☁ Backup",
                             "↺ Ripristino",
                             "▣ QR",
-                            "🛠 Altri strumenti"
+                            "📥 Importa Dati"
                         )
 
                     if (

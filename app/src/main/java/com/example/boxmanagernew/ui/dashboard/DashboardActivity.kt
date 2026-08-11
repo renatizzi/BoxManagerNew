@@ -11,15 +11,17 @@ import androidx.cardview.widget.CardView
 import com.example.boxmanagernew.MainActivity
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.data.local.DatabaseProvider
+import com.example.boxmanagernew.ui.backup.BackupActivity
 import com.example.boxmanagernew.ui.categories.CategoriesActivity
 import com.example.boxmanagernew.ui.categories.CategoryViewModel
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
-import com.example.boxmanagernew.ui.backup.BackupActivity
 import com.example.boxmanagernew.ui.globalsearch.GlobalSearchActivity
+import com.example.boxmanagernew.ui.importdata.ImportActivity
 import com.example.boxmanagernew.ui.main.BoxViewModel
+import com.example.boxmanagernew.ui.qr.QRActivity
+import com.example.boxmanagernew.ui.restore.RestoreActivity
 import com.example.boxmanagernew.ui.search.SearchResultActivity
-import com.example.boxmanagernew.ui.utility.UtilityActivity
 
 class DashboardActivity : BaseActivity() {
 
@@ -254,10 +256,11 @@ class DashboardActivity : BaseActivity() {
         findViewById<CardView>(
             R.id.cardRestore
         ).setOnClickListener {
+
             startActivity(
                 Intent(
                     this,
-                    UtilityActivity::class.java
+                    RestoreActivity::class.java
                 )
             )
         }
@@ -269,7 +272,7 @@ class DashboardActivity : BaseActivity() {
             startActivity(
                 Intent(
                     this,
-                    UtilityActivity::class.java
+                    QRActivity::class.java
                 )
             )
         }
@@ -281,7 +284,7 @@ class DashboardActivity : BaseActivity() {
             startActivity(
                 Intent(
                     this,
-                    UtilityActivity::class.java
+                    ImportActivity::class.java
                 )
             )
         }
