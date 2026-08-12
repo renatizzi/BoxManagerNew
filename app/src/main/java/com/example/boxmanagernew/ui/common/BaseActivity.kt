@@ -3,6 +3,7 @@ package com.example.boxmanagernew.ui.common
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.content.res.Configuration
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.GestureDetector
@@ -14,6 +15,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
@@ -26,6 +28,7 @@ import com.example.boxmanagernew.ui.settings.SettingsActivity
 import com.example.boxmanagernew.ui.utility.UtilityActivity
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.switchmaterial.SwitchMaterial
 import kotlin.math.abs
 
 abstract class BaseActivity : AppCompatActivity() {
@@ -145,9 +148,6 @@ abstract class BaseActivity : AppCompatActivity() {
 
             is CategoriesActivity ->
                 openSwipe(UtilityActivity::class.java)
-
-            is UtilityActivity ->
-                openSwipe(SettingsActivity::class.java)
 
             is SettingsActivity ->
                 return
@@ -280,6 +280,31 @@ abstract class BaseActivity : AppCompatActivity() {
                 title,
                 subtitle
             )
+        }
+
+        findViewById<SwitchMaterial>(
+            R.id.switchTheme
+        )?.apply {
+
+            val isDark =
+                (
+                        resources.configuration.uiMode and
+                                Configuration.UI_MODE_NIGHT_MASK
+                        ) == Configuration.UI_MODE_NIGHT_YES
+
+            setOnCheckedChangeListener(null)
+
+            isChecked = isDark
+
+            setOnCheckedChangeListener { _, checked ->
+
+                delegate.localNightMode =
+                    if (checked) {
+                        AppCompatDelegate.MODE_NIGHT_YES
+                    } else {
+                        AppCompatDelegate.MODE_NIGHT_NO
+                    }
+            }
         }
     }
 
