@@ -266,9 +266,9 @@
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardBackup"
                     android:layout_width="0dp"
-                    android:layout_height="70dp"
+                    android:layout_height="64dp"
                     android:layout_columnWeight="1"
-                    android:layout_margin="4dp">
+                    android:layout_margin="3dp">
 
                     <TextView
                         android:text="☁ Backup"
@@ -283,9 +283,9 @@
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardRestore"
                     android:layout_width="0dp"
-                    android:layout_height="70dp"
+                    android:layout_height="64dp"
                     android:layout_columnWeight="1"
-                    android:layout_margin="4dp">
+                    android:layout_margin="3dp">
 
                     <TextView
                         android:text="↺ Ripristino"
@@ -300,9 +300,9 @@
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardQr"
                     android:layout_width="0dp"
-                    android:layout_height="70dp"
+                    android:layout_height="64dp"
                     android:layout_columnWeight="1"
-                    android:layout_margin="4dp">
+                    android:layout_margin="3dp">
 
                     <TextView
                         android:text="▣ Codice QR"
@@ -318,9 +318,9 @@
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardTools"
                     android:layout_width="0dp"
-                    android:layout_height="70dp"
+                    android:layout_height="64dp"
                     android:layout_columnWeight="1"
-                    android:layout_margin="4dp">
+                    android:layout_margin="3dp">
 
                     <TextView
                         android:text="📥 Importa Dati"

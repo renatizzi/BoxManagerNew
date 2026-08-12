@@ -146,7 +146,8 @@
                         android:hint="Cerca..."
                         android:imeOptions="actionDone"
                         android:minHeight="48dp"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:drawableEnd="@android:drawable/ic_btn_speak_now" />
 
                     <Button
                         android:id="@+id/buttonSortObjects"
