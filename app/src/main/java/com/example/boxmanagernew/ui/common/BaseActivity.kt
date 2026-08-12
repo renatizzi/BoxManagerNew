@@ -360,18 +360,22 @@ abstract class BaseActivity : AppCompatActivity() {
 
                 is TextView -> {
 
-                    val dashboardActivities =
+                    val functionCardTexts =
                         listOf(
                             "📦 Contenitori",
                             "🏷 Categorie",
                             "☁ Backup",
                             "↺ Ripristino",
-                            "▣ QR",
-                            "📥 Importa Dati"
+                            "▣ Codice QR",
+                            "📥 Importa Dati",
+                            "💾 Backup",
+                            "🔄 Ripristino",
+                            "📥 Importa dati",
+                            "📱 Codice QR"
                         )
 
                     if (
-                        dashboardActivities.contains(
+                        functionCardTexts.contains(
                             child.text.toString()
                         )
                     ) {

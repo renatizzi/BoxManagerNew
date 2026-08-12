@@ -305,9 +305,10 @@
                     android:layout_margin="4dp">
 
                     <TextView
-                        android:text="▣ QR"
+                        android:text="▣ Codice QR"
                         android:textSize="18sp"
                         android:textStyle="bold"
+                        android:textColor="@color/text_primary"
                         android:gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
@@ -325,7 +326,6 @@
                         android:text="📥 Importa Dati"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:textColor="@color/text_primary"
                         android:gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>

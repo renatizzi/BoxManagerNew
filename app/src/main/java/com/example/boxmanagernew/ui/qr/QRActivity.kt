@@ -16,7 +16,7 @@ class QRActivity : BaseActivity() {
         setupTopBar()
 
         setupPageHeader(
-            title = "QR Scanner",
+            title = "Codice QR",
             subtitle = ""
         )
 

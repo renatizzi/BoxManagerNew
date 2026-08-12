@@ -6,6 +6,10 @@ import com.example.boxmanagernew.R
 import com.example.boxmanagernew.ui.backup.BackupActivity
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
+import com.example.boxmanagernew.ui.importdata.ImportActivity
+import com.example.boxmanagernew.ui.qr.QRActivity
+import com.example.boxmanagernew.ui.restore.RestoreActivity
+import com.google.android.material.card.MaterialCardView
 
 class UtilityActivity : BaseActivity() {
 
@@ -21,7 +25,7 @@ class UtilityActivity : BaseActivity() {
 
         setupPageHeader(
             title = "Utility",
-            subtitle = "Import / Export Archivio"
+            subtitle = "Strumenti di supporto alla gestione dell'archivio"
         )
 
         BottomNavManager.setup(
@@ -29,7 +33,7 @@ class UtilityActivity : BaseActivity() {
             BottomNavManager.TAB_UTILITY
         )
 
-        findViewById<android.widget.Button>(
+        findViewById<MaterialCardView>(
             R.id.btnBackup
         ).setOnClickListener {
 
@@ -37,6 +41,42 @@ class UtilityActivity : BaseActivity() {
                 Intent(
                     this,
                     BackupActivity::class.java
+                )
+            )
+        }
+
+        findViewById<MaterialCardView>(
+            R.id.btnRestore
+        ).setOnClickListener {
+
+            startActivity(
+                Intent(
+                    this,
+                    RestoreActivity::class.java
+                )
+            )
+        }
+
+        findViewById<MaterialCardView>(
+            R.id.btnImport
+        ).setOnClickListener {
+
+            startActivity(
+                Intent(
+                    this,
+                    ImportActivity::class.java
+                )
+            )
+        }
+
+        findViewById<MaterialCardView>(
+            R.id.btnQr
+        ).setOnClickListener {
+
+            startActivity(
+                Intent(
+                    this,
+                    QRActivity::class.java
                 )
             )
         }
