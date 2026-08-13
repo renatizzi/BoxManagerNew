@@ -80,7 +80,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:enabled="false"
-                android:text="Crea Backup" />
+                android:text="Crea Backup"
+                android:textColor="@android:color/white" />
 
         </LinearLayout>
 
