@@ -39,6 +39,9 @@ interface BoxDao {
         id: Int
     )
 
+    @Query("DELETE FROM box")
+    suspend fun deleteAll()
+
     @Query(
         """
         SELECT COUNT(*)

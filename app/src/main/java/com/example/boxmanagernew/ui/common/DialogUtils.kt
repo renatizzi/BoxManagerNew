@@ -348,6 +348,20 @@ object DialogUtils {
             .show()
     }
 
+    fun showRestoreConfirmation(
+        context: Context,
+        onConfirm: () -> Unit
+    ) {
+
+        AlertDialog.Builder(context)
+            .setMessage(BackupConfiguration.MSG_RESTORE_CONFIRM)
+            .setPositiveButton("SI") { _, _ ->
+                onConfirm()
+            }
+            .setNegativeButton("NO", null)
+            .show()
+    }
+
     fun showMoveConfirmation(
         context: Context,
         onConfirm: () -> Unit

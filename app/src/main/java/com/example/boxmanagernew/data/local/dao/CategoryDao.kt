@@ -38,4 +38,7 @@ interface CategoryDao {
         LIMIT 1
     """)
     suspend fun getCategoryByName(name: String): CategoryEntity?
+
+    @Query("DELETE FROM categories")
+    suspend fun deleteAll()
 }

@@ -34,6 +34,36 @@ class BackupZipPersister(
             ?: "Cartella selezionata"
     }
 
+    data class ZipFileItem(
+        val uri: Uri,
+        val name: String,
+        val lastModified: Long
+    )
+
+    fun listZipFiles(
+        treeUri: Uri
+    ): List<ZipFileItem> {
+
+        val tree = tree(treeUri) ?: return emptyList()
+
+        return tree.listFiles()
+            .filter { file ->
+                file.isFile &&
+                        file.name?.endsWith(
+                            BackupConfiguration.BACKUP_FILE_EXTENSION,
+                            ignoreCase = true
+                        ) == true
+            }
+            .sortedByDescending { it.lastModified() }
+            .map { file ->
+                ZipFileItem(
+                    uri = file.uri,
+                    name = file.name ?: "backup.zip",
+                    lastModified = file.lastModified()
+                )
+            }
+    }
+
     fun existingFile(
         treeUri: Uri,
         fileName: String

@@ -53,4 +53,7 @@ interface LocationDao {
     suspend fun getByName(
         name: String
     ): LocationEntity?
+
+    @Query("DELETE FROM locations")
+    suspend fun deleteAll()
 }

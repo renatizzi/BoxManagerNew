@@ -63,4 +63,23 @@ object BackupConfiguration {
 
     const val MSG_FILE_EXISTS =
         "File già esistente. Sostituirlo?"
+
+    const val PRE_RESTORE_PREFIX = "PRE_RESTORE_"
+
+    const val MSG_RESTORE_REPLACE_WARNING =
+        "Il ripristino sostituirà l'archivio attuale."
+
+    const val MSG_RESTORE_CONFIRM =
+        "Il ripristino sostituirà tutti i dati. Continuare?"
+
+    const val MSG_RESTORE_COMPLETED = "Ripristino completato"
+
+    const val MSG_RESTORE_INVALID_FILE =
+        "File di backup non valido."
+
+    const val MSG_RESTORE_INCOMPATIBLE =
+        "Questo backup non è compatibile."
+
+    const val MSG_RESTORE_FAILED =
+        "Ripristino non eseguito. Riprovare."
 }

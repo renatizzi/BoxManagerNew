@@ -18,4 +18,7 @@ interface ObjectTypeDao {
 
     @Query("SELECT * FROM object_types WHERE name = :name LIMIT 1")
     suspend fun getByName(name: String): ObjectTypeEntity?
+
+    @Query("DELETE FROM object_types")
+    suspend fun deleteAll()
 }

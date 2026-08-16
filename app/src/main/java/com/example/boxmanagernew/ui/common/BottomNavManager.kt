@@ -54,6 +54,15 @@ object BottomNavManager {
         navDashboard?.setOnClickListener {
 
             if (currentTab == TAB_DASHBOARD) {
+
+                if (activity !is DashboardActivity) {
+
+                    openActivity(
+                        activity,
+                        DashboardActivity::class.java
+                    )
+                }
+
                 return@setOnClickListener
             }
 
@@ -87,6 +96,15 @@ object BottomNavManager {
         navCategories?.setOnClickListener {
 
             if (currentTab == TAB_CATEGORIES) {
+
+                if (activity !is CategoriesActivity) {
+
+                    openActivity(
+                        activity,
+                        CategoriesActivity::class.java
+                    )
+                }
+
                 return@setOnClickListener
             }
 
@@ -99,6 +117,15 @@ object BottomNavManager {
         navUtility?.setOnClickListener {
 
             if (currentTab == TAB_UTILITY) {
+
+                if (activity !is UtilityActivity) {
+
+                    openActivity(
+                        activity,
+                        UtilityActivity::class.java
+                    )
+                }
+
                 return@setOnClickListener
             }
 
@@ -111,6 +138,15 @@ object BottomNavManager {
         navSettings?.setOnClickListener {
 
             if (currentTab == TAB_SETTINGS) {
+
+                if (activity !is SettingsActivity) {
+
+                    openActivity(
+                        activity,
+                        SettingsActivity::class.java
+                    )
+                }
+
                 return@setOnClickListener
             }
 

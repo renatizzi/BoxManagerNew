@@ -119,4 +119,7 @@ interface ObjectDao {
     suspend fun countObjectsByBox(
         boxId: Int
     ): Int
+
+    @Query("DELETE FROM objects")
+    suspend fun deleteAll()
 }
