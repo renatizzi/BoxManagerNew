@@ -13,6 +13,7 @@ import com.example.boxmanagernew.R
 import com.example.boxmanagernew.data.local.entity.CategoryEntity
 import com.example.boxmanagernew.domain.model.Box
 import com.example.boxmanagernew.domain.model.Location
+import com.example.boxmanagernew.backup.config.BackupConfiguration
 import com.example.boxmanagernew.ui.categories.CategorySpinnerAdapter
 import com.example.boxmanagernew.ui.settings.LocationSpinnerAdapter
 
@@ -326,6 +327,20 @@ object DialogUtils {
 
         AlertDialog.Builder(context)
             .setMessage("Conferma eliminazione?")
+            .setPositiveButton("SI") { _, _ ->
+                onConfirm()
+            }
+            .setNegativeButton("NO", null)
+            .show()
+    }
+
+    fun showReplaceBackupConfirmation(
+        context: Context,
+        onConfirm: () -> Unit
+    ) {
+
+        AlertDialog.Builder(context)
+            .setMessage(BackupConfiguration.MSG_FILE_EXISTS)
             .setPositiveButton("SI") { _, _ ->
                 onConfirm()
             }

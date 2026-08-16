@@ -43,4 +43,24 @@ object BackupConfiguration {
      * Algoritmo utilizzato per il checksum.
      */
     const val CHECKSUM_ALGORITHM = "SHA-256"
+
+    const val PREFS_NAME = "boxmanager_backup"
+
+    const val PREFS_KEY_FOLDER_URI = "folder_uri"
+
+    const val ZIP_MIME_TYPE = "application/zip"
+
+    const val MSG_BACKUP_COMPLETED = "Backup completato"
+
+    const val MSG_FOLDER_INACCESSIBLE =
+        "Cartella non accessibile. Scegli di nuovo la cartella."
+
+    const val MSG_WRITE_FAILED =
+        "Backup non creato. Riprovare."
+
+    const val MSG_INVALID_ARCHIVE =
+        "Backup non creato. Archivio non valido."
+
+    const val MSG_FILE_EXISTS =
+        "File già esistente. Sostituirlo?"
 }

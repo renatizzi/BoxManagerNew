@@ -2,6 +2,7 @@ package com.example.boxmanagernew.backup.zip
 
 import java.io.File
 import java.io.FileOutputStream
+import java.io.OutputStream
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
@@ -15,9 +16,17 @@ class BackupZipWriter {
         entries: Map<String, ByteArray>
     ) {
 
-        ZipOutputStream(
-            FileOutputStream(destination)
-        ).use { zip ->
+        FileOutputStream(destination).use { stream ->
+            write(stream, entries)
+        }
+    }
+
+    fun write(
+        destination: OutputStream,
+        entries: Map<String, ByteArray>
+    ) {
+
+        ZipOutputStream(destination).use { zip ->
 
             entries.forEach { (name, content) ->
 

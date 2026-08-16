@@ -34,4 +34,27 @@ class BackupCoordinator(
 
         return exporter.export(archive)
     }
+
+    fun exportPayload(
+        boxes: List<BoxEntity>,
+        objects: List<ObjectEntity>,
+        categories: List<CategoryEntity>,
+        locations: List<LocationEntity>,
+        objectTypes: List<ObjectTypeEntity>,
+        applicationVersion: String
+    ): Map<String, ByteArray> {
+
+        val archive = mapper.buildArchive(
+            boxes = boxes,
+            objects = objects,
+            categories = categories,
+            locations = locations,
+            objectTypes = objectTypes
+        )
+
+        return exporter.exportPayload(
+            archive = archive,
+            applicationVersion = applicationVersion
+        )
+    }
 }

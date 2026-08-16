@@ -35,4 +35,23 @@ class BackupFacade(
             objectTypes = objectTypes
         )
     }
+
+    fun exportPayload(
+        boxes: List<BoxEntity>,
+        objects: List<ObjectEntity>,
+        categories: List<CategoryEntity>,
+        locations: List<LocationEntity>,
+        objectTypes: List<ObjectTypeEntity>,
+        applicationVersion: String
+    ): Map<String, ByteArray> {
+
+        return coordinator.exportPayload(
+            boxes = boxes,
+            objects = objects,
+            categories = categories,
+            locations = locations,
+            objectTypes = objectTypes,
+            applicationVersion = applicationVersion
+        )
+    }
 }

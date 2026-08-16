@@ -1,11 +1,12 @@
 package com.example.boxmanagernew.ui.backup
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.boxmanagernew.backup.config.BackupConfiguration
 import com.example.boxmanagernew.backup.facade.BackupFacade
-import com.example.boxmanagernew.backup.model.BackupArchive
 import com.example.boxmanagernew.data.local.dao.ObjectTypeDao
 import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
 import com.example.boxmanagernew.data.repository.CategoryRepositoryImpl
@@ -27,11 +28,16 @@ class BackupViewModel(
     private val backupFacade: BackupFacade
 ) : ViewModel() {
 
+    data class UserMessage(
+        val text: String,
+        val blockingError: Boolean = false
+    )
+
     private val _busy = MutableLiveData(false)
     val busy: LiveData<Boolean> = _busy
 
-    private val _message = MutableLiveData("")
-    val message: LiveData<String> = _message
+    private val _message = MutableLiveData(UserMessage(""))
+    val message: LiveData<UserMessage> = _message
 
     private val _fileName =
         MutableLiveData(generateDefaultFileName())
@@ -48,6 +54,7 @@ class BackupViewModel(
 
     fun setFileName(value: String) {
         _fileName.value = value.trim()
+        updateBackupAvailability()
     }
 
     fun setSelectedFolder(folder: String) {
@@ -58,11 +65,21 @@ class BackupViewModel(
     fun refreshDefaultFileName() {
         _fileName.value =
             generateDefaultFileName()
+        updateBackupAvailability()
     }
 
     fun exportBackup(
-        onCompleted: (String) -> Unit
+        treeUri: Uri,
+        applicationVersion: String,
+        overwrite: Boolean,
+        persister: BackupZipPersister
     ) {
+
+        val name = _fileName.value.orEmpty()
+
+        if (name.isBlank()) {
+            return
+        }
 
         viewModelScope.launch {
 
@@ -70,43 +87,71 @@ class BackupViewModel(
 
             try {
 
-                val archive =
+                val result =
                     withContext(Dispatchers.IO) {
 
-                        backupFacade.export(
-
-                            boxes =
-                                boxRepository
+                        val payload =
+                            backupFacade.exportPayload(
+                                boxes = boxRepository
                                     .getAllBoxEntitiesSync(),
-
-                            objects =
-                                objectRepository
+                                objects = objectRepository
                                     .getAllObjectEntitiesSync(),
-
-                            categories =
-                                categoryRepository
+                                categories = categoryRepository
                                     .getAllCategoryEntitiesSync(),
-
-                            locations =
-                                locationRepository
+                                locations = locationRepository
                                     .getAllLocationEntitiesSync(),
+                                objectTypes = objectTypeDao
+                                    .getAllTypesSync(),
+                                applicationVersion = applicationVersion
+                            )
 
-                            objectTypes =
-                                objectTypeDao
-                                    .getAllTypesSync()
+                        persister.persist(
+                            treeUri = treeUri,
+                            fileName = name,
+                            entries = payload,
+                            overwrite = overwrite
                         )
                     }
 
+                if (result.success) {
+
+                    _message.value =
+                        UserMessage(
+                            buildBackupSummary(result)
+                        )
+
+                } else if (result.folderInaccessible) {
+
+                    _message.value =
+                        UserMessage(
+                            BackupConfiguration.MSG_FOLDER_INACCESSIBLE,
+                            blockingError = true
+                        )
+
+                } else {
+
+                    _message.value =
+                        UserMessage(
+                            BackupConfiguration.MSG_WRITE_FAILED,
+                            blockingError = true
+                        )
+                }
+
+            } catch (_: IllegalArgumentException) {
+
                 _message.value =
-                    buildBackupSummary(archive)
+                    UserMessage(
+                        BackupConfiguration.MSG_INVALID_ARCHIVE,
+                        blockingError = true
+                    )
 
-                onCompleted(archive)
-
-            } catch (e: Exception) {
+            } catch (_: Exception) {
 
                 _message.value =
-                    e.message
-                        ?: "Errore durante il backup."
+                    UserMessage(
+                        BackupConfiguration.MSG_WRITE_FAILED,
+                        blockingError = true
+                    )
 
             } finally {
 
@@ -132,33 +177,39 @@ class BackupViewModel(
                 Locale.getDefault()
             )
 
-        return "BCK_${formatter.format(Date())}"
+        return BackupConfiguration.BACKUP_FILE_PREFIX +
+                formatter.format(Date())
     }
 
     private fun buildBackupSummary(
-        archive: String
+        result: BackupZipPersister.Result
     ): String {
+
+        val whenText =
+            SimpleDateFormat(
+                "dd/MM/yyyy HH:mm",
+                Locale.getDefault()
+            ).format(Date())
 
         return buildString {
 
-            appendLine("Backup completato")
+            appendLine(BackupConfiguration.MSG_BACKUP_COMPLETED)
             appendLine()
-
-            appendLine(
-                "Formato: ${BackupArchive.CURRENT_FORMAT_VERSION}"
-            )
-
-            appendLine(
-                "Dimensione: ${archive.length} caratteri"
-            )
-
-            appendLine(
-                "Nome file: ${_fileName.value.orEmpty()}"
-            )
-
-            appendLine(
-                "Destinazione: ${_selectedFolder.value.orEmpty()}"
-            )
+            appendLine("Nome file: ${result.fileName}")
+            appendLine("Cartella: ${result.folderName}")
+            appendLine("Dimensione: ${formatSize(result.sizeBytes)}")
+            append("Data: $whenText")
         }
+    }
+
+    private fun formatSize(bytes: Long): String {
+
+        if (bytes < 1024) {
+            return "$bytes byte"
+        }
+
+        val kilo = bytes / 1024.0
+
+        return String.format(Locale.getDefault(), "%.1f KB", kilo)
     }
 }
