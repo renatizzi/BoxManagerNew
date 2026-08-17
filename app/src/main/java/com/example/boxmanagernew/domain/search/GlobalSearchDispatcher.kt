@@ -99,7 +99,7 @@ class GlobalSearchDispatcher(
             return SearchResponse(
                 success = false,
                 message =
-                    "LOOKUP hasMatches=false matches=0",
+                    SearchConfiguration.MSG_NO_RESULTS,
                 debugMarker =
                     listOf(
                         "[M1] QUESTION=${coreNormalizationResult.normalizedQuestion}",
@@ -181,7 +181,7 @@ class GlobalSearchDispatcher(
             return SearchResponse(
                 success = false,
                 message =
-                    "Non ho compreso la richiesta.",
+                    SearchConfiguration.MSG_NOT_UNDERSTOOD,
                 debugMarker =
                     listOf(
                         "[M1] QUESTION=${coreNormalizationResult.normalizedQuestion}",
@@ -206,7 +206,7 @@ class GlobalSearchDispatcher(
             return SearchResponse(
                 success = false,
                 message =
-                    "Puoi formulare la richiesta in modo più preciso?",
+                    SearchConfiguration.MSG_CLARIFY,
                 requiresClarification = true,
                 clarificationType =
                     SearchClarificationType.GENERIC_REQUEST,
@@ -294,7 +294,7 @@ class GlobalSearchDispatcher(
                 SearchResponse(
                     success = false,
                     message =
-                        "Motore B non ancora disponibile.",
+                        SearchConfiguration.MSG_INTERROGATION_UNAVAILABLE,
                     debugMarker =
                         listOf(
                             "[M1] QUESTION=${coreNormalizationResult.normalizedQuestion}",

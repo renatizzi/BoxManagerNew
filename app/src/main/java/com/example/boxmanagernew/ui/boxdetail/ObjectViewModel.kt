@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import com.example.boxmanagernew.domain.model.Object
 import com.example.boxmanagernew.domain.model.ObjectWithType
 import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
+import com.example.boxmanagernew.util.CanonicalNormalizer
 import kotlinx.coroutines.launch
 
 class ObjectViewModel(
@@ -31,23 +32,57 @@ class ObjectViewModel(
 
     private var currentQuery: String = ""
 
-    fun load(boxId: Int) {
-        currentSource?.let { _objects.removeSource(it) }
+    private var matchWholeWords: Boolean = false
 
-        val source = repository.getObjectsWithType(boxId)
-        currentSource = source
+    private var loadedBoxId: Int? = null
 
-        _objects.addSource(source) {
-            lastSource = it
-            applyFilterAndSort()
-        }
+    init {
 
         _objects.addSource(_selectedItems) {
+
             updateHiddenSelectionState()
         }
     }
 
+    fun load(boxId: Int) {
+
+        if (
+            loadedBoxId == boxId &&
+            currentSource != null
+        ) {
+
+            applyFilterAndSort()
+            return
+        }
+
+        currentSource?.let {
+            _objects.removeSource(it)
+        }
+
+        val source =
+            repository.getObjectsWithType(boxId)
+
+        currentSource =
+            source
+
+        loadedBoxId =
+            boxId
+
+        _objects.addSource(source) {
+
+            lastSource = it
+            applyFilterAndSort()
+        }
+    }
+
     fun filter(query: String) {
+        matchWholeWords = false
+        currentQuery = query.trim()
+        applyFilterAndSort()
+    }
+
+    fun filterByWholeWords(query: String) {
+        matchWholeWords = true
         currentQuery = query.trim()
         applyFilterAndSort()
     }
@@ -63,12 +98,6 @@ class ObjectViewModel(
 
         if (currentQuery.isNotBlank()) {
 
-            val words =
-                currentQuery
-                    .lowercase()
-                    .split("\\s+".toRegex())
-                    .filter { it.isNotBlank() }
-
             result =
                 result.filter { item ->
 
@@ -81,10 +110,29 @@ class ObjectViewModel(
                             item.obj.description?.let {
                                 append(it)
                             }
-                        }.lowercase()
+                        }
 
-                    words.all {
-                        searchable.contains(it)
+                    if (matchWholeWords) {
+
+                        CanonicalNormalizer.allTokensMatchWords(
+                            currentQuery,
+                            searchable
+                        )
+
+                    } else {
+
+                        val words =
+                            currentQuery
+                                .lowercase()
+                                .split("\\s+".toRegex())
+                                .filter { it.isNotBlank() }
+
+                        val target =
+                            searchable.lowercase()
+
+                        words.all {
+                            target.contains(it)
+                        }
                     }
                 }
         }

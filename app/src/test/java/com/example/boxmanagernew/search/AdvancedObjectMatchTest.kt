@@ -1,0 +1,150 @@
+package com.example.boxmanagernew.search
+
+import com.example.boxmanagernew.domain.search.SearchEngineA
+import com.example.boxmanagernew.domain.search.model.SearchAnalysisResult
+import com.example.boxmanagernew.domain.search.model.SearchFulcrum
+import com.example.boxmanagernew.util.CanonicalNormalizer
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
+import org.junit.Test
+
+class AdvancedObjectMatchTest {
+
+    @Test
+    fun vitiMatchesSingularViteAndNotCacciaviti() {
+
+        assertTrue(
+            CanonicalNormalizer.wholeWordMatches(
+                "viti",
+                "vite"
+            )
+        )
+
+        assertTrue(
+            CanonicalNormalizer.wholeWordMatches(
+                "vite",
+                "viti"
+            )
+        )
+
+        assertFalse(
+            CanonicalNormalizer.wholeWordMatches(
+                "viti",
+                "cacciaviti"
+            )
+        )
+
+        assertFalse(
+            CanonicalNormalizer.wholeWordMatches(
+                "viti",
+                "cacciavite"
+            )
+        )
+    }
+
+    @Test
+    fun allTokensMatchWordsAcceptsSingularVite() {
+
+        assertTrue(
+            CanonicalNormalizer.allTokensMatchWords(
+                "viti",
+                "vite"
+            )
+        )
+
+        assertFalse(
+            CanonicalNormalizer.allTokensMatchWords(
+                "viti",
+                "cacciaviti"
+            )
+        )
+    }
+
+    @Test
+    fun matchingWordRangesHighlightsSingularVite() {
+
+        val ranges =
+            CanonicalNormalizer.matchingWordRanges(
+                "vite",
+                "viti"
+            )
+
+        assertEquals(
+            1,
+            ranges.size
+        )
+
+        assertEquals(
+            0,
+            ranges.first().first
+        )
+
+        assertTrue(
+            CanonicalNormalizer.matchingWordRanges(
+                "cacciaviti",
+                "viti"
+            ).isEmpty()
+        )
+    }
+
+    @Test
+    fun engineAKeepsObjectTermFromContainerQuestion() {
+
+        val response =
+            SearchEngineA().execute(
+                analysis(
+                    "fammi vedere quali contenitori contengono viti"
+                )
+            )
+
+        assertEquals(
+            "viti",
+            response.operationalQuery
+        )
+    }
+
+    @Test
+    fun engineAKeepsObjectTermFromWhereQuestion() {
+
+        val withArticle =
+            SearchEngineA().execute(
+                analysis(
+                    "Dove si trovano le viti?"
+                )
+            )
+
+        val withoutArticle =
+            SearchEngineA().execute(
+                analysis(
+                    "Dove si trovano viti?"
+                )
+            )
+
+        assertEquals(
+            "viti",
+            withArticle.operationalQuery
+        )
+
+        assertEquals(
+            "viti",
+            withoutArticle.operationalQuery
+        )
+    }
+
+    private fun analysis(
+        question: String
+    ): SearchAnalysisResult {
+
+        return SearchAnalysisResult(
+            originalQuery = question,
+            operationalQuery = null,
+            interpretation = null,
+            recognizedEntities = emptySet(),
+            dominantFulcrum = SearchFulcrum.OBJECT,
+            satisfiability = null,
+            classification = null,
+            patternId = null
+        )
+    }
+}

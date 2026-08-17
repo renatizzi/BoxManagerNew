@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.domain.model.ObjectWithType
+import com.example.boxmanagernew.util.CanonicalNormalizer
 
 class ObjectAdapter(
     private var items: List<ObjectWithType>,
@@ -28,6 +29,7 @@ class ObjectAdapter(
     private var selectionMode = false
     private var isFilterActive = false
     private var currentQuery = ""
+    private var wholeWordHighlight = false
 
     inner class ObjectViewHolder(
         itemView: View
@@ -248,11 +250,15 @@ class ObjectAdapter(
     }
 
     fun updateQuery(
-        query: String
+        query: String,
+        wholeWord: Boolean = false
     ) {
 
         currentQuery =
             query
+
+        wholeWordHighlight =
+            wholeWord
 
         notifyDataSetChanged()
     }
@@ -260,6 +266,31 @@ class ObjectAdapter(
     private fun highlight(
         text: String
     ): SpannableString {
+
+        if (wholeWordHighlight) {
+
+            val result =
+                SpannableString(text)
+
+            CanonicalNormalizer
+                .matchingWordRanges(
+                    text,
+                    currentQuery
+                )
+                .forEach { range ->
+
+                    result.setSpan(
+                        BackgroundColorSpan(
+                            Color.YELLOW
+                        ),
+                        range.first,
+                        range.last + 1,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
+                }
+
+            return result
+        }
 
         val result =
             SpannableString(text)

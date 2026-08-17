@@ -71,6 +71,35 @@ class SearchEngineA(
             "archiviate"
         )
 
+    private val listScopeWords =
+        setOf(
+            "contenitore",
+            "contenitori",
+            "oggetto",
+            "oggetti",
+            "categoria",
+            "categorie",
+            "posizione",
+            "posizioni",
+            "luogo",
+            "luoghi",
+            "fammi",
+            "vedere",
+            "vedi",
+            "mostrami",
+            "quali",
+            "quale",
+            "contengono",
+            "contiene",
+            "elenco",
+            "lista",
+            "trovano",
+            "trovo",
+            "trovato",
+            "trovati",
+            "trovate"
+        )
+
     fun execute(
         analysis: SearchAnalysisResult
     ): SearchResponse {
@@ -177,6 +206,9 @@ class SearchEngineA(
             }
             .filterNot {
                 simpleSearchIndicators.contains(it)
+            }
+            .filterNot {
+                listScopeWords.contains(it)
             }
             .joinToString(" ")
     }

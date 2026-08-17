@@ -106,6 +106,135 @@ object CanonicalNormalizer {
             .trim()
     }
 
+    fun wordTokens(
+        value: String
+    ): List<String> {
+
+        return normalize(value)
+            .split(" ")
+            .filter {
+                it.isNotBlank()
+            }
+    }
+
+    fun wholeWordMatches(
+        token: String,
+        word: String
+    ): Boolean {
+
+        if (token.isBlank() || word.isBlank()) {
+            return false
+        }
+
+        return inflectionSet(token)
+            .intersect(inflectionSet(word))
+            .isNotEmpty()
+    }
+
+    private fun inflectionSet(
+        value: String
+    ): Set<String> {
+
+        val normalized =
+            normalize(value)
+
+        if (normalized.length < 3) {
+            return setOf(normalized)
+        }
+
+        val variants =
+            mutableSetOf(normalized)
+
+        irregulars[normalized]?.let {
+            variants.add(it)
+        }
+
+        when {
+
+            normalized.endsWith("a") ->
+                variants.add(normalized.dropLast(1) + "e")
+
+            normalized.endsWith("e") -> {
+                variants.add(normalized.dropLast(1) + "a")
+                variants.add(normalized.dropLast(1) + "i")
+            }
+
+            normalized.endsWith("o") ->
+                variants.add(normalized.dropLast(1) + "i")
+
+            normalized.endsWith("i") -> {
+                variants.add(normalized.dropLast(1) + "o")
+                variants.add(normalized.dropLast(1) + "e")
+            }
+        }
+
+        return variants
+    }
+
+    fun allTokensMatchWords(
+        query: String,
+        text: String
+    ): Boolean {
+
+        val tokens =
+            wordTokens(query)
+                .filter {
+                    it.isNotBlank()
+                }
+
+        if (tokens.isEmpty()) {
+            return false
+        }
+
+        val words =
+            wordTokens(text)
+
+        return tokens.all { token ->
+
+            words.any { word ->
+
+                wholeWordMatches(
+                    token,
+                    word
+                )
+            }
+        }
+    }
+
+    fun matchingWordRanges(
+        text: String,
+        query: String
+    ): List<IntRange> {
+
+        val tokens =
+            wordTokens(query)
+                .filter {
+                    it.isNotBlank()
+                }
+
+        if (
+            tokens.isEmpty() ||
+            text.isBlank()
+        ) {
+            return emptyList()
+        }
+
+        return Regex("\\S+")
+            .findAll(text)
+            .filter { match ->
+
+                tokens.any { token ->
+
+                    wholeWordMatches(
+                        token,
+                        match.value
+                    )
+                }
+            }
+            .map { it.range }
+            .toList()
+    }
+
     fun singularPluralVariant(
         value: String
     ): String {

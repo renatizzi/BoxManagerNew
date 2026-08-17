@@ -21,6 +21,7 @@ class SearchQuestionRepository {
                     "cerca",
                     "dov'è",
                     "dove si trova",
+                    "dove si trovano",
                     "in quale contenitore trovo",
                     "trova"
                 ),

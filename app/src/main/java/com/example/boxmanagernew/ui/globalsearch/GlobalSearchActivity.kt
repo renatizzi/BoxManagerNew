@@ -5,24 +5,25 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.boxmanagernew.MainActivity
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.domain.search.GlobalSearchDispatcher
+import com.example.boxmanagernew.domain.search.SearchConfiguration
 import com.example.boxmanagernew.domain.search.model.SearchFulcrum
 import com.example.boxmanagernew.domain.search.model.SearchMessage
+import com.example.boxmanagernew.domain.search.model.SearchResponse
 import com.example.boxmanagernew.ui.categories.CategoriesActivity
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
-import com.example.boxmanagernew.MainActivity
-import com.example.boxmanagernew.ui.search.SearchResultActivity
 
 class GlobalSearchActivity : BaseActivity() {
 
     private lateinit var viewModel: GlobalSearchViewModel
+    private lateinit var editQuestion: EditText
 
     private val dispatcher =
         GlobalSearchDispatcher()
@@ -55,10 +56,8 @@ class GlobalSearchActivity : BaseActivity() {
             BottomNavManager.TAB_DASHBOARD
         )
 
-        val editQuestion =
-            findViewById<EditText>(
-                R.id.editQuestion
-            )
+        editQuestion =
+            findViewById(R.id.editQuestion)
 
         editQuestion.setTypeface(
             null,
@@ -76,10 +75,6 @@ class GlobalSearchActivity : BaseActivity() {
             intent.getStringExtra(
                 "dashboardSearchQuery"
             ) ?: ""
-
-        editQuestion.setText(
-            initialQuery
-        )
 
         viewModel =
             ViewModelProvider(this)[
@@ -100,8 +95,6 @@ class GlobalSearchActivity : BaseActivity() {
                 GlobalSearchAdapter(it)
         }
 
-        viewModel.clear()
-
         editQuestion.setOnEditorActionListener {
                 _, actionId, _ ->
 
@@ -110,89 +103,7 @@ class GlobalSearchActivity : BaseActivity() {
                 EditorInfo.IME_ACTION_DONE
             ) {
 
-                val question =
-                    editQuestion.text
-                        .toString()
-                        .trim()
-
-                if (
-                    question.isBlank()
-                ) {
-
-                    return@setOnEditorActionListener true
-                }
-
-                viewModel.addMessage(
-                    SearchMessage(
-                        text = question,
-                        fromUser = true
-                    )
-                )
-
-                val response =
-                    dispatcher.dispatch(
-                        question
-                    )
-
-                response.debugMarker?.let {
-
-                    viewModel.addMessage(
-                        SearchMessage(
-                            text = it,
-                            fromUser = false
-                        )
-                    )
-                }
-
-                when {
-
-                    response.requiresClarification -> {
-
-                        Toast.makeText(
-                            this,
-                            "RICHIESTA_DA_PRECISARE",
-                            Toast.LENGTH_LONG
-                        ).show()
-
-                        viewModel.addMessage(
-                            SearchMessage(
-                                text = response.message,
-                                fromUser = false
-                            )
-                        )
-                    }
-                    response.success &&
-                            response.message ==
-                            "ENGINE_A_RESULT" -> {
-
-                        viewModel.addMessage(
-                            SearchMessage(
-                                text =
-                                    "[DEBUG] NAVIGAZIONE BLOCCATA",
-                                fromUser = false
-                            )
-                        )
-                    }
-
-                    else -> {
-
-                        Toast.makeText(
-                            this,
-                            "NON_GESTITA",
-                            Toast.LENGTH_LONG
-                        ).show()
-
-                        viewModel.addMessage(
-                            SearchMessage(
-                                text = response.message,
-                                fromUser = false
-                            )
-                        )
-                    }
-                }
-
-                editQuestion.setText("")
-
+                submitQuestion()
                 true
 
             } else {
@@ -200,5 +111,154 @@ class GlobalSearchActivity : BaseActivity() {
                 false
             }
         }
+
+        if (savedInstanceState == null) {
+
+            editQuestion.setText(
+                initialQuery
+            )
+
+            viewModel.clear()
+
+            if (initialQuery.isNotBlank()) {
+                submitQuestion()
+            }
+        }
+    }
+
+    private fun submitQuestion() {
+
+        val question =
+            editQuestion.text
+                .toString()
+                .trim()
+
+        if (question.isBlank()) {
+            return
+        }
+
+        viewModel.addMessage(
+            SearchMessage(
+                text = question,
+                fromUser = true
+            )
+        )
+
+        val response =
+            dispatcher.dispatch(
+                question
+            )
+
+        when {
+
+            response.requiresClarification -> {
+                showReply(response.message)
+            }
+
+            response.success &&
+                    response.dominantFulcrum != null -> {
+
+                openPredefinedList(
+                    response,
+                    question
+                )
+            }
+
+            else -> {
+                showReply(response.message)
+            }
+        }
+
+        editQuestion.setText("")
+    }
+
+    private fun showReply(
+        text: String
+    ) {
+
+        val visible =
+            if (
+                text.startsWith("[") ||
+                text.contains("LOOKUP") ||
+                text.contains("ENGINE_")
+            ) {
+                SearchConfiguration.MSG_NOT_UNDERSTOOD
+            } else {
+                text
+            }
+
+        viewModel.addMessage(
+            SearchMessage(
+                text = visible,
+                fromUser = false
+            )
+        )
+    }
+
+    private fun openPredefinedList(
+        response: SearchResponse,
+        originalQuestion: String
+    ) {
+
+        val objectTerms =
+            response.operationalQuery
+                ?.trim()
+                .orEmpty()
+
+        if (
+            objectTerms.isBlank()
+        ) {
+
+            showReply(
+                SearchConfiguration.MSG_NO_RESULTS
+            )
+
+            return
+        }
+
+        val target =
+            when (response.dominantFulcrum) {
+
+                SearchFulcrum.OBJECT,
+                SearchFulcrum.BOX,
+                SearchFulcrum.LOCATION ->
+                    MainActivity::class.java
+
+                SearchFulcrum.CATEGORY ->
+                    CategoriesActivity::class.java
+
+                null ->
+                    return
+            }
+
+        startActivity(
+            Intent(this, target).apply {
+
+                val isObjectList =
+                    response.dominantFulcrum ==
+                            SearchFulcrum.OBJECT ||
+                            response.dominantFulcrum ==
+                            SearchFulcrum.BOX
+
+                putExtra(
+                    SearchConfiguration.EXTRA_SEARCH_QUESTION,
+                    if (isObjectList) {
+                        originalQuestion
+                    } else {
+                        objectTerms
+                    }
+                )
+
+                if (isObjectList) {
+
+                    putExtra(
+                        SearchConfiguration.EXTRA_OBJECT_TERMS,
+                        objectTerms
+                    )
+                }
+            }
+        )
+
+        finish()
     }
 }

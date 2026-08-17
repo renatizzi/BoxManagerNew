@@ -20,6 +20,7 @@ import com.example.boxmanagernew.domain.model.Box
 import com.example.boxmanagernew.domain.model.Object
 import com.example.boxmanagernew.domain.model.Location
 import com.example.boxmanagernew.ui.boxdetail.BoxDetailActivity
+import com.example.boxmanagernew.domain.search.SearchConfiguration
 import com.example.boxmanagernew.ui.categories.CategoriesActivity
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
@@ -52,6 +53,10 @@ class MainActivity : BaseActivity() {
     private var categories: List<CategoryEntity> = emptyList()
     private var locations: List<Location> =
         emptyList()
+
+    private var ignoreSearchChanges =
+        false
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -86,34 +91,31 @@ class MainActivity : BaseActivity() {
 
         setupListeners()
 
-        intent.getStringExtra(
-            "dashboardFilter"
-        )?.let { filter ->
+        if (savedInstanceState == null) {
 
-            viewModel.filter(filter)
+            applyIncomingSearch()
 
-            adapter.updateQuery("")
+        } else {
 
-            if (
-                filter ==
-                BoxViewModel.FILTER_EMPTY_BOXES
-            ) {
-
-                showContextMessage(
-                    "Filtro attivo: contenitori vuoti. Tocca qui per rimuovere."
-                )
-            }
+            restoreAdvancedSearchPresentation()
         }
-        intent.getStringExtra(
-            "dashboardSearchQuery"
-        )?.let { query ->
+    }
 
-            viewModel.filter(query)
+    override fun onRestoreInstanceState(
+        savedInstanceState: Bundle
+    ) {
 
-            adapter.updateQuery(query)
+        ignoreSearchChanges =
+            true
 
-            editSearch.setText(query)
-        }
+        super.onRestoreInstanceState(
+            savedInstanceState
+        )
+
+        ignoreSearchChanges =
+            false
+
+        restoreAdvancedSearchPresentation()
     }
 
     private fun setupViews() {
@@ -361,9 +363,10 @@ class MainActivity : BaseActivity() {
 
             onSearchChanged = { query ->
 
-                viewModel.filter(query)
+                if (!ignoreSearchChanges) {
 
-                adapter.updateQuery(query)
+                    applyTypedSearch(query)
+                }
             },
 
             onSortClicked = {
@@ -414,6 +417,154 @@ class MainActivity : BaseActivity() {
         )
     }
 
+    private fun applyIncomingSearch() {
+
+        intent.getStringExtra(
+            "dashboardFilter"
+        )?.let { filter ->
+
+            viewModel.filter(filter)
+
+            adapter.updateQuery("")
+
+            if (
+                filter ==
+                BoxViewModel.FILTER_EMPTY_BOXES
+            ) {
+
+                showContextMessage(
+                    "Filtro attivo: contenitori vuoti. Tocca qui per rimuovere."
+                )
+            }
+        }
+
+        intent.getStringExtra(
+            SearchConfiguration.EXTRA_SEARCH_QUESTION
+        )?.let { query ->
+
+            val objectTerms =
+                intent.getStringExtra(
+                    SearchConfiguration.EXTRA_OBJECT_TERMS
+                )
+
+            if (
+                !objectTerms.isNullOrBlank()
+            ) {
+
+                adapter.updateQuery(
+                    objectTerms
+                )
+
+                ignoreSearchChanges =
+                    true
+
+                editSearch.setText(
+                    query
+                )
+
+                ignoreSearchChanges =
+                    false
+
+                viewModel.filterByContainedObjects(
+                    objectTerms
+                )
+
+            } else {
+
+                ignoreSearchChanges =
+                    true
+
+                editSearch.setText(query)
+
+                ignoreSearchChanges =
+                    false
+
+                viewModel.filter(query)
+
+                adapter.updateQuery(query)
+            }
+        }
+    }
+
+    private fun restoreAdvancedSearchPresentation() {
+
+        val objectTerms =
+            intent.getStringExtra(
+                SearchConfiguration.EXTRA_OBJECT_TERMS
+            )
+
+        val originalQuestion =
+            intent.getStringExtra(
+                SearchConfiguration.EXTRA_SEARCH_QUESTION
+            )
+
+        if (
+            objectTerms.isNullOrBlank() ||
+            originalQuestion.isNullOrBlank()
+        ) {
+            return
+        }
+
+        adapter.updateQuery(
+            objectTerms
+        )
+
+        ignoreSearchChanges =
+            true
+
+        if (
+            editSearch.text.toString() !=
+            originalQuestion
+        ) {
+
+            editSearch.setText(
+                originalQuestion
+            )
+        }
+
+        ignoreSearchChanges =
+            false
+
+        viewModel.filterByContainedObjects(
+            objectTerms
+        )
+    }
+
+    private fun applyTypedSearch(
+        query: String
+    ) {
+
+        val objectTerms =
+            intent.getStringExtra(
+                SearchConfiguration.EXTRA_OBJECT_TERMS
+            )
+
+        val originalQuestion =
+            intent.getStringExtra(
+                SearchConfiguration.EXTRA_SEARCH_QUESTION
+            )
+
+        if (
+            !objectTerms.isNullOrBlank() &&
+            query == originalQuestion
+        ) {
+
+            viewModel.filterByContainedObjects(
+                objectTerms
+            )
+
+            adapter.updateQuery(
+                objectTerms
+            )
+
+        } else {
+
+            viewModel.filter(query)
+
+            adapter.updateQuery(query)
+        }
+    }
+
     private fun setupFab() {
 
         fabAdd.setOnClickListener {
@@ -437,8 +588,20 @@ class MainActivity : BaseActivity() {
                 putExtra("boxName", box.name)
 
                 putExtra(
-                    "searchQuery",
+                    SearchConfiguration.EXTRA_SEARCH_QUERY,
                     viewModel.currentQuery.value ?: ""
+                )
+
+                putExtra(
+                    SearchConfiguration.EXTRA_SEARCH_QUESTION,
+                    intent.getStringExtra(
+                        SearchConfiguration.EXTRA_SEARCH_QUESTION
+                    )
+                )
+
+                putExtra(
+                    SearchConfiguration.EXTRA_ADVANCED_OBJECT_MATCH,
+                    viewModel.isContainedObjectsFilter()
                 )
             }
         )

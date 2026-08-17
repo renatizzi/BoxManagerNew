@@ -137,6 +137,37 @@ class ObjectRepositoryImpl(
         return results
     }
 
+    suspend fun findBoxIdsByObjectTerms(
+        query: String
+    ): Set<Int> {
+
+        val tokens =
+            CanonicalNormalizer.wordTokens(query)
+                .filter {
+                    it.isNotBlank() &&
+                            it !in ignoredWords
+                }
+
+        if (tokens.isEmpty()) {
+            return emptySet()
+        }
+
+        return dao.searchObjects()
+            .filter { row ->
+
+                CanonicalNormalizer.allTokensMatchWords(
+                    query,
+                    buildString {
+                        append(row.objectName)
+                        append(" ")
+                        append(row.description ?: "")
+                    }
+                )
+            }
+            .map { it.boxId }
+            .toSet()
+    }
+
     suspend fun getObjectsByBoxSync(
         boxId:Int
     ):List<Object>{

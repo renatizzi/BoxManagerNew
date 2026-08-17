@@ -19,6 +19,7 @@ import com.example.boxmanagernew.data.local.entity.CategoryEntity
 import com.example.boxmanagernew.data.repository.*
 import com.example.boxmanagernew.domain.model.Box
 import com.example.boxmanagernew.domain.model.Category
+import com.example.boxmanagernew.domain.search.SearchConfiguration
 import com.example.boxmanagernew.ui.categories.CategorySpinnerAdapter
 import com.example.boxmanagernew.ui.categories.CategoryViewModel
 import com.example.boxmanagernew.ui.categories.IconMapper
@@ -56,6 +57,15 @@ class BoxDetailActivity : BaseActivity() {
     private var currentCategory: Category? = null
 
     private var categories: List<CategoryEntity> = emptyList()
+
+    private var ignoreObjectSearchChanges =
+        false
+
+    private var displaySearchText =
+        ""
+
+    private var advancedObjectMatch =
+        false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,6 +116,9 @@ class BoxDetailActivity : BaseActivity() {
         editSearch =
             findViewById(R.id.editSearchObjects)
 
+        editSearch.isSaveEnabled =
+            false
+
         buttonSort =
             findViewById(R.id.buttonSortObjects)
 
@@ -122,8 +135,30 @@ class BoxDetailActivity : BaseActivity() {
                 ?: "Contenitore"
 
         val initialSearchQuery =
-            intent.getStringExtra("searchQuery")
-                ?: ""
+            intent.getStringExtra(
+                SearchConfiguration.EXTRA_SEARCH_QUERY
+            ) ?: ""
+
+        val originalQuestion =
+            intent.getStringExtra(
+                SearchConfiguration.EXTRA_SEARCH_QUESTION
+            ) ?: ""
+
+        advancedObjectMatch =
+            intent.getBooleanExtra(
+                SearchConfiguration.EXTRA_ADVANCED_OBJECT_MATCH,
+                false
+            )
+
+        displaySearchText =
+            if (
+                advancedObjectMatch &&
+                originalQuestion.isNotBlank()
+            ) {
+                originalQuestion
+            } else {
+                initialSearchQuery
+            }
 
         textTitle.text =
             "Lista Oggetti"
@@ -259,25 +294,6 @@ class BoxDetailActivity : BaseActivity() {
             adapter
         objectViewModel.load(boxId)
 
-        if (initialSearchQuery.isNotBlank()) {
-
-            editSearch.setText(
-                initialSearchQuery
-            )
-
-            objectViewModel.filter(
-                initialSearchQuery
-            )
-
-            adapter.updateQuery(
-                initialSearchQuery
-            )
-
-            adapter.updateFilterState(
-                true
-            )
-        }
-
         setupObservers(
             boxId,
             textCategory,
@@ -285,6 +301,8 @@ class BoxDetailActivity : BaseActivity() {
             textPosition,
             textLastModified
         )
+
+        applyIncomingObjectSearch()
         contextCard.setOnClickListener {
 
             editSearch.setText("")
@@ -353,16 +371,16 @@ class BoxDetailActivity : BaseActivity() {
                     s: Editable?
                 ) {
 
-                    objectViewModel.filter(
-                        s.toString()
-                    )
+                    if (ignoreObjectSearchChanges) {
+                        return
+                    }
 
-                    adapter.updateQuery(
-                        s.toString()
-                    )
-
-                    adapter.updateFilterState(
-                        s.toString().isNotBlank()
+                    applyObjectSearch(
+                        s.toString(),
+                        intent.getBooleanExtra(
+                            SearchConfiguration.EXTRA_ADVANCED_OBJECT_MATCH,
+                            false
+                        )
                     )
                 }
 
@@ -419,6 +437,96 @@ class BoxDetailActivity : BaseActivity() {
                     }
                 }
             }
+        )
+    }
+
+    override fun onRestoreInstanceState(
+        savedInstanceState: Bundle
+    ) {
+
+        ignoreObjectSearchChanges =
+            true
+
+        super.onRestoreInstanceState(
+            savedInstanceState
+        )
+
+        ignoreObjectSearchChanges =
+            false
+
+        applyIncomingObjectSearch()
+    }
+
+    private fun applyIncomingObjectSearch() {
+
+        if (displaySearchText.isBlank()) {
+            return
+        }
+
+        ignoreObjectSearchChanges =
+            true
+
+        editSearch.setText(
+            displaySearchText
+        )
+
+        ignoreObjectSearchChanges =
+            false
+
+        applyObjectSearch(
+            displaySearchText,
+            advancedObjectMatch
+        )
+    }
+
+    private fun applyObjectSearch(
+        query: String,
+        advancedObjectMatch: Boolean
+    ) {
+
+        val incomingTerms =
+            intent.getStringExtra(
+                SearchConfiguration.EXTRA_SEARCH_QUERY
+            ) ?: ""
+
+        val originalQuestion =
+            intent.getStringExtra(
+                SearchConfiguration.EXTRA_SEARCH_QUESTION
+            ) ?: ""
+
+        val keepAdvanced =
+            advancedObjectMatch &&
+                    incomingTerms.isNotBlank() &&
+                    (
+                            query == originalQuestion ||
+                                    query == incomingTerms
+                            )
+
+        if (keepAdvanced) {
+
+            objectViewModel.filterByWholeWords(
+                incomingTerms
+            )
+
+            adapter.updateQuery(
+                incomingTerms,
+                wholeWord = true
+            )
+
+        } else {
+
+            objectViewModel.filter(
+                query
+            )
+
+            adapter.updateQuery(
+                query,
+                wholeWord = false
+            )
+        }
+
+        adapter.updateFilterState(
+            query.isNotBlank()
         )
     }
 

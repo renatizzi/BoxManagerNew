@@ -1,6 +1,5 @@
 package com.example.boxmanagernew.ui.search
 
-import android.widget.Toast
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
@@ -69,12 +68,6 @@ class SearchResultActivity : BaseActivity() {
 
             val results =
                 repo.searchObjects(query)
-
-            Toast.makeText(
-                this@SearchResultActivity,
-                "[M9] QUERY=$query RESULTS=${results.size}",
-                Toast.LENGTH_LONG
-            ).show()
 
             results
                 .sortedBy {

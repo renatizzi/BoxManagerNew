@@ -10,6 +10,7 @@ import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
 import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
 import com.example.boxmanagernew.domain.model.Box
 import com.example.boxmanagernew.util.CanonicalNormalizer
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class BoxViewModel(
@@ -74,6 +75,12 @@ class BoxViewModel(
 
     val hasHiddenSelections =
         _hasHiddenSelections
+
+    private var matchContainedObjectsOnly =
+        false
+
+    private var filterJob: Job? =
+        null
 
     init {
 
@@ -234,8 +241,35 @@ class BoxViewModel(
         query: String
     ) {
 
+        matchContainedObjectsOnly =
+            false
+
         _currentQuery.value =
             query
+    }
+
+    fun isContainedObjectsFilter(): Boolean =
+        matchContainedObjectsOnly
+
+    fun filterByContainedObjects(
+        terms: String
+    ) {
+
+        matchContainedObjectsOnly =
+            true
+
+        if (
+            _currentQuery.value ==
+            terms
+        ) {
+
+            applyFilterAndSort()
+
+        } else {
+
+            _currentQuery.value =
+                terms
+        }
     }
 
     fun toggleSelection(
@@ -272,15 +306,21 @@ class BoxViewModel(
 
     private fun applyFilterAndSort() {
 
-        viewModelScope.launch {
+        val query =
+            _currentQuery.value
+                ?.trim()
+                ?: ""
+
+        val containedOnly =
+            matchContainedObjectsOnly
+
+        filterJob?.cancel()
+
+        filterJob =
+            viewModelScope.launch {
 
             var result =
                 lastSource
-
-            val query =
-                _currentQuery.value
-                    ?.trim()
-                    ?: ""
 
             if (
                 query ==
@@ -295,6 +335,25 @@ class BoxViewModel(
 
                         emptyIds.contains(
                             it.id
+                        )
+                    }
+
+            } else if (
+                query.isNotBlank() &&
+                containedOnly
+            ) {
+
+                val matchingBoxIds =
+                    objectRepository
+                        .findBoxIdsByObjectTerms(
+                            query
+                        )
+
+                result =
+                    result.filter { box ->
+
+                        matchingBoxIds.contains(
+                            box.id
                         )
                     }
 
