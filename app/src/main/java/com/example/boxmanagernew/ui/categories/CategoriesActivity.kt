@@ -325,7 +325,9 @@ class CategoriesActivity : BaseActivity() {
                 false
 
             adapter.updateQuery(
-                locationTerms
+                SearchConfiguration.locationHighlightQuery(
+                    locationTerms
+                )
             )
 
             viewModel.filterByBoxLocation(
@@ -386,9 +388,11 @@ class CategoriesActivity : BaseActivity() {
         ignoreSearchChanges =
             false
 
-        adapter.updateQuery(
-            locationTerms
-        )
+            adapter.updateQuery(
+                SearchConfiguration.locationHighlightQuery(
+                    locationTerms
+                )
+            )
 
         viewModel.filterByBoxLocation(
             locationTerms
@@ -419,7 +423,9 @@ class CategoriesActivity : BaseActivity() {
             )
 
             adapter.updateQuery(
-                locationTerms
+                SearchConfiguration.locationHighlightQuery(
+                    locationTerms
+                )
             )
 
         } else {

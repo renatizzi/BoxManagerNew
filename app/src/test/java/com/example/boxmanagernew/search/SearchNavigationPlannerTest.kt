@@ -1,5 +1,6 @@
 package com.example.boxmanagernew.search
 
+import com.example.boxmanagernew.domain.search.SearchConfiguration
 import com.example.boxmanagernew.domain.search.SearchEngineA
 import com.example.boxmanagernew.domain.search.SearchNavigationPlanner
 import com.example.boxmanagernew.domain.search.model.SearchAnalysisResult
@@ -17,7 +18,7 @@ class SearchNavigationPlannerTest {
 
     private val index =
         SearchArchiveIndex(
-            locations = listOf("Cantina"),
+            locations = listOf("Cantina", "Mansarda"),
             categories = listOf("Ferramenta"),
             objects = listOf("Vite"),
             boxes = listOf("Cassetta 1")
@@ -35,6 +36,40 @@ class SearchNavigationPlannerTest {
         assertTrue(plan.resolved)
         assertEquals(SearchFulcrum.BOX, plan.fulcrum)
         assertEquals("Cantina", plan.locationTerms)
+    }
+
+    @Test
+    fun twoPlacesOpenContainersInEitherLocation() {
+
+        val plan =
+            planner.plan(
+                "Fammi vedere cosa ho in cantina e in mansarda",
+                index
+            )
+
+        val names =
+            SearchConfiguration.splitLocationTerms(
+                plan.locationTerms
+            )
+
+        assertTrue(plan.resolved)
+        assertEquals(SearchFulcrum.BOX, plan.fulcrum)
+        assertEquals(
+            setOf("Cantina", "Mansarda"),
+            names.toSet()
+        )
+    }
+
+    @Test
+    fun placesWithoutANameStayUnresolved() {
+
+        val plan =
+            planner.plan(
+                "Fammi vedere i luoghi",
+                index
+            )
+
+        assertFalse(plan.resolved)
     }
 
     @Test

@@ -6,6 +6,7 @@ import com.example.boxmanagernew.data.local.dao.BoxDao
 import com.example.boxmanagernew.data.local.dao.CategoryDao
 import com.example.boxmanagernew.data.local.entity.CategoryEntity
 import com.example.boxmanagernew.domain.model.Category
+import com.example.boxmanagernew.domain.search.SearchConfiguration
 import com.example.boxmanagernew.util.CanonicalNormalizer
 
 class CategoryRepositoryImpl(
@@ -103,10 +104,15 @@ class CategoryRepositoryImpl(
         return boxDao.getAllSync()
             .filter { box ->
 
-                CanonicalNormalizer.allTokensMatchWords(
-                    locationTerms,
-                    box.position
-                )
+                SearchConfiguration.splitLocationTerms(
+                    locationTerms
+                ).any { name ->
+
+                    CanonicalNormalizer.allTokensMatchWords(
+                        name,
+                        box.position
+                    )
+                }
             }
             .map { it.categoryId }
             .toSet()

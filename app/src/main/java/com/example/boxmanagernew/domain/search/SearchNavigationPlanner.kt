@@ -35,8 +35,11 @@ class SearchNavigationPlanner {
             )
 
         val locationTerms =
-            locations.firstOrNull()
-                .orEmpty()
+            SearchConfiguration.packLocationTerms(
+                locations.filterNot { name ->
+                    isGenericLocationWord(name)
+                }
+            )
 
         if (asksForCategoryList(question)) {
 
@@ -81,6 +84,23 @@ class SearchNavigationPlanner {
 
         return normalized.contains("categoria") ||
                 normalized.contains("categorie")
+    }
+
+    private fun isGenericLocationWord(
+        name: String
+    ): Boolean {
+
+        val normalized =
+            CanonicalNormalizer.normalize(
+                name
+            )
+
+        return normalized == "luogo" ||
+                normalized == "luoghi" ||
+                normalized == "posizione" ||
+                normalized == "posizioni" ||
+                normalized == "posto" ||
+                normalized == "posti"
     }
 
     private fun matchingNames(

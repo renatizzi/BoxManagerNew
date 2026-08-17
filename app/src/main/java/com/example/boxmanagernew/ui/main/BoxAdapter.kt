@@ -17,6 +17,7 @@ import com.example.boxmanagernew.R
 import com.example.boxmanagernew.data.local.entity.CategoryEntity
 import com.example.boxmanagernew.domain.model.Box
 import com.example.boxmanagernew.ui.categories.IconMapper
+import com.example.boxmanagernew.util.CanonicalNormalizer
 
 class BoxAdapter(
     private var items: List<Box>,
@@ -154,6 +155,14 @@ class BoxAdapter(
         items = newItems
 
         diffResult.dispatchUpdatesTo(this)
+
+        if (currentQuery.isNotBlank()) {
+
+            notifyItemRangeChanged(
+                0,
+                items.size
+            )
+        }
     }
 
     fun updateCategories(newCategories: List<CategoryEntity>) {
@@ -218,35 +227,7 @@ class BoxAdapter(
 
     private fun highlight(text: String): SpannableString {
 
-        if (currentQuery.length < 3) {
-            return SpannableString(text)
-        }
-
-        val lowerText =
-            text.lowercase()
-
-        val lowerQuery =
-            currentQuery.lowercase()
-
-        val start =
-            lowerText.indexOf(lowerQuery)
-
-        if (start < 0) {
-            return SpannableString(text)
-        }
-
-        val end =
-            start + lowerQuery.length
-
-        return SpannableString(text).apply {
-
-            setSpan(
-                BackgroundColorSpan(Color.YELLOW),
-                start,
-                end,
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
-        }
+        return highlightRanges(text)
     }
 
     private fun buildSubtitle(
@@ -261,49 +242,40 @@ class BoxAdapter(
                 "$category • $position"
             }
 
-        val spannable =
-            SpannableString(fullText)
+        return highlightRanges(fullText)
+    }
 
-        if (currentQuery.length < 3) {
-            return spannable
+    private fun highlightRanges(
+        text: String
+    ): SpannableString {
+
+        val result =
+            SpannableString(text)
+
+        if (
+            currentQuery.isBlank() ||
+            text.isBlank()
+        ) {
+            return result
         }
 
-        val query =
-            currentQuery.lowercase()
-
-        val categoryStart = 0
-        val categoryMatch =
-            category.lowercase().indexOf(query)
-
-        if (categoryMatch >= 0) {
-
-            spannable.setSpan(
-                BackgroundColorSpan(Color.YELLOW),
-                categoryStart + categoryMatch,
-                categoryStart + categoryMatch + query.length,
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        CanonicalNormalizer
+            .matchingWordRanges(
+                text,
+                currentQuery
             )
-        }
+            .forEach { range ->
 
-        if (position.isNotBlank()) {
-
-            val positionStart =
-                category.length + 3
-
-            val positionMatch =
-                position.lowercase().indexOf(query)
-
-            if (positionMatch >= 0) {
-
-                spannable.setSpan(
-                    BackgroundColorSpan(Color.YELLOW),
-                    positionStart + positionMatch,
-                    positionStart + positionMatch + query.length,
+                result.setSpan(
+                    BackgroundColorSpan(
+                        Color.YELLOW
+                    ),
+                    range.first,
+                    range.last + 1,
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
                 )
             }
-        }
 
-        return spannable
+        return result
     }
 }

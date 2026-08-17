@@ -479,7 +479,9 @@ class MainActivity : BaseActivity() {
             ) {
 
                 adapter.updateQuery(
-                    locationTerms
+                    SearchConfiguration.locationHighlightQuery(
+                        locationTerms
+                    )
                 )
 
                 ignoreSearchChanges =
@@ -570,7 +572,9 @@ class MainActivity : BaseActivity() {
         ) {
 
             adapter.updateQuery(
-                locationTerms
+                SearchConfiguration.locationHighlightQuery(
+                    locationTerms
+                )
             )
 
             ignoreSearchChanges =
@@ -637,7 +641,9 @@ class MainActivity : BaseActivity() {
             )
 
             adapter.updateQuery(
-                locationTerms
+                SearchConfiguration.locationHighlightQuery(
+                    locationTerms
+                )
             )
 
         } else {

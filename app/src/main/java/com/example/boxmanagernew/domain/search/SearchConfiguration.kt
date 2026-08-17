@@ -31,4 +31,42 @@ object SearchConfiguration {
 
     const val EXTRA_LOCATION_TERMS =
         "advancedLocationTerms"
+
+    const val LOCATION_TERMS_SEPARATOR =
+        "\u001f"
+
+    fun packLocationTerms(
+        names: List<String>
+    ): String {
+
+        return names
+            .map { it.trim() }
+            .filter { it.isNotBlank() }
+            .joinToString(
+                LOCATION_TERMS_SEPARATOR
+            )
+    }
+
+    fun splitLocationTerms(
+        packed: String
+    ): List<String> {
+
+        if (packed.isBlank()) {
+            return emptyList()
+        }
+
+        return packed
+            .split(LOCATION_TERMS_SEPARATOR)
+            .map { it.trim() }
+            .filter { it.isNotBlank() }
+    }
+
+    fun locationHighlightQuery(
+        packed: String
+    ): String {
+
+        return splitLocationTerms(
+            packed
+        ).joinToString(" ")
+    }
 }

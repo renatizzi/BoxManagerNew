@@ -9,6 +9,7 @@ import com.example.boxmanagernew.data.local.entity.CategoryEntity
 import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
 import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
 import com.example.boxmanagernew.domain.model.Box
+import com.example.boxmanagernew.domain.search.SearchConfiguration
 import com.example.boxmanagernew.util.CanonicalNormalizer
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -81,6 +82,9 @@ class BoxViewModel(
 
     private var matchLocationOnly =
         false
+
+    private var locationFilterTerms =
+        ""
 
     private var filterJob: Job? =
         null
@@ -250,6 +254,9 @@ class BoxViewModel(
         matchLocationOnly =
             false
 
+        locationFilterTerms =
+            ""
+
         _currentQuery.value =
             query
     }
@@ -266,6 +273,9 @@ class BoxViewModel(
 
         matchLocationOnly =
             true
+
+        locationFilterTerms =
+            terms
 
         if (
             _currentQuery.value ==
@@ -290,6 +300,9 @@ class BoxViewModel(
 
         matchLocationOnly =
             false
+
+        locationFilterTerms =
+            ""
 
         if (
             _currentQuery.value ==
@@ -375,17 +388,22 @@ class BoxViewModel(
                     }
 
             } else if (
-                query.isNotBlank() &&
-                locationOnly
+                locationOnly &&
+                locationFilterTerms.isNotBlank()
             ) {
 
                 result =
                     result.filter { box ->
 
-                        CanonicalNormalizer.allTokensMatchWords(
-                            query,
-                            box.position
-                        )
+                        SearchConfiguration.splitLocationTerms(
+                            locationFilterTerms
+                        ).any { name ->
+
+                            CanonicalNormalizer.allTokensMatchWords(
+                                name,
+                                box.position
+                            )
+                        }
                     }
 
             } else if (
