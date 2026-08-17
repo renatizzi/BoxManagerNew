@@ -79,6 +79,9 @@ class BoxViewModel(
     private var matchContainedObjectsOnly =
         false
 
+    private var matchLocationOnly =
+        false
+
     private var filterJob: Job? =
         null
 
@@ -244,6 +247,9 @@ class BoxViewModel(
         matchContainedObjectsOnly =
             false
 
+        matchLocationOnly =
+            false
+
         _currentQuery.value =
             query
     }
@@ -251,12 +257,39 @@ class BoxViewModel(
     fun isContainedObjectsFilter(): Boolean =
         matchContainedObjectsOnly
 
+    fun filterByLocation(
+        terms: String
+    ) {
+
+        matchContainedObjectsOnly =
+            false
+
+        matchLocationOnly =
+            true
+
+        if (
+            _currentQuery.value ==
+            terms
+        ) {
+
+            applyFilterAndSort()
+
+        } else {
+
+            _currentQuery.value =
+                terms
+        }
+    }
+
     fun filterByContainedObjects(
         terms: String
     ) {
 
         matchContainedObjectsOnly =
             true
+
+        matchLocationOnly =
+            false
 
         if (
             _currentQuery.value ==
@@ -314,6 +347,9 @@ class BoxViewModel(
         val containedOnly =
             matchContainedObjectsOnly
 
+        val locationOnly =
+            matchLocationOnly
+
         filterJob?.cancel()
 
         filterJob =
@@ -335,6 +371,20 @@ class BoxViewModel(
 
                         emptyIds.contains(
                             it.id
+                        )
+                    }
+
+            } else if (
+                query.isNotBlank() &&
+                locationOnly
+            ) {
+
+                result =
+                    result.filter { box ->
+
+                        CanonicalNormalizer.allTokensMatchWords(
+                            query,
+                            box.position
                         )
                     }
 

@@ -7,18 +7,26 @@ import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.boxmanagernew.MainActivity
 import com.example.boxmanagernew.R
+import com.example.boxmanagernew.data.local.DatabaseProvider
 import com.example.boxmanagernew.domain.search.GlobalSearchDispatcher
 import com.example.boxmanagernew.domain.search.SearchConfiguration
+import com.example.boxmanagernew.domain.search.SearchNavigationPlan
+import com.example.boxmanagernew.domain.search.SearchNavigationPlanner
+import com.example.boxmanagernew.domain.search.model.SearchArchiveIndex
 import com.example.boxmanagernew.domain.search.model.SearchFulcrum
 import com.example.boxmanagernew.domain.search.model.SearchMessage
 import com.example.boxmanagernew.domain.search.model.SearchResponse
 import com.example.boxmanagernew.ui.categories.CategoriesActivity
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class GlobalSearchActivity : BaseActivity() {
 
@@ -144,32 +152,154 @@ class GlobalSearchActivity : BaseActivity() {
             )
         )
 
-        val response =
-            dispatcher.dispatch(
-                question
-            )
+        editQuestion.setText("")
 
-        when {
+        lifecycleScope.launch {
 
-            response.requiresClarification -> {
-                showReply(response.message)
+            val response =
+                withContext(
+                    Dispatchers.Default
+                ) {
+
+                    dispatcher.dispatch(
+                        question
+                    )
+                }
+
+            if (
+                response.message ==
+                SearchConfiguration.MSG_INTERROGATION_UNAVAILABLE
+            ) {
+
+                showReply(
+                    response.message
+                )
+
+                return@launch
             }
 
-            response.success &&
-                    response.dominantFulcrum != null -> {
+            if (response.requiresClarification) {
 
-                openPredefinedList(
-                    response,
+                showReply(
+                    response.message
+                )
+
+                return@launch
+            }
+
+            val index =
+                loadArchiveIndex()
+
+            val plan =
+                SearchNavigationPlanner()
+                    .plan(
+                        question,
+                        index
+                    )
+
+            if (plan.resolved) {
+
+                openPlannedList(
+                    plan,
                     question
                 )
+
+                return@launch
             }
 
-            else -> {
-                showReply(response.message)
+            when {
+
+                response.success &&
+                        response.dominantFulcrum != null -> {
+
+                    openPredefinedList(
+                        response,
+                        question
+                    )
+                }
+
+                else -> {
+                    showReply(
+                        response.message
+                    )
+                }
             }
         }
+    }
 
-        editQuestion.setText("")
+    private suspend fun loadArchiveIndex():
+            SearchArchiveIndex =
+
+        withContext(
+            Dispatchers.IO
+        ) {
+
+            val db =
+                DatabaseProvider.getDatabase(
+                    applicationContext
+                )
+
+            SearchArchiveIndex(
+                locations =
+                    db.locationDao()
+                        .getAllLocationsSync()
+                        .map { it.name },
+                categories =
+                    db.categoryDao()
+                        .getAllSync()
+                        .map { it.name },
+                objects =
+                    db.objectTypeDao()
+                        .getAllTypesSync()
+                        .map { it.name },
+                boxes =
+                    db.boxDao()
+                        .getAllSync()
+                        .map { it.name }
+            )
+        }
+
+    private fun openPlannedList(
+        plan: SearchNavigationPlan,
+        originalQuestion: String
+    ) {
+
+        val target =
+            when (plan.fulcrum) {
+
+                SearchFulcrum.CATEGORY ->
+                    CategoriesActivity::class.java
+
+                SearchFulcrum.BOX,
+                SearchFulcrum.LOCATION,
+                SearchFulcrum.OBJECT ->
+                    MainActivity::class.java
+
+                null ->
+                    return
+            }
+
+        startActivity(
+            Intent(this, target).apply {
+
+                putExtra(
+                    SearchConfiguration.EXTRA_SEARCH_QUESTION,
+                    originalQuestion
+                )
+
+                if (
+                    plan.locationTerms.isNotBlank()
+                ) {
+
+                    putExtra(
+                        SearchConfiguration.EXTRA_LOCATION_TERMS,
+                        plan.locationTerms
+                    )
+                }
+            }
+        )
+
+        finish()
     }
 
     private fun showReply(

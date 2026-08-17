@@ -15,10 +15,10 @@ class SearchInterpreter {
         return when {
 
             normalizedQuestion.contains(
-                "oggetto"
+                "categoria"
             ) -> {
 
-                SearchInterpretation.FIND_OBJECT
+                SearchInterpretation.FIND_CATEGORY
             }
 
             normalizedQuestion.contains(
@@ -29,10 +29,10 @@ class SearchInterpreter {
             }
 
             normalizedQuestion.contains(
-                "categoria"
+                "oggetto"
             ) -> {
 
-                SearchInterpretation.FIND_CATEGORY
+                SearchInterpretation.FIND_OBJECT
             }
 
             normalizedQuestion.contains(

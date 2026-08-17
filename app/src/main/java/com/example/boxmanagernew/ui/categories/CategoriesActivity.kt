@@ -17,6 +17,7 @@ import com.example.boxmanagernew.R
 import com.example.boxmanagernew.data.local.DatabaseProvider
 import com.example.boxmanagernew.data.repository.CategoryRepositoryImpl
 import com.example.boxmanagernew.domain.model.Category
+import com.example.boxmanagernew.domain.search.SearchConfiguration
 import com.example.boxmanagernew.ui.common.*
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -34,6 +35,9 @@ class CategoriesActivity : BaseActivity() {
     private lateinit var textCategoryCount: TextView
     private lateinit var recyclerView: RecyclerView
     private lateinit var fabAdd: FloatingActionButton
+
+    private var ignoreSearchChanges =
+        false
 
     private val iconNames = listOf(
         "outline_checkroom_24","outline_fastfood_24","outline_handyman_24",
@@ -70,28 +74,31 @@ class CategoriesActivity : BaseActivity() {
         setupListeners()
         showDefaultBar()
 
-        intent.getStringExtra(
-            "dashboardFilter"
-        )?.let { filter ->
+        if (savedInstanceState == null) {
 
-            if (
-                filter ==
-                CategoryViewModel.FILTER_USED
-            ) {
+            applyIncomingSearch()
 
-                viewModel.filter(filter)
-            }
+        } else {
+
+            restoreIncomingSearch()
         }
-        intent.getStringExtra(
-            "dashboardSearchQuery"
-        )?.let { query ->
+    }
 
-            viewModel.filter(query)
+    override fun onRestoreInstanceState(
+        savedInstanceState: Bundle
+    ) {
 
-            adapter.updateQuery(query)
+        ignoreSearchChanges =
+            true
 
-            editSearch.setText(query)
-        }
+        super.onRestoreInstanceState(
+            savedInstanceState
+        )
+
+        ignoreSearchChanges =
+            false
+
+        restoreIncomingSearch()
     }
 
     private fun setupViews() {
@@ -207,8 +214,11 @@ class CategoriesActivity : BaseActivity() {
             buttonSort,
             true,
             { q ->
-                viewModel.filter(q)
-                adapter.updateQuery(q)
+
+                if (!ignoreSearchChanges) {
+
+                    applyTypedSearch(q)
+                }
             },
             {
                 resetUiState()
@@ -271,6 +281,152 @@ class CategoriesActivity : BaseActivity() {
 
                 showDeleteDialog(category)
             }
+        }
+    }
+
+    private fun applyIncomingSearch() {
+
+        intent.getStringExtra(
+            "dashboardFilter"
+        )?.let { filter ->
+
+            if (
+                filter ==
+                CategoryViewModel.FILTER_USED
+            ) {
+
+                viewModel.filter(filter)
+            }
+        }
+
+        val locationTerms =
+            intent.getStringExtra(
+                SearchConfiguration.EXTRA_LOCATION_TERMS
+            )
+
+        val originalQuestion =
+            intent.getStringExtra(
+                SearchConfiguration.EXTRA_SEARCH_QUESTION
+            )
+
+        if (
+            !locationTerms.isNullOrBlank() &&
+            !originalQuestion.isNullOrBlank()
+        ) {
+
+            ignoreSearchChanges =
+                true
+
+            editSearch.setText(
+                originalQuestion
+            )
+
+            ignoreSearchChanges =
+                false
+
+            adapter.updateQuery(
+                locationTerms
+            )
+
+            viewModel.filterByBoxLocation(
+                locationTerms
+            )
+
+            return
+        }
+
+        originalQuestion?.let { query ->
+
+            viewModel.filter(query)
+
+            adapter.updateQuery(query)
+
+            ignoreSearchChanges =
+                true
+
+            editSearch.setText(query)
+
+            ignoreSearchChanges =
+                false
+        }
+    }
+
+    private fun restoreIncomingSearch() {
+
+        val locationTerms =
+            intent.getStringExtra(
+                SearchConfiguration.EXTRA_LOCATION_TERMS
+            )
+
+        val originalQuestion =
+            intent.getStringExtra(
+                SearchConfiguration.EXTRA_SEARCH_QUESTION
+            )
+
+        if (
+            locationTerms.isNullOrBlank() ||
+            originalQuestion.isNullOrBlank()
+        ) {
+            return
+        }
+
+        ignoreSearchChanges =
+            true
+
+        if (
+            editSearch.text.toString() !=
+            originalQuestion
+        ) {
+
+            editSearch.setText(
+                originalQuestion
+            )
+        }
+
+        ignoreSearchChanges =
+            false
+
+        adapter.updateQuery(
+            locationTerms
+        )
+
+        viewModel.filterByBoxLocation(
+            locationTerms
+        )
+    }
+
+    private fun applyTypedSearch(
+        query: String
+    ) {
+
+        val locationTerms =
+            intent.getStringExtra(
+                SearchConfiguration.EXTRA_LOCATION_TERMS
+            )
+
+        val originalQuestion =
+            intent.getStringExtra(
+                SearchConfiguration.EXTRA_SEARCH_QUESTION
+            )
+
+        if (
+            !locationTerms.isNullOrBlank() &&
+            query == originalQuestion
+        ) {
+
+            viewModel.filterByBoxLocation(
+                locationTerms
+            )
+
+            adapter.updateQuery(
+                locationTerms
+            )
+
+        } else {
+
+            viewModel.filter(query)
+
+            adapter.updateQuery(query)
         }
     }
 

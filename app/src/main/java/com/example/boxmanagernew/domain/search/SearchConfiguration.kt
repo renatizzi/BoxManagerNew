@@ -28,4 +28,7 @@ object SearchConfiguration {
 
     const val EXTRA_ADVANCED_OBJECT_MATCH =
         "advancedObjectMatch"
+
+    const val EXTRA_LOCATION_TERMS =
+        "advancedLocationTerms"
 }

@@ -43,6 +43,9 @@ class CategoryViewModel(
     private val _currentQuery =
         MutableLiveData("")
 
+    private var boxLocationTerms =
+        ""
+
     private var lastSource =
         emptyList<Category>()
 
@@ -85,8 +88,32 @@ class CategoryViewModel(
         query: String
     ) {
 
+        boxLocationTerms =
+            ""
+
         _currentQuery.value =
             query
+    }
+
+    fun filterByBoxLocation(
+        terms: String
+    ) {
+
+        boxLocationTerms =
+            terms
+
+        if (
+            _currentQuery.value ==
+            terms
+        ) {
+
+            applyFilterAndSort()
+
+        } else {
+
+            _currentQuery.value =
+                terms
+        }
     }
 
     fun toggleSort() {
@@ -123,6 +150,27 @@ class CategoryViewModel(
                         }
 
                     }.getOrDefault(false)
+                }
+
+        } else if (
+            boxLocationTerms.isNotBlank()
+        ) {
+
+            val ids =
+                runCatching {
+
+                    kotlinx.coroutines.runBlocking {
+
+                        repository.categoryIdsForLocation(
+                            boxLocationTerms
+                        )
+                    }
+
+                }.getOrDefault(emptySet())
+
+            result =
+                result.filter {
+                    it.id in ids
                 }
 
         } else if (

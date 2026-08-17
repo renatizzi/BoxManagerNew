@@ -447,6 +447,11 @@ class MainActivity : BaseActivity() {
                     SearchConfiguration.EXTRA_OBJECT_TERMS
                 )
 
+            val locationTerms =
+                intent.getStringExtra(
+                    SearchConfiguration.EXTRA_LOCATION_TERMS
+                )
+
             if (
                 !objectTerms.isNullOrBlank()
             ) {
@@ -467,6 +472,28 @@ class MainActivity : BaseActivity() {
 
                 viewModel.filterByContainedObjects(
                     objectTerms
+                )
+
+            } else if (
+                !locationTerms.isNullOrBlank()
+            ) {
+
+                adapter.updateQuery(
+                    locationTerms
+                )
+
+                ignoreSearchChanges =
+                    true
+
+                editSearch.setText(
+                    query
+                )
+
+                ignoreSearchChanges =
+                    false
+
+                viewModel.filterByLocation(
+                    locationTerms
                 )
 
             } else {
@@ -493,41 +520,79 @@ class MainActivity : BaseActivity() {
                 SearchConfiguration.EXTRA_OBJECT_TERMS
             )
 
+        val locationTerms =
+            intent.getStringExtra(
+                SearchConfiguration.EXTRA_LOCATION_TERMS
+            )
+
         val originalQuestion =
             intent.getStringExtra(
                 SearchConfiguration.EXTRA_SEARCH_QUESTION
             )
 
-        if (
-            objectTerms.isNullOrBlank() ||
-            originalQuestion.isNullOrBlank()
-        ) {
+        if (originalQuestion.isNullOrBlank()) {
             return
         }
 
-        adapter.updateQuery(
-            objectTerms
-        )
-
-        ignoreSearchChanges =
-            true
-
         if (
-            editSearch.text.toString() !=
-            originalQuestion
+            !objectTerms.isNullOrBlank()
         ) {
 
-            editSearch.setText(
-                originalQuestion
+            adapter.updateQuery(
+                objectTerms
             )
+
+            ignoreSearchChanges =
+                true
+
+            if (
+                editSearch.text.toString() !=
+                originalQuestion
+            ) {
+
+                editSearch.setText(
+                    originalQuestion
+                )
+            }
+
+            ignoreSearchChanges =
+                false
+
+            viewModel.filterByContainedObjects(
+                objectTerms
+            )
+
+            return
         }
 
-        ignoreSearchChanges =
-            false
+        if (
+            !locationTerms.isNullOrBlank()
+        ) {
 
-        viewModel.filterByContainedObjects(
-            objectTerms
-        )
+            adapter.updateQuery(
+                locationTerms
+            )
+
+            ignoreSearchChanges =
+                true
+
+            if (
+                editSearch.text.toString() !=
+                originalQuestion
+            ) {
+
+                editSearch.setText(
+                    originalQuestion
+                )
+            }
+
+            ignoreSearchChanges =
+                false
+
+            viewModel.filterByLocation(
+                locationTerms
+            )
+        }
     }
 
     private fun applyTypedSearch(
@@ -537,6 +602,11 @@ class MainActivity : BaseActivity() {
         val objectTerms =
             intent.getStringExtra(
                 SearchConfiguration.EXTRA_OBJECT_TERMS
+            )
+
+        val locationTerms =
+            intent.getStringExtra(
+                SearchConfiguration.EXTRA_LOCATION_TERMS
             )
 
         val originalQuestion =
@@ -555,6 +625,19 @@ class MainActivity : BaseActivity() {
 
             adapter.updateQuery(
                 objectTerms
+            )
+
+        } else if (
+            !locationTerms.isNullOrBlank() &&
+            query == originalQuestion
+        ) {
+
+            viewModel.filterByLocation(
+                locationTerms
+            )
+
+            adapter.updateQuery(
+                locationTerms
             )
 
         } else {
@@ -587,22 +670,27 @@ class MainActivity : BaseActivity() {
 
                 putExtra("boxName", box.name)
 
-                putExtra(
-                    SearchConfiguration.EXTRA_SEARCH_QUERY,
-                    viewModel.currentQuery.value ?: ""
-                )
-
-                putExtra(
-                    SearchConfiguration.EXTRA_SEARCH_QUESTION,
-                    intent.getStringExtra(
-                        SearchConfiguration.EXTRA_SEARCH_QUESTION
-                    )
-                )
-
-                putExtra(
-                    SearchConfiguration.EXTRA_ADVANCED_OBJECT_MATCH,
+                if (
                     viewModel.isContainedObjectsFilter()
-                )
+                ) {
+
+                    putExtra(
+                        SearchConfiguration.EXTRA_SEARCH_QUERY,
+                        viewModel.currentQuery.value ?: ""
+                    )
+
+                    putExtra(
+                        SearchConfiguration.EXTRA_SEARCH_QUESTION,
+                        intent.getStringExtra(
+                            SearchConfiguration.EXTRA_SEARCH_QUESTION
+                        )
+                    )
+
+                    putExtra(
+                        SearchConfiguration.EXTRA_ADVANCED_OBJECT_MATCH,
+                        true
+                    )
+                }
             }
         )
     }

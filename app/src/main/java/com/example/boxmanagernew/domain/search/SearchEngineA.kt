@@ -97,7 +97,15 @@ class SearchEngineA(
             "trovo",
             "trovato",
             "trovati",
-            "trovate"
+            "trovate",
+            "tutto",
+            "tutta",
+            "tutti",
+            "tutte",
+            "quello",
+            "quella",
+            "quelli",
+            "quelle"
         )
 
     fun execute(
