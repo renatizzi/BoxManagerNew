@@ -14,7 +14,7 @@ class SearchEngineA(
         setOf(
             "a","ad","al","alla","allo","che","con","da","del",
             "della","dello","dei","degli","delle","di",
-            "e","gli","ha","hai","ho","i","il","in","l","la",
+            "e","è","é","gli","ha","hai","ho","i","il","in","l","la",
             "le","li","lo","nel","nella","nello","nei",
             "negli","nelle","per","quale","quali","quanto",
             "quanti","sei","si","sono","su","tra","un","una","uno"
@@ -135,56 +135,11 @@ class SearchEngineA(
     ): String {
 
         val canonicalQuery =
-            query
-                .trim()
-                .lowercase()
-                .replace('’', '\'')
-                .replace('ʼ', '\'')
-                .replace('`', '\'')
-                .replace(
-                    Regex("\\bdov'\\s*[èe]'?\\b"),
-                    "dove è"
+            SearchNormalizer()
+                .normalize(
+                    query
                 )
-                .replace(
-                    Regex("\\bqual\\s+è\\b"),
-                    "quale è"
-                )
-                .replace(
-                    Regex("\\bqual\\s+e'\\b"),
-                    "quale è"
-                )
-                .replace(
-                    Regex("\\bcom'\\s*è\\b"),
-                    "come è"
-                )
-                .replace(
-                    Regex("\\bcom'\\s*e'\\b"),
-                    "come è"
-                )
-                .replace(
-                    Regex("\\bcos'\\s*è\\b"),
-                    "cosa è"
-                )
-                .replace(
-                    Regex("\\bcos'\\s*e'\\b"),
-                    "cosa è"
-                )
-                .replace(
-                    Regex("\\bc'\\s*è\\b"),
-                    "ci è"
-                )
-                .replace(
-                    Regex("\\bc'\\s*e'\\b"),
-                    "ci è"
-                )
-                .replace(
-                    Regex("\\bs'\\s*è\\b"),
-                    "si è"
-                )
-                .replace(
-                    Regex("\\bs'\\s*e'\\b"),
-                    "si è"
-                )
+                .normalizedQuestion
 
         val indicators =
             lexicalMatrix.findIndicators(

@@ -8,32 +8,60 @@ class SearchNormalizer {
         question: String
     ): SearchNormalizedQuestion {
 
-        val normalizedQuestion =
+        val unified =
             question
                 .trim()
                 .lowercase()
+                .replace('’', '\'')
+                .replace('‘', '\'')
+                .replace('ʼ', '\'')
+                .replace('`', '\'')
+                .replace('´', '\'')
+
+        val normalizedQuestion =
+            unified
                 .replace(
-                    Regex("\\bdov['’]è\\b"),
+                    wordRegex("dov'\\s*[èeé]'?"),
                     "dove è"
                 )
                 .replace(
-                    Regex("\\bqual è\\b"),
+                    wordRegex("qual\\s+[èeé]"),
                     "quale è"
                 )
                 .replace(
-                    Regex("\\bcom['’]è\\b"),
+                    wordRegex("qual\\s+e'"),
+                    "quale è"
+                )
+                .replace(
+                    wordRegex("com'\\s*[èeé]"),
                     "come è"
                 )
                 .replace(
-                    Regex("\\bcos['’]è\\b"),
+                    wordRegex("com'\\s*e'"),
+                    "come è"
+                )
+                .replace(
+                    wordRegex("cos'\\s*[èeé]"),
                     "cosa è"
                 )
                 .replace(
-                    Regex("\\bc['’]è\\b"),
+                    wordRegex("cos'\\s*e'"),
+                    "cosa è"
+                )
+                .replace(
+                    wordRegex("c'\\s*[èeé]"),
                     "ci è"
                 )
                 .replace(
-                    Regex("\\bs['’]è\\b"),
+                    wordRegex("c'\\s*e'"),
+                    "ci è"
+                )
+                .replace(
+                    wordRegex("s'\\s*[èeé]"),
+                    "si è"
+                )
+                .replace(
+                    wordRegex("s'\\s*e'"),
                     "si è"
                 )
                 .replace(
@@ -46,6 +74,15 @@ class SearchNormalizer {
                 question,
             normalizedQuestion =
                 normalizedQuestion
+        )
+    }
+
+    private fun wordRegex(
+        core: String
+    ): Regex {
+
+        return Regex(
+            "(?:^|(?<=\\s))$core(?=\\s|[?.,;:!']|$)"
         )
     }
 }

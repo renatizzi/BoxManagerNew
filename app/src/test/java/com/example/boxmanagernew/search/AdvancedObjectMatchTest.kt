@@ -132,6 +132,62 @@ class AdvancedObjectMatchTest {
         )
     }
 
+    @Test
+    fun engineADropsBeingVerbAfterDove() {
+
+        val withApostrophe =
+            SearchEngineA().execute(
+                analysis(
+                    "Dov'è il trapano elettrico?"
+                )
+            )
+
+        val withoutApostrophe =
+            SearchEngineA().execute(
+                analysis(
+                    "Dove è il trapano elettrico?"
+                )
+            )
+
+        val curlyApostrophe =
+            SearchEngineA().execute(
+                analysis(
+                    "Dov’è il trapano elettrico?"
+                )
+            )
+
+        assertEquals(
+            "trapano elettrico",
+            withApostrophe.operationalQuery
+        )
+
+        assertEquals(
+            "trapano elettrico",
+            withoutApostrophe.operationalQuery
+        )
+
+        assertEquals(
+            "trapano elettrico",
+            curlyApostrophe.operationalQuery
+        )
+    }
+
+    @Test
+    fun engineAKeepsObjectFromTrovaQuestion() {
+
+        val response =
+            SearchEngineA().execute(
+                analysis(
+                    "Trova il trapano elettrico?"
+                )
+            )
+
+        assertEquals(
+            "trapano elettrico",
+            response.operationalQuery
+        )
+    }
+
     private fun analysis(
         question: String
     ): SearchAnalysisResult {
