@@ -92,6 +92,12 @@ class BoxViewModel(
     private var categoryFilterTerms =
         ""
 
+    private var matchBoxNameOnly =
+        false
+
+    private var boxFilterTerms =
+        ""
+
     private var filterJob: Job? =
         null
 
@@ -269,6 +275,12 @@ class BoxViewModel(
         categoryFilterTerms =
             ""
 
+        matchBoxNameOnly =
+            false
+
+        boxFilterTerms =
+            ""
+
         _currentQuery.value =
             query
     }
@@ -293,6 +305,12 @@ class BoxViewModel(
             false
 
         categoryFilterTerms =
+            ""
+
+        matchBoxNameOnly =
+            false
+
+        boxFilterTerms =
             ""
 
         if (
@@ -326,6 +344,12 @@ class BoxViewModel(
             false
 
         categoryFilterTerms =
+            ""
+
+        matchBoxNameOnly =
+            false
+
+        boxFilterTerms =
             ""
 
         if (
@@ -362,6 +386,12 @@ class BoxViewModel(
         categoryFilterTerms =
             terms
 
+        matchBoxNameOnly =
+            false
+
+        boxFilterTerms =
+            ""
+
         val queryKey =
             if (
                 locationTerms.isBlank()
@@ -382,6 +412,45 @@ class BoxViewModel(
 
             _currentQuery.value =
                 queryKey
+        }
+    }
+
+    fun filterByBoxNames(
+        terms: String
+    ) {
+
+        matchContainedObjectsOnly =
+            false
+
+        matchLocationOnly =
+            false
+
+        locationFilterTerms =
+            ""
+
+        matchCategoryOnly =
+            false
+
+        categoryFilterTerms =
+            ""
+
+        matchBoxNameOnly =
+            true
+
+        boxFilterTerms =
+            terms
+
+        if (
+            _currentQuery.value ==
+            terms
+        ) {
+
+            applyFilterAndSort()
+
+        } else {
+
+            _currentQuery.value =
+                terms
         }
     }
 
@@ -439,6 +508,12 @@ class BoxViewModel(
         val locationTerms =
             locationFilterTerms
 
+        val boxNameOnly =
+            matchBoxNameOnly
+
+        val boxTerms =
+            boxFilterTerms
+
         filterJob?.cancel()
 
         filterJob =
@@ -461,6 +536,29 @@ class BoxViewModel(
                         emptyIds.contains(
                             it.id
                         )
+                    }
+
+            } else if (
+                boxNameOnly &&
+                boxTerms.isNotBlank()
+            ) {
+
+                result =
+                    result.filter { box ->
+
+                        SearchConfiguration.splitLocationTerms(
+                            boxTerms
+                        ).any { name ->
+
+                            CanonicalNormalizer.allTokensMatchWords(
+                                name,
+                                box.name
+                            ) &&
+                                    CanonicalNormalizer.allTokensMatchWords(
+                                        box.name,
+                                        name
+                                    )
+                        }
                     }
 
             } else if (

@@ -5,6 +5,9 @@ data class SearchArchiveLookupResult(
     val scopeMatches:
     List<SearchArchiveScopeMatch>,
 
+    val hits: SearchArchivalHits =
+        SearchArchivalHits(),
+
     val hasMatches: Boolean =
         scopeMatches.isNotEmpty()
 )

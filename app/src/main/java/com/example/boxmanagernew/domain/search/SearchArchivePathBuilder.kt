@@ -1,60 +1,50 @@
 package com.example.boxmanagernew.domain.search
 
-import com.example.boxmanagernew.domain.search.model.CoreEntityType
 import com.example.boxmanagernew.domain.search.model.SearchArchivePath
 import com.example.boxmanagernew.domain.search.model.SearchArchivePathStep
 import com.example.boxmanagernew.domain.search.model.SearchFulcrum
-import com.example.boxmanagernew.domain.search.model.SearchRecognizedEntitiesResult
 
+/**
+ * Fase 5: percorso V1 verso la lista Contenitori.
+ */
 class SearchArchivePathBuilder {
 
     fun build(
-        recognizedEntities: SearchRecognizedEntitiesResult,
         fulcrum: SearchFulcrum?
     ): SearchArchivePath {
 
-        val steps = mutableListOf<SearchArchivePathStep>()
+        val steps =
+            when (fulcrum) {
 
-        when (fulcrum) {
-
-            SearchFulcrum.OBJECT ->
-                steps += SearchArchivePathStep.OBJECT
-
-            SearchFulcrum.BOX ->
-                steps += SearchArchivePathStep.BOX
-
-            SearchFulcrum.LOCATION ->
-                steps += SearchArchivePathStep.LOCATION
-
-            SearchFulcrum.CATEGORY ->
-                steps += SearchArchivePathStep.CATEGORY
-
-            null -> {}
-        }
-
-        recognizedEntities.recognizedEntities.forEach {
-
-            val step =
-                when (it.entityType) {
-
-                    CoreEntityType.OBJECT ->
-                        SearchArchivePathStep.OBJECT
-
-                    CoreEntityType.BOX ->
+                SearchFulcrum.OBJECT ->
+                    listOf(
+                        SearchArchivePathStep.OBJECT,
                         SearchArchivePathStep.BOX
+                    )
 
-                    CoreEntityType.LOCATION ->
-                        SearchArchivePathStep.LOCATION
+                SearchFulcrum.LOCATION ->
+                    listOf(
+                        SearchArchivePathStep.LOCATION,
+                        SearchArchivePathStep.BOX
+                    )
 
-                    CoreEntityType.CATEGORY ->
-                        SearchArchivePathStep.CATEGORY
-                }
+                SearchFulcrum.CATEGORY ->
+                    listOf(
+                        SearchArchivePathStep.CATEGORY,
+                        SearchArchivePathStep.BOX
+                    )
 
-            if (!steps.contains(step)) {
-                steps += step
+                SearchFulcrum.BOX ->
+                    listOf(
+                        SearchArchivePathStep.BOX
+                    )
+
+                null ->
+                    emptyList()
             }
-        }
 
-        return SearchArchivePath(steps)
+        return SearchArchivePath(
+            steps = steps
+        )
     }
 }

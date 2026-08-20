@@ -1,5 +1,6 @@
 package com.example.boxmanagernew.search
 
+import com.example.boxmanagernew.domain.search.ObjectSearchMatcher
 import com.example.boxmanagernew.domain.search.SearchEngineA
 import com.example.boxmanagernew.domain.search.model.SearchAnalysisResult
 import com.example.boxmanagernew.domain.search.model.SearchFulcrum
@@ -57,6 +58,34 @@ class AdvancedObjectMatchTest {
             CanonicalNormalizer.allTokensMatchWords(
                 "viti",
                 "cacciaviti"
+            )
+        )
+    }
+
+    @Test
+    fun objectSearchUsesDescriptionLikeSimpleSearch() {
+
+        assertTrue(
+            ObjectSearchMatcher.matches(
+                "Utensile",
+                "viti da legno",
+                "viti"
+            )
+        )
+
+        assertTrue(
+            ObjectSearchMatcher.matches(
+                "Trapano",
+                "elettrico a batteria",
+                "trapano elettrico"
+            )
+        )
+
+        assertFalse(
+            ObjectSearchMatcher.matches(
+                "Cacciaviti",
+                "a stella",
+                "viti"
             )
         )
     }

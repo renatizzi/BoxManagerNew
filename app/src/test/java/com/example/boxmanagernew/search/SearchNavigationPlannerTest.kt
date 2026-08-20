@@ -22,10 +22,26 @@ class SearchNavigationPlannerTest {
             categories = listOf(
                 "Ferramenta",
                 "Generico",
-                "Miscellanea"
+                "Miscellanea",
+                "Alimenti e Bevande",
+                "Contenitori"
             ),
-            objects = listOf("Vite"),
-            boxes = listOf("Cassetta 1")
+            objects = listOf("Vite", "Box"),
+            boxes = listOf(
+                "Cassetta 1",
+                "prova",
+                "box prova",
+                "prova 1",
+                "prova 2",
+                "Box 1",
+                "Box1",
+                "Box",
+                "Box1 - Cartone",
+                "Box9 - Plastica",
+                "BOX_VUOTO",
+                "UtenzeBox",
+                "NastroBox"
+            )
         )
 
     @Test
@@ -197,6 +213,159 @@ class SearchNavigationPlannerTest {
     }
 
     @Test
+    fun namedBoxOpensThatContainer() {
+
+        val plan =
+            planner.plan(
+                "Trova Cassetta 1",
+                index
+            )
+
+        assertTrue(plan.resolved)
+        assertEquals(SearchFulcrum.BOX, plan.fulcrum)
+        assertEquals("Cassetta 1", plan.boxTerms)
+        assertEquals("", plan.locationTerms)
+    }
+
+    @Test
+    fun trovaBoxProvaOpensProvaContainers() {
+
+        val plan =
+            planner.plan(
+                "Trova box prova",
+                index
+            )
+
+        val names =
+            SearchConfiguration.splitLocationTerms(
+                plan.boxTerms
+            )
+
+        assertTrue(plan.resolved)
+        assertEquals(SearchFulcrum.BOX, plan.fulcrum)
+        assertTrue(names.contains("prova"))
+        assertTrue(names.contains("box prova"))
+        assertTrue(names.contains("prova 1"))
+        assertTrue(names.contains("prova 2"))
+    }
+
+    @Test
+    fun trovaContenitoreProvaMatchesProvaFamily() {
+
+        val plan =
+            planner.plan(
+                "Trova contenitore prova",
+                index
+            )
+
+        val names =
+            SearchConfiguration.splitLocationTerms(
+                plan.boxTerms
+            )
+
+        assertTrue(plan.resolved)
+        assertEquals(
+            setOf("prova", "box prova", "prova 1", "prova 2"),
+            names.toSet()
+        )
+    }
+
+    @Test
+    fun provaUnoDoesNotMatchProvaDue() {
+
+        val plan =
+            planner.plan(
+                "Trova contenitore prova 1",
+                index
+            )
+
+        val names =
+            SearchConfiguration.splitLocationTerms(
+                plan.boxTerms
+            )
+
+        assertTrue(plan.resolved)
+        assertTrue(names.contains("prova 1"))
+        assertFalse(names.contains("prova 2"))
+    }
+
+    @Test
+    fun boxAliasAloneDoesNotMatchProvaBoxes() {
+
+        val plan =
+            planner.plan(
+                "Trova contenitore box",
+                index
+            )
+
+        val names =
+            SearchConfiguration.splitLocationTerms(
+                plan.boxTerms
+            )
+
+        assertTrue(plan.resolved)
+        assertEquals(SearchFulcrum.BOX, plan.fulcrum)
+        assertEquals("", plan.categoryTerms)
+        assertEquals(
+            setOf("box prova", "Box 1", "Box"),
+            names.toSet()
+        )
+    }
+
+    @Test
+    fun trovaBoxMatchesSameWholeWordNames() {
+
+        val fromBox =
+            planner.plan(
+                "Trova box",
+                index
+            )
+
+        val fromContainer =
+            planner.plan(
+                "Trova contenitore box",
+                index
+            )
+
+        assertEquals(
+            SearchConfiguration.splitLocationTerms(
+                fromContainer.boxTerms
+            ).toSet(),
+            SearchConfiguration.splitLocationTerms(
+                fromBox.boxTerms
+            ).toSet()
+        )
+    }
+
+    @Test
+    fun alimentiMatchesAlimentiEBevande() {
+
+        val plan =
+            planner.plan(
+                "Quali sono i contenitori della categoria Alimenti?",
+                index
+            )
+
+        assertTrue(plan.resolved)
+        assertEquals(
+            "Alimenti e Bevande",
+            plan.categoryTerms
+        )
+    }
+
+    @Test
+    fun unknownBoxNameStaysUnresolved() {
+
+        val plan =
+            planner.plan(
+                "Trova box inesistente",
+                index
+            )
+
+        assertFalse(plan.resolved)
+    }
+
+    @Test
     fun objectQuestionStaysOnExistingPath() {
 
         val plan =
@@ -240,6 +409,30 @@ class SearchNavigationPlannerTest {
 
         assertEquals(
             "cantina",
+            response.operationalQuery
+        )
+    }
+
+    @Test
+    fun engineADropsBoxAliasAndDoesNotKeepBox() {
+
+        val response =
+            SearchEngineA().execute(
+                SearchAnalysisResult(
+                    originalQuery =
+                        "Trova contenitore box",
+                    operationalQuery = null,
+                    interpretation = null,
+                    recognizedEntities = emptySet(),
+                    dominantFulcrum = SearchFulcrum.BOX,
+                    satisfiability = null,
+                    classification = null,
+                    patternId = null
+                )
+            )
+
+        assertEquals(
+            "",
             response.operationalQuery
         )
     }

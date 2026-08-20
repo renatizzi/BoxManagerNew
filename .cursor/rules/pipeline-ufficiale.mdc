@@ -1,0 +1,47 @@
+---
+description: Pipeline ufficiale 3.3.6 = unico percorso vivo della Ricerca avanzata. Non aggirare con piani nomi, stub o Motore A.
+alwaysApply: true
+---
+
+# Pipeline ufficiale: eseguire, non aggirare
+
+Nota 3.3.6–3.3.8. Vincolante **dal primo codice** di Ricerca avanzata, non da un KO successivo.
+
+## Sequenza obbligatoria (unica, senza omissioni né inversioni)
+
+0. Acquisizione domanda (card Ricerca avanzata)
+1. Normalizzazione
+2. Analisi indicatori (solo indizi)
+3. Riconoscimento entità Core in **archivio** (OBJECT / BOX / LOCATION / CATEGORY)
+4. Fulcro
+5. Percorso archivistico (solo OBJECT⇄BOX, BOX⇄LOCATION, BOX⇄CATEGORY)
+6. Trasformazione archivistica
+7. Soddisfacibilità
+8. Tipologia: Navigazione (Motore A) o Interrogazione (Motore B)
+9. Routing da quella tipologia
+10. Risposta dal Motore, usando **solo** l’Output della Pipeline
+
+Ogni fase usa solo l’uscita della precedente. L’Output (entità, fulcro, percorso, trasformazione, tipologia, eventuale query) è l’unica base per aprire una lista.
+
+## Prima di qualsiasi diff su search
+
+Aprire Nota 3.3.6 (sidecar 9.1_B3c). Per la domanda in esame, scrivere le uscite 0–10. Se una fase manca nel codice, dirlo e **fermarsi**. Non sostituirla con un matching.
+
+## Vietato
+
+- Far girare un piano-nomi / planner **prima** o **al posto** del dispatcher.
+- Classificare o aprire liste **senza** fase 5 e 6.
+- Far decidere entità, fulcro, percorso, trasformazione, routing o lista agli **indicatori** o alla sola formulazione (`contains("contenitore")`, pattern “trova”, togliere gli alias e cercare il resto).
+- Riscrivere `box` → `contenitore` **prima** del riconoscimento entità (cancella il nome in archivio).
+- Cerotti su un KO (parola intera, sottostringa, categoria, query vuota) che **saltano** la sequenza.
+- Motore B in V1; output Motore A = lista Contenitori.
+
+## Come l’utente verifica
+
+`GlobalSearchActivity` deve chiamare la Pipeline (dispatcher) come unico avvio. Se un piano-nomi apre la lista e `return` prima del dispatcher, la regola è violata.
+
+## Esempio già successo
+
+- Fonte: 3.3.6 sequenza integrale.
+- Errore: `SearchNavigationPlanner` sui nomi; se risolve, il dispatcher non parte; `Trova box` ≠ `Trova contenitore box`.
+- Corretto: le due domande attraversano le stesse 0–10; i 6 contenitori escono in fase 10 da fulcro BOX + nomi riconosciuti in fase 3.

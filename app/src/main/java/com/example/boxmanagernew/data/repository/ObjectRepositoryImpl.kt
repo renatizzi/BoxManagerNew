@@ -11,6 +11,7 @@ import com.example.boxmanagernew.domain.model.Object
 import com.example.boxmanagernew.domain.model.ObjectWithType
 import com.example.boxmanagernew.domain.model.SearchResult
 import com.example.boxmanagernew.domain.repository.ObjectRepository
+import com.example.boxmanagernew.domain.search.ObjectSearchMatcher
 import com.example.boxmanagernew.util.CanonicalNormalizer
 
 class ObjectRepositoryImpl(
@@ -141,27 +142,13 @@ class ObjectRepositoryImpl(
         query: String
     ): Set<Int> {
 
-        val tokens =
-            CanonicalNormalizer.wordTokens(query)
-                .filter {
-                    it.isNotBlank() &&
-                            it !in ignoredWords
-                }
-
-        if (tokens.isEmpty()) {
-            return emptySet()
-        }
-
         return dao.searchObjects()
             .filter { row ->
 
-                CanonicalNormalizer.allTokensMatchWords(
-                    query,
-                    buildString {
-                        append(row.objectName)
-                        append(" ")
-                        append(row.description ?: "")
-                    }
+                ObjectSearchMatcher.matches(
+                    row.objectName,
+                    row.description,
+                    query
                 )
             }
             .map { it.boxId }

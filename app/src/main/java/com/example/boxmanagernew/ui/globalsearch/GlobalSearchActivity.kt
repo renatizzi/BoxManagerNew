@@ -15,10 +15,7 @@ import com.example.boxmanagernew.R
 import com.example.boxmanagernew.data.local.DatabaseProvider
 import com.example.boxmanagernew.domain.search.GlobalSearchDispatcher
 import com.example.boxmanagernew.domain.search.SearchConfiguration
-import com.example.boxmanagernew.domain.search.SearchNavigationPlan
-import com.example.boxmanagernew.domain.search.SearchNavigationPlanner
 import com.example.boxmanagernew.domain.search.model.SearchArchiveIndex
-import com.example.boxmanagernew.domain.search.model.SearchFulcrum
 import com.example.boxmanagernew.domain.search.model.SearchMessage
 import com.example.boxmanagernew.domain.search.model.SearchResponse
 import com.example.boxmanagernew.ui.common.BaseActivity
@@ -144,16 +141,10 @@ class GlobalSearchActivity : BaseActivity() {
             return
         }
 
-        viewModel.addMessage(
-            SearchMessage(
-                text = question,
-                fromUser = true
-            )
-        )
-
-        editQuestion.setText("")
-
         lifecycleScope.launch {
+
+            val index =
+                loadArchiveIndex()
 
             val response =
                 withContext(
@@ -161,7 +152,8 @@ class GlobalSearchActivity : BaseActivity() {
                 ) {
 
                     dispatcher.dispatch(
-                        question
+                        question,
+                        index
                     )
                 }
 
@@ -186,43 +178,20 @@ class GlobalSearchActivity : BaseActivity() {
                 return@launch
             }
 
-            val index =
-                loadArchiveIndex()
+            if (
+                response.success
+            ) {
 
-            val plan =
-                SearchNavigationPlanner()
-                    .plan(
-                        question,
-                        index
-                    )
-
-            if (plan.resolved) {
-
-                openPlannedList(
-                    plan,
-                    question
+                openPipelineList(
+                    response
                 )
 
                 return@launch
             }
 
-            when {
-
-                response.success &&
-                        response.dominantFulcrum != null -> {
-
-                    openPredefinedList(
-                        response,
-                        question
-                    )
-                }
-
-                else -> {
-                    showReply(
-                        response.message
-                    )
-                }
-            }
+            showReply(
+                response.message
+            )
         }
     }
 
@@ -258,55 +227,57 @@ class GlobalSearchActivity : BaseActivity() {
             )
         }
 
-    private fun openPlannedList(
-        plan: SearchNavigationPlan,
-        originalQuestion: String
+    private fun openPipelineList(
+        response: SearchResponse
     ) {
 
-        val target =
-            when (plan.fulcrum) {
-
-                SearchFulcrum.BOX,
-                SearchFulcrum.LOCATION,
-                SearchFulcrum.OBJECT,
-                SearchFulcrum.CATEGORY ->
-                    MainActivity::class.java
-
-                null ->
-                    return
-            }
-
         startActivity(
-            Intent(this, target).apply {
-
-                putExtra(
-                    SearchConfiguration.EXTRA_SEARCH_QUESTION,
-                    originalQuestion
-                )
+            Intent(
+                this,
+                MainActivity::class.java
+            ).apply {
 
                 if (
-                    plan.locationTerms.isNotBlank()
+                    response.objectTerms.isNotBlank()
+                ) {
+
+                    putExtra(
+                        SearchConfiguration.EXTRA_OBJECT_TERMS,
+                        response.objectTerms
+                    )
+                }
+
+                if (
+                    response.locationTerms.isNotBlank()
                 ) {
 
                     putExtra(
                         SearchConfiguration.EXTRA_LOCATION_TERMS,
-                        plan.locationTerms
+                        response.locationTerms
                     )
                 }
 
                 if (
-                    plan.categoryTerms.isNotBlank()
+                    response.categoryTerms.isNotBlank()
                 ) {
 
                     putExtra(
                         SearchConfiguration.EXTRA_CATEGORY_TERMS,
-                        plan.categoryTerms
+                        response.categoryTerms
+                    )
+                }
+
+                if (
+                    response.boxTerms.isNotBlank()
+                ) {
+
+                    putExtra(
+                        SearchConfiguration.EXTRA_BOX_TERMS,
+                        response.boxTerms
                     )
                 }
             }
         )
-
-        finish()
     }
 
     private fun showReply(
@@ -330,74 +301,5 @@ class GlobalSearchActivity : BaseActivity() {
                 fromUser = false
             )
         )
-    }
-
-    private fun openPredefinedList(
-        response: SearchResponse,
-        originalQuestion: String
-    ) {
-
-        val objectTerms =
-            response.operationalQuery
-                ?.trim()
-                .orEmpty()
-
-        if (
-            objectTerms.isBlank()
-        ) {
-
-            showReply(
-                SearchConfiguration.MSG_NO_RESULTS
-            )
-
-            return
-        }
-
-        val target =
-            when (response.dominantFulcrum) {
-
-                SearchFulcrum.OBJECT,
-                SearchFulcrum.BOX,
-                SearchFulcrum.LOCATION,
-                SearchFulcrum.CATEGORY ->
-                    MainActivity::class.java
-
-                null ->
-                    return
-            }
-
-        startActivity(
-            Intent(this, target).apply {
-
-                val isObjectList =
-                    response.dominantFulcrum ==
-                            SearchFulcrum.OBJECT ||
-                            response.dominantFulcrum ==
-                            SearchFulcrum.BOX ||
-                            response.dominantFulcrum ==
-                            SearchFulcrum.LOCATION ||
-                            response.dominantFulcrum ==
-                            SearchFulcrum.CATEGORY
-
-                putExtra(
-                    SearchConfiguration.EXTRA_SEARCH_QUESTION,
-                    if (isObjectList) {
-                        originalQuestion
-                    } else {
-                        objectTerms
-                    }
-                )
-
-                if (isObjectList) {
-
-                    putExtra(
-                        SearchConfiguration.EXTRA_OBJECT_TERMS,
-                        objectTerms
-                    )
-                }
-            }
-        )
-
-        finish()
     }
 }

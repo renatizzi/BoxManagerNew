@@ -438,114 +438,10 @@ class MainActivity : BaseActivity() {
             }
         }
 
-        intent.getStringExtra(
-            SearchConfiguration.EXTRA_SEARCH_QUESTION
-        )?.let { query ->
-
-            val objectTerms =
-                intent.getStringExtra(
-                    SearchConfiguration.EXTRA_OBJECT_TERMS
-                )
-
-            val locationTerms =
-                intent.getStringExtra(
-                    SearchConfiguration.EXTRA_LOCATION_TERMS
-                )
-
-            val categoryTerms =
-                intent.getStringExtra(
-                    SearchConfiguration.EXTRA_CATEGORY_TERMS
-                )
-
-            if (
-                !objectTerms.isNullOrBlank()
-            ) {
-
-                adapter.updateQuery(
-                    objectTerms
-                )
-
-                ignoreSearchChanges =
-                    true
-
-                editSearch.setText(
-                    query
-                )
-
-                ignoreSearchChanges =
-                    false
-
-                viewModel.filterByContainedObjects(
-                    objectTerms
-                )
-
-            } else if (
-                !categoryTerms.isNullOrBlank()
-            ) {
-
-                adapter.updateQuery(
-                    SearchConfiguration.locationHighlightQuery(
-                        categoryTerms
-                    )
-                )
-
-                ignoreSearchChanges =
-                    true
-
-                editSearch.setText(
-                    query
-                )
-
-                ignoreSearchChanges =
-                    false
-
-                viewModel.filterByCategory(
-                    categoryTerms,
-                    locationTerms.orEmpty()
-                )
-
-            } else if (
-                !locationTerms.isNullOrBlank()
-            ) {
-
-                adapter.updateQuery(
-                    SearchConfiguration.locationHighlightQuery(
-                        locationTerms
-                    )
-                )
-
-                ignoreSearchChanges =
-                    true
-
-                editSearch.setText(
-                    query
-                )
-
-                ignoreSearchChanges =
-                    false
-
-                viewModel.filterByLocation(
-                    locationTerms
-                )
-
-            } else {
-
-                ignoreSearchChanges =
-                    true
-
-                editSearch.setText(query)
-
-                ignoreSearchChanges =
-                    false
-
-                viewModel.filter(query)
-
-                adapter.updateQuery(query)
-            }
-        }
+        applyAdvancedArchiveFilter()
     }
 
-    private fun restoreAdvancedSearchPresentation() {
+    private fun applyAdvancedArchiveFilter() {
 
         val objectTerms =
             intent.getStringExtra(
@@ -562,12 +458,18 @@ class MainActivity : BaseActivity() {
                 SearchConfiguration.EXTRA_CATEGORY_TERMS
             )
 
-        val originalQuestion =
+        val boxTerms =
             intent.getStringExtra(
-                SearchConfiguration.EXTRA_SEARCH_QUESTION
+                SearchConfiguration.EXTRA_BOX_TERMS
             )
 
-        if (originalQuestion.isNullOrBlank()) {
+        if (
+            objectTerms.isNullOrBlank() &&
+            locationTerms.isNullOrBlank() &&
+            categoryTerms.isNullOrBlank() &&
+            boxTerms.isNullOrBlank()
+        ) {
+
             return
         }
 
@@ -579,30 +481,11 @@ class MainActivity : BaseActivity() {
                 objectTerms
             )
 
-            ignoreSearchChanges =
-                true
-
-            if (
-                editSearch.text.toString() !=
-                originalQuestion
-            ) {
-
-                editSearch.setText(
-                    originalQuestion
-                )
-            }
-
-            ignoreSearchChanges =
-                false
-
             viewModel.filterByContainedObjects(
                 objectTerms
             )
 
-            return
-        }
-
-        if (
+        } else if (
             !categoryTerms.isNullOrBlank()
         ) {
 
@@ -612,31 +495,26 @@ class MainActivity : BaseActivity() {
                 )
             )
 
-            ignoreSearchChanges =
-                true
-
-            if (
-                editSearch.text.toString() !=
-                originalQuestion
-            ) {
-
-                editSearch.setText(
-                    originalQuestion
-                )
-            }
-
-            ignoreSearchChanges =
-                false
-
             viewModel.filterByCategory(
                 categoryTerms,
                 locationTerms.orEmpty()
             )
 
-            return
-        }
+        } else if (
+            !boxTerms.isNullOrBlank()
+        ) {
 
-        if (
+            adapter.updateQuery(
+                SearchConfiguration.locationHighlightQuery(
+                    boxTerms
+                )
+            )
+
+            viewModel.filterByBoxNames(
+                boxTerms
+            )
+
+        } else if (
             !locationTerms.isNullOrBlank()
         ) {
 
@@ -646,102 +524,56 @@ class MainActivity : BaseActivity() {
                 )
             )
 
-            ignoreSearchChanges =
-                true
-
-            if (
-                editSearch.text.toString() !=
-                originalQuestion
-            ) {
-
-                editSearch.setText(
-                    originalQuestion
-                )
-            }
-
-            ignoreSearchChanges =
-                false
-
             viewModel.filterByLocation(
                 locationTerms
             )
         }
     }
 
+    private fun restoreAdvancedSearchPresentation() {
+
+        applyAdvancedArchiveFilter()
+    }
+
     private fun applyTypedSearch(
         query: String
     ) {
 
-        val objectTerms =
-            intent.getStringExtra(
-                SearchConfiguration.EXTRA_OBJECT_TERMS
-            )
-
-        val locationTerms =
-            intent.getStringExtra(
-                SearchConfiguration.EXTRA_LOCATION_TERMS
-            )
-
-        val categoryTerms =
-            intent.getStringExtra(
-                SearchConfiguration.EXTRA_CATEGORY_TERMS
-            )
-
-        val originalQuestion =
-            intent.getStringExtra(
-                SearchConfiguration.EXTRA_SEARCH_QUESTION
-            )
-
         if (
-            !objectTerms.isNullOrBlank() &&
-            query == originalQuestion
+            query.isBlank()
         ) {
 
-            viewModel.filterByContainedObjects(
-                objectTerms
-            )
+            val hadAdvanced =
+                !intent.getStringExtra(
+                    SearchConfiguration.EXTRA_OBJECT_TERMS
+                ).isNullOrBlank() ||
+                    !intent.getStringExtra(
+                        SearchConfiguration.EXTRA_LOCATION_TERMS
+                    ).isNullOrBlank() ||
+                    !intent.getStringExtra(
+                        SearchConfiguration.EXTRA_CATEGORY_TERMS
+                    ).isNullOrBlank() ||
+                    !intent.getStringExtra(
+                        SearchConfiguration.EXTRA_BOX_TERMS
+                    ).isNullOrBlank()
 
-            adapter.updateQuery(
-                objectTerms
-            )
+            if (hadAdvanced) {
 
-        } else if (
-            !categoryTerms.isNullOrBlank() &&
-            query == originalQuestion
-        ) {
+                applyAdvancedArchiveFilter()
 
-            viewModel.filterByCategory(
-                categoryTerms,
-                locationTerms.orEmpty()
-            )
+            } else {
 
-            adapter.updateQuery(
-                SearchConfiguration.locationHighlightQuery(
-                    categoryTerms
-                )
-            )
+                viewModel.filter("")
 
-        } else if (
-            !locationTerms.isNullOrBlank() &&
-            query == originalQuestion
-        ) {
+                adapter.updateQuery("")
+            }
 
-            viewModel.filterByLocation(
-                locationTerms
-            )
-
-            adapter.updateQuery(
-                SearchConfiguration.locationHighlightQuery(
-                    locationTerms
-                )
-            )
-
-        } else {
-
-            viewModel.filter(query)
-
-            adapter.updateQuery(query)
+            return
         }
+
+        viewModel.filter(query)
+
+        adapter.updateQuery(query)
     }
 
     private fun setupFab() {

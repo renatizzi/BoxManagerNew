@@ -14,47 +14,73 @@ data class SearchNavigationPlan(
 
     val categoryTerms: String = "",
 
+    val boxTerms: String = "",
+
     val objectTerms: String = ""
 )
 
-class SearchNavigationPlanner {
+class SearchNavigationPlanner(
+
+    private val archivalLookup: SearchArchivalLookup =
+        SearchArchivalLookup()
+) {
 
     fun plan(
         question: String,
         index: SearchArchiveIndex
     ): SearchNavigationPlan {
 
-        val locations =
-            matchingNames(
+        val hits =
+            archivalLookup.find(
                 question,
-                index.locations
+                index
             )
 
         val objects =
-            matchingNames(
-                question,
-                index.objects
-            )
+            hits.objects.filterNot { name ->
+                SearchCoreAliases.isBoxAlias(name) ||
+                        SearchCoreAliases.isLocationAlias(name) ||
+                        SearchCoreAliases.isCategoryAlias(name)
+            }
 
-        val categories =
-            matchingNames(
-                question,
-                index.categories
-            )
+        val looksForContainerName =
+            CanonicalNormalizer.wordTokens(
+                question
+            ).any { token ->
+                SearchCoreAliases.isBoxAlias(
+                    token
+                )
+            }
 
         val locationTerms =
             SearchConfiguration.packLocationTerms(
-                locations.filterNot { name ->
+                hits.locations.filterNot { name ->
                     isGenericLocationWord(name)
                 }
             )
 
         val categoryTerms =
             SearchConfiguration.packLocationTerms(
-                categories.filterNot { name ->
+                hits.categories.filterNot { name ->
                     SearchCoreAliases.isCategoryAlias(
                         name
                     )
+                }
+            )
+
+        val boxTerms =
+            SearchConfiguration.packLocationTerms(
+                hits.boxes.filterNot { name ->
+                    hits.locations.any { location ->
+                        CanonicalNormalizer.allTokensMatchWords(
+                            name,
+                            location
+                        ) &&
+                                CanonicalNormalizer.allTokensMatchWords(
+                                    location,
+                                    name
+                                )
+                    }
                 }
             )
 
@@ -67,6 +93,21 @@ class SearchNavigationPlanner {
                 fulcrum = SearchFulcrum.BOX,
                 locationTerms = locationTerms,
                 categoryTerms = categoryTerms
+            )
+        }
+
+        if (
+            boxTerms.isNotBlank() &&
+            (
+                objects.isEmpty() ||
+                        looksForContainerName
+            )
+        ) {
+
+            return SearchNavigationPlan(
+                resolved = true,
+                fulcrum = SearchFulcrum.BOX,
+                boxTerms = boxTerms
             )
         }
 
@@ -94,24 +135,5 @@ class SearchNavigationPlanner {
         return SearchCoreAliases.isLocationAlias(
             name
         )
-    }
-
-    private fun matchingNames(
-        question: String,
-        names: List<String>
-    ): List<String> {
-
-        return names
-            .filter { name ->
-
-                name.isNotBlank() &&
-                        CanonicalNormalizer.allTokensMatchWords(
-                            name,
-                            question
-                        )
-            }
-            .sortedByDescending {
-                it.length
-            }
     }
 }

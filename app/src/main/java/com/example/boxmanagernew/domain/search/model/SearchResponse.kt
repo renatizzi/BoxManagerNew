@@ -15,5 +15,18 @@ data class SearchResponse(
 
     val dominantFulcrum: SearchFulcrum? = null,
 
+    val locationTerms: String = "",
+
+    val categoryTerms: String = "",
+
+    val boxTerms: String = "",
+
+    val objectTerms: String = "",
+
+    val archiveTransformation:
+    SearchArchiveTransformation? = null,
+
+    val requestType: SearchRequestType? = null,
+
     val debugMarker: String? = null
 )

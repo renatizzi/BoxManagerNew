@@ -175,7 +175,8 @@ class SearchEngineA(
                 listScopeWords.contains(it) ||
                         SearchCoreAliases.isLocationAlias(it) ||
                         SearchCoreAliases.isObjectAlias(it) ||
-                        SearchCoreAliases.isCategoryAlias(it)
+                        SearchCoreAliases.isCategoryAlias(it) ||
+                        SearchCoreAliases.isBoxAlias(it)
             }
             .joinToString(" ")
     }

@@ -1,5 +1,6 @@
 package com.example.boxmanagernew.domain.search
 
+import com.example.boxmanagernew.domain.search.model.SearchArchiveIndex
 import com.example.boxmanagernew.domain.search.model.SearchArchiveLookupResult
 import com.example.boxmanagernew.domain.search.model.SearchArchiveScope
 import com.example.boxmanagernew.domain.search.model.SearchArchiveScopeMatch
@@ -7,11 +8,15 @@ import com.example.boxmanagernew.domain.search.model.SearchArchiveScopeMatch
 class SearchArchiveLookup(
 
     private val gateway: SearchArchiveGateway =
-        SearchArchiveGateway()
+        SearchArchiveGateway(),
+
+    private val archivalLookup: SearchArchivalLookup =
+        SearchArchivalLookup()
 ) {
 
     fun lookup(
-        searchText: String
+        searchText: String,
+        index: SearchArchiveIndex? = null
     ): SearchArchiveLookupResult {
 
         val normalized =
@@ -27,6 +32,69 @@ class SearchArchiveLookup(
                 scopeMatches = emptyList()
             )
         }
+
+        if (
+            index != null
+        ) {
+
+            return lookupInArchive(
+                searchText,
+                index
+            )
+        }
+
+        return stubLookup(
+            normalized
+        )
+    }
+
+    private fun lookupInArchive(
+        searchText: String,
+        index: SearchArchiveIndex
+    ): SearchArchiveLookupResult {
+
+        val hits =
+            archivalLookup.find(
+                searchText,
+                index
+            )
+
+        val matches =
+            mutableListOf<SearchArchiveScopeMatch>()
+
+        addScope(
+            matches,
+            SearchArchiveScope.OBJECT,
+            hits.objects.size
+        )
+
+        addScope(
+            matches,
+            SearchArchiveScope.BOX,
+            hits.boxes.size
+        )
+
+        addScope(
+            matches,
+            SearchArchiveScope.LOCATION,
+            hits.locations.size
+        )
+
+        addScope(
+            matches,
+            SearchArchiveScope.CATEGORY,
+            hits.categories.size
+        )
+
+        return SearchArchiveLookupResult(
+            scopeMatches = matches,
+            hits = hits
+        )
+    }
+
+    private fun stubLookup(
+        normalized: String
+    ): SearchArchiveLookupResult {
 
         val matches =
             mutableListOf<SearchArchiveScopeMatch>()
@@ -49,5 +117,24 @@ class SearchArchiveLookup(
         return SearchArchiveLookupResult(
             scopeMatches = matches
         )
+    }
+
+    private fun addScope(
+        matches: MutableList<SearchArchiveScopeMatch>,
+        scope: SearchArchiveScope,
+        matchCount: Int
+    ) {
+
+        if (
+            matchCount > 0
+        ) {
+
+            matches.add(
+                SearchArchiveScopeMatch(
+                    scope = scope,
+                    matchCount = matchCount
+                )
+            )
+        }
     }
 }
