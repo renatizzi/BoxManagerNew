@@ -32,6 +32,9 @@ object SearchConfiguration {
     const val EXTRA_LOCATION_TERMS =
         "advancedLocationTerms"
 
+    const val EXTRA_CATEGORY_TERMS =
+        "advancedCategoryTerms"
+
     const val LOCATION_TERMS_SEPARATOR =
         "\u001f"
 

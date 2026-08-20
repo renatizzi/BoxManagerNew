@@ -452,6 +452,11 @@ class MainActivity : BaseActivity() {
                     SearchConfiguration.EXTRA_LOCATION_TERMS
                 )
 
+            val categoryTerms =
+                intent.getStringExtra(
+                    SearchConfiguration.EXTRA_CATEGORY_TERMS
+                )
+
             if (
                 !objectTerms.isNullOrBlank()
             ) {
@@ -472,6 +477,31 @@ class MainActivity : BaseActivity() {
 
                 viewModel.filterByContainedObjects(
                     objectTerms
+                )
+
+            } else if (
+                !categoryTerms.isNullOrBlank()
+            ) {
+
+                adapter.updateQuery(
+                    SearchConfiguration.locationHighlightQuery(
+                        categoryTerms
+                    )
+                )
+
+                ignoreSearchChanges =
+                    true
+
+                editSearch.setText(
+                    query
+                )
+
+                ignoreSearchChanges =
+                    false
+
+                viewModel.filterByCategory(
+                    categoryTerms,
+                    locationTerms.orEmpty()
                 )
 
             } else if (
@@ -527,6 +557,11 @@ class MainActivity : BaseActivity() {
                 SearchConfiguration.EXTRA_LOCATION_TERMS
             )
 
+        val categoryTerms =
+            intent.getStringExtra(
+                SearchConfiguration.EXTRA_CATEGORY_TERMS
+            )
+
         val originalQuestion =
             intent.getStringExtra(
                 SearchConfiguration.EXTRA_SEARCH_QUESTION
@@ -562,6 +597,40 @@ class MainActivity : BaseActivity() {
 
             viewModel.filterByContainedObjects(
                 objectTerms
+            )
+
+            return
+        }
+
+        if (
+            !categoryTerms.isNullOrBlank()
+        ) {
+
+            adapter.updateQuery(
+                SearchConfiguration.locationHighlightQuery(
+                    categoryTerms
+                )
+            )
+
+            ignoreSearchChanges =
+                true
+
+            if (
+                editSearch.text.toString() !=
+                originalQuestion
+            ) {
+
+                editSearch.setText(
+                    originalQuestion
+                )
+            }
+
+            ignoreSearchChanges =
+                false
+
+            viewModel.filterByCategory(
+                categoryTerms,
+                locationTerms.orEmpty()
             )
 
             return
@@ -613,6 +682,11 @@ class MainActivity : BaseActivity() {
                 SearchConfiguration.EXTRA_LOCATION_TERMS
             )
 
+        val categoryTerms =
+            intent.getStringExtra(
+                SearchConfiguration.EXTRA_CATEGORY_TERMS
+            )
+
         val originalQuestion =
             intent.getStringExtra(
                 SearchConfiguration.EXTRA_SEARCH_QUESTION
@@ -629,6 +703,22 @@ class MainActivity : BaseActivity() {
 
             adapter.updateQuery(
                 objectTerms
+            )
+
+        } else if (
+            !categoryTerms.isNullOrBlank() &&
+            query == originalQuestion
+        ) {
+
+            viewModel.filterByCategory(
+                categoryTerms,
+                locationTerms.orEmpty()
+            )
+
+            adapter.updateQuery(
+                SearchConfiguration.locationHighlightQuery(
+                    categoryTerms
+                )
             )
 
         } else if (

@@ -174,7 +174,8 @@ class SearchEngineA(
             .filterNot {
                 listScopeWords.contains(it) ||
                         SearchCoreAliases.isLocationAlias(it) ||
-                        SearchCoreAliases.isObjectAlias(it)
+                        SearchCoreAliases.isObjectAlias(it) ||
+                        SearchCoreAliases.isCategoryAlias(it)
             }
             .joinToString(" ")
     }

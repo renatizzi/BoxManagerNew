@@ -19,7 +19,11 @@ class SearchNavigationPlannerTest {
     private val index =
         SearchArchiveIndex(
             locations = listOf("Cantina", "Mansarda"),
-            categories = listOf("Ferramenta"),
+            categories = listOf(
+                "Ferramenta",
+                "Generico",
+                "Miscellanea"
+            ),
             objects = listOf("Vite"),
             boxes = listOf("Cassetta 1")
         )
@@ -127,7 +131,7 @@ class SearchNavigationPlannerTest {
     }
 
     @Test
-    fun categoryQuestionOpensCategoriesOfLocation() {
+    fun categoryWordWithoutNameOpensLocationContainers() {
 
         val plan =
             planner.plan(
@@ -136,8 +140,60 @@ class SearchNavigationPlannerTest {
             )
 
         assertTrue(plan.resolved)
-        assertEquals(SearchFulcrum.CATEGORY, plan.fulcrum)
+        assertEquals(SearchFulcrum.BOX, plan.fulcrum)
         assertEquals("Cantina", plan.locationTerms)
+        assertEquals("", plan.categoryTerms)
+    }
+
+    @Test
+    fun namedCategoryOpensContainersOfThatCategory() {
+
+        val plan =
+            planner.plan(
+                "Quali sono i contenitori della categoria Generico?",
+                index
+            )
+
+        assertTrue(plan.resolved)
+        assertEquals(SearchFulcrum.BOX, plan.fulcrum)
+        assertEquals("Generico", plan.categoryTerms)
+    }
+
+    @Test
+    fun objectsOfCategoryOpenSameContainers() {
+
+        val fromObjects =
+            planner.plan(
+                "Fammi vedere tutti gli oggetti che fanno parte della categoria Generico",
+                index
+            )
+
+        val fromContainers =
+            planner.plan(
+                "Quali sono i contenitori della categoria Generico?",
+                index
+            )
+
+        assertTrue(fromObjects.resolved)
+        assertEquals(SearchFulcrum.BOX, fromObjects.fulcrum)
+        assertEquals(
+            fromContainers.categoryTerms,
+            fromObjects.categoryTerms
+        )
+    }
+
+    @Test
+    fun miscellaneaCategoryOpensItsContainers() {
+
+        val plan =
+            planner.plan(
+                "Cerca i contenitori che fanno parte della categoria Miscellanea",
+                index
+            )
+
+        assertTrue(plan.resolved)
+        assertEquals(SearchFulcrum.BOX, plan.fulcrum)
+        assertEquals("Miscellanea", plan.categoryTerms)
     }
 
     @Test

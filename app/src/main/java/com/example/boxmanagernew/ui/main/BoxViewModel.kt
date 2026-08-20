@@ -86,6 +86,12 @@ class BoxViewModel(
     private var locationFilterTerms =
         ""
 
+    private var matchCategoryOnly =
+        false
+
+    private var categoryFilterTerms =
+        ""
+
     private var filterJob: Job? =
         null
 
@@ -257,6 +263,12 @@ class BoxViewModel(
         locationFilterTerms =
             ""
 
+        matchCategoryOnly =
+            false
+
+        categoryFilterTerms =
+            ""
+
         _currentQuery.value =
             query
     }
@@ -276,6 +288,12 @@ class BoxViewModel(
 
         locationFilterTerms =
             terms
+
+        matchCategoryOnly =
+            false
+
+        categoryFilterTerms =
+            ""
 
         if (
             _currentQuery.value ==
@@ -304,6 +322,12 @@ class BoxViewModel(
         locationFilterTerms =
             ""
 
+        matchCategoryOnly =
+            false
+
+        categoryFilterTerms =
+            ""
+
         if (
             _currentQuery.value ==
             terms
@@ -315,6 +339,49 @@ class BoxViewModel(
 
             _currentQuery.value =
                 terms
+        }
+    }
+
+    fun filterByCategory(
+        terms: String,
+        locationTerms: String = ""
+    ) {
+
+        matchContainedObjectsOnly =
+            false
+
+        matchLocationOnly =
+            false
+
+        locationFilterTerms =
+            locationTerms
+
+        matchCategoryOnly =
+            true
+
+        categoryFilterTerms =
+            terms
+
+        val queryKey =
+            if (
+                locationTerms.isBlank()
+            ) {
+                terms
+            } else {
+                "$terms $locationTerms"
+            }
+
+        if (
+            _currentQuery.value ==
+            queryKey
+        ) {
+
+            applyFilterAndSort()
+
+        } else {
+
+            _currentQuery.value =
+                queryKey
         }
     }
 
@@ -363,6 +430,15 @@ class BoxViewModel(
         val locationOnly =
             matchLocationOnly
 
+        val categoryOnly =
+            matchCategoryOnly
+
+        val categoryTerms =
+            categoryFilterTerms
+
+        val locationTerms =
+            locationFilterTerms
+
         filterJob?.cancel()
 
         filterJob =
@@ -386,6 +462,51 @@ class BoxViewModel(
                             it.id
                         )
                     }
+
+            } else if (
+                categoryOnly &&
+                categoryTerms.isNotBlank()
+            ) {
+
+                result =
+                    result.filter { box ->
+
+                        val categoryName =
+                            categories.find {
+                                it.id ==
+                                        box.categoryId
+                            }?.name
+                                ?: ""
+
+                        SearchConfiguration.splitLocationTerms(
+                            categoryTerms
+                        ).any { name ->
+
+                            CanonicalNormalizer.allTokensMatchWords(
+                                name,
+                                categoryName
+                            )
+                        }
+                    }
+
+                if (
+                    locationTerms.isNotBlank()
+                ) {
+
+                    result =
+                        result.filter { box ->
+
+                            SearchConfiguration.splitLocationTerms(
+                                locationTerms
+                            ).any { name ->
+
+                                CanonicalNormalizer.allTokensMatchWords(
+                                    name,
+                                    box.position
+                                )
+                            }
+                        }
+                }
 
             } else if (
                 locationOnly &&

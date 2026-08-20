@@ -21,7 +21,6 @@ import com.example.boxmanagernew.domain.search.model.SearchArchiveIndex
 import com.example.boxmanagernew.domain.search.model.SearchFulcrum
 import com.example.boxmanagernew.domain.search.model.SearchMessage
 import com.example.boxmanagernew.domain.search.model.SearchResponse
-import com.example.boxmanagernew.ui.categories.CategoriesActivity
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
 import kotlinx.coroutines.Dispatchers
@@ -267,12 +266,10 @@ class GlobalSearchActivity : BaseActivity() {
         val target =
             when (plan.fulcrum) {
 
-                SearchFulcrum.CATEGORY ->
-                    CategoriesActivity::class.java
-
                 SearchFulcrum.BOX,
                 SearchFulcrum.LOCATION,
-                SearchFulcrum.OBJECT ->
+                SearchFulcrum.OBJECT,
+                SearchFulcrum.CATEGORY ->
                     MainActivity::class.java
 
                 null ->
@@ -294,6 +291,16 @@ class GlobalSearchActivity : BaseActivity() {
                     putExtra(
                         SearchConfiguration.EXTRA_LOCATION_TERMS,
                         plan.locationTerms
+                    )
+                }
+
+                if (
+                    plan.categoryTerms.isNotBlank()
+                ) {
+
+                    putExtra(
+                        SearchConfiguration.EXTRA_CATEGORY_TERMS,
+                        plan.categoryTerms
                     )
                 }
             }
@@ -351,11 +358,9 @@ class GlobalSearchActivity : BaseActivity() {
 
                 SearchFulcrum.OBJECT,
                 SearchFulcrum.BOX,
-                SearchFulcrum.LOCATION ->
-                    MainActivity::class.java
-
+                SearchFulcrum.LOCATION,
                 SearchFulcrum.CATEGORY ->
-                    CategoriesActivity::class.java
+                    MainActivity::class.java
 
                 null ->
                     return
@@ -370,7 +375,9 @@ class GlobalSearchActivity : BaseActivity() {
                             response.dominantFulcrum ==
                             SearchFulcrum.BOX ||
                             response.dominantFulcrum ==
-                            SearchFulcrum.LOCATION
+                            SearchFulcrum.LOCATION ||
+                            response.dominantFulcrum ==
+                            SearchFulcrum.CATEGORY
 
                 putExtra(
                     SearchConfiguration.EXTRA_SEARCH_QUESTION,

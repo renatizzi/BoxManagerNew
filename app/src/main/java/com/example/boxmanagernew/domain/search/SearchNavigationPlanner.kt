@@ -12,6 +12,8 @@ data class SearchNavigationPlan(
 
     val locationTerms: String = "",
 
+    val categoryTerms: String = "",
+
     val objectTerms: String = ""
 )
 
@@ -34,6 +36,12 @@ class SearchNavigationPlanner {
                 index.objects
             )
 
+        val categories =
+            matchingNames(
+                question,
+                index.categories
+            )
+
         val locationTerms =
             SearchConfiguration.packLocationTerms(
                 locations.filterNot { name ->
@@ -41,18 +49,24 @@ class SearchNavigationPlanner {
                 }
             )
 
-        if (asksForCategoryList(question)) {
+        val categoryTerms =
+            SearchConfiguration.packLocationTerms(
+                categories.filterNot { name ->
+                    SearchCoreAliases.isCategoryAlias(
+                        name
+                    )
+                }
+            )
 
-            if (locationTerms.isBlank()) {
-                return SearchNavigationPlan(
-                    resolved = false
-                )
-            }
+        if (
+            categoryTerms.isNotBlank()
+        ) {
 
             return SearchNavigationPlan(
                 resolved = true,
-                fulcrum = SearchFulcrum.CATEGORY,
-                locationTerms = locationTerms
+                fulcrum = SearchFulcrum.BOX,
+                locationTerms = locationTerms,
+                categoryTerms = categoryTerms
             )
         }
 
@@ -71,19 +85,6 @@ class SearchNavigationPlanner {
         return SearchNavigationPlan(
             resolved = false
         )
-    }
-
-    private fun asksForCategoryList(
-        question: String
-    ): Boolean {
-
-        val normalized =
-            CanonicalNormalizer.normalize(
-                question
-            )
-
-        return normalized.contains("categoria") ||
-                normalized.contains("categorie")
     }
 
     private fun isGenericLocationWord(
