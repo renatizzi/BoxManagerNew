@@ -1,0 +1,27 @@
+---
+description: Non sostituire tabelle e elenchi ufficiali (Nota, Excel) con versioni ricomposte o accorciate.
+alwaysApply: true
+---
+
+# Fonti ufficiali: importare, non ricomporre
+
+Nota Integrata, Excel di progetto e catalogo 2.6 sono **fonti da recepire**, non da riassumere.
+
+## Obbligo
+
+- Prima di codice su alias, sinonimi, nuclei, messaggi, matrici: **aprire l’artefatto ufficiale** e usare **l’elenco intero**.
+- I casi di prova (es. *posto / locale / sito*) sono **esempi visibili**, non un elenco sostitutivo.
+- Plurali e forme senza accento sono solo matching. Non sono un secondo elenco.
+- Se un sottoinsieme sembra sufficiente, dirlo in analisi e aspettare **SI**. Non sostituire in silenzio.
+
+## Vietato
+
+- Ricomporre a memoria un elenco “più corto” o “più sensato”.
+- Mixare pezzi di Excel + pezzi di codice vivo e chiamare il risultato “la tabella”.
+- Aggiornare un nucleo (LOCATION) e lasciare OBJECT/BOX/CATEGORY sulla copia vecchia, se la fonte è una tabella a quattro righe.
+
+## Esempio già successo
+
+- Fonte: tabella 1.3.3 (OBJECT / BOX / LOCATION / CATEGORY).
+- Errore: in codice solo posto/locale/sito.
+- Corretto: importare le quattro righe; i tre KO restano test, non la fonte.

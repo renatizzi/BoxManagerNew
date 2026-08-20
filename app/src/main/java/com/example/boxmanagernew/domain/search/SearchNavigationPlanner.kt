@@ -90,17 +90,9 @@ class SearchNavigationPlanner {
         name: String
     ): Boolean {
 
-        val normalized =
-            CanonicalNormalizer.normalize(
-                name
-            )
-
-        return normalized == "luogo" ||
-                normalized == "luoghi" ||
-                normalized == "posizione" ||
-                normalized == "posizioni" ||
-                normalized == "posto" ||
-                normalized == "posti"
+        return SearchCoreAliases.isLocationAlias(
+            name
+        )
     }
 
     private fun matchingNames(

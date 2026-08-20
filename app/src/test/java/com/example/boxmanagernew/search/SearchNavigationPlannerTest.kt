@@ -73,6 +73,60 @@ class SearchNavigationPlannerTest {
     }
 
     @Test
+    fun localeBeforePlaceOpensSameContainersAsPlace() {
+
+        val plan =
+            planner.plan(
+                "Fammi vedere cosa ho nel locale cantina",
+                index
+            )
+
+        assertTrue(plan.resolved)
+        assertEquals(SearchFulcrum.BOX, plan.fulcrum)
+        assertEquals("Cantina", plan.locationTerms)
+    }
+
+    @Test
+    fun sitoBeforePlaceOpensSameContainersAsPlace() {
+
+        val plan =
+            planner.plan(
+                "Cosa ho nel sito mansarda",
+                index
+            )
+
+        assertTrue(plan.resolved)
+        assertEquals(SearchFulcrum.BOX, plan.fulcrum)
+        assertEquals("Mansarda", plan.locationTerms)
+    }
+
+    @Test
+    fun zonaBeforePlaceOpensSameContainersAsPlace() {
+
+        val plan =
+            planner.plan(
+                "Fammi vedere cosa ho nella zona cantina",
+                index
+            )
+
+        assertTrue(plan.resolved)
+        assertEquals(SearchFulcrum.BOX, plan.fulcrum)
+        assertEquals("Cantina", plan.locationTerms)
+    }
+
+    @Test
+    fun postoWithoutAPlaceNameStaysOnObjectPath() {
+
+        val plan =
+            planner.plan(
+                "In quale posto custodisco le viti?",
+                index
+            )
+
+        assertFalse(plan.resolved)
+    }
+
+    @Test
     fun categoryQuestionOpensCategoriesOfLocation() {
 
         val plan =

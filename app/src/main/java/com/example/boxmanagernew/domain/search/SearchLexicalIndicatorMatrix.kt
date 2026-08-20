@@ -32,6 +32,8 @@ class SearchLexicalIndicatorMatrix {
                 "posizione",
                 "luogo",
                 "posto",
+                "locale",
+                "sito",
                 "dove"
             )
 

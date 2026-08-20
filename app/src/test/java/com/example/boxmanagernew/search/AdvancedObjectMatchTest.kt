@@ -188,6 +188,46 @@ class AdvancedObjectMatchTest {
         )
     }
 
+    @Test
+    fun engineADropsPlaceSynonymsAndKeepsObject() {
+
+        val withPosto =
+            SearchEngineA().execute(
+                analysis(
+                    "In quale posto custodisco le viti?"
+                )
+            )
+
+        val whereQuestion =
+            SearchEngineA().execute(
+                analysis(
+                    "Dove si trovano le viti?"
+                )
+            )
+
+        assertEquals(
+            "viti",
+            withPosto.operationalQuery
+        )
+
+        assertEquals(
+            whereQuestion.operationalQuery,
+            withPosto.operationalQuery
+        )
+
+        val withZona =
+            SearchEngineA().execute(
+                analysis(
+                    "In quale zona custodisco le viti?"
+                )
+            )
+
+        assertEquals(
+            "viti",
+            withZona.operationalQuery
+        )
+    }
+
     private fun analysis(
         question: String
     ): SearchAnalysisResult {

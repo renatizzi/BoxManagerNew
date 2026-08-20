@@ -368,7 +368,9 @@ class GlobalSearchActivity : BaseActivity() {
                     response.dominantFulcrum ==
                             SearchFulcrum.OBJECT ||
                             response.dominantFulcrum ==
-                            SearchFulcrum.BOX
+                            SearchFulcrum.BOX ||
+                            response.dominantFulcrum ==
+                            SearchFulcrum.LOCATION
 
                 putExtra(
                     SearchConfiguration.EXTRA_SEARCH_QUESTION,

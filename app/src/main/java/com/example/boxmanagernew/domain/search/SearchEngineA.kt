@@ -59,6 +59,11 @@ class SearchEngineA(
             "sistemate",
 
             "custodire",
+            "custodisco",
+            "custodisci",
+            "custodisce",
+            "custodiamo",
+            "custodiscono",
             "custodito",
             "custodita",
             "custoditi",
@@ -79,10 +84,6 @@ class SearchEngineA(
             "oggetti",
             "categoria",
             "categorie",
-            "posizione",
-            "posizioni",
-            "luogo",
-            "luoghi",
             "fammi",
             "vedere",
             "vedi",
@@ -171,7 +172,9 @@ class SearchEngineA(
                 simpleSearchIndicators.contains(it)
             }
             .filterNot {
-                listScopeWords.contains(it)
+                listScopeWords.contains(it) ||
+                        SearchCoreAliases.isLocationAlias(it) ||
+                        SearchCoreAliases.isObjectAlias(it)
             }
             .joinToString(" ")
     }
