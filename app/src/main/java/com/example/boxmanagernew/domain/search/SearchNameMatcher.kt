@@ -26,6 +26,15 @@ object SearchNameMatcher {
             "nome","nomi"
         )
 
+    fun isFunctionWord(
+        token: String
+    ): Boolean {
+
+        return functionWords.contains(
+            token.lowercase()
+        )
+    }
+
     fun contentTokens(
         question: String
     ): List<String> {
@@ -162,15 +171,19 @@ object SearchNameMatcher {
             return false
         }
 
-        val required =
+        val questionTokens =
             contentTokens(
                 question
-            ).filter { token ->
+            )
+
+        val required =
+            questionTokens.filter { token ->
                 shouldRequire(
                     token,
                     nameWords,
                     name,
-                    siblingNames
+                    siblingNames,
+                    questionTokens
                 )
             }
 
@@ -201,7 +214,8 @@ object SearchNameMatcher {
         token: String,
         nameWords: List<String>,
         name: String,
-        siblingNames: List<String>
+        siblingNames: List<String>,
+        questionTokens: List<String>
     ): Boolean {
 
         val inThisName =
@@ -220,7 +234,8 @@ object SearchNameMatcher {
             isStandaloneOtherName(
                 token,
                 name,
-                siblingNames
+                siblingNames,
+                questionTokens
             )
         ) {
             return false
@@ -241,7 +256,8 @@ object SearchNameMatcher {
     private fun isStandaloneOtherName(
         token: String,
         name: String,
-        siblingNames: List<String>
+        siblingNames: List<String>,
+        questionTokens: List<String>
     ): Boolean {
 
         return siblingNames.any { other ->
@@ -255,11 +271,44 @@ object SearchNameMatcher {
                         other
                     )
 
-                words.size == 1 &&
-                        nameWordMatches(
-                            token,
-                            words.first()
-                        )
+                if (words.isEmpty()) {
+                    false
+                } else {
+
+                    val tokenBelongs =
+                        words.any { word ->
+                            nameWordMatches(
+                                token,
+                                word
+                            )
+                        }
+
+                    val otherEvidenced =
+                        words.all { word ->
+                            questionTokens.any { questionToken ->
+                                nameWordMatches(
+                                    questionToken,
+                                    word
+                                )
+                            }
+                        }
+
+                    val sharesStem =
+                        words.any { siblingWord ->
+                            CanonicalNormalizer.wordTokens(
+                                name
+                            ).any { nameWord ->
+                                nameWordMatches(
+                                    siblingWord,
+                                    nameWord
+                                )
+                            }
+                        }
+
+                    tokenBelongs &&
+                            otherEvidenced &&
+                            !sharesStem
+                }
             }
         }
     }

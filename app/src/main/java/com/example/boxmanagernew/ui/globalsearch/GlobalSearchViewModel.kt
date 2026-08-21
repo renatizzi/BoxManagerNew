@@ -41,6 +41,34 @@ class GlobalSearchViewModel : ViewModel() {
             current
     }
 
+    fun replaceLastAssistantMessage(
+        message: SearchMessage
+    ) {
+
+        val current =
+            _messages.value
+                ?.toMutableList()
+                ?: mutableListOf()
+
+        if (
+            current.isNotEmpty() &&
+            !current.last().fromUser
+        ) {
+
+            current[current.lastIndex] =
+                message
+
+        } else {
+
+            current.add(
+                message
+            )
+        }
+
+        _messages.value =
+            current
+    }
+
     fun clear() {
 
         _messages.value =

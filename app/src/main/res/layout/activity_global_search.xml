@@ -13,6 +13,7 @@
     <include layout="@layout/layout_page_header"/>
 
     <ScrollView
+        android:id="@+id/scrollSearchBody"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"

@@ -12,35 +12,54 @@ class SearchEntityRecognizer {
         lookupResult: SearchArchiveLookupResult
     ): SearchRecognizedEntitiesResult {
 
+        val hits =
+            lookupResult.hits
+
         val recognizedEntities =
-            lookupResult.scopeMatches.map {
-
-                SearchRecognizedEntity(
-                    entityType =
-                        when (it.scope) {
-
-                            SearchArchiveScope.OBJECT ->
-                                CoreEntityType.OBJECT
-
-                            SearchArchiveScope.BOX ->
-                                CoreEntityType.BOX
-
-                            SearchArchiveScope.LOCATION ->
-                                CoreEntityType.LOCATION
-
-                            SearchArchiveScope.CATEGORY ->
-                                CoreEntityType.CATEGORY
-                        },
-                    scope =
-                        it.scope,
-                    matchCount =
-                        it.matchCount
+            listOf(
+                entity(
+                    CoreEntityType.OBJECT,
+                    SearchArchiveScope.OBJECT,
+                    hits.objects
+                ),
+                entity(
+                    CoreEntityType.BOX,
+                    SearchArchiveScope.BOX,
+                    hits.boxes
+                ),
+                entity(
+                    CoreEntityType.LOCATION,
+                    SearchArchiveScope.LOCATION,
+                    hits.locations
+                ),
+                entity(
+                    CoreEntityType.CATEGORY,
+                    SearchArchiveScope.CATEGORY,
+                    hits.categories
                 )
-            }
+            ).filterNotNull()
 
         return SearchRecognizedEntitiesResult(
             recognizedEntities =
                 recognizedEntities
+        )
+    }
+
+    private fun entity(
+        type: CoreEntityType,
+        scope: SearchArchiveScope,
+        keys: List<String>
+    ): SearchRecognizedEntity? {
+
+        if (keys.isEmpty()) {
+            return null
+        }
+
+        return SearchRecognizedEntity(
+            entityType = type,
+            scope = scope,
+            matchCount = keys.size,
+            keys = keys
         )
     }
 

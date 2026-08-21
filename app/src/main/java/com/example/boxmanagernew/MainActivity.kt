@@ -478,7 +478,9 @@ class MainActivity : BaseActivity() {
         ) {
 
             adapter.updateQuery(
-                objectTerms
+                SearchConfiguration.locationHighlightQuery(
+                    objectTerms
+                )
             )
 
             viewModel.filterByContainedObjects(

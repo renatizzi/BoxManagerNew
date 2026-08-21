@@ -1,6 +1,7 @@
 package com.example.boxmanagernew.domain.search
 
 import com.example.boxmanagernew.domain.search.model.SearchNormalizedQuestion
+import com.example.boxmanagernew.util.CanonicalNormalizer
 
 class SearchNormalizer {
 
@@ -68,12 +69,35 @@ class SearchNormalizer {
                     Regex("\\s+"),
                     " "
                 )
+                .replace(
+                    Regex("[?.,;:!]"),
+                    " "
+                )
+                .replace(
+                    Regex("\\s+"),
+                    " "
+                )
+                .trim()
+
+        val withoutNoise =
+            CanonicalNormalizer.wordTokens(
+                normalizedQuestion
+            ).filterNot { token ->
+
+                SearchNameMatcher.isFunctionWord(
+                    token
+                ) &&
+                        !SearchLexicalIndicatorMatrix
+                            .isOfficialIndicator(
+                                token
+                            )
+            }.joinToString(" ")
 
         return SearchNormalizedQuestion(
             originalQuestion =
                 question,
             normalizedQuestion =
-                normalizedQuestion
+                withoutNoise
         )
     }
 

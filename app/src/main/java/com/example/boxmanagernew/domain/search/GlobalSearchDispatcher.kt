@@ -1,5 +1,6 @@
 package com.example.boxmanagernew.domain.search
 
+import com.example.boxmanagernew.domain.search.model.SearchClarificationType
 import com.example.boxmanagernew.domain.search.model.SearchArchivalHits
 import com.example.boxmanagernew.domain.search.model.SearchArchiveIndex
 import com.example.boxmanagernew.domain.search.model.SearchArchiveTransformation
@@ -67,7 +68,9 @@ class GlobalSearchDispatcher(
                 searchText =
                     normalizedQuestion
                         .normalizedQuestion,
-                index = archiveIndex
+                index = archiveIndex,
+                indicators =
+                    lexicalIndicatorGroups
             )
 
         val recognizedEntitiesResult =
@@ -93,14 +96,19 @@ class GlobalSearchDispatcher(
                 archivePath
             )
 
-        val requestType =
-            requestTypeOf(
+        val extras =
+            extrasFor(
                 archiveTransformation,
                 lookupResult.hits
             )
 
-        val extras =
-            extrasFor(
+        val satisfiable =
+            hasNavigationExtras(
+                extras
+            )
+
+        val requestType =
+            requestTypeOf(
                 archiveTransformation,
                 lookupResult.hits
             )
@@ -114,15 +122,39 @@ class GlobalSearchDispatcher(
                 "[D3] FULCRUM_REASON=${fulcrumResult.reason}",
                 "[PATH] ${archivePath.steps}",
                 "[TRANSFORM] $archiveTransformation",
+                "[SATISFIABLE] $satisfiable",
                 "[TYPE] $requestType"
             ).joinToString("\n")
+
+        // R8/R19 Nota 3.3.6: stessa chiave su più Core, senza selettore extra.
+        if (
+            archiveIndex != null &&
+            archiveLookup.needsHomonymClarification(
+                normalizedQuestion.normalizedQuestion,
+                archiveIndex
+            )
+        ) {
+
+            return SearchResponse(
+                success = false,
+                message =
+                    SearchConfiguration.MSG_CLARIFY,
+                requiresClarification = true,
+                clarificationType =
+                    SearchClarificationType.AMBIGUOUS_CORE,
+                dominantFulcrum =
+                    fulcrumResult.fulcrum,
+                archiveTransformation =
+                    archiveTransformation,
+                requestType = requestType,
+                debugMarker = debugMarker
+            )
+        }
 
         if (
             requestType ==
             SearchRequestType.ARCHIVE_NAVIGATION &&
-            hasNavigationExtras(
-                extras
-            )
+            satisfiable
         ) {
 
             return SearchResponse(
@@ -268,11 +300,12 @@ class GlobalSearchDispatcher(
             )
 
         val objectTerms =
-            hits.objects.filterNot { name ->
-                SearchCoreAliases.isBoxAlias(name) ||
-                        SearchCoreAliases.isLocationAlias(name) ||
-                        SearchCoreAliases.isCategoryAlias(name)
-            }.joinToString(" ")
+            SearchConfiguration.packLocationTerms(
+                hits.objects.filterNot { name ->
+                    SearchCoreAliases.isLocationAlias(name) ||
+                            SearchCoreAliases.isCategoryAlias(name)
+                }
+            )
 
         return when (transformation) {
 

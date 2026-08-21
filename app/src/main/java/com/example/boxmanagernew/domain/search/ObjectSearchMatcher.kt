@@ -46,4 +46,29 @@ object ObjectSearchMatcher {
             }
         }
     }
+
+    fun matchesAnyPackedTerm(
+        typeName: String,
+        description: String?,
+        packed: String
+    ): Boolean {
+
+        val terms =
+            SearchConfiguration.splitLocationTerms(
+                packed
+            ).ifEmpty {
+                listOf(packed).filter {
+                    it.isNotBlank()
+                }
+            }
+
+        return terms.any { term ->
+
+            matches(
+                typeName,
+                description,
+                term
+            )
+        }
+    }
 }

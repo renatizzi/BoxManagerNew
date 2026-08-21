@@ -6,5 +6,7 @@ data class SearchRecognizedEntity(
 
     val scope: SearchArchiveScope,
 
-    val matchCount: Int
+    val matchCount: Int,
+
+    val keys: List<String> = emptyList()
 )

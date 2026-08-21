@@ -3,9 +3,11 @@ package com.example.boxmanagernew.search
 import com.example.boxmanagernew.domain.search.GlobalSearchDispatcher
 import com.example.boxmanagernew.domain.search.SearchConfiguration
 import com.example.boxmanagernew.domain.search.model.SearchArchiveIndex
+import com.example.boxmanagernew.domain.search.model.SearchArchiveObjectRecord
 import com.example.boxmanagernew.domain.search.model.SearchArchiveTransformation
 import com.example.boxmanagernew.domain.search.model.SearchRequestType
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -24,7 +26,7 @@ class SearchOfficialPipelineTest {
                 "Alimenti e Bevande",
                 "Contenitori"
             ),
-            objects = listOf("Vite", "Box"),
+            objects = listOf("Vite", "Trapano elettrico", "Box"),
             boxes = listOf(
                 "Cassetta 1",
                 "prova",
@@ -42,14 +44,170 @@ class SearchOfficialPipelineTest {
             )
         )
 
-    @Test
-    fun trovaContenitoreBoxUsesSameNamesAsTrovaBox() {
+    private fun archiveWithBoxOnAllCores() =
+        index.copy(
+            locations =
+                index.locations + "Box",
+            categories =
+                index.categories + "Box",
+            objectRecords = listOf(
+                SearchArchiveObjectRecord(
+                    name = "Box",
+                    boxName = "Cassetta 1"
+                )
+            )
+        )
 
-        val fromBox =
+    @Test
+    fun trovaIlTrapanoElettricoPipelinePhases() {
+
+        val question =
+            "TROVA IL TRAPANO ELETTRICO"
+
+        val normalized =
+            com.example.boxmanagernew.domain.search.SearchNormalizer()
+                .normalize(
+                    question
+                )
+
+        val indicators =
+            com.example.boxmanagernew.domain.search
+                .SearchLexicalIndicatorMatrix()
+                .findIndicators(
+                    normalized.normalizedQuestion
+                )
+
+        val response =
+            dispatcher.dispatch(
+                question,
+                index
+            )
+
+        assertEquals(
+            "trapano elettrico",
+            normalized.normalizedQuestion
+        )
+        assertTrue(
+            indicators.values.all { group ->
+                group.isEmpty()
+            }
+        )
+        assertTrue(response.success)
+        assertEquals(
+            "Trapano elettrico",
+            response.objectTerms
+        )
+        assertEquals(
+            SearchArchiveTransformation.OBJECT_TO_BOX,
+            response.archiveTransformation
+        )
+        assertEquals(
+            SearchRequestType.ARCHIVE_NAVIGATION,
+            response.requestType
+        )
+        assertTrue(
+            response.debugMarker.orEmpty().contains(
+                "keys=[Trapano elettrico]"
+            )
+        )
+        assertTrue(
+            response.debugMarker.orEmpty().contains(
+                "[SATISFIABLE] true"
+            )
+        )
+    }
+
+    @Test
+    fun trovaBoxAsksClarificationWhenObjectAndContainerShareKey() {
+
+        val response =
             dispatcher.dispatch(
                 "Trova box",
                 index
             )
+
+        assertFalse(response.success)
+        assertTrue(response.requiresClarification)
+        assertEquals(
+            SearchConfiguration.MSG_CLARIFY,
+            response.message
+        )
+    }
+
+    @Test
+    fun trovaBoxAsksClarificationWhenOnlyObjectNamedBox() {
+
+        val archive =
+            index.copy(
+                objects = listOf(
+                    "Vite",
+                    "Box"
+                ),
+                boxes = listOf(
+                    "Cassetta 1"
+                ),
+                objectRecords = listOf(
+                    SearchArchiveObjectRecord(
+                        name = "Box",
+                        boxName = "Cassetta 1"
+                    )
+                )
+            )
+
+        val response =
+            dispatcher.dispatch(
+                "Trova box",
+                archive
+            )
+
+        assertFalse(
+            "Trova box non deve aprire i contenitori dell'oggetto Box. " +
+                    "success=${response.success} " +
+                    "clarify=${response.requiresClarification} " +
+                    "objectTerms=${response.objectTerms} " +
+                    "boxTerms=${response.boxTerms} " +
+                    "transform=${response.archiveTransformation}\n" +
+                    response.debugMarker
+            ,
+            response.success
+        )
+        assertTrue(response.requiresClarification)
+        assertEquals(
+            SearchConfiguration.MSG_CLARIFY,
+            response.message
+        )
+        assertEquals("", response.objectTerms)
+        assertEquals("", response.boxTerms)
+    }
+
+    @Test
+    fun trovaBoxWithoutObjectNamedBoxOpensNamedContainers() {
+
+        val onlyContainers =
+            index.copy(
+                objects = listOf(
+                    "Vite",
+                    "Trapano elettrico"
+                )
+            )
+
+        val response =
+            dispatcher.dispatch(
+                "Trova box",
+                onlyContainers
+            )
+
+        assertTrue(response.success)
+        assertEquals(
+            setOf("box prova", "Box 1", "Box"),
+            SearchConfiguration.splitLocationTerms(
+                response.boxTerms
+            ).toSet()
+        )
+    }
+
+    @Test
+    fun trovaContenitoreBoxUsesNamedContainers() {
 
         val fromContainer =
             dispatcher.dispatch(
@@ -60,7 +218,6 @@ class SearchOfficialPipelineTest {
         val expected =
             setOf("box prova", "Box 1", "Box")
 
-        assertTrue(fromBox.success)
         assertTrue(fromContainer.success)
         assertEquals(
             SearchRequestType.ARCHIVE_NAVIGATION,
@@ -73,17 +230,282 @@ class SearchOfficialPipelineTest {
         assertEquals(
             expected,
             SearchConfiguration.splitLocationTerms(
-                fromBox.boxTerms
-            ).toSet()
-        )
-        assertEquals(
-            expected,
-            SearchConfiguration.splitLocationTerms(
                 fromContainer.boxTerms
             ).toSet()
         )
         assertEquals("", fromContainer.categoryTerms)
         assertEquals("", fromContainer.objectTerms)
+    }
+
+    @Test
+    fun trovaOggettoBoxDoesNotOpenOggettiDiValoreCategory() {
+
+        val archive =
+            index.copy(
+                categories =
+                    index.categories +
+                            "Oggetti di valore",
+                objectRecords = listOf(
+                    SearchArchiveObjectRecord(
+                        name = "Box",
+                        boxName = "Cassetta 1"
+                    )
+                )
+            )
+
+        val response =
+            dispatcher.dispatch(
+                "Trova oggetto box",
+                archive
+            )
+
+        assertTrue(response.success)
+        assertEquals(
+            SearchArchiveTransformation.OBJECT_TO_BOX,
+            response.archiveTransformation
+        )
+        assertEquals(
+            "Box",
+            response.objectTerms
+        )
+        assertEquals(
+            "",
+            response.categoryTerms
+        )
+        assertEquals(
+            "",
+            response.boxTerms
+        )
+    }
+
+    @Test
+    fun trovaPosizioneBoxOpensLocationNamedBox() {
+
+        val archive =
+            index.copy(
+                locations =
+                    index.locations + "Box",
+                objectRecords = listOf(
+                    SearchArchiveObjectRecord(
+                        name = "Box",
+                        boxName = "Cassetta 1"
+                    )
+                )
+            )
+
+        val response =
+            dispatcher.dispatch(
+                "Trova posizione box",
+                archive
+            )
+
+        assertTrue(response.success)
+        assertEquals(
+            SearchArchiveTransformation.LOCATION_TO_BOX,
+            response.archiveTransformation
+        )
+        assertEquals(
+            "Box",
+            response.locationTerms
+        )
+        assertEquals(
+            "",
+            response.objectTerms
+        )
+        assertEquals(
+            "",
+            response.boxTerms
+        )
+    }
+
+    @Test
+    fun trovaCategoriaBoxOpensCategoryNamedBox() {
+
+        val archive =
+            index.copy(
+                categories =
+                    index.categories + "Box",
+                objectRecords = listOf(
+                    SearchArchiveObjectRecord(
+                        name = "Box",
+                        boxName = "Cassetta 1"
+                    )
+                )
+            )
+
+        val response =
+            dispatcher.dispatch(
+                "Trova categoria box",
+                archive
+            )
+
+        assertTrue(response.success)
+        assertEquals(
+            SearchArchiveTransformation.CATEGORY_TO_BOX,
+            response.archiveTransformation
+        )
+        assertEquals(
+            "Box",
+            response.categoryTerms
+        )
+        assertEquals(
+            "",
+            response.objectTerms
+        )
+        assertEquals(
+            "",
+            response.boxTerms
+        )
+    }
+
+    @Test
+    fun fourCoreBoxOggettoOpensContainersThatContainObjectBox() {
+
+        val response =
+            dispatcher.dispatch(
+                "Trova oggetto box",
+                archiveWithBoxOnAllCores()
+            )
+
+        assertFalse(response.requiresClarification)
+        assertTrue(
+            "Trova oggetto box deve aprire i contenitori dell'oggetto. " +
+                    "success=${response.success} " +
+                    "message=${response.message} " +
+                    "objectTerms=${response.objectTerms} " +
+                    "boxTerms=${response.boxTerms} " +
+                    "locationTerms=${response.locationTerms} " +
+                    "categoryTerms=${response.categoryTerms} " +
+                    "transform=${response.archiveTransformation}\n" +
+                    response.debugMarker,
+            response.success
+        )
+        assertEquals(
+            SearchArchiveTransformation.OBJECT_TO_BOX,
+            response.archiveTransformation
+        )
+        assertEquals("Box", response.objectTerms)
+        assertEquals("", response.boxTerms)
+        assertEquals("", response.locationTerms)
+        assertEquals("", response.categoryTerms)
+    }
+
+    @Test
+    fun fourCoreBoxContenitoreOpensNamedContainers() {
+
+        val response =
+            dispatcher.dispatch(
+                "Trova contenitore box",
+                archiveWithBoxOnAllCores()
+            )
+
+        assertTrue(response.success)
+        assertEquals(
+            SearchArchiveTransformation.NONE,
+            response.archiveTransformation
+        )
+        assertEquals(
+            setOf("box prova", "Box 1", "Box"),
+            SearchConfiguration.splitLocationTerms(
+                response.boxTerms
+            ).toSet()
+        )
+        assertEquals("", response.objectTerms)
+    }
+
+    @Test
+    fun fourCoreBoxPosizioneOpensLocation() {
+
+        val response =
+            dispatcher.dispatch(
+                "Trova posizione box",
+                archiveWithBoxOnAllCores()
+            )
+
+        assertTrue(response.success)
+        assertEquals(
+            SearchArchiveTransformation.LOCATION_TO_BOX,
+            response.archiveTransformation
+        )
+        assertEquals("Box", response.locationTerms)
+        assertEquals("", response.objectTerms)
+        assertEquals("", response.boxTerms)
+        assertEquals("", response.categoryTerms)
+    }
+
+    @Test
+    fun fourCoreBoxCategoriaOpensCategory() {
+
+        val response =
+            dispatcher.dispatch(
+                "Trova categoria box",
+                archiveWithBoxOnAllCores()
+            )
+
+        assertTrue(response.success)
+        assertEquals(
+            SearchArchiveTransformation.CATEGORY_TO_BOX,
+            response.archiveTransformation
+        )
+        assertEquals("Box", response.categoryTerms)
+        assertEquals("", response.objectTerms)
+        assertEquals("", response.boxTerms)
+        assertEquals("", response.locationTerms)
+    }
+
+    @Test
+    fun fourCoreBoxWithoutSelectorAsksClarification() {
+
+        val response =
+            dispatcher.dispatch(
+                "Trova box",
+                archiveWithBoxOnAllCores()
+            )
+
+        assertFalse(response.success)
+        assertTrue(response.requiresClarification)
+        assertEquals(
+            SearchConfiguration.MSG_CLARIFY,
+            response.message
+        )
+    }
+
+    @Test
+    fun trapanoElettricoDoesNotMatchCacciaviteElettrico() {
+
+        val archive =
+            SearchArchiveIndex(
+                objects = listOf(
+                    "Trapano elettrico",
+                    "Cacciavite elettrico"
+                ),
+                objectRecords = listOf(
+                    SearchArchiveObjectRecord(
+                        name = "Trapano elettrico",
+                        boxName = "Cassetta 1"
+                    ),
+                    SearchArchiveObjectRecord(
+                        name = "Cacciavite elettrico",
+                        boxName = "Cassetta 2"
+                    )
+                ),
+                boxes = listOf(
+                    "Cassetta 1",
+                    "Cassetta 2"
+                )
+            )
+
+        val response =
+            dispatcher.dispatch(
+                "Trova il trapano elettrico",
+                archive
+            )
+
+        assertTrue(response.success)
+        assertEquals(
+            "Trapano elettrico",
+            response.objectTerms
+        )
     }
 
     @Test
@@ -157,6 +579,25 @@ class SearchOfficialPipelineTest {
     }
 
     @Test
+    fun provaUnoDoesNotMatchProvaDue() {
+
+        val response =
+            dispatcher.dispatch(
+                "Trova contenitore prova 1",
+                index
+            )
+
+        val names =
+            SearchConfiguration.splitLocationTerms(
+                response.boxTerms
+            ).toSet()
+
+        assertTrue(response.success)
+        assertTrue(names.contains("prova 1"))
+        assertTrue(!names.contains("prova 2"))
+    }
+
+    @Test
     fun objectQuestionUsesObjectToBox() {
 
         val response =
@@ -170,6 +611,357 @@ class SearchOfficialPipelineTest {
         assertEquals(
             SearchArchiveTransformation.OBJECT_TO_BOX,
             response.archiveTransformation
+        )
+    }
+
+    @Test
+    fun twoObjectsStaySeparateAndUseObjectToBox() {
+
+        val response =
+            dispatcher.dispatch(
+                "Trova viti e trapano elettrico",
+                index
+            )
+
+        assertTrue(response.success)
+        assertEquals(
+            SearchRequestType.ARCHIVE_NAVIGATION,
+            response.requestType
+        )
+        assertEquals(
+            SearchArchiveTransformation.OBJECT_TO_BOX,
+            response.archiveTransformation
+        )
+        assertEquals(
+            setOf("Vite", "Trapano elettrico"),
+            SearchConfiguration.splitLocationTerms(
+                response.objectTerms
+            ).toSet()
+        )
+        assertEquals("", response.boxTerms)
+    }
+
+    @Test
+    fun objectDescriptionIsInSearchPerimeter() {
+
+        val described =
+            SearchArchiveIndex(
+                objects = listOf("Utensile"),
+                objectRecords = listOf(
+                    SearchArchiveObjectRecord(
+                        name = "Utensile",
+                        description = "viti da legno"
+                    )
+                ),
+                boxes = listOf("Cassetta 1"),
+                locations = listOf("Cantina")
+            )
+
+        val response =
+            dispatcher.dispatch(
+                "Trova viti",
+                described
+            )
+
+        assertTrue(response.success)
+        assertEquals(
+            SearchArchiveTransformation.OBJECT_TO_BOX,
+            response.archiveTransformation
+        )
+        assertEquals(
+            "viti",
+            response.objectTerms
+        )
+    }
+
+    @Test
+    fun locationWordInObjectDescriptionDoesNotStealLocation() {
+
+        val described =
+            SearchArchiveIndex(
+                objects = listOf("Utensile"),
+                objectRecords = listOf(
+                    SearchArchiveObjectRecord(
+                        name = "Utensile",
+                        description = "ripiano in cantina"
+                    )
+                ),
+                boxes = listOf("Cassetta 1"),
+                locations = listOf("Cantina")
+            )
+
+        val response =
+            dispatcher.dispatch(
+                "Fammi vedere tutto quello che ho in cantina",
+                described
+            )
+
+        assertTrue(response.success)
+        assertEquals("Cantina", response.locationTerms)
+        assertEquals(
+            SearchArchiveTransformation.LOCATION_TO_BOX,
+            response.archiveTransformation
+        )
+        assertEquals("", response.objectTerms)
+    }
+
+    @Test
+    fun specificObjectNameIsNotIntersectedWithShorterVite() {
+
+        val index =
+            SearchArchiveIndex(
+                objects = listOf(
+                    "Vite",
+                    "Set di viti a stella"
+                ),
+                objectRecords = listOf(
+                    SearchArchiveObjectRecord(
+                        name = "Vite",
+                        boxName = "Box A"
+                    ),
+                    SearchArchiveObjectRecord(
+                        name = "Set di viti a stella",
+                        boxName = "Cassetta 1"
+                    )
+                ),
+                boxes = listOf("Box A", "Cassetta 1")
+            )
+
+        val fullName =
+            dispatcher.dispatch(
+                "Trova set di viti a stella",
+                index
+            )
+
+        val shortName =
+            dispatcher.dispatch(
+                "Trova set di viti",
+                index
+            )
+
+        assertTrue(fullName.success)
+        assertTrue(shortName.success)
+        assertEquals(
+            "Set di viti a stella",
+            fullName.objectTerms
+        )
+        assertEquals(
+            "Set di viti a stella",
+            shortName.objectTerms
+        )
+    }
+
+    @Test
+    fun descriptionPhraseDoesNotOpenAllViteBoxes() {
+
+        val index =
+            SearchArchiveIndex(
+                objects = listOf("Vite"),
+                objectRecords = listOf(
+                    SearchArchiveObjectRecord(
+                        name = "Vite",
+                        boxName = "Box A"
+                    ),
+                    SearchArchiveObjectRecord(
+                        name = "Vite",
+                        boxName = "Box B"
+                    ),
+                    SearchArchiveObjectRecord(
+                        name = "Vite",
+                        description =
+                            "set di viti a stella",
+                        boxName = "Cassetta 1"
+                    )
+                ),
+                boxes = listOf(
+                    "Box A",
+                    "Box B",
+                    "Cassetta 1"
+                )
+            )
+
+        val response =
+            dispatcher.dispatch(
+                "Trova set di viti a stella",
+                index
+            )
+
+        assertTrue(response.success)
+        assertEquals(
+            "set viti stella",
+            response.objectTerms
+        )
+    }
+
+    @Test
+    fun trovaVitiKeepsViteWhenDescriptionIsLonger() {
+
+        val index =
+            SearchArchiveIndex(
+                objects = listOf("Vite"),
+                objectRecords = listOf(
+                    SearchArchiveObjectRecord(
+                        name = "Vite",
+                        boxName = "Box A"
+                    ),
+                    SearchArchiveObjectRecord(
+                        name = "Vite",
+                        description =
+                            "set di viti a stella",
+                        boxName = "Cassetta 1"
+                    )
+                ),
+                boxes = listOf(
+                    "Box A",
+                    "Cassetta 1"
+                )
+            )
+
+        val response =
+            dispatcher.dispatch(
+                "Trova viti",
+                index
+            )
+
+        assertTrue(response.success)
+        assertEquals(
+            "Vite",
+            response.objectTerms
+        )
+        assertEquals(
+            SearchArchiveTransformation.OBJECT_TO_BOX,
+            response.archiveTransformation
+        )
+    }
+
+    @Test
+    fun trapanoElettricoIsOneArchivalKey() {
+
+        val response =
+            dispatcher.dispatch(
+                "Trova trapano elettrico",
+                index
+            )
+
+        assertTrue(response.success)
+        assertEquals(
+            "Trapano elettrico",
+            response.objectTerms
+        )
+        assertEquals(
+            SearchArchiveTransformation.OBJECT_TO_BOX,
+            response.archiveTransformation
+        )
+    }
+
+    @Test
+    fun twoObjectsInDifferentBoxesStayNavigable() {
+
+        val split =
+            SearchArchiveIndex(
+                objects = listOf(
+                    "Vite",
+                    "Trapano elettrico"
+                ),
+                objectRecords = listOf(
+                    SearchArchiveObjectRecord(
+                        name = "Vite",
+                        boxName = "Box A"
+                    ),
+                    SearchArchiveObjectRecord(
+                        name = "Trapano elettrico",
+                        boxName = "Box B"
+                    )
+                ),
+                boxes = listOf("Box A", "Box B")
+            )
+
+        val response =
+            dispatcher.dispatch(
+                "Trova viti e trapano elettrico",
+                split
+            )
+
+        assertTrue(response.success)
+        assertEquals(
+            SearchArchiveTransformation.OBJECT_TO_BOX,
+            response.archiveTransformation
+        )
+        assertEquals(
+            setOf("Vite", "Trapano elettrico"),
+            SearchConfiguration.splitLocationTerms(
+                response.objectTerms
+            ).toSet()
+        )
+    }
+
+    @Test
+    fun twoObjectsInSameBoxStayNavigable() {
+
+        val together =
+            SearchArchiveIndex(
+                objects = listOf(
+                    "Vite",
+                    "Trapano elettrico"
+                ),
+                objectRecords = listOf(
+                    SearchArchiveObjectRecord(
+                        name = "Vite",
+                        boxName = "Cassetta 1"
+                    ),
+                    SearchArchiveObjectRecord(
+                        name = "Trapano elettrico",
+                        boxName = "Cassetta 1"
+                    )
+                ),
+                boxes = listOf("Cassetta 1")
+            )
+
+        val response =
+            dispatcher.dispatch(
+                "Trova viti e trapano elettrico",
+                together
+            )
+
+        assertTrue(response.success)
+        assertEquals(
+            setOf("Vite", "Trapano elettrico"),
+            SearchConfiguration.splitLocationTerms(
+                response.objectTerms
+            ).toSet()
+        )
+    }
+
+    @Test
+    fun descriptionOnlyObjectWithBoxStaysNavigable() {
+
+        val described =
+            SearchArchiveIndex(
+                objects = listOf("Utensile"),
+                objectRecords = listOf(
+                    SearchArchiveObjectRecord(
+                        name = "Utensile",
+                        description = "viti da legno",
+                        boxName = "Cassetta 1"
+                    )
+                ),
+                boxes = listOf("Cassetta 1")
+            )
+
+        val response =
+            dispatcher.dispatch(
+                "Trova viti",
+                described
+            )
+
+        assertTrue(response.success)
+        assertEquals(
+            SearchArchiveTransformation.OBJECT_TO_BOX,
+            response.archiveTransformation
+        )
+        assertEquals(
+            "viti",
+            response.objectTerms
         )
     }
 }

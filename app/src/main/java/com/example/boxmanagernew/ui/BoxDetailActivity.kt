@@ -139,11 +139,6 @@ class BoxDetailActivity : BaseActivity() {
                 SearchConfiguration.EXTRA_SEARCH_QUERY
             ) ?: ""
 
-        val originalQuestion =
-            intent.getStringExtra(
-                SearchConfiguration.EXTRA_SEARCH_QUESTION
-            ) ?: ""
-
         advancedObjectMatch =
             intent.getBooleanExtra(
                 SearchConfiguration.EXTRA_ADVANCED_OBJECT_MATCH,
@@ -151,12 +146,9 @@ class BoxDetailActivity : BaseActivity() {
             )
 
         displaySearchText =
-            if (
-                advancedObjectMatch &&
-                originalQuestion.isNotBlank()
-            ) {
-                originalQuestion
-            } else {
+            SearchConfiguration.locationHighlightQuery(
+                initialSearchQuery
+            ).ifBlank {
                 initialSearchQuery
             }
 
@@ -494,12 +486,18 @@ class BoxDetailActivity : BaseActivity() {
                 SearchConfiguration.EXTRA_SEARCH_QUESTION
             ) ?: ""
 
+        val visibleTerms =
+            SearchConfiguration.locationHighlightQuery(
+                incomingTerms
+            )
+
         val keepAdvanced =
             advancedObjectMatch &&
                     incomingTerms.isNotBlank() &&
                     (
-                            query == originalQuestion ||
-                                    query == incomingTerms
+                            query == incomingTerms ||
+                                    query == visibleTerms ||
+                                    query == originalQuestion
                             )
 
         if (keepAdvanced) {

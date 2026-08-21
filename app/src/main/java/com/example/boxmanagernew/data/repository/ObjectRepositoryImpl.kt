@@ -12,6 +12,7 @@ import com.example.boxmanagernew.domain.model.ObjectWithType
 import com.example.boxmanagernew.domain.model.SearchResult
 import com.example.boxmanagernew.domain.repository.ObjectRepository
 import com.example.boxmanagernew.domain.search.ObjectSearchMatcher
+import com.example.boxmanagernew.domain.search.SearchConfiguration
 import com.example.boxmanagernew.util.CanonicalNormalizer
 
 class ObjectRepositoryImpl(
@@ -139,20 +140,38 @@ class ObjectRepositoryImpl(
     }
 
     suspend fun findBoxIdsByObjectTerms(
-        query: String
+        packed: String
     ): Set<Int> {
 
-        return dao.searchObjects()
-            .filter { row ->
+        val terms =
+            SearchConfiguration.splitLocationTerms(
+                packed
+            ).ifEmpty {
+                listOf(packed).filter {
+                    it.isNotBlank()
+                }
+            }
+
+        if (terms.isEmpty()) {
+            return emptySet()
+        }
+
+        val rows =
+            dao.searchObjects()
+
+        return terms.flatMap { term ->
+
+            rows.filter { row ->
 
                 ObjectSearchMatcher.matches(
                     row.objectName,
                     row.description,
-                    query
+                    term
                 )
+            }.map { row ->
+                row.boxId
             }
-            .map { it.boxId }
-            .toSet()
+        }.toSet()
     }
 
     suspend fun getObjectsByBoxSync(

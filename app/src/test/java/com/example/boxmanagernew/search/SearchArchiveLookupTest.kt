@@ -38,4 +38,25 @@ class SearchArchiveLookupTest {
         assertTrue(result.hasMatches)
         assertEquals(1, boxMatch.matchCount)
     }
+
+    @Test
+    fun twoObjectNamesAreRecognizedIndependently() {
+
+        val result =
+            SearchArchiveLookup().lookup(
+                "Trova viti e trapano elettrico",
+                SearchArchiveIndex(
+                    objects = listOf(
+                        "Vite",
+                        "Trapano elettrico",
+                        "Box"
+                    )
+                )
+            )
+
+        assertEquals(
+            setOf("Vite", "Trapano elettrico"),
+            result.hits.objects.toSet()
+        )
+    }
 }

@@ -31,18 +31,34 @@ class SearchArchiveFulcrumResolver {
 
         val objectNames =
             hits.objects.filterNot { name ->
-                SearchCoreAliases.isBoxAlias(name) ||
-                        SearchCoreAliases.isLocationAlias(name) ||
+                SearchCoreAliases.isLocationAlias(name) ||
                         SearchCoreAliases.isCategoryAlias(name)
             }
 
-        val hasBoxAlias =
+        val hasObjectAlias =
             CanonicalNormalizer.wordTokens(
                 question
             ).any { token ->
-                SearchCoreAliases.isBoxAlias(
+                SearchCoreAliases.isObjectAlias(
                     token
                 )
+            }
+
+        val extraBoxQualifier =
+            CanonicalNormalizer.wordTokens(
+                question
+            ).any { token ->
+
+                SearchCoreAliases.isBoxAlias(
+                    token
+                ) &&
+                        objectNames.none { name ->
+
+                            SearchNameMatcher.wholeWordInName(
+                                name,
+                                token
+                            )
+                        }
             }
 
         if (categoryNames.isNotEmpty()) {
@@ -54,10 +70,21 @@ class SearchArchiveFulcrumResolver {
         }
 
         if (
+            hasObjectAlias &&
+            objectNames.isNotEmpty()
+        ) {
+
+            return SearchFulcrumResult(
+                fulcrum = SearchFulcrum.OBJECT,
+                reason = "ARCHIVE_OBJECT"
+            )
+        }
+
+        if (
             hits.boxes.isNotEmpty() &&
             (
                 objectNames.isEmpty() ||
-                        hasBoxAlias
+                        extraBoxQualifier
             )
         ) {
 

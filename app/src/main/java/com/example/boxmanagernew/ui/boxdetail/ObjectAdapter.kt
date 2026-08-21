@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.domain.model.ObjectWithType
+import com.example.boxmanagernew.domain.search.SearchConfiguration
 import com.example.boxmanagernew.util.CanonicalNormalizer
 
 class ObjectAdapter(
@@ -275,7 +276,9 @@ class ObjectAdapter(
             CanonicalNormalizer
                 .matchingWordRanges(
                     text,
-                    currentQuery
+                    SearchConfiguration.locationHighlightQuery(
+                        currentQuery
+                    )
                 )
                 .forEach { range ->
 

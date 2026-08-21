@@ -6,6 +6,8 @@ enum class SearchClarificationType {
 
     AMBIGUOUS_OBJECT,
 
+    AMBIGUOUS_CORE,
+
     AMBIGUOUS_CATEGORY,
 
     AMBIGUOUS_LOCATION,

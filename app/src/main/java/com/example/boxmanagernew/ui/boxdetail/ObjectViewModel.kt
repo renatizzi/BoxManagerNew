@@ -4,7 +4,7 @@ import androidx.lifecycle.*
 import com.example.boxmanagernew.domain.model.Object
 import com.example.boxmanagernew.domain.model.ObjectWithType
 import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
-import com.example.boxmanagernew.util.CanonicalNormalizer
+import com.example.boxmanagernew.domain.search.ObjectSearchMatcher
 import kotlinx.coroutines.launch
 
 class ObjectViewModel(
@@ -114,9 +114,10 @@ class ObjectViewModel(
 
                     if (matchWholeWords) {
 
-                        CanonicalNormalizer.allTokensMatchWords(
-                            currentQuery,
-                            searchable
+                        ObjectSearchMatcher.matchesAnyPackedTerm(
+                            item.typeName,
+                            item.obj.description,
+                            currentQuery
                         )
 
                     } else {

@@ -1,6 +1,7 @@
 package com.example.boxmanagernew.search
 
 import com.example.boxmanagernew.domain.search.ObjectSearchMatcher
+import com.example.boxmanagernew.domain.search.SearchConfiguration
 import com.example.boxmanagernew.domain.search.SearchEngineA
 import com.example.boxmanagernew.domain.search.model.SearchAnalysisResult
 import com.example.boxmanagernew.domain.search.model.SearchFulcrum
@@ -254,6 +255,41 @@ class AdvancedObjectMatchTest {
         assertEquals(
             "viti",
             withZona.operationalQuery
+        )
+    }
+
+    @Test
+    fun packedTermsMatchEitherObjectNotBothOnOneRow() {
+
+        val packed =
+            SearchConfiguration.packLocationTerms(
+                listOf("Vite", "Trapano elettrico")
+            )
+
+        assertTrue(
+            ObjectSearchMatcher.matchesAnyPackedTerm(
+                "Vite",
+                null,
+                packed
+            )
+        )
+
+        assertTrue(
+            ObjectSearchMatcher.matchesAnyPackedTerm(
+                "Trapano elettrico",
+                "a batteria",
+                packed
+            )
+        )
+
+        assertFalse(
+            ObjectSearchMatcher.matches(
+                "Vite",
+                null,
+                SearchConfiguration.locationHighlightQuery(
+                    packed
+                )
+            )
         )
     }
 

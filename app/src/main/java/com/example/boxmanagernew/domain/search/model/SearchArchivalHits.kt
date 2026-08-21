@@ -8,5 +8,9 @@ data class SearchArchivalHits(
 
     val objects: List<String> = emptyList(),
 
-    val boxes: List<String> = emptyList()
+    val boxes: List<String> = emptyList(),
+
+    val objectBoxIntersection: List<String> = emptyList(),
+
+    val hasObjectBoxes: Boolean = false
 )

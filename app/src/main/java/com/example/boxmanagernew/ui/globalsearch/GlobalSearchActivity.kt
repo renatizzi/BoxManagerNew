@@ -5,6 +5,7 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
+import android.widget.ScrollView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -16,6 +17,7 @@ import com.example.boxmanagernew.data.local.DatabaseProvider
 import com.example.boxmanagernew.domain.search.GlobalSearchDispatcher
 import com.example.boxmanagernew.domain.search.SearchConfiguration
 import com.example.boxmanagernew.domain.search.model.SearchArchiveIndex
+import com.example.boxmanagernew.domain.search.model.SearchArchiveObjectRecord
 import com.example.boxmanagernew.domain.search.model.SearchMessage
 import com.example.boxmanagernew.domain.search.model.SearchResponse
 import com.example.boxmanagernew.ui.common.BaseActivity
@@ -28,6 +30,8 @@ class GlobalSearchActivity : BaseActivity() {
 
     private lateinit var viewModel: GlobalSearchViewModel
     private lateinit var editQuestion: EditText
+    private lateinit var scrollSearchBody: ScrollView
+    private lateinit var recyclerMessages: RecyclerView
 
     private val dispatcher =
         GlobalSearchDispatcher()
@@ -63,6 +67,16 @@ class GlobalSearchActivity : BaseActivity() {
         editQuestion =
             findViewById(R.id.editQuestion)
 
+        scrollSearchBody =
+            findViewById(
+                R.id.scrollSearchBody
+            )
+
+        recyclerMessages =
+            findViewById(
+                R.id.recyclerMessages
+            )
+
         editQuestion.setTypeface(
             null,
             Typeface.ITALIC
@@ -85,18 +99,20 @@ class GlobalSearchActivity : BaseActivity() {
                 GlobalSearchViewModel::class.java
             ]
 
-        val recycler =
-            findViewById<RecyclerView>(
-                R.id.recyclerMessages
-            )
-
-        recycler.layoutManager =
+        recyclerMessages.layoutManager =
             LinearLayoutManager(this)
 
         viewModel.messages.observe(this) {
 
-            recycler.adapter =
+            recyclerMessages.adapter =
                 GlobalSearchAdapter(it)
+
+            scrollSearchBody.post {
+
+                scrollSearchBody.fullScroll(
+                    ScrollView.FOCUS_DOWN
+                )
+            }
         }
 
         editQuestion.setOnEditorActionListener {
@@ -207,6 +223,10 @@ class GlobalSearchActivity : BaseActivity() {
                     applicationContext
                 )
 
+            val objectRows =
+                db.objectDao()
+                    .searchObjects()
+
             SearchArchiveIndex(
                 locations =
                     db.locationDao()
@@ -223,7 +243,18 @@ class GlobalSearchActivity : BaseActivity() {
                 boxes =
                     db.boxDao()
                         .getAllSync()
-                        .map { it.name }
+                        .map { it.name },
+                objectRecords =
+                    objectRows.map { row ->
+
+                        SearchArchiveObjectRecord(
+                            name = row.objectName,
+                            description =
+                                row.description
+                                    .orEmpty(),
+                            boxName = row.boxName
+                        )
+                    }
             )
         }
 
@@ -295,11 +326,15 @@ class GlobalSearchActivity : BaseActivity() {
                 text
             }
 
-        viewModel.addMessage(
+        viewModel.replaceLastAssistantMessage(
             SearchMessage(
                 text = visible,
                 fromUser = false
             )
+        )
+
+        hideKeyboard(
+            editQuestion
         )
     }
 }

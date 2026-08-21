@@ -2,6 +2,7 @@ package com.example.boxmanagernew.domain.search
 
 import com.example.boxmanagernew.domain.search.model.SearchAnalysisResult
 import com.example.boxmanagernew.domain.search.model.SearchResponse
+import com.example.boxmanagernew.util.CanonicalNormalizer
 
 class SearchEngineA(
 
@@ -17,7 +18,8 @@ class SearchEngineA(
             "e","è","é","gli","ha","hai","ho","i","il","in","l","la",
             "le","li","lo","nel","nella","nello","nei",
             "negli","nelle","per","quale","quali","quanto",
-            "quanti","sei","si","sono","su","tra","un","una","uno"
+            "quanti","sei","si","sono","su","tra","un","una","uno",
+            "trova","cerca","mostra","dammi","dimmi","dove"
         )
 
     private val archivalVerbs =
@@ -147,11 +149,8 @@ class SearchEngineA(
                 canonicalQuery
             )
 
-        val simpleSearchIndicators =
-            indicators[
-                SearchLexicalIndicatorMatrix
-                    .SIMPLE_SEARCH
-            ] ?: emptySet()
+        val indicatorTerms =
+            indicators.values.flatten().toSet()
 
         return canonicalQuery
             .replace(
@@ -168,8 +167,15 @@ class SearchEngineA(
             .filterNot {
                 archivalVerbs.contains(it)
             }
-            .filterNot {
-                simpleSearchIndicators.contains(it)
+            .filterNot { token ->
+
+                indicatorTerms.any { term ->
+
+                    CanonicalNormalizer.wholeWordMatches(
+                        token,
+                        term
+                    )
+                }
             }
             .filterNot {
                 listScopeWords.contains(it) ||

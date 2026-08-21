@@ -16,7 +16,9 @@ class SearchArchiveLookup(
 
     fun lookup(
         searchText: String,
-        index: SearchArchiveIndex? = null
+        index: SearchArchiveIndex? = null,
+        indicators: Map<String, Set<String>> =
+            emptyMap()
     ): SearchArchiveLookupResult {
 
         val normalized =
@@ -39,7 +41,8 @@ class SearchArchiveLookup(
 
             return lookupInArchive(
                 searchText,
-                index
+                index,
+                indicators
             )
         }
 
@@ -50,13 +53,15 @@ class SearchArchiveLookup(
 
     private fun lookupInArchive(
         searchText: String,
-        index: SearchArchiveIndex
+        index: SearchArchiveIndex,
+        indicators: Map<String, Set<String>>
     ): SearchArchiveLookupResult {
 
         val hits =
             archivalLookup.find(
                 searchText,
-                index
+                index,
+                indicators
             )
 
         val matches =
@@ -89,6 +94,17 @@ class SearchArchiveLookup(
         return SearchArchiveLookupResult(
             scopeMatches = matches,
             hits = hits
+        )
+    }
+
+    fun needsHomonymClarification(
+        question: String,
+        index: SearchArchiveIndex
+    ): Boolean {
+
+        return archivalLookup.needsHomonymClarification(
+            question,
+            index
         )
     }
 
