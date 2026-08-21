@@ -101,17 +101,6 @@ class ObjectViewModel(
             result =
                 result.filter { item ->
 
-                    val searchable =
-                        buildString {
-
-                            append(item.typeName)
-                            append(" ")
-
-                            item.obj.description?.let {
-                                append(it)
-                            }
-                        }
-
                     if (matchWholeWords) {
 
                         ObjectSearchMatcher.matchesAnyPackedTerm(
@@ -122,18 +111,11 @@ class ObjectViewModel(
 
                     } else {
 
-                        val words =
+                        ObjectSearchMatcher.matches(
+                            item.typeName,
+                            item.obj.description,
                             currentQuery
-                                .lowercase()
-                                .split("\\s+".toRegex())
-                                .filter { it.isNotBlank() }
-
-                        val target =
-                            searchable.lowercase()
-
-                        words.all {
-                            target.contains(it)
-                        }
+                        )
                     }
                 }
         }

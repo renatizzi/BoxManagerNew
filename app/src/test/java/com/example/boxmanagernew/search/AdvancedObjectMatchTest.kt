@@ -151,6 +151,47 @@ class AdvancedObjectMatchTest {
     }
 
     @Test
+    fun matchingWordRangesHighlightsCompoundNameDigit() {
+
+        val ranges =
+            CanonicalNormalizer.matchingWordRanges(
+                "prova 1",
+                "prova 1"
+            )
+
+        val highlighted =
+            ranges.map { range ->
+
+                "prova 1".substring(
+                    range.first,
+                    range.last + 1
+                )
+            }
+
+        assertTrue(highlighted.any { it.equals("prova", ignoreCase = true) })
+        assertTrue(highlighted.any { it == "1" })
+    }
+
+    @Test
+    fun matchingWordRangesWithoutInflectDoesNotPaintTrapani() {
+
+        assertTrue(
+            CanonicalNormalizer.matchingWordRanges(
+                "TRAPANI",
+                "trapano elettrico",
+                inflect = false
+            ).isEmpty()
+        )
+
+        assertTrue(
+            CanonicalNormalizer.matchingWordRanges(
+                "TRAPANI",
+                "trapano elettrico"
+            ).isNotEmpty()
+        )
+    }
+
+    @Test
     fun engineAKeepsObjectTermFromContainerQuestion() {
 
         val response =

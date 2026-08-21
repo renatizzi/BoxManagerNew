@@ -61,6 +61,33 @@ class SearchArchiveFulcrumResolver {
                         }
             }
 
+        val specificBoxName =
+            SearchNameMatcher.contentTokens(
+                question
+            ).any { token ->
+
+                SearchCoreAliases.coreEntityType(
+                    token
+                ) == null &&
+                        !token.all { char ->
+                            char.isDigit()
+                        } &&
+                        hits.boxes.any { name ->
+
+                            SearchNameMatcher.wholeWordInName(
+                                name,
+                                token
+                            )
+                        } &&
+                        objectNames.none { name ->
+
+                            SearchNameMatcher.wholeWordInName(
+                                name,
+                                token
+                            )
+                        }
+            }
+
         if (categoryNames.isNotEmpty()) {
 
             return SearchFulcrumResult(
@@ -84,7 +111,8 @@ class SearchArchiveFulcrumResolver {
             hits.boxes.isNotEmpty() &&
             (
                 objectNames.isEmpty() ||
-                        extraBoxQualifier
+                        extraBoxQualifier ||
+                        specificBoxName
             )
         ) {
 

@@ -648,11 +648,6 @@ class BoxViewModel(
                 query.isNotBlank()
             ) {
 
-                val canonicalQuery =
-                    CanonicalNormalizer.canonical(
-                        query
-                    )
-
                 val matchingBoxIds =
                     objectRepository
                         .searchObjects(query)
@@ -669,20 +664,12 @@ class BoxViewModel(
                             }?.name
                                 ?: ""
 
-                        val searchable =
-                            CanonicalNormalizer.canonical(
-                                buildString {
-                                    append(box.name)
-                                    append(" ")
-                                    append(box.position)
-                                    append(" ")
-                                    append(category)
-                                }
+                        CanonicalNormalizer
+                            .matchingWordRanges(
+                                "${box.name} ${box.position} $category",
+                                query
                             )
-
-                        searchable.contains(
-                            canonicalQuery
-                        ) ||
+                            .isNotEmpty() ||
                                 matchingBoxIds.contains(
                                     box.id
                                 )

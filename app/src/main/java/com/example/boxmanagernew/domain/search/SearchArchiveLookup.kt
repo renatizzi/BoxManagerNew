@@ -1,6 +1,7 @@
 package com.example.boxmanagernew.domain.search
 
 import com.example.boxmanagernew.domain.search.model.CoreEntityType
+import com.example.boxmanagernew.domain.search.model.SearchArchivalHits
 import com.example.boxmanagernew.domain.search.model.SearchArchiveIndex
 import com.example.boxmanagernew.domain.search.model.SearchArchiveLookupResult
 import com.example.boxmanagernew.domain.search.model.SearchArchiveScope
@@ -111,12 +112,15 @@ class SearchArchiveLookup(
 
     fun homonymCoresForClarification(
         question: String,
-        index: SearchArchiveIndex
+        index: SearchArchiveIndex,
+        hits: SearchArchivalHits? =
+            null
     ): Set<CoreEntityType> {
 
         return archivalLookup.homonymCoresForClarification(
             question,
-            index
+            index,
+            hits
         )
     }
 

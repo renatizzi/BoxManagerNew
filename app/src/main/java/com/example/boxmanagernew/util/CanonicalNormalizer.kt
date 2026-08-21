@@ -203,17 +203,29 @@ object CanonicalNormalizer {
 
     fun matchingWordRanges(
         text: String,
-        query: String
+        query: String,
+        inflect: Boolean = true
     ): List<IntRange> {
 
-        val tokens =
+        val queryTokens =
             wordTokens(query)
+
+        val tokens =
+            queryTokens
                 .filter { token ->
 
                     token.isNotBlank() &&
-                            !token.all { char ->
-                                char.isDigit()
-                            }
+                            (
+                                    !token.all { char ->
+                                        char.isDigit()
+                                    } ||
+                                            queryTokens.any { other ->
+                                                other.any { char ->
+                                                    !char.isDigit()
+                                                } &&
+                                                        queryTokens.size <= 3
+                                            }
+                                    )
                 }
 
         if (
@@ -229,10 +241,21 @@ object CanonicalNormalizer {
 
                 tokens.any { token ->
 
-                    wholeWordMatches(
-                        token,
-                        match.value
-                    )
+                    if (inflect) {
+
+                        wholeWordMatches(
+                            token,
+                            match.value
+                        )
+                    } else {
+
+                        normalize(
+                            token
+                        ) ==
+                                normalize(
+                                    match.value
+                                )
+                    }
                 }
             }
             .map { it.range }

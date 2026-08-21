@@ -973,4 +973,236 @@ class SearchOfficialPipelineTest {
             response.objectTerms
         )
     }
+
+    @Test
+    fun containersThatContainVitiDoesNotAskClarificationForCategoryNamedContenitori() {
+
+        val response =
+            dispatcher.dispatch(
+                "fammi vedere quali contenitori contengono viti",
+                index
+            )
+
+        assertFalse(response.requiresClarification)
+        assertTrue(response.success)
+        assertEquals(
+            SearchArchiveTransformation.OBJECT_TO_BOX,
+            response.archiveTransformation
+        )
+        assertEquals("Vite", response.objectTerms)
+    }
+
+    @Test
+    fun elencoContenitoriInCantinaUsesLocation() {
+
+        val response =
+            dispatcher.dispatch(
+                "Elenco dei contenitori che sono in cantina",
+                index
+            )
+
+        assertFalse(response.requiresClarification)
+        assertTrue(response.success)
+        assertEquals("Cantina", response.locationTerms)
+        assertEquals(
+            SearchArchiveTransformation.LOCATION_TO_BOX,
+            response.archiveTransformation
+        )
+    }
+
+    @Test
+    fun oggettiDellaCategoriaGenericoOpensThoseContainers() {
+
+        val response =
+            dispatcher.dispatch(
+                "oggetti della categoria Generico",
+                index
+            )
+
+        assertFalse(response.requiresClarification)
+        assertTrue(response.success)
+        assertEquals("Generico", response.categoryTerms)
+        assertEquals(
+            SearchArchiveTransformation.CATEGORY_TO_BOX,
+            response.archiveTransformation
+        )
+    }
+
+    @Test
+    fun sitoBoxUsesLocationSelectorEvenWithCosa() {
+
+        val archive =
+            archiveWithBoxOnAllCores()
+
+        val response =
+            dispatcher.dispatch(
+                "Cosa ho nel sito BOX",
+                archive
+            )
+
+        assertFalse(response.requiresClarification)
+        assertTrue(response.success)
+        assertEquals(
+            SearchArchiveTransformation.LOCATION_TO_BOX,
+            response.archiveTransformation
+        )
+        assertEquals("Box", response.locationTerms)
+        assertEquals("", response.objectTerms)
+        assertEquals("", response.boxTerms)
+    }
+
+    @Test
+    fun trovaTrapanoAsksClarificationWhenBoxTrapaniExists() {
+
+        val archive =
+            index.copy(
+                objects = listOf(
+                    "Trapano",
+                    "Vite"
+                ),
+                boxes = index.boxes + "Trapani"
+            )
+
+        val response =
+            dispatcher.dispatch(
+                "Trova trapano",
+                archive
+            )
+
+        assertFalse(response.success)
+        assertTrue(response.requiresClarification)
+    }
+
+    @Test
+    fun trovaTrapanoElettricoDoesNotClarifyForBoxTrapani() {
+
+        val archive =
+            index.copy(
+                boxes = index.boxes + "Trapani"
+            )
+
+        val response =
+            dispatcher.dispatch(
+                "Trova il trapano elettrico",
+                archive
+            )
+
+        assertFalse(response.requiresClarification)
+        assertTrue(response.success)
+        assertEquals(
+            "Trapano elettrico",
+            response.objectTerms
+        )
+    }
+
+    @Test
+    fun trovaBoxProvaDoesNotIncludeBoxOnlyNames() {
+
+        val response =
+            dispatcher.dispatch(
+                "Trova box prova",
+                index
+            )
+
+        val names =
+            SearchConfiguration.splitLocationTerms(
+                response.boxTerms
+            ).toSet()
+
+        assertTrue(response.success)
+        assertEquals(
+            setOf("prova", "box prova", "prova 1", "prova 2"),
+            names
+        )
+        assertFalse(names.contains("Box 1"))
+        assertFalse(names.contains("Box"))
+    }
+
+    @Test
+    fun provaUnoHighlightKeepsTheDigit() {
+
+        val response =
+            dispatcher.dispatch(
+                "Trova contenitore prova 1",
+                index
+            )
+
+        assertTrue(response.success)
+        assertTrue(
+            response.highlightTerms.contains("1")
+        )
+        assertTrue(
+            response.highlightTerms.contains("prova")
+        )
+    }
+
+    @Test
+    fun trapanoElettricoDoesNotClarifyAgainstBoxDeiTrapani() {
+
+        val archive =
+            index.copy(
+                objects = listOf(
+                    "Trapano elettrico",
+                    "Trapano"
+                ),
+                boxes = index.boxes +
+                        "BOX DEI TRAPANI" +
+                        "Trapani"
+            )
+
+        val response =
+            dispatcher.dispatch(
+                "Cerca il trapano elettrico",
+                archive
+            )
+
+        assertFalse(
+            "Chiave composta OBJECT, non omonimo del contenitore. " +
+                    "clarify=${response.requiresClarification} " +
+                    "message=${response.message} " +
+                    "objectTerms=${response.objectTerms}\n" +
+                    response.debugMarker,
+            response.requiresClarification
+        )
+        assertTrue(response.success)
+        assertEquals(
+            "Trapano elettrico",
+            response.objectTerms
+        )
+    }
+
+    @Test
+    fun contenitoriDellaCategoriaGenericoDoesNotClarifyObjectCategory() {
+
+        val archive =
+            index.copy(
+                objects = listOf(
+                    "Vite",
+                    "Generico"
+                )
+            )
+
+        val response =
+            dispatcher.dispatch(
+                "contenitori della categoria Generico",
+                archive
+            )
+
+        assertFalse(
+            "categoria Generico è trasformazione dominante. " +
+                    "clarify=${response.requiresClarification} " +
+                    "message=${response.message} " +
+                    "categoryTerms=${response.categoryTerms} " +
+                    "objectTerms=${response.objectTerms}\n" +
+                    response.debugMarker,
+            response.requiresClarification
+        )
+        assertTrue(response.success)
+        assertEquals("Generico", response.categoryTerms)
+        assertEquals(
+            SearchArchiveTransformation.CATEGORY_TO_BOX,
+            response.archiveTransformation
+        )
+        assertEquals("", response.objectTerms)
+    }
 }

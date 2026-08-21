@@ -30,7 +30,6 @@ class ObjectAdapter(
     private var selectionMode = false
     private var isFilterActive = false
     private var currentQuery = ""
-    private var wholeWordHighlight = false
 
     inner class ObjectViewHolder(
         itemView: View
@@ -252,14 +251,12 @@ class ObjectAdapter(
 
     fun updateQuery(
         query: String,
+        @Suppress("UNUSED_PARAMETER")
         wholeWord: Boolean = false
     ) {
 
         currentQuery =
             query
-
-        wholeWordHighlight =
-            wholeWord
 
         notifyDataSetChanged()
     }
@@ -268,64 +265,27 @@ class ObjectAdapter(
         text: String
     ): SpannableString {
 
-        if (wholeWordHighlight) {
-
-            val result =
-                SpannableString(text)
-
-            CanonicalNormalizer
-                .matchingWordRanges(
-                    text,
-                    SearchConfiguration.locationHighlightQuery(
-                        currentQuery
-                    )
-                )
-                .forEach { range ->
-
-                    result.setSpan(
-                        BackgroundColorSpan(
-                            Color.YELLOW
-                        ),
-                        range.first,
-                        range.last + 1,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
-                }
-
-            return result
-        }
-
         val result =
             SpannableString(text)
 
-        val tokens =
-            currentQuery
-                .lowercase()
-                .split("\\s+".toRegex())
-                .filter {
-                    it.length >= 3
-                }
-
-        val target =
-            text.lowercase()
-
-        tokens.forEach { token ->
-
-            val start =
-                target.indexOf(token)
-
-            if (start >= 0) {
+        CanonicalNormalizer
+            .matchingWordRanges(
+                text,
+                SearchConfiguration.locationHighlightQuery(
+                    currentQuery
+                )
+            )
+            .forEach { range ->
 
                 result.setSpan(
                     BackgroundColorSpan(
                         Color.YELLOW
                     ),
-                    start,
-                    start + token.length,
+                    range.first,
+                    range.last + 1,
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
                 )
             }
-        }
 
         return result
     }

@@ -98,25 +98,44 @@ class SearchArchivalLookup {
             )
 
         val selectorCores =
-            tokens.mapNotNull { token ->
+            preferNonObjectSelector(
+                tokens.mapNotNull { token ->
 
-                if (
-                    isPureSelector(
-                        token,
-                        index
-                    )
-                ) {
-                    SearchCoreAliases.coreEntityType(
-                        token
-                    )
-                } else {
-                    null
-                }
-            }.distinct()
+                    if (
+                        isPureSelector(
+                            token,
+                            index
+                        )
+                    ) {
+                        SearchCoreAliases.coreEntityType(
+                            token
+                        )
+                    } else {
+                        null
+                    }
+                }.distinct()
+            )
+
+        val nameTokens =
+            archivalNameTokens(
+                tokens,
+                index
+            )
+
+        val nameCores =
+            nameTokens.flatMap { token ->
+
+                coresNamed(
+                    token,
+                    index
+                )
+            }.toSet()
 
         val selected =
-            selectorCores.singleOrNull()
-                ?: return hits
+            resolveSelectedCore(
+                selectorCores,
+                nameCores
+            ) ?: return hits
 
         val homographs =
             tokens.filterNot { token ->
@@ -133,12 +152,18 @@ class SearchArchivalLookup {
                 ).size >= 2
             }
 
-        if (homographs.isEmpty()) {
-            return hits
-        }
-
         val keyQuestion =
-            homographs.joinToString(" ")
+            when {
+
+                nameTokens.isNotEmpty() ->
+                    nameTokens.joinToString(" ")
+
+                homographs.isNotEmpty() ->
+                    homographs.joinToString(" ")
+
+                else ->
+                    return hits
+            }
 
         val selectedNames =
             when (selected) {
@@ -240,6 +265,27 @@ class SearchArchivalLookup {
         )
     }
 
+    private fun resolveSelectedCore(
+        selectorCores: List<CoreEntityType>,
+        nameCores: Set<CoreEntityType>
+    ): CoreEntityType? {
+
+        selectorCores.singleOrNull()?.let { core ->
+            return core
+        }
+
+        if (nameCores.size == 1) {
+            return nameCores.single()
+        }
+
+        val qualifying =
+            selectorCores.filter { core ->
+                core in nameCores
+            }
+
+        return qualifying.singleOrNull()
+    }
+
     private fun coresNamed(
         token: String,
         index: SearchArchiveIndex
@@ -253,7 +299,8 @@ class SearchArchivalLookup {
 
                 exactWordInName(
                     record.name,
-                    token
+                    token,
+                    inflect = true
                 )
             }
         ) {
@@ -265,7 +312,8 @@ class SearchArchivalLookup {
 
                 exactWordInName(
                     name,
-                    token
+                    token,
+                    inflect = true
                 )
             }
         ) {
@@ -280,7 +328,8 @@ class SearchArchivalLookup {
                 ) &&
                         exactWordInName(
                             name,
-                            token
+                            token,
+                            inflect = false
                         )
             }
         ) {
@@ -295,7 +344,8 @@ class SearchArchivalLookup {
                 ) &&
                         exactWordInName(
                             name,
-                            token
+                            token,
+                            inflect = false
                         )
             }
         ) {
@@ -307,7 +357,8 @@ class SearchArchivalLookup {
 
     fun homonymCoresForClarification(
         question: String,
-        index: SearchArchiveIndex
+        index: SearchArchiveIndex,
+        hits: SearchArchivalHits? = null
     ): Set<CoreEntityType> {
 
         val tokens =
@@ -315,32 +366,316 @@ class SearchArchivalLookup {
                 question
             )
 
-        val cores =
-            mutableSetOf<CoreEntityType>()
+        val selectorCores =
+            preferNonObjectSelector(
+                tokens.mapNotNull { token ->
 
-        for (token in tokens) {
+                    if (
+                        isPureSelector(
+                            token,
+                            index
+                        )
+                    ) {
+                        SearchCoreAliases.coreEntityType(
+                            token
+                        )
+                    } else {
+                        null
+                    }
+                }.distinct()
+            )
 
-            val identified =
-                identifiedCores(
+        val nameTokens =
+            archivalNameTokens(
+                tokens,
+                index
+            )
+
+        val nameCores =
+            nameTokens.flatMap { token ->
+
+                coresNamed(
                     token,
                     index
                 )
+            }.toSet()
 
-            if (
-                identified.size >= 2 &&
-                extraQualifierCores(
-                    tokens,
-                    token
-                ).size != 1
-            ) {
+        if (
+            resolveSelectedCore(
+                selectorCores,
+                nameCores
+            ) != null
+        ) {
+            return emptySet()
+        }
 
-                cores.addAll(
-                    identified
+        val resolvedHits =
+            hits ?: find(
+                question,
+                index
+            )
+
+        val candidateKeys =
+            maximalKeys(
+                resolvedHits.objects +
+                        resolvedHits.boxes +
+                        resolvedHits.locations +
+                        resolvedHits.categories,
+                question
+            ).ifEmpty {
+                nameTokens
+            }
+
+        val cores =
+            mutableSetOf<CoreEntityType>()
+
+        for (key in candidateKeys) {
+
+            val identified =
+                coresForCompleteKey(
+                    key,
+                    index
+                ).toMutableSet()
+
+            SearchCoreAliases.coreEntityType(
+                key
+            )?.let { alias ->
+
+                identified.add(
+                    alias
+                )
+            }
+
+            if (identified.size < 2) {
+                continue
+            }
+
+            val keyWords =
+                SearchNameMatcher.contentTokens(
+                    key
+                )
+
+            val qualifiers =
+                preferNonObjectSelector(
+                    tokens.filter { token ->
+
+                        keyWords.none { word ->
+
+                            CanonicalNormalizer.wholeWordMatches(
+                                token,
+                                word
+                            )
+                        }
+                    }.mapNotNull { token ->
+
+                        SearchCoreAliases.coreEntityType(
+                            token
+                        )
+                    }.distinct()
+                )
+
+            val qualifying =
+                qualifiers.filter { core ->
+                    core in identified
+                }
+
+            if (qualifying.size == 1) {
+                continue
+            }
+
+            cores.addAll(
+                identified
+            )
+        }
+
+        return cores
+    }
+
+    private fun coresForCompleteKey(
+        key: String,
+        index: SearchArchiveIndex
+    ): Set<CoreEntityType> {
+
+        val cores =
+            mutableSetOf<CoreEntityType>()
+
+        fun listed(
+            names: List<String>
+        ): Boolean {
+
+            return names.any { name ->
+
+                sameCompleteKey(
+                    key,
+                    name
                 )
             }
         }
 
+        if (
+            listed(
+                index.archivalObjects().map { record ->
+                    record.name
+                }
+            )
+        ) {
+            cores.add(CoreEntityType.OBJECT)
+        }
+
+        if (
+            listed(
+                index.boxes
+            )
+        ) {
+            cores.add(CoreEntityType.BOX)
+        }
+
+        if (
+            listed(
+                index.locations.filterNot { name ->
+                    SearchCoreAliases.isLocationAlias(
+                        name
+                    )
+                }
+            )
+        ) {
+            cores.add(CoreEntityType.LOCATION)
+        }
+
+        if (
+            listed(
+                index.categories.filterNot { name ->
+                    SearchCoreAliases.isCategoryAlias(
+                        name
+                    )
+                }
+            )
+        ) {
+            cores.add(CoreEntityType.CATEGORY)
+        }
+
         return cores
+    }
+
+    private fun sameCompleteKey(
+        left: String,
+        right: String
+    ): Boolean {
+
+        val leftWords =
+            SearchNameMatcher.contentTokens(
+                left
+            )
+
+        val rightWords =
+            SearchNameMatcher.contentTokens(
+                right
+            )
+
+        if (
+            leftWords.isEmpty() ||
+            leftWords.size !=
+            rightWords.size
+        ) {
+            return false
+        }
+
+        return leftWords.indices.all { wordIndex ->
+
+            CanonicalNormalizer.wholeWordMatches(
+                leftWords[wordIndex],
+                rightWords[wordIndex]
+            )
+        }
+    }
+
+    private fun archivalNameTokens(
+        tokens: List<String>,
+        index: SearchArchiveIndex
+    ): List<String> {
+
+        return tokens.filterNot { token ->
+
+            isPureSelector(
+                token,
+                index
+            ) ||
+                    SearchCoreAliases.coreEntityType(
+                        token
+                    ) != null ||
+                    isCueToken(
+                        token
+                    )
+        }
+    }
+
+    private fun isCueToken(
+        token: String
+    ): Boolean {
+
+        return SearchLexicalIndicatorMatrix
+            .isOfficialIndicator(
+                token
+            ) &&
+                SearchCoreAliases.coreEntityType(
+                    token
+                ) == null
+    }
+
+    private fun maximalKeys(
+        names: List<String>,
+        question: String
+    ): List<String> {
+
+        val questionTokens =
+            SearchNameMatcher.contentTokens(
+                question
+            )
+
+        fun coverage(
+            name: String
+        ): Set<String> {
+
+            return SearchNameMatcher.contentTokens(
+                name
+            ).map { token ->
+                tokenStem(
+                    token
+                )
+            }.filter { stem ->
+
+                questionTokens.any { token ->
+
+                    CanonicalNormalizer.wholeWordMatches(
+                        token,
+                        stem
+                    )
+                }
+            }.toSet()
+        }
+
+        return names.filter { name ->
+
+            val own =
+                coverage(
+                    name
+                )
+
+            own.isNotEmpty() &&
+                    names.none { other ->
+
+                        other != name &&
+                                coverage(
+                                    other
+                                ).containsAll(
+                                    own
+                                ) &&
+                                coverage(
+                                    other
+                                ).size >
+                                own.size
+                    }
+        }
     }
 
     fun highlightKeys(
@@ -355,10 +690,7 @@ class SearchArchivalLookup {
             isPureSelector(
                 token,
                 index
-            ) ||
-                    token.all { char ->
-                        char.isDigit()
-                    }
+            )
         }.joinToString(" ")
     }
 
@@ -471,20 +803,56 @@ class SearchArchivalLookup {
         }
     }
 
+    private fun preferNonObjectSelector(
+        cores: List<CoreEntityType>
+    ): List<CoreEntityType> {
+
+        if (
+            cores.size > 1 &&
+            cores.contains(
+                CoreEntityType.OBJECT
+            ) &&
+            cores.any { core ->
+                core != CoreEntityType.OBJECT
+            }
+        ) {
+
+            return cores.filter { core ->
+                core != CoreEntityType.OBJECT
+            }
+        }
+
+        return cores
+    }
+
     private fun exactWordInName(
         name: String,
-        token: String
+        token: String,
+        inflect: Boolean
     ): Boolean {
 
-        return SearchNameMatcher.contentTokens(
-            name
-        ).any { word ->
+        val words =
+            SearchNameMatcher.contentTokens(
+                name
+            )
+
+        if (words.size != 1) {
+            return false
+        }
+
+        return if (inflect) {
+
+            CanonicalNormalizer.wholeWordMatches(
+                token,
+                words.first()
+            )
+        } else {
 
             CanonicalNormalizer.normalize(
-                word
+                token
             ) ==
                     CanonicalNormalizer.normalize(
-                        token
+                        words.first()
                     )
         }
     }
@@ -902,13 +1270,23 @@ class SearchArchivalLookup {
                 SearchCoreAliases.isBoxAlias(token) ||
                         SearchCoreAliases.isLocationAlias(token) ||
                         SearchCoreAliases.isCategoryAlias(token) ||
-                        SearchCoreAliases.isObjectAlias(token)
+                        SearchCoreAliases.isObjectAlias(token) ||
+                        isCueToken(
+                            token
+                        )
             }
 
-        if (specific.isNotEmpty()) {
+        val hasNameToken =
+            specific.any { token ->
+                !token.all { char ->
+                    char.isDigit()
+                }
+            }
+
+        if (hasNameToken) {
 
             return matchingNames(
-                question,
+                specific.joinToString(" "),
                 names
             )
         }

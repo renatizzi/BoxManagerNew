@@ -20,13 +20,6 @@ class ObjectRepositoryImpl(
     private val typeDao: ObjectTypeDao
 ) : ObjectRepository {
 
-    private val ignoredWords =
-        setOf(
-            "a","ad","da","di","del","della",
-            "dello","dei","degli","con",
-            "per","in","su","al","alla"
-        )
-
     override fun getObjectsByBox(
         boxId: Int
     ): LiveData<List<Object>> {
@@ -83,15 +76,9 @@ class ObjectRepositoryImpl(
         query: String
     ): List<SearchResult> {
 
-        val tokens =
-            CanonicalNormalizer.normalize(query)
-                .split(" ")
-                .filter {
-                    it.isNotBlank() &&
-                            it !in ignoredWords
-                }
-
-        if (tokens.isEmpty()) {
+        if (
+            query.isBlank()
+        ) {
             return emptyList()
         }
 
@@ -99,41 +86,16 @@ class ObjectRepositoryImpl(
             dao.searchObjects()
                 .filter { row ->
 
-                    val searchable =
-                        CanonicalNormalizer.canonical(
-                            buildString {
-                                append(row.objectName)
-                                append(" ")
-                                append(row.description ?: "")
-                            }
-                        )
-
-                    tokens.all { token ->
-
-                        val singular =
-                            CanonicalNormalizer
-                                .singularPluralVariant(token)
-
-                        val irregular =
-                            CanonicalNormalizer
-                                .irregularVariant(token)
-
-                        val variants =
-                            setOf(
-                                CanonicalNormalizer.canonical(token),
-                                CanonicalNormalizer.canonical(singular),
-                                CanonicalNormalizer.canonical(irregular)
-                            )
-
-                        variants.any {
-                            searchable.contains(it)
-                        }
-                    }
+                    ObjectSearchMatcher.matches(
+                        row.objectName,
+                        row.description,
+                        query
+                    )
                 }
 
         Log.d(
             "BOX_M8",
-            "[M8] TOKENS=${tokens.size} MATCHES=${results.size}"
+            "[M8] MATCHES=${results.size}"
         )
 
         return results

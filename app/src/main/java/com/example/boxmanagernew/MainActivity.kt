@@ -521,7 +521,8 @@ class MainActivity : BaseActivity() {
         ) {
 
             adapter.updateQuery(
-                highlightQuery
+                highlightQuery,
+                inflect = true
             )
 
             viewModel.filterByBoxNames(

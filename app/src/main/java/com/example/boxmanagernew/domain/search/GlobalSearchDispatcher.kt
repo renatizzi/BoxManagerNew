@@ -131,7 +131,8 @@ class GlobalSearchDispatcher(
             if (archiveIndex != null) {
                 archiveLookup.homonymCoresForClarification(
                     normalizedQuestion.normalizedQuestion,
-                    archiveIndex
+                    archiveIndex,
+                    lookupResult.hits
                 )
             } else {
                 emptySet()

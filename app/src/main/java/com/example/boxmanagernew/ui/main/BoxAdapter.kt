@@ -31,6 +31,7 @@ class BoxAdapter(
     private var selectedIds: Set<Int> = emptySet()
     private var selectionMode: Boolean = false
     private var currentQuery: String = ""
+    private var highlightInflect: Boolean = false
 
     inner class BoxViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val iconArea: FrameLayout = itemView.findViewById(R.id.iconArea)
@@ -183,9 +184,13 @@ class BoxAdapter(
         notifyDataSetChanged()
     }
 
-    fun updateQuery(query: String) {
+    fun updateQuery(
+        query: String,
+        inflect: Boolean = false
+    ) {
 
         currentQuery = query
+        highlightInflect = inflect
 
         notifyDataSetChanged()
     }
@@ -262,7 +267,8 @@ class BoxAdapter(
         CanonicalNormalizer
             .matchingWordRanges(
                 text,
-                currentQuery
+                currentQuery,
+                inflect = highlightInflect
             )
             .forEach { range ->
 
