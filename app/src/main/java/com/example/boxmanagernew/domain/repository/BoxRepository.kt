@@ -12,4 +12,8 @@ interface BoxRepository {
     suspend fun updateBox(box: Box)
 
     suspend fun deleteBox(id: Int)
+
+    suspend fun getBoxByPermanentId(permanentId: String): Box?
+
+    suspend fun getBoxById(id: Int): Box?
 }

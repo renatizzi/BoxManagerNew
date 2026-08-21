@@ -2,6 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.any"
+        android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -9,6 +17,10 @@
         android:label="BoxManager"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/Theme.BoxManager">
+
+        <activity
+            android:name=".ui.qr.QrLabelActivity"
+            android:exported="false" />
 
         <activity
             android:name=".ui.qr.QRActivity"

@@ -6,5 +6,6 @@ data class Box(
     val description: String? = null,
     val categoryId: Int,
     val position: String,
-    val lastModified: Long
+    val lastModified: Long,
+    val permanentId: String = ""
 )

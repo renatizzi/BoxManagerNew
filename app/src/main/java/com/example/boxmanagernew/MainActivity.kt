@@ -728,26 +728,31 @@ class MainActivity : BaseActivity() {
 
             if (totalObjects > 0) {
 
-                DialogUtils.showObjectsDeleteDialog(
-                    context = this@MainActivity,
+                DialogUtils.showBoxQrDeleteConfirmation(
+                    context = this@MainActivity
+                ) {
 
-                    onDelete = {
+                    DialogUtils.showObjectsDeleteDialog(
+                        context = this@MainActivity,
 
-                        viewModel.deleteBoxes(ids)
-                    },
+                        onDelete = {
 
-                    onMoveObjects = {
+                            viewModel.deleteBoxes(ids)
+                        },
 
-                        showDestinationBoxDialog(
-                            sourceBoxIds = ids,
-                            deleteAfterMove = true
-                        )
-                    }
-                )
+                        onMoveObjects = {
+
+                            showDestinationBoxDialog(
+                                sourceBoxIds = ids,
+                                deleteAfterMove = true
+                            )
+                        }
+                    )
+                }
 
             } else {
 
-                DialogUtils.showDeleteConfirmation(
+                DialogUtils.showBoxQrDeleteConfirmation(
                     context = this@MainActivity
                 ) {
 
@@ -1070,26 +1075,31 @@ class MainActivity : BaseActivity() {
 
             if (objectCount > 0) {
 
-                DialogUtils.showObjectsDeleteDialog(
-                    context = this@MainActivity,
+                DialogUtils.showBoxQrDeleteConfirmation(
+                    context = this@MainActivity
+                ) {
 
-                    onDelete = {
+                    DialogUtils.showObjectsDeleteDialog(
+                        context = this@MainActivity,
 
-                        viewModel.deleteBox(id)
-                    },
+                        onDelete = {
 
-                    onMoveObjects = {
+                            viewModel.deleteBox(id)
+                        },
 
-                        showDestinationBoxDialog(
-                            sourceBoxIds = listOf(id),
-                            deleteAfterMove = true
-                        )
-                    }
-                )
+                        onMoveObjects = {
+
+                            showDestinationBoxDialog(
+                                sourceBoxIds = listOf(id),
+                                deleteAfterMove = true
+                            )
+                        }
+                    )
+                }
 
             } else {
 
-                DialogUtils.showDeleteConfirmation(
+                DialogUtils.showBoxQrDeleteConfirmation(
                     context = this@MainActivity
                 ) {
 

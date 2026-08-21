@@ -33,6 +33,20 @@ interface BoxDao {
             List<BoxEntity>
 
     @Query(
+        "SELECT * FROM box WHERE id = :id"
+    )
+    suspend fun getById(
+        id: Int
+    ): BoxEntity?
+
+    @Query(
+        "SELECT * FROM box WHERE permanentId = :permanentId LIMIT 1"
+    )
+    suspend fun getByPermanentId(
+        permanentId: String
+    ): BoxEntity?
+
+    @Query(
         "DELETE FROM box WHERE id = :id"
     )
     suspend fun deleteById(

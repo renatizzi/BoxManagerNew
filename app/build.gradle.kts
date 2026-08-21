@@ -57,6 +57,14 @@ dependencies {
 
     ksp(libs.room.compiler)
 
+    implementation(libs.camera.core)
+    implementation(libs.camera.camera2)
+    implementation(libs.camera.lifecycle)
+    implementation(libs.camera.view)
+    implementation(libs.camera.mlkit.vision)
+    implementation(libs.mlkit.barcode.scanning)
+    implementation(libs.zxing.core)
+
     testImplementation(libs.junit)
     testImplementation("org.json:json:20240303")
     androidTestImplementation(libs.androidx.junit)

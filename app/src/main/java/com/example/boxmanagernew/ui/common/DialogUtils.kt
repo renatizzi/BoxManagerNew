@@ -14,6 +14,7 @@ import com.example.boxmanagernew.data.local.entity.CategoryEntity
 import com.example.boxmanagernew.domain.model.Box
 import com.example.boxmanagernew.domain.model.Location
 import com.example.boxmanagernew.backup.config.BackupConfiguration
+import com.example.boxmanagernew.domain.qr.QrConfiguration
 import com.example.boxmanagernew.ui.categories.CategorySpinnerAdapter
 import com.example.boxmanagernew.ui.settings.LocationSpinnerAdapter
 
@@ -327,6 +328,20 @@ object DialogUtils {
 
         AlertDialog.Builder(context)
             .setMessage("Conferma eliminazione?")
+            .setPositiveButton("SI") { _, _ ->
+                onConfirm()
+            }
+            .setNegativeButton("NO", null)
+            .show()
+    }
+
+    fun showBoxQrDeleteConfirmation(
+        context: Context,
+        onConfirm: () -> Unit
+    ) {
+
+        AlertDialog.Builder(context)
+            .setMessage(QrConfiguration.MSG_DELETE)
             .setPositiveButton("SI") { _, _ ->
                 onConfirm()
             }

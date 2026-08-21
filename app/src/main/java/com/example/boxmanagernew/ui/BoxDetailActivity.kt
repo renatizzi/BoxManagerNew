@@ -1,6 +1,7 @@
 package com.example.boxmanagernew.ui.boxdetail
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.InputType
@@ -28,6 +29,7 @@ import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.example.boxmanagernew.ui.common.DialogUtils
 import com.example.boxmanagernew.ui.common.FeedbackUtils
 import com.example.boxmanagernew.ui.main.BoxViewModel
+import com.example.boxmanagernew.ui.qr.QrLabelActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -403,6 +405,19 @@ class BoxDetailActivity : BaseActivity() {
             BottomNavManager.TAB_BOXES
         )
 
+        findViewById<TextView>(R.id.textBoxMenu).setOnClickListener { view ->
+
+            val popup = PopupMenu(view.context, view)
+            popup.menu.add("Visualizza etichetta QR")
+            popup.setOnMenuItemClickListener {
+                if (it.title == "Visualizza etichetta QR") {
+                    openQrLabel()
+                }
+                true
+            }
+            popup.show()
+        }
+
         refreshAppShell()
 
         fab.setOnClickListener {
@@ -428,6 +443,20 @@ class BoxDetailActivity : BaseActivity() {
                         finish()
                     }
                 }
+            }
+        )
+    }
+
+    private fun openQrLabel() {
+
+        val box = currentBox ?: return
+
+        startActivity(
+            Intent(
+                this,
+                QrLabelActivity::class.java
+            ).apply {
+                putExtra("boxId", box.id)
             }
         )
     }

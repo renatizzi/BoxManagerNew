@@ -5,6 +5,7 @@ import androidx.lifecycle.map
 import com.example.boxmanagernew.data.local.dao.BoxDao
 import com.example.boxmanagernew.data.local.entity.BoxEntity
 import com.example.boxmanagernew.domain.model.Box
+import com.example.boxmanagernew.domain.model.BoxPermanentId
 import com.example.boxmanagernew.domain.repository.BoxRepository
 
 class BoxRepositoryImpl(
@@ -20,16 +21,24 @@ class BoxRepositoryImpl(
 
                 list.map { entity ->
 
-                    Box(
-                        id = entity.id,
-                        name = entity.name,
-                        description = null,
-                        categoryId = entity.categoryId,
-                        position = entity.position,
-                        lastModified = entity.lastModified
-                    )
+                    toDomain(entity)
                 }
             }
+    }
+
+    private fun toDomain(
+        entity: BoxEntity
+    ): Box {
+
+        return Box(
+            id = entity.id,
+            name = entity.name,
+            description = null,
+            categoryId = entity.categoryId,
+            position = entity.position,
+            lastModified = entity.lastModified,
+            permanentId = entity.permanentId
+        )
     }
 
     suspend fun getAllBoxEntitiesSync():
@@ -54,7 +63,10 @@ class BoxRepositoryImpl(
                 name = box.name,
                 categoryId = box.categoryId,
                 position = box.position,
-                lastModified = box.lastModified
+                lastModified = box.lastModified,
+                permanentId = BoxPermanentId.fromStored(
+                    box.permanentId
+                )
             )
         )
     }
@@ -63,13 +75,20 @@ class BoxRepositoryImpl(
         box: Box
     ) {
 
+        val existing =
+            boxDao.getById(box.id)
+
         boxDao.update(
             BoxEntity(
                 id = box.id,
                 name = box.name,
                 categoryId = box.categoryId,
                 position = box.position,
-                lastModified = box.lastModified
+                lastModified = box.lastModified,
+                permanentId = BoxPermanentId.fromStored(
+                    existing?.permanentId
+                        ?: box.permanentId
+                )
             )
         )
     }
@@ -79,6 +98,29 @@ class BoxRepositoryImpl(
     ) {
 
         boxDao.deleteById(id)
+    }
+
+    override suspend fun getBoxByPermanentId(
+        permanentId: String
+    ): Box? {
+
+        val id = permanentId.trim()
+        if (id.isEmpty()) {
+            return null
+        }
+
+        return boxDao.getByPermanentId(id)?.let { entity ->
+            toDomain(entity)
+        }
+    }
+
+    override suspend fun getBoxById(
+        id: Int
+    ): Box? {
+
+        return boxDao.getById(id)?.let { entity ->
+            toDomain(entity)
+        }
     }
 
     suspend fun moveBoxes(

@@ -47,6 +47,7 @@ class BackupRestoreInspectorTest {
         assertEquals(1, ready.metadata.categoryCount)
         assertEquals(1, ready.metadata.locationCount)
         assertEquals("Box \"A\"", ready.archive.boxes.single().name)
+        assertEquals("box-a-permanent", ready.archive.boxes.single().permanentId)
         assertEquals(null, ready.archive.objects.first().description)
         assertEquals("Riga uno\nRiga due", ready.archive.objects.last().description)
     }
@@ -122,6 +123,30 @@ class BackupRestoreInspectorTest {
         assertEquals(archive.objectTypes, restored.objectTypes)
     }
 
+    @Test
+    fun deserializer_missingPermanentId_assignsTechnicalId() {
+
+        val payload = exporter.exportPayload(sampleArchive(), "1.0")
+        val archiveJson =
+            payload.getValue(BackupConfiguration.ARCHIVE_FILE_NAME)
+                .toString(StandardCharsets.UTF_8)
+                .replace(
+                    ",\"permanentId\":\"box-a-permanent\"",
+                    ""
+                )
+
+        val restored =
+            deserializer.deserializeArchive(
+                archiveJson.toByteArray(StandardCharsets.UTF_8)
+            )
+
+        val assigned =
+            restored.boxes.single().permanentId
+
+        assertTrue(assigned.isNotBlank())
+        assertTrue(assigned != "box-a-permanent")
+    }
+
     private fun sampleArchive() = mapper.buildArchive(
         boxes = listOf(
             BoxEntity(
@@ -129,7 +154,8 @@ class BackupRestoreInspectorTest {
                 name = "Box \"A\"",
                 categoryId = 2,
                 position = "Garage",
-                lastModified = 123L
+                lastModified = 123L,
+                permanentId = "box-a-permanent"
             )
         ),
         objects = listOf(

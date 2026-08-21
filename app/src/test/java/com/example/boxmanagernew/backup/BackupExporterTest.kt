@@ -28,7 +28,8 @@ class BackupExporterTest {
                         name = "Box \"A\"",
                         categoryId = 2,
                         position = "Garage",
-                        lastModified = 123L
+                        lastModified = 123L,
+                        permanentId = "box-a-permanent"
                     )
                 ),
                 objects = listOf(
@@ -78,6 +79,7 @@ class BackupExporterTest {
                 .toString(StandardCharsets.UTF_8)
 
         assertTrue(archiveJson.contains("\"boxes\": [{\"id\":1"))
+        assertTrue(archiveJson.contains("\"permanentId\":\"box-a-permanent\""))
         assertTrue(archiveJson.contains("\"description\":null"))
         assertTrue(archiveJson.contains("\"quantity\":null"))
         assertTrue(archiveJson.contains("\"quantity\":0"))

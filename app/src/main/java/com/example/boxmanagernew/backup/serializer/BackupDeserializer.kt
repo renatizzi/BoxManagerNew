@@ -10,6 +10,7 @@ import com.example.boxmanagernew.data.local.entity.CategoryEntity
 import com.example.boxmanagernew.data.local.entity.LocationEntity
 import com.example.boxmanagernew.data.local.entity.ObjectEntity
 import com.example.boxmanagernew.data.local.entity.ObjectTypeEntity
+import com.example.boxmanagernew.domain.model.BoxPermanentId
 import org.json.JSONArray
 import org.json.JSONObject
 import java.nio.charset.StandardCharsets
@@ -91,7 +92,14 @@ class BackupDeserializer {
                 name = item.getString("name"),
                 categoryId = item.getInt("categoryId"),
                 position = item.getString("position"),
-                lastModified = item.getLong("lastModified")
+                lastModified = item.getLong("lastModified"),
+                permanentId = BoxPermanentId.fromStored(
+                    if (item.has("permanentId") && !item.isNull("permanentId")) {
+                        item.getString("permanentId")
+                    } else {
+                        null
+                    }
+                )
             )
         }
     }

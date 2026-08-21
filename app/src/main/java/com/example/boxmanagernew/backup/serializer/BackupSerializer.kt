@@ -76,7 +76,8 @@ class BackupSerializer {
 
         "{\"id\":${box.id},\"name\":\"${escape(box.name)}\"," +
                 "\"categoryId\":${box.categoryId},\"position\":\"${escape(box.position)}\"," +
-                "\"lastModified\":${box.lastModified}}"
+                "\"lastModified\":${box.lastModified}," +
+                "\"permanentId\":\"${escape(box.permanentId)}\"}"
     }
 
     private fun serializeObjects(

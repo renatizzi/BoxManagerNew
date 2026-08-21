@@ -15,31 +15,28 @@
         android:id="@+id/headerInclude"
         layout="@layout/layout_page_header" />
 
-    <ScrollView
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <LinearLayout
-            android:id="@+id/contentContainer"
+        <androidx.camera.view.PreviewView
+            android:id="@+id/previewQr"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/tvMessages"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_horizontal"
-            android:padding="16dp">
+            android:layout_gravity="bottom"
+            android:background="?attr/colorSurface"
+            android:minHeight="48dp"
+            android:padding="16dp"
+            android:textColor="@color/text_secondary"
+            android:visibility="gone" />
 
-            <TextView
-                android:id="@+id/textQrPlaceholder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Codice QR"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="@color/text_primary" />
-
-        </LinearLayout>
-
-    </ScrollView>
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/navContainer"
