@@ -1,5 +1,6 @@
 package com.example.boxmanagernew.domain.search
 
+import com.example.boxmanagernew.domain.search.model.CoreEntityType
 import com.example.boxmanagernew.domain.search.model.SearchArchiveIndex
 import com.example.boxmanagernew.domain.search.model.SearchArchiveLookupResult
 import com.example.boxmanagernew.domain.search.model.SearchArchiveScope
@@ -97,15 +98,26 @@ class SearchArchiveLookup(
         )
     }
 
+    fun homonymCoresForClarification(
+        question: String,
+        index: SearchArchiveIndex
+    ): Set<CoreEntityType> {
+
+        return archivalLookup.homonymCoresForClarification(
+            question,
+            index
+        )
+    }
+
     fun needsHomonymClarification(
         question: String,
         index: SearchArchiveIndex
     ): Boolean {
 
-        return archivalLookup.needsHomonymClarification(
+        return homonymCoresForClarification(
             question,
             index
-        )
+        ).size >= 2
     }
 
     private fun stubLookup(

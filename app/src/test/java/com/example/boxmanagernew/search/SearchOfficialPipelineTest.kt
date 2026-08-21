@@ -129,7 +129,7 @@ class SearchOfficialPipelineTest {
         assertFalse(response.success)
         assertTrue(response.requiresClarification)
         assertEquals(
-            SearchConfiguration.MSG_CLARIFY,
+            "Riformula la domanda in modo che sia chiaro se ti riferisci a un oggetto o a un contenitore.",
             response.message
         )
     }
@@ -173,7 +173,7 @@ class SearchOfficialPipelineTest {
         )
         assertTrue(response.requiresClarification)
         assertEquals(
-            SearchConfiguration.MSG_CLARIFY,
+            "Riformula la domanda in modo che sia chiaro se ti riferisci a un oggetto o a un contenitore.",
             response.message
         )
         assertEquals("", response.objectTerms)
@@ -465,7 +465,7 @@ class SearchOfficialPipelineTest {
         assertFalse(response.success)
         assertTrue(response.requiresClarification)
         assertEquals(
-            SearchConfiguration.MSG_CLARIFY,
+            "Riformula la domanda in modo che sia chiaro se ti riferisci a un oggetto, a un contenitore, a una posizione o a una categoria.",
             response.message
         )
     }

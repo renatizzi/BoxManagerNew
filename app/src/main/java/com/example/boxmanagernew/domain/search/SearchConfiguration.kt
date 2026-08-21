@@ -1,5 +1,7 @@
 package com.example.boxmanagernew.domain.search
 
+import com.example.boxmanagernew.domain.search.model.CoreEntityType
+
 /**
  * Messaggi utente della Ricerca Interrogativa (catalogo 2.6).
  */
@@ -10,6 +12,48 @@ object SearchConfiguration {
 
     const val MSG_CLARIFY =
         "Puoi formulare la richiesta in modo più preciso?"
+
+    private const val MSG_HOMONYM_CLARIFY_PREFIX =
+        "Riformula la domanda in modo che sia chiaro se ti riferisci"
+
+    fun homonymClarifyMessage(
+        cores: Set<CoreEntityType>
+    ): String {
+
+        val phrases =
+            listOf(
+                CoreEntityType.OBJECT to
+                    "a un oggetto",
+                CoreEntityType.BOX to
+                    "a un contenitore",
+                CoreEntityType.LOCATION to
+                    "a una posizione",
+                CoreEntityType.CATEGORY to
+                    "a una categoria"
+            ).mapNotNull { (core, phrase) ->
+
+                if (core in cores) {
+                    phrase
+                } else {
+                    null
+                }
+            }
+
+        if (phrases.size < 2) {
+            return MSG_CLARIFY
+        }
+
+        val joined =
+            if (phrases.size == 2) {
+                "${phrases[0]} o ${phrases[1]}"
+            } else {
+                phrases.dropLast(1).joinToString(
+                    ", "
+                ) + " o " + phrases.last()
+            }
+
+        return "$MSG_HOMONYM_CLARIFY_PREFIX $joined."
+    }
 
     const val MSG_NO_RESULTS =
         "Nessun risultato trovato."

@@ -305,27 +305,53 @@ class SearchArchivalLookup {
         return cores
     }
 
-    fun needsHomonymClarification(
+    fun homonymCoresForClarification(
         question: String,
         index: SearchArchiveIndex
-    ): Boolean {
+    ): Set<CoreEntityType> {
 
         val tokens =
             SearchNameMatcher.contentTokens(
                 question
             )
 
-        return tokens.any { token ->
+        val cores =
+            mutableSetOf<CoreEntityType>()
 
-            identifiedCores(
-                token,
-                index
-            ).size >= 2 &&
-                    extraQualifierCores(
-                        tokens,
-                        token
-                    ).size != 1
+        for (token in tokens) {
+
+            val identified =
+                identifiedCores(
+                    token,
+                    index
+                )
+
+            if (
+                identified.size >= 2 &&
+                extraQualifierCores(
+                    tokens,
+                    token
+                ).size != 1
+            ) {
+
+                cores.addAll(
+                    identified
+                )
+            }
         }
+
+        return cores
+    }
+
+    fun needsHomonymClarification(
+        question: String,
+        index: SearchArchiveIndex
+    ): Boolean {
+
+        return homonymCoresForClarification(
+            question,
+            index
+        ).size >= 2
     }
 
     private fun identifiedCores(

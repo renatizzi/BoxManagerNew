@@ -127,18 +127,24 @@ class GlobalSearchDispatcher(
             ).joinToString("\n")
 
         // R8/R19 Nota 3.3.6: stessa chiave su più Core, senza selettore extra.
-        if (
-            archiveIndex != null &&
-            archiveLookup.needsHomonymClarification(
-                normalizedQuestion.normalizedQuestion,
-                archiveIndex
-            )
-        ) {
+        val homonymCores =
+            if (archiveIndex != null) {
+                archiveLookup.homonymCoresForClarification(
+                    normalizedQuestion.normalizedQuestion,
+                    archiveIndex
+                )
+            } else {
+                emptySet()
+            }
+
+        if (homonymCores.size >= 2) {
 
             return SearchResponse(
                 success = false,
                 message =
-                    SearchConfiguration.MSG_CLARIFY,
+                    SearchConfiguration.homonymClarifyMessage(
+                        homonymCores
+                    ),
                 requiresClarification = true,
                 clarificationType =
                     SearchClarificationType.AMBIGUOUS_CORE,
