@@ -463,6 +463,11 @@ class MainActivity : BaseActivity() {
                 SearchConfiguration.EXTRA_BOX_TERMS
             )
 
+        val highlightTerms =
+            intent.getStringExtra(
+                SearchConfiguration.EXTRA_HIGHLIGHT_TERMS
+            )
+
         if (
             objectTerms.isNullOrBlank() &&
             locationTerms.isNullOrBlank() &&
@@ -473,14 +478,25 @@ class MainActivity : BaseActivity() {
             return
         }
 
+        val highlightQuery =
+            highlightTerms
+                ?.takeIf { terms ->
+                    terms.isNotBlank()
+                }
+                ?: SearchConfiguration.locationHighlightQuery(
+                    objectTerms
+                        ?: categoryTerms
+                        ?: boxTerms
+                        ?: locationTerms
+                        ?: ""
+                )
+
         if (
             !objectTerms.isNullOrBlank()
         ) {
 
             adapter.updateQuery(
-                SearchConfiguration.locationHighlightQuery(
-                    objectTerms
-                )
+                highlightQuery
             )
 
             viewModel.filterByContainedObjects(
@@ -492,9 +508,7 @@ class MainActivity : BaseActivity() {
         ) {
 
             adapter.updateQuery(
-                SearchConfiguration.locationHighlightQuery(
-                    categoryTerms
-                )
+                highlightQuery
             )
 
             viewModel.filterByCategory(
@@ -507,9 +521,7 @@ class MainActivity : BaseActivity() {
         ) {
 
             adapter.updateQuery(
-                SearchConfiguration.locationHighlightQuery(
-                    boxTerms
-                )
+                highlightQuery
             )
 
             viewModel.filterByBoxNames(
@@ -521,9 +533,7 @@ class MainActivity : BaseActivity() {
         ) {
 
             adapter.updateQuery(
-                SearchConfiguration.locationHighlightQuery(
-                    locationTerms
-                )
+                highlightQuery
             )
 
             viewModel.filterByLocation(

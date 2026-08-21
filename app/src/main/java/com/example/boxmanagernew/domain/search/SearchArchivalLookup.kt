@@ -343,6 +343,25 @@ class SearchArchivalLookup {
         return cores
     }
 
+    fun highlightKeys(
+        question: String,
+        index: SearchArchiveIndex
+    ): String {
+
+        return SearchNameMatcher.contentTokens(
+            question
+        ).filterNot { token ->
+
+            isPureSelector(
+                token,
+                index
+            ) ||
+                    token.all { char ->
+                        char.isDigit()
+                    }
+        }.joinToString(" ")
+    }
+
     fun needsHomonymClarification(
         question: String,
         index: SearchArchiveIndex

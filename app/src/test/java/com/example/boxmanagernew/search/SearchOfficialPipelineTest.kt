@@ -235,6 +235,10 @@ class SearchOfficialPipelineTest {
         )
         assertEquals("", fromContainer.categoryTerms)
         assertEquals("", fromContainer.objectTerms)
+        assertEquals(
+            "box",
+            fromContainer.highlightTerms
+        )
     }
 
     @Test
@@ -275,6 +279,10 @@ class SearchOfficialPipelineTest {
         assertEquals(
             "",
             response.boxTerms
+        )
+        assertEquals(
+            "box",
+            response.highlightTerms
         )
     }
 
@@ -388,6 +396,7 @@ class SearchOfficialPipelineTest {
         assertEquals("", response.boxTerms)
         assertEquals("", response.locationTerms)
         assertEquals("", response.categoryTerms)
+        assertEquals("box", response.highlightTerms)
     }
 
     @Test

@@ -98,6 +98,17 @@ class SearchArchiveLookup(
         )
     }
 
+    fun highlightKeys(
+        question: String,
+        index: SearchArchiveIndex
+    ): String {
+
+        return archivalLookup.highlightKeys(
+            question,
+            index
+        )
+    }
+
     fun homonymCoresForClarification(
         question: String,
         index: SearchArchiveIndex

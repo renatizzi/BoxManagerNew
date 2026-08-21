@@ -82,6 +82,9 @@ object SearchConfiguration {
     const val EXTRA_BOX_TERMS =
         "advancedBoxTerms"
 
+    const val EXTRA_HIGHLIGHT_TERMS =
+        "advancedHighlightTerms"
+
     const val LOCATION_TERMS_SEPARATOR =
         "\u001f"
 

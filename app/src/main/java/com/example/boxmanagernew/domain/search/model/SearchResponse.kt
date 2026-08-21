@@ -23,6 +23,8 @@ data class SearchResponse(
 
     val objectTerms: String = "",
 
+    val highlightTerms: String = "",
+
     val archiveTransformation:
     SearchArchiveTransformation? = null,
 

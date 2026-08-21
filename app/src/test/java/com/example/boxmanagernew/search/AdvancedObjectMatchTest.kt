@@ -119,6 +119,38 @@ class AdvancedObjectMatchTest {
     }
 
     @Test
+    fun matchingWordRangesDoesNotHighlightDigitsFromOtherNames() {
+
+        assertTrue(
+            CanonicalNormalizer.matchingWordRanges(
+                "prova 1",
+                "Box"
+            ).isEmpty()
+        )
+
+        val packedNames =
+            "box prova Box 1 prova 1 prova 2"
+
+        val provaUno =
+            CanonicalNormalizer.matchingWordRanges(
+                "prova 1",
+                packedNames
+            )
+
+        assertTrue(
+            provaUno.none { range ->
+
+                "prova 1".substring(
+                    range.first,
+                    range.last + 1
+                ).all { char ->
+                    char.isDigit()
+                }
+            }
+        )
+    }
+
+    @Test
     fun engineAKeepsObjectTermFromContainerQuestion() {
 
         val response =

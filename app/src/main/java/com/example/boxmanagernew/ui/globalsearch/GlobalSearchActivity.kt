@@ -307,6 +307,16 @@ class GlobalSearchActivity : BaseActivity() {
                         response.boxTerms
                     )
                 }
+
+                if (
+                    response.highlightTerms.isNotBlank()
+                ) {
+
+                    putExtra(
+                        SearchConfiguration.EXTRA_HIGHLIGHT_TERMS,
+                        response.highlightTerms
+                    )
+                }
             }
         )
     }

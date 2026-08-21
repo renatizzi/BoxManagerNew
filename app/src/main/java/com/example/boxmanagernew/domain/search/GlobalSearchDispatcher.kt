@@ -181,6 +181,15 @@ class GlobalSearchDispatcher(
                     extras.boxTerms,
                 objectTerms =
                     extras.objectTerms,
+                highlightTerms =
+                    if (archiveIndex != null) {
+                        archiveLookup.highlightKeys(
+                            normalizedQuestion.normalizedQuestion,
+                            archiveIndex
+                        )
+                    } else {
+                        ""
+                    },
                 archiveTransformation =
                     archiveTransformation,
                 requestType = requestType,

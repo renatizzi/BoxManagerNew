@@ -208,8 +208,12 @@ object CanonicalNormalizer {
 
         val tokens =
             wordTokens(query)
-                .filter {
-                    it.isNotBlank()
+                .filter { token ->
+
+                    token.isNotBlank() &&
+                            !token.all { char ->
+                                char.isDigit()
+                            }
                 }
 
         if (
