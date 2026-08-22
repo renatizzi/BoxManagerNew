@@ -1,20 +1,21 @@
 ---
-description: Promemoria B7 igiene — salvataggio file e menu QR sui contenitori.
+description: B7 igiene CONVALIDATO — fonte Nota 9.1_B7. Non riaprire D0–B7.
 alwaysApply: true
 ---
 
-# B7 igiene (promemoria)
+# B7 igiene (chiuso 22/08/2026)
 
-Non è chiuso. Fette interne, SI prima del codice. Non riaprire D0–B6 (stampa/export e voce CONVALIDATI).
+Fonte viva: `docs/Nota_Integrata_9.1_B7.docx` (Allegato 4.13). Non riaprire D0–B7.
 
-## Salvataggio file
+## Già convalidato
 
-Vedi anche `salvataggio-file.mdc`. Allineare ogni scrittura file al criterio Esporta già convalidato, dove ha senso. `Modello_Importazione.csv` resta fisso.
+- Catalogo 2.6: nessuna frase nuova; allineati i testi «in uso».
+- Ricerca semplice: sottostringa inline, min 3, stesso ago filtro/giallo; Contenitori = nome + categoria + posizione + oggetti. Plurali/inflessione solo avanzata.
+- Genera Modello: `Modello_Importazione.csv` fisso; riuso cartella Backup.
+- Menu card Contenitore: Modifica, Elimina, Visualizza etichetta QR. 3.4.4 stampa/PDF invariato.
+- Room senza `fallbackToDestructiveMigration()`; `allowBackup=false`; orfani rimossi.
 
-## Menu QR sui contenitori (da valutare, non deciso)
+## Non toccare
 
-Oggi «Visualizza etichetta QR» sta nel menu ⋮ **in alto a destra della pagina contenuto box** (`BoxDetailActivity`), e quella voce è **l’unica** del menu.
-
-Valutare se è più coerente spostarla nel menu ⋮ **a destra della card Contenitore** (lista `MainActivity` / `BoxAdapter`), **insieme a Modifica ed Elimina**.
-
-Non spostare in silenzio: analisi, poi SI. 3.4.4 QR (stampa/PDF etichetta) non si ritocca nel merito; qui si valuta solo **dove** si apre l’anteprima.
+- Motore B in V1. Swipe tab (4.1.6). `box.position` stringa.
+- Salvataggio file: criterio Esporta già in `salvataggio-file.mdc`.
