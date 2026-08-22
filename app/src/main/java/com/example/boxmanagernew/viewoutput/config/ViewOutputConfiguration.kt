@@ -25,6 +25,12 @@ object ViewOutputConfiguration {
     const val PAGE_TITLE_FOUND_OBJECTS =
         "Lista Oggetti Trovati - Risultati ricerca archivio"
 
+    const val PAGE_TITLE_CATEGORIES =
+        "Categorie - Classificazione Contenitori"
+
+    const val PAGE_TITLE_LOCATIONS =
+        "Posizione - Luoghi abituali di custodia"
+
     fun objectsInBoxTitle(boxName: String): String {
         return "Lista Oggetti - Contenuto del box $boxName"
     }
@@ -48,6 +54,14 @@ object ViewOutputConfiguration {
 
     fun countObjects(count: Int): String {
         return "N. Oggetti: $count"
+    }
+
+    fun countCategories(count: Int): String {
+        return "N. Categorie: $count"
+    }
+
+    fun countLocations(count: Int): String {
+        return "N. Posizioni: $count"
     }
 
     fun proposedFileName(

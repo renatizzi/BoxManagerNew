@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -16,10 +17,17 @@ import com.example.boxmanagernew.R
 import com.example.boxmanagernew.data.local.DatabaseProvider
 import com.example.boxmanagernew.data.repository.LocationRepositoryImpl
 import com.example.boxmanagernew.domain.model.Location
+import com.example.boxmanagernew.domain.search.SearchConfiguration
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.example.boxmanagernew.ui.common.DialogUtils
 import com.example.boxmanagernew.ui.common.FeedbackUtils
+import com.example.boxmanagernew.viewoutput.config.ViewOutputConfiguration
+import com.example.boxmanagernew.viewoutput.model.ContainerViewSnapshotFactory
+import com.example.boxmanagernew.viewoutput.model.NameListStyle
+import com.example.boxmanagernew.viewoutput.model.ViewPrintHeader
+import com.example.boxmanagernew.viewoutput.persist.ViewExportPersister
+import com.example.boxmanagernew.viewoutput.ui.ViewOutputController
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
@@ -34,6 +42,8 @@ class LocationsActivity : BaseActivity() {
     private lateinit var contextCard: MaterialCardView
     private lateinit var textContextMessage: TextView
 
+    private lateinit var outputController: ViewOutputController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -46,6 +56,7 @@ class LocationsActivity : BaseActivity() {
             "Posizione",
             "Luoghi abituali di custodia"
         )
+        setupPrintAction()
 
         BottomNavManager.setup(
             this,
@@ -124,6 +135,60 @@ class LocationsActivity : BaseActivity() {
 
         hideWarning()
         refreshAppShell()
+    }
+
+    private fun setupPrintAction() {
+
+        val container =
+            findViewById<FrameLayout>(
+                R.id.headerActionContainer
+            ) ?: return
+
+        outputController =
+            ViewOutputController(
+                this,
+                ViewExportPersister(this),
+                showFolderInaccessible = {},
+                launchFolderPicker = {}
+            )
+
+        outputController.inflatePrintOnly(
+            container
+        ) {
+            handlePrintView()
+        }
+    }
+
+    private fun handlePrintView() {
+
+        val locations =
+            viewModel.locations.value
+                ?: emptyList()
+
+        if (locations.isEmpty()) {
+            textContextMessage.text =
+                SearchConfiguration.MSG_NO_RESULTS
+            contextCard.visibility =
+                View.VISIBLE
+            return
+        }
+
+        val snapshot =
+            ContainerViewSnapshotFactory.fromLocations(
+                locations
+            )
+
+        outputController.print(
+            snapshot,
+            ViewPrintHeader(
+                title = ViewOutputConfiguration.PAGE_TITLE_LOCATIONS,
+                filterLine = ViewOutputConfiguration.filterLine(""),
+                countLine = ViewOutputConfiguration.countLocations(
+                    snapshot.boxes.size
+                ),
+                nameListStyle = NameListStyle.PLACE_ICON
+            )
+        )
     }
 
     private fun hideWarning() {

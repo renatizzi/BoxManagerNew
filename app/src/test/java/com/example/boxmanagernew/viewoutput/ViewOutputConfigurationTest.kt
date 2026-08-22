@@ -36,6 +36,14 @@ class ViewOutputConfigurationTest {
             "N. Oggetti: 12",
             ViewOutputConfiguration.countObjects(12)
         )
+        assertEquals(
+            "N. Categorie: 4",
+            ViewOutputConfiguration.countCategories(4)
+        )
+        assertEquals(
+            "N. Posizioni: 5",
+            ViewOutputConfiguration.countLocations(5)
+        )
     }
 
     @Test
@@ -48,6 +56,14 @@ class ViewOutputConfigurationTest {
         assertEquals(
             "Lista Oggetti Trovati - Risultati ricerca archivio",
             ViewOutputConfiguration.PAGE_TITLE_FOUND_OBJECTS
+        )
+        assertEquals(
+            "Categorie - Classificazione Contenitori",
+            ViewOutputConfiguration.PAGE_TITLE_CATEGORIES
+        )
+        assertEquals(
+            "Posizione - Luoghi abituali di custodia",
+            ViewOutputConfiguration.PAGE_TITLE_LOCATIONS
         )
     }
 

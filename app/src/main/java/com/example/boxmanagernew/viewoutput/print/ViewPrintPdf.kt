@@ -11,6 +11,7 @@ import androidx.core.graphics.drawable.toBitmap
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.viewoutput.config.ViewOutputConfiguration
 import com.example.boxmanagernew.viewoutput.model.ContainerViewSnapshot
+import com.example.boxmanagernew.viewoutput.model.NameListStyle
 import com.example.boxmanagernew.viewoutput.model.ViewPrintHeader
 import java.io.ByteArrayOutputStream
 
@@ -164,6 +165,36 @@ object ViewPrintPdf {
         )
         y += 14f
 
+        if (header.nameListStyle != NameListStyle.NESTED) {
+            snapshot.boxes.forEach { row ->
+                val icon = when (header.nameListStyle) {
+                    NameListStyle.PLACE_ICON -> placeIcon
+                    NameListStyle.CATEGORY_ICON ->
+                        categoryIcons.getOrPut(row.categoryIconRes) {
+                            if (row.categoryIconRes == 0) {
+                                null
+                            } else {
+                                bitmap(context, row.categoryIconRes)
+                            }
+                        }
+                    NameListStyle.NESTED -> null
+                }
+                ensureSpace(boxPaint.textSize + 10f)
+                val top = y - ICON + 2f
+                var textX = MARGIN
+                if (icon != null) {
+                    canvas.drawBitmap(
+                        icon,
+                        null,
+                        RectF(MARGIN, top, MARGIN + ICON, top + ICON),
+                        null
+                    )
+                    textX = MARGIN + ICON + 4f
+                }
+                drawWrapped(row.name, boxPaint, textX)
+                y += 8f
+            }
+        } else {
         snapshot.boxes.forEach { box ->
             ensureSpace(boxPaint.textSize + metaPaint.textSize + 24f)
             drawWrapped(box.name, boxPaint, MARGIN)
@@ -217,6 +248,7 @@ object ViewPrintPdf {
                 )
             }
             y += 6f
+        }
         }
 
         document.finishPage(page)

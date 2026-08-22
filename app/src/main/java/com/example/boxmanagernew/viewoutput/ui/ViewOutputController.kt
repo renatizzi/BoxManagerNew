@@ -62,6 +62,21 @@ class ViewOutputController(
         }
     }
 
+    fun inflatePrintOnly(
+        container: FrameLayout,
+        onPrint: () -> Unit
+    ) {
+
+        inflateActions(
+            container,
+            onPrint,
+            onExport = {}
+        )
+        container.findViewById<View>(
+            R.id.btnExportView
+        )?.visibility = View.GONE
+    }
+
     fun print(
         snapshot: ContainerViewSnapshot,
         header: ViewPrintHeader

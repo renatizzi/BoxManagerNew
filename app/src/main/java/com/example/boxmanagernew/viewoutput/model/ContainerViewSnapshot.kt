@@ -18,8 +18,15 @@ data class ViewPrintHeader(
     val title: String,
     val filterLine: String,
     val countLine: String,
-    val showBlockSubtotals: Boolean = false
+    val showBlockSubtotals: Boolean = false,
+    val nameListStyle: NameListStyle = NameListStyle.NESTED
 )
+
+enum class NameListStyle {
+    NESTED,
+    CATEGORY_ICON,
+    PLACE_ICON
+}
 
 data class ContainerViewSnapshot(
     val boxes: List<ViewBoxBlock>

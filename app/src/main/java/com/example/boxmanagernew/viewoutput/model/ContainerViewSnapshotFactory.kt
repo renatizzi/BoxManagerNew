@@ -1,6 +1,8 @@
 package com.example.boxmanagernew.viewoutput.model
 
 import com.example.boxmanagernew.domain.model.Box
+import com.example.boxmanagernew.domain.model.Category
+import com.example.boxmanagernew.domain.model.Location
 import com.example.boxmanagernew.domain.model.ObjectWithType
 import com.example.boxmanagernew.domain.model.SearchResult
 
@@ -105,5 +107,39 @@ object ContainerViewSnapshotFactory {
             }
 
         return ContainerViewSnapshot(boxes)
+    }
+
+    fun fromCategories(
+        categories: List<Category>,
+        categoryIconOf: (String) -> Int
+    ): ContainerViewSnapshot {
+
+        return ContainerViewSnapshot(
+            boxes = categories.map { category ->
+                ViewBoxBlock(
+                    name = category.name,
+                    category = "",
+                    position = "",
+                    categoryIconRes = categoryIconOf(category.icon),
+                    objects = emptyList()
+                )
+            }
+        )
+    }
+
+    fun fromLocations(
+        locations: List<Location>
+    ): ContainerViewSnapshot {
+
+        return ContainerViewSnapshot(
+            boxes = locations.map { location ->
+                ViewBoxBlock(
+                    name = location.name,
+                    category = "",
+                    position = "",
+                    objects = emptyList()
+                )
+            }
+        )
     }
 }

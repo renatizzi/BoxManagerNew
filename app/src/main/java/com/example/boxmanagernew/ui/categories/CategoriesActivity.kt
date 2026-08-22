@@ -5,6 +5,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
@@ -19,6 +20,12 @@ import com.example.boxmanagernew.data.repository.CategoryRepositoryImpl
 import com.example.boxmanagernew.domain.model.Category
 import com.example.boxmanagernew.domain.search.SearchConfiguration
 import com.example.boxmanagernew.ui.common.*
+import com.example.boxmanagernew.viewoutput.config.ViewOutputConfiguration
+import com.example.boxmanagernew.viewoutput.model.ContainerViewSnapshotFactory
+import com.example.boxmanagernew.viewoutput.model.NameListStyle
+import com.example.boxmanagernew.viewoutput.model.ViewPrintHeader
+import com.example.boxmanagernew.viewoutput.persist.ViewExportPersister
+import com.example.boxmanagernew.viewoutput.ui.ViewOutputController
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
@@ -35,6 +42,8 @@ class CategoriesActivity : BaseActivity() {
     private lateinit var textCategoryCount: TextView
     private lateinit var recyclerView: RecyclerView
     private lateinit var fabAdd: FloatingActionButton
+
+    private lateinit var outputController: ViewOutputController
 
     private var ignoreSearchChanges =
         false
@@ -55,6 +64,7 @@ class CategoriesActivity : BaseActivity() {
         setupEdgeToEdge()
         setupTopBar()
         setupViews()
+        setupPrintAction()
 
         BottomNavManager.setup(this, BottomNavManager.TAB_CATEGORIES)
         setupBackNavigation()
@@ -130,6 +140,67 @@ class CategoriesActivity : BaseActivity() {
 
         fabAdd =
             findViewById(R.id.fabAddCategory)
+    }
+
+    private fun setupPrintAction() {
+
+        val container =
+            findViewById<FrameLayout>(
+                R.id.headerActionContainer
+            ) ?: return
+
+        outputController =
+            ViewOutputController(
+                this,
+                ViewExportPersister(this),
+                showFolderInaccessible = {},
+                launchFolderPicker = {}
+            )
+
+        outputController.inflatePrintOnly(
+            container
+        ) {
+            handlePrintView()
+        }
+    }
+
+    private fun handlePrintView() {
+
+        val categories =
+            viewModel.categories.value
+                ?: emptyList()
+
+        if (categories.isEmpty()) {
+            showWarningMessage(
+                SearchConfiguration.MSG_NO_RESULTS
+            )
+            return
+        }
+
+        val snapshot =
+            ContainerViewSnapshotFactory.fromCategories(
+                categories
+            ) { icon ->
+                if (icon.isBlank()) {
+                    0
+                } else {
+                    IconMapper.getIconRes(icon)
+                }
+            }
+
+        outputController.print(
+            snapshot,
+            ViewPrintHeader(
+                title = ViewOutputConfiguration.PAGE_TITLE_CATEGORIES,
+                filterLine = ViewOutputConfiguration.filterLine(
+                    editSearch.text.toString().trim()
+                ),
+                countLine = ViewOutputConfiguration.countCategories(
+                    snapshot.boxes.size
+                ),
+                nameListStyle = NameListStyle.CATEGORY_ICON
+            )
+        )
     }
 
     private fun setupBackNavigation() {
