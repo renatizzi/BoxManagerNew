@@ -16,6 +16,7 @@ import com.example.boxmanagernew.ui.categories.CategoriesActivity
 import com.example.boxmanagernew.ui.categories.CategoryViewModel
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
+import com.example.boxmanagernew.ui.common.VoiceSearchController
 import com.example.boxmanagernew.ui.globalsearch.GlobalSearchActivity
 import com.example.boxmanagernew.ui.importdata.ImportActivity
 import com.example.boxmanagernew.ui.main.BoxViewModel
@@ -24,6 +25,9 @@ import com.example.boxmanagernew.ui.restore.RestoreActivity
 import com.example.boxmanagernew.ui.search.SearchResultActivity
 
 class DashboardActivity : BaseActivity() {
+
+    private val voiceSearch =
+        VoiceSearchController(this)
 
     override fun onCreate(
         savedInstanceState: Bundle?
@@ -80,103 +84,121 @@ class DashboardActivity : BaseActivity() {
                 EditorInfo.IME_ACTION_DONE
             ) {
 
-                val query =
-                    editSearch.text
-                        .toString()
-                        .trim()
-
-                val selected =
-                    spinner.selectedItemPosition
-
-                if (
-                    query.isBlank() &&
-                    selected != 1 &&
-                    selected != 4
-                ) {
-
-                    return@setOnEditorActionListener true
-                }
-
-                editSearch.clearFocus()
-
-                hideKeyboard(editSearch)
-
-                editSearch.setText("")
-
-                spinner.setSelection(0)
-
-                when (selected) {
-
-                    0 -> {
-
-                        startActivity(
-                            Intent(
-                                this,
-                                GlobalSearchActivity::class.java
-                            ).apply {
-
-                                putExtra(
-                                    "dashboardSearchQuery",
-                                    query
-                                )
-                            }
-                        )
-                    }
-
-                    1,4 -> {
-
-                        startActivity(
-                            Intent(
-                                this,
-                                MainActivity::class.java
-                            ).apply {
-
-                                putExtra(
-                                    "dashboardSearchQuery",
-                                    query
-                                )
-                            }
-                        )
-                    }
-
-                    2 -> {
-
-                        startActivity(
-                            Intent(
-                                this,
-                                SearchResultActivity::class.java
-                            ).apply {
-
-                                putExtra(
-                                    "dashboardSearchQuery",
-                                    query
-                                )
-                            }
-                        )
-                    }
-
-                    3 -> {
-
-                        startActivity(
-                            Intent(
-                                this,
-                                CategoriesActivity::class.java
-                            ).apply {
-
-                                putExtra(
-                                    "dashboardSearchQuery",
-                                    query
-                                )
-                            }
-                        )
-                    }
-                }
-
+                submitDashboardSearch(
+                    editSearch,
+                    spinner
+                )
                 true
 
             } else {
 
                 false
+            }
+        }
+
+        voiceSearch.attach(editSearch) { _ ->
+
+            submitDashboardSearch(
+                editSearch,
+                spinner
+            )
+        }
+    }
+
+    private fun submitDashboardSearch(
+        editSearch: EditText,
+        spinner: Spinner
+    ) {
+
+        val query =
+            editSearch.text
+                .toString()
+                .trim()
+
+        val selected =
+            spinner.selectedItemPosition
+
+        if (
+            query.isBlank() &&
+            selected != 1 &&
+            selected != 4
+        ) {
+
+            return
+        }
+
+        editSearch.clearFocus()
+
+        hideKeyboard(editSearch)
+
+        editSearch.setText("")
+
+        spinner.setSelection(0)
+
+        when (selected) {
+
+            0 -> {
+
+                startActivity(
+                    Intent(
+                        this,
+                        GlobalSearchActivity::class.java
+                    ).apply {
+
+                        putExtra(
+                            "dashboardSearchQuery",
+                            query
+                        )
+                    }
+                )
+            }
+
+            1, 4 -> {
+
+                startActivity(
+                    Intent(
+                        this,
+                        MainActivity::class.java
+                    ).apply {
+
+                        putExtra(
+                            "dashboardSearchQuery",
+                            query
+                        )
+                    }
+                )
+            }
+
+            2 -> {
+
+                startActivity(
+                    Intent(
+                        this,
+                        SearchResultActivity::class.java
+                    ).apply {
+
+                        putExtra(
+                            "dashboardSearchQuery",
+                            query
+                        )
+                    }
+                )
+            }
+
+            3 -> {
+
+                startActivity(
+                    Intent(
+                        this,
+                        CategoriesActivity::class.java
+                    ).apply {
+
+                        putExtra(
+                            "dashboardSearchQuery",
+                            query
+                        )
+                    }
+                )
             }
         }
     }

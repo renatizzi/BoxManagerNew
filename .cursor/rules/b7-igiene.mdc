@@ -1,0 +1,20 @@
+---
+description: Promemoria B7 igiene — salvataggio file e menu QR sui contenitori.
+alwaysApply: true
+---
+
+# B7 igiene (promemoria)
+
+Non è chiuso. Fette interne, SI prima del codice. Non riaprire D0–B6 (stampa/export e voce CONVALIDATI).
+
+## Salvataggio file
+
+Vedi anche `salvataggio-file.mdc`. Allineare ogni scrittura file al criterio Esporta già convalidato, dove ha senso. `Modello_Importazione.csv` resta fisso.
+
+## Menu QR sui contenitori (da valutare, non deciso)
+
+Oggi «Visualizza etichetta QR» sta nel menu ⋮ **in alto a destra della pagina contenuto box** (`BoxDetailActivity`), e quella voce è **l’unica** del menu.
+
+Valutare se è più coerente spostarla nel menu ⋮ **a destra della card Contenitore** (lista `MainActivity` / `BoxAdapter`), **insieme a Modifica ed Elimina**.
+
+Non spostare in silenzio: analisi, poi SI. 3.4.4 QR (stampa/PDF etichetta) non si ritocca nel merito; qui si valuta solo **dove** si apre l’anteprima.

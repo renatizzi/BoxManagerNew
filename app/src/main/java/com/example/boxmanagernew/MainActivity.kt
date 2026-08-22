@@ -35,6 +35,7 @@ import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.example.boxmanagernew.ui.common.DialogUtils
 import com.example.boxmanagernew.ui.common.FeedbackUtils
 import com.example.boxmanagernew.ui.common.UiUtils
+import com.example.boxmanagernew.ui.common.VoiceSearchController
 import com.example.boxmanagernew.ui.main.BoxAdapter
 import com.example.boxmanagernew.ui.main.BoxViewModel
 import com.example.boxmanagernew.viewoutput.config.ViewOutputConfiguration
@@ -89,6 +90,9 @@ class MainActivity : BaseActivity() {
                 onExportFolderChosen(uri)
             }
         }
+
+    private val voiceSearch =
+        VoiceSearchController(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -411,6 +415,8 @@ class MainActivity : BaseActivity() {
                 viewModel.toggleSort()
             }
         )
+
+        voiceSearch.attach(editSearch)
 
         setupFab()
 

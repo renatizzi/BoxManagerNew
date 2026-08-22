@@ -31,6 +31,7 @@ import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.example.boxmanagernew.ui.common.DialogUtils
 import com.example.boxmanagernew.ui.common.FeedbackUtils
 import com.example.boxmanagernew.ui.common.UiUtils
+import com.example.boxmanagernew.ui.common.VoiceSearchController
 import com.example.boxmanagernew.ui.main.BoxViewModel
 import com.example.boxmanagernew.ui.qr.QrLabelActivity
 import com.example.boxmanagernew.viewoutput.config.ViewOutputConfiguration
@@ -90,6 +91,9 @@ class BoxDetailActivity : BaseActivity() {
             }
         }
 
+    private val voiceSearch =
+        VoiceSearchController(this)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -142,6 +146,8 @@ class BoxDetailActivity : BaseActivity() {
 
         editSearch.isSaveEnabled =
             false
+
+        voiceSearch.attach(editSearch)
 
         buttonSort =
             findViewById(R.id.buttonSortObjects)

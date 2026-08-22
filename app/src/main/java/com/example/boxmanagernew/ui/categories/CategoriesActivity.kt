@@ -45,6 +45,9 @@ class CategoriesActivity : BaseActivity() {
 
     private lateinit var outputController: ViewOutputController
 
+    private val voiceSearch =
+        VoiceSearchController(this)
+
     private var ignoreSearchChanges =
         false
 
@@ -128,6 +131,8 @@ class CategoriesActivity : BaseActivity() {
 
         editSearch =
             findViewById(R.id.editTextSearchCategory)
+
+        voiceSearch.attach(editSearch)
 
         buttonSort =
             findViewById(R.id.buttonSortCategory)
