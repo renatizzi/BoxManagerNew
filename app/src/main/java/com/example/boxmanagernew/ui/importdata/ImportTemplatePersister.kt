@@ -1,26 +1,22 @@
-package com.example.boxmanagernew.ui.backup
+package com.example.boxmanagernew.ui.importdata
 
 import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
 import androidx.documentfile.provider.DocumentFile
-import com.example.boxmanagernew.backup.config.BackupConfiguration
-import com.example.boxmanagernew.backup.constants.BackupConstants
-import com.example.boxmanagernew.backup.zip.BackupZipWriter
+import com.example.boxmanagernew.importdata.config.ImportConfiguration
 import com.example.boxmanagernew.ui.common.SafFolderLabel
 import java.io.File
 
-class BackupZipPersister(
-    private val context: Context,
-    private val zipWriter: BackupZipWriter = BackupZipWriter()
+class ImportTemplatePersister(
+    private val context: Context
 ) {
 
     data class Result(
         val success: Boolean,
         val folderInaccessible: Boolean = false,
         val fileName: String = "",
-        val folderName: String = "",
-        val sizeBytes: Long = 0L
+        val folderName: String = ""
     )
 
     fun folderDisplayName(treeUri: Uri): String? {
@@ -34,54 +30,22 @@ class BackupZipPersister(
         return SafFolderLabel.of(treeUri, tree)
     }
 
-    data class ZipFileItem(
-        val uri: Uri,
-        val name: String,
-        val lastModified: Long
-    )
-
-    fun listZipFiles(
-        treeUri: Uri
-    ): List<ZipFileItem> {
-
-        val tree = tree(treeUri) ?: return emptyList()
-
-        return tree.listFiles()
-            .filter { file ->
-                file.isFile &&
-                        file.name?.endsWith(
-                            BackupConfiguration.BACKUP_FILE_EXTENSION,
-                            ignoreCase = true
-                        ) == true
-            }
-            .sortedByDescending { it.lastModified() }
-            .map { file ->
-                ZipFileItem(
-                    uri = file.uri,
-                    name = file.name ?: "backup.zip",
-                    lastModified = file.lastModified()
-                )
-            }
-    }
-
     fun existingFile(
-        treeUri: Uri,
-        fileName: String
+        treeUri: Uri
     ): DocumentFile? {
 
         val tree = tree(treeUri) ?: return null
-        val zipName = zipFileName(fileName)
+        val csvName = ImportConfiguration.FILE_NAME
 
         return tree.listFiles().firstOrNull { child ->
             val name = child.name ?: return@firstOrNull false
-            name.equals(zipName, ignoreCase = true)
+            name.equals(csvName, ignoreCase = true)
         }
     }
 
     fun persist(
         treeUri: Uri,
-        fileName: String,
-        entries: Map<String, ByteArray>,
+        bytes: ByteArray,
         overwrite: Boolean
     ): Result {
 
@@ -94,22 +58,19 @@ class BackupZipPersister(
             )
         }
 
-        val zipName = zipFileName(fileName)
-        val existing = existingFile(treeUri, zipName)
+        val existing = existingFile(treeUri)
         var temp: File? = null
         var created: DocumentFile? = null
 
         try {
 
             temp = File.createTempFile(
-                BackupConstants.TEMP_FILE_PREFIX,
-                BackupConfiguration.BACKUP_FILE_EXTENSION,
+                "import_template_",
+                ImportConfiguration.FILE_EXTENSION,
                 context.cacheDir
             )
 
-            zipWriter.write(temp, entries)
-
-            val size = temp.length()
+            temp.writeBytes(bytes)
 
             if (overwrite && existing != null) {
                 if (!existing.delete()) {
@@ -117,13 +78,12 @@ class BackupZipPersister(
                 }
             }
 
-            val baseName =
-                zipName.removeSuffix(
-                    BackupConfiguration.BACKUP_FILE_EXTENSION
-                )
+            val baseName = ImportConfiguration.FILE_NAME.removeSuffix(
+                ImportConfiguration.FILE_EXTENSION
+            )
 
             created = tree.createFile(
-                BackupConfiguration.ZIP_MIME_TYPE,
+                ImportConfiguration.CSV_MIME_TYPE,
                 baseName
             ) ?: return writeFailed()
 
@@ -132,9 +92,8 @@ class BackupZipPersister(
 
             return Result(
                 success = true,
-                fileName = created.name ?: zipName,
-                folderName = SafFolderLabel.of(treeUri, tree),
-                sizeBytes = size
+                fileName = created.name ?: ImportConfiguration.FILE_NAME,
+                folderName = SafFolderLabel.of(treeUri, tree)
             )
 
         } catch (_: Exception) {
@@ -185,22 +144,5 @@ class BackupZipPersister(
 
     private fun tree(treeUri: Uri): DocumentFile? {
         return DocumentFile.fromTreeUri(context, treeUri)
-    }
-
-    companion object {
-
-        fun zipFileName(fileName: String): String {
-
-            val trimmed = fileName.trim()
-            val extension = BackupConfiguration.BACKUP_FILE_EXTENSION
-
-            return if (
-                trimmed.endsWith(extension, ignoreCase = true)
-            ) {
-                trimmed
-            } else {
-                trimmed + extension
-            }
-        }
     }
 }
