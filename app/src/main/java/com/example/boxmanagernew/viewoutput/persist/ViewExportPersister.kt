@@ -3,7 +3,9 @@ package com.example.boxmanagernew.viewoutput.persist
 import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
+import android.provider.DocumentsContract
 import androidx.documentfile.provider.DocumentFile
+import com.example.boxmanagernew.backup.config.BackupConfiguration
 import com.example.boxmanagernew.importdata.config.ImportConfiguration
 import com.example.boxmanagernew.ui.common.SafFolderLabel
 import com.example.boxmanagernew.viewoutput.config.ViewOutputConfiguration
@@ -29,6 +31,37 @@ class ViewExportPersister(
         return SafFolderLabel.of(treeUri, tree)
     }
 
+    fun rememberedFolderUri(): Uri? {
+
+        val saved =
+            context.getSharedPreferences(
+                BackupConfiguration.PREFS_NAME,
+                Context.MODE_PRIVATE
+            ).getString(
+                BackupConfiguration.PREFS_KEY_FOLDER_URI,
+                null
+            ) ?: return null
+
+        return try {
+            Uri.parse(saved)
+        } catch (_: Exception) {
+            null
+        }
+    }
+
+    fun rememberFolder(uri: Uri) {
+
+        context.getSharedPreferences(
+            BackupConfiguration.PREFS_NAME,
+            Context.MODE_PRIVATE
+        ).edit()
+            .putString(
+                BackupConfiguration.PREFS_KEY_FOLDER_URI,
+                uri.toString()
+            )
+            .apply()
+    }
+
     fun existingFile(
         treeUri: Uri,
         fileName: String
@@ -37,10 +70,96 @@ class ViewExportPersister(
         val tree = tree(treeUri) ?: return null
         val csvName = ViewOutputConfiguration.csvFileName(fileName)
 
-        return tree.listFiles().firstOrNull { child ->
-            val name = child.name ?: return@firstOrNull false
-            name.equals(csvName, ignoreCase = true)
+        val byExact =
+            tree.findFile(csvName)
+                ?: tree.findFile(ViewOutputConfiguration.csvStem(csvName))
+
+        if (
+            byExact != null &&
+            byExact.isFile &&
+            ViewOutputConfiguration.csvNamesMatch(
+                byExact.name.orEmpty(),
+                csvName
+            )
+        ) {
+            return byExact
         }
+
+        return tree.listFiles().firstOrNull { child ->
+            if (!child.isFile) {
+                return@firstOrNull false
+            }
+            val name = child.name ?: return@firstOrNull false
+            ViewOutputConfiguration.csvNamesMatch(name, csvName)
+        } ?: existingFileFromQuery(treeUri, csvName)
+    }
+
+    private fun existingFileFromQuery(
+        treeUri: Uri,
+        csvName: String
+    ): DocumentFile? {
+
+        val treeId =
+            try {
+                DocumentsContract.getTreeDocumentId(treeUri)
+            } catch (_: Exception) {
+                return null
+            }
+
+        val childrenUri =
+            DocumentsContract.buildChildDocumentsUriUsingTree(
+                treeUri,
+                treeId
+            )
+
+        val cursor =
+            try {
+                context.contentResolver.query(
+                    childrenUri,
+                    arrayOf(
+                        DocumentsContract.Document.COLUMN_DOCUMENT_ID,
+                        DocumentsContract.Document.COLUMN_DISPLAY_NAME,
+                        DocumentsContract.Document.COLUMN_MIME_TYPE
+                    ),
+                    null,
+                    null,
+                    null
+                )
+            } catch (_: Exception) {
+                null
+            } ?: return null
+
+        cursor.use { rows ->
+            while (rows.moveToNext()) {
+                val mime = rows.getString(2)
+                if (
+                    mime == DocumentsContract.Document.MIME_TYPE_DIR
+                ) {
+                    continue
+                }
+                val name = rows.getString(1) ?: continue
+                if (
+                    !ViewOutputConfiguration.csvNamesMatch(
+                        name,
+                        csvName
+                    )
+                ) {
+                    continue
+                }
+                val documentId = rows.getString(0) ?: continue
+                val documentUri =
+                    DocumentsContract.buildDocumentUriUsingTree(
+                        treeUri,
+                        documentId
+                    )
+                return DocumentFile.fromSingleUri(
+                    context,
+                    documentUri
+                )
+            }
+        }
+
+        return null
     }
 
     fun persist(

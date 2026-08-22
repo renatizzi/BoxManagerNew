@@ -1,0 +1,17 @@
+---
+description: In B7 (igiene) allineare ogni salvataggio file al criterio Esporta già convalidato.
+alwaysApply: true
+---
+
+# Salvataggio file (B7 igiene)
+
+Non è chiuso in B6. In igiene, verificare **ogni** punto che scrive un file (Backup, PRE_RESTORE, modello Import, Esporta vista, altri) e allineare dove ha senso.
+
+Criterio già convalidato su Esporta (Contenitori e Oggetti):
+
+- Nome proposto datato, come il Backup: prefisso + `ddMMyy_HHmm` (Esporta = `ESPORTA_…csv`).
+- Dopo il primo CONSENTI Android sulla cartella, riusare quella cartella (stesse preferenze del Backup); non rimostrare il permesso se è già valida.
+- Box unico: campo nome + domanda + SI/NO. Nome libero → `Confermi?`. Nome già presente → catalogo `File già esistente. Sostituirlo?`
+- Il testo Android «Consenti l'accesso per "…"» è del sistema, non nostro; non si toglie da quel dialogo.
+
+`Modello_Importazione.csv` resta il nome fisso del tracciato ufficiale, non una copia datata.

@@ -39,11 +39,36 @@ class ViewOutputConfigurationTest {
     }
 
     @Test
-    fun csvFileName_keepsOrAddsCsv() {
+    fun objectPageTitles_matchScreenHeaders() {
 
         assertEquals(
-            "Esporta.csv",
-            ViewOutputConfiguration.csvFileName("")
+            "Lista Oggetti - Contenuto del box Cantina",
+            ViewOutputConfiguration.objectsInBoxTitle("Cantina")
+        )
+        assertEquals(
+            "Lista Oggetti Trovati - Risultati ricerca archivio",
+            ViewOutputConfiguration.PAGE_TITLE_FOUND_OBJECTS
+        )
+    }
+
+    @Test
+    fun csvFileName_keepsOrAddsCsv() {
+
+        val now = GregorianCalendar(
+            2026,
+            Calendar.AUGUST,
+            22,
+            16,
+            20
+        ).time
+
+        assertEquals(
+            "ESPORTA_220826_1620.csv",
+            ViewOutputConfiguration.csvFileName("", now)
+        )
+        assertEquals(
+            "ESPORTA_220826_1620.csv",
+            ViewOutputConfiguration.proposedFileName(now)
         )
         assertEquals(
             "Lista_Cantina.csv",
@@ -52,6 +77,52 @@ class ViewOutputConfigurationTest {
         assertEquals(
             "Lista.csv",
             ViewOutputConfiguration.csvFileName("Lista.csv")
+        )
+    }
+
+    @Test
+    fun csvNamesMatch_treatsCsvExtensionAsSameFile() {
+
+        assertEquals(
+            true,
+            ViewOutputConfiguration.csvNamesMatch(
+                "Esporta.csv",
+                "Esporta"
+            )
+        )
+        assertEquals(
+            true,
+            ViewOutputConfiguration.csvNamesMatch(
+                "Esporta.csv",
+                "esporta.CSV"
+            )
+        )
+        assertEquals(
+            true,
+            ViewOutputConfiguration.csvNamesMatch(
+                "Esporta.csv.csv",
+                "Esporta.csv"
+            )
+        )
+        assertEquals(
+            false,
+            ViewOutputConfiguration.csvNamesMatch(
+                "Esporta.csv",
+                "Lista.csv"
+            )
+        )
+    }
+
+    @Test
+    fun exportFilePrompt_confirmOrReplace() {
+
+        assertEquals(
+            "Confermi?",
+            ViewOutputConfiguration.exportFilePrompt(false)
+        )
+        assertEquals(
+            "File già esistente. Sostituirlo?",
+            ViewOutputConfiguration.exportFilePrompt(true)
         )
     }
 }

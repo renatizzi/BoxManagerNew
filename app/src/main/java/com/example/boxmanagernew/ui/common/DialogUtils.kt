@@ -1,7 +1,9 @@
 package com.example.boxmanagernew.ui.common
 
 import android.content.Context
+import android.text.Editable
 import android.text.InputType
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
@@ -17,6 +19,7 @@ import com.example.boxmanagernew.backup.config.BackupConfiguration
 import com.example.boxmanagernew.domain.qr.QrConfiguration
 import com.example.boxmanagernew.ui.categories.CategorySpinnerAdapter
 import com.example.boxmanagernew.ui.settings.LocationSpinnerAdapter
+import com.example.boxmanagernew.viewoutput.config.ViewOutputConfiguration
 
 object DialogUtils {
 
@@ -381,26 +384,102 @@ object DialogUtils {
     fun showExportFileName(
         context: Context,
         defaultName: String,
-        onConfirm: (String) -> Unit
+        exists: (String) -> Boolean,
+        onSave: (fileName: String, overwrite: Boolean) -> Unit
     ) {
+
+        val pad =
+            (16 * context.resources.displayMetrics.density).toInt()
 
         val name =
             EditText(context).apply {
                 setText(defaultName)
                 setSelection(defaultName.length)
                 inputType = InputType.TYPE_CLASS_TEXT
-                val pad =
-                    (16 * context.resources.displayMetrics.density).toInt()
-                setPadding(pad, pad, pad, pad)
             }
 
-        AlertDialog.Builder(context)
-            .setView(name)
-            .setPositiveButton("SI") { _, _ ->
-                onConfirm(name.text.toString())
+        val prompt =
+            TextView(context).apply {
+                setPadding(0, pad, 0, 0)
             }
-            .setNegativeButton("NO", null)
-            .show()
+
+        val column =
+            LinearLayout(context).apply {
+                orientation = LinearLayout.VERTICAL
+                setPadding(pad, pad, pad, pad)
+                addView(name)
+                addView(prompt)
+            }
+
+        fun typedFileName(): String {
+            return ViewOutputConfiguration.csvFileName(
+                name.text.toString()
+            )
+        }
+
+        fun refreshPrompt() {
+            prompt.text =
+                ViewOutputConfiguration.exportFilePrompt(
+                    exists(typedFileName())
+                )
+        }
+
+        refreshPrompt()
+
+        name.addTextChangedListener(
+            object : TextWatcher {
+
+                override fun afterTextChanged(s: Editable?) {
+                    refreshPrompt()
+                }
+
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                }
+
+                override fun onTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    before: Int,
+                    count: Int
+                ) {
+                }
+            }
+        )
+
+        val dialog =
+            AlertDialog.Builder(context)
+                .setView(column)
+                .setPositiveButton("SI", null)
+                .setNegativeButton("NO", null)
+                .create()
+
+        dialog.setOnShowListener {
+
+            dialog.getButton(
+                AlertDialog.BUTTON_POSITIVE
+            ).setOnClickListener {
+
+                val fileName = typedFileName()
+                onSave(
+                    fileName,
+                    exists(fileName)
+                )
+                dialog.dismiss()
+            }
+
+            dialog.getButton(
+                AlertDialog.BUTTON_NEGATIVE
+            ).setOnClickListener {
+                dialog.dismiss()
+            }
+        }
+
+        dialog.show()
     }
 
     fun showRestoreConfirmation(

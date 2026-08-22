@@ -17,7 +17,8 @@ data class ViewBoxBlock(
 data class ViewPrintHeader(
     val title: String,
     val filterLine: String,
-    val countLine: String
+    val countLine: String,
+    val showBlockSubtotals: Boolean = false
 )
 
 data class ContainerViewSnapshot(

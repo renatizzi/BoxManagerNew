@@ -9,12 +9,14 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.boxmanagernew.R
+import com.example.boxmanagernew.backup.config.BackupConfiguration
 import com.example.boxmanagernew.data.local.AppDatabase
 import com.example.boxmanagernew.data.local.entity.CategoryEntity
 import com.example.boxmanagernew.data.repository.*
@@ -28,8 +30,15 @@ import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.example.boxmanagernew.ui.common.DialogUtils
 import com.example.boxmanagernew.ui.common.FeedbackUtils
+import com.example.boxmanagernew.ui.common.UiUtils
 import com.example.boxmanagernew.ui.main.BoxViewModel
 import com.example.boxmanagernew.ui.qr.QrLabelActivity
+import com.example.boxmanagernew.viewoutput.config.ViewOutputConfiguration
+import com.example.boxmanagernew.viewoutput.model.ContainerViewSnapshot
+import com.example.boxmanagernew.viewoutput.model.ContainerViewSnapshotFactory
+import com.example.boxmanagernew.viewoutput.model.ViewPrintHeader
+import com.example.boxmanagernew.viewoutput.persist.ViewExportPersister
+import com.example.boxmanagernew.viewoutput.ui.ViewOutputController
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -69,6 +78,18 @@ class BoxDetailActivity : BaseActivity() {
     private var advancedObjectMatch =
         false
 
+    private lateinit var outputController: ViewOutputController
+
+    private val exportFolderPicker =
+        registerForActivityResult(
+            ActivityResultContracts.OpenDocumentTree()
+        ) { uri ->
+
+            if (uri != null && ::outputController.isInitialized) {
+                outputController.onFolderChosen(uri)
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -82,6 +103,7 @@ class BoxDetailActivity : BaseActivity() {
             findViewById<TextView>(R.id.textTitle)
 
         initViews()
+        setupViewOutputActions()
         val textCategory =
             findViewById<TextView>(R.id.textCategory)
 
@@ -312,6 +334,9 @@ class BoxDetailActivity : BaseActivity() {
             adapter.updateFilterState(false)
 
             hideKeyboard(editSearch)
+
+            contextCard.visibility =
+                View.GONE
         }
 
         buttonDeleteSelected.setOnClickListener {
@@ -657,6 +682,129 @@ class BoxDetailActivity : BaseActivity() {
 
 
     }
+
+    private fun setupViewOutputActions() {
+
+        val container =
+            findViewById<FrameLayout>(
+                R.id.headerActionContainer
+            ) ?: return
+
+        outputController =
+            ViewOutputController(
+                this,
+                ViewExportPersister(this),
+                showFolderInaccessible = {
+                    showOutputMessage(
+                        BackupConfiguration.MSG_FOLDER_INACCESSIBLE
+                    )
+                },
+                launchFolderPicker = {
+                    exportFolderPicker.launch(null)
+                }
+            )
+
+        outputController.inflateActions(
+            container,
+            onPrint = {
+                handlePrintView()
+            },
+            onExport = {
+                handleExportView()
+            }
+        )
+    }
+
+    private fun handlePrintView() {
+
+        val snapshot =
+            loadObjectSnapshot()
+                ?: return
+
+        outputController.print(
+            snapshot,
+            objectPrintHeader(snapshot)
+        )
+    }
+
+    private fun handleExportView() {
+
+        val snapshot =
+            loadObjectSnapshot()
+                ?: return
+
+        outputController.export(snapshot)
+    }
+
+    private fun loadObjectSnapshot():
+            ContainerViewSnapshot? {
+
+        val box =
+            currentBox
+                ?: return null
+
+        val objects =
+            objectViewModel.objects.value
+                ?: emptyList()
+
+        if (objects.isEmpty()) {
+
+            showOutputMessage(
+                SearchConfiguration.MSG_NO_RESULTS
+            )
+            return null
+        }
+
+        val category =
+            currentCategory
+
+        val iconRes =
+            if (category == null || category.icon.isBlank()) {
+                0
+            } else {
+                IconMapper.getIconRes(category.icon)
+            }
+
+        return ContainerViewSnapshotFactory.fromBoxContents(
+            box,
+            category?.name.orEmpty(),
+            iconRes,
+            objects
+        )
+    }
+
+    private fun objectPrintHeader(
+        snapshot: ContainerViewSnapshot
+    ): ViewPrintHeader {
+
+        val boxName =
+            currentBox?.name.orEmpty()
+
+        return ViewPrintHeader(
+            title = ViewOutputConfiguration.objectsInBoxTitle(
+                boxName
+            ),
+            filterLine = ViewOutputConfiguration.filterLine(
+                editSearch.text.toString().trim()
+            ),
+            countLine = ViewOutputConfiguration.countObjects(
+                snapshot.objectCount
+            ),
+            showBlockSubtotals = false
+        )
+    }
+
+    private fun showOutputMessage(
+        message: String
+    ) {
+
+        UiUtils.showContextMessage(
+            contextCard,
+            textContextMessage,
+            message
+        )
+    }
+
     private fun updateObjectsTitle() {
 
         val totalObjects =

@@ -77,6 +77,44 @@ class ViewExportCsvBuilderTest {
     }
 
     @Test
+    fun build_objectHits_onlyMatchingRows_noTotalLine() {
+
+        val snapshot =
+            ContainerViewSnapshotFactory.fromSearchResults(
+                results = listOf(
+                    SearchResult(
+                        objectName = "Viti",
+                        description = "M6",
+                        quantity = 20,
+                        boxId = 1,
+                        boxName = "Box A",
+                        boxPosition = "Cantina",
+                        categoryName = "Alimenti"
+                    )
+                )
+            ) { 0 }
+
+        val bytes = ViewExportCsvBuilder().build(snapshot)
+        val text = String(
+            bytes.copyOfRange(
+                ImportConfiguration.UTF8_BOM.size,
+                bytes.size
+            ),
+            Charsets.UTF_8
+        )
+
+        assertTrue(!text.contains("N. Oggetti"))
+        assertTrue(!text.contains("N. Contenitori"))
+
+        val inspected = ImportFileInspector().inspect(bytes)
+        val ready = inspected as ImportFileInspector.Result.Ready
+        assertEquals(1, ready.boxes.size)
+        assertEquals("Box A", ready.boxes[0].name)
+        assertEquals(1, ready.objects.size)
+        assertEquals("Viti", ready.objects[0].name)
+    }
+
+    @Test
     fun build_emptySnapshot_headersOnlyStillValid() {
 
         val bytes =

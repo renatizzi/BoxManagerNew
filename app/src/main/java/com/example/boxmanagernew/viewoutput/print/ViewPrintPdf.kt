@@ -9,6 +9,7 @@ import android.graphics.pdf.PdfDocument
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import com.example.boxmanagernew.R
+import com.example.boxmanagernew.viewoutput.config.ViewOutputConfiguration
 import com.example.boxmanagernew.viewoutput.model.ContainerViewSnapshot
 import com.example.boxmanagernew.viewoutput.model.ViewPrintHeader
 import java.io.ByteArrayOutputStream
@@ -204,6 +205,16 @@ object ViewPrintPdf {
                     MARGIN + ICON + 4f
                 )
                 y += 8f
+            }
+            if (header.showBlockSubtotals) {
+                y += 4f
+                drawWrapped(
+                    ViewOutputConfiguration.countObjects(
+                        box.objects.size
+                    ),
+                    countPaint,
+                    MARGIN
+                )
             }
             y += 6f
         }

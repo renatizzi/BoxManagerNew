@@ -12,17 +12,48 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.lifecycleScope
 import com.example.boxmanagernew.R
+import com.example.boxmanagernew.backup.config.BackupConfiguration
 import com.example.boxmanagernew.data.local.DatabaseProvider
 import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
 import com.example.boxmanagernew.domain.model.SearchResult
+import com.example.boxmanagernew.domain.search.SearchConfiguration
+import com.example.boxmanagernew.ui.categories.IconMapper
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
+import com.example.boxmanagernew.viewoutput.config.ViewOutputConfiguration
+import com.example.boxmanagernew.viewoutput.model.ContainerViewSnapshot
+import com.example.boxmanagernew.viewoutput.model.ContainerViewSnapshotFactory
+import com.example.boxmanagernew.viewoutput.model.ViewPrintHeader
+import com.example.boxmanagernew.viewoutput.persist.ViewExportPersister
+import com.example.boxmanagernew.viewoutput.ui.ViewOutputController
 import kotlinx.coroutines.launch
 
 class SearchResultActivity : BaseActivity() {
+
+    private lateinit var outputController: ViewOutputController
+
+    private var resultsLoaded =
+        false
+
+    private var loadedSnapshot: ContainerViewSnapshot? =
+        null
+
+    private var searchQuery =
+        ""
+
+    private val exportFolderPicker =
+        registerForActivityResult(
+            ActivityResultContracts.OpenDocumentTree()
+        ) { uri ->
+
+            if (uri != null && ::outputController.isInitialized) {
+                outputController.onFolderChosen(uri)
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -38,12 +69,14 @@ class SearchResultActivity : BaseActivity() {
             subtitle = "Risultati ricerca archivio"
         )
 
+        setupViewOutputActions()
+
         BottomNavManager.setup(
             this,
             BottomNavManager.TAB_BOXES
         )
 
-        val query =
+        searchQuery =
             intent.getStringExtra(
                 "dashboardSearchQuery"
             ) ?: ""
@@ -67,7 +100,35 @@ class SearchResultActivity : BaseActivity() {
                 )
 
             val results =
-                repo.searchObjects(query)
+                repo.searchObjects(searchQuery)
+
+            val iconNames =
+                results.mapNotNull { row ->
+                    row.categoryName
+                }.distinct()
+
+            val icons =
+                iconNames.associateWith { name ->
+                    val category =
+                        db.categoryDao()
+                            .getCategoryByName(name)
+                    val icon =
+                        category?.icon.orEmpty()
+                    if (icon.isBlank()) {
+                        0
+                    } else {
+                        IconMapper.getIconRes(icon)
+                    }
+                }
+
+            loadedSnapshot =
+                ContainerViewSnapshotFactory.fromSearchResults(
+                    results
+                ) { name ->
+                    icons[name] ?: 0
+                }
+            resultsLoaded =
+                true
 
             results
                 .sortedBy {
@@ -81,10 +142,106 @@ class SearchResultActivity : BaseActivity() {
                     addGroup(
                         container,
                         items,
-                        query,
+                        searchQuery,
                         db
                     )
                 }
+        }
+    }
+
+    private fun setupViewOutputActions() {
+
+        val container =
+            findViewById<FrameLayout>(
+                R.id.headerActionContainer
+            ) ?: return
+
+        outputController =
+            ViewOutputController(
+                this,
+                ViewExportPersister(this),
+                showFolderInaccessible = {
+                    showOutputMessage(
+                        BackupConfiguration.MSG_FOLDER_INACCESSIBLE
+                    )
+                },
+                launchFolderPicker = {
+                    exportFolderPicker.launch(null)
+                }
+            )
+
+        outputController.inflateActions(
+            container,
+            onPrint = {
+                handlePrintView()
+            },
+            onExport = {
+                handleExportView()
+            }
+        )
+    }
+
+    private fun handlePrintView() {
+
+        val snapshot =
+            snapshotForOutput()
+                ?: return
+
+        outputController.print(
+            snapshot,
+            ViewPrintHeader(
+                title = ViewOutputConfiguration.PAGE_TITLE_FOUND_OBJECTS,
+                filterLine = ViewOutputConfiguration.filterLine(
+                    searchQuery
+                ),
+                countLine = ViewOutputConfiguration.countObjects(
+                    snapshot.objectCount
+                ),
+                showBlockSubtotals = true
+            )
+        )
+    }
+
+    private fun handleExportView() {
+
+        val snapshot =
+            snapshotForOutput()
+                ?: return
+
+        outputController.export(snapshot)
+    }
+
+    private fun snapshotForOutput():
+            ContainerViewSnapshot? {
+
+        if (!resultsLoaded) {
+            return null
+        }
+
+        val snapshot =
+            loadedSnapshot
+                ?: ContainerViewSnapshot(emptyList())
+
+        if (snapshot.objectCount == 0) {
+
+            showOutputMessage(
+                SearchConfiguration.MSG_NO_RESULTS
+            )
+            return null
+        }
+
+        return snapshot
+    }
+
+    private fun showOutputMessage(
+        message: String
+    ) {
+
+        findViewById<TextView>(
+            R.id.textOutputMessage
+        )?.apply {
+            text = message
+            visibility = View.VISIBLE
         }
     }
 

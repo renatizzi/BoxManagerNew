@@ -737,7 +737,17 @@ class MainActivity : BaseActivity() {
             pendingCsvBytes =
                 bytes
 
-            exportFolderPicker.launch(null)
+            val saved =
+                exportPersister.rememberedFolderUri()
+
+            if (
+                saved != null &&
+                exportPersister.folderDisplayName(saved) != null
+            ) {
+                onExportFolderChosen(saved)
+            } else {
+                exportFolderPicker.launch(null)
+            }
         }
     }
 
@@ -768,48 +778,22 @@ class MainActivity : BaseActivity() {
             return
         }
 
-        fun askFileName(suggested: String) {
+        exportPersister.rememberFolder(uri)
 
-            DialogUtils.showExportFileName(
-                this,
-                suggested
-            ) { typedName ->
-
-                val fileName =
-                    ViewOutputConfiguration.csvFileName(
-                        typedName
-                    )
-
-                if (exportPersister.existingFile(uri, fileName) != null) {
-
-                    DialogUtils.showReplaceBackupConfirmation(
-                        this,
-                        onConfirm = {
-                            writeExport(
-                                uri,
-                                bytes,
-                                fileName,
-                                overwrite = true
-                            )
-                        },
-                        onDecline = {
-                            askFileName(fileName)
-                        }
-                    )
-                    return@showExportFileName
-                }
-
+        DialogUtils.showExportFileName(
+            this,
+            ViewOutputConfiguration.proposedFileName(),
+            exists = { fileName ->
+                exportPersister.existingFile(uri, fileName) != null
+            },
+            onSave = { fileName, overwrite ->
                 writeExport(
                     uri,
                     bytes,
                     fileName,
-                    overwrite = false
+                    overwrite
                 )
             }
-        }
-
-        askFileName(
-            ViewOutputConfiguration.EXPORT_FILE_NAME
         )
     }
 
