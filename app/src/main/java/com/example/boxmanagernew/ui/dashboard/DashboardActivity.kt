@@ -85,15 +85,17 @@ class DashboardActivity : BaseActivity() {
                         .toString()
                         .trim()
 
+                val selected =
+                    spinner.selectedItemPosition
+
                 if (
-                    query.isBlank()
+                    query.isBlank() &&
+                    selected != 1 &&
+                    selected != 4
                 ) {
 
                     return@setOnEditorActionListener true
                 }
-
-                val selected =
-                    spinner.selectedItemPosition
 
                 editSearch.clearFocus()
 

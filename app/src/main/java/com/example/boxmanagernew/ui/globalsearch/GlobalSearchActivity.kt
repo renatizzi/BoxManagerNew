@@ -199,7 +199,8 @@ class GlobalSearchActivity : BaseActivity() {
             ) {
 
                 openPipelineList(
-                    response
+                    response,
+                    question
                 )
 
                 return@launch
@@ -259,7 +260,8 @@ class GlobalSearchActivity : BaseActivity() {
         }
 
     private fun openPipelineList(
-        response: SearchResponse
+        response: SearchResponse,
+        question: String
     ) {
 
         startActivity(
@@ -317,6 +319,11 @@ class GlobalSearchActivity : BaseActivity() {
                         response.highlightTerms
                     )
                 }
+
+                putExtra(
+                    SearchConfiguration.EXTRA_SEARCH_QUESTION,
+                    question
+                )
             }
         )
     }

@@ -1,9 +1,15 @@
 package com.example.boxmanagernew
 
+import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.print.PrintAttributes
+import android.print.PrintManager
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModel
@@ -19,9 +25,11 @@ import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
 import com.example.boxmanagernew.domain.model.Box
 import com.example.boxmanagernew.domain.model.Object
 import com.example.boxmanagernew.domain.model.Location
-import com.example.boxmanagernew.ui.boxdetail.BoxDetailActivity
+import com.example.boxmanagernew.backup.config.BackupConfiguration
 import com.example.boxmanagernew.domain.search.SearchConfiguration
+import com.example.boxmanagernew.ui.boxdetail.BoxDetailActivity
 import com.example.boxmanagernew.ui.categories.CategoriesActivity
+import com.example.boxmanagernew.ui.categories.IconMapper
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.example.boxmanagernew.ui.common.DialogUtils
@@ -29,8 +37,18 @@ import com.example.boxmanagernew.ui.common.FeedbackUtils
 import com.example.boxmanagernew.ui.common.UiUtils
 import com.example.boxmanagernew.ui.main.BoxAdapter
 import com.example.boxmanagernew.ui.main.BoxViewModel
+import com.example.boxmanagernew.viewoutput.config.ViewOutputConfiguration
+import com.example.boxmanagernew.viewoutput.csv.ViewExportCsvBuilder
+import com.example.boxmanagernew.viewoutput.model.ContainerViewSnapshot
+import com.example.boxmanagernew.viewoutput.model.ContainerViewSnapshotFactory
+import com.example.boxmanagernew.viewoutput.model.ViewPrintHeader
+import com.example.boxmanagernew.viewoutput.persist.ViewExportPersister
+import com.example.boxmanagernew.viewoutput.print.ViewPrintAdapter
+import com.example.boxmanagernew.viewoutput.print.ViewPrintPdf
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : BaseActivity() {
 
@@ -57,6 +75,21 @@ class MainActivity : BaseActivity() {
     private var ignoreSearchChanges =
         false
 
+    private lateinit var objectRepository: ObjectRepositoryImpl
+    private lateinit var exportPersister: ViewExportPersister
+
+    private var pendingCsvBytes: ByteArray? = null
+
+    private val exportFolderPicker =
+        registerForActivityResult(
+            ActivityResultContracts.OpenDocumentTree()
+        ) { uri ->
+
+            if (uri != null) {
+                onExportFolderChosen(uri)
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -67,6 +100,9 @@ class MainActivity : BaseActivity() {
 
         setupTopBar()
 
+        exportPersister =
+            ViewExportPersister(this)
+
         setupViews()
 
         val db =
@@ -74,13 +110,14 @@ class MainActivity : BaseActivity() {
 
         val repository =
             BoxRepositoryImpl(db.boxDao())
-        val objectRepository =
+        objectRepository =
             ObjectRepositoryImpl(
                 db.objectDao(),
                 db.objectTypeDao()
             )
         initializeDefaultData(db)
         setupAdapter()
+        setupViewOutputActions()
 
         setupViewModel(
             repository,
@@ -439,6 +476,7 @@ class MainActivity : BaseActivity() {
         }
 
         applyAdvancedArchiveFilter()
+        applySimpleDashboardQuery()
     }
 
     private fun applyAdvancedArchiveFilter() {
@@ -541,6 +579,339 @@ class MainActivity : BaseActivity() {
                 locationTerms
             )
         }
+    }
+
+    private fun hasAdvancedArchiveExtras(): Boolean {
+
+        return !intent.getStringExtra(
+            SearchConfiguration.EXTRA_OBJECT_TERMS
+        ).isNullOrBlank() ||
+            !intent.getStringExtra(
+                SearchConfiguration.EXTRA_LOCATION_TERMS
+            ).isNullOrBlank() ||
+            !intent.getStringExtra(
+                SearchConfiguration.EXTRA_CATEGORY_TERMS
+            ).isNullOrBlank() ||
+            !intent.getStringExtra(
+                SearchConfiguration.EXTRA_BOX_TERMS
+            ).isNullOrBlank()
+    }
+
+    private fun applySimpleDashboardQuery() {
+
+        if (
+            intent.hasExtra("dashboardFilter")
+        ) {
+            return
+        }
+
+        if (hasAdvancedArchiveExtras()) {
+            return
+        }
+
+        if (
+            !intent.hasExtra(
+                SearchConfiguration.EXTRA_SEARCH_QUESTION
+            )
+        ) {
+            return
+        }
+
+        val query =
+            intent.getStringExtra(
+                SearchConfiguration.EXTRA_SEARCH_QUESTION
+            ) ?: ""
+
+        ignoreSearchChanges =
+            true
+
+        editSearch.setText(query)
+
+        ignoreSearchChanges =
+            false
+
+        applyTypedSearch(query)
+    }
+
+    private fun setupViewOutputActions() {
+
+        val container =
+            findViewById<FrameLayout>(
+                R.id.headerActionContainer
+            ) ?: return
+
+        val actions =
+            LayoutInflater.from(this)
+                .inflate(
+                    R.layout.layout_header_print_export,
+                    container,
+                    false
+                )
+
+        container.addView(actions)
+
+        actions.findViewById<View>(
+            R.id.btnPrintView
+        ).setOnClickListener {
+
+            handlePrintView()
+        }
+
+        actions.findViewById<View>(
+            R.id.btnExportView
+        ).setOnClickListener {
+
+            handleExportView()
+        }
+    }
+
+    private fun handlePrintView() {
+
+        lifecycleScope.launch {
+
+            val snapshot =
+                loadViewSnapshot()
+                    ?: return@launch
+
+            val header =
+                printHeader(snapshot)
+
+            val result =
+                withContext(
+                    Dispatchers.Default
+                ) {
+
+                    ViewPrintPdf.toBytes(
+                        this@MainActivity,
+                        snapshot,
+                        header
+                    )
+                }
+
+            val printManager =
+                getSystemService(
+                    Context.PRINT_SERVICE
+                ) as? PrintManager
+                    ?: return@launch
+
+            try {
+                printManager.print(
+                    "Stampa",
+                    ViewPrintAdapter(
+                        result.bytes,
+                        result.pageCount
+                    ),
+                    PrintAttributes.Builder()
+                        .setMediaSize(
+                            PrintAttributes.MediaSize.ISO_A4
+                        )
+                        .setColorMode(
+                            PrintAttributes.COLOR_MODE_MONOCHROME
+                        )
+                        .build()
+                )
+            } catch (_: Exception) {
+                return@launch
+            }
+        }
+    }
+
+    private fun handleExportView() {
+
+        lifecycleScope.launch {
+
+            val snapshot =
+                loadViewSnapshot()
+                    ?: return@launch
+
+            val bytes =
+                withContext(
+                    Dispatchers.Default
+                ) {
+
+                    ViewExportCsvBuilder().build(
+                        snapshot
+                    )
+                }
+
+            pendingCsvBytes =
+                bytes
+
+            exportFolderPicker.launch(null)
+        }
+    }
+
+    private fun onExportFolderChosen(
+        uri: Uri
+    ) {
+
+        val bytes = pendingCsvBytes
+        if (bytes == null) {
+            return
+        }
+
+        try {
+            contentResolver.takePersistableUriPermission(
+                uri,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+            )
+        } catch (_: Exception) {
+        }
+
+        if (exportPersister.folderDisplayName(uri) == null) {
+            pendingCsvBytes = null
+            FeedbackUtils.alert(this)
+            showContextMessage(
+                BackupConfiguration.MSG_FOLDER_INACCESSIBLE
+            )
+            return
+        }
+
+        fun askFileName(suggested: String) {
+
+            DialogUtils.showExportFileName(
+                this,
+                suggested
+            ) { typedName ->
+
+                val fileName =
+                    ViewOutputConfiguration.csvFileName(
+                        typedName
+                    )
+
+                if (exportPersister.existingFile(uri, fileName) != null) {
+
+                    DialogUtils.showReplaceBackupConfirmation(
+                        this,
+                        onConfirm = {
+                            writeExport(
+                                uri,
+                                bytes,
+                                fileName,
+                                overwrite = true
+                            )
+                        },
+                        onDecline = {
+                            askFileName(fileName)
+                        }
+                    )
+                    return@showExportFileName
+                }
+
+                writeExport(
+                    uri,
+                    bytes,
+                    fileName,
+                    overwrite = false
+                )
+            }
+        }
+
+        askFileName(
+            ViewOutputConfiguration.EXPORT_FILE_NAME
+        )
+    }
+
+    private fun writeExport(
+        uri: Uri,
+        bytes: ByteArray,
+        fileName: String,
+        overwrite: Boolean
+    ) {
+
+        val result =
+            exportPersister.persist(
+                uri,
+                fileName,
+                bytes,
+                overwrite
+            )
+
+        pendingCsvBytes = null
+
+        if (result.folderInaccessible) {
+            FeedbackUtils.alert(this)
+            showContextMessage(
+                BackupConfiguration.MSG_FOLDER_INACCESSIBLE
+            )
+        }
+    }
+
+    private fun printHeader(
+        snapshot: ContainerViewSnapshot
+    ): ViewPrintHeader {
+
+        val filterQuery =
+            if (hasAdvancedArchiveExtras()) {
+                intent.getStringExtra(
+                    SearchConfiguration.EXTRA_SEARCH_QUESTION
+                ).orEmpty()
+            } else {
+                editSearch.text.toString().trim()
+            }
+
+        val countLine =
+            ViewOutputConfiguration.countBoxes(
+                snapshot.boxes.size
+            )
+
+        return ViewPrintHeader(
+            title = ViewOutputConfiguration.PAGE_TITLE,
+            filterLine = ViewOutputConfiguration.filterLine(
+                filterQuery
+            ),
+            countLine = countLine
+        )
+    }
+
+    private suspend fun loadViewSnapshot():
+            ContainerViewSnapshot? {
+
+        val boxes =
+            viewModel.boxes.value
+                ?: emptyList()
+
+        if (boxes.isEmpty()) {
+
+            showContextMessage(
+                SearchConfiguration.MSG_NO_RESULTS
+            )
+            return null
+        }
+
+        val objects =
+            withContext(
+                Dispatchers.IO
+            ) {
+
+                objectRepository.objectsInBoxes(
+                    boxes.map { box ->
+                        box.id
+                    }.toSet()
+                )
+            }
+
+        return ContainerViewSnapshotFactory.from(
+            boxes,
+            { categoryId ->
+                categories.find { category ->
+                    category.id == categoryId
+                }?.name.orEmpty()
+            },
+            { categoryId ->
+                val icon =
+                    categories.find { category ->
+                        category.id == categoryId
+                    }?.icon.orEmpty()
+                if (icon.isBlank()) {
+                    0
+                } else {
+                    IconMapper.getIconRes(icon)
+                }
+            },
+            objects
+        )
     }
 
     private fun restoreAdvancedSearchPresentation() {

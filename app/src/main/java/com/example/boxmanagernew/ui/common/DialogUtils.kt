@@ -354,10 +354,50 @@ object DialogUtils {
         onConfirm: () -> Unit
     ) {
 
+        showReplaceBackupConfirmation(
+            context,
+            onConfirm,
+            null
+        )
+    }
+
+    fun showReplaceBackupConfirmation(
+        context: Context,
+        onConfirm: () -> Unit,
+        onDecline: (() -> Unit)?
+    ) {
+
         AlertDialog.Builder(context)
             .setMessage(BackupConfiguration.MSG_FILE_EXISTS)
             .setPositiveButton("SI") { _, _ ->
                 onConfirm()
+            }
+            .setNegativeButton("NO") { _, _ ->
+                onDecline?.invoke()
+            }
+            .show()
+    }
+
+    fun showExportFileName(
+        context: Context,
+        defaultName: String,
+        onConfirm: (String) -> Unit
+    ) {
+
+        val name =
+            EditText(context).apply {
+                setText(defaultName)
+                setSelection(defaultName.length)
+                inputType = InputType.TYPE_CLASS_TEXT
+                val pad =
+                    (16 * context.resources.displayMetrics.density).toInt()
+                setPadding(pad, pad, pad, pad)
+            }
+
+        AlertDialog.Builder(context)
+            .setView(name)
+            .setPositiveButton("SI") { _, _ ->
+                onConfirm(name.text.toString())
             }
             .setNegativeButton("NO", null)
             .show()

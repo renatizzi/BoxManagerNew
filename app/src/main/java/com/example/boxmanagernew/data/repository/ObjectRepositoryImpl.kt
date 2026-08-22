@@ -221,6 +221,20 @@ class ObjectRepositoryImpl(
         )
     }
 
+    suspend fun objectsInBoxes(
+        boxIds: Set<Int>
+    ): List<SearchResult> {
+
+        if (boxIds.isEmpty()) {
+            return emptyList()
+        }
+
+        return dao.searchObjects()
+            .filter { row ->
+                row.boxId in boxIds
+            }
+    }
+
     override suspend fun insert(obj:Object){}
     override suspend fun update(obj:Object){}
     override suspend fun delete(obj:Object){}
