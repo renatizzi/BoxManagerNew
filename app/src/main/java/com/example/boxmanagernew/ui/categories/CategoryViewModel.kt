@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.boxmanagernew.domain.model.Category
 import com.example.boxmanagernew.data.repository.CategoryRepositoryImpl
-import com.example.boxmanagernew.util.CanonicalNormalizer
+import com.example.boxmanagernew.util.SimpleSearch
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -174,24 +174,16 @@ class CategoryViewModel(
                 }
 
         } else if (
-            query.isNotBlank()
+            SimpleSearch.needle(query).isNotEmpty()
         ) {
-
-            val canonicalQuery =
-                CanonicalNormalizer.canonical(
-                    query
-                )
 
             result =
                 result.filter {
 
-                    CanonicalNormalizer
-                        .canonical(
-                            it.name
-                        )
-                        .contains(
-                            canonicalQuery
-                        )
+                    SimpleSearch.matches(
+                        it.name,
+                        query
+                    )
                 }
         }
 

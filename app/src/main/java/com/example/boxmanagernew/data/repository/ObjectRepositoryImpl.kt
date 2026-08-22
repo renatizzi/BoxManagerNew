@@ -13,7 +13,7 @@ import com.example.boxmanagernew.domain.model.SearchResult
 import com.example.boxmanagernew.domain.repository.ObjectRepository
 import com.example.boxmanagernew.domain.search.ObjectSearchMatcher
 import com.example.boxmanagernew.domain.search.SearchConfiguration
-import com.example.boxmanagernew.util.CanonicalNormalizer
+import com.example.boxmanagernew.util.SimpleSearch
 
 class ObjectRepositoryImpl(
     private val dao: ObjectDao,
@@ -99,6 +99,27 @@ class ObjectRepositoryImpl(
         )
 
         return results
+    }
+
+    suspend fun searchObjectsInline(
+        query: String
+    ): List<SearchResult> {
+
+        if (
+            SimpleSearch.needle(query).isEmpty()
+        ) {
+            return emptyList()
+        }
+
+        return dao.searchObjects()
+            .filter { row ->
+
+                SimpleSearch.matchesAny(
+                    query,
+                    row.objectName,
+                    row.description
+                )
+            }
     }
 
     suspend fun findBoxIdsByObjectTerms(

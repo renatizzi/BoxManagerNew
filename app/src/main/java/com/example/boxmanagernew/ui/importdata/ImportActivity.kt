@@ -128,7 +128,7 @@ class ImportActivity : BaseActivity() {
         }
 
         btnGenerateTemplate.setOnClickListener {
-            folderPicker.launch(null)
+            startGenerateTemplate()
         }
 
         btnImportData.setOnClickListener {
@@ -243,21 +243,31 @@ class ImportActivity : BaseActivity() {
         backupFolderUri = uri
     }
 
-    private fun onTemplateFolderChosen(uri: Uri) {
+    private fun startGenerateTemplate() {
 
-        try {
-            contentResolver.takePersistableUriPermission(
-                uri,
-                Intent.FLAG_GRANT_READ_URI_PERMISSION or
-                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-            )
-        } catch (_: Exception) {
-        }
+        val uri = backupFolderUri
 
-        if (templatePersister.folderDisplayName(uri) == null) {
-            showBlocking(BackupConfiguration.MSG_FOLDER_INACCESSIBLE)
+        if (
+            uri != null &&
+            templatePersister.folderDisplayName(uri) != null
+        ) {
+            writeTemplate(uri)
             return
         }
+
+        folderPicker.launch(null)
+    }
+
+    private fun onTemplateFolderChosen(uri: Uri) {
+
+        if (!persistBackupFolder(uri)) {
+            return
+        }
+
+        writeTemplate(uri)
+    }
+
+    private fun writeTemplate(uri: Uri) {
 
         if (templatePersister.existingFile(uri) != null) {
 

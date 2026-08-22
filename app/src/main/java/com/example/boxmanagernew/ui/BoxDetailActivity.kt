@@ -1,7 +1,6 @@
 package com.example.boxmanagernew.ui.boxdetail
 
 import android.app.AlertDialog
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.InputType
@@ -33,7 +32,6 @@ import com.example.boxmanagernew.ui.common.FeedbackUtils
 import com.example.boxmanagernew.ui.common.UiUtils
 import com.example.boxmanagernew.ui.common.VoiceSearchController
 import com.example.boxmanagernew.ui.main.BoxViewModel
-import com.example.boxmanagernew.ui.qr.QrLabelActivity
 import com.example.boxmanagernew.viewoutput.config.ViewOutputConfiguration
 import com.example.boxmanagernew.viewoutput.model.ContainerViewSnapshot
 import com.example.boxmanagernew.viewoutput.model.ContainerViewSnapshotFactory
@@ -436,19 +434,6 @@ class BoxDetailActivity : BaseActivity() {
             BottomNavManager.TAB_BOXES
         )
 
-        findViewById<TextView>(R.id.textBoxMenu).setOnClickListener { view ->
-
-            val popup = PopupMenu(view.context, view)
-            popup.menu.add("Visualizza etichetta QR")
-            popup.setOnMenuItemClickListener {
-                if (it.title == "Visualizza etichetta QR") {
-                    openQrLabel()
-                }
-                true
-            }
-            popup.show()
-        }
-
         refreshAppShell()
 
         fab.setOnClickListener {
@@ -474,20 +459,6 @@ class BoxDetailActivity : BaseActivity() {
                         finish()
                     }
                 }
-            }
-        )
-    }
-
-    private fun openQrLabel() {
-
-        val box = currentBox ?: return
-
-        startActivity(
-            Intent(
-                this,
-                QrLabelActivity::class.java
-            ).apply {
-                putExtra("boxId", box.id)
             }
         )
     }

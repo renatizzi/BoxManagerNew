@@ -53,7 +53,6 @@ abstract class AppDatabase :
                             .addMigrations(
                                 BoxSchemaMigrations.MIGRATION_5_6
                             )
-                            .fallbackToDestructiveMigration()
                             .build()
 
                     INSTANCE =

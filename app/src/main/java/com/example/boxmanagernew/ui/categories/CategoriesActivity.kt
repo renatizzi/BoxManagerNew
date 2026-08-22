@@ -348,7 +348,7 @@ class CategoriesActivity : BaseActivity() {
                 )
 
                 showWarningMessage(
-                    "Categoria in uso: eliminazione non consentita. Tocca qui per annullare."
+                    "Categoria in uso. Eliminazione non consentita"
                 )
 
             } else {

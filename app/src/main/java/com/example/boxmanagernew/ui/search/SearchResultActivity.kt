@@ -1,11 +1,9 @@
 package com.example.boxmanagernew.ui.search
 
-import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned
-import android.text.style.BackgroundColorSpan
 import android.text.style.StyleSpan
 import android.view.Gravity
 import android.view.View
@@ -23,6 +21,7 @@ import com.example.boxmanagernew.domain.model.SearchResult
 import com.example.boxmanagernew.domain.search.SearchConfiguration
 import com.example.boxmanagernew.ui.categories.IconMapper
 import com.example.boxmanagernew.ui.common.BaseActivity
+import com.example.boxmanagernew.ui.common.SimpleSearchHighlight
 import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.example.boxmanagernew.viewoutput.config.ViewOutputConfiguration
 import com.example.boxmanagernew.viewoutput.model.ContainerViewSnapshot
@@ -100,7 +99,7 @@ class SearchResultActivity : BaseActivity() {
                 )
 
             val results =
-                repo.searchObjects(searchQuery)
+                repo.searchObjectsInline(searchQuery)
 
             val iconNames =
                 results.mapNotNull { row ->
@@ -561,37 +560,9 @@ class SearchResultActivity : BaseActivity() {
         query: String
     ): SpannableString {
 
-        val result =
-            SpannableString(text)
-
-        val tokens =
-            query.lowercase()
-                .split("\\s+".toRegex())
-                .filter {
-                    it.length >= 3
-                }
-
-        val target =
-            text.lowercase()
-
-        tokens.forEach {
-
-            val start =
-                target.indexOf(it)
-
-            if (start >= 0) {
-
-                result.setSpan(
-                    BackgroundColorSpan(
-                        Color.YELLOW
-                    ),
-                    start,
-                    start + it.length,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
-            }
-        }
-
-        return result
+        return SimpleSearchHighlight.paint(
+            text,
+            query
+        )
     }
 }

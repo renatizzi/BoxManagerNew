@@ -5,6 +5,7 @@ import com.example.boxmanagernew.domain.model.Object
 import com.example.boxmanagernew.domain.model.ObjectWithType
 import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
 import com.example.boxmanagernew.domain.search.ObjectSearchMatcher
+import com.example.boxmanagernew.util.SimpleSearch
 import kotlinx.coroutines.launch
 
 class ObjectViewModel(
@@ -96,27 +97,33 @@ class ObjectViewModel(
 
         var result = lastSource
 
-        if (currentQuery.isNotBlank()) {
+        if (matchWholeWords) {
 
-            result =
-                result.filter { item ->
+            if (currentQuery.isNotBlank()) {
 
-                    if (matchWholeWords) {
+                result =
+                    result.filter { item ->
 
                         ObjectSearchMatcher.matchesAnyPackedTerm(
                             item.typeName,
                             item.obj.description,
                             currentQuery
                         )
-
-                    } else {
-
-                        ObjectSearchMatcher.matches(
-                            item.typeName,
-                            item.obj.description,
-                            currentQuery
-                        )
                     }
+            }
+
+        } else if (
+            SimpleSearch.needle(currentQuery).isNotEmpty()
+        ) {
+
+            result =
+                result.filter { item ->
+
+                    SimpleSearch.matchesAny(
+                        currentQuery,
+                        item.typeName,
+                        item.obj.description
+                    )
                 }
         }
 

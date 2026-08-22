@@ -1,9 +1,6 @@
 package com.example.boxmanagernew.ui.categories
 
-import android.graphics.Color
 import android.text.SpannableString
-import android.text.Spanned
-import android.text.style.BackgroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +11,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.domain.model.Category
+import com.example.boxmanagernew.ui.common.SimpleSearchHighlight
 
 class CategoryAdapter(
     private var items: List<Category>,
@@ -203,39 +201,10 @@ class CategoryAdapter(
         text: String
     ): SpannableString {
 
-        if (
-            currentQuery.length < 3
-        ) {
-            return SpannableString(text)
-        }
-
-        val lowerText =
-            text.lowercase()
-
-        val lowerQuery =
-            currentQuery.lowercase()
-
-        val start =
-            lowerText.indexOf(lowerQuery)
-
-        if (start < 0) {
-            return SpannableString(text)
-        }
-
-        val end =
-            start + lowerQuery.length
-
-        return SpannableString(text).apply {
-
-            setSpan(
-                BackgroundColorSpan(
-                    Color.YELLOW
-                ),
-                start,
-                end,
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
-        }
+        return SimpleSearchHighlight.paint(
+            text,
+            currentQuery
+        )
     }
 
     class CategoryDiffCallback(

@@ -38,6 +38,7 @@ import com.example.boxmanagernew.ui.common.UiUtils
 import com.example.boxmanagernew.ui.common.VoiceSearchController
 import com.example.boxmanagernew.ui.main.BoxAdapter
 import com.example.boxmanagernew.ui.main.BoxViewModel
+import com.example.boxmanagernew.ui.qr.QrLabelActivity
 import com.example.boxmanagernew.viewoutput.config.ViewOutputConfiguration
 import com.example.boxmanagernew.viewoutput.csv.ViewExportCsvBuilder
 import com.example.boxmanagernew.viewoutput.model.ContainerViewSnapshot
@@ -259,6 +260,18 @@ class MainActivity : BaseActivity() {
                 onDelete = {
 
                     showDeleteDialog(it.id)
+                },
+
+                onShowQrLabel = { box ->
+
+                    startActivity(
+                        Intent(
+                            this,
+                            QrLabelActivity::class.java
+                        ).apply {
+                            putExtra("boxId", box.id)
+                        }
+                    )
                 },
 
                 onToggleSelection = {
@@ -939,7 +952,7 @@ class MainActivity : BaseActivity() {
 
                 viewModel.filter("")
 
-                adapter.updateQuery("")
+                adapter.updateQuery("", inline = true)
             }
 
             return
@@ -947,7 +960,7 @@ class MainActivity : BaseActivity() {
 
         viewModel.filter(query)
 
-        adapter.updateQuery(query)
+        adapter.updateQuery(query, inline = true)
     }
 
     private fun setupFab() {

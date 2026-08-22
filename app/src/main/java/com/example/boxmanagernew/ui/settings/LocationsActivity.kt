@@ -349,7 +349,7 @@ class LocationsActivity : BaseActivity() {
             if (!deleted) {
 
                 showWarning(
-                    "Posizione in uso: eliminazione non consentita.\nTocca qui per annullare."
+                    "Posizione in uso. Eliminazione non consentita"
                 )
 
                 return@launch

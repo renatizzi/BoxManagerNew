@@ -18,6 +18,7 @@ import com.example.boxmanagernew.data.local.entity.CategoryEntity
 import com.example.boxmanagernew.domain.model.Box
 import com.example.boxmanagernew.ui.categories.IconMapper
 import com.example.boxmanagernew.util.CanonicalNormalizer
+import com.example.boxmanagernew.util.SimpleSearch
 
 class BoxAdapter(
     private var items: List<Box>,
@@ -25,6 +26,7 @@ class BoxAdapter(
     private val onClick: (Box) -> Unit,
     private val onEdit: (Box) -> Unit,
     private val onDelete: (Box) -> Unit,
+    private val onShowQrLabel: (Box) -> Unit,
     private val onToggleSelection: (Box) -> Unit
 ) : RecyclerView.Adapter<BoxAdapter.BoxViewHolder>() {
 
@@ -32,6 +34,7 @@ class BoxAdapter(
     private var selectionMode: Boolean = false
     private var currentQuery: String = ""
     private var highlightInflect: Boolean = false
+    private var highlightInline: Boolean = false
 
     inner class BoxViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val iconArea: FrameLayout = itemView.findViewById(R.id.iconArea)
@@ -126,12 +129,16 @@ class BoxAdapter(
 
             popup.menu.add("Modifica")
             popup.menu.add("Elimina")
+            popup.menu.add("Visualizza etichetta QR")
 
             popup.setOnMenuItemClickListener {
 
                 when (it.title) {
 
                     "Modifica" -> onEdit(box)
+
+                    "Visualizza etichetta QR" ->
+                        onShowQrLabel(box)
 
                     "Elimina" -> onDelete(box)
                 }
@@ -186,11 +193,13 @@ class BoxAdapter(
 
     fun updateQuery(
         query: String,
-        inflect: Boolean = false
+        inflect: Boolean = false,
+        inline: Boolean = false
     ) {
 
         currentQuery = query
         highlightInflect = inflect
+        highlightInline = inline
 
         notifyDataSetChanged()
     }
@@ -264,12 +273,22 @@ class BoxAdapter(
             return result
         }
 
-        CanonicalNormalizer
-            .matchingWordRanges(
-                text,
-                currentQuery,
-                inflect = highlightInflect
-            )
+        val ranges =
+            if (highlightInline) {
+
+                SimpleSearch.highlightRanges(text, currentQuery)
+
+            } else {
+
+                CanonicalNormalizer
+                    .matchingWordRanges(
+                        text,
+                        currentQuery,
+                        inflect = highlightInflect
+                    )
+            }
+
+        ranges
             .forEach { range ->
 
                 result.setSpan(

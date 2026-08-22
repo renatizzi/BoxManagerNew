@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.domain.model.ObjectWithType
 import com.example.boxmanagernew.domain.search.SearchConfiguration
+import com.example.boxmanagernew.ui.common.SimpleSearchHighlight
 import com.example.boxmanagernew.util.CanonicalNormalizer
 
 class ObjectAdapter(
@@ -30,6 +31,7 @@ class ObjectAdapter(
     private var selectionMode = false
     private var isFilterActive = false
     private var currentQuery = ""
+    private var matchWholeWords = false
 
     inner class ObjectViewHolder(
         itemView: View
@@ -251,12 +253,14 @@ class ObjectAdapter(
 
     fun updateQuery(
         query: String,
-        @Suppress("UNUSED_PARAMETER")
         wholeWord: Boolean = false
     ) {
 
         currentQuery =
             query
+
+        matchWholeWords =
+            wholeWord
 
         notifyDataSetChanged()
     }
@@ -264,6 +268,14 @@ class ObjectAdapter(
     private fun highlight(
         text: String
     ): SpannableString {
+
+        if (!matchWholeWords) {
+
+            return SimpleSearchHighlight.paint(
+                text,
+                currentQuery
+            )
+        }
 
         val result =
             SpannableString(text)

@@ -11,6 +11,7 @@ import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
 import com.example.boxmanagernew.domain.model.Box
 import com.example.boxmanagernew.domain.search.SearchConfiguration
 import com.example.boxmanagernew.util.CanonicalNormalizer
+import com.example.boxmanagernew.util.SimpleSearch
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
@@ -645,12 +646,12 @@ class BoxViewModel(
                     }
 
             } else if (
-                query.isNotBlank()
+                SimpleSearch.needle(query).isNotEmpty()
             ) {
 
                 val matchingBoxIds =
                     objectRepository
-                        .searchObjects(query)
+                        .searchObjectsInline(query)
                         .map { it.boxId }
                         .toSet()
 
@@ -664,15 +665,15 @@ class BoxViewModel(
                             }?.name
                                 ?: ""
 
-                        CanonicalNormalizer
-                            .matchingWordRanges(
-                                "${box.name} ${box.position} $category",
-                                query
+                        SimpleSearch.matchesAny(
+                            query,
+                            box.name,
+                            box.position,
+                            category
+                        ) ||
+                            matchingBoxIds.contains(
+                                box.id
                             )
-                            .isNotEmpty() ||
-                                matchingBoxIds.contains(
-                                    box.id
-                                )
                     }
             }
 
