@@ -142,4 +142,96 @@ object ContainerViewSnapshotFactory {
             }
         )
     }
+
+    fun fromBoxesGroupedByCategory(
+        boxes: List<Box>,
+        categoryNameOf: (Int) -> String,
+        categoryIconOf: (Int) -> Int
+    ): ContainerViewSnapshot {
+
+        val groups =
+            boxes
+                .groupBy { box ->
+                    categoryNameOf(
+                        box.categoryId
+                    ).ifBlank {
+                        "-"
+                    }
+                }
+                .toSortedMap(
+                    String.CASE_INSENSITIVE_ORDER
+                )
+
+        return ContainerViewSnapshot(
+            boxes = groups.map { (category, group) ->
+
+                val iconRes =
+                    group
+                        .map { box ->
+                            categoryIconOf(
+                                box.categoryId
+                            )
+                        }
+                        .firstOrNull { res ->
+                            res != 0
+                        } ?: 0
+
+                ViewBoxBlock(
+                    name = category,
+                    category = "",
+                    position = "",
+                    categoryIconRes = iconRes,
+                    objects = group
+                        .sortedBy { box ->
+                            box.name.lowercase()
+                        }
+                        .map { box ->
+                            ViewObjectLine(
+                                name = box.name,
+                                description = "",
+                                quantity = ""
+                            )
+                        }
+                )
+            }
+        )
+    }
+
+    fun fromBoxesGroupedByLocation(
+        boxes: List<Box>
+    ): ContainerViewSnapshot {
+
+        val groups =
+            boxes
+                .groupBy { box ->
+                    box.position.ifBlank {
+                        "-"
+                    }
+                }
+                .toSortedMap(
+                    String.CASE_INSENSITIVE_ORDER
+                )
+
+        return ContainerViewSnapshot(
+            boxes = groups.map { (location, group) ->
+
+                ViewBoxBlock(
+                    name = location,
+                    category = "",
+                    position = "",
+                    objects = group
+                        .sortedBy { box ->
+                            box.name.lowercase()
+                        }
+                        .map { box ->
+                            ViewObjectLine(
+                                name = box.name,
+                                description = "",
+                                quantity = ""
+                            )
+                        }
+                )
+            }
+        )
+    }
 }

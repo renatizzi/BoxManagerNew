@@ -36,6 +36,12 @@ class SearchArchivePathBuilder {
                     CoreEntityType.LOCATION
             }
 
+        val hasBox =
+            recognizedEntities.any { entity ->
+                entity.entityType ==
+                    CoreEntityType.BOX
+            }
+
         val steps =
             when (fulcrum) {
 
@@ -75,7 +81,8 @@ class SearchArchivePathBuilder {
                     pathFromRecognizedCores(
                         hasObject,
                         hasCategory,
-                        hasLocation
+                        hasLocation,
+                        hasBox
                     ).ifEmpty {
                         listOf(
                             SearchArchivePathStep.BOX
@@ -86,7 +93,8 @@ class SearchArchivePathBuilder {
                     pathFromRecognizedCores(
                         hasObject,
                         hasCategory,
-                        hasLocation
+                        hasLocation,
+                        hasBox
                     )
             }
 
@@ -98,7 +106,8 @@ class SearchArchivePathBuilder {
     private fun pathFromRecognizedCores(
         hasObject: Boolean,
         hasCategory: Boolean,
-        hasLocation: Boolean
+        hasLocation: Boolean,
+        hasBox: Boolean
     ): List<SearchArchivePathStep> {
 
         if (hasObject && hasCategory) {
@@ -119,7 +128,7 @@ class SearchArchivePathBuilder {
             )
         }
 
-        if (hasCategory) {
+        if (hasCategory && hasBox) {
 
             return listOf(
                 SearchArchivePathStep.BOX,
@@ -127,11 +136,34 @@ class SearchArchivePathBuilder {
             )
         }
 
-        if (hasLocation) {
+        if (hasLocation && hasBox) {
 
             return listOf(
                 SearchArchivePathStep.BOX,
                 SearchArchivePathStep.LOCATION
+            )
+        }
+
+        if (hasCategory) {
+
+            return listOf(
+                SearchArchivePathStep.CATEGORY,
+                SearchArchivePathStep.BOX
+            )
+        }
+
+        if (hasLocation) {
+
+            return listOf(
+                SearchArchivePathStep.LOCATION,
+                SearchArchivePathStep.BOX
+            )
+        }
+
+        if (hasObject || hasBox) {
+
+            return listOf(
+                SearchArchivePathStep.BOX
             )
         }
 

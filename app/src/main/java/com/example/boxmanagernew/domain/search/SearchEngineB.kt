@@ -43,13 +43,10 @@ class SearchEngineB {
 
         if (f7) {
 
-            val boxes =
+            return compareResult(
                 boxesWithDuplicateObjects(
                     index
-                )
-
-            return compareResult(
-                boxes,
+                ),
                 SearchF7Pattern.VARIANTS[2]
             )
         }
@@ -134,11 +131,11 @@ class SearchEngineB {
     }
 
     private fun compareResult(
-        lines: List<String>,
+        payload: ComparePayload,
         heading: String?
     ): SearchResponse {
 
-        if (lines.isEmpty()) {
+        if (payload.lines.isEmpty()) {
 
             return SearchResponse(
                 success = false,
@@ -150,7 +147,7 @@ class SearchEngineB {
         }
 
         val body =
-            lines.joinToString(
+            payload.lines.joinToString(
                 "\n"
             )
 
@@ -165,13 +162,17 @@ class SearchEngineB {
             success = true,
             message = message,
             requestType =
-                SearchRequestType.ARCHIVE_QUERY
+                SearchRequestType.ARCHIVE_QUERY,
+            resultBoxNames =
+                payload.boxNames,
+            resultObjectNames =
+                payload.objectNames
         )
     }
 
     private fun boxCategoryCompareLines(
         index: SearchArchiveIndex
-    ): List<String> {
+    ): ComparePayload {
 
         val pairs =
             boxCategoryPairs(
@@ -188,25 +189,31 @@ class SearchEngineB {
                 .distinct()
 
         if (categoryKeys.size < 2) {
-            return emptyList()
+            return ComparePayload(
+                emptyList(),
+                emptyList()
+            )
         }
 
-        return pairs
-            .groupBy { pair ->
-                pair.second
-            }
-            .filter { (_, group) ->
-                group
-                    .map { pair ->
-                        pair.first
-                    }
-                    .distinct()
-                    .size == 1
-            }
-            .toSortedMap(
-                String.CASE_INSENSITIVE_ORDER
-            )
-            .flatMap { (category, group) ->
+        val grouped =
+            pairs
+                .groupBy { pair ->
+                    pair.second
+                }
+                .filter { (_, group) ->
+                    group
+                        .map { pair ->
+                            pair.first
+                        }
+                        .distinct()
+                        .size == 1
+                }
+                .toSortedMap(
+                    String.CASE_INSENSITIVE_ORDER
+                )
+
+        val lines =
+            grouped.flatMap { (category, group) ->
 
                 val boxes =
                     group
@@ -222,11 +229,29 @@ class SearchEngineB {
                     category
                 ) + boxes
             }
+
+        val boxNames =
+            grouped.flatMap { (_, group) ->
+
+                group
+                    .map { pair ->
+                        pair.first
+                    }
+                    .distinct()
+                    .sortedWith(
+                        String.CASE_INSENSITIVE_ORDER
+                    )
+            }
+
+        return ComparePayload(
+            lines,
+            boxNames
+        )
     }
 
     private fun boxLocationCompareLines(
         index: SearchArchiveIndex
-    ): List<String> {
+    ): ComparePayload {
 
         val pairs =
             boxLocationPairs(
@@ -243,25 +268,31 @@ class SearchEngineB {
                 .distinct()
 
         if (locationKeys.size < 2) {
-            return emptyList()
+            return ComparePayload(
+                emptyList(),
+                emptyList()
+            )
         }
 
-        return pairs
-            .groupBy { pair ->
-                pair.second
-            }
-            .filter { (_, group) ->
-                group
-                    .map { pair ->
-                        pair.first
-                    }
-                    .distinct()
-                    .size == 1
-            }
-            .toSortedMap(
-                String.CASE_INSENSITIVE_ORDER
-            )
-            .flatMap { (location, group) ->
+        val grouped =
+            pairs
+                .groupBy { pair ->
+                    pair.second
+                }
+                .filter { (_, group) ->
+                    group
+                        .map { pair ->
+                            pair.first
+                        }
+                        .distinct()
+                        .size == 1
+                }
+                .toSortedMap(
+                    String.CASE_INSENSITIVE_ORDER
+                )
+
+        val lines =
+            grouped.flatMap { (location, group) ->
 
                 val boxes =
                     group
@@ -277,6 +308,24 @@ class SearchEngineB {
                     location
                 ) + boxes
             }
+
+        val boxNames =
+            grouped.flatMap { (_, group) ->
+
+                group
+                    .map { pair ->
+                        pair.first
+                    }
+                    .distinct()
+                    .sortedWith(
+                        String.CASE_INSENSITIVE_ORDER
+                    )
+            }
+
+        return ComparePayload(
+            lines,
+            boxNames
+        )
     }
 
     private fun boxLocationPairs(
@@ -364,18 +413,44 @@ class SearchEngineB {
 
     private fun boxesWithDuplicateObjects(
         index: SearchArchiveIndex
-    ): List<String> {
+    ): ComparePayload {
 
-        return boxesFromGroups(
+        val groups =
             duplicateNameGroups(
                 index
             )
+
+        val boxNames =
+            boxesFromGroups(
+                groups
+            )
+
+        val objectNames =
+            groups
+                .flatten()
+                .map { record ->
+                    record.name
+                }
+                .filter { name ->
+                    name.isNotBlank()
+                }
+                .distinctBy { name ->
+                    name.lowercase()
+                }
+                .sortedWith(
+                    String.CASE_INSENSITIVE_ORDER
+                )
+
+        return ComparePayload(
+            boxNames,
+            boxNames,
+            objectNames
         )
     }
 
     private fun boxesWithCrossCategoryDuplicates(
         index: SearchArchiveIndex
-    ): List<String> {
+    ): ComparePayload {
 
         val categoryByBox =
             boxCategoryPairs(
@@ -385,83 +460,101 @@ class SearchEngineB {
                     pair.second
             }
 
-        return duplicateNameGroups(
-            index
-        )
-            .mapNotNull { group ->
+        val hits =
+            duplicateNameGroups(
+                index
+            )
+                .mapNotNull { group ->
 
-                val boxesWithCategory =
-                    group
-                        .map { record ->
-                            record.boxName
-                        }
-                        .filter { boxName ->
-                            boxName.isNotBlank()
-                        }
-                        .distinctBy { boxName ->
-                            boxName.lowercase()
-                        }
-                        .mapNotNull { boxName ->
-
-                            val category =
-                                categoryByBox[
-                                    boxName.lowercase()
-                                ].orEmpty()
-
-                            if (category.isBlank()) {
-                                null
-                            } else {
-                                boxName to category
+                    val boxesWithCategory =
+                        group
+                            .map { record ->
+                                record.boxName
                             }
-                        }
+                            .filter { boxName ->
+                                boxName.isNotBlank()
+                            }
+                            .distinctBy { boxName ->
+                                boxName.lowercase()
+                            }
+                            .mapNotNull { boxName ->
 
-                val categories =
-                    boxesWithCategory
-                        .map { pair ->
-                            CanonicalNormalizer.canonical(
-                                pair.second
+                                val category =
+                                    categoryByBox[
+                                        boxName.lowercase()
+                                    ].orEmpty()
+
+                                if (category.isBlank()) {
+                                    null
+                                } else {
+                                    boxName to category
+                                }
+                            }
+
+                    val categories =
+                        boxesWithCategory
+                            .map { pair ->
+                                CanonicalNormalizer.canonical(
+                                    pair.second
+                                )
+                            }
+                            .distinct()
+
+                    if (
+                        boxesWithCategory.size < 2 ||
+                        categories.size < 2
+                    ) {
+                        return@mapNotNull null
+                    }
+
+                    val objectName =
+                        group
+                            .map { record ->
+                                record.name
+                            }
+                            .minWith(
+                                String.CASE_INSENSITIVE_ORDER
                             )
-                        }
-                        .distinct()
 
-                if (
-                    boxesWithCategory.size < 2 ||
-                    categories.size < 2
-                ) {
-                    return@mapNotNull null
+                    val boxNames =
+                        boxesWithCategory
+                            .map { pair ->
+                                pair.first
+                            }
+                            .sortedWith(
+                                String.CASE_INSENSITIVE_ORDER
+                            )
+
+                    val objectNames =
+                        group
+                            .map { record ->
+                                record.name
+                            }
+                            .filter { name ->
+                                name.isNotBlank()
+                            }
+                            .distinctBy { name ->
+                                name.lowercase()
+                            }
+
+                    CompareHit(
+                        objectName + ": " +
+                            boxNames.joinToString(
+                                ", "
+                            ),
+                        boxNames,
+                        objectNames
+                    )
                 }
 
-                val objectName =
-                    group
-                        .map { record ->
-                            record.name
-                        }
-                        .minWith(
-                            String.CASE_INSENSITIVE_ORDER
-                        )
-
-                val boxNames =
-                    boxesWithCategory
-                        .map { pair ->
-                            pair.first
-                        }
-                        .sortedWith(
-                            String.CASE_INSENSITIVE_ORDER
-                        )
-
-                objectName + ": " +
-                    boxNames.joinToString(
-                        ", "
-                    )
-            }
-            .sortedWith(
-                String.CASE_INSENSITIVE_ORDER
-            )
+        return payloadFromHits(
+            hits
+        )
     }
 
     private fun boxesWithCrossLocationDuplicates(
         index: SearchArchiveIndex
-    ): List<String> {
+    ): ComparePayload {
 
         val locationByBox =
             boxLocationPairs(
@@ -471,78 +564,140 @@ class SearchEngineB {
                     pair.second
             }
 
-        return duplicateNameGroups(
-            index
-        )
-            .mapNotNull { group ->
+        val hits =
+            duplicateNameGroups(
+                index
+            )
+                .mapNotNull { group ->
 
-                val boxesWithLocation =
-                    group
-                        .map { record ->
-                            record.boxName
-                        }
-                        .filter { boxName ->
-                            boxName.isNotBlank()
-                        }
-                        .distinctBy { boxName ->
-                            boxName.lowercase()
-                        }
-                        .mapNotNull { boxName ->
-
-                            val location =
-                                locationByBox[
-                                    boxName.lowercase()
-                                ].orEmpty()
-
-                            if (location.isBlank()) {
-                                null
-                            } else {
-                                boxName to location
+                    val boxesWithLocation =
+                        group
+                            .map { record ->
+                                record.boxName
                             }
-                        }
+                            .filter { boxName ->
+                                boxName.isNotBlank()
+                            }
+                            .distinctBy { boxName ->
+                                boxName.lowercase()
+                            }
+                            .mapNotNull { boxName ->
 
-                val locations =
-                    boxesWithLocation
-                        .map { pair ->
-                            CanonicalNormalizer.canonical(
-                                pair.second
+                                val location =
+                                    locationByBox[
+                                        boxName.lowercase()
+                                    ].orEmpty()
+
+                                if (location.isBlank()) {
+                                    null
+                                } else {
+                                    boxName to location
+                                }
+                            }
+
+                    val locations =
+                        boxesWithLocation
+                            .map { pair ->
+                                CanonicalNormalizer.canonical(
+                                    pair.second
+                                )
+                            }
+                            .distinct()
+
+                    if (
+                        boxesWithLocation.size < 2 ||
+                        locations.size < 2
+                    ) {
+                        return@mapNotNull null
+                    }
+
+                    val objectName =
+                        group
+                            .map { record ->
+                                record.name
+                            }
+                            .minWith(
+                                String.CASE_INSENSITIVE_ORDER
                             )
-                        }
-                        .distinct()
 
-                if (
-                    boxesWithLocation.size < 2 ||
-                    locations.size < 2
-                ) {
-                    return@mapNotNull null
+                    val boxNames =
+                        boxesWithLocation
+                            .map { pair ->
+                                pair.first
+                            }
+                            .sortedWith(
+                                String.CASE_INSENSITIVE_ORDER
+                            )
+
+                    val objectNames =
+                        group
+                            .map { record ->
+                                record.name
+                            }
+                            .filter { name ->
+                                name.isNotBlank()
+                            }
+                            .distinctBy { name ->
+                                name.lowercase()
+                            }
+
+                    CompareHit(
+                        objectName + ": " +
+                            boxNames.joinToString(
+                                ", "
+                            ),
+                        boxNames,
+                        objectNames
+                    )
                 }
 
-                val objectName =
-                    group
-                        .map { record ->
-                            record.name
-                        }
-                        .minWith(
-                            String.CASE_INSENSITIVE_ORDER
-                        )
+        return payloadFromHits(
+            hits
+        )
+    }
 
-                val boxNames =
-                    boxesWithLocation
-                        .map { pair ->
-                            pair.first
-                        }
-                        .sortedWith(
-                            String.CASE_INSENSITIVE_ORDER
-                        )
+    private fun payloadFromHits(
+        hits: List<CompareHit>
+    ): ComparePayload {
 
-                objectName + ": " +
-                    boxNames.joinToString(
-                        ", "
-                    )
-            }
-            .sortedWith(
-                String.CASE_INSENSITIVE_ORDER
-            )
+        val lines =
+            hits
+                .map { hit ->
+                    hit.line
+                }
+                .sortedWith(
+                    String.CASE_INSENSITIVE_ORDER
+                )
+
+        val boxNames =
+            hits
+                .flatMap { hit ->
+                    hit.boxNames
+                }
+                .distinctBy { name ->
+                    name.lowercase()
+                }
+                .sortedWith(
+                    String.CASE_INSENSITIVE_ORDER
+                )
+
+        val objectNames =
+            hits
+                .flatMap { hit ->
+                    hit.objectNames
+                }
+                .distinctBy { name ->
+                    name.lowercase()
+                }
+                .sortedWith(
+                    String.CASE_INSENSITIVE_ORDER
+                )
+
+        return ComparePayload(
+            lines,
+            boxNames,
+            objectNames
+        )
     }
 
     private fun boxesFromGroups(
@@ -763,3 +918,21 @@ class SearchEngineB {
             )
     }
 }
+
+private data class ComparePayload(
+
+    val lines: List<String>,
+
+    val boxNames: List<String>,
+
+    val objectNames: List<String> = emptyList()
+)
+
+private data class CompareHit(
+
+    val line: String,
+
+    val boxNames: List<String>,
+
+    val objectNames: List<String>
+)

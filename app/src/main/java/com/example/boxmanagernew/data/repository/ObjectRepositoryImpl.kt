@@ -256,9 +256,23 @@ class ObjectRepositoryImpl(
             }
     }
 
-    override suspend fun insert(obj:Object){}
-    override suspend fun update(obj:Object){}
-    override suspend fun delete(obj:Object){}
+    override suspend fun insert(obj: Object) {}
+
+    override suspend fun update(obj: Object) {}
+
+    override suspend fun delete(obj: Object) {
+
+        dao.deleteById(obj.id)
+    }
+
+    suspend fun deleteByIds(ids: List<Int>) {
+
+        if (ids.isEmpty()) {
+            return
+        }
+
+        dao.deleteByIds(ids)
+    }
 
     suspend fun moveObjects(
         ids: List<Int>,

@@ -87,6 +87,28 @@ class SearchSatisfiabilityEvaluator {
         }
 
         if (
+            !navigationSatisfiable &&
+            isInventoryTransformation(
+                transformation
+            ) &&
+            isSingleCoreAlias(
+                indicators
+            )
+        ) {
+
+            return SearchSatisfiabilityResult(
+                finalClassification =
+                    SearchClassification.ENGINE_A,
+                satisfiableByEngineA = true,
+                satisfiableByEngineB = false,
+                requiresClarification = false,
+                clarificationType =
+                    SearchClarificationType.NONE,
+                matchedPatternId = null
+            )
+        }
+
+        if (
             isLegacyInterrogationTransformation(
                 transformation
             )
@@ -153,6 +175,56 @@ class SearchSatisfiabilityEvaluator {
                     )
             }
         }
+    }
+
+    private fun isSingleCoreAlias(
+        indicators: Map<String, Set<String>>
+    ): Boolean {
+
+        val hasBox =
+            indicators[
+                SearchLexicalIndicatorMatrix.BOX
+            ].orEmpty().isNotEmpty()
+
+        val hasObject =
+            indicators[
+                SearchLexicalIndicatorMatrix.OBJECT
+            ].orEmpty().isNotEmpty()
+
+        val hasCategory =
+            indicators[
+                SearchLexicalIndicatorMatrix.CATEGORY
+            ].orEmpty().isNotEmpty()
+
+        val hasLocation =
+            indicators[
+                SearchLexicalIndicatorMatrix.LOCATION
+            ].orEmpty().any { term ->
+                SearchCoreAliases.isLocationAlias(
+                    term
+                )
+            }
+
+        return listOf(
+            hasBox,
+            hasObject,
+            hasCategory,
+            hasLocation
+        ).count { present ->
+            present
+        } == 1
+    }
+
+    private fun isInventoryTransformation(
+        transformation: SearchArchiveTransformation
+    ): Boolean {
+
+        return transformation ==
+                SearchArchiveTransformation.NONE ||
+                transformation ==
+                SearchArchiveTransformation.CATEGORY_TO_BOX ||
+                transformation ==
+                SearchArchiveTransformation.LOCATION_TO_BOX
     }
 
     private fun isNavigationTransformation(

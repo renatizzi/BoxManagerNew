@@ -165,7 +165,48 @@ object ViewPrintPdf {
         )
         y += 14f
 
-        if (header.nameListStyle != NameListStyle.NESTED) {
+        if (header.nameListStyle == NameListStyle.CATEGORY_GROUPS ||
+            header.nameListStyle == NameListStyle.PLACE_GROUPS
+        ) {
+            snapshot.boxes.forEach { group ->
+                val headerIcon = when (header.nameListStyle) {
+                    NameListStyle.PLACE_GROUPS -> placeIcon
+                    NameListStyle.CATEGORY_GROUPS ->
+                        categoryIcons.getOrPut(group.categoryIconRes) {
+                            if (group.categoryIconRes == 0) {
+                                null
+                            } else {
+                                bitmap(context, group.categoryIconRes)
+                            }
+                        }
+                    else -> null
+                }
+                ensureSpace(boxPaint.textSize + 10f)
+                val top = y - ICON + 2f
+                var textX = MARGIN
+                if (headerIcon != null) {
+                    canvas.drawBitmap(
+                        headerIcon,
+                        null,
+                        RectF(MARGIN, top, MARGIN + ICON, top + ICON),
+                        null
+                    )
+                    textX = MARGIN + ICON + 4f
+                }
+                drawWrapped(group.name, boxPaint, textX)
+                y += 4f
+                group.objects.forEach { boxLine ->
+                    ensureSpace(objectPaint.textSize + 8f)
+                    drawWrapped(
+                        boxLine.name,
+                        objectPaint,
+                        MARGIN + ICON + 4f
+                    )
+                    y += 4f
+                }
+                y += 8f
+            }
+        } else if (header.nameListStyle != NameListStyle.NESTED) {
             snapshot.boxes.forEach { row ->
                 val icon = when (header.nameListStyle) {
                     NameListStyle.PLACE_ICON -> placeIcon
@@ -177,7 +218,7 @@ object ViewPrintPdf {
                                 bitmap(context, row.categoryIconRes)
                             }
                         }
-                    NameListStyle.NESTED -> null
+                    else -> null
                 }
                 ensureSpace(boxPaint.textSize + 10f)
                 val top = y - ICON + 2f

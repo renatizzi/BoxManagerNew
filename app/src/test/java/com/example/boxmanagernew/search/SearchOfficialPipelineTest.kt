@@ -2041,4 +2041,85 @@ class SearchOfficialPipelineTest {
             response.objectTerms
         )
     }
+
+    @Test
+    fun inventoryBoxes_opensUnfilteredNavigation() {
+
+        assertInventoryNavigation(
+            "Elenco di tutti i contenitori",
+            SearchArchiveTransformation.NONE,
+            "[PATH] [BOX]"
+        )
+    }
+
+    @Test
+    fun inventoryObjects_opensUnfilteredNavigation() {
+
+        assertInventoryNavigation(
+            "Elenco di tutti gli oggetti",
+            SearchArchiveTransformation.NONE,
+            "[PATH] [BOX]"
+        )
+    }
+
+    @Test
+    fun inventoryLocations_opensUnfilteredNavigation() {
+
+        assertInventoryNavigation(
+            "Elenco di tutte le posizioni",
+            SearchArchiveTransformation.LOCATION_TO_BOX,
+            "[PATH] [LOCATION, BOX]"
+        )
+    }
+
+    @Test
+    fun inventoryCategories_opensUnfilteredNavigation() {
+
+        assertInventoryNavigation(
+            "Elenco di tutte le categorie",
+            SearchArchiveTransformation.CATEGORY_TO_BOX,
+            "[PATH] [CATEGORY, BOX]"
+        )
+    }
+
+    private fun assertInventoryNavigation(
+        question: String,
+        transformation: SearchArchiveTransformation,
+        pathMarker: String
+    ) {
+
+        val response =
+            dispatcher.dispatch(
+                question,
+                index
+            )
+
+        val marker =
+            response.debugMarker.orEmpty()
+
+        assertTrue(
+            marker,
+            response.success
+        )
+        assertEquals(
+            marker,
+            SearchRequestType.ARCHIVE_NAVIGATION,
+            response.requestType
+        )
+        assertEquals(
+            transformation,
+            response.archiveTransformation
+        )
+        assertTrue(
+            marker,
+            marker.contains(
+                pathMarker
+            )
+        )
+        assertEquals("", response.objectTerms)
+        assertEquals("", response.locationTerms)
+        assertEquals("", response.categoryTerms)
+        assertEquals("", response.boxTerms)
+        assertFalse(response.requiresClarification)
+    }
 }

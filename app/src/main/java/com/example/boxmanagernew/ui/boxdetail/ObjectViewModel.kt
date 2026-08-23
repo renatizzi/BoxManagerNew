@@ -199,19 +199,13 @@ class ObjectViewModel(
 
     fun deleteObjects(ids: List<Int>) {
 
+        if (ids.isEmpty()) {
+            return
+        }
+
         viewModelScope.launch {
 
-            lastSource.forEach {
-
-                if (
-                    ids.contains(it.obj.id)
-                ) {
-
-                    repository.delete(
-                        it.obj
-                    )
-                }
-            }
+            repository.deleteByIds(ids)
 
             clearSelection()
         }

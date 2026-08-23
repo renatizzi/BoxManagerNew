@@ -3,9 +3,12 @@ package com.example.boxmanagernew.ui.globalsearch
 import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.ScrollView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -13,17 +16,29 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.boxmanagernew.MainActivity
 import com.example.boxmanagernew.R
+import com.example.boxmanagernew.backup.config.BackupConfiguration
 import com.example.boxmanagernew.data.local.DatabaseProvider
+import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
+import com.example.boxmanagernew.domain.model.Box
 import com.example.boxmanagernew.domain.search.GlobalSearchDispatcher
 import com.example.boxmanagernew.domain.search.SearchConfiguration
 import com.example.boxmanagernew.domain.search.model.SearchArchiveBoxRecord
 import com.example.boxmanagernew.domain.search.model.SearchArchiveIndex
 import com.example.boxmanagernew.domain.search.model.SearchArchiveObjectRecord
+import com.example.boxmanagernew.domain.search.model.SearchArchiveTransformation
 import com.example.boxmanagernew.domain.search.model.SearchMessage
 import com.example.boxmanagernew.domain.search.model.SearchRequestType
 import com.example.boxmanagernew.domain.search.model.SearchResponse
+import com.example.boxmanagernew.ui.categories.IconMapper
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
+import com.example.boxmanagernew.ui.common.FeedbackUtils
+import com.example.boxmanagernew.viewoutput.config.ViewOutputConfiguration
+import com.example.boxmanagernew.viewoutput.model.ContainerViewSnapshot
+import com.example.boxmanagernew.viewoutput.model.ContainerViewSnapshotFactory
+import com.example.boxmanagernew.viewoutput.model.ViewPrintHeader
+import com.example.boxmanagernew.viewoutput.persist.ViewExportPersister
+import com.example.boxmanagernew.viewoutput.ui.ViewOutputController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -34,9 +49,36 @@ class GlobalSearchActivity : BaseActivity() {
     private lateinit var editQuestion: EditText
     private lateinit var scrollSearchBody: ScrollView
     private lateinit var recyclerMessages: RecyclerView
+    private lateinit var outputController: ViewOutputController
 
     private val dispatcher =
         GlobalSearchDispatcher()
+
+    private var printableQuestion =
+        ""
+
+    private var printableBoxNames:
+            List<String> =
+        emptyList()
+
+    private var printableObjectNames:
+            List<String> =
+        emptyList()
+
+    private val exportFolderPicker =
+        registerForActivityResult(
+            ActivityResultContracts.OpenDocumentTree()
+        ) { uri ->
+
+            if (
+                uri != null &&
+                ::outputController.isInitialized
+            ) {
+                outputController.onFolderChosen(
+                    uri
+                )
+            }
+        }
 
     override fun onCreate(
         savedInstanceState: Bundle?
@@ -60,6 +102,8 @@ class GlobalSearchActivity : BaseActivity() {
                 R.string.global_search_subtitle
             )
         )
+
+        setupViewOutputActions()
 
         BottomNavManager.setup(
             this,
@@ -159,6 +203,8 @@ class GlobalSearchActivity : BaseActivity() {
             return
         }
 
+        hidePrintActions()
+
         lifecycleScope.launch {
 
             val index =
@@ -213,6 +259,25 @@ class GlobalSearchActivity : BaseActivity() {
             showReply(
                 response.message
             )
+
+            if (
+                response.success &&
+                response.requestType ==
+                SearchRequestType.ARCHIVE_QUERY &&
+                response.resultBoxNames.isNotEmpty()
+            ) {
+
+                printableQuestion =
+                    question
+
+                printableBoxNames =
+                    response.resultBoxNames
+
+                printableObjectNames =
+                    response.resultObjectNames
+
+                showPrintActions()
+            }
         }
     }
 
@@ -372,6 +437,34 @@ class GlobalSearchActivity : BaseActivity() {
                     SearchConfiguration.EXTRA_SEARCH_QUESTION,
                     question
                 )
+
+                if (
+                    response.objectTerms.isBlank() &&
+                    response.locationTerms.isBlank() &&
+                    response.categoryTerms.isBlank() &&
+                    response.boxTerms.isBlank()
+                ) {
+
+                    val inventoryDrive =
+                        when (
+                            response.archiveTransformation
+                        ) {
+
+                            SearchArchiveTransformation.CATEGORY_TO_BOX ->
+                                SearchConfiguration.INVENTORY_CATEGORY
+
+                            SearchArchiveTransformation.LOCATION_TO_BOX ->
+                                SearchConfiguration.INVENTORY_LOCATION
+
+                            else ->
+                                SearchConfiguration.INVENTORY_BOX
+                        }
+
+                    putExtra(
+                        SearchConfiguration.EXTRA_INVENTORY_LIST,
+                        inventoryDrive
+                    )
+                }
             }
         )
     }
@@ -400,6 +493,269 @@ class GlobalSearchActivity : BaseActivity() {
 
         hideKeyboard(
             editQuestion
+        )
+    }
+
+    private fun setupViewOutputActions() {
+
+        val container =
+            findViewById<FrameLayout>(
+                R.id.headerActionContainer
+            ) ?: return
+
+        outputController =
+            ViewOutputController(
+                this,
+                ViewExportPersister(this),
+                showFolderInaccessible = {
+                    FeedbackUtils.alert(
+                        this
+                    )
+                    viewModel.addMessage(
+                        SearchMessage(
+                            text =
+                                BackupConfiguration.MSG_FOLDER_INACCESSIBLE,
+                            fromUser = false
+                        )
+                    )
+                },
+                launchFolderPicker = {
+                    exportFolderPicker.launch(
+                        null
+                    )
+                }
+            )
+
+        outputController.inflateActions(
+            container,
+            onPrint = {
+                handlePrintView()
+            },
+            onExport = {
+                handleExportView()
+            }
+        )
+
+        hidePrintActions()
+    }
+
+    private fun showPrintActions() {
+
+        findViewById<FrameLayout>(
+            R.id.headerActionContainer
+        )?.visibility =
+            View.VISIBLE
+    }
+
+    private fun hidePrintActions() {
+
+        printableQuestion =
+            ""
+
+        printableBoxNames =
+            emptyList()
+
+        printableObjectNames =
+            emptyList()
+
+        findViewById<FrameLayout>(
+            R.id.headerActionContainer
+        )?.visibility =
+            View.GONE
+    }
+
+    private fun handlePrintView() {
+
+        lifecycleScope.launch {
+
+            val snapshot =
+                loadPrintableSnapshot()
+                    ?: return@launch
+
+            outputController.print(
+                snapshot,
+                ViewPrintHeader(
+                    title =
+                        ViewOutputConfiguration.PAGE_TITLE,
+                    filterLine =
+                        ViewOutputConfiguration.filterLine(
+                            printableQuestion
+                        ),
+                    countLine =
+                        ViewOutputConfiguration.countBoxes(
+                            snapshot.boxes.size
+                        )
+                )
+            )
+        }
+    }
+
+    private fun handleExportView() {
+
+        lifecycleScope.launch {
+
+            val snapshot =
+                loadPrintableSnapshot()
+                    ?: return@launch
+
+            outputController.export(
+                snapshot
+            )
+        }
+    }
+
+    private suspend fun loadPrintableSnapshot():
+            ContainerViewSnapshot? {
+
+        val boxNames =
+            printableBoxNames
+
+        val objectNames =
+            printableObjectNames
+
+        if (boxNames.isEmpty()) {
+
+            showOutputNotice(
+                SearchConfiguration.MSG_NO_RESULTS
+            )
+
+            return null
+        }
+
+        val snapshot =
+            withContext(
+                Dispatchers.IO
+            ) {
+
+                val db =
+                    DatabaseProvider.getDatabase(
+                        applicationContext
+                    )
+
+                val allowedBoxes =
+                    boxNames
+                        .map { name ->
+                            name.lowercase()
+                        }
+                        .toSet()
+
+                val nameOrder =
+                    boxNames
+                        .mapIndexed { index, name ->
+                            name.lowercase() to
+                                index
+                        }
+                        .toMap()
+
+                val boxes =
+                    db.boxDao()
+                        .getAllSync()
+                        .filter { entity ->
+                            entity.name.lowercase() in
+                                allowedBoxes
+                        }
+                        .sortedBy { entity ->
+                            nameOrder[
+                                entity.name.lowercase()
+                            ] ?: Int.MAX_VALUE
+                        }
+                        .map { entity ->
+
+                            Box(
+                                id = entity.id,
+                                name = entity.name,
+                                categoryId =
+                                    entity.categoryId,
+                                position =
+                                    entity.position,
+                                lastModified =
+                                    entity.lastModified,
+                                permanentId =
+                                    entity.permanentId
+                            )
+                        }
+
+                if (boxes.isEmpty()) {
+                    return@withContext null
+                }
+
+                val categories =
+                    db.categoryDao()
+                        .getAllSync()
+
+                val objects =
+                    ObjectRepositoryImpl(
+                        db.objectDao(),
+                        db.objectTypeDao()
+                    ).objectsInBoxes(
+                        boxes.map { box ->
+                            box.id
+                        }.toSet()
+                    ).let { rows ->
+
+                        if (objectNames.isEmpty()) {
+                            rows
+                        } else {
+
+                            val allowedObjects =
+                                objectNames
+                                    .map { name ->
+                                        name.lowercase()
+                                    }
+                                    .toSet()
+
+                            rows.filter { row ->
+                                row.objectName.lowercase() in
+                                    allowedObjects
+                            }
+                        }
+                    }
+
+                ContainerViewSnapshotFactory.from(
+                    boxes,
+                    { categoryId ->
+                        categories.find { category ->
+                            category.id == categoryId
+                        }?.name.orEmpty()
+                    },
+                    { categoryId ->
+                        val icon =
+                            categories.find { category ->
+                                category.id ==
+                                    categoryId
+                            }?.icon.orEmpty()
+
+                        if (icon.isBlank()) {
+                            0
+                        } else {
+                            IconMapper.getIconRes(
+                                icon
+                            )
+                        }
+                    },
+                    objects
+                )
+            }
+
+        if (snapshot == null) {
+
+            showOutputNotice(
+                SearchConfiguration.MSG_NO_RESULTS
+            )
+        }
+
+        return snapshot
+    }
+
+    private fun showOutputNotice(
+        text: String
+    ) {
+
+        viewModel.addMessage(
+            SearchMessage(
+                text = text,
+                fromUser = false
+            )
         )
     }
 }

@@ -30,5 +30,9 @@ data class SearchResponse(
 
     val requestType: SearchRequestType? = null,
 
-    val debugMarker: String? = null
+    val debugMarker: String? = null,
+
+    val resultBoxNames: List<String> = emptyList(),
+
+    val resultObjectNames: List<String> = emptyList()
 )

@@ -120,6 +120,12 @@ interface ObjectDao {
         boxId: Int
     ): Int
 
+    @Query("DELETE FROM objects WHERE id = :id")
+    suspend fun deleteById(id: Int)
+
+    @Query("DELETE FROM objects WHERE id IN (:ids)")
+    suspend fun deleteByIds(ids: List<Int>)
+
     @Query("DELETE FROM objects")
     suspend fun deleteAll()
 }

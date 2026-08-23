@@ -85,6 +85,21 @@ object SearchConfiguration {
     const val EXTRA_HIGHLIGHT_TERMS =
         "advancedHighlightTerms"
 
+    const val EXTRA_INVENTORY_LIST =
+        "advancedInventoryList"
+
+    const val INVENTORY_BOX =
+        "BOX"
+
+    const val INVENTORY_OBJECT =
+        "OBJECT"
+
+    const val INVENTORY_CATEGORY =
+        "CATEGORY"
+
+    const val INVENTORY_LOCATION =
+        "LOCATION"
+
     const val LOCATION_TERMS_SEPARATOR =
         "\u001f"
 

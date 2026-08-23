@@ -1,6 +1,7 @@
 package com.example.boxmanagernew.domain.search
 
 import com.example.boxmanagernew.domain.search.model.CoreEntityType
+import com.example.boxmanagernew.domain.search.model.SearchArchivalHits
 import com.example.boxmanagernew.domain.search.model.SearchArchiveLookupResult
 import com.example.boxmanagernew.domain.search.model.SearchArchiveScope
 import com.example.boxmanagernew.domain.search.model.SearchRecognizedEntitiesResult
@@ -112,10 +113,106 @@ class SearchEntityRecognizer {
             }
         }
 
+        if (
+            !hasNamedArchiveKey(
+                hits
+            )
+        ) {
+
+            if (
+                hasBoxAlias &&
+                !hasCategoryAlias &&
+                !hasLocationAlias &&
+                !hasObjectAlias
+            ) {
+
+                addTypeOnly(
+                    recognizedEntities,
+                    CoreEntityType.BOX,
+                    SearchArchiveScope.BOX
+                )
+            }
+
+            if (
+                hasObjectAlias &&
+                !hasCategoryAlias &&
+                !hasLocationAlias &&
+                !hasBoxAlias
+            ) {
+
+                addTypeOnly(
+                    recognizedEntities,
+                    CoreEntityType.OBJECT,
+                    SearchArchiveScope.OBJECT
+                )
+            }
+
+            if (
+                hasCategoryAlias &&
+                !hasBoxAlias
+            ) {
+
+                addTypeOnly(
+                    recognizedEntities,
+                    CoreEntityType.CATEGORY,
+                    SearchArchiveScope.CATEGORY
+                )
+            }
+
+            if (
+                hasLocationAlias &&
+                !hasBoxAlias
+            ) {
+
+                addTypeOnly(
+                    recognizedEntities,
+                    CoreEntityType.LOCATION,
+                    SearchArchiveScope.LOCATION
+                )
+            }
+        }
+
         return SearchRecognizedEntitiesResult(
             recognizedEntities =
                 recognizedEntities
         )
+    }
+
+    private fun hasNamedArchiveKey(
+        hits: SearchArchivalHits
+    ): Boolean {
+
+        val namedObjects =
+            hits.objects.any { name ->
+                !SearchCoreAliases.isLocationAlias(
+                    name
+                ) &&
+                    !SearchCoreAliases.isCategoryAlias(
+                        name
+                    )
+            }
+
+        val namedCategories =
+            hits.categories.any { name ->
+                !SearchCoreAliases.isCategoryAlias(
+                    name
+                )
+            }
+
+        val namedLocations =
+            hits.locations.any { name ->
+                !SearchCoreAliases.isLocationAlias(
+                    name
+                )
+            }
+
+        val namedBoxes =
+            hits.boxes.isNotEmpty()
+
+        return namedObjects ||
+            namedCategories ||
+            namedLocations ||
+            namedBoxes
     }
 
     private fun addTypeOnly(

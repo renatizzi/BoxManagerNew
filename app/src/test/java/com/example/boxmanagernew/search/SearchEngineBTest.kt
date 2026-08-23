@@ -65,6 +65,16 @@ class SearchEngineBTest {
         assertTrue(response.success)
         assertTrue(response.message.contains("Prova 2"))
         assertTrue(response.message.contains("prova"))
+        assertTrue(
+            response.resultBoxNames.containsAll(
+                listOf("Prova 2", "prova")
+            )
+        )
+        assertTrue(
+            response.resultObjectNames.containsAll(
+                listOf("Caffè", "CAFFE'")
+            )
+        )
     }
 
     @Test
@@ -181,6 +191,16 @@ class SearchEngineBTest {
         )
         assertTrue(response.message.contains("Cassetta 1"))
         assertTrue(response.message.contains("prova"))
+        assertTrue(
+            response.resultBoxNames.containsAll(
+                listOf("Cassetta 1", "prova")
+            )
+        )
+        assertTrue(
+            response.resultObjectNames.contains(
+                "Vite"
+            )
+        )
     }
 
     @Test
@@ -210,6 +230,16 @@ class SearchEngineBTest {
         assertFalse(
             response.message.startsWith(
                 "Elenco dei contenitori che hanno oggetti uguali"
+            )
+        )
+        assertTrue(
+            response.resultBoxNames.containsAll(
+                listOf("Cassetta 1", "prova")
+            )
+        )
+        assertTrue(
+            response.resultObjectNames.contains(
+                "Vite"
             )
         )
     }
@@ -290,6 +320,14 @@ class SearchEngineBTest {
         assertEquals(
             listOf("Box: BOX, prova 4"),
             listed
+        )
+        assertEquals(
+            listOf("BOX", "prova 4"),
+            response.resultBoxNames
+        )
+        assertEquals(
+            listOf("Box"),
+            response.resultObjectNames
         )
     }
 

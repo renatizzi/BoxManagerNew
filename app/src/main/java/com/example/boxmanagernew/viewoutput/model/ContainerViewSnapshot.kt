@@ -25,7 +25,9 @@ data class ViewPrintHeader(
 enum class NameListStyle {
     NESTED,
     CATEGORY_ICON,
-    PLACE_ICON
+    PLACE_ICON,
+    CATEGORY_GROUPS,
+    PLACE_GROUPS
 }
 
 data class ContainerViewSnapshot(

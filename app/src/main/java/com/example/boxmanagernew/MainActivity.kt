@@ -42,6 +42,7 @@ import com.example.boxmanagernew.viewoutput.config.ViewOutputConfiguration
 import com.example.boxmanagernew.viewoutput.csv.ViewExportCsvBuilder
 import com.example.boxmanagernew.viewoutput.model.ContainerViewSnapshot
 import com.example.boxmanagernew.viewoutput.model.ContainerViewSnapshotFactory
+import com.example.boxmanagernew.viewoutput.model.NameListStyle
 import com.example.boxmanagernew.viewoutput.model.ViewPrintHeader
 import com.example.boxmanagernew.viewoutput.persist.ViewExportPersister
 import com.example.boxmanagernew.viewoutput.print.ViewPrintAdapter
@@ -594,6 +595,14 @@ class MainActivity : BaseActivity() {
         }
 
         if (
+            !intent.getStringExtra(
+                SearchConfiguration.EXTRA_INVENTORY_LIST
+            ).isNullOrBlank()
+        ) {
+            return
+        }
+
+        if (
             !intent.hasExtra(
                 SearchConfiguration.EXTRA_SEARCH_QUESTION
             )
@@ -641,11 +650,32 @@ class MainActivity : BaseActivity() {
             handlePrintView()
         }
 
-        actions.findViewById<View>(
-            R.id.btnExportView
-        ).setOnClickListener {
+        val exportButton =
+            actions.findViewById<View>(
+                R.id.btnExportView
+            )
 
-            handleExportView()
+        val inventoryDrive =
+            intent.getStringExtra(
+                SearchConfiguration.EXTRA_INVENTORY_LIST
+            ).orEmpty()
+
+        if (
+            inventoryDrive ==
+            SearchConfiguration.INVENTORY_CATEGORY ||
+            inventoryDrive ==
+            SearchConfiguration.INVENTORY_LOCATION
+        ) {
+
+            exportButton.visibility =
+                View.GONE
+
+        } else {
+
+            exportButton.setOnClickListener {
+
+                handleExportView()
+            }
         }
     }
 
@@ -810,8 +840,16 @@ class MainActivity : BaseActivity() {
         snapshot: ContainerViewSnapshot
     ): ViewPrintHeader {
 
+        val inventoryDrive =
+            intent.getStringExtra(
+                SearchConfiguration.EXTRA_INVENTORY_LIST
+            ).orEmpty()
+
         val filterQuery =
-            if (hasAdvancedArchiveExtras()) {
+            if (
+                hasAdvancedArchiveExtras() ||
+                inventoryDrive.isNotBlank()
+            ) {
                 intent.getStringExtra(
                     SearchConfiguration.EXTRA_SEARCH_QUESTION
                 ).orEmpty()
@@ -819,18 +857,54 @@ class MainActivity : BaseActivity() {
                 editSearch.text.toString().trim()
             }
 
-        val countLine =
-            ViewOutputConfiguration.countBoxes(
-                snapshot.boxes.size
-            )
+        return when (inventoryDrive) {
 
-        return ViewPrintHeader(
-            title = ViewOutputConfiguration.PAGE_TITLE,
-            filterLine = ViewOutputConfiguration.filterLine(
-                filterQuery
-            ),
-            countLine = countLine
-        )
+            SearchConfiguration.INVENTORY_CATEGORY ->
+                ViewPrintHeader(
+                    title =
+                        ViewOutputConfiguration.PAGE_TITLE_CATEGORIES,
+                    filterLine =
+                        ViewOutputConfiguration.filterLine(
+                            filterQuery
+                        ),
+                    countLine =
+                        ViewOutputConfiguration.countCategories(
+                            snapshot.boxes.size
+                        ),
+                    nameListStyle =
+                        NameListStyle.CATEGORY_GROUPS
+                )
+
+            SearchConfiguration.INVENTORY_LOCATION ->
+                ViewPrintHeader(
+                    title =
+                        ViewOutputConfiguration.PAGE_TITLE_LOCATIONS,
+                    filterLine =
+                        ViewOutputConfiguration.filterLine(
+                            filterQuery
+                        ),
+                    countLine =
+                        ViewOutputConfiguration.countLocations(
+                            snapshot.boxes.size
+                        ),
+                    nameListStyle =
+                        NameListStyle.PLACE_GROUPS
+                )
+
+            else ->
+                ViewPrintHeader(
+                    title =
+                        ViewOutputConfiguration.PAGE_TITLE,
+                    filterLine =
+                        ViewOutputConfiguration.filterLine(
+                            filterQuery
+                        ),
+                    countLine =
+                        ViewOutputConfiguration.countBoxes(
+                            snapshot.boxes.size
+                        )
+                )
+        }
     }
 
     private suspend fun loadViewSnapshot():
@@ -846,6 +920,47 @@ class MainActivity : BaseActivity() {
                 SearchConfiguration.MSG_NO_RESULTS
             )
             return null
+        }
+
+        val inventoryDrive =
+            intent.getStringExtra(
+                SearchConfiguration.EXTRA_INVENTORY_LIST
+            ).orEmpty()
+
+        if (
+            inventoryDrive ==
+            SearchConfiguration.INVENTORY_CATEGORY
+        ) {
+
+            return ContainerViewSnapshotFactory.fromBoxesGroupedByCategory(
+                boxes,
+                { categoryId ->
+                    categories.find { category ->
+                        category.id == categoryId
+                    }?.name.orEmpty()
+                },
+                { categoryId ->
+                    val icon =
+                        categories.find { category ->
+                            category.id == categoryId
+                        }?.icon.orEmpty()
+                    if (icon.isBlank()) {
+                        0
+                    } else {
+                        IconMapper.getIconRes(icon)
+                    }
+                }
+            )
+        }
+
+        if (
+            inventoryDrive ==
+            SearchConfiguration.INVENTORY_LOCATION
+        ) {
+
+            return ContainerViewSnapshotFactory.fromBoxesGroupedByLocation(
+                boxes
+            )
         }
 
         val objects =
