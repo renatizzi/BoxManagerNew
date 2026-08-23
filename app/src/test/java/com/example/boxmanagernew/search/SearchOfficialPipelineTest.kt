@@ -4,6 +4,7 @@ import com.example.boxmanagernew.domain.search.GlobalSearchDispatcher
 import com.example.boxmanagernew.domain.search.SearchConfiguration
 import com.example.boxmanagernew.domain.search.SearchF7Pattern
 import com.example.boxmanagernew.domain.search.SearchF8Pattern
+import com.example.boxmanagernew.domain.search.model.SearchArchiveBoxRecord
 import com.example.boxmanagernew.domain.search.model.SearchArchiveIndex
 import com.example.boxmanagernew.domain.search.model.SearchArchiveObjectRecord
 import com.example.boxmanagernew.domain.search.model.SearchArchiveTransformation
@@ -1206,6 +1207,433 @@ class SearchOfficialPipelineTest {
             response.archiveTransformation
         )
         assertEquals("", response.objectTerms)
+        assertEquals(
+            SearchRequestType.ARCHIVE_NAVIGATION,
+            response.requestType
+        )
+    }
+
+    @Test
+    fun categoryAliasPlusContainers_withoutNamedKey_comparesBoxCategories() {
+
+        val archive =
+            crossCategoryArchive()
+
+        val response =
+            dispatcher.dispatch(
+                "Elenco dei contenitori con categoria diversa",
+                archive
+            )
+
+        val marker =
+            response.debugMarker.orEmpty()
+
+        assertTrue(
+            marker,
+            marker.contains(
+                "entityType=CATEGORY"
+            )
+        )
+        assertTrue(
+            marker,
+            marker.contains(
+                "[PATH] [BOX, CATEGORY]"
+            )
+        )
+        assertEquals(
+            SearchArchiveTransformation.BOX_TO_CATEGORY,
+            response.archiveTransformation
+        )
+        assertFalse(response.requiresClarification)
+        assertEquals(
+            SearchRequestType.ARCHIVE_QUERY,
+            response.requestType
+        )
+        assertTrue(response.success)
+        assertTrue(
+            response.message.contains(
+                "Alimenti e Bevande"
+            )
+        )
+        assertTrue(
+            response.message.contains(
+                "prova"
+            )
+        )
+        assertFalse(
+            response.message.contains(
+                "Ferramenta"
+            )
+        )
+        assertFalse(
+            response.message.contains(
+                "Cassetta 1"
+            )
+        )
+        assertFalse(
+            response.message.contains(
+                "Box 1"
+            )
+        )
+        assertEquals("", response.categoryTerms)
+        assertEquals("", response.boxTerms)
+    }
+
+    @Test
+    fun boxCategoryQuery_oneCategory_usesCatalogNoResults() {
+
+        val archive =
+            index.copy(
+                boxRecords = listOf(
+                    SearchArchiveBoxRecord(
+                        name = "Cassetta 1",
+                        categoryName = "Ferramenta"
+                    ),
+                    SearchArchiveBoxRecord(
+                        name = "prova",
+                        categoryName = "Ferramenta"
+                    )
+                )
+            )
+
+        val response =
+            dispatcher.dispatch(
+                "Elenco dei contenitori con categoria diversa",
+                archive
+            )
+
+        assertEquals(
+            SearchRequestType.ARCHIVE_QUERY,
+            response.requestType
+        )
+        assertFalse(response.success)
+        assertEquals(
+            SearchConfiguration.MSG_NO_RESULTS,
+            response.message
+        )
+    }
+
+    @Test
+    fun locationAliasPlusContainers_withoutNamedKey_comparesBoxLocations() {
+
+        val archive =
+            crossLocationArchive()
+
+        val response =
+            dispatcher.dispatch(
+                "Elenco dei contenitori con posizione diversa",
+                archive
+            )
+
+        val marker =
+            response.debugMarker.orEmpty()
+
+        assertTrue(
+            marker,
+            marker.contains(
+                "entityType=LOCATION"
+            )
+        )
+        assertTrue(
+            marker,
+            marker.contains(
+                "[PATH] [BOX, LOCATION]"
+            )
+        )
+        assertEquals(
+            SearchArchiveTransformation.BOX_TO_LOCATION,
+            response.archiveTransformation
+        )
+        assertFalse(response.requiresClarification)
+        assertEquals(
+            SearchRequestType.ARCHIVE_QUERY,
+            response.requestType
+        )
+        assertTrue(response.success)
+        assertTrue(
+            response.message.contains(
+                "Mansarda"
+            )
+        )
+        assertTrue(
+            response.message.contains(
+                "prova"
+            )
+        )
+        assertFalse(
+            response.message.contains(
+                "Cantina"
+            )
+        )
+        assertFalse(
+            response.message.contains(
+                "Cassetta 1"
+            )
+        )
+        assertFalse(
+            response.message.contains(
+                "Box 1"
+            )
+        )
+        assertEquals("", response.locationTerms)
+        assertEquals("", response.boxTerms)
+        assertFalse(
+            response.message.startsWith(
+                "Elenco dei contenitori che hanno oggetti uguali"
+            )
+        )
+    }
+
+    @Test
+    fun boxLocationQuery_oneLocation_usesCatalogNoResults() {
+
+        val archive =
+            index.copy(
+                boxRecords = listOf(
+                    SearchArchiveBoxRecord(
+                        name = "Cassetta 1",
+                        locationName = "Cantina"
+                    ),
+                    SearchArchiveBoxRecord(
+                        name = "prova",
+                        locationName = "Cantina"
+                    )
+                )
+            )
+
+        val response =
+            dispatcher.dispatch(
+                "Elenco dei contenitori con posizione diversa",
+                archive
+            )
+
+        assertEquals(
+            SearchRequestType.ARCHIVE_QUERY,
+            response.requestType
+        )
+        assertFalse(response.success)
+        assertEquals(
+            SearchConfiguration.MSG_NO_RESULTS,
+            response.message
+        )
+    }
+
+    @Test
+    fun f7Official_doesNotAddLocationFromDoveClue() {
+
+        val response =
+            dispatcher.dispatch(
+                SearchF7Pattern.VARIANTS[3],
+                duplicateArchive()
+            )
+
+        val entitiesLine =
+            response.debugMarker.orEmpty()
+                .lineSequence()
+                .first {
+                    it.startsWith(
+                        "[M3] ENTITIES="
+                    )
+                }
+
+        assertFalse(
+            entitiesLine,
+            entitiesLine.contains(
+                "LOCATION"
+            )
+        )
+        assertEquals(
+            SearchRequestType.ARCHIVE_QUERY,
+            response.requestType
+        )
+        assertTrue(response.success)
+        assertTrue(
+            response.message.startsWith(
+                "Elenco dei contenitori che hanno oggetti uguali"
+            )
+        )
+    }
+
+    @Test
+    fun objectPlusLocationAlias_withoutBoxAlias_staysMotoreA() {
+
+        val response =
+            dispatcher.dispatch(
+                "In quale posto custodisco le viti",
+                index
+            )
+
+        assertTrue(response.success)
+        assertEquals(
+            SearchRequestType.ARCHIVE_NAVIGATION,
+            response.requestType
+        )
+        assertEquals(
+            SearchArchiveTransformation.OBJECT_TO_BOX,
+            response.archiveTransformation
+        )
+        assertEquals(
+            "Vite",
+            response.objectTerms
+        )
+    }
+
+    @Test
+    fun locationAliasPlusContainersAndObject_sameObjectOnBoxLocationNavigation() {
+
+        val archive =
+            crossLocationObjectArchive()
+
+        val response =
+            dispatcher.dispatch(
+                "Elenco dei contenitori con posizione diversa e oggetti uguali",
+                archive
+            )
+
+        val marker =
+            response.debugMarker.orEmpty()
+
+        assertFalse(response.requiresClarification)
+        assertEquals(
+            SearchRequestType.ARCHIVE_QUERY,
+            response.requestType
+        )
+        assertTrue(
+            marker,
+            marker.contains(
+                "entityType=OBJECT"
+            )
+        )
+        assertTrue(
+            marker,
+            marker.contains(
+                "entityType=BOX"
+            )
+        )
+        assertTrue(
+            marker,
+            marker.contains(
+                "entityType=LOCATION"
+            )
+        )
+        assertTrue(
+            marker,
+            marker.contains(
+                "[PATH] [OBJECT, BOX, LOCATION]"
+            )
+        )
+        assertEquals(
+            SearchArchiveTransformation.OBJECT_TO_LOCATION,
+            response.archiveTransformation
+        )
+        assertTrue(response.success)
+        assertTrue(
+            response.message.contains(
+                "Vite: Cassetta 1, prova"
+            )
+        )
+        assertFalse(
+            response.message.contains(
+                "Box 1"
+            )
+        )
+        assertFalse(
+            response.message.contains(
+                "ENGINE_A_RESULT"
+            )
+        )
+        assertFalse(
+            response.message.startsWith(
+                "Elenco dei contenitori che hanno oggetti uguali"
+            )
+        )
+        assertFalse(
+            response.message.startsWith(
+                "Elenco dei contenitori che hanno categoria diversa"
+            )
+        )
+    }
+
+    @Test
+    fun objectLocationQuery_sameLocation_usesCatalogNoResults() {
+
+        val archive =
+            index.copy(
+                boxRecords = listOf(
+                    SearchArchiveBoxRecord(
+                        name = "Cassetta 1",
+                        locationName = "Cantina"
+                    ),
+                    SearchArchiveBoxRecord(
+                        name = "prova",
+                        locationName = "Cantina"
+                    )
+                ),
+                objectRecords = listOf(
+                    SearchArchiveObjectRecord(
+                        name = "Vite",
+                        boxName = "Cassetta 1",
+                        boxLocation = "Cantina"
+                    ),
+                    SearchArchiveObjectRecord(
+                        name = "Vite",
+                        boxName = "prova",
+                        boxLocation = "Cantina"
+                    )
+                )
+            )
+
+        val response =
+            dispatcher.dispatch(
+                "Elenco dei contenitori con posizione diversa e oggetti uguali",
+                archive
+            )
+
+        assertEquals(
+            SearchRequestType.ARCHIVE_QUERY,
+            response.requestType
+        )
+        assertFalse(response.success)
+        assertEquals(
+            SearchConfiguration.MSG_NO_RESULTS,
+            response.message
+        )
+    }
+
+    @Test
+    fun f7OfficialQuestion_doesNotAddCategoryWithoutCategoryAlias() {
+
+        val response =
+            dispatcher.dispatch(
+                SearchF7Pattern.VARIANTS[0],
+                duplicateArchive()
+            )
+
+        val entitiesLine =
+            response.debugMarker.orEmpty()
+                .lineSequence()
+                .first {
+                    it.startsWith(
+                        "[M3] ENTITIES="
+                    )
+                }
+
+        assertFalse(
+            entitiesLine,
+            entitiesLine.contains(
+                "CATEGORY"
+            )
+        )
+        assertEquals(
+            SearchRequestType.ARCHIVE_QUERY,
+            response.requestType
+        )
+        assertTrue(response.success)
+        assertTrue(
+            response.message.startsWith(
+                "Elenco dei contenitori che hanno oggetti uguali"
+            )
+        )
     }
 
     private fun duplicateArchive() =
@@ -1354,13 +1782,13 @@ class SearchOfficialPipelineTest {
     }
 
     @Test
-    fun f8OfficialVariants_routeToEngineB_notContainerList() {
+    fun f8OfficialVariants_sameObjectOnBoxCategoryNavigation() {
 
         val archive =
             crossCategoryArchive()
 
         val heading =
-            "Elenco dei contenitori che hanno categoria diversa e contengono oggetti uguali"
+            SearchF8Pattern.VARIANTS[6]
 
         SearchF8Pattern.VARIANTS.forEach { question ->
 
@@ -1370,6 +1798,9 @@ class SearchOfficialPipelineTest {
                     archive
                 )
 
+            val marker =
+                response.debugMarker.orEmpty()
+
             assertFalse(
                 question,
                 response.requiresClarification
@@ -1378,6 +1809,35 @@ class SearchOfficialPipelineTest {
                 question,
                 SearchRequestType.ARCHIVE_QUERY,
                 response.requestType
+            )
+            assertTrue(
+                question + "\n" + marker,
+                marker.contains(
+                    "entityType=OBJECT"
+                )
+            )
+            assertTrue(
+                question + "\n" + marker,
+                marker.contains(
+                    "entityType=BOX"
+                )
+            )
+            assertTrue(
+                question + "\n" + marker,
+                marker.contains(
+                    "entityType=CATEGORY"
+                )
+            )
+            assertTrue(
+                question + "\n" + marker,
+                marker.contains(
+                    "[PATH] [OBJECT, BOX, CATEGORY]"
+                )
+            )
+            assertEquals(
+                question,
+                SearchArchiveTransformation.OBJECT_TO_CATEGORY,
+                response.archiveTransformation
             )
             assertTrue(
                 question,
@@ -1392,13 +1852,7 @@ class SearchOfficialPipelineTest {
             assertTrue(
                 question,
                 response.message.contains(
-                    "Cassetta 1"
-                )
-            )
-            assertTrue(
-                question,
-                response.message.contains(
-                    "prova"
+                    "Vite: Cassetta 1, prova"
                 )
             )
             assertFalse(
@@ -1407,20 +1861,17 @@ class SearchOfficialPipelineTest {
                     "Box 1"
                 )
             )
-            assertEquals(
+            assertFalse(
                 question,
-                SearchF8Pattern.ID,
-                response.debugMarker
-                    .orEmpty()
-                    .lineSequence()
-                    .first {
-                        it.startsWith(
-                            "[PATTERN]"
-                        )
-                    }
-                    .substringAfter(
-                        "[PATTERN] "
-                    )
+                response.message.contains(
+                    "ENGINE_A_RESULT"
+                )
+            )
+            assertFalse(
+                question,
+                response.message.startsWith(
+                    "Elenco dei contenitori che hanno oggetti uguali"
+                )
             )
         }
     }
@@ -1438,28 +1889,27 @@ class SearchOfficialPipelineTest {
             )
 
         assertEquals(
-            SearchF8Pattern.ID,
-            response.debugMarker
-                .orEmpty()
-                .lineSequence()
-                .first {
-                    it.startsWith(
-                        "[PATTERN]"
-                    )
-                }
-                .substringAfter(
-                    "[PATTERN] "
-                )
+            SearchRequestType.ARCHIVE_QUERY,
+            response.requestType
+        )
+        assertEquals(
+            SearchArchiveTransformation.OBJECT_TO_CATEGORY,
+            response.archiveTransformation
         )
         assertTrue(response.success)
         assertTrue(
             response.message.contains(
-                "Cassetta 1"
+                "Vite: Cassetta 1, prova"
             )
         )
         assertFalse(
             response.message.contains(
                 "Box 1"
+            )
+        )
+        assertFalse(
+            response.message.startsWith(
+                "Elenco dei contenitori che hanno oggetti uguali"
             )
         )
     }
@@ -1484,8 +1934,75 @@ class SearchOfficialPipelineTest {
         )
     }
 
+    private fun crossLocationObjectArchive() =
+        index.copy(
+            boxRecords = listOf(
+                SearchArchiveBoxRecord(
+                    name = "Cassetta 1",
+                    locationName = "Cantina"
+                ),
+                SearchArchiveBoxRecord(
+                    name = "prova",
+                    locationName = "Mansarda"
+                ),
+                SearchArchiveBoxRecord(
+                    name = "Box 1",
+                    locationName = "Cantina"
+                )
+            ),
+            objectRecords = listOf(
+                SearchArchiveObjectRecord(
+                    name = "Vite",
+                    boxName = "Cassetta 1",
+                    boxLocation = "Cantina"
+                ),
+                SearchArchiveObjectRecord(
+                    name = "Vite",
+                    boxName = "prova",
+                    boxLocation = "Mansarda"
+                ),
+                SearchArchiveObjectRecord(
+                    name = "Trapano elettrico",
+                    boxName = "Box 1",
+                    boxLocation = "Cantina"
+                )
+            )
+        )
+
+    private fun crossLocationArchive() =
+        index.copy(
+            boxRecords = listOf(
+                SearchArchiveBoxRecord(
+                    name = "Cassetta 1",
+                    locationName = "Cantina"
+                ),
+                SearchArchiveBoxRecord(
+                    name = "prova",
+                    locationName = "Mansarda"
+                ),
+                SearchArchiveBoxRecord(
+                    name = "Box 1",
+                    locationName = "Cantina"
+                )
+            )
+        )
+
     private fun crossCategoryArchive() =
         index.copy(
+            boxRecords = listOf(
+                SearchArchiveBoxRecord(
+                    name = "Cassetta 1",
+                    categoryName = "Ferramenta"
+                ),
+                SearchArchiveBoxRecord(
+                    name = "prova",
+                    categoryName = "Alimenti e Bevande"
+                ),
+                SearchArchiveBoxRecord(
+                    name = "Box 1",
+                    categoryName = "Ferramenta"
+                )
+            ),
             objectRecords = listOf(
                 SearchArchiveObjectRecord(
                     name = "Vite",

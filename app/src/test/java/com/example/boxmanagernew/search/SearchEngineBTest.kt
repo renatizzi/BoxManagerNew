@@ -184,6 +184,66 @@ class SearchEngineBTest {
     }
 
     @Test
+    fun objectLocationDifferentPlaces_listsBothBoxes() {
+
+        val response =
+            engine.execute(
+                SearchEngineB.objectLocationQuery(),
+                SearchArchiveIndex(
+                    objectRecords = listOf(
+                        SearchArchiveObjectRecord(
+                            name = "Vite",
+                            boxName = "Cassetta 1",
+                            boxLocation = "Cantina"
+                        ),
+                        SearchArchiveObjectRecord(
+                            name = "Vite",
+                            boxName = "prova",
+                            boxLocation = "Mansarda"
+                        )
+                    )
+                )
+            )
+
+        assertTrue(response.success)
+        assertTrue(response.message.contains("Vite: Cassetta 1, prova"))
+        assertFalse(
+            response.message.startsWith(
+                "Elenco dei contenitori che hanno oggetti uguali"
+            )
+        )
+    }
+
+    @Test
+    fun objectLocationSamePlace_isNotAHit() {
+
+        val response =
+            engine.execute(
+                SearchEngineB.objectLocationQuery(),
+                SearchArchiveIndex(
+                    objectRecords = listOf(
+                        SearchArchiveObjectRecord(
+                            name = "Vite",
+                            boxName = "Cassetta 1",
+                            boxLocation = "Cantina"
+                        ),
+                        SearchArchiveObjectRecord(
+                            name = "Vite",
+                            boxName = "prova",
+                            boxLocation = "Cantina"
+                        )
+                    )
+                )
+            )
+
+        assertFalse(response.success)
+        assertEquals(
+            SearchConfiguration.MSG_NO_RESULTS,
+            response.message
+        )
+    }
+
+    @Test
     fun f8OnlyCrossCategoryPair_ignoresOtherSameCategoryDuplicates() {
 
         val response =

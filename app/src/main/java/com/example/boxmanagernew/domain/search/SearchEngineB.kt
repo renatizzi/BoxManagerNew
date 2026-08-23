@@ -12,10 +12,14 @@ import com.example.boxmanagernew.util.CanonicalNormalizer
 /**
  * Motore B: elaborazione della Query Archivistica.
  * F7 / PATTERN_007: oggetti uguali / doppioni.
- * F8 / PATTERN_008: per ogni nome oggetto presente in più box,
- * restano solo i gruppi con almeno due categorie distinte.
- * Chiave oggetto: solo il nome (accenti, caratteri speciali,
- * singolare/plurale se una sola parola). Quantità e descrizione escluse.
+ * BOX⇄CATEGORY: confronto sulle coppie contenitore-categoria
+ * restituite dalla navigazione.
+ * F8 / PATTERN_008: stesso tipo di oggetto su quei dati
+ * (OBJECT⇄BOX concatenato a BOX⇄CATEGORY).
+ * BOX⇄LOCATION: confronto sulle coppie contenitore-posizione
+ * restituite dalla navigazione.
+ * F6/F9: stesso tipo di oggetto su quei dati
+ * (OBJECT⇄BOX concatenato a BOX⇄LOCATION).
  */
 class SearchEngineB {
 
@@ -32,33 +36,109 @@ class SearchEngineB {
             return unavailable()
         }
 
-        val f8 =
-            query.filters.any { filter ->
-                filter == SearchF8Pattern.ID
-            }
-
         val f7 =
             query.filters.any { filter ->
                 filter == SearchF7Pattern.ID
             }
 
-        if (!f8 && !f7) {
+        if (f7) {
 
-            return unavailable()
-        }
-
-        val boxes =
-            if (f8) {
-                boxesWithCrossCategoryDuplicates(
-                    index
-                )
-            } else {
+            val boxes =
                 boxesWithDuplicateObjects(
                     index
                 )
-            }
 
-        if (boxes.isEmpty()) {
+            return compareResult(
+                boxes,
+                SearchF7Pattern.VARIANTS[2]
+            )
+        }
+
+        val f8 =
+            query.targetEntities.contains(
+                CoreEntityType.OBJECT
+            ) &&
+                query.targetEntities.contains(
+                    CoreEntityType.BOX
+                ) &&
+                query.targetEntities.contains(
+                    CoreEntityType.CATEGORY
+                )
+
+        if (f8) {
+
+            return compareResult(
+                boxesWithCrossCategoryDuplicates(
+                    index
+                ),
+                SearchF8Pattern.VARIANTS[6]
+            )
+        }
+
+        val objectLocation =
+            query.targetEntities.contains(
+                CoreEntityType.OBJECT
+            ) &&
+                query.targetEntities.contains(
+                    CoreEntityType.BOX
+                ) &&
+                query.targetEntities.contains(
+                    CoreEntityType.LOCATION
+                )
+
+        if (objectLocation) {
+
+            return compareResult(
+                boxesWithCrossLocationDuplicates(
+                    index
+                ),
+                heading = null
+            )
+        }
+
+        if (
+            query.targetEntities.contains(
+                CoreEntityType.BOX
+            ) &&
+            query.targetEntities.contains(
+                CoreEntityType.CATEGORY
+            )
+        ) {
+
+            return compareResult(
+                boxCategoryCompareLines(
+                    index
+                ),
+                heading = null
+            )
+        }
+
+        if (
+            query.targetEntities.contains(
+                CoreEntityType.BOX
+            ) &&
+            query.targetEntities.contains(
+                CoreEntityType.LOCATION
+            )
+        ) {
+
+            return compareResult(
+                boxLocationCompareLines(
+                    index
+                ),
+                heading = null
+            )
+        }
+
+        return unavailable()
+    }
+
+    private fun compareResult(
+        lines: List<String>,
+        heading: String?
+    ): SearchResponse {
+
+        if (lines.isEmpty()) {
 
             return SearchResponse(
                 success = false,
@@ -69,23 +149,206 @@ class SearchEngineB {
             )
         }
 
-        val heading =
-            if (f8) {
-                SearchF8Pattern.VARIANTS[6]
+        val body =
+            lines.joinToString(
+                "\n"
+            )
+
+        val message =
+            if (heading.isNullOrBlank()) {
+                body
             } else {
-                SearchF7Pattern.VARIANTS[2]
+                heading + "\n" + body
             }
 
         return SearchResponse(
             success = true,
-            message =
-                heading + "\n" +
-                    boxes.joinToString(
-                        "\n"
-                    ),
+            message = message,
             requestType =
                 SearchRequestType.ARCHIVE_QUERY
         )
+    }
+
+    private fun boxCategoryCompareLines(
+        index: SearchArchiveIndex
+    ): List<String> {
+
+        val pairs =
+            boxCategoryPairs(
+                index
+            )
+
+        val categoryKeys =
+            pairs
+                .map { pair ->
+                    CanonicalNormalizer.canonical(
+                        pair.second
+                    )
+                }
+                .distinct()
+
+        if (categoryKeys.size < 2) {
+            return emptyList()
+        }
+
+        return pairs
+            .groupBy { pair ->
+                pair.second
+            }
+            .filter { (_, group) ->
+                group
+                    .map { pair ->
+                        pair.first
+                    }
+                    .distinct()
+                    .size == 1
+            }
+            .toSortedMap(
+                String.CASE_INSENSITIVE_ORDER
+            )
+            .flatMap { (category, group) ->
+
+                val boxes =
+                    group
+                        .map { pair ->
+                            pair.first
+                        }
+                        .distinct()
+                        .sortedWith(
+                            String.CASE_INSENSITIVE_ORDER
+                        )
+
+                listOf(
+                    category
+                ) + boxes
+            }
+    }
+
+    private fun boxLocationCompareLines(
+        index: SearchArchiveIndex
+    ): List<String> {
+
+        val pairs =
+            boxLocationPairs(
+                index
+            )
+
+        val locationKeys =
+            pairs
+                .map { pair ->
+                    CanonicalNormalizer.canonical(
+                        pair.second
+                    )
+                }
+                .distinct()
+
+        if (locationKeys.size < 2) {
+            return emptyList()
+        }
+
+        return pairs
+            .groupBy { pair ->
+                pair.second
+            }
+            .filter { (_, group) ->
+                group
+                    .map { pair ->
+                        pair.first
+                    }
+                    .distinct()
+                    .size == 1
+            }
+            .toSortedMap(
+                String.CASE_INSENSITIVE_ORDER
+            )
+            .flatMap { (location, group) ->
+
+                val boxes =
+                    group
+                        .map { pair ->
+                            pair.first
+                        }
+                        .distinct()
+                        .sortedWith(
+                            String.CASE_INSENSITIVE_ORDER
+                        )
+
+                listOf(
+                    location
+                ) + boxes
+            }
+    }
+
+    private fun boxLocationPairs(
+        index: SearchArchiveIndex
+    ): List<Pair<String, String>> {
+
+        val fromBoxes =
+            index.boxRecords
+                .filter { record ->
+                    record.name.isNotBlank() &&
+                        record.locationName.isNotBlank()
+                }
+                .distinctBy { record ->
+                    record.name.lowercase()
+                }
+                .map { record ->
+                    record.name to
+                        record.locationName
+                }
+
+        if (fromBoxes.isNotEmpty()) {
+            return fromBoxes
+        }
+
+        return index.objectRecords
+            .filter { record ->
+                record.boxName.isNotBlank() &&
+                    record.boxLocation.isNotBlank()
+            }
+            .distinctBy { record ->
+                record.boxName.lowercase()
+            }
+            .map { record ->
+                record.boxName to
+                    record.boxLocation
+            }
+    }
+
+    private fun boxCategoryPairs(
+        index: SearchArchiveIndex
+    ): List<Pair<String, String>> {
+
+        val fromBoxes =
+            index.boxRecords
+                .filter { record ->
+                    record.name.isNotBlank() &&
+                        record.categoryName.isNotBlank()
+                }
+                .distinctBy { record ->
+                    record.name.lowercase()
+                }
+                .map { record ->
+                    record.name to
+                        record.categoryName
+                }
+
+        if (fromBoxes.isNotEmpty()) {
+            return fromBoxes
+        }
+
+        return index.objectRecords
+            .filter { record ->
+                record.boxName.isNotBlank() &&
+                    record.boxCategory.isNotBlank()
+            }
+            .distinctBy { record ->
+                record.boxName.lowercase()
+            }
+            .map { record ->
+                record.boxName to
+                    record.boxCategory
+            }
     }
 
     private fun unavailable():
@@ -114,45 +377,55 @@ class SearchEngineB {
         index: SearchArchiveIndex
     ): List<String> {
 
-        val records =
-            index.objectRecords.filter { record ->
-
-                record.boxName.isNotBlank() &&
-                    record.name.isNotBlank()
+        val categoryByBox =
+            boxCategoryPairs(
+                index
+            ).associate { pair ->
+                pair.first.lowercase() to
+                    pair.second
             }
 
-        return records
-            .groupBy { record ->
-                CanonicalNormalizer.canonical(
-                    record.name
-                )
-            }
-            .mapNotNull { (_, group) ->
+        return duplicateNameGroups(
+            index
+        )
+            .mapNotNull { group ->
 
-                val boxesByCategory =
+                val boxesWithCategory =
                     group
                         .map { record ->
-                            record.boxName to
-                                categoryKeyOf(
-                                    record
-                                )
+                            record.boxName
                         }
-                        .filter { pair ->
-                            pair.second.isNotEmpty()
+                        .filter { boxName ->
+                            boxName.isNotBlank()
                         }
-                        .distinctBy { pair ->
-                            pair.first.lowercase()
+                        .distinctBy { boxName ->
+                            boxName.lowercase()
+                        }
+                        .mapNotNull { boxName ->
+
+                            val category =
+                                categoryByBox[
+                                    boxName.lowercase()
+                                ].orEmpty()
+
+                            if (category.isBlank()) {
+                                null
+                            } else {
+                                boxName to category
+                            }
                         }
 
                 val categories =
-                    boxesByCategory
+                    boxesWithCategory
                         .map { pair ->
-                            pair.second
+                            CanonicalNormalizer.canonical(
+                                pair.second
+                            )
                         }
                         .distinct()
 
                 if (
-                    boxesByCategory.size < 2 ||
+                    boxesWithCategory.size < 2 ||
                     categories.size < 2
                 ) {
                     return@mapNotNull null
@@ -168,7 +441,7 @@ class SearchEngineB {
                         )
 
                 val boxNames =
-                    boxesByCategory
+                    boxesWithCategory
                         .map { pair ->
                             pair.first
                         }
@@ -186,19 +459,90 @@ class SearchEngineB {
             )
     }
 
-    private fun categoryKeyOf(
-        record: SearchArchiveObjectRecord
-    ): String {
+    private fun boxesWithCrossLocationDuplicates(
+        index: SearchArchiveIndex
+    ): List<String> {
 
-        if (record.categoryId != 0) {
+        val locationByBox =
+            boxLocationPairs(
+                index
+            ).associate { pair ->
+                pair.first.lowercase() to
+                    pair.second
+            }
 
-            return "id:" +
-                record.categoryId
-        }
-
-        return categoryKey(
-            record.boxCategory
+        return duplicateNameGroups(
+            index
         )
+            .mapNotNull { group ->
+
+                val boxesWithLocation =
+                    group
+                        .map { record ->
+                            record.boxName
+                        }
+                        .filter { boxName ->
+                            boxName.isNotBlank()
+                        }
+                        .distinctBy { boxName ->
+                            boxName.lowercase()
+                        }
+                        .mapNotNull { boxName ->
+
+                            val location =
+                                locationByBox[
+                                    boxName.lowercase()
+                                ].orEmpty()
+
+                            if (location.isBlank()) {
+                                null
+                            } else {
+                                boxName to location
+                            }
+                        }
+
+                val locations =
+                    boxesWithLocation
+                        .map { pair ->
+                            CanonicalNormalizer.canonical(
+                                pair.second
+                            )
+                        }
+                        .distinct()
+
+                if (
+                    boxesWithLocation.size < 2 ||
+                    locations.size < 2
+                ) {
+                    return@mapNotNull null
+                }
+
+                val objectName =
+                    group
+                        .map { record ->
+                            record.name
+                        }
+                        .minWith(
+                            String.CASE_INSENSITIVE_ORDER
+                        )
+
+                val boxNames =
+                    boxesWithLocation
+                        .map { pair ->
+                            pair.first
+                        }
+                        .sortedWith(
+                            String.CASE_INSENSITIVE_ORDER
+                        )
+
+                objectName + ": " +
+                    boxNames.joinToString(
+                        ", "
+                    )
+            }
+            .sortedWith(
+                String.CASE_INSENSITIVE_ORDER
+            )
     }
 
     private fun boxesFromGroups(
@@ -300,15 +644,6 @@ class SearchEngineB {
             }
     }
 
-    private fun categoryKey(
-        category: String
-    ): String {
-
-        return CanonicalNormalizer.canonical(
-            category.trim()
-        )
-    }
-
     private fun sameSearchName(
         left: String,
         right: String
@@ -351,6 +686,46 @@ class SearchEngineB {
     }
 
     companion object {
+
+        fun objectLocationQuery():
+                SearchArchiveQuery =
+
+            SearchArchiveQuery(
+                operation =
+                    SearchArchiveQueryOperation.COMPARE,
+                targetEntities =
+                    setOf(
+                        CoreEntityType.OBJECT,
+                        CoreEntityType.BOX,
+                        CoreEntityType.LOCATION
+                    )
+            )
+
+        fun boxLocationQuery():
+                SearchArchiveQuery =
+
+            SearchArchiveQuery(
+                operation =
+                    SearchArchiveQueryOperation.COMPARE,
+                targetEntities =
+                    setOf(
+                        CoreEntityType.BOX,
+                        CoreEntityType.LOCATION
+                    )
+            )
+
+        fun boxCategoryQuery():
+                SearchArchiveQuery =
+
+            SearchArchiveQuery(
+                operation =
+                    SearchArchiveQueryOperation.COMPARE,
+                targetEntities =
+                    setOf(
+                        CoreEntityType.BOX,
+                        CoreEntityType.CATEGORY
+                    )
+            )
 
         fun f7Query():
                 SearchArchiveQuery =

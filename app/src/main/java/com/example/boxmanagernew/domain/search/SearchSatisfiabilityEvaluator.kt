@@ -46,6 +46,8 @@ class SearchSatisfiabilityEvaluator {
                     indicators
                 ) &&
                     !navigationSatisfiable &&
+                    transformation !=
+                    SearchArchiveTransformation.OBJECT_TO_LOCATION &&
                     !SearchF8Pattern.isOfficialFamily(
                         normalizedQuestion
                     )

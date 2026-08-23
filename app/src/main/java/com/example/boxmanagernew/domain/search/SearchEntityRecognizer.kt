@@ -9,7 +9,9 @@ import com.example.boxmanagernew.domain.search.model.SearchRecognizedEntity
 class SearchEntityRecognizer {
 
     fun recognize(
-        lookupResult: SearchArchiveLookupResult
+        lookupResult: SearchArchiveLookupResult,
+        indicators: Map<String, Set<String>> =
+            emptyMap()
     ): SearchRecognizedEntitiesResult {
 
         val hits =
@@ -38,10 +40,105 @@ class SearchEntityRecognizer {
                     hits.categories
                 )
             ).filterNotNull()
+                .toMutableList()
+
+        val hasCategoryAlias =
+            indicators[
+                SearchLexicalIndicatorMatrix.CATEGORY
+            ].orEmpty().isNotEmpty()
+
+        val hasBoxAlias =
+            indicators[
+                SearchLexicalIndicatorMatrix.BOX
+            ].orEmpty().isNotEmpty()
+
+        val hasObjectAlias =
+            indicators[
+                SearchLexicalIndicatorMatrix.OBJECT
+            ].orEmpty().isNotEmpty()
+
+        val hasLocationAlias =
+            indicators[
+                SearchLexicalIndicatorMatrix.LOCATION
+            ].orEmpty().any { term ->
+                SearchCoreAliases.isLocationAlias(
+                    term
+                )
+            }
+
+        if (hasCategoryAlias && hasBoxAlias) {
+
+            addTypeOnly(
+                recognizedEntities,
+                CoreEntityType.CATEGORY,
+                SearchArchiveScope.CATEGORY
+            )
+            addTypeOnly(
+                recognizedEntities,
+                CoreEntityType.BOX,
+                SearchArchiveScope.BOX
+            )
+
+            if (hasObjectAlias) {
+
+                addTypeOnly(
+                    recognizedEntities,
+                    CoreEntityType.OBJECT,
+                    SearchArchiveScope.OBJECT
+                )
+            }
+        }
+
+        if (hasLocationAlias && hasBoxAlias) {
+
+            addTypeOnly(
+                recognizedEntities,
+                CoreEntityType.LOCATION,
+                SearchArchiveScope.LOCATION
+            )
+            addTypeOnly(
+                recognizedEntities,
+                CoreEntityType.BOX,
+                SearchArchiveScope.BOX
+            )
+
+            if (hasObjectAlias) {
+
+                addTypeOnly(
+                    recognizedEntities,
+                    CoreEntityType.OBJECT,
+                    SearchArchiveScope.OBJECT
+                )
+            }
+        }
 
         return SearchRecognizedEntitiesResult(
             recognizedEntities =
                 recognizedEntities
+        )
+    }
+
+    private fun addTypeOnly(
+        recognizedEntities: MutableList<SearchRecognizedEntity>,
+        type: CoreEntityType,
+        scope: SearchArchiveScope
+    ) {
+
+        if (
+            recognizedEntities.any { entity ->
+                entity.entityType == type
+            }
+        ) {
+            return
+        }
+
+        recognizedEntities.add(
+            SearchRecognizedEntity(
+                entityType = type,
+                scope = scope,
+                matchCount = 0,
+                keys = emptyList()
+            )
         )
     }
 

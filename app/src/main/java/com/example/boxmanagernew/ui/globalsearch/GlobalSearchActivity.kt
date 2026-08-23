@@ -16,8 +16,7 @@ import com.example.boxmanagernew.R
 import com.example.boxmanagernew.data.local.DatabaseProvider
 import com.example.boxmanagernew.domain.search.GlobalSearchDispatcher
 import com.example.boxmanagernew.domain.search.SearchConfiguration
-import com.example.boxmanagernew.domain.search.SearchEngineB
-import com.example.boxmanagernew.domain.search.SearchF8Pattern
+import com.example.boxmanagernew.domain.search.model.SearchArchiveBoxRecord
 import com.example.boxmanagernew.domain.search.model.SearchArchiveIndex
 import com.example.boxmanagernew.domain.search.model.SearchArchiveObjectRecord
 import com.example.boxmanagernew.domain.search.model.SearchMessage
@@ -198,32 +197,6 @@ class GlobalSearchActivity : BaseActivity() {
             }
 
             if (
-                SearchF8Pattern.matches(
-                    question
-                )
-            ) {
-
-                val f8Response =
-                    if (
-                        response.requestType ==
-                        SearchRequestType.ARCHIVE_QUERY
-                    ) {
-                        response
-                    } else {
-                        SearchEngineB().execute(
-                            SearchEngineB.f8Query(),
-                            index
-                        )
-                    }
-
-                showReply(
-                    f8Response.message
-                )
-
-                return@launch
-            }
-
-            if (
                 response.success &&
                 response.requestType ==
                 SearchRequestType.ARCHIVE_NAVIGATION
@@ -297,6 +270,19 @@ class GlobalSearchActivity : BaseActivity() {
                         .map { it.name },
                 boxes =
                     boxes.map { it.name },
+                boxRecords =
+                    boxes.map { box ->
+
+                        SearchArchiveBoxRecord(
+                            name = box.name,
+                            categoryName =
+                                categoryNameById[
+                                    box.categoryId
+                                ].orEmpty(),
+                            locationName =
+                                box.position
+                        )
+                    },
                 objectRecords =
                     objectRows.map { row ->
 
@@ -310,6 +296,8 @@ class GlobalSearchActivity : BaseActivity() {
                                 categoryNameByBoxId[
                                     row.boxId
                                 ].orEmpty(),
+                            boxLocation =
+                                row.boxPosition,
                             categoryId =
                                 categoryIdByBoxId[
                                     row.boxId

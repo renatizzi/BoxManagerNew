@@ -10,5 +10,7 @@ data class SearchArchiveObjectRecord(
 
     val boxCategory: String = "",
 
+    val boxLocation: String = "",
+
     val categoryId: Int = 0
 )

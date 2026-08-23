@@ -83,7 +83,8 @@ class GlobalSearchDispatcher(
 
         val recognizedEntitiesResult =
             entityRecognizer.recognize(
-                lookupResult
+                lookupResult,
+                lexicalIndicatorGroups
             )
 
         val fulcrumResult =
@@ -96,7 +97,8 @@ class GlobalSearchDispatcher(
 
         val archivePath =
             pathBuilder.build(
-                fulcrumResult.fulcrum
+                fulcrumResult.fulcrum,
+                recognizedEntitiesResult.recognizedEntities
             )
 
         val archiveTransformation =
@@ -153,7 +155,9 @@ class GlobalSearchDispatcher(
                 emptySet()
             }
 
-        if (homonymCores.size >= 2) {
+        if (
+            homonymCores.size >= 2
+        ) {
 
             return SearchResponse(
                 success = false,
@@ -169,30 +173,6 @@ class GlobalSearchDispatcher(
                 archiveTransformation =
                     archiveTransformation,
                 requestType = requestType,
-                debugMarker = debugMarker
-            )
-        }
-
-        if (
-            archiveIndex != null &&
-            SearchF8Pattern.matches(
-                normalizedQuestion.normalizedQuestion
-            )
-        ) {
-
-            val engineResponse =
-                engineB.execute(
-                    SearchEngineB.f8Query(),
-                    archiveIndex
-                )
-
-            return engineResponse.copy(
-                dominantFulcrum =
-                    fulcrumResult.fulcrum,
-                archiveTransformation =
-                    archiveTransformation,
-                requestType =
-                    SearchRequestType.ARCHIVE_QUERY,
                 debugMarker = debugMarker
             )
         }
@@ -244,27 +224,105 @@ class GlobalSearchDispatcher(
 
             if (
                 archiveIndex != null &&
-                (
-                    satisfiability.matchedPatternId ==
-                    SearchF7Pattern.ID ||
-                    satisfiability.matchedPatternId ==
-                    SearchF8Pattern.ID
-                )
+                satisfiability.matchedPatternId ==
+                SearchF7Pattern.ID
             ) {
-
-                val engineQuery =
-                    if (
-                        satisfiability.matchedPatternId ==
-                        SearchF8Pattern.ID
-                    ) {
-                        SearchEngineB.f8Query()
-                    } else {
-                        SearchEngineB.f7Query()
-                    }
 
                 val engineResponse =
                     engineB.execute(
-                        engineQuery,
+                        SearchEngineB.f7Query(),
+                        archiveIndex
+                    )
+
+                return engineResponse.copy(
+                    dominantFulcrum =
+                        fulcrumResult.fulcrum,
+                    archiveTransformation =
+                        archiveTransformation,
+                    requestType =
+                        SearchRequestType.ARCHIVE_QUERY,
+                    debugMarker = debugMarker
+                )
+            }
+
+            if (
+                archiveIndex != null &&
+                archiveTransformation ==
+                SearchArchiveTransformation.OBJECT_TO_LOCATION
+            ) {
+
+                val engineResponse =
+                    engineB.execute(
+                        SearchEngineB.objectLocationQuery(),
+                        archiveIndex
+                    )
+
+                return engineResponse.copy(
+                    dominantFulcrum =
+                        fulcrumResult.fulcrum,
+                    archiveTransformation =
+                        archiveTransformation,
+                    requestType =
+                        SearchRequestType.ARCHIVE_QUERY,
+                    debugMarker = debugMarker
+                )
+            }
+
+            if (
+                archiveIndex != null &&
+                archiveTransformation ==
+                SearchArchiveTransformation.OBJECT_TO_CATEGORY
+            ) {
+
+                val engineResponse =
+                    engineB.execute(
+                        SearchEngineB.f8Query(),
+                        archiveIndex
+                    )
+
+                return engineResponse.copy(
+                    dominantFulcrum =
+                        fulcrumResult.fulcrum,
+                    archiveTransformation =
+                        archiveTransformation,
+                    requestType =
+                        SearchRequestType.ARCHIVE_QUERY,
+                    debugMarker = debugMarker
+                )
+            }
+
+            if (
+                archiveIndex != null &&
+                archiveTransformation ==
+                SearchArchiveTransformation.BOX_TO_LOCATION
+            ) {
+
+                val engineResponse =
+                    engineB.execute(
+                        SearchEngineB.boxLocationQuery(),
+                        archiveIndex
+                    )
+
+                return engineResponse.copy(
+                    dominantFulcrum =
+                        fulcrumResult.fulcrum,
+                    archiveTransformation =
+                        archiveTransformation,
+                    requestType =
+                        SearchRequestType.ARCHIVE_QUERY,
+                    debugMarker = debugMarker
+                )
+            }
+
+            if (
+                archiveIndex != null &&
+                archiveTransformation ==
+                SearchArchiveTransformation.BOX_TO_CATEGORY
+            ) {
+
+                val engineResponse =
+                    engineB.execute(
+                        SearchEngineB.boxCategoryQuery(),
                         archiveIndex
                     )
 

@@ -12,6 +12,30 @@ class SearchArchiveTransformationResolver {
 
         val steps = path.steps
 
+        if (
+            steps.take(3) ==
+            listOf(
+                SearchArchivePathStep.OBJECT,
+                SearchArchivePathStep.BOX,
+                SearchArchivePathStep.CATEGORY
+            )
+        ) {
+
+            return SearchArchiveTransformation.OBJECT_TO_CATEGORY
+        }
+
+        if (
+            steps.take(3) ==
+            listOf(
+                SearchArchivePathStep.OBJECT,
+                SearchArchivePathStep.BOX,
+                SearchArchivePathStep.LOCATION
+            )
+        ) {
+
+            return SearchArchiveTransformation.OBJECT_TO_LOCATION
+        }
+
         if (steps.size < 2) {
             return SearchArchiveTransformation.NONE
         }

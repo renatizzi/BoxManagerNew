@@ -11,7 +11,10 @@ data class SearchArchiveIndex(
     val boxes: List<String> = emptyList(),
 
     val objectRecords:
-    List<SearchArchiveObjectRecord> = emptyList()
+    List<SearchArchiveObjectRecord> = emptyList(),
+
+    val boxRecords:
+    List<SearchArchiveBoxRecord> = emptyList()
 ) {
 
     fun archivalObjects():
