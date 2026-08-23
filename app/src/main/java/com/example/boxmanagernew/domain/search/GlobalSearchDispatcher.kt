@@ -7,6 +7,7 @@ import com.example.boxmanagernew.domain.search.model.SearchArchiveTransformation
 import com.example.boxmanagernew.domain.search.model.SearchFulcrum
 import com.example.boxmanagernew.domain.search.model.SearchRequestType
 import com.example.boxmanagernew.domain.search.model.SearchResponse
+import com.example.boxmanagernew.domain.search.model.SearchSatisfiabilityResult
 import com.example.boxmanagernew.util.CanonicalNormalizer
 
 /**
@@ -39,7 +40,14 @@ class GlobalSearchDispatcher(
 
     private val transformationResolver:
     SearchArchiveTransformationResolver =
-        SearchArchiveTransformationResolver()
+        SearchArchiveTransformationResolver(),
+
+    private val satisfiabilityEvaluator:
+    SearchSatisfiabilityEvaluator =
+        SearchSatisfiabilityEvaluator(),
+
+    private val engineB: SearchEngineB =
+        SearchEngineB()
 ) {
 
     fun dispatch(
@@ -102,15 +110,22 @@ class GlobalSearchDispatcher(
                 lookupResult.hits
             )
 
-        val satisfiable =
+        val navigationSatisfiable =
             hasNavigationExtras(
                 extras
             )
 
+        val satisfiability =
+            satisfiabilityEvaluator.evaluate(
+                normalizedQuestion.normalizedQuestion,
+                lexicalIndicatorGroups,
+                archiveTransformation,
+                navigationSatisfiable
+            )
+
         val requestType =
             requestTypeOf(
-                archiveTransformation,
-                lookupResult.hits
+                satisfiability
             )
 
         val debugMarker =
@@ -122,11 +137,11 @@ class GlobalSearchDispatcher(
                 "[D3] FULCRUM_REASON=${fulcrumResult.reason}",
                 "[PATH] ${archivePath.steps}",
                 "[TRANSFORM] $archiveTransformation",
-                "[SATISFIABLE] $satisfiable",
-                "[TYPE] $requestType"
+                "[SATISFIABLE] ${satisfiability.satisfiableByEngineA}",
+                "[TYPE] $requestType",
+                "[PATTERN] ${satisfiability.matchedPatternId}"
             ).joinToString("\n")
 
-        // R8/R19 Nota 3.3.6: stessa chiave su più Core, senza selettore extra.
         val homonymCores =
             if (archiveIndex != null) {
                 archiveLookup.homonymCoresForClarification(
@@ -159,9 +174,33 @@ class GlobalSearchDispatcher(
         }
 
         if (
+            archiveIndex != null &&
+            SearchF8Pattern.matches(
+                normalizedQuestion.normalizedQuestion
+            )
+        ) {
+
+            val engineResponse =
+                engineB.execute(
+                    SearchEngineB.f8Query(),
+                    archiveIndex
+                )
+
+            return engineResponse.copy(
+                dominantFulcrum =
+                    fulcrumResult.fulcrum,
+                archiveTransformation =
+                    archiveTransformation,
+                requestType =
+                    SearchRequestType.ARCHIVE_QUERY,
+                debugMarker = debugMarker
+            )
+        }
+
+        if (
             requestType ==
             SearchRequestType.ARCHIVE_NAVIGATION &&
-            satisfiable
+            satisfiability.satisfiableByEngineA
         ) {
 
             return SearchResponse(
@@ -203,6 +242,43 @@ class GlobalSearchDispatcher(
             SearchRequestType.ARCHIVE_QUERY
         ) {
 
+            if (
+                archiveIndex != null &&
+                (
+                    satisfiability.matchedPatternId ==
+                    SearchF7Pattern.ID ||
+                    satisfiability.matchedPatternId ==
+                    SearchF8Pattern.ID
+                )
+            ) {
+
+                val engineQuery =
+                    if (
+                        satisfiability.matchedPatternId ==
+                        SearchF8Pattern.ID
+                    ) {
+                        SearchEngineB.f8Query()
+                    } else {
+                        SearchEngineB.f7Query()
+                    }
+
+                val engineResponse =
+                    engineB.execute(
+                        engineQuery,
+                        archiveIndex
+                    )
+
+                return engineResponse.copy(
+                    dominantFulcrum =
+                        fulcrumResult.fulcrum,
+                    archiveTransformation =
+                        archiveTransformation,
+                    requestType =
+                        SearchRequestType.ARCHIVE_QUERY,
+                    debugMarker = debugMarker
+                )
+            }
+
             return SearchResponse(
                 success = false,
                 message =
@@ -238,42 +314,24 @@ class GlobalSearchDispatcher(
     }
 
     private fun requestTypeOf(
-        transformation: SearchArchiveTransformation,
-        hits: SearchArchivalHits
+        satisfiability: SearchSatisfiabilityResult
     ): SearchRequestType? {
 
-        val navigation =
-            transformation ==
-                    SearchArchiveTransformation
-                        .OBJECT_TO_BOX ||
-                    transformation ==
-                    SearchArchiveTransformation
-                        .LOCATION_TO_BOX ||
-                    transformation ==
-                    SearchArchiveTransformation
-                        .CATEGORY_TO_BOX ||
-                    (
-                            transformation ==
-                                    SearchArchiveTransformation
-                                        .NONE &&
-                                    hits.boxes.isNotEmpty()
-                            )
+        if (
+            satisfiability.satisfiableByEngineA
+        ) {
 
-        if (navigation) {
             return SearchRequestType.ARCHIVE_NAVIGATION
         }
 
-        return when (transformation) {
+        if (
+            satisfiability.satisfiableByEngineB
+        ) {
 
-            SearchArchiveTransformation.OBJECT_TO_LOCATION,
-            SearchArchiveTransformation.OBJECT_TO_CATEGORY,
-            SearchArchiveTransformation.BOX_TO_LOCATION,
-            SearchArchiveTransformation.BOX_TO_CATEGORY ->
-                SearchRequestType.ARCHIVE_QUERY
-
-            else ->
-                null
+            return SearchRequestType.ARCHIVE_QUERY
         }
+
+        return null
     }
 
     private fun extrasFor(

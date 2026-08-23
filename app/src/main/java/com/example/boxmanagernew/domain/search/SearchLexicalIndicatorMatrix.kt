@@ -46,6 +46,7 @@ class SearchLexicalIndicatorMatrix {
                 "uguale",
                 "stesso",
                 "duplicato",
+                "doppione",
                 "diverso",
                 "differente",
                 "confronto"

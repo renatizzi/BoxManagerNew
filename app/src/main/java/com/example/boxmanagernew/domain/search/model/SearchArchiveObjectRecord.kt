@@ -6,5 +6,9 @@ data class SearchArchiveObjectRecord(
 
     val description: String = "",
 
-    val boxName: String = ""
+    val boxName: String = "",
+
+    val boxCategory: String = "",
+
+    val categoryId: Int = 0
 )

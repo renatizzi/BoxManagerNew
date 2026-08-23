@@ -2,6 +2,8 @@ package com.example.boxmanagernew.search
 
 import com.example.boxmanagernew.domain.search.GlobalSearchDispatcher
 import com.example.boxmanagernew.domain.search.SearchConfiguration
+import com.example.boxmanagernew.domain.search.SearchF7Pattern
+import com.example.boxmanagernew.domain.search.SearchF8Pattern
 import com.example.boxmanagernew.domain.search.model.SearchArchiveIndex
 import com.example.boxmanagernew.domain.search.model.SearchArchiveObjectRecord
 import com.example.boxmanagernew.domain.search.model.SearchArchiveTransformation
@@ -1204,5 +1206,322 @@ class SearchOfficialPipelineTest {
             response.archiveTransformation
         )
         assertEquals("", response.objectTerms)
+    }
+
+    private fun duplicateArchive() =
+        index.copy(
+            objectRecords = listOf(
+                SearchArchiveObjectRecord(
+                    name = "Vite",
+                    boxName = "Cassetta 1"
+                ),
+                SearchArchiveObjectRecord(
+                    name = "Vite",
+                    boxName = "prova"
+                ),
+                SearchArchiveObjectRecord(
+                    name = "Trapano elettrico",
+                    boxName = "Box 1"
+                )
+            )
+        )
+
+    @Test
+    fun f7OfficialVariants_routeToEngineB_notContainerList() {
+
+        val archive =
+            duplicateArchive()
+
+        val heading =
+            "Elenco dei contenitori che hanno oggetti uguali"
+
+        SearchF7Pattern.VARIANTS.forEach { question ->
+
+            val response =
+                dispatcher.dispatch(
+                    question,
+                    archive
+                )
+
+            assertFalse(
+                question,
+                response.requiresClarification
+            )
+            assertEquals(
+                question,
+                SearchRequestType.ARCHIVE_QUERY,
+                response.requestType
+            )
+            assertTrue(
+                question,
+                response.success
+            )
+            assertTrue(
+                question,
+                response.message.startsWith(
+                    heading
+                )
+            )
+            assertTrue(
+                question,
+                response.message.contains(
+                    "Cassetta 1"
+                )
+            )
+            assertTrue(
+                question,
+                response.message.contains(
+                    "prova"
+                )
+            )
+            assertFalse(
+                question,
+                response.message.contains(
+                    "Box 1"
+                )
+            )
+            assertEquals(
+                question,
+                SearchF7Pattern.ID,
+                response.debugMarker
+                    .orEmpty()
+                    .lineSequence()
+                    .first {
+                        it.startsWith(
+                            "[PATTERN]"
+                        )
+                    }
+                    .substringAfter(
+                        "[PATTERN] "
+                    )
+            )
+        }
+    }
+
+    @Test
+    fun f7Official_doesNotClarifyWhenHomonymExistsButIsNotInQuestion() {
+
+        val archive =
+            duplicateArchive().copy(
+                locations =
+                    index.locations + "Box",
+                categories =
+                    index.categories + "Box"
+            )
+
+        val response =
+            dispatcher.dispatch(
+                SearchF7Pattern.VARIANTS[3],
+                archive
+            )
+
+        assertFalse(response.requiresClarification)
+        assertEquals(
+            SearchRequestType.ARCHIVE_QUERY,
+            response.requestType
+        )
+        assertTrue(response.success)
+    }
+
+    @Test
+    fun f7WithoutDuplicates_usesCatalogNoResults() {
+
+        val archive =
+            index.copy(
+                objectRecords = listOf(
+                    SearchArchiveObjectRecord(
+                        name = "Vite",
+                        boxName = "Cassetta 1"
+                    )
+                )
+            )
+
+        val response =
+            dispatcher.dispatch(
+                SearchF7Pattern.VARIANTS[0],
+                archive
+            )
+
+        assertEquals(
+            SearchRequestType.ARCHIVE_QUERY,
+            response.requestType
+        )
+        assertFalse(response.success)
+        assertEquals(
+            SearchConfiguration.MSG_NO_RESULTS,
+            response.message
+        )
+    }
+
+    @Test
+    fun f8OfficialVariants_routeToEngineB_notContainerList() {
+
+        val archive =
+            crossCategoryArchive()
+
+        val heading =
+            "Elenco dei contenitori che hanno categoria diversa e contengono oggetti uguali"
+
+        SearchF8Pattern.VARIANTS.forEach { question ->
+
+            val response =
+                dispatcher.dispatch(
+                    question,
+                    archive
+                )
+
+            assertFalse(
+                question,
+                response.requiresClarification
+            )
+            assertEquals(
+                question,
+                SearchRequestType.ARCHIVE_QUERY,
+                response.requestType
+            )
+            assertTrue(
+                question,
+                response.success
+            )
+            assertTrue(
+                question,
+                response.message.startsWith(
+                    heading
+                )
+            )
+            assertTrue(
+                question,
+                response.message.contains(
+                    "Cassetta 1"
+                )
+            )
+            assertTrue(
+                question,
+                response.message.contains(
+                    "prova"
+                )
+            )
+            assertFalse(
+                question,
+                response.message.contains(
+                    "Box 1"
+                )
+            )
+            assertEquals(
+                question,
+                SearchF8Pattern.ID,
+                response.debugMarker
+                    .orEmpty()
+                    .lineSequence()
+                    .first {
+                        it.startsWith(
+                            "[PATTERN]"
+                        )
+                    }
+                    .substringAfter(
+                        "[PATTERN] "
+                    )
+            )
+        }
+    }
+
+    @Test
+    fun f8FamilyTokens_doNotFallThroughToF7() {
+
+        val archive =
+            crossCategoryArchive()
+
+        val response =
+            dispatcher.dispatch(
+                "F8-01 Cerca i contenitori con categoria diversa che contengono lo stesso tipo di oggetto",
+                archive
+            )
+
+        assertEquals(
+            SearchF8Pattern.ID,
+            response.debugMarker
+                .orEmpty()
+                .lineSequence()
+                .first {
+                    it.startsWith(
+                        "[PATTERN]"
+                    )
+                }
+                .substringAfter(
+                    "[PATTERN] "
+                )
+        )
+        assertTrue(response.success)
+        assertTrue(
+            response.message.contains(
+                "Cassetta 1"
+            )
+        )
+        assertFalse(
+            response.message.contains(
+                "Box 1"
+            )
+        )
+    }
+
+    @Test
+    fun f8SameCategory_usesCatalogNoResults() {
+
+        val response =
+            dispatcher.dispatch(
+                SearchF8Pattern.VARIANTS[0],
+                duplicateArchive()
+            )
+
+        assertEquals(
+            SearchRequestType.ARCHIVE_QUERY,
+            response.requestType
+        )
+        assertFalse(response.success)
+        assertEquals(
+            SearchConfiguration.MSG_NO_RESULTS,
+            response.message
+        )
+    }
+
+    private fun crossCategoryArchive() =
+        index.copy(
+            objectRecords = listOf(
+                SearchArchiveObjectRecord(
+                    name = "Vite",
+                    boxName = "Cassetta 1",
+                    boxCategory = "Ferramenta"
+                ),
+                SearchArchiveObjectRecord(
+                    name = "Vite",
+                    boxName = "prova",
+                    boxCategory = "Alimenti e Bevande"
+                ),
+                SearchArchiveObjectRecord(
+                    name = "Trapano elettrico",
+                    boxName = "Box 1",
+                    boxCategory = "Ferramenta"
+                )
+            )
+        )
+
+    @Test
+    fun motoreAObjectQuestion_stillOpensNavigation() {
+
+        val response =
+            dispatcher.dispatch(
+                "TROVA IL TRAPANO ELETTRICO",
+                index
+            )
+
+        assertTrue(response.success)
+        assertEquals(
+            SearchRequestType.ARCHIVE_NAVIGATION,
+            response.requestType
+        )
+        assertEquals(
+            "Trapano elettrico",
+            response.objectTerms
+        )
     }
 }

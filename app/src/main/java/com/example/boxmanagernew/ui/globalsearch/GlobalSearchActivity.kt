@@ -16,9 +16,12 @@ import com.example.boxmanagernew.R
 import com.example.boxmanagernew.data.local.DatabaseProvider
 import com.example.boxmanagernew.domain.search.GlobalSearchDispatcher
 import com.example.boxmanagernew.domain.search.SearchConfiguration
+import com.example.boxmanagernew.domain.search.SearchEngineB
+import com.example.boxmanagernew.domain.search.SearchF8Pattern
 import com.example.boxmanagernew.domain.search.model.SearchArchiveIndex
 import com.example.boxmanagernew.domain.search.model.SearchArchiveObjectRecord
 import com.example.boxmanagernew.domain.search.model.SearchMessage
+import com.example.boxmanagernew.domain.search.model.SearchRequestType
 import com.example.boxmanagernew.domain.search.model.SearchResponse
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.BottomNavManager
@@ -195,7 +198,35 @@ class GlobalSearchActivity : BaseActivity() {
             }
 
             if (
-                response.success
+                SearchF8Pattern.matches(
+                    question
+                )
+            ) {
+
+                val f8Response =
+                    if (
+                        response.requestType ==
+                        SearchRequestType.ARCHIVE_QUERY
+                    ) {
+                        response
+                    } else {
+                        SearchEngineB().execute(
+                            SearchEngineB.f8Query(),
+                            index
+                        )
+                    }
+
+                showReply(
+                    f8Response.message
+                )
+
+                return@launch
+            }
+
+            if (
+                response.success &&
+                response.requestType ==
+                SearchRequestType.ARCHIVE_NAVIGATION
             ) {
 
                 openPipelineList(
@@ -228,23 +259,44 @@ class GlobalSearchActivity : BaseActivity() {
                 db.objectDao()
                     .searchObjects()
 
+            val boxes =
+                db.boxDao()
+                    .getAllSync()
+
+            val categoryNameById =
+                db.categoryDao()
+                    .getAllSync()
+                    .associate { category ->
+                        category.id to category.name
+                    }
+
+            val categoryIdByBoxId =
+                boxes.associate { box ->
+                    box.id to box.categoryId
+                }
+
+            val categoryNameByBoxId =
+                boxes.associate { box ->
+                    box.id to
+                        categoryNameById[
+                            box.categoryId
+                        ].orEmpty()
+                }
+
             SearchArchiveIndex(
                 locations =
                     db.locationDao()
                         .getAllLocationsSync()
                         .map { it.name },
                 categories =
-                    db.categoryDao()
-                        .getAllSync()
-                        .map { it.name },
+                    categoryNameById.values
+                        .toList(),
                 objects =
                     db.objectTypeDao()
                         .getAllTypesSync()
                         .map { it.name },
                 boxes =
-                    db.boxDao()
-                        .getAllSync()
-                        .map { it.name },
+                    boxes.map { it.name },
                 objectRecords =
                     objectRows.map { row ->
 
@@ -253,7 +305,15 @@ class GlobalSearchActivity : BaseActivity() {
                             description =
                                 row.description
                                     .orEmpty(),
-                            boxName = row.boxName
+                            boxName = row.boxName,
+                            boxCategory =
+                                categoryNameByBoxId[
+                                    row.boxId
+                                ].orEmpty(),
+                            categoryId =
+                                categoryIdByBoxId[
+                                    row.boxId
+                                ] ?: 0
                         )
                     }
             )
