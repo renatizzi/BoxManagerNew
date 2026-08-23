@@ -3,7 +3,6 @@ package com.example.boxmanagernew.ui.common
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
-import android.content.res.Configuration
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.GestureDetector
@@ -12,10 +11,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
+import android.widget.CompoundButton
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
@@ -40,6 +39,8 @@ abstract class BaseActivity : AppCompatActivity() {
         savedInstanceState: Bundle?
     ) {
 
+        ThemeManager.applyStoredNightMode(this)
+
         super.onCreate(savedInstanceState)
 
         ThemeManager.initializeDefaults(this)
@@ -54,6 +55,13 @@ abstract class BaseActivity : AppCompatActivity() {
         refreshAppShell()
 
         refreshBottomNav()
+    }
+
+    override fun onPause() {
+
+        detachNightSwitch()
+
+        super.onPause()
     }
 
     private fun refreshBottomNav() {
@@ -282,29 +290,62 @@ abstract class BaseActivity : AppCompatActivity() {
             )
         }
 
+        bindNightSwitch()
+    }
+
+    private fun bindNightSwitch() {
+
+        val switch =
+            findViewById<SwitchMaterial>(
+                R.id.switchTheme
+            ) ?: return
+
+        val isDark =
+            ThemeManager.isNightModeEnabled(
+                this
+            )
+
+        switch.setOnCheckedChangeListener(null)
+        switch.setOnClickListener(null)
+        switch.isChecked = isDark
+        switch.jumpDrawablesToCurrentState()
+
+        switch.setOnClickListener {
+
+            if (
+                isFinishing ||
+                isDestroyed
+            ) {
+                return@setOnClickListener
+            }
+
+            val night =
+                switch.isChecked
+
+            if (
+                night ==
+                ThemeManager.isNightModeEnabled(
+                    this
+                )
+            ) {
+                return@setOnClickListener
+            }
+
+            ThemeManager.setNightMode(
+                this,
+                night
+            )
+        }
+    }
+
+    private fun detachNightSwitch() {
+
         findViewById<SwitchMaterial>(
             R.id.switchTheme
         )?.apply {
 
-            val isDark =
-                (
-                        resources.configuration.uiMode and
-                                Configuration.UI_MODE_NIGHT_MASK
-                        ) == Configuration.UI_MODE_NIGHT_YES
-
             setOnCheckedChangeListener(null)
-
-            isChecked = isDark
-
-            setOnCheckedChangeListener { _, checked ->
-
-                delegate.localNightMode =
-                    if (checked) {
-                        AppCompatDelegate.MODE_NIGHT_YES
-                    } else {
-                        AppCompatDelegate.MODE_NIGHT_NO
-                    }
-            }
+            setOnClickListener(null)
         }
     }
 
@@ -374,6 +415,10 @@ abstract class BaseActivity : AppCompatActivity() {
                 viewGroup.getChildAt(i)
 
             when (child) {
+
+                is CompoundButton -> {
+                    // Switch Dark: non è un pulsante da tinteggiare.
+                }
 
                 is Button ->
                     child.backgroundTintList =

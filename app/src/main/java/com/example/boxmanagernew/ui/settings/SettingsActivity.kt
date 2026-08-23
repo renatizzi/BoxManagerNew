@@ -2,7 +2,6 @@ package com.example.boxmanagernew.ui.settings
 
 import android.content.Context
 import android.content.Intent
-import android.content.res.Configuration
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.View
@@ -246,7 +245,7 @@ class SettingsActivity : BaseActivity() {
                 setColor(
                     ContextCompat.getColor(
                         this@SettingsActivity,
-                        android.R.color.white
+                        R.color.list_row_fill
                     )
                 )
 
@@ -273,14 +272,11 @@ class SettingsActivity : BaseActivity() {
 
     private fun updateThemeLabel() {
 
-        val mode =
-            resources.configuration.uiMode and
-                    Configuration.UI_MODE_NIGHT_MASK
-
         textCurrentTheme.text =
             if (
-                mode ==
-                Configuration.UI_MODE_NIGHT_YES
+                ThemeManager.isNightModeEnabled(
+                    this
+                )
             ) {
                 "Tema corrente: Dark"
             } else {

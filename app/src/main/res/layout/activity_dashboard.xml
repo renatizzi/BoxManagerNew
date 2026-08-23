@@ -36,6 +36,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginEnd="8dp"
+                    app:cardBackgroundColor="@color/elevated_surface"
                     app:cardCornerRadius="24dp"
                     app:cardElevation="0dp">
 
@@ -124,6 +125,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="8dp"
+                    app:cardBackgroundColor="@color/elevated_surface"
                     app:cardCornerRadius="24dp"
                     app:cardElevation="0dp">
 
@@ -229,6 +231,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                app:cardBackgroundColor="@color/elevated_surface"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="4dp">
 
@@ -276,7 +279,8 @@
                     android:layout_width="0dp"
                     android:layout_height="64dp"
                     android:layout_columnWeight="1"
-                    android:layout_margin="3dp">
+                    android:layout_margin="3dp"
+                    app:cardBackgroundColor="@color/elevated_surface">
 
                     <TextView
                         android:text="☁ Backup"
@@ -293,7 +297,8 @@
                     android:layout_width="0dp"
                     android:layout_height="64dp"
                     android:layout_columnWeight="1"
-                    android:layout_margin="3dp">
+                    android:layout_margin="3dp"
+                    app:cardBackgroundColor="@color/elevated_surface">
 
                     <TextView
                         android:text="↺ Ripristino"
@@ -310,7 +315,8 @@
                     android:layout_width="0dp"
                     android:layout_height="64dp"
                     android:layout_columnWeight="1"
-                    android:layout_margin="3dp">
+                    android:layout_margin="3dp"
+                    app:cardBackgroundColor="@color/elevated_surface">
 
                     <TextView
                         android:text="▣ Codice QR"
@@ -328,7 +334,8 @@
                     android:layout_width="0dp"
                     android:layout_height="64dp"
                     android:layout_columnWeight="1"
-                    android:layout_margin="3dp">
+                    android:layout_margin="3dp"
+                    app:cardBackgroundColor="@color/elevated_surface">
 
                     <TextView
                         android:text="📥 Importa Dati"

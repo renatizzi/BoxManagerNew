@@ -12,14 +12,14 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <!-- BRAND -->
-    <color name="primary_gradient_start">#8E2DE2</color>
-    <color name="primary_gradient_end">#4A00E0</color>
+    <!-- BRAND = stesse tre palette del giorno (default arancione). Niente viola. -->
+    <color name="primary_gradient_start">#E67E22</color>
+    <color name="primary_gradient_end">#D35400</color>
 
-    <color name="primary_button">#7B1FA2</color>
-    <color name="primary_button_light">#9C4DCC</color>
+    <color name="primary_button">#A04000</color>
+    <color name="primary_button_light">#F39C12</color>
 
-    <color name="fab_color">#9C4DCC</color>
+    <color name="fab_color">#A04000</color>
 
     <!-- SURFACE -->
     <color name="card_background">#121212</color>
@@ -35,8 +35,14 @@
     <!-- ICON -->
     <color name="icon_tint">#DDDDDD</color>
 
-    <!-- SELECTION -->
-    <color name="selection_background">#1E3A5F</color>
-    <color name="selection_stroke">#64B5F6</color>
+    <!-- SELECTION (stessa famiglia arancione del giorno, su fondo scuro) -->
+    <color name="selection_background">#3D2914</color>
+    <color name="selection_stroke">#E67E22</color>
+
+    <color name="list_row_fill">#1E1E1E</color>
+
+    <color name="elevated_surface">#1E1E1E</color>
+
+    <color name="on_surface_icon">#DDDDDD</color>
 
 </resources>

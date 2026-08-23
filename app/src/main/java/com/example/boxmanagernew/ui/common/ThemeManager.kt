@@ -1,7 +1,9 @@
 package com.example.boxmanagernew.ui.common
 
 import android.content.Context
+import android.content.res.Configuration
 import androidx.annotation.ColorInt
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import com.example.boxmanagernew.R
 
@@ -19,14 +21,8 @@ object ThemeManager {
     private const val KEY_TOPBAR_SUBTITLE =
         "topbar_subtitle"
 
-    private const val KEY_BOTTOMNAV_BG =
-        "bottomnav_bg"
-
     private const val KEY_BOTTOMNAV_ACTIVE =
         "bottomnav_active"
-
-    private const val KEY_BOTTOMNAV_INACTIVE =
-        "bottomnav_inactive"
 
     private const val KEY_ACCENT =
         "accent"
@@ -36,6 +32,18 @@ object ThemeManager {
 
     private const val KEY_CURRENT_PALETTE =
         "current_palette"
+
+    private const val KEY_NIGHT_MODE =
+        "night_mode"
+
+    private const val NIGHT_UNSET =
+        -1
+
+    private const val NIGHT_NO =
+        0
+
+    private const val NIGHT_YES =
+        1
 
     const val PALETTE_ORANGE =
         "palette_orange"
@@ -131,20 +139,8 @@ object ThemeManager {
                 0xFFFFFFFF.toInt()
             )
             .putInt(
-                KEY_BOTTOMNAV_BG,
-                getDefaultBottomNavBackground(
-                    context
-                )
-            )
-            .putInt(
                 KEY_BOTTOMNAV_ACTIVE,
                 accentDark
-            )
-            .putInt(
-                KEY_BOTTOMNAV_INACTIVE,
-                getDefaultBottomNavInactive(
-                    context
-                )
             )
             .putInt(
                 KEY_ACCENT,
@@ -167,6 +163,119 @@ object ThemeManager {
                 PALETTE_ORANGE
             )
             ?: PALETTE_ORANGE
+    }
+
+    fun applyStoredNightMode(
+        context: Context
+    ) {
+
+        val stored =
+            getPrefs(context)
+                .getInt(
+                    KEY_NIGHT_MODE,
+                    NIGHT_UNSET
+                )
+
+        if (stored == NIGHT_UNSET) {
+            return
+        }
+
+        val mode =
+            if (stored == NIGHT_YES) {
+                AppCompatDelegate.MODE_NIGHT_YES
+            } else {
+                AppCompatDelegate.MODE_NIGHT_NO
+            }
+
+        if (
+            AppCompatDelegate
+                .getDefaultNightMode() != mode
+        ) {
+
+            AppCompatDelegate
+                .setDefaultNightMode(
+                    mode
+                )
+        }
+    }
+
+    fun isNightModeEnabled(
+        context: Context
+    ): Boolean {
+
+        val stored =
+            getPrefs(context)
+                .getInt(
+                    KEY_NIGHT_MODE,
+                    NIGHT_UNSET
+                )
+
+        return when (stored) {
+
+            NIGHT_YES ->
+                true
+
+            NIGHT_NO ->
+                false
+
+            else ->
+                (
+                        context.resources
+                            .configuration.uiMode and
+                                Configuration.UI_MODE_NIGHT_MASK
+                        ) == Configuration.UI_MODE_NIGHT_YES
+        }
+    }
+
+    fun setNightMode(
+        context: Context,
+        night: Boolean
+    ) {
+
+        if (
+            isNightModeEnabled(context) == night &&
+                    AppCompatDelegate.getDefaultNightMode() ==
+                    if (night) {
+                        AppCompatDelegate.MODE_NIGHT_YES
+                    } else {
+                        AppCompatDelegate.MODE_NIGHT_NO
+                    }
+        ) {
+            return
+        }
+
+        val stored =
+            if (night) {
+                NIGHT_YES
+            } else {
+                NIGHT_NO
+            }
+
+        val mode =
+            if (night) {
+                AppCompatDelegate.MODE_NIGHT_YES
+            } else {
+                AppCompatDelegate.MODE_NIGHT_NO
+            }
+
+        getPrefs(context)
+            .edit()
+            .putInt(
+                KEY_NIGHT_MODE,
+                stored
+            )
+            .apply()
+
+        if (
+            AppCompatDelegate
+                .getDefaultNightMode() != mode
+        ) {
+
+            AppCompatDelegate
+                .setDefaultNightMode(
+                    mode
+                )
+        }
     }
 
     @ColorInt
@@ -223,11 +332,9 @@ object ThemeManager {
     fun getBottomNavBackground(
         context: Context
     ): Int =
-        getPrefs(context)
-            .getInt(
-                KEY_BOTTOMNAV_BG,
-                getDefaultBottomNavBackground(context)
-            )
+        getDefaultBottomNavBackground(
+            context
+        )
 
     @ColorInt
     fun getBottomNavActive(
@@ -243,11 +350,9 @@ object ThemeManager {
     fun getBottomNavInactive(
         context: Context
     ): Int =
-        getPrefs(context)
-            .getInt(
-                KEY_BOTTOMNAV_INACTIVE,
-                getDefaultBottomNavInactive(context)
-            )
+        getDefaultBottomNavInactive(
+            context
+        )
 
     private fun getPrefs(
         context: Context
