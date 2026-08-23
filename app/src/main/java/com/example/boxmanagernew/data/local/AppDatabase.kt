@@ -70,9 +70,8 @@ abstract class AppDatabase :
 
                         if (
                             categoryDao
-                                .getCategoryByName(
-                                    "Miscellanea"
-                                ) == null
+                                .getAllSync()
+                                .isEmpty()
                         ) {
 
                             listOf(
@@ -98,22 +97,21 @@ abstract class AppDatabase :
                             }
                         }
 
-                        listOf(
-                            "Garage",
-                            "Cantina",
-                            "Soffitta"
-                        ).forEach {
+                        if (
+                            locationDao
+                                .getAllLocationsSync()
+                                .isEmpty()
+                        ) {
 
-                            if (
-                                locationDao
-                                    .getByName(
-                                        it
-                                    ) == null
-                            ) {
+                            listOf(
+                                "Garage",
+                                "Cantina",
+                                "Soffitta"
+                            ).forEach { name ->
 
                                 locationDao.insert(
                                     LocationEntity(
-                                        name = it
+                                        name = name
                                     )
                                 )
                             }

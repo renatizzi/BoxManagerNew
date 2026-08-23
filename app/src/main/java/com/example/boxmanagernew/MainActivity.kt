@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.boxmanagernew.data.local.DatabaseProvider
 import com.example.boxmanagernew.data.local.entity.CategoryEntity
-import com.example.boxmanagernew.data.local.entity.ObjectTypeEntity
 import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
 import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
 import com.example.boxmanagernew.domain.model.Box
@@ -120,7 +119,6 @@ class MainActivity : BaseActivity() {
                 db.objectDao(),
                 db.objectTypeDao()
             )
-        initializeDefaultData(db)
         setupAdapter()
         setupViewOutputActions()
 
@@ -196,39 +194,6 @@ class MainActivity : BaseActivity() {
 
         fabAdd =
             findViewById(R.id.fabAdd)
-    }
-
-    private fun initializeDefaultData(
-        db: com.example.boxmanagernew.data.local.AppDatabase
-    ) {
-
-        lifecycleScope.launch {
-
-            if (
-                db.categoryDao()
-                    .getCategoryByName("Generico") == null
-            ) {
-
-                db.categoryDao().insert(
-                    CategoryEntity(
-                        name = "Generico",
-                        icon = "outline_box_24"
-                    )
-                )
-            }
-
-            if (
-                db.objectTypeDao()
-                    .getByName("Generico") == null
-            ) {
-
-                db.objectTypeDao().insert(
-                    ObjectTypeEntity(
-                        name = "Generico"
-                    )
-                )
-            }
-        }
     }
 
     private fun setupAdapter() {
