@@ -19,7 +19,6 @@ import com.example.boxmanagernew.data.repository.LocationRepositoryImpl
 import com.example.boxmanagernew.domain.model.Location
 import com.example.boxmanagernew.domain.search.SearchConfiguration
 import com.example.boxmanagernew.ui.common.BaseActivity
-import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.example.boxmanagernew.ui.common.DialogUtils
 import com.example.boxmanagernew.ui.common.FeedbackUtils
 import com.example.boxmanagernew.viewoutput.config.ViewOutputConfiguration
@@ -49,8 +48,7 @@ class LocationsActivity : BaseActivity() {
 
         setContentView(R.layout.activity_locations)
 
-        setupEdgeToEdge()
-        setupTopBar()
+        setupAppShell()
 
         setupPageHeader(
             "Posizione",
@@ -58,10 +56,7 @@ class LocationsActivity : BaseActivity() {
         )
         setupPrintAction()
 
-        BottomNavManager.setup(
-            this,
-            BottomNavManager.TAB_SETTINGS
-        )
+        setupBottomNav()
 
         contextCard =
             findViewById(R.id.contextCard)

@@ -43,6 +43,8 @@
 
     <color name="elevated_surface">#1E1E1E</color>
 
+    <color name="context_warning_stroke">#EF5350</color>
+
     <color name="on_surface_icon">#DDDDDD</color>
 
 </resources>

@@ -13,7 +13,6 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.ui.common.BaseActivity
-import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.example.boxmanagernew.ui.common.ThemeManager
 
 class SettingsActivity : BaseActivity() {
@@ -51,18 +50,14 @@ class SettingsActivity : BaseActivity() {
             R.layout.activity_settings
         )
 
-        setupEdgeToEdge()
-        setupTopBar()
+        setupAppShell()
         setupViews()
         loadPreferences()
         setupListeners()
         setupPaletteSelector()
         updateThemeLabel()
 
-        BottomNavManager.setup(
-            this,
-            BottomNavManager.TAB_SETTINGS
-        )
+        setupBottomNav()
 
         refreshAppShell()
     }
@@ -205,11 +200,6 @@ class SettingsActivity : BaseActivity() {
         )
 
         refreshAppShell()
-
-        BottomNavManager.setup(
-            this,
-            BottomNavManager.TAB_SETTINGS
-        )
 
         updatePaletteSelection()
     }

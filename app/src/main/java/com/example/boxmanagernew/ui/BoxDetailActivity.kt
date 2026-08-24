@@ -26,7 +26,6 @@ import com.example.boxmanagernew.ui.categories.CategorySpinnerAdapter
 import com.example.boxmanagernew.ui.categories.CategoryViewModel
 import com.example.boxmanagernew.ui.categories.IconMapper
 import com.example.boxmanagernew.ui.common.BaseActivity
-import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.example.boxmanagernew.ui.common.DialogUtils
 import com.example.boxmanagernew.ui.common.FeedbackUtils
 import com.example.boxmanagernew.ui.common.UiUtils
@@ -97,9 +96,7 @@ class BoxDetailActivity : BaseActivity() {
 
         setContentView(R.layout.activity_box_detail)
 
-        setupEdgeToEdge()
-
-        setupTopBar()
+        setupAppShell()
 
         val textTitle =
             findViewById<TextView>(R.id.textTitle)
@@ -429,10 +426,7 @@ class BoxDetailActivity : BaseActivity() {
 
             objectViewModel.toggleSort()
         }
-        BottomNavManager.setup(
-            this,
-            BottomNavManager.TAB_BOXES
-        )
+        setupBottomNav()
 
         refreshAppShell()
 

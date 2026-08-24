@@ -24,7 +24,6 @@ import com.example.boxmanagernew.data.repository.LocationRepositoryImpl
 import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
 import com.example.boxmanagernew.ui.backup.BackupZipPersister
 import com.example.boxmanagernew.ui.common.BaseActivity
-import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.example.boxmanagernew.ui.common.DialogUtils
 import com.example.boxmanagernew.ui.common.FeedbackUtils
 
@@ -72,18 +71,14 @@ class RestoreActivity : BaseActivity() {
 
         setContentView(R.layout.activity_restore)
 
-        setupEdgeToEdge()
-        setupTopBar()
+        setupAppShell()
 
         setupPageHeader(
             title = "Ripristino Archivio",
             subtitle = "Sostituzione completa dell'archivio"
         )
 
-        BottomNavManager.setup(
-            this,
-            BottomNavManager.TAB_UTILITY
-        )
+        setupBottomNav()
 
         persister = BackupZipPersister(this)
 

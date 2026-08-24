@@ -15,7 +15,6 @@ import com.example.boxmanagernew.ui.backup.BackupActivity
 import com.example.boxmanagernew.ui.categories.CategoriesActivity
 import com.example.boxmanagernew.ui.categories.CategoryViewModel
 import com.example.boxmanagernew.ui.common.BaseActivity
-import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.example.boxmanagernew.ui.common.VoiceSearchController
 import com.example.boxmanagernew.ui.globalsearch.GlobalSearchActivity
 import com.example.boxmanagernew.ui.importdata.ImportActivity
@@ -39,9 +38,7 @@ class DashboardActivity : BaseActivity() {
             R.layout.activity_dashboard
         )
 
-        setupEdgeToEdge()
-
-        setupTopBar()
+        setupAppShell()
 
         setupPageHeader(
             title = "Dashboard",
@@ -54,10 +51,7 @@ class DashboardActivity : BaseActivity() {
 
         loadKpiData()
 
-        BottomNavManager.setup(
-            this,
-            BottomNavManager.TAB_DASHBOARD
-        )
+        setupBottomNav()
     }
 
     private fun setupSearch() {

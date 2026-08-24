@@ -27,10 +27,8 @@ import com.example.boxmanagernew.domain.model.Location
 import com.example.boxmanagernew.backup.config.BackupConfiguration
 import com.example.boxmanagernew.domain.search.SearchConfiguration
 import com.example.boxmanagernew.ui.boxdetail.BoxDetailActivity
-import com.example.boxmanagernew.ui.categories.CategoriesActivity
 import com.example.boxmanagernew.ui.categories.IconMapper
 import com.example.boxmanagernew.ui.common.BaseActivity
-import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.example.boxmanagernew.ui.common.DialogUtils
 import com.example.boxmanagernew.ui.common.FeedbackUtils
 import com.example.boxmanagernew.ui.common.UiUtils
@@ -101,9 +99,7 @@ class MainActivity : BaseActivity() {
 
         setContentView(R.layout.activity_main)
 
-        setupEdgeToEdge()
-
-        setupTopBar()
+        setupAppShell()
 
         exportPersister =
             ViewExportPersister(this)
@@ -399,21 +395,7 @@ class MainActivity : BaseActivity() {
 
         setupFab()
 
-        BottomNavManager.setup(
-            this,
-            BottomNavManager.TAB_BOXES
-        )
-
-        findViewById<View>(R.id.navCategories)
-            .setOnClickListener {
-
-                startActivity(
-                    Intent(
-                        this,
-                        CategoriesActivity::class.java
-                    )
-                )
-            }
+        setupBottomNav()
 
         onBackPressedDispatcher.addCallback(
             this,

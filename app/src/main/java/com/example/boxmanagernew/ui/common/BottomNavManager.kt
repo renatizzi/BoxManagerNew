@@ -8,8 +8,17 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.boxmanagernew.MainActivity
 import com.example.boxmanagernew.R
+import com.example.boxmanagernew.ui.boxdetail.BoxDetailActivity
+import com.example.boxmanagernew.ui.backup.BackupActivity
 import com.example.boxmanagernew.ui.categories.CategoriesActivity
 import com.example.boxmanagernew.ui.dashboard.DashboardActivity
+import com.example.boxmanagernew.ui.globalsearch.GlobalSearchActivity
+import com.example.boxmanagernew.ui.importdata.ImportActivity
+import com.example.boxmanagernew.ui.qr.QRActivity
+import com.example.boxmanagernew.ui.qr.QrLabelActivity
+import com.example.boxmanagernew.ui.restore.RestoreActivity
+import com.example.boxmanagernew.ui.search.SearchResultActivity
+import com.example.boxmanagernew.ui.settings.LocationsActivity
 import com.example.boxmanagernew.ui.settings.SettingsActivity
 import com.example.boxmanagernew.ui.utility.UtilityActivity
 
@@ -20,6 +29,41 @@ object BottomNavManager {
     const val TAB_CATEGORIES = 2
     const val TAB_UTILITY = 3
     const val TAB_SETTINGS = 4
+
+    /**
+     * Tab padre AppShell per ogni schermata con barra inferiore.
+     * Le pagine secondarie restano ancorate alla sezione di provenienza.
+     */
+    fun tabFor(activity: Activity): Int? {
+        return when (activity) {
+            is DashboardActivity,
+            is GlobalSearchActivity ->
+                TAB_DASHBOARD
+
+            is MainActivity,
+            is BoxDetailActivity,
+            is SearchResultActivity ->
+                TAB_BOXES
+
+            is CategoriesActivity ->
+                TAB_CATEGORIES
+
+            is UtilityActivity,
+            is BackupActivity,
+            is RestoreActivity,
+            is ImportActivity,
+            is QRActivity,
+            is QrLabelActivity ->
+                TAB_UTILITY
+
+            is SettingsActivity,
+            is LocationsActivity ->
+                TAB_SETTINGS
+
+            else ->
+                null
+        }
+    }
 
     fun setup(
         activity: Activity,

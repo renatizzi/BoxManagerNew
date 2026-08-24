@@ -53,8 +53,6 @@ abstract class BaseActivity : AppCompatActivity() {
         super.onResume()
 
         refreshAppShell()
-
-        refreshBottomNav()
     }
 
     override fun onPause() {
@@ -64,40 +62,29 @@ abstract class BaseActivity : AppCompatActivity() {
         super.onPause()
     }
 
+    /**
+     * Cornice comune: edge-to-edge + top bar globale.
+     * La bottom nav si aggiorna in [refreshAppShell] via [BottomNavManager.tabFor].
+     */
+    protected fun setupAppShell() {
+        setupEdgeToEdge()
+        setupTopBar()
+    }
+
+    protected fun setupBottomNav() {
+        refreshBottomNav()
+    }
+
     private fun refreshBottomNav() {
 
-        when (this) {
+        val tab =
+            BottomNavManager.tabFor(this)
+                ?: return
 
-            is DashboardActivity ->
-                BottomNavManager.setup(
-                    this,
-                    BottomNavManager.TAB_DASHBOARD
-                )
-
-            is MainActivity ->
-                BottomNavManager.setup(
-                    this,
-                    BottomNavManager.TAB_BOXES
-                )
-
-            is CategoriesActivity ->
-                BottomNavManager.setup(
-                    this,
-                    BottomNavManager.TAB_CATEGORIES
-                )
-
-            is UtilityActivity ->
-                BottomNavManager.setup(
-                    this,
-                    BottomNavManager.TAB_UTILITY
-                )
-
-            is SettingsActivity ->
-                BottomNavManager.setup(
-                    this,
-                    BottomNavManager.TAB_SETTINGS
-                )
-        }
+        BottomNavManager.setup(
+            this,
+            tab
+        )
     }
 
     private fun setupSwipeNavigation() {
@@ -244,6 +231,28 @@ abstract class BaseActivity : AppCompatActivity() {
 
             insets
         }
+
+        applySystemBarContrast()
+    }
+
+    private fun applySystemBarContrast() {
+
+        val lightPage =
+            !ThemeManager.isNightModeEnabled(this)
+
+        val controller =
+            WindowCompat.getInsetsController(
+                window,
+                window.decorView
+            )
+
+        // Dark OFF: pagina chiara dietro la status bar → icone scure.
+        // Dark ON: pagina scura → icone chiare.
+        controller.isAppearanceLightStatusBars =
+            lightPage
+
+        controller.isAppearanceLightNavigationBars =
+            lightPage
     }
 
     protected fun setupTopBar() =
@@ -378,6 +387,10 @@ abstract class BaseActivity : AppCompatActivity() {
     protected fun refreshAppShell() {
 
         refreshTopBar()
+
+        applySystemBarContrast()
+
+        refreshBottomNav()
 
         val accent =
             ThemeManager.getAccentDarkColor(this)

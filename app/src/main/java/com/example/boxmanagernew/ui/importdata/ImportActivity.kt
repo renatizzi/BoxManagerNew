@@ -21,7 +21,6 @@ import com.example.boxmanagernew.importdata.config.ImportConfiguration
 import com.example.boxmanagernew.importdata.merge.ImportMergeApplier
 import com.example.boxmanagernew.ui.backup.BackupZipPersister
 import com.example.boxmanagernew.ui.common.BaseActivity
-import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.example.boxmanagernew.ui.common.DialogUtils
 import com.example.boxmanagernew.ui.common.FeedbackUtils
 import com.google.android.material.card.MaterialCardView
@@ -72,18 +71,14 @@ class ImportActivity : BaseActivity() {
 
         setContentView(R.layout.activity_import)
 
-        setupEdgeToEdge()
-        setupTopBar()
+        setupAppShell()
 
         setupPageHeader(
             title = "Importa Dati",
             subtitle = ""
         )
 
-        BottomNavManager.setup(
-            this,
-            BottomNavManager.TAB_UTILITY
-        )
+        setupBottomNav()
 
         templatePersister = ImportTemplatePersister(this)
         backupPersister = BackupZipPersister(this)

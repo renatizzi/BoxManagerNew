@@ -22,7 +22,6 @@ import com.example.boxmanagernew.domain.search.SearchConfiguration
 import com.example.boxmanagernew.ui.categories.IconMapper
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.SimpleSearchHighlight
-import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.example.boxmanagernew.viewoutput.config.ViewOutputConfiguration
 import com.example.boxmanagernew.viewoutput.model.ContainerViewSnapshot
 import com.example.boxmanagernew.viewoutput.model.ContainerViewSnapshotFactory
@@ -60,8 +59,7 @@ class SearchResultActivity : BaseActivity() {
 
         setContentView(R.layout.activity_search_result)
 
-        setupEdgeToEdge()
-        setupTopBar()
+        setupAppShell()
 
         setupPageHeader(
             title = "Lista Oggetti Trovati",
@@ -70,10 +68,7 @@ class SearchResultActivity : BaseActivity() {
 
         setupViewOutputActions()
 
-        BottomNavManager.setup(
-            this,
-            BottomNavManager.TAB_BOXES
-        )
+        setupBottomNav()
 
         searchQuery =
             intent.getStringExtra(

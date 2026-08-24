@@ -16,7 +16,6 @@ import com.example.boxmanagernew.data.local.DatabaseProvider
 import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
 import com.example.boxmanagernew.domain.qr.BoxQrPayload
 import com.example.boxmanagernew.ui.common.BaseActivity
-import com.example.boxmanagernew.ui.common.BottomNavManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -38,18 +37,14 @@ class QrLabelActivity : BaseActivity() {
 
         setContentView(R.layout.activity_qr_label)
 
-        setupEdgeToEdge()
-        setupTopBar()
+        setupAppShell()
 
         setupPageHeader(
             title = "Anteprima etichetta",
             subtitle = ""
         )
 
-        BottomNavManager.setup(
-            this,
-            BottomNavManager.TAB_BOXES
-        )
+        setupBottomNav()
 
         val boxId = intent.getIntExtra("boxId", -1)
         if (boxId < 0) {

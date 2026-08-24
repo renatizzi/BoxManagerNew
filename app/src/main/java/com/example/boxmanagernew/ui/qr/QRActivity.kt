@@ -19,7 +19,6 @@ import com.example.boxmanagernew.domain.qr.QrScanOutcome
 import com.example.boxmanagernew.domain.qr.QrScanResolver
 import com.example.boxmanagernew.ui.boxdetail.BoxDetailActivity
 import com.example.boxmanagernew.ui.common.BaseActivity
-import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.example.boxmanagernew.ui.common.FeedbackUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -48,18 +47,14 @@ class QRActivity : BaseActivity() {
 
         setContentView(R.layout.activity_qr)
 
-        setupEdgeToEdge()
-        setupTopBar()
+        setupAppShell()
 
         setupPageHeader(
             title = "Codice QR",
             subtitle = ""
         )
 
-        BottomNavManager.setup(
-            this,
-            BottomNavManager.TAB_UTILITY
-        )
+        setupBottomNav()
 
         tvMessages = findViewById(R.id.tvMessages)
 

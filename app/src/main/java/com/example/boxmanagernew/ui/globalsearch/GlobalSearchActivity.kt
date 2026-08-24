@@ -31,7 +31,6 @@ import com.example.boxmanagernew.domain.search.model.SearchRequestType
 import com.example.boxmanagernew.domain.search.model.SearchResponse
 import com.example.boxmanagernew.ui.categories.IconMapper
 import com.example.boxmanagernew.ui.common.BaseActivity
-import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.example.boxmanagernew.ui.common.FeedbackUtils
 import com.example.boxmanagernew.viewoutput.config.ViewOutputConfiguration
 import com.example.boxmanagernew.viewoutput.model.ContainerViewSnapshot
@@ -90,9 +89,7 @@ class GlobalSearchActivity : BaseActivity() {
             R.layout.activity_global_search
         )
 
-        setupEdgeToEdge()
-
-        setupTopBar()
+        setupAppShell()
 
         setupPageHeader(
             title = getString(
@@ -105,10 +102,7 @@ class GlobalSearchActivity : BaseActivity() {
 
         setupViewOutputActions()
 
-        BottomNavManager.setup(
-            this,
-            BottomNavManager.TAB_DASHBOARD
-        )
+        setupBottomNav()
 
         editQuestion =
             findViewById(R.id.editQuestion)

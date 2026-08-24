@@ -148,7 +148,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:cardCornerRadius="16dp"
-            app:cardElevation="3dp">
+            app:cardElevation="3dp"
+            app:cardBackgroundColor="?attr/colorSurface">
 
             <FrameLayout
                 android:layout_width="match_parent"

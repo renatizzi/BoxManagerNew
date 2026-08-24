@@ -18,7 +18,6 @@ import com.example.boxmanagernew.backup.facade.BackupFacade
 import com.example.boxmanagernew.data.local.DatabaseProvider
 import com.example.boxmanagernew.data.repository.*
 import com.example.boxmanagernew.ui.common.BaseActivity
-import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.example.boxmanagernew.ui.common.DialogUtils
 import com.example.boxmanagernew.ui.common.FeedbackUtils
 
@@ -50,18 +49,14 @@ class BackupActivity : BaseActivity() {
 
         setContentView(R.layout.activity_backup)
 
-        setupEdgeToEdge()
-        setupTopBar()
+        setupAppShell()
 
         setupPageHeader(
             title = "Backup Archivio",
             subtitle = "Creazione copia completa dell'archivio"
         )
 
-        BottomNavManager.setup(
-            this,
-            BottomNavManager.TAB_UTILITY
-        )
+        setupBottomNav()
 
         persister = BackupZipPersister(this)
 

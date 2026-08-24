@@ -5,7 +5,6 @@ import android.os.Bundle
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.ui.backup.BackupActivity
 import com.example.boxmanagernew.ui.common.BaseActivity
-import com.example.boxmanagernew.ui.common.BottomNavManager
 import com.example.boxmanagernew.ui.importdata.ImportActivity
 import com.example.boxmanagernew.ui.qr.QRActivity
 import com.example.boxmanagernew.ui.restore.RestoreActivity
@@ -19,19 +18,14 @@ class UtilityActivity : BaseActivity() {
 
         setContentView(R.layout.activity_utility)
 
-        setupEdgeToEdge()
-
-        setupTopBar()
+        setupAppShell()
 
         setupPageHeader(
             title = "Utility",
             subtitle = "Strumenti di supporto alla gestione dell'archivio"
         )
 
-        BottomNavManager.setup(
-            this,
-            BottomNavManager.TAB_UTILITY
-        )
+        setupBottomNav()
 
         findViewById<MaterialCardView>(
             R.id.btnBackup

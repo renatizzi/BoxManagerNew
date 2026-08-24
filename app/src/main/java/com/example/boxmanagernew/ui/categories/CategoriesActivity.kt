@@ -64,12 +64,11 @@ class CategoriesActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_categories)
 
-        setupEdgeToEdge()
-        setupTopBar()
+        setupAppShell()
         setupViews()
         setupPrintAction()
 
-        BottomNavManager.setup(this, BottomNavManager.TAB_CATEGORIES)
+        setupBottomNav()
         setupBackNavigation()
 
         val db =
@@ -550,7 +549,7 @@ class CategoriesActivity : BaseActivity() {
 
         contextCard.strokeColor =
             getColor(
-                android.R.color.holo_red_dark
+                R.color.context_warning_stroke
             )
     }
 
