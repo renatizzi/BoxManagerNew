@@ -38,7 +38,12 @@ class SearchCoreAliasesTest {
             "barattolo",
             "cassaforte",
             "imballaggio",
-            "cover"
+            "cover",
+            "armadio",
+            "guardaroba",
+            "stipo",
+            "libreria",
+            "scaffale"
         ).forEach { alias ->
 
             assertEquals(

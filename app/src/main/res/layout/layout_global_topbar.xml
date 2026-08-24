@@ -25,14 +25,32 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textGlobalTitle"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="BoxManager"
-                android:textColor="?attr/topBarTitleColor"
-                android:textStyle="bold"
-                android:textSize="18sp"/>
+                android:orientation="horizontal"
+                android:gravity="bottom">
+
+                <TextView
+                    android:id="@+id/textGlobalTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="BoxManager"
+                    android:textColor="?attr/topBarTitleColor"
+                    android:textStyle="bold"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:id="@+id/textAppVersion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginBottom="1dp"
+                    android:text="v. 1.0"
+                    android:textSize="11sp"
+                    android:textColor="?attr/topBarSubtitleColor"/>
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/textGlobalSubtitle"

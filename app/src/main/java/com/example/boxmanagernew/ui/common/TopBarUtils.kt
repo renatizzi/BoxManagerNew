@@ -1,8 +1,10 @@
 package com.example.boxmanagernew.ui.common
 
+import android.app.Activity
 import android.content.Context
 import android.widget.TextView
-import androidx.core.graphics.toColorInt
+import com.example.boxmanagernew.BuildConfig
+import com.example.boxmanagernew.R
 import com.example.boxmanagernew.ui.settings.SettingsActivity
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -29,6 +31,8 @@ object TopBarUtils {
             context,
             titleView
         )
+
+        bindVersion(context)
 
         bindSubtitle(
             context,
@@ -61,6 +65,30 @@ object TopBarUtils {
 
         titleView.setTextColor(
             ThemeManager.getTopBarTitle(
+                context
+            )
+        )
+    }
+
+    fun bindVersion(
+        context: Context
+    ) {
+
+        val activity =
+            context as? Activity
+                ?: return
+
+        val versionView =
+            activity.findViewById<TextView>(
+                R.id.textAppVersion
+            )
+                ?: return
+
+        versionView.text =
+            "v. ${BuildConfig.VERSION_NAME}"
+
+        versionView.setTextColor(
+            ThemeManager.getTopBarSubtitle(
                 context
             )
         )

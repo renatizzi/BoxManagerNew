@@ -86,7 +86,16 @@ object SearchCoreAliases {
             "cover",
             "covers",
             "imballaggio",
-            "imballaggi"
+            "imballaggi",
+            "armadio",
+            "armadi",
+            "guardaroba",
+            "stipo",
+            "stipi",
+            "libreria",
+            "librerie",
+            "scaffale",
+            "scaffali"
         )
 
     val locationTerms =
