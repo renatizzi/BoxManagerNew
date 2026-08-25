@@ -15,7 +15,9 @@ import com.example.boxmanagernew.R
 import com.example.boxmanagernew.data.local.DatabaseProvider
 import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
 import com.example.boxmanagernew.domain.qr.BoxQrPayload
+import com.example.boxmanagernew.domain.premium.PremiumFeature
 import com.example.boxmanagernew.ui.common.BaseActivity
+import com.example.boxmanagernew.ui.premium.ArchivioCompletoNav
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -34,6 +36,15 @@ class QrLabelActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (
+            !ArchivioCompletoNav.allowActivity(
+                this,
+                PremiumFeature.QR_LABEL
+            )
+        ) {
+            return
+        }
 
         setContentView(R.layout.activity_qr_label)
 

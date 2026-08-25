@@ -11,7 +11,9 @@ import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.boxmanagernew.R
+import com.example.boxmanagernew.domain.premium.PremiumFeature
 import com.example.boxmanagernew.ui.common.DialogUtils
+import com.example.boxmanagernew.ui.premium.ArchivioCompletoNav
 import com.example.boxmanagernew.ui.common.FeedbackUtils
 import com.example.boxmanagernew.viewoutput.config.ViewOutputConfiguration
 import com.example.boxmanagernew.viewoutput.csv.ViewExportCsvBuilder
@@ -58,7 +60,12 @@ class ViewOutputController(
         actions.findViewById<View>(
             R.id.btnExportView
         ).setOnClickListener {
-            onExport()
+            ArchivioCompletoNav.run(
+                activity,
+                PremiumFeature.EXPORT
+            ) {
+                onExport()
+            }
         }
     }
 

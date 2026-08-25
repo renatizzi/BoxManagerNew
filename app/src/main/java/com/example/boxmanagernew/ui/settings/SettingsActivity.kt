@@ -11,9 +11,13 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import com.example.boxmanagernew.BuildConfig
 import com.example.boxmanagernew.R
+import com.example.boxmanagernew.domain.premium.ArchivioCompletoAccess
+import com.example.boxmanagernew.domain.premium.ArchivioCompletoCopy
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.ThemeManager
+import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : BaseActivity() {
 
@@ -56,6 +60,7 @@ class SettingsActivity : BaseActivity() {
         setupListeners()
         setupPaletteSelector()
         updateThemeLabel()
+        setupDebugUnlock()
 
         setupBottomNav()
 
@@ -296,5 +301,50 @@ class SettingsActivity : BaseActivity() {
 
         textSaveMessage.visibility =
             View.VISIBLE
+    }
+
+    private fun setupDebugUnlock() {
+
+        val card =
+            findViewById<View>(R.id.cardDebugUnlock)
+
+        if (!BuildConfig.DEBUG) {
+            card.visibility = View.GONE
+            return
+        }
+
+        card.visibility = View.VISIBLE
+
+        val access =
+            ArchivioCompletoAccess(this)
+
+        findViewById<TextView>(R.id.textDebugUnlockTitle).text =
+            ArchivioCompletoCopy.SETTINGS_UNLOCK_TITLE
+
+        findViewById<TextView>(R.id.textDebugUnlockHint).text =
+            ArchivioCompletoCopy.SETTINGS_UNLOCK_HINT
+
+        val switchUnlock =
+            findViewById<SwitchMaterial>(R.id.switchDebugUnlock)
+
+        switchUnlock.isChecked =
+            access.isDebugUnlock()
+
+        switchUnlock.setOnCheckedChangeListener { _, checked ->
+            access.setDebugUnlock(checked)
+            if (!checked) {
+                access.resetTrials()
+            }
+        }
+
+        val reset =
+            findViewById<Button>(R.id.buttonResetTrials)
+
+        reset.text =
+            ArchivioCompletoCopy.SETTINGS_RESET_TRIALS
+
+        reset.setOnClickListener {
+            access.resetTrials()
+        }
     }
 }

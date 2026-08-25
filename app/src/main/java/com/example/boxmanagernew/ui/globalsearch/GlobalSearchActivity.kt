@@ -8,6 +8,11 @@ import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ScrollView
+import android.widget.TextView
+import com.example.boxmanagernew.domain.premium.ArchivioCompletoAccess
+import com.example.boxmanagernew.domain.premium.ArchivioCompletoCopy
+import com.example.boxmanagernew.domain.premium.PremiumFeature
+import com.example.boxmanagernew.ui.premium.ArchivioCompletoNav
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -84,6 +89,15 @@ class GlobalSearchActivity : BaseActivity() {
     ) {
 
         super.onCreate(savedInstanceState)
+
+        if (
+            !ArchivioCompletoNav.allowActivity(
+                this,
+                PremiumFeature.ADVANCED_SEARCH
+            )
+        ) {
+            return
+        }
 
         setContentView(
             R.layout.activity_global_search
@@ -180,10 +194,37 @@ class GlobalSearchActivity : BaseActivity() {
 
             viewModel.clear()
 
+            refreshSearchTrial()
+
             if (initialQuery.isNotBlank()) {
                 submitQuestion()
             }
+        } else {
+            refreshSearchTrial()
         }
+    }
+
+    private fun refreshSearchTrial() {
+
+        val trialView =
+            findViewById<TextView>(R.id.textSearchTrial)
+
+        val access =
+            ArchivioCompletoAccess(this)
+
+        if (access.isOpen()) {
+            trialView.visibility = View.GONE
+            return
+        }
+
+        trialView.visibility = View.VISIBLE
+        trialView.text =
+            ArchivioCompletoCopy.trialLine(
+                PremiumFeature.ADVANCED_SEARCH,
+                access.remaining(
+                    PremiumFeature.ADVANCED_SEARCH
+                )
+            )
     }
 
     private fun submitQuestion() {
@@ -195,6 +236,30 @@ class GlobalSearchActivity : BaseActivity() {
 
         if (question.isBlank()) {
             return
+        }
+
+        val access =
+            ArchivioCompletoAccess(this)
+
+        if (!access.isOpen()) {
+
+            if (
+                !access.canTrial(
+                    PremiumFeature.ADVANCED_SEARCH
+                )
+            ) {
+                ArchivioCompletoNav.run(
+                    this,
+                    PremiumFeature.ADVANCED_SEARCH
+                ) {}
+                finish()
+                return
+            }
+
+            access.consumeTrial(
+                PremiumFeature.ADVANCED_SEARCH
+            )
+            refreshSearchTrial()
         }
 
         hidePrintActions()

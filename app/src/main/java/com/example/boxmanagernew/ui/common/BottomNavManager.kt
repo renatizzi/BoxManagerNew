@@ -18,6 +18,7 @@ import com.example.boxmanagernew.ui.qr.QRActivity
 import com.example.boxmanagernew.ui.qr.QrLabelActivity
 import com.example.boxmanagernew.ui.restore.RestoreActivity
 import com.example.boxmanagernew.ui.search.SearchResultActivity
+import com.example.boxmanagernew.ui.premium.ArchivioCompletoActivity
 import com.example.boxmanagernew.ui.settings.LocationsActivity
 import com.example.boxmanagernew.ui.settings.SettingsActivity
 import com.example.boxmanagernew.ui.utility.UtilityActivity
@@ -59,6 +60,12 @@ object BottomNavManager {
             is SettingsActivity,
             is LocationsActivity ->
                 TAB_SETTINGS
+
+            is ArchivioCompletoActivity ->
+                activity.intent.getIntExtra(
+                    ArchivioCompletoActivity.EXTRA_NAV_TAB,
+                    TAB_DASHBOARD
+                )
 
             else ->
                 null

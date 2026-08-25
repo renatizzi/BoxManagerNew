@@ -20,7 +20,9 @@ import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
 import com.example.boxmanagernew.importdata.config.ImportConfiguration
 import com.example.boxmanagernew.importdata.merge.ImportMergeApplier
 import com.example.boxmanagernew.ui.backup.BackupZipPersister
+import com.example.boxmanagernew.domain.premium.PremiumFeature
 import com.example.boxmanagernew.ui.common.BaseActivity
+import com.example.boxmanagernew.ui.premium.ArchivioCompletoNav
 import com.example.boxmanagernew.ui.common.DialogUtils
 import com.example.boxmanagernew.ui.common.FeedbackUtils
 import com.google.android.material.card.MaterialCardView
@@ -68,6 +70,15 @@ class ImportActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (
+            !ArchivioCompletoNav.allowActivity(
+                this,
+                PremiumFeature.IMPORT
+            )
+        ) {
+            return
+        }
 
         setContentView(R.layout.activity_import)
 

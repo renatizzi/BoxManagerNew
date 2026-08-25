@@ -9,7 +9,7 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.boxmanagernew"
+        applicationId = "it.renatizzi.boxmanager"
         minSdk = 24
         targetSdk = 36
         versionCode = 1

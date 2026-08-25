@@ -4,8 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.ui.backup.BackupActivity
+import com.example.boxmanagernew.domain.premium.PremiumFeature
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.importdata.ImportActivity
+import com.example.boxmanagernew.ui.premium.ArchivioCompletoNav
 import com.example.boxmanagernew.ui.qr.QRActivity
 import com.example.boxmanagernew.ui.restore.RestoreActivity
 import com.google.android.material.card.MaterialCardView
@@ -55,7 +57,9 @@ class UtilityActivity : BaseActivity() {
             R.id.btnImport
         ).setOnClickListener {
 
-            startActivity(
+            ArchivioCompletoNav.start(
+                this,
+                PremiumFeature.IMPORT,
                 Intent(
                     this,
                     ImportActivity::class.java
@@ -67,7 +71,9 @@ class UtilityActivity : BaseActivity() {
             R.id.btnQr
         ).setOnClickListener {
 
-            startActivity(
+            ArchivioCompletoNav.start(
+                this,
+                PremiumFeature.QR_SCAN,
                 Intent(
                     this,
                     QRActivity::class.java

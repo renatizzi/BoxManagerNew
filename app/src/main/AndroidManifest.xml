@@ -20,6 +20,10 @@
         android:theme="@style/Theme.BoxManager">
 
         <activity
+            android:name=".ui.premium.ArchivioCompletoActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".ui.qr.QrLabelActivity"
             android:exported="false" />
 

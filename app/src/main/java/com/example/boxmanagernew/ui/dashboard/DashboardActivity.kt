@@ -19,6 +19,8 @@ import com.example.boxmanagernew.ui.common.VoiceSearchController
 import com.example.boxmanagernew.ui.globalsearch.GlobalSearchActivity
 import com.example.boxmanagernew.ui.importdata.ImportActivity
 import com.example.boxmanagernew.ui.main.BoxViewModel
+import com.example.boxmanagernew.domain.premium.PremiumFeature
+import com.example.boxmanagernew.ui.premium.ArchivioCompletoNav
 import com.example.boxmanagernew.ui.qr.QRActivity
 import com.example.boxmanagernew.ui.restore.RestoreActivity
 import com.example.boxmanagernew.ui.search.SearchResultActivity
@@ -133,7 +135,9 @@ class DashboardActivity : BaseActivity() {
 
             0 -> {
 
-                startActivity(
+                ArchivioCompletoNav.start(
+                    this,
+                    PremiumFeature.ADVANCED_SEARCH,
                     Intent(
                         this,
                         GlobalSearchActivity::class.java
@@ -287,7 +291,9 @@ class DashboardActivity : BaseActivity() {
             R.id.cardQr
         ).setOnClickListener {
 
-            startActivity(
+            ArchivioCompletoNav.start(
+                this,
+                PremiumFeature.QR_SCAN,
                 Intent(
                     this,
                     QRActivity::class.java
@@ -299,7 +305,9 @@ class DashboardActivity : BaseActivity() {
             R.id.cardTools
         ).setOnClickListener {
 
-            startActivity(
+            ArchivioCompletoNav.start(
+                this,
+                PremiumFeature.IMPORT,
                 Intent(
                     this,
                     ImportActivity::class.java

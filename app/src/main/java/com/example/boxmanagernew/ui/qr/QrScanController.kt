@@ -21,7 +21,8 @@ class QrScanController(
     private val lifecycleOwner: LifecycleOwner,
     private val previewView: PreviewView,
     private val onQrContent: (String) -> Unit,
-    private val onQrUnreadable: () -> Unit
+    private val onQrUnreadable: () -> Unit,
+    private val onCameraUnavailable: () -> Unit
 ) {
 
     private val analysisExecutor: ExecutorService =
@@ -60,9 +61,13 @@ class QrScanController(
                     return@addListener
                 }
 
-                val provider = future.get()
-                cameraProvider = provider
-                bind(provider)
+                try {
+                    val provider = future.get()
+                    cameraProvider = provider
+                    bind(provider)
+                } catch (_: Exception) {
+                    notifyUnavailable()
+                }
             },
             ContextCompat.getMainExecutor(context)
         )
@@ -90,6 +95,15 @@ class QrScanController(
 
     private fun bind(provider: ProcessCameraProvider) {
 
+        try {
+            bindUnsafe(provider)
+        } catch (_: Exception) {
+            notifyUnavailable()
+        }
+    }
+
+    private fun bindUnsafe(provider: ProcessCameraProvider) {
+
         val preview = Preview.Builder().build().also { useCase ->
             useCase.setSurfaceProvider(previewView.surfaceProvider)
         }
@@ -114,7 +128,11 @@ class QrScanController(
                 }
 
                 val barcodes =
-                    result.getValue(barcodeScanner)
+                    try {
+                        result.getValue(barcodeScanner)
+                    } catch (_: Exception) {
+                        return@MlKitAnalyzer
+                    }
 
                 if (barcodes.isNullOrEmpty()) {
                     return@MlKitAnalyzer
@@ -141,7 +159,11 @@ class QrScanController(
 
         provider.unbindAll()
 
-        val selector = firstAvailableSelector(provider) ?: return
+        val selector = firstAvailableSelector(provider)
+        if (selector == null) {
+            notifyUnavailable()
+            return
+        }
 
         provider.bindToLifecycle(
             lifecycleOwner,
@@ -149,6 +171,18 @@ class QrScanController(
             preview,
             analysis
         )
+    }
+
+    private fun notifyUnavailable() {
+        if (stopped.get()) {
+            return
+        }
+        val context = previewView.context
+        ContextCompat.getMainExecutor(context).execute {
+            if (!stopped.get()) {
+                onCameraUnavailable()
+            }
+        }
     }
 
     private fun firstAvailableSelector(

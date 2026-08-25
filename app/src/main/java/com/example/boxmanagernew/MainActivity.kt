@@ -35,6 +35,8 @@ import com.example.boxmanagernew.ui.common.UiUtils
 import com.example.boxmanagernew.ui.common.VoiceSearchController
 import com.example.boxmanagernew.ui.main.BoxAdapter
 import com.example.boxmanagernew.ui.main.BoxViewModel
+import com.example.boxmanagernew.domain.premium.PremiumFeature
+import com.example.boxmanagernew.ui.premium.ArchivioCompletoNav
 import com.example.boxmanagernew.ui.qr.QrLabelActivity
 import com.example.boxmanagernew.viewoutput.config.ViewOutputConfiguration
 import com.example.boxmanagernew.viewoutput.csv.ViewExportCsvBuilder
@@ -226,7 +228,9 @@ class MainActivity : BaseActivity() {
 
                 onShowQrLabel = { box ->
 
-                    startActivity(
+                    ArchivioCompletoNav.start(
+                        this,
+                        PremiumFeature.QR_LABEL,
                         Intent(
                             this,
                             QrLabelActivity::class.java
@@ -656,7 +660,12 @@ class MainActivity : BaseActivity() {
 
             exportButton.setOnClickListener {
 
-                handleExportView()
+                ArchivioCompletoNav.run(
+                    this,
+                    PremiumFeature.EXPORT
+                ) {
+                    handleExportView()
+                }
             }
         }
     }

@@ -16,7 +16,10 @@ import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
 import com.example.boxmanagernew.domain.model.Box
 import com.example.boxmanagernew.domain.qr.BoxQrPayload
 import com.example.boxmanagernew.domain.qr.QrScanOutcome
+import com.example.boxmanagernew.domain.qr.QrConfiguration
 import com.example.boxmanagernew.domain.qr.QrScanResolver
+import com.example.boxmanagernew.domain.premium.PremiumFeature
+import com.example.boxmanagernew.ui.premium.ArchivioCompletoNav
 import com.example.boxmanagernew.ui.boxdetail.BoxDetailActivity
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.FeedbackUtils
@@ -39,11 +42,22 @@ class QRActivity : BaseActivity() {
 
             if (granted) {
                 startScan()
+            } else {
+                showCameraUnavailable()
             }
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (
+            !ArchivioCompletoNav.allowActivity(
+                this,
+                PremiumFeature.QR_SCAN
+            )
+        ) {
+            return
+        }
 
         setContentView(R.layout.activity_qr)
 
@@ -83,6 +97,7 @@ class QRActivity : BaseActivity() {
                 PackageManager.FEATURE_CAMERA_ANY
             )
         ) {
+            showCameraUnavailable()
             return
         }
 
@@ -113,7 +128,8 @@ class QRActivity : BaseActivity() {
                 this,
                 preview,
                 onQrContent = { raw -> handleScan(raw) },
-                onQrUnreadable = { handleScan(null) }
+                onQrUnreadable = { handleScan(null) },
+                onCameraUnavailable = { showCameraUnavailable() }
             ).also { controller ->
                 controller.start()
             }
@@ -169,6 +185,10 @@ class QRActivity : BaseActivity() {
                 putExtra("boxName", box.name)
             }
         )
+    }
+
+    private fun showCameraUnavailable() {
+        showBlocking(QrConfiguration.MSG_READ_ERROR)
     }
 
     private fun showBlocking(text: String?) {

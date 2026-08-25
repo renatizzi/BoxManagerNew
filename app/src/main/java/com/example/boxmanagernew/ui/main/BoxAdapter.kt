@@ -78,7 +78,7 @@ class BoxAdapter(
         } else {
 
             holder.imageCategory.setImageResource(
-                R.drawable.ic_launcher_foreground
+                R.drawable.outline_browse_24
             )
         }
 
