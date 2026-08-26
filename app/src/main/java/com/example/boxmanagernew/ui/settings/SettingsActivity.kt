@@ -10,11 +10,13 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.boxmanagernew.BuildConfig
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.domain.premium.ArchivioCompletoAccess
 import com.example.boxmanagernew.domain.premium.ArchivioCompletoCopy
+import com.example.boxmanagernew.domain.premium.ArchivioCompletoPolicy
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.ThemeManager
 import com.google.android.material.switchmaterial.SwitchMaterial
@@ -61,6 +63,7 @@ class SettingsActivity : BaseActivity() {
         setupPaletteSelector()
         updateThemeLabel()
         setupDebugUnlock()
+        setupAdminParams()
 
         setupBottomNav()
 
@@ -301,6 +304,95 @@ class SettingsActivity : BaseActivity() {
 
         textSaveMessage.visibility =
             View.VISIBLE
+
+        setupAdminParams()
+    }
+
+    private fun setupAdminParams() {
+
+        val card =
+            findViewById<View>(R.id.cardAdminParams)
+
+        val username =
+            editUserName.text
+                .toString()
+                .trim()
+                .ifEmpty {
+                    getSharedPreferences(
+                        PREFS,
+                        Context.MODE_PRIVATE
+                    ).getString(KEY_USERNAME, "") ?: ""
+                }
+
+        if (!ArchivioCompletoPolicy.isAdminUsername(username)) {
+            card.visibility = View.GONE
+            return
+        }
+
+        card.visibility = View.VISIBLE
+
+        val access =
+            ArchivioCompletoAccess(this)
+
+        findViewById<TextView>(R.id.textAdminParamsTitle).text =
+            ArchivioCompletoCopy.SETTINGS_PARAMS_TITLE
+
+        findViewById<TextView>(R.id.textAdminParamsHint).text =
+            ArchivioCompletoCopy.SETTINGS_PARAMS_HINT
+
+        findViewById<TextView>(R.id.textParamTrialLabel).text =
+            ArchivioCompletoCopy.SETTINGS_PARAM_TRIAL
+
+        findViewById<TextView>(R.id.textParamBonusLabel).text =
+            ArchivioCompletoCopy.SETTINGS_PARAM_BONUS
+
+        findViewById<TextView>(R.id.textParamFriendsLabel).text =
+            ArchivioCompletoCopy.SETTINGS_PARAM_FRIENDS
+
+        val editTrial =
+            findViewById<EditText>(R.id.editParamTrialDays)
+
+        val editBonus =
+            findViewById<EditText>(R.id.editParamShareBonusDays)
+
+        val editFriends =
+            findViewById<EditText>(R.id.editParamShareFriends)
+
+        editTrial.setText(access.trialDays().toString())
+        editBonus.setText(access.shareBonusDays().toString())
+        editFriends.setText(access.shareFriendsRequired().toString())
+
+        val saveParams =
+            findViewById<Button>(R.id.buttonSaveAdminParams)
+
+        saveParams.text =
+            ArchivioCompletoCopy.SETTINGS_PARAMS_SAVE
+
+        saveParams.setOnClickListener {
+            val trial =
+                editTrial.text.toString().toIntOrNull()
+                    ?: ArchivioCompletoPolicy.DEFAULT_TRIAL_DAYS
+
+            val bonus =
+                editBonus.text.toString().toIntOrNull()
+                    ?: ArchivioCompletoPolicy.DEFAULT_SHARE_BONUS_DAYS
+
+            val friends =
+                editFriends.text.toString().toIntOrNull()
+                    ?: ArchivioCompletoPolicy.DEFAULT_SHARE_FRIENDS
+
+            access.saveParams(trial, bonus, friends)
+
+            editTrial.setText(access.trialDays().toString())
+            editBonus.setText(access.shareBonusDays().toString())
+            editFriends.setText(access.shareFriendsRequired().toString())
+
+            Toast.makeText(
+                this,
+                ArchivioCompletoCopy.SETTINGS_PARAMS_SAVED,
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
     private fun setupDebugUnlock() {
@@ -332,19 +424,28 @@ class SettingsActivity : BaseActivity() {
 
         switchUnlock.setOnCheckedChangeListener { _, checked ->
             access.setDebugUnlock(checked)
-            if (!checked) {
-                access.resetTrials()
-            }
         }
 
-        val reset =
+        val expire =
             findViewById<Button>(R.id.buttonResetTrials)
 
-        reset.text =
-            ArchivioCompletoCopy.SETTINGS_RESET_TRIALS
+        expire.text =
+            ArchivioCompletoCopy.SETTINGS_EXPIRE_TRIAL
 
-        reset.setOnClickListener {
-            access.resetTrials()
+        expire.setOnClickListener {
+            access.expireTrialForDebug()
+            switchUnlock.isChecked = false
+        }
+
+        val restart =
+            findViewById<Button>(R.id.buttonRestartTrial)
+
+        restart.text =
+            ArchivioCompletoCopy.SETTINGS_RESTART_TRIAL
+
+        restart.setOnClickListener {
+            access.restartTrialForDebug()
+            switchUnlock.isChecked = false
         }
     }
 }

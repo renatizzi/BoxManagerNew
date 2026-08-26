@@ -68,6 +68,22 @@
                 android:textColor="@color/text_secondary"
                 android:textSize="13sp" />
 
+            <EditText
+                android:id="@+id/editUnlockCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:inputType="textCapCharacters"
+                android:maxLines="1"
+                android:textColor="@color/text_primary"
+                android:importantForAutofill="no" />
+
+            <Button
+                android:id="@+id/buttonRedeemCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" />
+
         </LinearLayout>
     </ScrollView>
 

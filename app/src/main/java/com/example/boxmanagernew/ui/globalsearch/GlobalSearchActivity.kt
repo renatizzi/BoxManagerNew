@@ -212,18 +212,16 @@ class GlobalSearchActivity : BaseActivity() {
         val access =
             ArchivioCompletoAccess(this)
 
-        if (access.isOpen()) {
+        if (access.isPermanentUnlock()) {
             trialView.visibility = View.GONE
             return
         }
 
         trialView.visibility = View.VISIBLE
         trialView.text =
-            ArchivioCompletoCopy.trialLine(
-                PremiumFeature.ADVANCED_SEARCH,
-                access.remaining(
-                    PremiumFeature.ADVANCED_SEARCH
-                )
+            ArchivioCompletoCopy.trialStatusLine(
+                access.remainingDays(),
+                access.accessUntil()
             )
     }
 
@@ -242,24 +240,12 @@ class GlobalSearchActivity : BaseActivity() {
             ArchivioCompletoAccess(this)
 
         if (!access.isOpen()) {
-
-            if (
-                !access.canTrial(
-                    PremiumFeature.ADVANCED_SEARCH
-                )
-            ) {
-                ArchivioCompletoNav.run(
-                    this,
-                    PremiumFeature.ADVANCED_SEARCH
-                ) {}
-                finish()
-                return
-            }
-
-            access.consumeTrial(
+            ArchivioCompletoNav.run(
+                this,
                 PremiumFeature.ADVANCED_SEARCH
-            )
-            refreshSearchTrial()
+            ) {}
+            finish()
+            return
         }
 
         hidePrintActions()

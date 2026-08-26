@@ -36,15 +36,6 @@ object ArchivioCompletoNav {
         }
 
         pending = {
-            val latest =
-                ArchivioCompletoAccess(activity)
-            if (
-                feature != PremiumFeature.ADVANCED_SEARCH &&
-                !latest.isOpen() &&
-                latest.canTrial(feature)
-            ) {
-                latest.consumeTrial(feature)
-            }
             proceed()
         }
 
