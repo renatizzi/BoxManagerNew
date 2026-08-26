@@ -1,8 +1,10 @@
 package com.example.boxmanagernew.ui.settings
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.GradientDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -17,6 +19,7 @@ import com.example.boxmanagernew.R
 import com.example.boxmanagernew.domain.premium.ArchivioCompletoAccess
 import com.example.boxmanagernew.domain.premium.ArchivioCompletoCopy
 import com.example.boxmanagernew.domain.premium.ArchivioCompletoPolicy
+import com.example.boxmanagernew.domain.privacy.PrivacyPolicy
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.ThemeManager
 import com.google.android.material.switchmaterial.SwitchMaterial
@@ -42,6 +45,7 @@ class SettingsActivity : BaseActivity() {
 
     private lateinit var textCurrentTheme: TextView
     private lateinit var cardLocations: View
+    private lateinit var cardPrivacy: View
 
     private var currentPalette =
         ThemeManager.PALETTE_ORANGE
@@ -100,6 +104,12 @@ class SettingsActivity : BaseActivity() {
 
         cardLocations =
             findViewById(R.id.cardLocations)
+
+        cardPrivacy =
+            findViewById(R.id.cardPrivacy)
+
+        findViewById<TextView>(R.id.textPrivacyLabel).text =
+            PrivacyPolicy.SETTINGS_LABEL
     }
 
     private fun loadPreferences() {
@@ -148,6 +158,27 @@ class SettingsActivity : BaseActivity() {
                     LocationsActivity::class.java
                 )
             )
+        }
+
+        cardPrivacy.setOnClickListener {
+            openPrivacyPolicy()
+        }
+    }
+
+    private fun openPrivacyPolicy() {
+        val intent =
+            Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(PrivacyPolicy.PUBLIC_URL)
+            )
+        try {
+            startActivity(intent)
+        } catch (_: ActivityNotFoundException) {
+            Toast.makeText(
+                this,
+                PrivacyPolicy.PUBLIC_URL,
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 

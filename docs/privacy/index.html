@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Informativa sulla privacy — BoxManager</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --fg: #1a1a1a;
+      --muted: #555;
+      --bg: #fafafa;
+      --card: #fff;
+      --line: #e5e5e5;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --fg: #f2f2f2;
+        --muted: #b0b0b0;
+        --bg: #121212;
+        --card: #1e1e1e;
+        --line: #333;
+      }
+    }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.55;
+    }
+    main {
+      max-width: 42rem;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 3rem;
+    }
+    h1 { font-size: 1.6rem; margin: 0 0 0.35rem; }
+    .meta { color: var(--muted); font-size: 0.95rem; margin-bottom: 1.5rem; }
+    section {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 1rem 1.1rem;
+      margin-bottom: 0.9rem;
+    }
+    h2 { font-size: 1.05rem; margin: 0 0 0.5rem; }
+    p, li { margin: 0.4rem 0; }
+    ul { padding-left: 1.2rem; margin: 0.3rem 0; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Informativa sulla privacy</h1>
+    <p class="meta">App Android <strong>BoxManager</strong> (<code>it.renatizzi.boxmanager</code>). Ultimo aggiornamento: 26 agosto 2026.</p>
+
+    <section>
+      <h2>1. Titolare</h2>
+      <p>Lo sviluppatore dell’app è Renato Stefanizzi. L’app non dispone di un account cloud né di un server di backend gestito dallo sviluppatore.</p>
+    </section>
+
+    <section>
+      <h2>2. Dati trattati sull’apparecchio</h2>
+      <p>BoxManager conserva l’archivio (contenitori, oggetti, categorie, luoghi e impostazioni locali, compreso l’eventuale nome utente) <strong>solo sul dispositivo</strong>, tramite database locale. Il backup automatico di Android è disabilitato (<code>allowBackup=false</code>).</p>
+      <p>Il nome utente nelle Impostazioni è un’etichetta locale: non crea un account online.</p>
+    </section>
+
+    <section>
+      <h2>3. Fotocamera</h2>
+      <p>La fotocamera è usata <strong>solo</strong> per leggere il codice QR di un contenitore. L’elaborazione avviene sul dispositivo (ML Kit barcode). Le immagini del flusso fotocamera <strong>non vengono salvate</strong> e <strong>non vengono inviate</strong> a server dello sviluppatore o a terzi dall’app.</p>
+    </section>
+
+    <section>
+      <h2>4. Backup, import, export e condivisione</h2>
+      <ul>
+        <li>Backup, ripristino, import CSV ed export CSV avvengono su richiesta dell’utente, tramite i meccanismi di sistema (file sul dispositivo o cartelle scelte dall’utente).</li>
+        <li>La funzione CONDIVIDI propone un messaggio con il link all’app su Google Play: non condivide l’inventario.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>5. Rete e SDK di terze parti</h2>
+      <p>L’app non effettua chiamate di rete proprie verso server dello sviluppatore. Le librerie di scansione QR (CameraX / ML Kit) possono far comparire nel manifesto i permessi di rete del sistema; l’app non li usa per raccogliere o trasmettere dati dell’archivio.</p>
+      <p>In questa fase non sono presenti analytics, pubblicità (AdMob) né acquisti in-app (Google Play Billing).</p>
+    </section>
+
+    <section>
+      <h2>6. Condivisione con terzi</h2>
+      <p>Lo sviluppatore non riceve né vende i dati dell’archivio. Eventuali file esportati o backup restano sotto controllo dell’utente sul dispositivo o nelle destinazioni scelte dall’utente.</p>
+    </section>
+
+    <section>
+      <h2>7. Conservazione e cancellazione</h2>
+      <p>I dati restano sul dispositivo finché l’utente non li elimina (funzioni dell’app) o non disinstalla l’app. Non esiste un account cloud da cancellare presso lo sviluppatore.</p>
+    </section>
+
+    <section>
+      <h2>8. Aggiornamenti</h2>
+      <p>Questa informativa può essere aggiornata in occasione di nuove funzioni (ad esempio donazioni o micro-pubblicità). La versione pubblicata a questo indirizzo è quella vigente.</p>
+    </section>
+
+    <section>
+      <h2>9. Contatti</h2>
+      <p>Per domande su questa informativa: contattare lo sviluppatore tramite i canali indicati sulla scheda Google Play di BoxManager.</p>
+    </section>
+  </main>
+</body>
+</html>

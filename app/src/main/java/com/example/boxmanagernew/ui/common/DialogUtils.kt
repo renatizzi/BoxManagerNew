@@ -16,6 +16,7 @@ import com.example.boxmanagernew.data.local.entity.CategoryEntity
 import com.example.boxmanagernew.domain.model.Box
 import com.example.boxmanagernew.domain.model.Location
 import com.example.boxmanagernew.backup.config.BackupConfiguration
+import com.example.boxmanagernew.domain.privacy.PrivacyPolicy
 import com.example.boxmanagernew.domain.qr.QrConfiguration
 import com.example.boxmanagernew.ui.categories.CategorySpinnerAdapter
 import com.example.boxmanagernew.ui.settings.LocationSpinnerAdapter
@@ -349,6 +350,28 @@ object DialogUtils {
                 onConfirm()
             }
             .setNegativeButton("NO", null)
+            .show()
+    }
+
+    fun showCameraPermissionRationale(
+        context: Context,
+        onContinue: () -> Unit,
+        onCancel: () -> Unit
+    ): AlertDialog {
+
+        return AlertDialog.Builder(context)
+            .setMessage(PrivacyPolicy.CAMERA_RATIONALE)
+            .setPositiveButton(
+                PrivacyPolicy.CAMERA_RATIONALE_CONTINUE
+            ) { _, _ ->
+                onContinue()
+            }
+            .setNegativeButton(
+                PrivacyPolicy.CAMERA_RATIONALE_CANCEL
+            ) { _, _ ->
+                onCancel()
+            }
+            .setCancelable(false)
             .show()
     }
 
