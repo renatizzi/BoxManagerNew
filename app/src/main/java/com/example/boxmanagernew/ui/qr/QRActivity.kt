@@ -19,10 +19,13 @@ import com.example.boxmanagernew.domain.qr.QrScanOutcome
 import com.example.boxmanagernew.domain.qr.QrConfiguration
 import com.example.boxmanagernew.domain.qr.QrScanResolver
 import com.example.boxmanagernew.domain.premium.PremiumFeature
+import com.example.boxmanagernew.domain.privacy.PrivacyPolicy
 import com.example.boxmanagernew.ui.premium.ArchivioCompletoNav
 import com.example.boxmanagernew.ui.boxdetail.BoxDetailActivity
 import com.example.boxmanagernew.ui.common.BaseActivity
+import com.example.boxmanagernew.ui.common.DialogUtils
 import com.example.boxmanagernew.ui.common.FeedbackUtils
+import androidx.appcompat.app.AlertDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -34,6 +37,7 @@ class QRActivity : BaseActivity() {
     private lateinit var tvMessages: TextView
     private lateinit var boxRepository: BoxRepositoryImpl
     private var handlingScan = false
+    private var cameraRationaleDialog: AlertDialog? = null
 
     private val requestCamera =
         registerForActivityResult(
@@ -43,7 +47,7 @@ class QRActivity : BaseActivity() {
             if (granted) {
                 startScan()
             } else {
-                showCameraUnavailable()
+                showCameraPermissionDenied()
             }
         }
 
@@ -86,6 +90,8 @@ class QRActivity : BaseActivity() {
     }
 
     override fun onDestroy() {
+        cameraRationaleDialog?.dismiss()
+        cameraRationaleDialog = null
         scanController?.stop()
         scanController = null
         super.onDestroy()
@@ -110,8 +116,26 @@ class QRActivity : BaseActivity() {
         if (granted) {
             startScan()
         } else {
-            requestCamera.launch(Manifest.permission.CAMERA)
+            showCameraRationaleThenRequest()
         }
+    }
+
+    private fun showCameraRationaleThenRequest() {
+        if (cameraRationaleDialog?.isShowing == true) {
+            return
+        }
+        cameraRationaleDialog =
+            DialogUtils.showCameraPermissionRationale(
+                this,
+                onContinue = {
+                    requestCamera.launch(
+                        Manifest.permission.CAMERA
+                    )
+                },
+                onCancel = {
+                    showCameraPermissionDenied()
+                }
+            )
     }
 
     private fun startScan() {
@@ -189,6 +213,10 @@ class QRActivity : BaseActivity() {
 
     private fun showCameraUnavailable() {
         showBlocking(QrConfiguration.MSG_READ_ERROR)
+    }
+
+    private fun showCameraPermissionDenied() {
+        showBlocking(PrivacyPolicy.MSG_CAMERA_DENIED)
     }
 
     private fun showBlocking(text: String?) {
