@@ -5,6 +5,13 @@ File: `docs/play/icon_play_512.png` (512×512, RGB, da `boxmanager_launcher`).
 
 In Play Console → scheda dello Store principale → **Icona dell'app** / alta risoluzione → carica questo PNG.
 
+## Immagine in primo piano (banner)
+File: `docs/play/feature_graphic_1024x500.png` (1024×500).
+
+In Play Console → scheda dello Store → **Immagine in primo piano** → carica questo PNG.
+
+Il **video** promo sulla scheda Store è **facoltativo**: puoi saltarlo.
+
 ## Keystore + AAB (solo sul tuo PC — non in git)
 
 ### A) Con Android Studio (consigliato)
