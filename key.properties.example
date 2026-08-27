@@ -1,0 +1,7 @@
+# Copia questo file come key.properties nella ROOT del progetto (stesso livello di settings.gradle.kts).
+# key.properties è gitignored: non committarlo.
+
+storeFile=C\:/Users/TUO_UTENTE/keystores/boxmanager-upload.jks
+storePassword=SOSTITUISCI
+keyAlias=boxmanager
+keyPassword=SOSTITUISCI
