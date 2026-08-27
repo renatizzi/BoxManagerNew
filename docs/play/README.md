@@ -43,3 +43,13 @@ Il **video** promo sulla scheda Store è **facoltativo**: puoi saltarlo.
 - `*.jks` / `*.keystore`
 - `key.properties`
 - password / alias in chat o nei commit
+
+## Screenshot telefono (Play)
+Cartella: `docs/play/screenshots/` (già ritagliati a 1080×2160, rapporto 2:1).
+
+Caricare in Console, in quest'ordine:
+1. `01_contenitori.png`
+2. `02_categorie.png`
+3. `03_utility.png`
+
+Non usare lo screenshot Impostazioni con nome reale.
