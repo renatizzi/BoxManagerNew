@@ -1,6 +1,8 @@
 package com.example.boxmanagernew.help
 
 import com.example.boxmanagernew.domain.help.QuickStartGuideCopy
+import com.example.boxmanagernew.importdata.config.ImportConfiguration
+import com.example.boxmanagernew.viewoutput.config.ViewOutputConfiguration
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -8,8 +10,8 @@ import org.junit.Test
 class QuickStartGuideCopyTest {
 
     @Test
-    fun sections_coverSixStepsInThreePhases() {
-        assertEquals(6, QuickStartGuideCopy.sections.size)
+    fun sections_coverSevenStepsInThreePhases() {
+        assertEquals(7, QuickStartGuideCopy.sections.size)
         assertEquals(
             1,
             QuickStartGuideCopy.sections.count {
@@ -23,7 +25,7 @@ class QuickStartGuideCopyTest {
             }
         )
         assertEquals(
-            3,
+            4,
             QuickStartGuideCopy.sections.count {
                 it.phase == QuickStartGuideCopy.Phase.USAGE
             }
@@ -35,5 +37,28 @@ class QuickStartGuideCopyTest {
         assertTrue(
             QuickStartGuideCopy.FOOTER_NOTE.contains("Archivio completo")
         )
+    }
+
+    @Test
+    fun csvSection_alignsWithImportConfiguration() {
+        val csvSection =
+            QuickStartGuideCopy.sections.single {
+                it.number == 7
+            }
+        val body = csvSection.bullets.joinToString(" ")
+
+        assertEquals("Import ed export CSV", csvSection.title)
+        assertTrue(body.contains(ImportConfiguration.FILE_NAME))
+        assertTrue(body.contains(ImportConfiguration.FORMAT_NAME))
+        assertTrue(body.contains(ImportConfiguration.SECTION_BOXES))
+        assertTrue(body.contains(ImportConfiguration.SECTION_OBJECTS))
+        assertTrue(body.contains(ImportConfiguration.PRE_IMPORT_PREFIX))
+        assertTrue(body.contains(ViewOutputConfiguration.EXPORT_FILE_PREFIX))
+        ImportConfiguration.BOX_HEADER_FIELDS.forEach { column ->
+            assertTrue(body.contains(column))
+        }
+        ImportConfiguration.OBJECT_HEADER_FIELDS.forEach { column ->
+            assertTrue(body.contains(column))
+        }
     }
 }

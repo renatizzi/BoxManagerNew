@@ -1,5 +1,8 @@
 package com.example.boxmanagernew.domain.help
 
+import com.example.boxmanagernew.importdata.config.ImportConfiguration
+import com.example.boxmanagernew.viewoutput.config.ViewOutputConfiguration
+
 /**
  * Guida rapida in-app. Non fa parte del catalogo 2.6.
  */
@@ -94,7 +97,7 @@ object QuickStartGuideCopy {
                 title = "Utility",
                 bullets = listOf(
                     "Backup e Ripristino per salvare l'archivio su file.",
-                    "Importa ed Esporta dati in CSV.",
+                    "Importa ed Esporta dati in CSV (vedi sezione 7).",
                     "Codice QR per aprire un contenitore dalla fotocamera."
                 )
             ),
@@ -107,8 +110,47 @@ object QuickStartGuideCopy {
                     "Stampa, esporta CSV o etichetta QR su ciò che hai selezionato.",
                     "Utile per inventari mirati e stampa di etichette."
                 )
+            ),
+            Section(
+                phase = Phase.USAGE,
+                number = 7,
+                title = "Import ed export CSV",
+                bullets = csvGuideBullets()
             )
         )
+
+    private fun csvGuideBullets(): List<String> {
+        val boxColumns =
+            ImportConfiguration.BOX_HEADER_FIELDS.joinToString(
+                ", "
+            )
+        val objectColumns =
+            ImportConfiguration.OBJECT_HEADER_FIELDS.joinToString(
+                ", "
+            )
+        return listOf(
+            "Da Utility apri Importa dati: genera " +
+                ImportConfiguration.FILE_NAME +
+                " oppure carica un file compilato.",
+            "Formato ufficiale ${ImportConfiguration.FORMAT_NAME} " +
+                "v${ImportConfiguration.FORMAT_VERSION}: separatore " +
+                "\"${ImportConfiguration.SEPARATOR}\", UTF-8 con BOM, " +
+                "sezioni ${ImportConfiguration.SECTION_BOXES} e " +
+                "${ImportConfiguration.SECTION_OBJECTS}.",
+            "Contenitori ($boxColumns). Oggetti ($objectColumns). " +
+                "Categorie e posizioni devono già esistere in app; " +
+                "ogni oggetto deve riferirsi a un contenitore presente " +
+                "nel file o nell'archivio.",
+            "Prima dell'import l'app salva un backup " +
+                "${ImportConfiguration.PRE_IMPORT_PREFIX}ddMMyy_HHmm " +
+                "nella cartella del Backup. Se un controllo fallisce, " +
+                "l'archivio non viene modificato.",
+            "Esporta dalla selezione nelle liste o da Utility: nome " +
+                "proposto ${ViewOutputConfiguration.EXPORT_FILE_PREFIX}" +
+                "ddMMyy_HHmm.csv, stesso tracciato del modello. " +
+                "I duplicati in import vengono ignorati."
+        )
+    }
 
     const val FOOTER_NOTE =
         "Ricerca avanzata, QR, import ed export richiedono Archivio completo " +
