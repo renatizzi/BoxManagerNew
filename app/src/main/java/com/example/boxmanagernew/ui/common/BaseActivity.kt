@@ -23,6 +23,7 @@ import com.example.boxmanagernew.MainActivity
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.ui.categories.CategoriesActivity
 import com.example.boxmanagernew.ui.dashboard.DashboardActivity
+import com.example.boxmanagernew.ui.help.QuickStartGuideActivity
 import com.example.boxmanagernew.ui.settings.SettingsActivity
 import com.example.boxmanagernew.ui.utility.UtilityActivity
 import com.google.android.material.card.MaterialCardView
@@ -300,6 +301,40 @@ abstract class BaseActivity : AppCompatActivity() {
         }
 
         bindNightSwitch()
+        bindHelpButton()
+    }
+
+    private fun bindHelpButton() {
+
+        val button =
+            findViewById<TextView>(
+                R.id.buttonHelp
+            ) ?: return
+
+        if (this is QuickStartGuideActivity) {
+            button.visibility = View.GONE
+            return
+        }
+
+        button.visibility = View.VISIBLE
+
+        button.setTextColor(
+            ThemeManager.getTopBarTitle(this)
+        )
+
+        button.setOnClickListener {
+
+            if (isFinishing || isDestroyed) {
+                return@setOnClickListener
+            }
+
+            startActivity(
+                Intent(
+                    this,
+                    QuickStartGuideActivity::class.java
+                )
+            )
+        }
     }
 
     private fun bindNightSwitch() {

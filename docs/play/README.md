@@ -53,3 +53,27 @@ Caricare in Console, in quest'ordine:
 3. `03_utility.png`
 
 Non usare lo screenshot Impostazioni con nome reale.
+
+## Test chiuso — Archivio completo per i tester (release)
+
+In release **non** c'è il pannello debug. I tester sbloccano Archivio completo con codice in-app:
+
+`BOXMANAGER-TESTER`
+
+(Accetta anche spazi/minuscole: es. `boxmanager tester`.)
+
+Messaggio da inviare con il link opt-in Play:
+
+```text
+Ciao! Test chiuso BoxManager (gratis su Play).
+
+1) Apri il link e tocca "Diventa tester"
+2) Installa BoxManager dal Play Store (stesso account Google)
+3) In app: tocca ? per la guida rapida
+4) Per Archivio completo: apri una funzione avanzata → campo codice → BOXMANAGER-TESTER
+5) Resta iscritto al test almeno 14 giorni
+
+Grazie!
+```
+
+Il codice amico `BOXMANAGER-AMICO` resta valido per il rinnovo via condivisione.

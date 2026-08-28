@@ -83,6 +83,12 @@ class ArchivioCompletoPolicyTest {
         assertTrue(
             ArchivioCompletoPolicy.isValidUnlockCode("BOXMANAGER-AMICO")
         )
+        assertTrue(
+            ArchivioCompletoPolicy.isValidUnlockCode(" boxmanager tester ")
+        )
+        assertTrue(
+            ArchivioCompletoPolicy.isValidUnlockCode("BOXMANAGER-TESTER")
+        )
         assertFalse(
             ArchivioCompletoPolicy.isValidUnlockCode("ALTRO")
         )

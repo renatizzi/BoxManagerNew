@@ -51,4 +51,9 @@
     <!-- Icona luogo in UI (il drawable resta nero per il PDF) -->
     <color name="on_surface_icon">#000000</color>
 
+    <!-- Guida rapida: macro-fasi -->
+    <color name="guide_phase_config">#4A90D9</color>
+    <color name="guide_phase_census">#2E7D32</color>
+    <color name="guide_phase_usage">#E67E22</color>
+
 </resources>

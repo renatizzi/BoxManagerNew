@@ -28,6 +28,12 @@ object ArchivioCompletoPolicy {
     const val UNLOCK_CODE =
         "BOXMANAGER-AMICO"
 
+    const val UNLOCK_CODE_TESTER =
+        "BOXMANAGER-TESTER"
+
+    private val UNLOCK_CODES =
+        setOf(UNLOCK_CODE, UNLOCK_CODE_TESTER)
+
     const val ADMIN_USERNAME =
         "Renato Stefanizzi"
 
@@ -130,6 +136,6 @@ object ArchivioCompletoPolicy {
     }
 
     fun isValidUnlockCode(raw: String): Boolean {
-        return normalizeCode(raw) == UNLOCK_CODE
+        return normalizeCode(raw) in UNLOCK_CODES
     }
 }
