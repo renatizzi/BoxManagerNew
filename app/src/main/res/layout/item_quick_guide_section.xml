@@ -50,6 +50,29 @@
                 android:textSize="14sp"
                 android:textColor="@color/text_secondary" />
 
+            <TextView
+                android:id="@+id/textExampleTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:textColor="@color/text_primary"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/textSpreadsheetExample"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:background="@color/guide_example_background"
+                android:fontFamily="monospace"
+                android:lineSpacingExtra="2dp"
+                android:padding="10dp"
+                android:textSize="12sp"
+                android:textColor="@color/text_secondary"
+                android:visibility="gone" />
+
         </LinearLayout>
 
     </LinearLayout>

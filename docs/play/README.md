@@ -69,7 +69,7 @@ Ciao! Test chiuso BoxManager (gratis su Play).
 
 1) Apri il link e tocca "Diventa tester"
 2) Installa BoxManager dal Play Store (stesso account Google)
-3) In app: tocca ? per la guida rapida
+3) In app: tocca Guida per la guida rapida
 4) Per Archivio completo: apri una funzione avanzata → campo codice → BOXMANAGER-TESTER
 5) Resta iscritto al test almeno 14 giorni
 
