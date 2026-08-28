@@ -55,5 +55,6 @@
     <color name="guide_phase_config">#4A90D9</color>
     <color name="guide_phase_census">#2E7D32</color>
     <color name="guide_phase_usage">#E67E22</color>
+    <color name="guide_example_background">#F0F4F8</color>
 
 </resources>

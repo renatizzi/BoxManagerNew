@@ -45,15 +45,28 @@ class QuickStartGuideCopyTest {
             QuickStartGuideCopy.sections.single {
                 it.number == 7
             }
-        val body = csvSection.bullets.joinToString(" ")
+        val body =
+            (
+                csvSection.bullets +
+                    listOfNotNull(csvSection.spreadsheetExample)
+                ).joinToString(" ")
 
         assertEquals("Import ed export CSV", csvSection.title)
+        assertEquals(
+            QuickStartGuideCopy.CSV_EXAMPLE_TITLE,
+            csvSection.spreadsheetExampleTitle
+        )
+        assertTrue(
+            body.contains("Excel") || body.contains("Fogli")
+        )
         assertTrue(body.contains(ImportConfiguration.FILE_NAME))
         assertTrue(body.contains(ImportConfiguration.FORMAT_NAME))
         assertTrue(body.contains(ImportConfiguration.SECTION_BOXES))
         assertTrue(body.contains(ImportConfiguration.SECTION_OBJECTS))
         assertTrue(body.contains(ImportConfiguration.PRE_IMPORT_PREFIX))
         assertTrue(body.contains(ViewOutputConfiguration.EXPORT_FILE_PREFIX))
+        assertTrue(body.contains("Scatola garage"))
+        assertTrue(body.contains("Trapano"))
         ImportConfiguration.BOX_HEADER_FIELDS.forEach { column ->
             assertTrue(body.contains(column))
         }

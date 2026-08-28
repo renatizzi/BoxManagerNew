@@ -46,8 +46,13 @@ object QuickStartGuideCopy {
         val phase: Phase,
         val number: Int,
         val title: String,
-        val bullets: List<String>
+        val bullets: List<String>,
+        val spreadsheetExampleTitle: String? = null,
+        val spreadsheetExample: String? = null
     )
+
+    const val CSV_EXAMPLE_TITLE =
+        "Esempio come appare in Excel o Fogli Google"
 
     val sections: List<Section> =
         listOf(
@@ -115,7 +120,9 @@ object QuickStartGuideCopy {
                 phase = Phase.USAGE,
                 number = 7,
                 title = "Import ed export CSV",
-                bullets = csvGuideBullets()
+                bullets = csvGuideBullets(),
+                spreadsheetExampleTitle = CSV_EXAMPLE_TITLE,
+                spreadsheetExample = csvSpreadsheetExample()
             )
         )
 
@@ -129,27 +136,80 @@ object QuickStartGuideCopy {
                 ", "
             )
         return listOf(
-            "Da Utility apri Importa dati: genera " +
+            "Di solito si lavora con un foglio elettronico: genera " +
                 ImportConfiguration.FILE_NAME +
-                " oppure carica un file compilato.",
+                " dall'app (Utility → Importa dati) oppure " +
+                "modifica un file esportato.",
+            "Salva come CSV con separatore punto e virgola (.csv): " +
+                "in Excel «CSV (delimitato da punto e virgola)», " +
+                "in Fogli «Valori separati da virgola» con separatore ;.",
             "Formato ufficiale ${ImportConfiguration.FORMAT_NAME} " +
-                "v${ImportConfiguration.FORMAT_VERSION}: separatore " +
-                "\"${ImportConfiguration.SEPARATOR}\", UTF-8 con BOM, " +
-                "sezioni ${ImportConfiguration.SECTION_BOXES} e " +
-                "${ImportConfiguration.SECTION_OBJECTS}.",
-            "Contenitori ($boxColumns). Oggetti ($objectColumns). " +
-                "Categorie e posizioni devono già esistere in app; " +
-                "ogni oggetto deve riferirsi a un contenitore presente " +
-                "nel file o nell'archivio.",
-            "Prima dell'import l'app salva un backup " +
+                "v${ImportConfiguration.FORMAT_VERSION}: prima " +
+                "${ImportConfiguration.SECTION_BOXES} " +
+                "($boxColumns), poi ${ImportConfiguration.SECTION_OBJECTS} " +
+                "($objectColumns). Vedi l'esempio sotto.",
+            "Prima di importare: crea in app le categorie e le posizioni " +
+                "che scrivi nel foglio; negli oggetti il contenitore deve " +
+                "essere già presente nel blocco contenitori o in archivio.",
+            "All'import l'app salva un backup " +
                 "${ImportConfiguration.PRE_IMPORT_PREFIX}ddMMyy_HHmm " +
-                "nella cartella del Backup. Se un controllo fallisce, " +
-                "l'archivio non viene modificato.",
+                "nella cartella del Backup. Se qualcosa non torna, " +
+                "l'archivio non cambia. I duplicati vengono ignorati.",
             "Esporta dalla selezione nelle liste o da Utility: nome " +
                 "proposto ${ViewOutputConfiguration.EXPORT_FILE_PREFIX}" +
-                "ddMMyy_HHmm.csv, stesso tracciato del modello. " +
-                "I duplicati in import vengono ignorati."
+                "ddMMyy_HHmm.csv, stesso schema del modello."
         )
+    }
+
+    private fun csvSpreadsheetExample(): String {
+        val boxName = "Scatola garage"
+        val category = "Attrezzi"
+        val position = "Garage"
+        val objectName = "Trapano"
+        val description = "Bosch verde"
+        val quantity = "1"
+
+        return buildString {
+            appendLine(
+                "Ogni riga del foglio = una riga del file. " +
+                    "Le colonne sono separate dal punto e virgola del CSV."
+            )
+            appendLine()
+            appendLine(
+                "     A              B                 C"
+            )
+            appendLine(
+                "1    formato        ${ImportConfiguration.FORMAT_NAME}  " +
+                    "${ImportConfiguration.FORMAT_VERSION}"
+            )
+            appendLine(
+                "2    sezione        ${ImportConfiguration.SECTION_BOXES}"
+            )
+            appendLine(
+                "3    ${ImportConfiguration.COL_NAME}           " +
+                    "${ImportConfiguration.COL_CATEGORY}         " +
+                    ImportConfiguration.COL_POSITION
+            )
+            appendLine(
+                "4    $boxName  $category          $position"
+            )
+            appendLine()
+            appendLine(
+                "     A        B              C             D"
+            )
+            appendLine(
+                "5    sezione  ${ImportConfiguration.SECTION_OBJECTS}"
+            )
+            appendLine(
+                "6    ${ImportConfiguration.COL_NAME}     " +
+                    "${ImportConfiguration.COL_BOX}    " +
+                    "${ImportConfiguration.COL_DESCRIPTION}   " +
+                    ImportConfiguration.COL_QUANTITY
+            )
+            appendLine(
+                "7    $objectName  $boxName  $description  $quantity"
+            )
+        }.trimEnd()
     }
 
     const val FOOTER_NOTE =

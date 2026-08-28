@@ -110,6 +110,24 @@ class QuickStartGuideActivity : BaseActivity() {
         card.findViewById<TextView>(R.id.textSectionBody).text =
             section.bullets.joinToString("\n") { "• $it" }
 
+        val exampleTitle =
+            card.findViewById<TextView>(R.id.textExampleTitle)
+        val exampleBody =
+            card.findViewById<TextView>(R.id.textSpreadsheetExample)
+
+        if (
+            section.spreadsheetExampleTitle != null &&
+            section.spreadsheetExample != null
+        ) {
+            exampleTitle.text = section.spreadsheetExampleTitle
+            exampleTitle.visibility = View.VISIBLE
+            exampleBody.text = section.spreadsheetExample
+            exampleBody.visibility = View.VISIBLE
+        } else {
+            exampleTitle.visibility = View.GONE
+            exampleBody.visibility = View.GONE
+        }
+
         return card
     }
 }
