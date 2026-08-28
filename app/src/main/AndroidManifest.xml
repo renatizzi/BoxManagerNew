@@ -66,6 +66,7 @@
 
         <activity android:name=".ui.settings.SettingsActivity" />
         <activity android:name=".ui.utility.UtilityActivity" />
+        <activity android:name=".ui.help.QuickStartGuideActivity" />
 
         <activity
             android:name=".MainActivity"
