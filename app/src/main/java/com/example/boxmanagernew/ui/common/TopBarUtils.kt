@@ -93,9 +93,7 @@ object TopBarUtils {
         )
     }
 
-    fun buildSubtitle(
-        context: Context
-    ): String {
+    fun buildSubtitle(): String {
 
         return "${DEFAULT_USERNAME} - ${getCurrentDateTime()}"
     }
