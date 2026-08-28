@@ -77,3 +77,30 @@ Grazie!
 ```
 
 Il codice amico `BOXMANAGER-AMICO` resta valido per il rinnovo via condivisione.
+
+## Test chiuso — checklist (solo sul tuo PC / Console)
+
+**Stato repo (già fatto in remoto):** `main` con G1+G2, `versionCode = 2`, `versionName = 1.1`. Topbar in app: `v. 1.1` automatico da Gradle.
+
+### Tu — passo 1: aggiorna e genera AAB
+
+```bash
+git pull origin main
+```
+
+Android Studio → **Sync** → **Build → Generate Signed App Bundle** (release, stesso keystore di prima).
+
+File da caricare: `app\release\app-release.aab` (deve essere **nuovo**, con versione **1.1 (2)**).
+
+### Tu — passo 2: Play Console
+
+1. **Testa e rilascia** → **Test** → **Test chiusi** → **Test chiusi - Alpha** → **Gestisci canale**
+2. **Crea nuova versione** → carica l’AAB → **Pubblica** sul track
+
+### Tu — passo 3: tester
+
+1. Stesso canale Alpha → **Tester** → elenco email (14–20 Gmail)
+2. Copia **link opt-in** e invia il messaggio sopra (codice `BOXMANAGER-TESTER`)
+3. Attendi **14 giorni** con almeno **12** tester iscritti
+
+Niente altro obbligatorio da codice finché non parte il test chiuso.
