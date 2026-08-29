@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.domain.help.QuickStartGuideCopy
