@@ -90,10 +90,18 @@ nome
 
 ---
 
-## 5. Attribuzione (opzionale B3)
+## 5. Attribuzione — nome utente già in app
 
-Campo `originLabel` / membro su contenitori e oggetti: utile per «chi ha censito», non per ACL.  
-Fuori da B1.
+**Non introdurre un secondo “membro famiglia”.** Si riusa il **nome utente** già in Impostazioni (`SharedPreferences` chiave `username`), oggi usato come etichetta locale (e per il check admin Archivio completo).
+
+| Uso | Comportamento previsto (B2/B3, flavor `famiglia`) |
+|-----|--------------------------------------------------|
+| Topbar | Mostra il nome salvato (non un default fisso) |
+| Nuovo contenitore / oggetto | Alla creazione si memorizza `createdBy` = nome utente corrente (trim); immutabile dopo create salvo SI |
+| Merge | Il campo viaggia nel pacchetto unione; utile per «chi ha censito», **non** per nascondere dati |
+| Nome vuoto | Fallback `Utente` in UI; in beta famiglia si invita a impostare un nome **distinto** per ciascun familiare (es. Marco, Anna) |
+
+Niente ACL: dopo il merge tutto resta dominio famiglia. Il nome serve a ripartire il lavoro e a leggere l’origine.
 
 ---
 
@@ -104,7 +112,7 @@ Fuori da B1.
 | **B0** | Questa Nota + policy sync beta | No |
 | **B1** | Catalogo famiglia export/import + Guida + flavor | No |
 | **B2** | Pacchetto unione per ID (insert+update) + anteprima | No |
-| **B3** | Origine membro; delete esplicito propagabile | No |
+| **B3** | Origine = **nome utente** Impostazioni su contenitori/oggetti; delete esplicito propagabile | No |
 
 ---
 

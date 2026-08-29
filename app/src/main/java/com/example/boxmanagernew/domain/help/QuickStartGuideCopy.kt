@@ -66,7 +66,7 @@ object QuickStartGuideCopy {
                 bullets = listOf(
                     "Definisci i luoghi abituali di custodia (casa, garage, cantina…).",
                     "Scegli il tema colore dell'interfaccia.",
-                    "Il nome utente è facoltativo: serve solo come etichetta locale."
+                    "Il nome utente (Impostazioni) compare in topbar e, in beta famiglia, marca chi ha censito contenitori/oggetti."
                 )
             ),
             Section(
