@@ -9,10 +9,16 @@
 
 **Fetta corrente sul branch:** B0 + B1 (catalogo categorie/luoghi).
 
-Build sideload:
+## Aggiornare la beta (solo Renato)
+
+Come per la 1.2: **nessun token**, solo pull del branch famiglia.
 
 ```bash
-./gradlew :app:assembleFamigliaDebug
+cd BoxManagerNew
+git checkout cursor/family-b-beta-75ee
+git pull origin cursor/family-b-beta-75ee
 ```
 
-Play 1.2 resta su `main` / flavor `play` — non pubblicare `famiglia`.
+Android Studio: **famigliaDebug** → Run (se il ▶ sparisce: Invalidate Caches).
+
+Play 1.2 resta su `main` — non mescolare i branch.

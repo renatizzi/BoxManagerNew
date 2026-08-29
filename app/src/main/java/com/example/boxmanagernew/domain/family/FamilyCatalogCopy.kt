@@ -1,7 +1,8 @@
 package com.example.boxmanagernew.domain.family
 
 /**
- * Testi UI catalogo famiglia (flavor famiglia). Allineati allo stile Utility/Import.
+ * Testi UI catalogo famiglia (flavor famiglia).
+ * Colori card: palette Impostazioni via [accentCardTexts].
  */
 object FamilyCatalogCopy {
 
@@ -13,10 +14,17 @@ object FamilyCatalogCopy {
         "Categorie e luoghi di custodia condivisi"
 
     const val INTRO =
-        "Condividi categorie e luoghi abituali tra i familiari. " +
-            "Dopo il setup, ciascuno censisce contenitori e oggetti sul proprio telefono."
+        "Allinea categorie e luoghi tra i familiari. " +
+            "Non sostituisce Importa dati né Esporta dati dell'inventario."
 
-    const val BUTTON_EXPORT = "📤 Esporta catalogo"
+    const val BUTTON_SEND = "📤 Invia catalogo"
 
-    const val BUTTON_IMPORT = "📥 Importa catalogo"
+    const val BUTTON_RECEIVE = "📥 Ricevi catalogo"
+
+    /** Testi card che ricevono il colore accent della palette Impostazioni. */
+    fun accentCardTexts(): List<String> = listOf(
+        UTILITY_CARD_LABEL,
+        BUTTON_SEND,
+        BUTTON_RECEIVE
+    )
 }

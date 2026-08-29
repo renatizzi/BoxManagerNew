@@ -90,9 +90,9 @@ class FamilyCatalogActivity : BaseActivity() {
         findViewById<TextView>(R.id.textFamilyIntro).text =
             FamilyCatalogCopy.INTRO
         findViewById<TextView>(R.id.textExportCatalog).text =
-            FamilyCatalogCopy.BUTTON_EXPORT
+            FamilyCatalogCopy.BUTTON_SEND
         findViewById<TextView>(R.id.textImportCatalog).text =
-            FamilyCatalogCopy.BUTTON_IMPORT
+            FamilyCatalogCopy.BUTTON_RECEIVE
 
         viewModel.message.observe(this) { text ->
             tvMessages.text = text

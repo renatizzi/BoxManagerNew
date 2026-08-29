@@ -143,7 +143,7 @@ object QuickStartGuideCopy {
             title = "Setup famiglia (beta)",
             bullets = listOf(
                 "Allineate categorie e luoghi con Utility → Catalogo famiglia.",
-                "Un familiare esporta il catalogo e lo condivide; gli altri lo importano.",
+                "Un familiare invia il catalogo; gli altri lo ricevono.",
                 "Poi ciascuno censisce contenitori e oggetti; l'unione inventario arriverà in una fetta successiva.",
                 "Non usare Ripristino per unire archivi: sostituisce tutto."
             )
