@@ -24,6 +24,8 @@ android {
         versionName = "1.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("boolean", "FAMILY_BETA", "false")
     }
 
     signingConfigs {
@@ -34,6 +36,24 @@ android {
                 storeFile = file(keystoreProperties["storeFile"] as String)
                 storePassword = keystoreProperties["storePassword"] as String
             }
+        }
+    }
+
+    flavorDimensions += "distribution"
+
+    productFlavors {
+        create("play") {
+            dimension = "distribution"
+            versionCode = 3
+            versionName = "1.2"
+            buildConfigField("boolean", "FAMILY_BETA", "false")
+        }
+        create("famiglia") {
+            dimension = "distribution"
+            applicationIdSuffix = ".famiglia"
+            versionCode = 1301
+            versionName = "1.3-famigliaB1"
+            buildConfigField("boolean", "FAMILY_BETA", "true")
         }
     }
 

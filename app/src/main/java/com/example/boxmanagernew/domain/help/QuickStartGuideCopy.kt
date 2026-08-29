@@ -54,8 +54,11 @@ object QuickStartGuideCopy {
     const val CSV_EXAMPLE_TITLE =
         "Esempio come appare in Excel o Fogli Google"
 
-    val sections: List<Section> =
-        listOf(
+    val sections: List<Section>
+        get() = sectionsFor(includeFamilyBeta = false)
+
+    fun sectionsFor(includeFamilyBeta: Boolean): List<Section> {
+        val base = listOf(
             Section(
                 phase = Phase.CONFIG,
                 number = 1,
@@ -100,11 +103,17 @@ object QuickStartGuideCopy {
                 phase = Phase.USAGE,
                 number = 5,
                 title = "Utility",
-                bullets = listOf(
-                    "Backup e Ripristino per salvare l'archivio su file.",
-                    "Importa ed Esporta dati in CSV (vedi sezione 7).",
-                    "Codice QR per aprire un contenitore dalla fotocamera."
-                )
+                bullets = buildList {
+                    add("Backup e Ripristino per salvare l'archivio su file.")
+                    add("Importa ed Esporta dati in CSV (vedi sezione 7).")
+                    add("Codice QR per aprire un contenitore dalla fotocamera.")
+                    if (includeFamilyBeta) {
+                        add(
+                            "Catalogo famiglia: condividi categorie e luoghi " +
+                                "tra i telefoni (setup una volta)."
+                        )
+                    }
+                }
             ),
             Section(
                 phase = Phase.USAGE,
@@ -125,6 +134,21 @@ object QuickStartGuideCopy {
                 spreadsheetExample = csvSpreadsheetExample()
             )
         )
+        if (!includeFamilyBeta) {
+            return base
+        }
+        return base + Section(
+            phase = Phase.CONFIG,
+            number = 8,
+            title = "Setup famiglia (beta)",
+            bullets = listOf(
+                "Allineate categorie e luoghi con Utility → Catalogo famiglia.",
+                "Un familiare esporta il catalogo e lo condivide; gli altri lo importano.",
+                "Poi ciascuno censisce contenitori e oggetti; l'unione inventario arriverà in una fetta successiva.",
+                "Non usare Ripristino per unire archivi: sostituisce tutto."
+            )
+        )
+    }
 
     private fun csvGuideBullets(): List<String> {
         val boxColumns =
