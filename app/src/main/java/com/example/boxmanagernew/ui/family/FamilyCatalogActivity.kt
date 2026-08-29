@@ -11,6 +11,7 @@ import com.example.boxmanagernew.R
 import com.example.boxmanagernew.data.local.DatabaseProvider
 import com.example.boxmanagernew.data.repository.CategoryRepositoryImpl
 import com.example.boxmanagernew.data.repository.LocationRepositoryImpl
+import com.example.boxmanagernew.domain.family.FamilyCatalogCopy
 import com.example.boxmanagernew.family.config.FamilyCatalogConfiguration
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.google.android.material.card.MaterialCardView
@@ -55,8 +56,8 @@ class FamilyCatalogActivity : BaseActivity() {
 
         setupAppShell()
         setupPageHeader(
-            title = "Catalogo famiglia",
-            subtitle = "Categorie e luoghi di custodia condivisi"
+            title = FamilyCatalogCopy.PAGE_TITLE,
+            subtitle = FamilyCatalogCopy.PAGE_SUBTITLE
         )
         setupBottomNav()
 
@@ -85,6 +86,13 @@ class FamilyCatalogActivity : BaseActivity() {
                     )
                 )
             }
+
+        findViewById<TextView>(R.id.textFamilyIntro).text =
+            FamilyCatalogCopy.INTRO
+        findViewById<TextView>(R.id.textExportCatalog).text =
+            FamilyCatalogCopy.BUTTON_EXPORT
+        findViewById<TextView>(R.id.textImportCatalog).text =
+            FamilyCatalogCopy.BUTTON_IMPORT
 
         viewModel.message.observe(this) { text ->
             tvMessages.text = text

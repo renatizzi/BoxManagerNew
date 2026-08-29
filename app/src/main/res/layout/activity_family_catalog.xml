@@ -18,7 +18,9 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:overScrollMode="never">
 
         <LinearLayout
             android:id="@+id/contentContainer"
@@ -44,18 +46,19 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:minHeight="72dp"
-                app:cardBackgroundColor="?attr/colorSurface"
+                app:cardBackgroundColor="@color/elevated_surface"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="5dp"
                 app:strokeWidth="0dp">
 
                 <TextView
+                    android:id="@+id/textExportCatalog"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:minHeight="72dp"
                     android:padding="16dp"
-                    android:text="Esporta catalogo famiglia"
+                    android:text="📤 Esporta catalogo"
                     android:textColor="@color/text_primary"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -70,18 +73,19 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:minHeight="72dp"
-                app:cardBackgroundColor="?attr/colorSurface"
+                app:cardBackgroundColor="@color/elevated_surface"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="5dp"
                 app:strokeWidth="0dp">
 
                 <TextView
+                    android:id="@+id/textImportCatalog"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:minHeight="72dp"
                     android:padding="16dp"
-                    android:text="Importa catalogo famiglia"
+                    android:text="📥 Importa catalogo"
                     android:textColor="@color/text_primary"
                     android:textSize="18sp"
                     android:textStyle="bold" />

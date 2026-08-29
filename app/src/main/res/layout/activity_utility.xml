@@ -167,7 +167,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:padding="12dp"
-                        android:text="Catalogo\nfamiglia"
+                        android:text="📋 Catalogo famiglia"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
