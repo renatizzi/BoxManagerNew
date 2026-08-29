@@ -5,6 +5,7 @@ import android.content.Context
 import android.widget.TextView
 import com.example.boxmanagernew.BuildConfig
 import com.example.boxmanagernew.R
+import com.example.boxmanagernew.ui.settings.SettingsActivity
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -45,7 +46,7 @@ object TopBarUtils {
     ) {
 
         subtitleView.text =
-            buildSubtitle()
+            buildSubtitle(context)
 
         subtitleView.setTextColor(
             ThemeManager.getTopBarSubtitle(
@@ -93,9 +94,25 @@ object TopBarUtils {
         )
     }
 
-    fun buildSubtitle(): String {
+    fun resolvedUsername(context: Context): String {
+        val stored = context
+            .getSharedPreferences(
+                SettingsActivity.PREFS,
+                Context.MODE_PRIVATE
+            )
+            .getString(SettingsActivity.KEY_USERNAME, "")
+            ?.trim()
+            .orEmpty()
+        return stored.ifEmpty { DEFAULT_USERNAME }
+    }
 
-        return "${DEFAULT_USERNAME} - ${getCurrentDateTime()}"
+    fun buildSubtitle(context: Context): String {
+        return "${resolvedUsername(context)} - ${getCurrentDateTime()}"
+    }
+
+    /** Retrocompat: senza Context resta il default. */
+    fun buildSubtitle(): String {
+        return "$DEFAULT_USERNAME - ${getCurrentDateTime()}"
     }
 
     private fun getCurrentDateTime(): String {
