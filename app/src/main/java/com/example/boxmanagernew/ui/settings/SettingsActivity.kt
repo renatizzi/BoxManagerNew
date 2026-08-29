@@ -67,6 +67,7 @@ class SettingsActivity : BaseActivity() {
         setupPaletteSelector()
         updateThemeLabel()
         setupDebugUnlock()
+        setupUnlockCode()
         setupAdminParams()
 
         setupBottomNav()
@@ -337,6 +338,84 @@ class SettingsActivity : BaseActivity() {
             View.VISIBLE
 
         setupAdminParams()
+        setupUnlockCode()
+    }
+
+    private fun setupUnlockCode() {
+
+        val card =
+            findViewById<View>(R.id.cardUnlockCode)
+
+        if (BuildConfig.DEBUG) {
+            card.visibility = View.GONE
+            return
+        }
+
+        card.visibility = View.VISIBLE
+
+        val access =
+            ArchivioCompletoAccess(this)
+
+        val title =
+            findViewById<TextView>(R.id.textUnlockCodeTitle)
+
+        val hint =
+            findViewById<TextView>(R.id.textUnlockCodeHint)
+
+        val inputLayout =
+            findViewById<View>(R.id.layoutUnlockCode)
+
+        val editCode =
+            findViewById<EditText>(R.id.editUnlockCode)
+
+        val buttonRedeem =
+            findViewById<Button>(R.id.buttonRedeemUnlockCode)
+
+        title.text =
+            ArchivioCompletoCopy.SETTINGS_CODE_TITLE
+
+        editCode.hint =
+            ArchivioCompletoCopy.UNLOCK_CODE_HINT
+
+        buttonRedeem.text =
+            ArchivioCompletoCopy.BUTTON_REDEEM
+
+        if (access.isOpen()) {
+            hint.text =
+                ArchivioCompletoCopy.SETTINGS_CODE_ACTIVE
+            inputLayout.visibility = View.GONE
+            buttonRedeem.visibility = View.GONE
+            return
+        }
+
+        hint.text =
+            ArchivioCompletoCopy.SETTINGS_CODE_HINT
+
+        inputLayout.visibility = View.VISIBLE
+        buttonRedeem.visibility = View.VISIBLE
+
+        buttonRedeem.setOnClickListener {
+            val raw =
+                editCode.text.toString()
+
+            if (!access.redeemCode(raw)) {
+                Toast.makeText(
+                    this,
+                    ArchivioCompletoCopy.CODE_KO,
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
+
+            Toast.makeText(
+                this,
+                ArchivioCompletoCopy.CODE_OK,
+                Toast.LENGTH_SHORT
+            ).show()
+
+            editCode.text?.clear()
+            setupUnlockCode()
+        }
     }
 
     private fun setupAdminParams() {

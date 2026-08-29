@@ -13,11 +13,16 @@ import com.google.android.material.card.MaterialCardView
 
 class QuickStartGuideActivity : BaseActivity() {
 
+    companion object {
+        const val EXTRA_NAV_TAB = "nav_tab"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quick_start_guide)
 
         setupAppShell()
+        setupBottomNav()
 
         setupPageHeader(
             title = QuickStartGuideCopy.PAGE_TITLE,

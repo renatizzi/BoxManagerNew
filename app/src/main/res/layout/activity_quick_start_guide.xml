@@ -17,7 +17,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:fillViewport="true"
         android:clipToPadding="false">
 
@@ -132,5 +133,16 @@
         </LinearLayout>
 
     </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/navContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include
+            layout="@layout/layout_bottom_nav" />
+
+    </LinearLayout>
 
 </LinearLayout>

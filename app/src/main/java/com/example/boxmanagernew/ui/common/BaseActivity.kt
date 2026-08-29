@@ -312,7 +312,16 @@ abstract class BaseActivity : AppCompatActivity() {
             ) ?: return
 
         if (this is QuickStartGuideActivity) {
-            button.visibility = View.GONE
+            button.text = "Chiudi"
+            button.visibility = View.VISIBLE
+
+            button.setTextColor(
+                ThemeManager.getTopBarTitle(this)
+            )
+
+            button.setOnClickListener {
+                finish()
+            }
             return
         }
 
@@ -332,6 +341,10 @@ abstract class BaseActivity : AppCompatActivity() {
                 Intent(
                     this,
                     QuickStartGuideActivity::class.java
+                ).putExtra(
+                    QuickStartGuideActivity.EXTRA_NAV_TAB,
+                    BottomNavManager.tabFor(this)
+                        ?: BottomNavManager.TAB_DASHBOARD
                 )
             )
         }
