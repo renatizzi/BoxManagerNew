@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.domain.help.QuickStartGuideCopy
@@ -13,11 +14,16 @@ import com.google.android.material.card.MaterialCardView
 
 class QuickStartGuideActivity : BaseActivity() {
 
+    companion object {
+        const val EXTRA_NAV_TAB = "nav_tab"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quick_start_guide)
 
         setupAppShell()
+        setupBottomNav()
 
         setupPageHeader(
             title = QuickStartGuideCopy.PAGE_TITLE,

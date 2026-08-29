@@ -67,6 +67,12 @@ object BottomNavManager {
                     TAB_DASHBOARD
                 )
 
+            is com.example.boxmanagernew.ui.help.QuickStartGuideActivity ->
+                activity.intent.getIntExtra(
+                    com.example.boxmanagernew.ui.help.QuickStartGuideActivity.EXTRA_NAV_TAB,
+                    TAB_DASHBOARD
+                )
+
             else ->
                 null
         }

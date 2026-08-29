@@ -57,6 +57,15 @@ object ArchivioCompletoCopy {
     const val CODE_HINT =
         "Hai un codice?"
 
+    const val SETTINGS_CODE_TITLE =
+        "Archivio completo"
+
+    const val SETTINGS_CODE_HINT =
+        "Inserisci il codice tester o amico per sbloccare le funzioni avanzate."
+
+    const val SETTINGS_CODE_ACTIVE =
+        "Archivio completo attivo su questo dispositivo."
+
     const val CODE_OK =
         "Archivio completo sbloccato su questo dispositivo."
 
