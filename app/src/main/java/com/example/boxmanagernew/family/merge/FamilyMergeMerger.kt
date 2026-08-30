@@ -2,7 +2,6 @@ package com.example.boxmanagernew.family.merge
 
 import com.example.boxmanagernew.data.local.entity.BoxEntity
 import com.example.boxmanagernew.data.local.entity.ObjectEntity
-import com.example.boxmanagernew.family.catalog.FamilyCatalogMerger
 import com.example.boxmanagernew.family.config.FamilyCatalogConfiguration
 import com.example.boxmanagernew.family.inventory.FamilyInventoryMerger
 import com.example.boxmanagernew.family.model.FamilyCatalogCategory
@@ -11,25 +10,24 @@ import com.example.boxmanagernew.family.model.FamilyMergeSnapshot
 import java.util.Locale
 
 /**
- * Pianifica l'unione famiglia: catalogo additivo, guarigione struttura dai
- * contenitori in arrivo, poi inventario per ID stabili.
+ * Pianifica l'unione archivio: guarigione categorie/posizioni dai contenitori
+ * in arrivo, poi inventario per ID stabili. Le tabelle del file non si
+ * importano qui (usare Invia/Ricevi tabelle condivise).
  */
 class FamilyMergeMerger(
-    private val catalogMerger: FamilyCatalogMerger = FamilyCatalogMerger(),
     private val inventoryMerger: FamilyInventoryMerger = FamilyInventoryMerger()
 ) {
 
     data class Plan(
-        val catalogPlan: FamilyCatalogMerger.Plan,
         val healedCategories: List<FamilyCatalogCategory>,
         val healedLocations: List<FamilyCatalogLocation>,
         val inventoryPlan: FamilyInventoryMerger.Plan
     ) {
         val categoriesToInsert: List<FamilyCatalogCategory>
-            get() = catalogPlan.categoriesToInsert + healedCategories
+            get() = healedCategories
 
         val locationsToInsert: List<FamilyCatalogLocation>
-            get() = catalogPlan.locationsToInsert + healedLocations
+            get() = healedLocations
 
         val canApply: Boolean
             get() = inventoryPlan.canApply ||
@@ -38,9 +36,6 @@ class FamilyMergeMerger(
 
         val hasConflicts: Boolean
             get() = inventoryPlan.hasConflicts
-
-        val structureInserted: Int
-            get() = categoriesToInsert.size + locationsToInsert.size
     }
 
     fun plan(
@@ -51,23 +46,10 @@ class FamilyMergeMerger(
         existingLocationNames: Collection<String>,
         objectTypeNames: Map<Int, String>
     ): Plan {
-        val catalogPlan = catalogMerger.plan(
-            incoming = incoming.catalog,
-            existingCategoryNames = existingCategoryNames,
-            existingLocationNames = existingLocationNames
-        )
-
         val categoryKeys =
             existingCategoryNames.map { key(it) }.toMutableSet()
         val locationKeys =
             existingLocationNames.map { key(it) }.toMutableSet()
-
-        for (category in catalogPlan.categoriesToInsert) {
-            categoryKeys.add(key(category.name))
-        }
-        for (location in catalogPlan.locationsToInsert) {
-            locationKeys.add(key(location.name))
-        }
 
         val healedCategories = mutableListOf<FamilyCatalogCategory>()
         val healedLocations = mutableListOf<FamilyCatalogLocation>()
@@ -95,13 +77,12 @@ class FamilyMergeMerger(
             for (name in existingCategoryNames) {
                 put(syntheticId++, name)
             }
-            for (category in catalogPlan.categoriesToInsert + healedCategories) {
+            for (category in healedCategories) {
                 put(syntheticId++, category.name)
             }
         }
         val projectedLocationNames = buildList {
             addAll(existingLocationNames)
-            addAll(catalogPlan.locationsToInsert.map { it.name })
             addAll(healedLocations.map { it.name })
         }
 
@@ -115,7 +96,6 @@ class FamilyMergeMerger(
         )
 
         return Plan(
-            catalogPlan = catalogPlan,
             healedCategories = healedCategories,
             healedLocations = healedLocations,
             inventoryPlan = inventoryPlan

@@ -21,9 +21,9 @@ Contesto familiare:
 
 | Strato | Contenuto | Ciclo di vita |
 |--------|-----------|----------------|
-| A — Struttura famiglia | Categorie + posizioni | Setup una volta; modifiche eccezionali |
+| A — Tabelle condivise | Categorie + posizioni | Setup una volta; modifiche eccezionali |
 | B — Inventario | Contenitori + oggetti | Lavoro quotidiano offline per membro |
-| C — Unione | Pacchetto merge esplicito | Periodico (file / condivisione) |
+| C — Condivisione | Pacchetto esplicito (file) | Periodico (file / condivisione) |
 
 Niente archivio inventariale cloud unico (fuori scope; «no C» prodotto).  
 Cloud eventuale solo come canale di scambio file/catalogo — non in B1.
@@ -81,18 +81,46 @@ objectPermanentId;boxPermanentId;tipo;descrizione;quantita;lastModified
 - Nome file proposto: `Unione_Famiglia_ddMMyy_HHmm.csv`.
 - Accetta anche file legacy B1 (`BoxManager_FamilyCatalog`) e B2 (`BoxManager_FamilyInventory`).
 
-### 4.2 Semantica import unione
+### 4.2 Semantica import unione (B3 — sostituita da B4 per il catalogo)
 
-1. **Catalogo additivo**: aggiunge categorie/posizioni mancanti (match nome case-insensitive); non cancella voci locali assenti dal file.
-2. **Guarigione struttura**: se un contenitore in arrivo referenzia categoria/posizione assente in locale (es. cancellata dopo il censimento), la voce viene **ricreata** prima dell'inventario (icona categoria = default).
+1. **Catalogo additivo** (B3): aggiunge categorie/posizioni mancanti; non cancella voci locali.
+2. **Guarigione da contenitori**: se un contenitore in arrivo referenzia categoria/posizione assente in locale, la voce viene **ricreata** prima dell'inventario (icona categoria = default).
 3. **Inventario per ID stabili**: insert / update / conflitto come B2; delete non propagato.
-4. **Un solo flusso UI**: Invia unione / Ricevi unione (anteprima SI/NO).
 
-### 4.3 Flusso famiglia
+In **B4** il catalogo additivo non è più applicato da Ricevi Archivio: usare **Invia/Ricevi tabelle condivise**.
+
+### 4.3 Flusso famiglia (B3)
 
 1. Ogni membro censisce offline contenitori e oggetti sul proprio telefono.
-2. Periodicamente un membro **Invia unione** → condivide il CSV.
-3. Gli altri: **Ricevi unione** → archivio domestico allineato senza rifare tutto il censimento da zero.
+2. Periodicamente un membro **Invia Archivio** → condivide il CSV.
+3. Gli altri: **Ricevi Archivio** → archivio domestico allineato senza rifare tutto il censimento da zero.
+
+---
+
+## 4bis. Condivisione archivio in due passi (B4 — questa fetta)
+
+Pagina unica **Condivisione Archivio**, due operazioni distinte.
+
+### 4bis.1 Tabelle condivise (categorie e posizioni)
+
+| Azione | File | Semantica |
+|--------|------|-----------|
+| Invia tabelle condivise | `Tabelle_Condivise_ddMMyy_HHmm.csv` (`BoxManager_FamilyCatalog`) | Esporta le tabelle locali (categorie + posizioni) |
+| Ricevi tabelle condivise | stesso formato | **Allinea/sostituisce** le tabelle locali al file condiviso (anteprima SI/NO). Blocca la rimozione se contenitori locali usano ancora quella categoria/posizione |
+
+- **Passo 1** (setup famiglia): condividere le tabelle.
+- **Passo 3** (ripristino): dopo reinstallazione o per correggere errori nelle tabelle locali.
+
+### 4bis.2 Archivio (contenitori e oggetti)
+
+| Azione | File | Semantica |
+|--------|------|-----------|
+| Invia Archivio | `Condivisione_Archivio_ddMMyy_HHmm.csv` (`BoxManager_FamilyMerge`) | Esporta tabelle di riferimento + inventario |
+| Ricevi Archivio | stesso formato | Unisce inventario per ID stabili. **Non** importa additivamente le categorie/posizioni del file: solo **guarigione** da contenitori in arrivo |
+
+- **Passo 2** (periodico): aggiornare contenitori e oggetti in famiglia.
+
+Nessun master/slave: il file nella cartella condivisa è il riferimento; ogni membro può inviare o ricevere.
 
 ---
 
@@ -111,7 +139,7 @@ nome
 ```
 
 - Nome file proposto: `Catalogo_Famiglia_ddMMyy_HHmm.csv`.
-- Ancora leggibile da Ricevi unione (solo struttura).
+- Ancora leggibile da Ricevi Archivio (solo tabelle condivise).
 
 ### 5.2 Semantica import catalogo
 
@@ -137,7 +165,7 @@ objectPermanentId;boxPermanentId;tipo;descrizione;quantita;lastModified
 ```
 
 - Nome file proposto: `Inventario_Famiglia_ddMMyy_HHmm.csv`.
-- Ancora leggibile da Ricevi unione (solo inventario; struttura guarita dai contenitori).
+- Ancora leggibile da Ricevi Archivio (solo inventario; categorie/posizioni guarite dai contenitori).
 
 ### 6.2 Semantica import inventario
 
@@ -176,8 +204,9 @@ Niente ACL: dopo il merge tutto resta dominio famiglia. Il nome serve a ripartir
 | **B0** | Questa Nota + policy sync beta | No |
 | **B1** | Catalogo famiglia export/import (legacy) + Guida + flavor | No |
 | **B2** | Pacchetto inventario per ID (legacy) + anteprima | No |
-| **B3** | **Unione famiglia unificata** (struttura + inventario, guarigione) | No — **CONVALIDA in corso** |
-| **B4** | Origine = **nome utente** Impostazioni su contenitori/oggetti; delete esplicito propagabile | No |
+| **B3** | Unione famiglia unificata (tabelle + inventario, guarigione) | No — superata da B4 |
+| **B4** | **Tabelle condivise** + **Archivio** separati; allineamento tabelle locali | No — **CONVALIDA in corso** |
+| **B5** | Origine = **nome utente** Impostazioni su contenitori/oggetti; delete esplicito propagabile | No |
 
 ---
 

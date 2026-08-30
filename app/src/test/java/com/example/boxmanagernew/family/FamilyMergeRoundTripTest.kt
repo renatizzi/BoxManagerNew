@@ -162,7 +162,7 @@ class FamilyMergeRoundTripTest {
     }
 
     @Test
-    fun merger_healsMissingStructureFromBoxes() {
+    fun merger_healsMissingCatalogFromBoxes() {
         val incoming = FamilyMergeSnapshot(
             catalog = FamilyCatalogSnapshot(
                 categories = emptyList(),

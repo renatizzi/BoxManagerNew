@@ -1,27 +1,38 @@
-package com.example.boxmanagernew.family.merge
+package com.example.boxmanagernew.family.shared
 
 import androidx.room.withTransaction
 import com.example.boxmanagernew.data.local.AppDatabase
 import com.example.boxmanagernew.data.local.entity.CategoryEntity
 import com.example.boxmanagernew.data.local.entity.LocationEntity
 import com.example.boxmanagernew.family.config.FamilyCatalogConfiguration
-import com.example.boxmanagernew.family.inventory.FamilyInventoryApplier
 
 /**
- * Applica un piano di condivisione archivio: categorie/posizioni guarite
- * dai contenitori in arrivo, poi inventario.
+ * Applica l'allineamento alle tabelle condivise (categorie e posizioni).
  */
-class FamilyMergeApplier(
-    private val database: AppDatabase,
-    private val inventoryApplier: FamilyInventoryApplier = FamilyInventoryApplier(database)
+class SharedTablesApplier(
+    private val database: AppDatabase
 ) {
 
-    suspend fun apply(plan: FamilyMergeMerger.Plan) {
+    suspend fun apply(plan: SharedTablesMerger.Plan) {
         if (!plan.canApply) {
             return
         }
 
         database.withTransaction {
+            for (removal in plan.categoriesToRemove) {
+                database.categoryDao().delete(removal.entity)
+            }
+            for (update in plan.categoriesToUpdate) {
+                database.categoryDao().update(
+                    CategoryEntity(
+                        id = update.entity.id,
+                        name = update.entity.name,
+                        icon = update.incoming.icon.ifBlank {
+                            FamilyCatalogConfiguration.DEFAULT_CATEGORY_ICON
+                        }
+                    )
+                )
+            }
             for (category in plan.categoriesToInsert) {
                 database.categoryDao().insert(
                     CategoryEntity(
@@ -33,6 +44,10 @@ class FamilyMergeApplier(
                     )
                 )
             }
+
+            for (removal in plan.locationsToRemove) {
+                database.locationDao().delete(removal.entity)
+            }
             for (location in plan.locationsToInsert) {
                 database.locationDao().insert(
                     LocationEntity(
@@ -41,7 +56,6 @@ class FamilyMergeApplier(
                     )
                 )
             }
-            inventoryApplier.apply(plan.inventoryPlan)
         }
     }
 }

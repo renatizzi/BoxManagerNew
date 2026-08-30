@@ -175,6 +175,6 @@ class FamilyMergeReader {
             "Formato non riconosciuto. Serve BoxManager_FamilyMerge v1 " +
                 "(o file legacy Catalogo/Inventario famiglia)."
         const val MSG_STRUCTURE =
-            "Struttura file unione incompleta."
+            "File di condivisione archivio incompleto."
     }
 }

@@ -5,7 +5,7 @@ import java.util.Date
 import java.util.Locale
 
 /**
- * Tracciato unione famiglia unificato (struttura + inventario).
+ * Tracciato condivisione archivio famiglia (tabelle + inventario).
  */
 object FamilyMergeConfiguration {
 

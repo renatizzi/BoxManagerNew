@@ -21,6 +21,7 @@ import com.example.boxmanagernew.domain.family.FamilyMergeCopy
 import com.example.boxmanagernew.family.config.FamilyCatalogConfiguration
 import com.example.boxmanagernew.family.config.FamilyInventoryConfiguration
 import com.example.boxmanagernew.family.config.FamilyMergeConfiguration
+import com.example.boxmanagernew.family.config.FamilySharedTablesConfiguration
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.FeedbackUtils
 import com.example.boxmanagernew.storage.StorageFolderConfiguration
@@ -47,12 +48,21 @@ class FamilyCatalogActivity : BaseActivity() {
             }
         }
 
-    private val mergeFilePicker =
+    private val sharedTablesFilePicker =
         registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) { result ->
             if (result.resultCode == AppCompatActivity.RESULT_OK) {
-                result.data?.data?.let { onMergeImportChosen(it) }
+                result.data?.data?.let { onSharedTablesImportChosen(it) }
+            }
+        }
+
+    private val archiveFilePicker =
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == AppCompatActivity.RESULT_OK) {
+                result.data?.data?.let { onArchiveImportChosen(it) }
             }
         }
 
@@ -112,16 +122,32 @@ class FamilyCatalogActivity : BaseActivity() {
             )
         )[FamilyMergeViewModel::class.java]
 
+        findViewById<MaterialCardView>(R.id.btnExportSharedTables)
+            .setOnClickListener { mergeViewModel.requestSharedTablesExport() }
+
+        findViewById<MaterialCardView>(R.id.btnImportSharedTables)
+            .setOnClickListener { launchSharedTablesFilePicker() }
+
         findViewById<MaterialCardView>(R.id.btnExportMerge)
-            .setOnClickListener { mergeViewModel.requestExport() }
+            .setOnClickListener { mergeViewModel.requestArchiveExport() }
 
         findViewById<MaterialCardView>(R.id.btnImportMerge)
-            .setOnClickListener { launchMergeFilePicker() }
+            .setOnClickListener { launchArchiveFilePicker() }
 
         findViewById<TextView>(R.id.textFamilyIntro).text =
             FamilyMergeCopy.INTRO
-        findViewById<TextView>(R.id.textFamilyFolderHint).text =
-            FamilyMergeCopy.HINT_FOLDER
+        findViewById<TextView>(R.id.textSectionSharedTables).text =
+            FamilyMergeCopy.SECTION_SHARED_TABLES
+        findViewById<TextView>(R.id.textSectionSharedTablesHint).text =
+            FamilyMergeCopy.SECTION_SHARED_TABLES_HINT
+        findViewById<TextView>(R.id.textExportSharedTables).text =
+            FamilyMergeCopy.BUTTON_SEND_SHARED_TABLES
+        findViewById<TextView>(R.id.textImportSharedTables).text =
+            FamilyMergeCopy.BUTTON_RECEIVE_SHARED_TABLES
+        findViewById<TextView>(R.id.textSectionArchive).text =
+            FamilyMergeCopy.SECTION_ARCHIVE
+        findViewById<TextView>(R.id.textSectionArchiveHint).text =
+            FamilyMergeCopy.SECTION_ARCHIVE_HINT
         findViewById<TextView>(R.id.textExportMerge).text =
             FamilyMergeCopy.BUTTON_SEND
         findViewById<TextView>(R.id.textImportMerge).text =
@@ -142,52 +168,85 @@ class FamilyCatalogActivity : BaseActivity() {
             )
         }
 
-        mergeViewModel.preview.observe(this) { preview ->
+        mergeViewModel.sharedTablesPreview.observe(this) { preview ->
             if (preview == null) {
                 return@observe
             }
-            showMergePreview(preview)
+            showSharedTablesPreview(preview)
+        }
+
+        mergeViewModel.archivePreview.observe(this) { preview ->
+            if (preview == null) {
+                return@observe
+            }
+            showArchivePreview(preview)
         }
     }
 
-    private fun showMergePreview(
-        preview: FamilyMergeViewModel.Preview
+    private fun showSharedTablesPreview(
+        preview: FamilyMergeViewModel.SharedTablesPreview
+    ) {
+        AlertDialog.Builder(this)
+            .setTitle("Ricevi tabelle condivise")
+            .setMessage(preview.summary)
+            .setPositiveButton("SI") { _, _ ->
+                mergeViewModel.confirmSharedTablesImport()
+            }
+            .setNegativeButton("NO") { _, _ ->
+                mergeViewModel.clearSharedTablesPreview()
+            }
+            .show()
+    }
+
+    private fun showArchivePreview(
+        preview: FamilyMergeViewModel.ArchivePreview
     ) {
         AlertDialog.Builder(this)
             .setTitle("Ricevi Archivio")
             .setMessage(preview.summary)
             .setPositiveButton("SI") { _, _ ->
-                mergeViewModel.confirmImport()
+                mergeViewModel.confirmArchiveImport()
             }
             .setNegativeButton("NO") { _, _ ->
-                mergeViewModel.clearPreview()
+                mergeViewModel.clearArchivePreview()
             }
             .show()
     }
 
-    private fun launchMergeFilePicker() {
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+    private fun launchSharedTablesFilePicker() {
+        sharedTablesFilePicker.launch(
+            buildFamilyFilePickerIntent(
+                FamilySharedTablesConfiguration.CSV_MIME_TYPE,
+                FamilyCatalogConfiguration.CSV_MIME_TYPE
+            )
+        )
+    }
+
+    private fun launchArchiveFilePicker() {
+        archiveFilePicker.launch(
+            buildFamilyFilePickerIntent(
+                FamilyMergeConfiguration.CSV_MIME_TYPE,
+                FamilyCatalogConfiguration.CSV_MIME_TYPE,
+                FamilyInventoryConfiguration.CSV_MIME_TYPE
+            )
+        )
+    }
+
+    private fun buildFamilyFilePickerIntent(vararg mimeTypes: String): Intent {
+        return Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
             addCategory(Intent.CATEGORY_OPENABLE)
             type = "*/*"
-            putExtra(Intent.EXTRA_MIME_TYPES, csvMimeTypes())
+            putExtra(
+                Intent.EXTRA_MIME_TYPES,
+                arrayOf(*mimeTypes, "text/*", "*/*")
+            )
             exportPersister.rememberedFolderUri()?.let { folderUri ->
                 putExtra(DocumentsContract.EXTRA_INITIAL_URI, folderUri)
             }
         }
-        mergeFilePicker.launch(intent)
     }
 
-    private fun csvMimeTypes(): Array<String> {
-        return arrayOf(
-            FamilyMergeConfiguration.CSV_MIME_TYPE,
-            FamilyCatalogConfiguration.CSV_MIME_TYPE,
-            FamilyInventoryConfiguration.CSV_MIME_TYPE,
-            "text/*",
-            "*/*"
-        )
-    }
-
-    private fun onMergeImportChosen(uri: Uri) {
+    private fun onSharedTablesImportChosen(uri: Uri) {
         val text = persister.readText(uri) ?: run {
             showUserMessage(
                 FamilyMergeCopy.MSG_READ_FAILED,
@@ -195,7 +254,18 @@ class FamilyCatalogActivity : BaseActivity() {
             )
             return
         }
-        mergeViewModel.importMergeText(text)
+        mergeViewModel.importSharedTablesText(text)
+    }
+
+    private fun onArchiveImportChosen(uri: Uri) {
+        val text = persister.readText(uri) ?: run {
+            showUserMessage(
+                FamilyMergeCopy.MSG_READ_FAILED,
+                blockingError = true
+            )
+            return
+        }
+        mergeViewModel.importArchiveText(text)
     }
 
     private fun showUserMessage(

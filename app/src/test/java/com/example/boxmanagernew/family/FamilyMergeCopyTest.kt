@@ -18,14 +18,44 @@ class FamilyMergeCopyTest {
     fun buttons_useInviaRiceviArchivio() {
         assertEquals("📤 Invia Archivio", FamilyMergeCopy.BUTTON_SEND)
         assertEquals("📥 Ricevi Archivio", FamilyMergeCopy.BUTTON_RECEIVE)
+        assertEquals(
+            "📤 Invia tabelle condivise",
+            FamilyMergeCopy.BUTTON_SEND_SHARED_TABLES
+        )
+        assertEquals(
+            "📥 Ricevi tabelle condivise",
+            FamilyMergeCopy.BUTTON_RECEIVE_SHARED_TABLES
+        )
         assertTrue(FamilyMergeCopy.BUTTON_SEND.contains("Invia"))
         assertTrue(FamilyMergeCopy.BUTTON_RECEIVE.contains("Ricevi"))
+    }
+
+    @Test
+    fun copy_avoidsStrutturaWording() {
+        val texts = listOf(
+            FamilyMergeCopy.INTRO,
+            FamilyMergeCopy.SECTION_SHARED_TABLES,
+            FamilyMergeCopy.SECTION_SHARED_TABLES_HINT,
+            FamilyMergeCopy.SECTION_ARCHIVE,
+            FamilyMergeCopy.SECTION_ARCHIVE_HINT
+        )
+        for (text in texts) {
+            assertFalse(
+                "Testo non deve contenere «struttura»: $text",
+                text.contains("struttura", ignoreCase = true)
+            )
+        }
+        assertTrue(
+            FamilyMergeCopy.SECTION_SHARED_TABLES.contains("tabelle condivise", true)
+        )
     }
 
     @Test
     fun accentCardTexts_includeAllFamilyLabels() {
         val accents = FamilyMergeCopy.accentCardTexts()
         assertTrue(accents.contains(FamilyMergeCopy.UTILITY_CARD_LABEL))
+        assertTrue(accents.contains(FamilyMergeCopy.BUTTON_SEND_SHARED_TABLES))
+        assertTrue(accents.contains(FamilyMergeCopy.BUTTON_RECEIVE_SHARED_TABLES))
         assertTrue(accents.contains(FamilyMergeCopy.BUTTON_SEND))
         assertTrue(accents.contains(FamilyMergeCopy.BUTTON_RECEIVE))
     }

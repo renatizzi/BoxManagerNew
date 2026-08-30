@@ -10,8 +10,10 @@ import com.example.boxmanagernew.data.repository.CategoryRepositoryImpl
 import com.example.boxmanagernew.data.repository.LocationRepositoryImpl
 import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
 import com.example.boxmanagernew.domain.family.FamilyMergeCopy
+import com.example.boxmanagernew.family.catalog.FamilyCatalogReader
+import com.example.boxmanagernew.family.catalog.FamilyCatalogWriter
 import com.example.boxmanagernew.family.config.FamilyCatalogConfiguration
-import com.example.boxmanagernew.family.config.FamilyInventoryConfiguration
+import com.example.boxmanagernew.family.config.FamilySharedTablesConfiguration
 import com.example.boxmanagernew.family.config.FamilyMergeConfiguration
 import com.example.boxmanagernew.family.merge.FamilyMergeApplier
 import com.example.boxmanagernew.family.merge.FamilyMergeMerger
@@ -24,6 +26,8 @@ import com.example.boxmanagernew.family.model.FamilyInventoryBox
 import com.example.boxmanagernew.family.model.FamilyInventoryObject
 import com.example.boxmanagernew.family.model.FamilyInventorySnapshot
 import com.example.boxmanagernew.family.model.FamilyMergeSnapshot
+import com.example.boxmanagernew.family.shared.SharedTablesApplier
+import com.example.boxmanagernew.family.shared.SharedTablesMerger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -34,14 +38,22 @@ class FamilyMergeViewModel(
     private val locationRepository: LocationRepositoryImpl,
     private val boxRepository: BoxRepositoryImpl,
     private val objectRepository: ObjectRepositoryImpl,
-    private val reader: FamilyMergeReader = FamilyMergeReader(),
-    private val merger: FamilyMergeMerger = FamilyMergeMerger(),
-    private val applier: FamilyMergeApplier = FamilyMergeApplier(database)
+    private val catalogReader: FamilyCatalogReader = FamilyCatalogReader(),
+    private val mergeReader: FamilyMergeReader = FamilyMergeReader(),
+    private val mergeMerger: FamilyMergeMerger = FamilyMergeMerger(),
+    private val mergeApplier: FamilyMergeApplier = FamilyMergeApplier(database),
+    private val sharedTablesMerger: SharedTablesMerger = SharedTablesMerger(),
+    private val sharedTablesApplier: SharedTablesApplier = SharedTablesApplier(database)
 ) : ViewModel() {
 
-    data class Preview(
+    data class ArchivePreview(
         val summary: String,
         val plan: FamilyMergeMerger.Plan
+    )
+
+    data class SharedTablesPreview(
+        val summary: String,
+        val plan: SharedTablesMerger.Plan
     )
 
     private val _message = MutableLiveData<String>()
@@ -50,68 +62,182 @@ class FamilyMergeViewModel(
     private val _exportBytes = MutableLiveData<Pair<String, ByteArray>?>()
     val exportBytes: LiveData<Pair<String, ByteArray>?> = _exportBytes
 
-    private val _preview = MutableLiveData<Preview?>()
-    val preview: LiveData<Preview?> = _preview
+    private val _archivePreview = MutableLiveData<ArchivePreview?>()
+    val archivePreview: LiveData<ArchivePreview?> = _archivePreview
+
+    private val _sharedTablesPreview = MutableLiveData<SharedTablesPreview?>()
+    val sharedTablesPreview: LiveData<SharedTablesPreview?> = _sharedTablesPreview
 
     fun clearExport() {
         _exportBytes.value = null
     }
 
-    fun clearPreview() {
-        _preview.value = null
+    fun clearArchivePreview() {
+        _archivePreview.value = null
     }
 
-    fun requestExport() {
+    fun clearSharedTablesPreview() {
+        _sharedTablesPreview.value = null
+    }
+
+    fun requestSharedTablesExport() {
         viewModelScope.launch {
-            val snapshot = withContext(Dispatchers.IO) { loadSnapshot() }
+            val snapshot = withContext(Dispatchers.IO) { loadSharedTablesSnapshot() }
+            val name = FamilySharedTablesConfiguration.proposedFileName()
+            val bytes = FamilyCatalogWriter.toCsvBytes(snapshot)
+            _exportBytes.value = name to bytes
+        }
+    }
+
+    fun requestArchiveExport() {
+        viewModelScope.launch {
+            val snapshot = withContext(Dispatchers.IO) { loadArchiveSnapshot() }
             val name = FamilyMergeConfiguration.proposedFileName()
             val bytes = FamilyMergeWriter.toCsvBytes(snapshot)
             _exportBytes.value = name to bytes
         }
     }
 
-    fun importMergeText(text: String) {
+    fun importSharedTablesText(text: String) {
         viewModelScope.launch {
-            when (val parsed = reader.parse(text)) {
+            when (val parsed = catalogReader.parse(text)) {
+                is FamilyCatalogReader.Result.Error -> {
+                    _message.value = parsed.message
+                }
+                is FamilyCatalogReader.Result.Ok -> {
+                    val preview = withContext(Dispatchers.IO) {
+                        buildSharedTablesPreview(parsed.snapshot)
+                    }
+                    if (preview == null) {
+                        return@launch
+                    }
+                    _sharedTablesPreview.value = preview
+                }
+            }
+        }
+    }
+
+    fun importArchiveText(text: String) {
+        viewModelScope.launch {
+            when (val parsed = mergeReader.parse(text)) {
                 is FamilyMergeReader.Result.Error -> {
                     _message.value = parsed.message
                 }
                 is FamilyMergeReader.Result.Ok -> {
                     val preview = withContext(Dispatchers.IO) {
-                        buildPreview(parsed.snapshot, parsed.skippedRows)
+                        buildArchivePreview(parsed.snapshot, parsed.skippedRows)
                     }
                     if (preview == null) {
                         return@launch
                     }
-                    _preview.value = preview
+                    _archivePreview.value = preview
                 }
             }
         }
     }
 
-    fun confirmImport() {
-        val current = _preview.value ?: return
+    fun confirmSharedTablesImport() {
+        val current = _sharedTablesPreview.value ?: return
         if (!current.plan.canApply) {
-            _preview.value = null
+            _sharedTablesPreview.value = null
+            _message.value = "Nessuna modifica da applicare."
+            return
+        }
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                sharedTablesApplier.apply(current.plan)
+            }
+            _sharedTablesPreview.value = null
+            _message.value = buildString {
+                appendLine(FamilyMergeCopy.MSG_RECEIVE_COMPLETED)
+                append(
+                    current.summary.removePrefix(
+                        "Anteprima tabelle condivise:\n"
+                    )
+                )
+            }
+        }
+    }
+
+    fun confirmArchiveImport() {
+        val current = _archivePreview.value ?: return
+        if (!current.plan.canApply) {
+            _archivePreview.value = null
             _message.value = "Nessuna novità da unire."
             return
         }
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                applier.apply(current.plan)
+                mergeApplier.apply(current.plan)
             }
-            _preview.value = null
+            _archivePreview.value = null
             _message.value = buildString {
                 appendLine(FamilyMergeCopy.MSG_RECEIVE_COMPLETED)
-                append(current.summary.removePrefix("Anteprima condivisione archivio:\n"))
+                append(
+                    current.summary.removePrefix(
+                        "Anteprima condivisione archivio:\n"
+                    )
+                )
             }
         }
     }
 
-    private suspend fun buildPreview(
+    private suspend fun buildSharedTablesPreview(
+        incoming: FamilyCatalogSnapshot
+    ): SharedTablesPreview? {
+        val categories = categoryRepository.getAllCategoryEntitiesSync()
+        val locations = locationRepository.getAllLocationEntitiesSync()
+        val boxes = boxRepository.getAllBoxEntitiesSync()
+
+        val categoryBoxCounts = categories.associate { category ->
+            category.id to boxes.count { it.categoryId == category.id }
+        }
+        val locationBoxCounts = locations.associate { location ->
+            location.id to boxes.count {
+                it.position.equals(location.name, ignoreCase = true)
+            }
+        }
+
+        val plan = sharedTablesMerger.plan(
+            incoming = incoming,
+            localCategories = categories,
+            localLocations = locations,
+            categoryBoxCounts = categoryBoxCounts,
+            locationBoxCounts = locationBoxCounts
+        )
+
+        if (plan.blockingErrors.isNotEmpty()) {
+            _message.postValue(plan.blockingErrors.joinToString("\n"))
+            return null
+        }
+
+        if (!plan.canApply) {
+            _message.postValue(
+                "Le tabelle locali sono già allineate alle tabelle condivise."
+            )
+            return null
+        }
+
+        val summary = buildString {
+            appendLine("Anteprima tabelle condivise:")
+            appendLine(
+                "Categorie: ${plan.categoriesToInsert.size} da aggiungere, " +
+                    "${plan.categoriesToUpdate.size} da aggiornare, " +
+                    "${plan.categoriesToRemove.size} da rimuovere."
+            )
+            append(
+                "Posizioni: ${plan.locationsToInsert.size} da aggiungere, " +
+                    "${plan.locationsToRemove.size} da rimuovere."
+            )
+        }
+
+        return SharedTablesPreview(summary = summary, plan = plan)
+    }
+
+    private suspend fun buildArchivePreview(
         incoming: FamilyMergeSnapshot,
         skippedRows: Int = 0
-    ): Preview? {
+    ): ArchivePreview? {
         val localBoxes = boxRepository.getAllBoxEntitiesSync()
         val localObjects = objectRepository.getAllObjectEntitiesSync()
         val categories = categoryRepository.getAllCategoryEntitiesSync()
@@ -119,7 +245,7 @@ class FamilyMergeViewModel(
         val objectTypes = database.objectTypeDao().getAllTypesSync()
         val objectTypeNames = objectTypes.associate { it.id to it.name }
 
-        val plan = merger.plan(
+        val plan = mergeMerger.plan(
             incoming = incoming,
             localBoxes = localBoxes,
             localObjects = localObjects,
@@ -147,13 +273,9 @@ class FamilyMergeViewModel(
                     "Righe non valide ignorate nel file: $skippedRows."
                 )
             }
-            appendLine(
-                "Struttura: ${plan.categoriesToInsert.size} categorie, " +
-                    "${plan.locationsToInsert.size} posizioni da aggiungere."
-            )
             if (plan.healedCategories.isNotEmpty() || plan.healedLocations.isNotEmpty()) {
                 appendLine(
-                    "Ripristinate dai contenitori: " +
+                    "Categorie/posizioni aggiunte dai contenitori in arrivo: " +
                         "${plan.healedCategories.size} categorie, " +
                         "${plan.healedLocations.size} posizioni."
                 )
@@ -179,10 +301,10 @@ class FamilyMergeViewModel(
             }
         }
 
-        return Preview(summary = summary, plan = plan)
+        return ArchivePreview(summary = summary, plan = plan)
     }
 
-    private suspend fun loadSnapshot(): FamilyMergeSnapshot {
+    private suspend fun loadSharedTablesSnapshot(): FamilyCatalogSnapshot {
         val categories =
             categoryRepository.getAllCategoryEntitiesSync().map {
                 FamilyCatalogCategory(
@@ -196,7 +318,14 @@ class FamilyMergeViewModel(
             locationRepository.getAllLocationEntitiesSync().map {
                 FamilyCatalogLocation(name = it.name)
             }
+        return FamilyCatalogSnapshot(
+            categories = categories,
+            locations = locations
+        )
+    }
 
+    private suspend fun loadArchiveSnapshot(): FamilyMergeSnapshot {
+        val shared = loadSharedTablesSnapshot()
         val boxes = boxRepository.getAllBoxEntitiesSync()
         val categoryNames = database.categoryDao().getAllSync()
             .associate { it.id to it.name }
@@ -232,10 +361,7 @@ class FamilyMergeViewModel(
         }
 
         return FamilyMergeSnapshot(
-            catalog = FamilyCatalogSnapshot(
-                categories = categories,
-                locations = locations
-            ),
+            catalog = shared,
             inventory = FamilyInventorySnapshot(
                 boxes = inventoryBoxes,
                 objects = inventoryObjects

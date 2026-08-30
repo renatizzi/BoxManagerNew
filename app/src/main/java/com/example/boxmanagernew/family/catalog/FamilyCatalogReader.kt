@@ -147,7 +147,7 @@ class FamilyCatalogReader {
             "Formato non riconosciuto. Serve BoxManager_FamilyCatalog v1."
         const val MSG_SECTION = "Sezione catalogo non valida."
         const val MSG_SECTION_ORDER =
-            "Struttura incompleta: servono sezioni CATEGORIE e/o POSIZIONI."
+            "File incompleto: servono sezioni CATEGORIE e/o POSIZIONI."
         const val MSG_CATEGORY_HEADER =
             "Intestazione CATEGORIE non valida (nome;icona)."
         const val MSG_LOCATION_HEADER =

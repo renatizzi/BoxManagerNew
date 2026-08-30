@@ -11,19 +11,28 @@ object FamilyMergeCopy {
     const val PAGE_TITLE = "Condivisione Archivio"
 
     const val PAGE_SUBTITLE =
-        "Un unico archivio domestico da aggiornare periodicamente"
+        "Tabelle condivise e archivio domestico in famiglia"
 
     const val INTRO =
-        "Condividi il tuo archivio personale con i tuoi familiari. Serve ad " +
-            "agevolare il censimento iniziale dei contenitori e degli oggetti " +
-            "in modo da fare riferimento ad un unico archivio condiviso e " +
-            "aggiornato \"della casa\". Non sostituisce le funzioni di Importa " +
-            "ed Esporta dati."
+        "Prima allinea le tue categorie e posizioni alle tabelle condivise, " +
+            "poi aggiorna periodicamente contenitori e oggetti. Non sostituisce " +
+            "Importa ed Esporta dati."
 
-    const val HINT_FOLDER =
-        "Invia e Ricevi usano una cartella dedicata alla condivisione archivio " +
-            "(distinta da Backup e da Importa/Esporta). Alla prima operazione " +
-            "ti verrà chiesta la cartella; poi verrà riusata."
+    const val SECTION_SHARED_TABLES = "Tabelle condivise (categorie e posizioni)"
+
+    const val SECTION_SHARED_TABLES_HINT =
+        "Passo 1: invia o ricevi le tabelle condivise in famiglia. " +
+            "Passo 3: ripristinale sulle tabelle locali dopo reinstallazione " +
+            "o per correggere errori."
+
+    const val BUTTON_SEND_SHARED_TABLES = "📤 Invia tabelle condivise"
+
+    const val BUTTON_RECEIVE_SHARED_TABLES = "📥 Ricevi tabelle condivise"
+
+    const val SECTION_ARCHIVE = "Archivio (contenitori e oggetti)"
+
+    const val SECTION_ARCHIVE_HINT =
+        "Passo 2: condividi periodicamente l'archivio censito."
 
     const val BUTTON_SEND = "📤 Invia Archivio"
 
@@ -43,6 +52,8 @@ object FamilyMergeCopy {
     /** Testi card che ricevono il colore accent della palette Impostazioni. */
     fun accentCardTexts(): List<String> = listOf(
         UTILITY_CARD_LABEL,
+        BUTTON_SEND_SHARED_TABLES,
+        BUTTON_RECEIVE_SHARED_TABLES,
         BUTTON_SEND,
         BUTTON_RECEIVE
     )

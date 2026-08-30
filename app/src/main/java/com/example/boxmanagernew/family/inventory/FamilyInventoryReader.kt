@@ -233,7 +233,7 @@ class FamilyInventoryReader {
             "Formato non riconosciuto. Serve BoxManager_FamilyInventory v1."
         const val MSG_SECTION = "Sezione inventario non valida."
         const val MSG_SECTION_ORDER =
-            "Struttura incompleta: servono sezioni CONTENITORI e/o OGGETTI."
+            "File incompleto: servono sezioni CONTENITORI e/o OGGETTI."
         const val MSG_BOX_HEADER =
             "Intestazione CONTENITORI non valida."
         const val MSG_OBJECT_HEADER =

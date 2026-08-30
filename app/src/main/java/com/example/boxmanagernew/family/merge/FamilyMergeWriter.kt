@@ -8,7 +8,8 @@ import com.example.boxmanagernew.family.inventory.FamilyInventoryWriter
 import com.example.boxmanagernew.family.model.FamilyMergeSnapshot
 
 /**
- * Serializza l'unione famiglia (struttura + inventario) in un unico CSV.
+ * Serializza la condivisione archivio (tabelle di riferimento + inventario)
+ * in un unico CSV.
  */
 object FamilyMergeWriter {
 
