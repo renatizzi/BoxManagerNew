@@ -3,7 +3,6 @@ package com.example.boxmanagernew.ui.family
 import android.net.Uri
 import android.os.Bundle
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
@@ -25,18 +24,17 @@ class FamilyCatalogActivity : BaseActivity() {
     private lateinit var catalogViewModel: FamilyCatalogViewModel
     private lateinit var inventoryViewModel: FamilyInventoryViewModel
     private lateinit var persister: FamilyCatalogPersister
+    private lateinit var exportCoordinator: FamilyExportCoordinator
     private lateinit var tvMessages: TextView
-
-    private var pendingExport: Pair<String, ByteArray>? = null
 
     private val folderPicker =
         registerForActivityResult(
             ActivityResultContracts.OpenDocumentTree()
         ) { uri ->
             if (uri != null) {
-                writePendingExport(uri)
+                exportCoordinator.onFolderChosen(uri)
             } else {
-                pendingExport = null
+                exportCoordinator.cancelPending()
             }
         }
 
@@ -77,6 +75,18 @@ class FamilyCatalogActivity : BaseActivity() {
 
         persister = FamilyCatalogPersister(this)
         tvMessages = findViewById(R.id.tvMessages)
+        exportCoordinator = FamilyExportCoordinator(
+            activity = this,
+            onFolderInaccessible = {
+                tvMessages.text = FamilyCatalogCopy.MSG_FOLDER_INACCESSIBLE
+            },
+            onExportCompleted = {
+                tvMessages.text = FamilyCatalogCopy.MSG_EXPORT_COMPLETED
+            },
+            launchFolderPicker = {
+                folderPicker.launch(null)
+            }
+        )
 
         val db = DatabaseProvider.getDatabase(applicationContext)
         catalogViewModel = ViewModelProvider(
@@ -115,12 +125,16 @@ class FamilyCatalogActivity : BaseActivity() {
             FamilyCatalogCopy.INTRO
         findViewById<TextView>(R.id.textSectionCatalog).text =
             FamilyCatalogCopy.SECTION_CATALOG
+        findViewById<TextView>(R.id.textSectionCatalogHint).text =
+            FamilyCatalogCopy.SECTION_CATALOG_HINT
         findViewById<TextView>(R.id.textExportCatalog).text =
             FamilyCatalogCopy.BUTTON_SEND
         findViewById<TextView>(R.id.textImportCatalog).text =
             FamilyCatalogCopy.BUTTON_RECEIVE
         findViewById<TextView>(R.id.textSectionInventory).text =
             FamilyCatalogCopy.SECTION_INVENTORY
+        findViewById<TextView>(R.id.textSectionInventoryHint).text =
+            FamilyCatalogCopy.SECTION_INVENTORY_HINT
         findViewById<TextView>(R.id.textExportInventory).text =
             FamilyCatalogCopy.BUTTON_SEND_INVENTORY
         findViewById<TextView>(R.id.textImportInventory).text =
@@ -138,18 +152,22 @@ class FamilyCatalogActivity : BaseActivity() {
             if (payload == null) {
                 return@observe
             }
-            pendingExport = payload
             catalogViewModel.clearExport()
-            folderPicker.launch(null)
+            exportCoordinator.beginExport(
+                defaultFileName = payload.first,
+                bytes = payload.second
+            )
         }
 
         inventoryViewModel.exportBytes.observe(this) { payload ->
             if (payload == null) {
                 return@observe
             }
-            pendingExport = payload
             inventoryViewModel.clearExport()
-            folderPicker.launch(null)
+            exportCoordinator.beginExport(
+                defaultFileName = payload.first,
+                bytes = payload.second
+            )
         }
 
         inventoryViewModel.preview.observe(this) { preview ->
@@ -182,36 +200,6 @@ class FamilyCatalogActivity : BaseActivity() {
             "text/*",
             "*/*"
         )
-    }
-
-    private fun writePendingExport(treeUri: Uri) {
-        val payload = pendingExport ?: return
-        pendingExport = null
-        try {
-            contentResolver.takePersistableUriPermission(
-                treeUri,
-                android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION or
-                    android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-            )
-        } catch (_: SecurityException) {
-            // Cartella usabile per questa sessione anche senza persist.
-        }
-        val result = persister.persist(treeUri, payload.first, payload.second)
-        if (result.success) {
-            Toast.makeText(
-                this,
-                "Salvato ${result.fileName} in ${result.folderName}",
-                Toast.LENGTH_SHORT
-            ).show()
-            tvMessages.text =
-                "Export completato: ${result.fileName}\nCartella: ${result.folderName}"
-        } else if (result.folderInaccessible) {
-            Toast.makeText(this, "Cartella non accessibile.", Toast.LENGTH_SHORT)
-                .show()
-        } else {
-            Toast.makeText(this, "Salvataggio non riuscito.", Toast.LENGTH_SHORT)
-                .show()
-        }
     }
 
     private fun onCatalogImportChosen(uri: Uri) {

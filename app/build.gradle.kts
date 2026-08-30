@@ -51,8 +51,8 @@ android {
         create("famiglia") {
             dimension = "distribution"
             applicationIdSuffix = ".famiglia"
-            versionCode = 1305
-            versionName = "1.3-famigliaB2.0"
+            versionCode = 1306
+            versionName = "1.3-famigliaB2.1"
             buildConfigField("boolean", "FAMILY_BETA", "true")
         }
     }

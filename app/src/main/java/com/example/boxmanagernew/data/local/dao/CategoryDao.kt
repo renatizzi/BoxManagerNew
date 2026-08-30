@@ -34,6 +34,13 @@ interface CategoryDao {
 
     @Query("""
         SELECT * FROM categories 
+        WHERE id = :id
+        LIMIT 1
+    """)
+    suspend fun getById(id: Int): CategoryEntity?
+
+    @Query("""
+        SELECT * FROM categories 
         WHERE LOWER(name) = LOWER(:name) 
         LIMIT 1
     """)

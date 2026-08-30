@@ -31,6 +31,17 @@ object FamilyCatalogCopy {
 
     const val BUTTON_RECEIVE_INVENTORY = "📥 Ricevi Inventario"
 
+    const val SECTION_CATALOG_HINT =
+        "Condividi categorie e luoghi: primo passo del merge famiglia."
+
+    const val SECTION_INVENTORY_HINT =
+        "Unisce contenitori e oggetti per ID stabili tra i familiari."
+
+    const val MSG_EXPORT_COMPLETED = "Salvataggio completato."
+
+    const val MSG_FOLDER_INACCESSIBLE =
+        "Cartella non accessibile. Scegli di nuovo la cartella."
+
     /** Testi card che ricevono il colore accent della palette Impostazioni. */
     fun accentCardTexts(): List<String> = listOf(
         UTILITY_CARD_LABEL,

@@ -254,10 +254,11 @@ class SearchResultActivity : BaseActivity() {
         )
 
         val category =
-            db.categoryDao()
-                .getCategoryByName(
-                    first.categoryName ?: ""
-                )
+            db.boxDao().getById(first.boxId)?.categoryId?.let { categoryId ->
+                db.categoryDao().getById(categoryId)
+            } ?: db.categoryDao().getCategoryByName(
+                first.categoryName.orEmpty()
+            )
 
         val card =
             CardView(this).apply {
@@ -336,15 +337,15 @@ class SearchResultActivity : BaseActivity() {
 
         body.addView(top)
 
+        val iconRes =
+            if (category != null) {
+                IconMapper.getIconRes(category.icon)
+            } else {
+                0
+            }
+
         val categoryView =
             TextView(this)
-
-        val iconRes =
-            resources.getIdentifier(
-                category?.icon,
-                "drawable",
-                packageName
-            )
 
         if (iconRes != 0) {
 
@@ -358,7 +359,7 @@ class SearchResultActivity : BaseActivity() {
         }
 
         categoryView.text =
-            " ${first.categoryName ?: "-"}"
+            " ${category?.name ?: first.categoryName ?: "-"}"
 
         body.addView(categoryView)
 
