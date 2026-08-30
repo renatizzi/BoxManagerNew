@@ -20,3 +20,8 @@ key.properties
 *.keystore
 *.jks.old
 *.keystore.old
+
+# Beta sideload artifacts (local only)
+family-b-beta.bundle
+SCARICA_QUESTO/
+INSTALLA_BETA_FAMIGLIA.sh

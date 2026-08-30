@@ -74,4 +74,23 @@ class QuickStartGuideCopyTest {
             assertTrue(body.contains(column))
         }
     }
+
+    @Test
+    fun familyBetaSections_addSetupFamiglia() {
+        val sections =
+            QuickStartGuideCopy.sectionsFor(includeFamilyBeta = true)
+        assertEquals(8, sections.size)
+        val family = sections.single { it.number == 8 }
+        assertEquals("Setup famiglia (beta)", family.title)
+        assertTrue(
+            family.bullets.any { it.contains("Catalogo Famiglia") }
+        )
+        val utility = sections.single { it.number == 5 }
+        assertTrue(
+            utility.bullets.any { it.contains("Catalogo Famiglia") }
+        )
+        assertTrue(
+            utility.bullets.any { it.contains("Inventario Famiglia") }
+        )
+    }
 }

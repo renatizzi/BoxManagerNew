@@ -7,6 +7,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
+import com.example.boxmanagernew.BuildConfig
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.domain.help.QuickStartGuideCopy
 import com.example.boxmanagernew.ui.common.BaseActivity
@@ -81,9 +82,10 @@ class QuickStartGuideActivity : BaseActivity() {
         val container =
             findViewById<LinearLayout>(R.id.sectionsContainer)
 
-        QuickStartGuideCopy.sections.forEach { section ->
-            container.addView(createSectionCard(section))
-        }
+        QuickStartGuideCopy.sectionsFor(BuildConfig.FAMILY_BETA)
+            .forEach { section ->
+                container.addView(createSectionCard(section))
+            }
     }
 
     private fun createSectionCard(
