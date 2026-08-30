@@ -14,17 +14,17 @@ import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
 import com.example.boxmanagernew.data.repository.CategoryRepositoryImpl
 import com.example.boxmanagernew.data.repository.LocationRepositoryImpl
 import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
-import com.example.boxmanagernew.domain.family.FamilyCatalogCopy
+import com.example.boxmanagernew.domain.family.FamilyMergeCopy
 import com.example.boxmanagernew.family.config.FamilyCatalogConfiguration
 import com.example.boxmanagernew.family.config.FamilyInventoryConfiguration
+import com.example.boxmanagernew.family.config.FamilyMergeConfiguration
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.FeedbackUtils
 import com.google.android.material.card.MaterialCardView
 
 class FamilyCatalogActivity : BaseActivity() {
 
-    private lateinit var catalogViewModel: FamilyCatalogViewModel
-    private lateinit var inventoryViewModel: FamilyInventoryViewModel
+    private lateinit var mergeViewModel: FamilyMergeViewModel
     private lateinit var persister: FamilyCatalogPersister
     private lateinit var exportCoordinator: FamilyExportCoordinator
     private lateinit var tvMessages: TextView
@@ -41,21 +41,12 @@ class FamilyCatalogActivity : BaseActivity() {
             }
         }
 
-    private val catalogFilePicker =
+    private val mergeFilePicker =
         registerForActivityResult(
             ActivityResultContracts.OpenDocument()
         ) { uri ->
             if (uri != null) {
-                onCatalogImportChosen(uri)
-            }
-        }
-
-    private val inventoryFilePicker =
-        registerForActivityResult(
-            ActivityResultContracts.OpenDocument()
-        ) { uri ->
-            if (uri != null) {
-                onInventoryImportChosen(uri)
+                onMergeImportChosen(uri)
             }
         }
 
@@ -71,8 +62,8 @@ class FamilyCatalogActivity : BaseActivity() {
 
         setupAppShell()
         setupPageHeader(
-            title = FamilyCatalogCopy.PAGE_TITLE,
-            subtitle = FamilyCatalogCopy.PAGE_SUBTITLE
+            title = FamilyMergeCopy.PAGE_TITLE,
+            subtitle = FamilyMergeCopy.PAGE_SUBTITLE
         )
         setupBottomNav()
 
@@ -83,13 +74,13 @@ class FamilyCatalogActivity : BaseActivity() {
             activity = this,
             onFolderInaccessible = {
                 showUserMessage(
-                    FamilyCatalogCopy.MSG_FOLDER_INACCESSIBLE,
+                    FamilyMergeCopy.MSG_FOLDER_INACCESSIBLE,
                     blockingError = true
                 )
             },
             onExportCompleted = {
                 showUserMessage(
-                    FamilyCatalogCopy.MSG_EXPORT_COMPLETED,
+                    FamilyMergeCopy.MSG_EXPORT_COMPLETED,
                     blockingError = false,
                     showDialog = true
                 )
@@ -100,112 +91,73 @@ class FamilyCatalogActivity : BaseActivity() {
         )
 
         val db = DatabaseProvider.getDatabase(applicationContext)
-        catalogViewModel = ViewModelProvider(
+        mergeViewModel = ViewModelProvider(
             this,
-            FamilyCatalogViewModelFactory(
-                CategoryRepositoryImpl(db.categoryDao(), db.boxDao()),
-                LocationRepositoryImpl(db.locationDao(), db.boxDao())
-            )
-        )[FamilyCatalogViewModel::class.java]
-        inventoryViewModel = ViewModelProvider(
-            this,
-            FamilyInventoryViewModelFactory(
+            FamilyMergeViewModelFactory(
                 db,
+                CategoryRepositoryImpl(db.categoryDao(), db.boxDao()),
+                LocationRepositoryImpl(db.locationDao(), db.boxDao()),
                 BoxRepositoryImpl(db.boxDao()),
                 ObjectRepositoryImpl(db.objectDao(), db.objectTypeDao())
             )
-        )[FamilyInventoryViewModel::class.java]
+        )[FamilyMergeViewModel::class.java]
 
-        findViewById<MaterialCardView>(R.id.btnExportCatalog)
-            .setOnClickListener { catalogViewModel.requestExport() }
+        findViewById<MaterialCardView>(R.id.btnExportMerge)
+            .setOnClickListener { mergeViewModel.requestExport() }
 
-        findViewById<MaterialCardView>(R.id.btnImportCatalog)
+        findViewById<MaterialCardView>(R.id.btnImportMerge)
             .setOnClickListener {
-                catalogFilePicker.launch(csvMimeTypes())
-            }
-
-        findViewById<MaterialCardView>(R.id.btnExportInventory)
-            .setOnClickListener { inventoryViewModel.requestExport() }
-
-        findViewById<MaterialCardView>(R.id.btnImportInventory)
-            .setOnClickListener {
-                inventoryFilePicker.launch(csvMimeTypes())
+                mergeFilePicker.launch(csvMimeTypes())
             }
 
         findViewById<TextView>(R.id.textFamilyIntro).text =
-            FamilyCatalogCopy.INTRO
-        findViewById<TextView>(R.id.textSectionCatalog).text =
-            FamilyCatalogCopy.SECTION_CATALOG
-        findViewById<TextView>(R.id.textSectionCatalogHint).text =
-            FamilyCatalogCopy.SECTION_CATALOG_HINT
-        findViewById<TextView>(R.id.textExportCatalog).text =
-            FamilyCatalogCopy.BUTTON_SEND
-        findViewById<TextView>(R.id.textImportCatalog).text =
-            FamilyCatalogCopy.BUTTON_RECEIVE
-        findViewById<TextView>(R.id.textSectionInventory).text =
-            FamilyCatalogCopy.SECTION_INVENTORY
-        findViewById<TextView>(R.id.textSectionInventoryHint).text =
-            FamilyCatalogCopy.SECTION_INVENTORY_HINT
-        findViewById<TextView>(R.id.textExportInventory).text =
-            FamilyCatalogCopy.BUTTON_SEND_INVENTORY
-        findViewById<TextView>(R.id.textImportInventory).text =
-            FamilyCatalogCopy.BUTTON_RECEIVE_INVENTORY
+            FamilyMergeCopy.INTRO
+        findViewById<TextView>(R.id.textExportMerge).text =
+            FamilyMergeCopy.BUTTON_SEND
+        findViewById<TextView>(R.id.textImportMerge).text =
+            FamilyMergeCopy.BUTTON_RECEIVE
 
-        catalogViewModel.message.observe(this) { text ->
+        mergeViewModel.message.observe(this) { text ->
             showUserMessage(text, blockingError = false, showDialog = true)
         }
 
-        inventoryViewModel.message.observe(this) { text ->
-            showUserMessage(text, blockingError = false, showDialog = true)
-        }
-
-        catalogViewModel.exportBytes.observe(this) { payload ->
+        mergeViewModel.exportBytes.observe(this) { payload ->
             if (payload == null) {
                 return@observe
             }
-            catalogViewModel.clearExport()
+            mergeViewModel.clearExport()
             exportCoordinator.beginExport(
                 defaultFileName = payload.first,
                 bytes = payload.second
             )
         }
 
-        inventoryViewModel.exportBytes.observe(this) { payload ->
-            if (payload == null) {
-                return@observe
-            }
-            inventoryViewModel.clearExport()
-            exportCoordinator.beginExport(
-                defaultFileName = payload.first,
-                bytes = payload.second
-            )
-        }
-
-        inventoryViewModel.preview.observe(this) { preview ->
+        mergeViewModel.preview.observe(this) { preview ->
             if (preview == null) {
                 return@observe
             }
-            showInventoryPreview(preview)
+            showMergePreview(preview)
         }
     }
 
-    private fun showInventoryPreview(
-        preview: FamilyInventoryViewModel.Preview
+    private fun showMergePreview(
+        preview: FamilyMergeViewModel.Preview
     ) {
         AlertDialog.Builder(this)
-            .setTitle("Ricevi Inventario")
+            .setTitle("Ricevi unione")
             .setMessage(preview.summary)
             .setPositiveButton("SI") { _, _ ->
-                inventoryViewModel.confirmImport()
+                mergeViewModel.confirmImport()
             }
             .setNegativeButton("NO") { _, _ ->
-                inventoryViewModel.clearPreview()
+                mergeViewModel.clearPreview()
             }
             .show()
     }
 
     private fun csvMimeTypes(): Array<String> {
         return arrayOf(
+            FamilyMergeConfiguration.CSV_MIME_TYPE,
             FamilyCatalogConfiguration.CSV_MIME_TYPE,
             FamilyInventoryConfiguration.CSV_MIME_TYPE,
             "text/*",
@@ -213,26 +165,15 @@ class FamilyCatalogActivity : BaseActivity() {
         )
     }
 
-    private fun onCatalogImportChosen(uri: Uri) {
+    private fun onMergeImportChosen(uri: Uri) {
         val text = persister.readText(uri) ?: run {
             showUserMessage(
-                FamilyCatalogCopy.MSG_READ_FAILED,
+                FamilyMergeCopy.MSG_READ_FAILED,
                 blockingError = true
             )
             return
         }
-        catalogViewModel.importCatalogText(text)
-    }
-
-    private fun onInventoryImportChosen(uri: Uri) {
-        val text = persister.readText(uri) ?: run {
-            showUserMessage(
-                FamilyCatalogCopy.MSG_READ_FAILED,
-                blockingError = true
-            )
-            return
-        }
-        inventoryViewModel.importInventoryText(text)
+        mergeViewModel.importMergeText(text)
     }
 
     private fun showUserMessage(

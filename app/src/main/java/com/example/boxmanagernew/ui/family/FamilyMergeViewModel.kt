@@ -6,32 +6,42 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.boxmanagernew.data.local.AppDatabase
 import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
+import com.example.boxmanagernew.data.repository.CategoryRepositoryImpl
+import com.example.boxmanagernew.data.repository.LocationRepositoryImpl
 import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
 import com.example.boxmanagernew.domain.family.FamilyMergeCopy
+import com.example.boxmanagernew.family.config.FamilyCatalogConfiguration
 import com.example.boxmanagernew.family.config.FamilyInventoryConfiguration
-import com.example.boxmanagernew.family.inventory.FamilyInventoryApplier
-import com.example.boxmanagernew.family.inventory.FamilyInventoryMerger
-import com.example.boxmanagernew.family.inventory.FamilyInventoryReader
-import com.example.boxmanagernew.family.inventory.FamilyInventoryWriter
+import com.example.boxmanagernew.family.config.FamilyMergeConfiguration
+import com.example.boxmanagernew.family.merge.FamilyMergeApplier
+import com.example.boxmanagernew.family.merge.FamilyMergeMerger
+import com.example.boxmanagernew.family.merge.FamilyMergeReader
+import com.example.boxmanagernew.family.merge.FamilyMergeWriter
+import com.example.boxmanagernew.family.model.FamilyCatalogCategory
+import com.example.boxmanagernew.family.model.FamilyCatalogLocation
+import com.example.boxmanagernew.family.model.FamilyCatalogSnapshot
 import com.example.boxmanagernew.family.model.FamilyInventoryBox
 import com.example.boxmanagernew.family.model.FamilyInventoryObject
 import com.example.boxmanagernew.family.model.FamilyInventorySnapshot
+import com.example.boxmanagernew.family.model.FamilyMergeSnapshot
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class FamilyInventoryViewModel(
+class FamilyMergeViewModel(
     private val database: AppDatabase,
+    private val categoryRepository: CategoryRepositoryImpl,
+    private val locationRepository: LocationRepositoryImpl,
     private val boxRepository: BoxRepositoryImpl,
     private val objectRepository: ObjectRepositoryImpl,
-    private val reader: FamilyInventoryReader = FamilyInventoryReader(),
-    private val merger: FamilyInventoryMerger = FamilyInventoryMerger(),
-    private val applier: FamilyInventoryApplier = FamilyInventoryApplier(database)
+    private val reader: FamilyMergeReader = FamilyMergeReader(),
+    private val merger: FamilyMergeMerger = FamilyMergeMerger(),
+    private val applier: FamilyMergeApplier = FamilyMergeApplier(database)
 ) : ViewModel() {
 
     data class Preview(
         val summary: String,
-        val plan: FamilyInventoryMerger.Plan
+        val plan: FamilyMergeMerger.Plan
     )
 
     private val _message = MutableLiveData<String>()
@@ -54,19 +64,19 @@ class FamilyInventoryViewModel(
     fun requestExport() {
         viewModelScope.launch {
             val snapshot = withContext(Dispatchers.IO) { loadSnapshot() }
-            val name = FamilyInventoryConfiguration.proposedFileName()
-            val bytes = FamilyInventoryWriter.toCsvBytes(snapshot)
+            val name = FamilyMergeConfiguration.proposedFileName()
+            val bytes = FamilyMergeWriter.toCsvBytes(snapshot)
             _exportBytes.value = name to bytes
         }
     }
 
-    fun importInventoryText(text: String) {
+    fun importMergeText(text: String) {
         viewModelScope.launch {
             when (val parsed = reader.parse(text)) {
-                is FamilyInventoryReader.Result.Error -> {
+                is FamilyMergeReader.Result.Error -> {
                     _message.value = parsed.message
                 }
-                is FamilyInventoryReader.Result.Ok -> {
+                is FamilyMergeReader.Result.Ok -> {
                     val preview = withContext(Dispatchers.IO) {
                         buildPreview(parsed.snapshot)
                     }
@@ -83,8 +93,7 @@ class FamilyInventoryViewModel(
         val current = _preview.value ?: return
         if (!current.plan.canApply) {
             _preview.value = null
-            _message.value =
-                "Nessuna novità da unire."
+            _message.value = "Nessuna novità da unire."
             return
         }
         viewModelScope.launch {
@@ -94,34 +103,33 @@ class FamilyInventoryViewModel(
             _preview.value = null
             _message.value = buildString {
                 appendLine(FamilyMergeCopy.MSG_RECEIVE_COMPLETED)
-                append(current.summary.removePrefix("Anteprima unione inventario:\n"))
+                append(current.summary.removePrefix("Anteprima unione famiglia:\n"))
             }
         }
     }
 
     private suspend fun buildPreview(
-        incoming: FamilyInventorySnapshot
+        incoming: FamilyMergeSnapshot
     ): Preview? {
         val localBoxes = boxRepository.getAllBoxEntitiesSync()
         val localObjects = objectRepository.getAllObjectEntitiesSync()
-        val categories = database.categoryDao().getAllSync()
-        val categoryNames = categories.associate { it.id to it.name }
+        val categories = categoryRepository.getAllCategoryEntitiesSync()
+        val locations = locationRepository.getAllLocationEntitiesSync()
         val objectTypes = database.objectTypeDao().getAllTypesSync()
         val objectTypeNames = objectTypes.associate { it.id to it.name }
-        val locations = database.locationDao().getAllLocationsSync()
 
         val plan = merger.plan(
             incoming = incoming,
             localBoxes = localBoxes,
             localObjects = localObjects,
-            categoryNames = categoryNames,
-            objectTypeNames = objectTypeNames,
-            locationNames = locations.map { it.name }
+            existingCategoryNames = categories.map { it.name },
+            existingLocationNames = locations.map { it.name },
+            objectTypeNames = objectTypeNames
         )
 
-        if (plan.blockingErrors.isNotEmpty()) {
+        if (plan.inventoryPlan.blockingErrors.isNotEmpty()) {
             _message.postValue(
-                plan.blockingErrors.joinToString("\n")
+                plan.inventoryPlan.blockingErrors.joinToString("\n")
             )
             return null
         }
@@ -132,18 +140,29 @@ class FamilyInventoryViewModel(
         }
 
         val summary = buildString {
-            appendLine("Anteprima unione inventario:")
+            appendLine("Anteprima unione famiglia:")
             appendLine(
-                "Contenitori: ${plan.boxesToInsert.size} nuovi, " +
-                    "${plan.boxesToUpdate.size} aggiornamenti, " +
-                    "${plan.boxConflicts.size} conflitti, " +
-                    "${plan.boxesIgnored} invariati."
+                "Struttura: ${plan.categoriesToInsert.size} categorie, " +
+                    "${plan.locationsToInsert.size} posizioni da aggiungere."
+            )
+            if (plan.healedCategories.isNotEmpty() || plan.healedLocations.isNotEmpty()) {
+                appendLine(
+                    "Ripristinate dai contenitori: " +
+                        "${plan.healedCategories.size} categorie, " +
+                        "${plan.healedLocations.size} posizioni."
+                )
+            }
+            appendLine(
+                "Contenitori: ${plan.inventoryPlan.boxesToInsert.size} nuovi, " +
+                    "${plan.inventoryPlan.boxesToUpdate.size} aggiornamenti, " +
+                    "${plan.inventoryPlan.boxConflicts.size} conflitti, " +
+                    "${plan.inventoryPlan.boxesIgnored} invariati."
             )
             append(
-                "Oggetti: ${plan.objectsToInsert.size} nuovi, " +
-                    "${plan.objectsToUpdate.size} aggiornamenti, " +
-                    "${plan.objectConflicts.size} conflitti, " +
-                    "${plan.objectsIgnored} invariati."
+                "Oggetti: ${plan.inventoryPlan.objectsToInsert.size} nuovi, " +
+                    "${plan.inventoryPlan.objectsToUpdate.size} aggiornamenti, " +
+                    "${plan.inventoryPlan.objectConflicts.size} conflitti, " +
+                    "${plan.inventoryPlan.objectsIgnored} invariati."
             )
             if (plan.hasConflicts) {
                 appendLine()
@@ -157,9 +176,23 @@ class FamilyInventoryViewModel(
         return Preview(summary = summary, plan = plan)
     }
 
-    private suspend fun loadSnapshot(): FamilyInventorySnapshot {
+    private suspend fun loadSnapshot(): FamilyMergeSnapshot {
+        val categories =
+            categoryRepository.getAllCategoryEntitiesSync().map {
+                FamilyCatalogCategory(
+                    name = it.name,
+                    icon = it.icon.ifBlank {
+                        FamilyCatalogConfiguration.DEFAULT_CATEGORY_ICON
+                    }
+                )
+            }
+        val locations =
+            locationRepository.getAllLocationEntitiesSync().map {
+                FamilyCatalogLocation(name = it.name)
+            }
+
         val boxes = boxRepository.getAllBoxEntitiesSync()
-        val categories = database.categoryDao().getAllSync()
+        val categoryNames = database.categoryDao().getAllSync()
             .associate { it.id to it.name }
         val objects = objectRepository.getAllObjectEntitiesSync()
         val objectTypes = database.objectTypeDao().getAllTypesSync()
@@ -170,7 +203,7 @@ class FamilyInventoryViewModel(
             FamilyInventoryBox(
                 permanentId = box.permanentId,
                 name = box.name,
-                category = categories[box.categoryId].orEmpty(),
+                category = categoryNames[box.categoryId].orEmpty(),
                 position = box.position,
                 lastModified = box.lastModified
             )
@@ -187,9 +220,15 @@ class FamilyInventoryViewModel(
             )
         }
 
-        return FamilyInventorySnapshot(
-            boxes = inventoryBoxes,
-            objects = inventoryObjects
+        return FamilyMergeSnapshot(
+            catalog = FamilyCatalogSnapshot(
+                categories = categories,
+                locations = locations
+            ),
+            inventory = FamilyInventorySnapshot(
+                boxes = inventoryBoxes,
+                objects = inventoryObjects
+            )
         )
     }
 }
