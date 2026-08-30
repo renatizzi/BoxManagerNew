@@ -1,8 +1,9 @@
 # Nota B0 — Merge famiglia (BoxManager)
 
-**Stato:** adottata (SI Renato, sessione continuità post Alpha 1.2)  
+**Stato:** adottata (SI Renato, sessione continuità post Alpha 1.2). **B4 CONVALIDA in corso** — non CONVALIDATO senza SI esplicito di Renato.  
 **Ambito:** solo build **flavor `famiglia`** (betatest locale). **Non** pubblicare su Play Store.  
-**Track Play / Alpha:** resta **1.2 (versionCode 3)** su `main` — non modificare il comportamento release Play da questa Nota.
+**Track Play / Alpha:** resta **1.2 (versionCode 3)** su `main` — non modificare il comportamento release Play da questa Nota.  
+**Sidecar B7:** `docs/Nota_Integrata_9.1_B7.docx` non riaperta (D0–B7 chiusi); il merge famiglia B4 resta documentato qui.
 
 ---
 
@@ -78,7 +79,8 @@ objectPermanentId;boxPermanentId;tipo;descrizione;quantita;lastModified
 ```
 
 - Separatore `;`, UTF-8 con BOM.
-- Nome file proposto: `Unione_Famiglia_ddMMyy_HHmm.csv`.
+- Nome file proposto (B3, storico): `Unione_Famiglia_ddMMyy_HHmm.csv`.
+- In **B4** i nomi proposti principali sono `Tabelle_Condivise_ddMMyy_HHmm.csv` e `Condivisione_Archivio_ddMMyy_HHmm.csv` (vedi §4bis).
 - Accetta anche file legacy B1 (`BoxManager_FamilyCatalog`) e B2 (`BoxManager_FamilyInventory`).
 
 ### 4.2 Semantica import unione (B3 — sostituita da B4 per il catalogo)
@@ -121,6 +123,19 @@ Pagina unica **Condivisione Archivio**, due operazioni distinte.
 - **Passo 2** (periodico): aggiornare contenitori e oggetti in famiglia.
 
 Nessun master/slave: il file nella cartella condivisa è il riferimento; ogni membro può inviare o ricevere.
+
+### 4bis.3 Pagina UI (B4.3)
+
+Pagina unica **Condivisione Archivio** (`FamilyCatalogActivity` / `activity_family_catalog.xml`), non «Unione famiglia».
+
+Due sezioni, griglia 2 colonne (Invia | Ricevi), card allineate a Utility:
+
+- `MaterialCardView` altezza `180dp`, `layout_margin` `6dp`, padding contenitore `16dp`
+- `cardCornerRadius` `16dp`, `cardElevation` `5dp`, sfondo `@color/elevated_surface`
+- testo centrato `20sp` bold (telefono e tablet)
+- nessuna card cartella/SFOGLIA: la cartella SAF (`KEY_FAMILY_SHARE`) si sceglie al tap su **Invia**, poi viene riusata
+
+Terminologia in pagina: **tabelle condivise**, **tabelle locali**, **categorie e posizioni**. Non usare «struttura».
 
 ---
 
@@ -178,7 +193,7 @@ objectPermanentId;boxPermanentId;tipo;descrizione;quantita;lastModified
 
 ### 6.3 UI (flavor `famiglia`)
 
-Pagina **Unione famiglia** → Invia unione / Ricevi unione, con anteprima SI/NO prima dell'applicazione.
+Pagina B2 (superata): Unione famiglia → Invia unione / Ricevi unione. In B4 la pagina è **Condivisione Archivio** (vedi §4bis).
 
 ---
 
@@ -205,7 +220,7 @@ Niente ACL: dopo il merge tutto resta dominio famiglia. Il nome serve a ripartir
 | **B1** | Catalogo famiglia export/import (legacy) + Guida + flavor | No |
 | **B2** | Pacchetto inventario per ID (legacy) + anteprima | No |
 | **B3** | Unione famiglia unificata (tabelle + inventario, guarigione) | No — superata da B4 |
-| **B4** | **Tabelle condivise** + **Archivio** separati; allineamento tabelle locali | No — **CONVALIDA in corso** |
+| **B4** | **Tabelle condivise** + **Archivio** separati; UI card = Utility (B4.3) | No — **CONVALIDA in corso** (non CONVALIDATO senza SI Renato) |
 | **B5** | Origine = **nome utente** Impostazioni su contenitori/oggetti; delete esplicito propagabile | No |
 
 ---
