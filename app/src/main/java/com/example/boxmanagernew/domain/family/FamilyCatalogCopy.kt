@@ -39,8 +39,14 @@ object FamilyCatalogCopy {
 
     const val MSG_EXPORT_COMPLETED = "Salvataggio completato."
 
+    const val MSG_RECEIVE_COMPLETED = "Ricezione completata."
+
+    const val MSG_READ_FAILED = "Impossibile leggere il file."
+
     const val MSG_FOLDER_INACCESSIBLE =
         "Cartella non accessibile. Scegli di nuovo la cartella."
+
+    const val MSG_WRITE_FAILED = "Salvataggio non riuscito. Riprovare."
 
     /** Testi card che ricevono il colore accent della palette Impostazioni. */
     fun accentCardTexts(): List<String> = listOf(

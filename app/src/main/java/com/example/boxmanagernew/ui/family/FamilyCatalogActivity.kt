@@ -2,6 +2,7 @@ package com.example.boxmanagernew.ui.family
 
 import android.net.Uri
 import android.os.Bundle
+import android.widget.ScrollView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -17,6 +18,7 @@ import com.example.boxmanagernew.domain.family.FamilyCatalogCopy
 import com.example.boxmanagernew.family.config.FamilyCatalogConfiguration
 import com.example.boxmanagernew.family.config.FamilyInventoryConfiguration
 import com.example.boxmanagernew.ui.common.BaseActivity
+import com.example.boxmanagernew.ui.common.FeedbackUtils
 import com.google.android.material.card.MaterialCardView
 
 class FamilyCatalogActivity : BaseActivity() {
@@ -26,6 +28,7 @@ class FamilyCatalogActivity : BaseActivity() {
     private lateinit var persister: FamilyCatalogPersister
     private lateinit var exportCoordinator: FamilyExportCoordinator
     private lateinit var tvMessages: TextView
+    private lateinit var scrollView: ScrollView
 
     private val folderPicker =
         registerForActivityResult(
@@ -75,13 +78,21 @@ class FamilyCatalogActivity : BaseActivity() {
 
         persister = FamilyCatalogPersister(this)
         tvMessages = findViewById(R.id.tvMessages)
+        scrollView = findViewById(R.id.familyCatalogScroll)
         exportCoordinator = FamilyExportCoordinator(
             activity = this,
             onFolderInaccessible = {
-                tvMessages.text = FamilyCatalogCopy.MSG_FOLDER_INACCESSIBLE
+                showUserMessage(
+                    FamilyCatalogCopy.MSG_FOLDER_INACCESSIBLE,
+                    blockingError = true
+                )
             },
             onExportCompleted = {
-                tvMessages.text = FamilyCatalogCopy.MSG_EXPORT_COMPLETED
+                showUserMessage(
+                    FamilyCatalogCopy.MSG_EXPORT_COMPLETED,
+                    blockingError = false,
+                    showDialog = true
+                )
             },
             launchFolderPicker = {
                 folderPicker.launch(null)
@@ -141,11 +152,11 @@ class FamilyCatalogActivity : BaseActivity() {
             FamilyCatalogCopy.BUTTON_RECEIVE_INVENTORY
 
         catalogViewModel.message.observe(this) { text ->
-            tvMessages.text = text
+            showUserMessage(text, blockingError = false, showDialog = true)
         }
 
         inventoryViewModel.message.observe(this) { text ->
-            tvMessages.text = text
+            showUserMessage(text, blockingError = false, showDialog = true)
         }
 
         catalogViewModel.exportBytes.observe(this) { payload ->
@@ -204,7 +215,10 @@ class FamilyCatalogActivity : BaseActivity() {
 
     private fun onCatalogImportChosen(uri: Uri) {
         val text = persister.readText(uri) ?: run {
-            tvMessages.text = "Impossibile leggere il file."
+            showUserMessage(
+                FamilyCatalogCopy.MSG_READ_FAILED,
+                blockingError = true
+            )
             return
         }
         catalogViewModel.importCatalogText(text)
@@ -212,9 +226,33 @@ class FamilyCatalogActivity : BaseActivity() {
 
     private fun onInventoryImportChosen(uri: Uri) {
         val text = persister.readText(uri) ?: run {
-            tvMessages.text = "Impossibile leggere il file."
+            showUserMessage(
+                FamilyCatalogCopy.MSG_READ_FAILED,
+                blockingError = true
+            )
             return
         }
         inventoryViewModel.importInventoryText(text)
+    }
+
+    private fun showUserMessage(
+        text: String,
+        blockingError: Boolean,
+        showDialog: Boolean = false
+    ) {
+        if (text.isBlank()) {
+            return
+        }
+        tvMessages.text = text
+        scrollView.scrollTo(0, 0)
+        if (blockingError) {
+            FeedbackUtils.alert(this)
+        }
+        if (showDialog) {
+            AlertDialog.Builder(this)
+                .setMessage(text)
+                .setPositiveButton("OK", null)
+                .show()
+        }
     }
 }

@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.boxmanagernew.data.local.AppDatabase
 import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
 import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
+import com.example.boxmanagernew.domain.family.FamilyCatalogCopy
 import com.example.boxmanagernew.family.config.FamilyInventoryConfiguration
 import com.example.boxmanagernew.family.inventory.FamilyInventoryApplier
 import com.example.boxmanagernew.family.inventory.FamilyInventoryMerger
@@ -56,9 +57,6 @@ class FamilyInventoryViewModel(
             val name = FamilyInventoryConfiguration.proposedFileName()
             val bytes = FamilyInventoryWriter.toCsvBytes(snapshot)
             _exportBytes.value = name to bytes
-            _message.value =
-                "Inventario pronto: ${snapshot.boxes.size} contenitori, " +
-                    "${snapshot.objects.size} oggetti."
         }
     }
 
@@ -86,7 +84,7 @@ class FamilyInventoryViewModel(
         if (!current.plan.canApply) {
             _preview.value = null
             _message.value =
-                "Nessuna modifica applicata: solo conflitti o dati già allineati."
+                "Nessuna novità da unire."
             return
         }
         viewModelScope.launch {
@@ -95,8 +93,8 @@ class FamilyInventoryViewModel(
             }
             _preview.value = null
             _message.value = buildString {
-                appendLine("Inventario Famiglia applicato.")
-                append(current.summary)
+                appendLine(FamilyCatalogCopy.MSG_RECEIVE_COMPLETED)
+                append(current.summary.removePrefix("Anteprima unione inventario:\n"))
             }
         }
     }

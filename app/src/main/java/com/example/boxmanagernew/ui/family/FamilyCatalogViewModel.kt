@@ -8,6 +8,7 @@ import com.example.boxmanagernew.data.repository.CategoryRepositoryImpl
 import com.example.boxmanagernew.data.repository.LocationRepositoryImpl
 import com.example.boxmanagernew.domain.model.Category
 import com.example.boxmanagernew.domain.model.Location
+import com.example.boxmanagernew.domain.family.FamilyCatalogCopy
 import com.example.boxmanagernew.family.catalog.FamilyCatalogMerger
 import com.example.boxmanagernew.family.catalog.FamilyCatalogReader
 import com.example.boxmanagernew.family.catalog.FamilyCatalogWriter
@@ -40,9 +41,6 @@ class FamilyCatalogViewModel(
             val name = FamilyCatalogConfiguration.proposedFileName()
             val bytes = FamilyCatalogWriter.toCsvBytes(snapshot)
             _exportBytes.value = name to bytes
-            _message.value =
-                "Catalogo pronto: ${snapshot.categories.size} categorie, " +
-                    "${snapshot.locations.size} posizioni."
         }
     }
 
@@ -90,7 +88,7 @@ class FamilyCatalogViewModel(
         }
 
         _message.value = buildString {
-            appendLine("Catalogo Famiglia applicato.")
+            appendLine(FamilyCatalogCopy.MSG_RECEIVE_COMPLETED)
             appendLine(
                 "Aggiunte: ${result.categoriesToInsert.size} categorie, " +
                     "${result.locationsToInsert.size} posizioni."
