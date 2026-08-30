@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <dimen name="family_share_button_min_height">72dp</dimen>
+  <dimen name="family_share_button_text">18sp</dimen>
+
+</resources>

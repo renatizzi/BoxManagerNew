@@ -31,13 +31,48 @@ class FamilyMergeCopyTest {
     }
 
     @Test
+    fun sectionHints_useRequestedWording() {
+        assertTrue(
+            FamilyMergeCopy.SECTION_SHARED_TABLES_HINT.contains(
+                "Definisci e personalizza le tabelle"
+            )
+        )
+        assertTrue(
+            FamilyMergeCopy.SECTION_SHARED_TABLES_HINT.contains(
+                "\"Tabelle condivise\""
+            )
+        )
+        assertTrue(
+            FamilyMergeCopy.SECTION_ARCHIVE_HINT.contains(
+                "\"Archivio\""
+            )
+        )
+        assertTrue(
+            FamilyMergeCopy.SECTION_ARCHIVE_HINT.contains(
+                "tutti i dati dell'Archivio"
+            )
+        )
+    }
+
+    @Test
+    fun folderCopy_isDefined() {
+        assertEquals("Cartella condivisa", FamilyMergeCopy.FOLDER_TITLE)
+        assertEquals(
+            "Nessuna cartella selezionata",
+            FamilyMergeCopy.FOLDER_NONE
+        )
+        assertTrue(FamilyMergeCopy.FOLDER_HINT.contains("Invia e Ricevi"))
+    }
+
+    @Test
     fun copy_avoidsStrutturaWording() {
         val texts = listOf(
             FamilyMergeCopy.INTRO,
             FamilyMergeCopy.SECTION_SHARED_TABLES,
             FamilyMergeCopy.SECTION_SHARED_TABLES_HINT,
             FamilyMergeCopy.SECTION_ARCHIVE,
-            FamilyMergeCopy.SECTION_ARCHIVE_HINT
+            FamilyMergeCopy.SECTION_ARCHIVE_HINT,
+            FamilyMergeCopy.FOLDER_HINT
         )
         for (text in texts) {
             assertFalse(
