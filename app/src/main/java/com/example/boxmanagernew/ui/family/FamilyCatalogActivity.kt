@@ -23,6 +23,7 @@ import com.example.boxmanagernew.family.config.FamilyInventoryConfiguration
 import com.example.boxmanagernew.family.config.FamilyMergeConfiguration
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.FeedbackUtils
+import com.example.boxmanagernew.storage.StorageFolderConfiguration
 import com.example.boxmanagernew.viewoutput.persist.ViewExportPersister
 import com.google.android.material.card.MaterialCardView
 
@@ -73,7 +74,10 @@ class FamilyCatalogActivity : BaseActivity() {
         setupBottomNav()
 
         persister = FamilyCatalogPersister(this)
-        exportPersister = ViewExportPersister(this)
+        exportPersister = ViewExportPersister(
+            this,
+            StorageFolderConfiguration.KEY_FAMILY_SHARE
+        )
         tvMessages = findViewById(R.id.tvMessages)
         scrollView = findViewById(R.id.familyCatalogScroll)
         exportCoordinator = FamilyExportCoordinator(

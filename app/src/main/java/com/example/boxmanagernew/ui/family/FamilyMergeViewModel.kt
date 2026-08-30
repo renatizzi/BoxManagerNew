@@ -78,7 +78,7 @@ class FamilyMergeViewModel(
                 }
                 is FamilyMergeReader.Result.Ok -> {
                     val preview = withContext(Dispatchers.IO) {
-                        buildPreview(parsed.snapshot)
+                        buildPreview(parsed.snapshot, parsed.skippedRows)
                     }
                     if (preview == null) {
                         return@launch
@@ -103,13 +103,14 @@ class FamilyMergeViewModel(
             _preview.value = null
             _message.value = buildString {
                 appendLine(FamilyMergeCopy.MSG_RECEIVE_COMPLETED)
-                append(current.summary.removePrefix("Anteprima unione famiglia:\n"))
+                append(current.summary.removePrefix("Anteprima condivisione archivio:\n"))
             }
         }
     }
 
     private suspend fun buildPreview(
-        incoming: FamilyMergeSnapshot
+        incoming: FamilyMergeSnapshot,
+        skippedRows: Int = 0
     ): Preview? {
         val localBoxes = boxRepository.getAllBoxEntitiesSync()
         val localObjects = objectRepository.getAllObjectEntitiesSync()
@@ -140,7 +141,12 @@ class FamilyMergeViewModel(
         }
 
         val summary = buildString {
-            appendLine("Anteprima unione famiglia:")
+            appendLine("Anteprima condivisione archivio:")
+            if (skippedRows > 0) {
+                appendLine(
+                    "Righe non valide ignorate nel file: $skippedRows."
+                )
+            }
             appendLine(
                 "Struttura: ${plan.categoriesToInsert.size} categorie, " +
                     "${plan.locationsToInsert.size} posizioni da aggiungere."
@@ -209,10 +215,15 @@ class FamilyMergeViewModel(
             )
         }
 
-        val inventoryObjects = objects.map { obj ->
+        val inventoryObjects = objects.mapNotNull { obj ->
+            val objectId = obj.objectPermanentId.trim()
+            val boxPermanentId = boxPermanentIds[obj.boxId].orEmpty().trim()
+            if (objectId.isEmpty() || boxPermanentId.isEmpty()) {
+                return@mapNotNull null
+            }
             FamilyInventoryObject(
-                objectPermanentId = obj.objectPermanentId,
-                boxPermanentId = boxPermanentIds[obj.boxId].orEmpty(),
+                objectPermanentId = objectId,
+                boxPermanentId = boxPermanentId,
                 typeName = objectTypes[obj.typeObjectId].orEmpty(),
                 description = obj.description,
                 quantity = obj.quantity,

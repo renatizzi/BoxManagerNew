@@ -15,7 +15,11 @@ import com.example.boxmanagernew.family.model.FamilyMergeSnapshot
 class FamilyMergeReader {
 
     sealed class Result {
-        data class Ok(val snapshot: FamilyMergeSnapshot) : Result()
+        data class Ok(
+            val snapshot: FamilyMergeSnapshot,
+            val skippedRows: Int = 0
+        ) : Result()
+
         data class Error(val message: String) : Result()
     }
 
@@ -45,14 +49,27 @@ class FamilyMergeReader {
         val sep = FamilyMergeConfiguration.SEPARATOR
         val inventoryMarker =
             "sezione$sep${FamilyInventoryConfiguration.SECTION_BOXES}"
-        val lines = text.lineSequence().toList()
+        val locationsMarker =
+            "sezione$sep${FamilyCatalogConfiguration.SECTION_LOCATIONS}"
+        val lines = text.lineSequence()
+            .map { it.trimEnd('\r').trim() }
+            .filter { it.isNotEmpty() }
+            .toList()
         if (lines.isEmpty()) {
             return Result.Error(MSG_STRUCTURE)
         }
 
-        val inventoryIndex = lines.indexOfFirst { line ->
-            line.trim() == inventoryMarker
+        val locationsIndex = lines.indexOfFirst { line ->
+            line == locationsMarker
         }
+        val searchStart = if (locationsIndex >= 0) locationsIndex + 1 else 1
+        val inventoryIndex = lines.withIndex()
+            .drop(searchStart)
+            .firstOrNull { (index, line) ->
+                line == inventoryMarker &&
+                    isInventoryHeaderLine(lines.getOrNull(index + 1))
+            }
+            ?.index ?: -1
         if (inventoryIndex <= 1) {
             return Result.Error(MSG_STRUCTURE)
         }
@@ -90,7 +107,7 @@ class FamilyMergeReader {
         }
 
         val inventory = when (val parsed = inventoryReader.parse(inventoryText)) {
-            is FamilyInventoryReader.Result.Ok -> parsed.snapshot
+            is FamilyInventoryReader.Result.Ok -> parsed
             is FamilyInventoryReader.Result.Error ->
                 return Result.Error(parsed.message)
         }
@@ -98,9 +115,26 @@ class FamilyMergeReader {
         return Result.Ok(
             FamilyMergeSnapshot(
                 catalog = catalog,
-                inventory = inventory
-            )
+                inventory = inventory.snapshot
+            ),
+            skippedRows = inventory.skippedRows
         )
+    }
+
+    private fun isInventoryHeaderLine(line: String?): Boolean {
+        if (line.isNullOrBlank()) {
+            return false
+        }
+        val cols = line.split(FamilyMergeConfiguration.SEPARATOR)
+        return cols.size >= 5 &&
+            cols[0].equals(
+                FamilyInventoryConfiguration.COL_PERMANENT_ID,
+                ignoreCase = true
+            ) &&
+            cols[1].equals(
+                FamilyInventoryConfiguration.COL_NAME,
+                ignoreCase = true
+            )
     }
 
     private fun parseLegacyCatalog(text: String): Result {
@@ -128,7 +162,8 @@ class FamilyMergeReader {
                         locations = emptyList()
                     ),
                     inventory = parsed.snapshot
-                )
+                ),
+                skippedRows = parsed.skippedRows
             )
             is FamilyInventoryReader.Result.Error ->
                 Result.Error(parsed.message)

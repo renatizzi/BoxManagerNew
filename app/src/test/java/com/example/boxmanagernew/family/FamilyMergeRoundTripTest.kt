@@ -110,6 +110,58 @@ class FamilyMergeRoundTripTest {
     }
 
     @Test
+    fun reader_bytesRoundTrip_withLocationContainingInventoryMarker() {
+        val snapshot = FamilyMergeSnapshot(
+            catalog = FamilyCatalogSnapshot(
+                categories = listOf(
+                    FamilyCatalogCategory("Hobby", "outline_browse_24")
+                ),
+                locations = listOf(
+                    FamilyCatalogLocation("Garage"),
+                    FamilyCatalogLocation("sezione;CONTENITORI")
+                )
+            ),
+            inventory = FamilyInventorySnapshot(
+                boxes = listOf(
+                    FamilyInventoryBox(
+                        permanentId = "box-1",
+                        name = "Scatola",
+                        category = "Hobby",
+                        position = "Garage",
+                        lastModified = 1000L
+                    )
+                ),
+                objects = listOf(
+                    FamilyInventoryObject(
+                        objectPermanentId = "obj-1",
+                        boxPermanentId = "box-1",
+                        typeName = "",
+                        description = "Rosso",
+                        quantity = null,
+                        lastModified = 2000L
+                    )
+                )
+            )
+        )
+
+        val bytes = FamilyMergeWriter.toCsvBytes(snapshot)
+        val text = String(bytes, Charsets.UTF_8)
+        val parsed = FamilyMergeReader().parse(text)
+
+        if (parsed is FamilyMergeReader.Result.Error) {
+            org.junit.Assert.fail(parsed.message)
+        }
+        assertTrue(parsed is FamilyMergeReader.Result.Ok)
+        val ok = parsed as FamilyMergeReader.Result.Ok
+        assertEquals(2, ok.snapshot.catalog.locations.size)
+        assertEquals("Garage", ok.snapshot.catalog.locations[0].name)
+        assertEquals("sezione;CONTENITORI", ok.snapshot.catalog.locations[1].name)
+        assertEquals(1, ok.snapshot.inventory.boxes.size)
+        assertEquals(1, ok.snapshot.inventory.objects.size)
+        assertEquals("Oggetto", ok.snapshot.inventory.objects[0].typeName)
+    }
+
+    @Test
     fun merger_healsMissingStructureFromBoxes() {
         val incoming = FamilyMergeSnapshot(
             catalog = FamilyCatalogSnapshot(

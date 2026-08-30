@@ -12,7 +12,11 @@ import java.util.Locale
 class FamilyInventoryReader {
 
     sealed class Result {
-        data class Ok(val snapshot: FamilyInventorySnapshot) : Result()
+        data class Ok(
+            val snapshot: FamilyInventorySnapshot,
+            val skippedRows: Int = 0
+        ) : Result()
+
         data class Error(val message: String) : Result()
     }
 
@@ -41,6 +45,7 @@ class FamilyInventoryReader {
         val objects = mutableListOf<FamilyInventoryObject>()
         var expectBoxHeader = false
         var expectObjectHeader = false
+        var skippedRows = 0
 
         for (line in lines.drop(1)) {
             val cols = split(line)
@@ -76,7 +81,11 @@ class FamilyInventoryReader {
                         expectBoxHeader = false
                         continue
                     }
-                    val parsed = parseBox(cols) ?: return Result.Error(MSG_BOX_ROW)
+                    val parsed = parseBox(cols)
+                    if (parsed == null) {
+                        skippedRows++
+                        continue
+                    }
                     boxes += parsed
                 }
                 FamilyInventoryConfiguration.SECTION_OBJECTS -> {
@@ -87,7 +96,11 @@ class FamilyInventoryReader {
                         expectObjectHeader = false
                         continue
                     }
-                    val parsed = parseObject(cols) ?: return Result.Error(MSG_OBJECT_ROW)
+                    val parsed = parseObject(cols)
+                    if (parsed == null) {
+                        skippedRows++
+                        continue
+                    }
                     objects += parsed
                 }
                 else -> return Result.Error(MSG_SECTION_ORDER)
@@ -102,7 +115,8 @@ class FamilyInventoryReader {
             FamilyInventorySnapshot(
                 boxes = boxes,
                 objects = objects
-            )
+            ),
+            skippedRows = skippedRows
         )
     }
 
@@ -113,8 +127,14 @@ class FamilyInventoryReader {
         val permanentId = cols[0].trim()
         val name = cols[1].trim()
         val category = cols[2].trim()
-        val position = cols[3].trim()
-        val lastModified = cols[4].trim().toLongOrNull() ?: return null
+        val position = if (cols.size == 5) {
+            cols[3].trim()
+        } else {
+            cols.subList(3, cols.size - 1)
+                .joinToString(FamilyInventoryConfiguration.SEPARATOR)
+                .trim()
+        }
+        val lastModified = parseLong(cols.last()) ?: return null
         if (permanentId.isEmpty() || name.isEmpty()) {
             return null
         }
@@ -134,18 +154,16 @@ class FamilyInventoryReader {
         val objectPermanentId = cols[0].trim()
         val boxPermanentId = cols[1].trim()
         val typeName = cols[2].trim().ifEmpty { DEFAULT_OBJECT_TYPE }
-        val lastModified = cols.last().trim().toLongOrNull() ?: return null
+        val lastModified = parseLong(cols.last()) ?: return null
         if (objectPermanentId.isEmpty() || boxPermanentId.isEmpty()) {
             return null
         }
 
         val quantityColumn = cols[cols.size - 2].trim()
-        val quantity = quantityColumn.takeIf { it.isNotEmpty() }?.toIntOrNull()
-            ?: if (quantityColumn.isEmpty()) {
-                null
-            } else {
-                return null
-            }
+        val quantity = when {
+            quantityColumn.isEmpty() -> null
+            else -> parseInt(quantityColumn) ?: return null
+        }
 
         val description = if (cols.size == 6) {
             cols[3].trim().ifEmpty { null }
@@ -164,6 +182,26 @@ class FamilyInventoryReader {
             quantity = quantity,
             lastModified = lastModified
         )
+    }
+
+    private fun parseLong(value: String): Long? {
+        val trimmed = value.trim()
+        if (trimmed.isEmpty()) {
+            return null
+        }
+        trimmed.toLongOrNull()?.let { return it }
+        trimmed.toDoubleOrNull()?.let { return it.toLong() }
+        return null
+    }
+
+    private fun parseInt(value: String): Int? {
+        val trimmed = value.trim()
+        if (trimmed.isEmpty()) {
+            return null
+        }
+        trimmed.toIntOrNull()?.let { return it }
+        trimmed.toDoubleOrNull()?.let { return it.toInt() }
+        return null
     }
 
     private fun isBoxHeader(cols: List<String>): Boolean {

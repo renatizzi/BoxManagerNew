@@ -6,7 +6,7 @@ package com.example.boxmanagernew.domain.family
  */
 object FamilyMergeCopy {
 
-    const val UTILITY_CARD_LABEL = "🤝 Condivisione Archivio"
+    const val UTILITY_CARD_LABEL = "📤 Condividi Archivio"
 
     const val PAGE_TITLE = "Condivisione Archivio"
 
@@ -21,9 +21,9 @@ object FamilyMergeCopy {
             "ed Esporta dati."
 
     const val HINT_FOLDER =
-        "Invia: salva nella cartella di Backup (come Esporta). Ricevi: scegli " +
-            "il file CSV; se hai già scelto la cartella di Backup, il selettore " +
-            "file si apre lì."
+        "Invia e Ricevi usano una cartella dedicata alla condivisione archivio " +
+            "(distinta da Backup e da Importa/Esporta). Alla prima operazione " +
+            "ti verrà chiesta la cartella; poi verrà riusata."
 
     const val BUTTON_SEND = "📤 Invia Archivio"
 

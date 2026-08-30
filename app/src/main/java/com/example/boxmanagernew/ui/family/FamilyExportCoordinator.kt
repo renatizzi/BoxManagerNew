@@ -6,15 +6,19 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.boxmanagernew.backup.config.BackupConfiguration
 import com.example.boxmanagernew.ui.common.DialogUtils
 import com.example.boxmanagernew.ui.common.FeedbackUtils
+import com.example.boxmanagernew.storage.StorageFolderConfiguration
 import com.example.boxmanagernew.viewoutput.config.ViewOutputConfiguration
 import com.example.boxmanagernew.viewoutput.persist.ViewExportPersister
 
 /**
- * Export Catalogo/Inventario famiglia: riuso cartella Backup + box nome file standard.
+ * Export condivisione archivio: cartella dedicata + box nome file standard.
  */
 class FamilyExportCoordinator(
     private val activity: AppCompatActivity,
-    private val persister: ViewExportPersister = ViewExportPersister(activity),
+    private val persister: ViewExportPersister = ViewExportPersister(
+        activity,
+        StorageFolderConfiguration.KEY_FAMILY_SHARE
+    ),
     private val onFolderInaccessible: () -> Unit,
     private val onExportCompleted: () -> Unit,
     private val launchFolderPicker: () -> Unit

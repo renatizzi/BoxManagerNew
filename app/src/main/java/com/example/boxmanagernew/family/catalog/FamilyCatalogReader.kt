@@ -48,10 +48,7 @@ class FamilyCatalogReader {
                 continue
             }
 
-            if (cols[0].equals("sezione", ignoreCase = true)) {
-                if (cols.size < 2) {
-                    return Result.Error(MSG_SECTION)
-                }
+            if (isSectionHeader(cols)) {
                 section = cols[1].uppercase(Locale.ROOT)
                 when (section) {
                     FamilyCatalogConfiguration.SECTION_CATEGORIES -> {
@@ -107,7 +104,7 @@ class FamilyCatalogReader {
                         }
                         return Result.Error(MSG_LOCATION_HEADER)
                     }
-                    val name = cols.getOrNull(0)?.trim().orEmpty()
+                    val name = line.trim()
                     if (name.isEmpty()) {
                         return Result.Error(MSG_LOCATION_NAME)
                     }
@@ -127,6 +124,17 @@ class FamilyCatalogReader {
                 locations = locations
             )
         )
+    }
+
+    private fun isSectionHeader(cols: List<String>): Boolean {
+        if (!cols[0].equals("sezione", ignoreCase = true) || cols.size < 2) {
+            return false
+        }
+        return when (cols[1].uppercase(Locale.ROOT)) {
+            FamilyCatalogConfiguration.SECTION_CATEGORIES,
+            FamilyCatalogConfiguration.SECTION_LOCATIONS -> true
+            else -> false
+        }
     }
 
     private fun split(line: String): List<String> {

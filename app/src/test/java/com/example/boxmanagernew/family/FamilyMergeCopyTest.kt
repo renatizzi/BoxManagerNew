@@ -10,7 +10,7 @@ class FamilyMergeCopyTest {
 
     @Test
     fun utilityCard_usesEmojiSingleLine() {
-        assertEquals("🤝 Condivisione Archivio", FamilyMergeCopy.UTILITY_CARD_LABEL)
+        assertEquals("📤 Condividi Archivio", FamilyMergeCopy.UTILITY_CARD_LABEL)
         assertFalse(FamilyMergeCopy.UTILITY_CARD_LABEL.contains("\n"))
     }
 

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.DocumentsContract
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.documentfile.provider.DocumentFile
@@ -11,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.boxmanagernew.BuildConfig
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.backup.config.BackupConfiguration
+import com.example.boxmanagernew.storage.StorageFolderConfiguration
 import com.example.boxmanagernew.backup.facade.BackupFacade
 import com.example.boxmanagernew.data.local.DatabaseProvider
 import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
@@ -36,6 +38,7 @@ class ImportActivity : BaseActivity() {
     private lateinit var btnGenerateTemplate: MaterialCardView
     private lateinit var btnImportData: MaterialCardView
 
+    private var importExportFolderUri: Uri? = null
     private var backupFolderUri: Uri? = null
 
     private val folderPicker =
@@ -60,11 +63,10 @@ class ImportActivity : BaseActivity() {
 
     private val filePicker =
         registerForActivityResult(
-            ActivityResultContracts.OpenDocument()
-        ) { uri ->
-
-            if (uri != null) {
-                onImportFileChosen(uri)
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == RESULT_OK) {
+                result.data?.data?.let { onImportFileChosen(it) }
             }
         }
 
@@ -110,6 +112,7 @@ class ImportActivity : BaseActivity() {
         btnGenerateTemplate = findViewById(R.id.btnGenerateTemplate)
         btnImportData = findViewById(R.id.btnImportData)
 
+        restoreSavedImportExportFolder()
         restoreSavedBackupFolder()
 
         viewModel.message.observe(this) { userMessage ->
@@ -138,14 +141,7 @@ class ImportActivity : BaseActivity() {
         }
 
         btnImportData.setOnClickListener {
-            filePicker.launch(
-                arrayOf(
-                    ImportConfiguration.CSV_MIME_TYPE,
-                    "text/comma-separated-values",
-                    "text/plain",
-                    "*/*"
-                )
-            )
+            launchImportFilePicker()
         }
     }
 
@@ -224,10 +220,10 @@ class ImportActivity : BaseActivity() {
         backupFolderUri = uri
 
         getSharedPreferences(
-            BackupConfiguration.PREFS_NAME,
+            StorageFolderConfiguration.PREFS_NAME,
             Context.MODE_PRIVATE
         ).edit()
-            .putString(BackupConfiguration.PREFS_KEY_FOLDER_URI, uri.toString())
+            .putString(StorageFolderConfiguration.KEY_BACKUP, uri.toString())
             .apply()
 
         return true
@@ -236,9 +232,9 @@ class ImportActivity : BaseActivity() {
     private fun restoreSavedBackupFolder() {
 
         val saved = getSharedPreferences(
-            BackupConfiguration.PREFS_NAME,
+            StorageFolderConfiguration.PREFS_NAME,
             Context.MODE_PRIVATE
-        ).getString(BackupConfiguration.PREFS_KEY_FOLDER_URI, null)
+        ).getString(StorageFolderConfiguration.KEY_BACKUP, null)
             ?: return
 
         val uri = Uri.parse(saved)
@@ -251,7 +247,7 @@ class ImportActivity : BaseActivity() {
 
     private fun startGenerateTemplate() {
 
-        val uri = backupFolderUri
+        val uri = importExportFolderUri
 
         if (
             uri != null &&
@@ -264,9 +260,76 @@ class ImportActivity : BaseActivity() {
         folderPicker.launch(null)
     }
 
+    private fun launchImportFilePicker() {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "*/*"
+            putExtra(
+                Intent.EXTRA_MIME_TYPES,
+                arrayOf(
+                    ImportConfiguration.CSV_MIME_TYPE,
+                    "text/comma-separated-values",
+                    "text/plain",
+                    "*/*"
+                )
+            )
+            importExportFolderUri?.let { folderUri ->
+                putExtra(DocumentsContract.EXTRA_INITIAL_URI, folderUri)
+            }
+        }
+        filePicker.launch(intent)
+    }
+
+    private fun persistImportExportFolder(uri: Uri): Boolean {
+
+        try {
+            contentResolver.takePersistableUriPermission(
+                uri,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+            )
+        } catch (_: Exception) {
+        }
+
+        if (templatePersister.folderDisplayName(uri) == null) {
+            showBlocking(BackupConfiguration.MSG_FOLDER_INACCESSIBLE)
+            return false
+        }
+
+        importExportFolderUri = uri
+
+        getSharedPreferences(
+            StorageFolderConfiguration.PREFS_NAME,
+            Context.MODE_PRIVATE
+        ).edit()
+            .putString(
+                StorageFolderConfiguration.KEY_IMPORT_EXPORT,
+                uri.toString()
+            )
+            .apply()
+
+        return true
+    }
+
+    private fun restoreSavedImportExportFolder() {
+
+        val saved = getSharedPreferences(
+            StorageFolderConfiguration.PREFS_NAME,
+            Context.MODE_PRIVATE
+        ).getString(StorageFolderConfiguration.KEY_IMPORT_EXPORT, null)
+            ?: return
+
+        val uri = Uri.parse(saved)
+        if (templatePersister.folderDisplayName(uri) == null) {
+            return
+        }
+
+        importExportFolderUri = uri
+    }
+
     private fun onTemplateFolderChosen(uri: Uri) {
 
-        if (!persistBackupFolder(uri)) {
+        if (!persistImportExportFolder(uri)) {
             return
         }
 

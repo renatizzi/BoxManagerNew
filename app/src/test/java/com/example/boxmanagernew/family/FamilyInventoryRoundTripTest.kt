@@ -211,6 +211,28 @@ class FamilyInventoryRoundTripTest {
     }
 
     @Test
+    fun reader_acceptsDecimalLastModifiedAndQuantity() {
+        val legacy = buildString {
+            append("formato;")
+            append(FamilyInventoryConfiguration.FORMAT_NAME)
+            append(";1\n")
+            append("sezione;CONTENITORI\n")
+            append("permanentId;nome;categoria;posizione;lastModified\n")
+            append("box-1;Scatola;Hobby;Garage;1000\n")
+            append("sezione;OGGETTI\n")
+            append("objectPermanentId;boxPermanentId;tipo;descrizione;quantita;lastModified\n")
+            append("obj-1;box-1;Tipo;desc;1.0;2000.0\n")
+        }
+
+        val parsed = FamilyInventoryReader().parse(legacy)
+        assertTrue(parsed is FamilyInventoryReader.Result.Ok)
+        val ok = parsed as FamilyInventoryReader.Result.Ok
+        assertEquals(1, ok.snapshot.objects.size)
+        assertEquals(1, ok.snapshot.objects[0].quantity)
+        assertEquals(2000L, ok.snapshot.objects[0].lastModified)
+    }
+
+    @Test
     fun reader_rejectsWrongFormat() {
         val result = FamilyInventoryReader().parse(
             "formato;BoxManager_FamilyCatalog;1\n"

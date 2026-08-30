@@ -26,6 +26,9 @@ object FamilyInventoryWriter {
             FamilyInventoryConfiguration.COL_LAST_MODIFIED
         ).joinToString(sep)
         for (box in snapshot.boxes) {
+            if (box.permanentId.trim().isEmpty()) {
+                continue
+            }
             lines += listOf(
                 escape(box.permanentId),
                 escape(box.name),
@@ -45,6 +48,12 @@ object FamilyInventoryWriter {
             FamilyInventoryConfiguration.COL_LAST_MODIFIED
         ).joinToString(sep)
         for (obj in snapshot.objects) {
+            if (
+                obj.objectPermanentId.trim().isEmpty() ||
+                obj.boxPermanentId.trim().isEmpty()
+            ) {
+                continue
+            }
             lines += listOf(
                 escape(obj.objectPermanentId),
                 escape(obj.boxPermanentId),
