@@ -48,7 +48,7 @@ object FamilyInventoryWriter {
             lines += listOf(
                 escape(obj.objectPermanentId),
                 escape(obj.boxPermanentId),
-                escape(obj.typeName),
+                escape(obj.typeName.ifBlank { FamilyInventoryReader.DEFAULT_OBJECT_TYPE }),
                 escape(obj.description.orEmpty()),
                 obj.quantity?.toString().orEmpty(),
                 obj.lastModified.toString()

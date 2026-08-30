@@ -133,13 +133,29 @@ class FamilyInventoryReader {
         }
         val objectPermanentId = cols[0].trim()
         val boxPermanentId = cols[1].trim()
-        val typeName = cols[2].trim()
-        val description = cols[3].trim().ifEmpty { null }
-        val quantity = cols[4].trim().toIntOrNull()
-        val lastModified = cols[5].trim().toLongOrNull() ?: return null
-        if (objectPermanentId.isEmpty() || boxPermanentId.isEmpty() || typeName.isEmpty()) {
+        val typeName = cols[2].trim().ifEmpty { DEFAULT_OBJECT_TYPE }
+        val lastModified = cols.last().trim().toLongOrNull() ?: return null
+        if (objectPermanentId.isEmpty() || boxPermanentId.isEmpty()) {
             return null
         }
+
+        val quantityColumn = cols[cols.size - 2].trim()
+        val quantity = quantityColumn.takeIf { it.isNotEmpty() }?.toIntOrNull()
+            ?: if (quantityColumn.isEmpty()) {
+                null
+            } else {
+                return null
+            }
+
+        val description = if (cols.size == 6) {
+            cols[3].trim().ifEmpty { null }
+        } else {
+            cols.subList(3, cols.size - 2)
+                .joinToString(FamilyInventoryConfiguration.SEPARATOR)
+                .trim()
+                .ifEmpty { null }
+        }
+
         return FamilyInventoryObject(
             objectPermanentId = objectPermanentId,
             boxPermanentId = boxPermanentId,
@@ -186,5 +202,6 @@ class FamilyInventoryReader {
             "Intestazione OGGETTI non valida."
         const val MSG_BOX_ROW = "Riga contenitore non valida."
         const val MSG_OBJECT_ROW = "Riga oggetto non valida."
+        const val DEFAULT_OBJECT_TYPE = "Oggetto"
     }
 }

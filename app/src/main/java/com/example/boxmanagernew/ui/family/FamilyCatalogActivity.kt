@@ -1,11 +1,14 @@
 package com.example.boxmanagernew.ui.family
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.DocumentsContract
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.boxmanagernew.BuildConfig
 import com.example.boxmanagernew.R
@@ -20,12 +23,14 @@ import com.example.boxmanagernew.family.config.FamilyInventoryConfiguration
 import com.example.boxmanagernew.family.config.FamilyMergeConfiguration
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.FeedbackUtils
+import com.example.boxmanagernew.viewoutput.persist.ViewExportPersister
 import com.google.android.material.card.MaterialCardView
 
 class FamilyCatalogActivity : BaseActivity() {
 
     private lateinit var mergeViewModel: FamilyMergeViewModel
     private lateinit var persister: FamilyCatalogPersister
+    private lateinit var exportPersister: ViewExportPersister
     private lateinit var exportCoordinator: FamilyExportCoordinator
     private lateinit var tvMessages: TextView
     private lateinit var scrollView: ScrollView
@@ -43,10 +48,10 @@ class FamilyCatalogActivity : BaseActivity() {
 
     private val mergeFilePicker =
         registerForActivityResult(
-            ActivityResultContracts.OpenDocument()
-        ) { uri ->
-            if (uri != null) {
-                onMergeImportChosen(uri)
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == AppCompatActivity.RESULT_OK) {
+                result.data?.data?.let { onMergeImportChosen(it) }
             }
         }
 
@@ -68,6 +73,7 @@ class FamilyCatalogActivity : BaseActivity() {
         setupBottomNav()
 
         persister = FamilyCatalogPersister(this)
+        exportPersister = ViewExportPersister(this)
         tvMessages = findViewById(R.id.tvMessages)
         scrollView = findViewById(R.id.familyCatalogScroll)
         exportCoordinator = FamilyExportCoordinator(
@@ -106,12 +112,12 @@ class FamilyCatalogActivity : BaseActivity() {
             .setOnClickListener { mergeViewModel.requestExport() }
 
         findViewById<MaterialCardView>(R.id.btnImportMerge)
-            .setOnClickListener {
-                mergeFilePicker.launch(csvMimeTypes())
-            }
+            .setOnClickListener { launchMergeFilePicker() }
 
         findViewById<TextView>(R.id.textFamilyIntro).text =
             FamilyMergeCopy.INTRO
+        findViewById<TextView>(R.id.textFamilyFolderHint).text =
+            FamilyMergeCopy.HINT_FOLDER
         findViewById<TextView>(R.id.textExportMerge).text =
             FamilyMergeCopy.BUTTON_SEND
         findViewById<TextView>(R.id.textImportMerge).text =
@@ -144,7 +150,7 @@ class FamilyCatalogActivity : BaseActivity() {
         preview: FamilyMergeViewModel.Preview
     ) {
         AlertDialog.Builder(this)
-            .setTitle("Ricevi unione")
+            .setTitle("Ricevi Archivio")
             .setMessage(preview.summary)
             .setPositiveButton("SI") { _, _ ->
                 mergeViewModel.confirmImport()
@@ -153,6 +159,18 @@ class FamilyCatalogActivity : BaseActivity() {
                 mergeViewModel.clearPreview()
             }
             .show()
+    }
+
+    private fun launchMergeFilePicker() {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "*/*"
+            putExtra(Intent.EXTRA_MIME_TYPES, csvMimeTypes())
+            exportPersister.rememberedFolderUri()?.let { folderUri ->
+                putExtra(DocumentsContract.EXTRA_INITIAL_URI, folderUri)
+            }
+        }
+        mergeFilePicker.launch(intent)
     }
 
     private fun csvMimeTypes(): Array<String> {

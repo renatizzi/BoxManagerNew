@@ -15,7 +15,7 @@ object FamilyMergeConfiguration {
 
     const val SEPARATOR = ";"
 
-    const val FILE_PREFIX = "Unione_Famiglia_"
+    const val FILE_PREFIX = "Condivisione_Archivio_"
 
     const val FILE_EXTENSION = ".csv"
 

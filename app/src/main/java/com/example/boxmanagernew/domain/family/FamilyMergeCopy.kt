@@ -1,27 +1,33 @@
 package com.example.boxmanagernew.domain.family
 
 /**
- * Testi UI unione famiglia (flavor famiglia).
+ * Testi UI condivisione archivio (flavor famiglia).
  * Colori card: palette Impostazioni via [accentCardTexts].
  */
 object FamilyMergeCopy {
 
-    const val UTILITY_CARD_LABEL = "🤝 Unione famiglia"
+    const val UTILITY_CARD_LABEL = "🤝 Condivisione Archivio"
 
-    const val PAGE_TITLE = "Unione famiglia"
+    const val PAGE_TITLE = "Condivisione Archivio"
 
     const val PAGE_SUBTITLE =
         "Un unico archivio domestico da aggiornare periodicamente"
 
     const val INTRO =
-        "Invia o ricevi un file con categorie, luoghi, contenitori e oggetti. " +
-            "Serve a ripartire il censimento in famiglia e a tenere un unico " +
-            "archivio domestico aggiornato. Non sostituisce Importa dati né " +
-            "Esporta dati dell'inventario V1."
+        "Condividi il tuo archivio personale con i tuoi familiari. Serve ad " +
+            "agevolare il censimento iniziale dei contenitori e degli oggetti " +
+            "in modo da fare riferimento ad un unico archivio condiviso e " +
+            "aggiornato \"della casa\". Non sostituisce le funzioni di Importa " +
+            "ed Esporta dati."
 
-    const val BUTTON_SEND = "📤 Invia unione"
+    const val HINT_FOLDER =
+        "Invia: salva nella cartella di Backup (come Esporta). Ricevi: scegli " +
+            "il file CSV; se hai già scelto la cartella di Backup, il selettore " +
+            "file si apre lì."
 
-    const val BUTTON_RECEIVE = "📥 Ricevi unione"
+    const val BUTTON_SEND = "📤 Invia Archivio"
+
+    const val BUTTON_RECEIVE = "📥 Ricevi Archivio"
 
     const val MSG_EXPORT_COMPLETED = "Salvataggio completato."
 

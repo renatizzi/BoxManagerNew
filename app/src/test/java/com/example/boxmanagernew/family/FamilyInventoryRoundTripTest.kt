@@ -136,6 +136,81 @@ class FamilyInventoryRoundTripTest {
     }
 
     @Test
+    fun reader_acceptsObjectWithNullQuantityAndEmptyType() {
+        val legacy = buildString {
+            append("formato;")
+            append(FamilyInventoryConfiguration.FORMAT_NAME)
+            append(";1\n")
+            append("sezione;CONTENITORI\n")
+            append("permanentId;nome;categoria;posizione;lastModified\n")
+            append("box-1;Scatola;Hobby;Garage;1000\n")
+            append("sezione;OGGETTI\n")
+            append("objectPermanentId;boxPermanentId;tipo;descrizione;quantita;lastModified\n")
+            append("obj-1;box-1;;Rosso;;2000\n")
+        }
+
+        val parsed = FamilyInventoryReader().parse(legacy)
+        assertTrue(parsed is FamilyInventoryReader.Result.Ok)
+        val ok = parsed as FamilyInventoryReader.Result.Ok
+        assertEquals(1, ok.snapshot.objects.size)
+        assertEquals("Oggetto", ok.snapshot.objects[0].typeName)
+        assertEquals(null, ok.snapshot.objects[0].quantity)
+    }
+
+    @Test
+    fun reader_acceptsDescriptionWithSemicolon() {
+        val legacy = buildString {
+            append("formato;")
+            append(FamilyInventoryConfiguration.FORMAT_NAME)
+            append(";1\n")
+            append("sezione;CONTENITORI\n")
+            append("permanentId;nome;categoria;posizione;lastModified\n")
+            append("box-1;Scatola;Hobby;Garage;1000\n")
+            append("sezione;OGGETTI\n")
+            append("objectPermanentId;boxPermanentId;tipo;descrizione;quantita;lastModified\n")
+            append("obj-1;box-1;Trapano;Rosso;vernice;1;2000\n")
+        }
+
+        val parsed = FamilyInventoryReader().parse(legacy)
+        assertTrue(parsed is FamilyInventoryReader.Result.Ok)
+        val ok = parsed as FamilyInventoryReader.Result.Ok
+        assertEquals("Rosso;vernice", ok.snapshot.objects[0].description)
+    }
+
+    @Test
+    fun writer_reader_roundTrip_preservesNullQuantity() {
+        val snapshot = FamilyInventorySnapshot(
+            boxes = listOf(
+                FamilyInventoryBox(
+                    permanentId = "box-1",
+                    name = "Scatola A",
+                    category = "Hobby",
+                    position = "Garage",
+                    lastModified = 1000L
+                )
+            ),
+            objects = listOf(
+                FamilyInventoryObject(
+                    objectPermanentId = "obj-1",
+                    boxPermanentId = "box-1",
+                    typeName = "",
+                    description = "Senza tipo",
+                    quantity = null,
+                    lastModified = 2000L
+                )
+            )
+        )
+
+        val csv = FamilyInventoryWriter.toCsvLines(snapshot).joinToString("\n")
+        val parsed = FamilyInventoryReader().parse(csv)
+
+        assertTrue(parsed is FamilyInventoryReader.Result.Ok)
+        val ok = parsed as FamilyInventoryReader.Result.Ok
+        assertEquals("Oggetto", ok.snapshot.objects[0].typeName)
+        assertEquals(null, ok.snapshot.objects[0].quantity)
+    }
+
+    @Test
     fun reader_rejectsWrongFormat() {
         val result = FamilyInventoryReader().parse(
             "formato;BoxManager_FamilyCatalog;1\n"

@@ -10,14 +10,14 @@ class FamilyMergeCopyTest {
 
     @Test
     fun utilityCard_usesEmojiSingleLine() {
-        assertEquals("🤝 Unione famiglia", FamilyMergeCopy.UTILITY_CARD_LABEL)
+        assertEquals("🤝 Condivisione Archivio", FamilyMergeCopy.UTILITY_CARD_LABEL)
         assertFalse(FamilyMergeCopy.UTILITY_CARD_LABEL.contains("\n"))
     }
 
     @Test
-    fun buttons_useInviaRicevi_notImportExport() {
-        assertEquals("📤 Invia unione", FamilyMergeCopy.BUTTON_SEND)
-        assertEquals("📥 Ricevi unione", FamilyMergeCopy.BUTTON_RECEIVE)
+    fun buttons_useInviaRiceviArchivio() {
+        assertEquals("📤 Invia Archivio", FamilyMergeCopy.BUTTON_SEND)
+        assertEquals("📥 Ricevi Archivio", FamilyMergeCopy.BUTTON_RECEIVE)
         assertTrue(FamilyMergeCopy.BUTTON_SEND.contains("Invia"))
         assertTrue(FamilyMergeCopy.BUTTON_RECEIVE.contains("Ricevi"))
     }
