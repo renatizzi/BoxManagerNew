@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
         ObjectTypeEntity::class,
         LocationEntity::class
     ],
-    version = 6,
+    version = 7,
     exportSchema = false
 )
 abstract class AppDatabase :
@@ -51,7 +51,8 @@ abstract class AppDatabase :
                             "box_manager_database"
                         )
                             .addMigrations(
-                                BoxSchemaMigrations.MIGRATION_5_6
+                                BoxSchemaMigrations.MIGRATION_5_6,
+                                BoxSchemaMigrations.MIGRATION_6_7
                             )
                             .build()
 

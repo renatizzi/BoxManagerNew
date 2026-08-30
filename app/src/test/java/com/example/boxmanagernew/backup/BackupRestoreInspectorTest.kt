@@ -164,14 +164,18 @@ class BackupRestoreInspectorTest {
                 typeObjectId = 4,
                 boxId = 1,
                 description = null,
-                quantity = null
+                quantity = null,
+                objectPermanentId = "obj-3",
+                lastModified = 100L
             ),
             ObjectEntity(
                 id = 5,
                 typeObjectId = 4,
                 boxId = 1,
                 description = "Riga uno\nRiga due",
-                quantity = 0
+                quantity = 0,
+                objectPermanentId = "obj-5",
+                lastModified = 200L
             )
         ),
         categories = listOf(

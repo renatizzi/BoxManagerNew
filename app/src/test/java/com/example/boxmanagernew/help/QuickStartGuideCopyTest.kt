@@ -83,11 +83,14 @@ class QuickStartGuideCopyTest {
         val family = sections.single { it.number == 8 }
         assertEquals("Setup famiglia (beta)", family.title)
         assertTrue(
-            family.bullets.any { it.contains("Catalogo famiglia") }
+            family.bullets.any { it.contains("Catalogo Famiglia") }
         )
         val utility = sections.single { it.number == 5 }
         assertTrue(
-            utility.bullets.any { it.contains("Catalogo famiglia") }
+            utility.bullets.any { it.contains("Catalogo Famiglia") }
+        )
+        assertTrue(
+            utility.bullets.any { it.contains("Inventario Famiglia") }
         )
     }
 }

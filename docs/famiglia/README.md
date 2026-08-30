@@ -7,7 +7,7 @@
 | [DUE_APP_CINQUE_TELEFONI.md](DUE_APP_CINQUE_TELEFONI.md) | Come far convivere Play 1.2 e beta in famiglia |
 | [INSTALLA_SENZA_RUN.md](INSTALLA_SENZA_RUN.md) | Se Run / Terminale non funzionano (script `.bat`) |
 
-**Fetta corrente sul branch:** B0 + B1 (catalogo categorie/luoghi).
+**Fetta corrente sul branch:** B0 + B1 + **B2** (unione inventario per ID).
 
 ## Aggiornare la beta (solo Renato)
 

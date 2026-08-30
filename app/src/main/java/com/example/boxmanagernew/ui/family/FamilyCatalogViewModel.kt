@@ -90,7 +90,7 @@ class FamilyCatalogViewModel(
         }
 
         _message.value = buildString {
-            appendLine("Catalogo famiglia applicato.")
+            appendLine("Catalogo Famiglia applicato.")
             appendLine(
                 "Aggiunte: ${result.categoriesToInsert.size} categorie, " +
                     "${result.locationsToInsert.size} posizioni."

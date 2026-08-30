@@ -109,8 +109,12 @@ object QuickStartGuideCopy {
                     add("Codice QR per aprire un contenitore dalla fotocamera.")
                     if (includeFamilyBeta) {
                         add(
-                            "Catalogo famiglia: condividi categorie e luoghi " +
+                            "Catalogo Famiglia: allinea categorie e luoghi " +
                                 "tra i telefoni (setup una volta)."
+                        )
+                        add(
+                            "Inventario Famiglia: unisci contenitori e oggetti " +
+                                "per ID stabili con anteprima."
                         )
                     }
                 }
@@ -142,9 +146,9 @@ object QuickStartGuideCopy {
             number = 8,
             title = "Setup famiglia (beta)",
             bullets = listOf(
-                "Allineate categorie e luoghi con Utility → Catalogo famiglia.",
-                "Un familiare invia il catalogo; gli altri lo ricevono.",
-                "Poi ciascuno censisce contenitori e oggetti; l'unione inventario arriverà in una fetta successiva.",
+                "Allineate categorie e luoghi con Utility → Catalogo Famiglia.",
+                "Un familiare invia il Catalogo; gli altri lo ricevono.",
+                "Poi ciascuno censisce contenitori e oggetti; unite l'inventario con Invia/Ricevi Inventario.",
                 "Non usare Ripristino per unire archivi: sostituisce tutto."
             )
         )

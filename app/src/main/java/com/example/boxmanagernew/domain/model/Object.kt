@@ -5,5 +5,7 @@ data class Object(
     val typeObjectId: Int,
     val boxId: Int,
     val description: String?,
-    val quantity: Int?
+    val quantity: Int?,
+    val objectPermanentId: String = "",
+    val lastModified: Long = 0L
 )

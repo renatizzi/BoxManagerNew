@@ -86,7 +86,9 @@ class BackupSerializer {
 
         "{\"id\":${obj.id},\"typeObjectId\":${obj.typeObjectId}," +
                 "\"boxId\":${obj.boxId},\"description\":${jsonStringOrNull(obj.description)}," +
-                "\"quantity\":${obj.quantity ?: "null"}}"
+                "\"quantity\":${obj.quantity ?: "null"}," +
+                "\"objectPermanentId\":\"${escape(obj.objectPermanentId)}\"," +
+                "\"lastModified\":${obj.lastModified}}"
     }
 
     private fun serializeCategories(

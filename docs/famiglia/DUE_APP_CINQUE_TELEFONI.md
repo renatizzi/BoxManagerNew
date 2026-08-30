@@ -45,4 +45,4 @@ Non disinstallare 1.2. Non smettere il test Play (conteggio 14 giorni).
 
 - Titolo launcher: **BoxManager** vs **BoxManager Famiglia**  
 - Versione in topbar: `1.2` vs `1.3-famigliaB…`  
-- Utility: solo Famiglia ha la card **Catalogo famiglia**
+- Utility: solo Famiglia ha la card **Catalogo Famiglia** e la pagina con Invia/Ricevi Catalogo e Inventario

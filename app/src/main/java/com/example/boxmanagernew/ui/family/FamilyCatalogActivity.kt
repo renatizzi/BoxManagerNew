@@ -5,20 +5,25 @@ import android.os.Bundle
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import com.example.boxmanagernew.BuildConfig
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.data.local.DatabaseProvider
+import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
 import com.example.boxmanagernew.data.repository.CategoryRepositoryImpl
 import com.example.boxmanagernew.data.repository.LocationRepositoryImpl
+import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
 import com.example.boxmanagernew.domain.family.FamilyCatalogCopy
 import com.example.boxmanagernew.family.config.FamilyCatalogConfiguration
+import com.example.boxmanagernew.family.config.FamilyInventoryConfiguration
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.google.android.material.card.MaterialCardView
 
 class FamilyCatalogActivity : BaseActivity() {
 
-    private lateinit var viewModel: FamilyCatalogViewModel
+    private lateinit var catalogViewModel: FamilyCatalogViewModel
+    private lateinit var inventoryViewModel: FamilyInventoryViewModel
     private lateinit var persister: FamilyCatalogPersister
     private lateinit var tvMessages: TextView
 
@@ -35,12 +40,21 @@ class FamilyCatalogActivity : BaseActivity() {
             }
         }
 
-    private val filePicker =
+    private val catalogFilePicker =
         registerForActivityResult(
             ActivityResultContracts.OpenDocument()
         ) { uri ->
             if (uri != null) {
-                onImportFileChosen(uri)
+                onCatalogImportChosen(uri)
+            }
+        }
+
+    private val inventoryFilePicker =
+        registerForActivityResult(
+            ActivityResultContracts.OpenDocument()
+        ) { uri ->
+            if (uri != null) {
+                onInventoryImportChosen(uri)
             }
         }
 
@@ -65,47 +79,109 @@ class FamilyCatalogActivity : BaseActivity() {
         tvMessages = findViewById(R.id.tvMessages)
 
         val db = DatabaseProvider.getDatabase(applicationContext)
-        viewModel = ViewModelProvider(
+        catalogViewModel = ViewModelProvider(
             this,
             FamilyCatalogViewModelFactory(
                 CategoryRepositoryImpl(db.categoryDao(), db.boxDao()),
                 LocationRepositoryImpl(db.locationDao(), db.boxDao())
             )
         )[FamilyCatalogViewModel::class.java]
+        inventoryViewModel = ViewModelProvider(
+            this,
+            FamilyInventoryViewModelFactory(
+                db,
+                BoxRepositoryImpl(db.boxDao()),
+                ObjectRepositoryImpl(db.objectDao(), db.objectTypeDao())
+            )
+        )[FamilyInventoryViewModel::class.java]
 
         findViewById<MaterialCardView>(R.id.btnExportCatalog)
-            .setOnClickListener { viewModel.requestExport() }
+            .setOnClickListener { catalogViewModel.requestExport() }
 
         findViewById<MaterialCardView>(R.id.btnImportCatalog)
             .setOnClickListener {
-                filePicker.launch(
-                    arrayOf(
-                        FamilyCatalogConfiguration.CSV_MIME_TYPE,
-                        "text/*",
-                        "*/*"
-                    )
-                )
+                catalogFilePicker.launch(csvMimeTypes())
+            }
+
+        findViewById<MaterialCardView>(R.id.btnExportInventory)
+            .setOnClickListener { inventoryViewModel.requestExport() }
+
+        findViewById<MaterialCardView>(R.id.btnImportInventory)
+            .setOnClickListener {
+                inventoryFilePicker.launch(csvMimeTypes())
             }
 
         findViewById<TextView>(R.id.textFamilyIntro).text =
             FamilyCatalogCopy.INTRO
+        findViewById<TextView>(R.id.textSectionCatalog).text =
+            FamilyCatalogCopy.SECTION_CATALOG
         findViewById<TextView>(R.id.textExportCatalog).text =
             FamilyCatalogCopy.BUTTON_SEND
         findViewById<TextView>(R.id.textImportCatalog).text =
             FamilyCatalogCopy.BUTTON_RECEIVE
+        findViewById<TextView>(R.id.textSectionInventory).text =
+            FamilyCatalogCopy.SECTION_INVENTORY
+        findViewById<TextView>(R.id.textExportInventory).text =
+            FamilyCatalogCopy.BUTTON_SEND_INVENTORY
+        findViewById<TextView>(R.id.textImportInventory).text =
+            FamilyCatalogCopy.BUTTON_RECEIVE_INVENTORY
 
-        viewModel.message.observe(this) { text ->
+        catalogViewModel.message.observe(this) { text ->
             tvMessages.text = text
         }
 
-        viewModel.exportBytes.observe(this) { payload ->
+        inventoryViewModel.message.observe(this) { text ->
+            tvMessages.text = text
+        }
+
+        catalogViewModel.exportBytes.observe(this) { payload ->
             if (payload == null) {
                 return@observe
             }
             pendingExport = payload
-            viewModel.clearExport()
+            catalogViewModel.clearExport()
             folderPicker.launch(null)
         }
+
+        inventoryViewModel.exportBytes.observe(this) { payload ->
+            if (payload == null) {
+                return@observe
+            }
+            pendingExport = payload
+            inventoryViewModel.clearExport()
+            folderPicker.launch(null)
+        }
+
+        inventoryViewModel.preview.observe(this) { preview ->
+            if (preview == null) {
+                return@observe
+            }
+            showInventoryPreview(preview)
+        }
+    }
+
+    private fun showInventoryPreview(
+        preview: FamilyInventoryViewModel.Preview
+    ) {
+        AlertDialog.Builder(this)
+            .setTitle("Ricevi Inventario")
+            .setMessage(preview.summary)
+            .setPositiveButton("SI") { _, _ ->
+                inventoryViewModel.confirmImport()
+            }
+            .setNegativeButton("NO") { _, _ ->
+                inventoryViewModel.clearPreview()
+            }
+            .show()
+    }
+
+    private fun csvMimeTypes(): Array<String> {
+        return arrayOf(
+            FamilyCatalogConfiguration.CSV_MIME_TYPE,
+            FamilyInventoryConfiguration.CSV_MIME_TYPE,
+            "text/*",
+            "*/*"
+        )
     }
 
     private fun writePendingExport(treeUri: Uri) {
@@ -138,12 +214,19 @@ class FamilyCatalogActivity : BaseActivity() {
         }
     }
 
-    private fun onImportFileChosen(uri: Uri) {
-        val text = persister.readText(uri)
-        if (text == null) {
+    private fun onCatalogImportChosen(uri: Uri) {
+        val text = persister.readText(uri) ?: run {
             tvMessages.text = "Impossibile leggere il file."
             return
         }
-        viewModel.importCatalogText(text)
+        catalogViewModel.importCatalogText(text)
+    }
+
+    private fun onInventoryImportChosen(uri: Uri) {
+        val text = persister.readText(uri) ?: run {
+            tvMessages.text = "Impossibile leggere il file."
+            return
+        }
+        inventoryViewModel.importInventoryText(text)
     }
 }

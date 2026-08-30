@@ -37,10 +37,10 @@ Cloud eventuale solo come canale di scambio file/catalogo — non in B1.
 | Entità | ID stabile | Note |
 |--------|------------|------|
 | Contenitore | `permanentId` (già in app / QR) | Deve viaggiare nel pacchetto unione (B2) |
-| Oggetto | `objectPermanentId` (da introdurre in B2) | Stesso ruolo; oggi assente |
+| Oggetto | `objectPermanentId` (introdotto in B2) | Stesso ruolo del contenitore |
 | Categoria / posizione | nome normalizzato (trim + case-fold) | Catalogo famiglia; non ID UUID in B1 |
 
-### 3.2 Regole unione inventario (B2+)
+### 3.2 Regole unione inventario (B2 — questa fetta)
 
 | Caso | Comportamento |
 |------|----------------|
@@ -86,11 +86,44 @@ nome
 1. Un membro (o insieme) definisce categorie + luoghi sul proprio telefono.
 2. **Esporta catalogo famiglia** → condivide il CSV.
 3. Gli altri: **Importa catalogo famiglia** → struttura allineata.
-4. Poi ciascuno censisce contenitori/oggetti; unione inventario = B2.
+4. Poi ciascuno censisce contenitori/oggetti; unione inventario = B2 (Invia/Ricevi Inventario).
 
 ---
 
-## 5. Attribuzione — nome utente già in app
+## 5. Inventario famiglia (B2 — questa fetta)
+
+### 5.1 Formato file
+
+```
+formato;BoxManager_FamilyInventory;1
+sezione;CONTENITORI
+permanentId;nome;categoria;posizione;lastModified
+…
+sezione;OGGETTI
+objectPermanentId;boxPermanentId;tipo;descrizione;quantita;lastModified
+…
+```
+
+- Separatore `;`, UTF-8 con BOM, allineato allo stile Catalogo B1.
+- Nome file proposto: `Inventario_Famiglia_ddMMyy_HHmm.csv`.
+- Riferimento oggetto→contenitore via `boxPermanentId` (non id Room locale).
+
+### 5.2 Semantica import inventario
+
+- **Insert** se l'ID stabile non esiste in locale.
+- **Update** se stesso ID e `lastModified` remoto > locale.
+- **Conflitto** (anteprima, non sovrascritto) se payload diverso e remoto ≤ locale.
+- **Ignora** se identico.
+- **Delete** non propagato in B2.
+- Categoria/posizione devono esistere (allineate con Catalogo B1).
+
+### 5.3 UI (flavor `famiglia`)
+
+Pagina **Catalogo Famiglia** → sezione **Inventario**: Invia Inventario / Ricevi Inventario, con anteprima SI/NO prima dell'applicazione.
+
+---
+
+## 6. Attribuzione — nome utente già in app
 
 **Non introdurre un secondo “membro famiglia”.** Si riusa il **nome utente** già in Impostazioni (`SharedPreferences` chiave `username`), oggi usato come etichetta locale (e per il check admin Archivio completo).
 
@@ -105,18 +138,18 @@ Niente ACL: dopo il merge tutto resta dominio famiglia. Il nome serve a ripartir
 
 ---
 
-## 6. Fette
+## 7. Fette
 
 | Fetta | Deliverable | Play |
 |-------|-------------|------|
 | **B0** | Questa Nota + policy sync beta | No |
 | **B1** | Catalogo famiglia export/import + Guida + flavor | No |
-| **B2** | Pacchetto unione per ID (insert+update) + anteprima | No |
+| **B2** | Pacchetto unione per ID (insert+update) + anteprima | No — **CONVALIDA in corso** |
 | **B3** | Origine = **nome utente** Impostazioni su contenitori/oggetti; delete esplicito propagabile | No |
 
 ---
 
-## 7. Vincoli non negoziabili
+## 8. Vincoli non negoziabili
 
 - Flavor `famiglia`: `applicationId` `it.renatizzi.boxmanager.famiglia` — installazione **affiancata** a Play 1.2.
 - Nessun upload AAB/APK `famiglia` sulla Console Play.
