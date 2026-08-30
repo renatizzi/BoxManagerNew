@@ -5,9 +5,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.DocumentsContract
 import android.view.View
-import android.widget.Button
 import android.widget.ScrollView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -37,27 +37,17 @@ class FamilyCatalogActivity : BaseActivity() {
     private lateinit var exportPersister: ViewExportPersister
     private lateinit var exportCoordinator: FamilyExportCoordinator
     private lateinit var tvMessages: TextView
-    private lateinit var textFamilyFolder: TextView
     private lateinit var scrollView: ScrollView
-
-    private var folderPickerForExport = false
 
     private val folderPicker =
         registerForActivityResult(
             ActivityResultContracts.OpenDocumentTree()
         ) { uri ->
             if (uri != null) {
-                if (persistFamilyFolder(uri)) {
-                    if (folderPickerForExport) {
-                        exportCoordinator.onFolderChosen(uri)
-                    }
-                } else if (folderPickerForExport) {
-                    exportCoordinator.cancelPending()
-                }
+                exportCoordinator.onFolderChosen(uri)
             } else {
                 exportCoordinator.cancelPending()
             }
-            folderPickerForExport = false
         }
 
     private val sharedTablesFilePicker =
@@ -101,7 +91,6 @@ class FamilyCatalogActivity : BaseActivity() {
             StorageFolderConfiguration.KEY_FAMILY_SHARE
         )
         tvMessages = findViewById(R.id.tvMessages)
-        textFamilyFolder = findViewById(R.id.textFamilyFolder)
         scrollView = findViewById(R.id.familyCatalogScroll)
         exportCoordinator = FamilyExportCoordinator(
             activity = this,
@@ -112,15 +101,17 @@ class FamilyCatalogActivity : BaseActivity() {
                     blockingError = true
                 )
             },
-            onExportCompleted = {
+            onExportCompleted = { folderName, fileName ->
+                val summary =
+                    FamilyMergeCopy.buildExportSummary(folderName, fileName)
+                Toast.makeText(this, summary, Toast.LENGTH_LONG).show()
                 showUserMessage(
-                    FamilyMergeCopy.MSG_EXPORT_COMPLETED,
+                    summary,
                     blockingError = false,
-                    showDialog = true
+                    showDialog = false
                 )
             },
             launchFolderPicker = {
-                folderPickerForExport = true
                 folderPicker.launch(null)
             }
         )
@@ -151,8 +142,6 @@ class FamilyCatalogActivity : BaseActivity() {
 
         findViewById<TextView>(R.id.textFamilyIntro).text =
             FamilyMergeCopy.INTRO
-        findViewById<TextView>(R.id.textFamilyFolderTitle).text =
-            FamilyMergeCopy.FOLDER_TITLE
         findViewById<TextView>(R.id.textSectionSharedTables).text =
             FamilyMergeCopy.SECTION_SHARED_TABLES
         findViewById<TextView>(R.id.textSectionSharedTablesHint).text =
@@ -169,13 +158,6 @@ class FamilyCatalogActivity : BaseActivity() {
             FamilyMergeCopy.BUTTON_SEND
         findViewById<TextView>(R.id.textImportMerge).text =
             FamilyMergeCopy.BUTTON_RECEIVE
-
-        findViewById<Button>(R.id.btnBrowseFamilyFolder).setOnClickListener {
-            folderPickerForExport = false
-            folderPicker.launch(null)
-        }
-
-        restoreSavedFamilyFolder()
 
         mergeViewModel.message.observe(this) { text ->
             showUserMessage(text, blockingError = false, showDialog = true)
@@ -290,51 +272,6 @@ class FamilyCatalogActivity : BaseActivity() {
             return
         }
         mergeViewModel.importArchiveText(text)
-    }
-
-    private fun persistFamilyFolder(uri: Uri): Boolean {
-        try {
-            contentResolver.takePersistableUriPermission(
-                uri,
-                Intent.FLAG_GRANT_READ_URI_PERMISSION or
-                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-            )
-        } catch (_: Exception) {
-            // Cartella usabile per la sessione anche senza persist.
-        }
-
-        val displayName = exportPersister.folderDisplayName(uri)
-        if (displayName == null) {
-            showUserMessage(
-                FamilyMergeCopy.MSG_FOLDER_INACCESSIBLE,
-                blockingError = true
-            )
-            return false
-        }
-
-        exportPersister.rememberFolder(uri)
-        updateFamilyFolderLabel(displayName)
-        return true
-    }
-
-    private fun restoreSavedFamilyFolder() {
-        val saved = exportPersister.rememberedFolderUri()
-        if (saved == null) {
-            updateFamilyFolderLabel(null)
-            return
-        }
-
-        val displayName = exportPersister.folderDisplayName(saved)
-        if (displayName == null) {
-            updateFamilyFolderLabel(null)
-            return
-        }
-
-        updateFamilyFolderLabel(displayName)
-    }
-
-    private fun updateFamilyFolderLabel(displayName: String?) {
-        textFamilyFolder.text = displayName ?: FamilyMergeCopy.FOLDER_NONE
     }
 
     private fun showUserMessage(

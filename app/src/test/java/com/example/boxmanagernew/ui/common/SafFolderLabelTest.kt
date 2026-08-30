@@ -28,6 +28,17 @@ class SafFolderLabelTest {
     }
 
     @Test
+    fun encodedDownloadSubfolder_isReadablePath() {
+        assertEquals(
+            "Download/Boxmanager_Famiglia",
+            SafFolderLabel.fromDocumentId(
+                "primary:Download%2FBoxmanager_Famiglia",
+                "Cartella selezionata"
+            )
+        )
+    }
+
+    @Test
     fun blankAfterVolume_usesFallback() {
         assertEquals(
             "Cartella selezionata",

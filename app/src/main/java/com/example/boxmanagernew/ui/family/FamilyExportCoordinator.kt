@@ -12,6 +12,7 @@ import com.example.boxmanagernew.viewoutput.persist.ViewExportPersister
 
 /**
  * Export condivisione archivio: cartella dedicata + box nome file standard.
+ * La cartella si sceglie al primo Invia, come Backup/Esporta vista.
  */
 class FamilyExportCoordinator(
     private val activity: AppCompatActivity,
@@ -20,7 +21,7 @@ class FamilyExportCoordinator(
         StorageFolderConfiguration.KEY_FAMILY_SHARE
     ),
     private val onFolderInaccessible: () -> Unit,
-    private val onExportCompleted: () -> Unit,
+    private val onExportCompleted: (folderName: String, fileName: String) -> Unit,
     private val launchFolderPicker: () -> Unit
 ) {
 
@@ -93,6 +94,7 @@ class FamilyExportCoordinator(
         fileName: String,
         overwrite: Boolean
     ) {
+        val folderName = persister.folderDisplayName(uri).orEmpty()
         val result = persister.persist(
             uri,
             fileName,
@@ -106,7 +108,9 @@ class FamilyExportCoordinator(
                 FeedbackUtils.alert(activity)
                 onFolderInaccessible()
             }
-            result.success -> onExportCompleted()
+            result.success -> {
+                onExportCompleted(folderName, ViewOutputConfiguration.csvFileName(fileName))
+            }
             else -> {
                 FeedbackUtils.alert(activity)
                 onFolderInaccessible()

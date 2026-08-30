@@ -3,6 +3,8 @@ package com.example.boxmanagernew.ui.common
 import android.net.Uri
 import android.provider.DocumentsContract
 import androidx.documentfile.provider.DocumentFile
+import java.net.URLDecoder
+import java.nio.charset.StandardCharsets
 
 object SafFolderLabel {
 
@@ -11,7 +13,8 @@ object SafFolderLabel {
         tree: DocumentFile
     ): String {
 
-        val fallback = tree.name?.takeIf { it.isNotBlank() }
+        val fallback = tree.name
+            ?.takeIf { it.isNotBlank() && !looksLikeUri(it) }
             ?: "Cartella selezionata"
 
         val docId = try {
@@ -33,6 +36,27 @@ object SafFolderLabel {
             .replace('\\', '/')
             .trim('/')
 
-        return relative.takeIf { it.isNotBlank() } ?: fallback
+        val decoded = decodePath(relative)
+
+        return decoded.takeIf { it.isNotBlank() && !looksLikeUri(it) }
+            ?: fallback.takeUnless { looksLikeUri(it) }
+            ?: "Cartella selezionata"
+    }
+
+    private fun decodePath(value: String): String {
+        if (value.isBlank()) {
+            return value
+        }
+        return try {
+            URLDecoder.decode(value, StandardCharsets.UTF_8.name())
+        } catch (_: Exception) {
+            value
+        }
+    }
+
+    private fun looksLikeUri(value: String): Boolean {
+        return value.startsWith("content://", ignoreCase = true) ||
+            value.contains("%3A", ignoreCase = true) &&
+            value.contains("documents/tree", ignoreCase = true)
     }
 }

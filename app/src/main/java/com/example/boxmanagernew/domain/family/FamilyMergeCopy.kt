@@ -36,20 +36,22 @@ object FamilyMergeCopy {
         "Usa i tasti Invia e Ricevi \"Archivio\" per condividere con i tuoi " +
             "familiari tutti i dati dell'Archivio"
 
-    const val FOLDER_TITLE = "Cartella condivisa"
-
-    const val FOLDER_NONE = "Nessuna cartella selezionata"
-
-    const val FOLDER_HINT =
-        "Cartella dedicata a Invia e Ricevi (distinta da Backup e da " +
-            "Importa/Esporta). Alla prima operazione ti verrà chiesta; poi " +
-            "verrà riusata."
-
     const val BUTTON_SEND = "📤 Invia Archivio"
 
     const val BUTTON_RECEIVE = "📥 Ricevi Archivio"
 
     const val MSG_EXPORT_COMPLETED = "Salvataggio completato."
+
+    fun buildExportSummary(
+        folderName: String,
+        fileName: String
+    ): String = buildString {
+        appendLine(MSG_EXPORT_COMPLETED)
+        if (folderName.isNotBlank()) {
+            appendLine("Cartella: $folderName")
+        }
+        append("Nome file: $fileName")
+    }
 
     const val MSG_RECEIVE_COMPLETED = "Ricezione completata."
 

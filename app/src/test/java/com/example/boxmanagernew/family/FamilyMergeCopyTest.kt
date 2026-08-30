@@ -55,13 +55,15 @@ class FamilyMergeCopyTest {
     }
 
     @Test
-    fun folderCopy_isDefined() {
-        assertEquals("Cartella condivisa", FamilyMergeCopy.FOLDER_TITLE)
-        assertEquals(
-            "Nessuna cartella selezionata",
-            FamilyMergeCopy.FOLDER_NONE
+    fun buildExportSummary_usesReadableFolderPath() {
+        val summary = FamilyMergeCopy.buildExportSummary(
+            folderName = "Download/Boxmanager_Famiglia",
+            fileName = "Tabelle_Condivise_300826_1200.csv"
         )
-        assertTrue(FamilyMergeCopy.FOLDER_HINT.contains("Invia e Ricevi"))
+        assertTrue(summary.contains("Salvataggio completato."))
+        assertTrue(summary.contains("Cartella: Download/Boxmanager_Famiglia"))
+        assertTrue(summary.contains("Nome file: Tabelle_Condivise_300826_1200.csv"))
+        assertFalse(summary.contains("content://"))
     }
 
     @Test
@@ -71,8 +73,7 @@ class FamilyMergeCopyTest {
             FamilyMergeCopy.SECTION_SHARED_TABLES,
             FamilyMergeCopy.SECTION_SHARED_TABLES_HINT,
             FamilyMergeCopy.SECTION_ARCHIVE,
-            FamilyMergeCopy.SECTION_ARCHIVE_HINT,
-            FamilyMergeCopy.FOLDER_HINT
+            FamilyMergeCopy.SECTION_ARCHIVE_HINT
         )
         for (text in texts) {
             assertFalse(
