@@ -34,23 +34,31 @@ class FamilyMergeCopyTest {
     fun sectionHints_useRequestedWording() {
         assertTrue(
             FamilyMergeCopy.SECTION_SHARED_TABLES_HINT.contains(
-                "Definisci e personalizza le tabelle"
+                "operazione rischiosa"
             )
         )
         assertTrue(
             FamilyMergeCopy.SECTION_SHARED_TABLES_HINT.contains(
-                "\"Tabelle condivise\""
+                "tasto \"Invia\""
+            )
+        )
+        assertTrue(
+            FamilyMergeCopy.SECTION_SHARED_TABLES_HINT.contains(
+                "tasto \"Ricevi\""
             )
         )
         assertTrue(
             FamilyMergeCopy.SECTION_ARCHIVE_HINT.contains(
-                "\"Archivio\""
+                "tasto \"Invia\""
             )
         )
         assertTrue(
             FamilyMergeCopy.SECTION_ARCHIVE_HINT.contains(
-                "tutti i dati dell'Archivio"
+                "intero archivio condiviso"
             )
+        )
+        assertTrue(
+            FamilyMergeCopy.INTRO.contains("Importa ed Esporta Dati")
         )
     }
 

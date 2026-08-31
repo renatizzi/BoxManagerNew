@@ -13,10 +13,8 @@ class FamilyShareLayoutParityTest {
 
     @Test
     fun familyShareCards_matchUtilityCardStyle() {
-        val utility = loadLayout("activity_utility.xml")
         val family = loadLayout("activity_family_catalog.xml")
 
-        val utilityCard = firstCard(utility, "btnBackup")
         val familyIds = listOf(
             "btnExportSharedTables",
             "btnImportSharedTables",
@@ -27,24 +25,17 @@ class FamilyShareLayoutParityTest {
 
         for (card in familyCards) {
             assertEquals(
-                "180dp",
-                card.getAttribute("android:layout_height")
-            )
-            assertEquals(
-                utilityCard.getAttribute("android:layout_height"),
+                "@dimen/family_share_button_min_height",
                 card.getAttribute("android:layout_height")
             )
             assertEquals("6dp", card.getAttribute("android:layout_margin"))
-            assertEquals(
-                utilityCard.getAttribute("android:layout_margin"),
-                card.getAttribute("android:layout_margin")
-            )
             assertEquals(
                 "@color/elevated_surface",
                 card.getAttribute("app:cardBackgroundColor")
             )
             assertEquals("16dp", card.getAttribute("app:cardCornerRadius"))
             assertEquals("5dp", card.getAttribute("app:cardElevation"))
+            assertEquals("true", card.getAttribute("app:cardUseCompatPadding"))
             assertEquals("0dp", card.getAttribute("app:strokeWidth"))
         }
 
@@ -57,7 +48,10 @@ class FamilyShareLayoutParityTest {
 
         for (text in familyTexts) {
             assertEquals("center", text.getAttribute("android:gravity"))
-            assertEquals("20sp", text.getAttribute("android:textSize"))
+            assertEquals(
+                "@dimen/family_share_button_text",
+                text.getAttribute("android:textSize")
+            )
             assertEquals("bold", text.getAttribute("android:textStyle"))
             assertEquals(
                 "match_parent",
@@ -75,13 +69,14 @@ class FamilyShareLayoutParityTest {
         assertTrue(xml.contains("btnImportMerge"))
         assertFalse(xml.contains("SFOGLIA", ignoreCase = true))
         assertFalse(xml.contains("btnBrowse", ignoreCase = true))
-        assertTrue(xml.contains("android:padding=\"16dp\""))
+        assertTrue(xml.contains("android:paddingStart=\"16dp\""))
+        assertTrue(xml.contains("family_share_content_bottom_padding"))
     }
 
     @Test
-    fun familyShareDimens_matchUtilityHeightOnPhoneAndTablet() {
+    fun familyShareDimens_phoneCompactTabletUtilityHeight() {
         assertEquals(
-            "180dp",
+            "164dp",
             dimenValue("values/dimens.xml", "family_share_button_min_height")
         )
         assertEquals(

@@ -14,17 +14,16 @@ object FamilyMergeCopy {
         "Tabelle condivise e archivio domestico in famiglia"
 
     const val INTRO =
-        "Prima allinea le tue categorie e posizioni alle tabelle condivise, " +
-            "poi aggiorna periodicamente contenitori e oggetti. Non sostituisce " +
-            "Importa ed Esporta dati."
+        "Aggiorna periodicamente e condividi con i tuoi familiari i dati del tuo " +
+            "archivio usando i tasti \"Invia\" e \"Ricevi\". Non sostituisce " +
+            "Importa ed Esporta Dati."
 
     const val SECTION_SHARED_TABLES = "Tabelle condivise (categorie e posizioni)"
 
     const val SECTION_SHARED_TABLES_HINT =
-        "Definisci e personalizza le tabelle delle categorie e delle posizioni " +
-            "abituali con la tua famiglia. Usa i tasti Invia e Ricevi " +
-            "\"Tabelle condivise\" per condividerle oppure per ripristinarle " +
-            "in caso di errori o di disinstallazione dell'app."
+        "Usa il tasto \"Invia\" per unire e condividere con i tuoi familiari solo " +
+            "le categorie e le posizioni abituali (operazione rischiosa). Usa il " +
+            "tasto \"Ricevi\" per ripristinarle sul tuo archivio."
 
     const val BUTTON_SEND_SHARED_TABLES = "📤 Invia tabelle condivise"
 
@@ -33,8 +32,9 @@ object FamilyMergeCopy {
     const val SECTION_ARCHIVE = "Archivio (contenitori e oggetti)"
 
     const val SECTION_ARCHIVE_HINT =
-        "Usa i tasti Invia e Ricevi \"Archivio\" per condividere con i tuoi " +
-            "familiari tutti i dati dell'Archivio"
+        "Usa il tasto \"Invia\" per unire e condividere con i tuoi familiari tutti i " +
+            "dati del tuo archivio. Usa il tasto \"Ricevi\" per ripristinare " +
+            "l'intero archivio condiviso."
 
     const val BUTTON_SEND = "📤 Invia Archivio"
 

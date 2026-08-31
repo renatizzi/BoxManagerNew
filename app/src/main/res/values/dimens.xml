@@ -22,7 +22,8 @@
     <dimen name="text_secondary">11sp</dimen>
     <dimen name="text_menu">18sp</dimen>
 
-    <dimen name="family_share_button_min_height">180dp</dimen>
+    <dimen name="family_share_button_min_height">164dp</dimen>
     <dimen name="family_share_button_text">20sp</dimen>
+    <dimen name="family_share_content_bottom_padding">12dp</dimen>
 
 </resources>

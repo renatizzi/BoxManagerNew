@@ -6,6 +6,8 @@
     android:id="@+id/rootContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
     android:orientation="vertical"
     android:background="?attr/colorSurface">
 
@@ -20,6 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:clipChildren="false"
         android:clipToPadding="false"
         android:fillViewport="true"
         android:overScrollMode="never"
@@ -29,14 +32,19 @@
             android:id="@+id/contentContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:clipToPadding="false"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingStart="16dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="@dimen/family_share_content_bottom_padding">
 
             <TextView
                 android:id="@+id/textFamilyIntro"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="4dp"
                 android:lineSpacingMultiplier="1.05"
                 android:textColor="@color/text_secondary"
                 android:textSize="13sp" />
@@ -45,7 +53,7 @@
                 android:id="@+id/tvMessages"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="4dp"
                 android:lineSpacingMultiplier="1.05"
                 android:textColor="@color/text_secondary"
                 android:textSize="12sp"
@@ -64,7 +72,7 @@
                 android:id="@+id/textSectionSharedTablesHint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
+                android:layout_marginBottom="2dp"
                 android:lineSpacingMultiplier="1.05"
                 android:textColor="@color/text_secondary"
                 android:textSize="12sp" />
@@ -72,12 +80,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clipChildren="false"
+                android:clipToPadding="false"
                 android:orientation="horizontal">
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/btnExportSharedTables"
                     android:layout_width="0dp"
-                    android:layout_height="180dp"
+                    android:layout_height="@dimen/family_share_button_min_height"
                     android:layout_margin="6dp"
                     android:layout_weight="1"
                     android:clickable="true"
@@ -85,6 +95,7 @@
                     app:cardBackgroundColor="@color/elevated_surface"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="5dp"
+                    app:cardUseCompatPadding="true"
                     app:strokeWidth="0dp">
 
                     <TextView
@@ -93,7 +104,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:padding="12dp"
-                        android:textSize="20sp"
+                        android:textSize="@dimen/family_share_button_text"
                         android:textStyle="bold" />
 
                 </com.google.android.material.card.MaterialCardView>
@@ -101,7 +112,7 @@
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/btnImportSharedTables"
                     android:layout_width="0dp"
-                    android:layout_height="180dp"
+                    android:layout_height="@dimen/family_share_button_min_height"
                     android:layout_margin="6dp"
                     android:layout_weight="1"
                     android:clickable="true"
@@ -109,6 +120,7 @@
                     app:cardBackgroundColor="@color/elevated_surface"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="5dp"
+                    app:cardUseCompatPadding="true"
                     app:strokeWidth="0dp">
 
                     <TextView
@@ -117,7 +129,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:padding="12dp"
-                        android:textSize="20sp"
+                        android:textSize="@dimen/family_share_button_text"
                         android:textStyle="bold" />
 
                 </com.google.android.material.card.MaterialCardView>
@@ -128,7 +140,7 @@
                 android:id="@+id/textSectionArchive"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginBottom="2dp"
                 android:textColor="@color/text_primary"
                 android:textSize="15sp"
@@ -138,7 +150,7 @@
                 android:id="@+id/textSectionArchiveHint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
+                android:layout_marginBottom="2dp"
                 android:lineSpacingMultiplier="1.05"
                 android:textColor="@color/text_secondary"
                 android:textSize="12sp" />
@@ -146,12 +158,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clipChildren="false"
+                android:clipToPadding="false"
                 android:orientation="horizontal">
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/btnExportMerge"
                     android:layout_width="0dp"
-                    android:layout_height="180dp"
+                    android:layout_height="@dimen/family_share_button_min_height"
                     android:layout_margin="6dp"
                     android:layout_weight="1"
                     android:clickable="true"
@@ -159,6 +173,7 @@
                     app:cardBackgroundColor="@color/elevated_surface"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="5dp"
+                    app:cardUseCompatPadding="true"
                     app:strokeWidth="0dp">
 
                     <TextView
@@ -167,7 +182,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:padding="12dp"
-                        android:textSize="20sp"
+                        android:textSize="@dimen/family_share_button_text"
                         android:textStyle="bold" />
 
                 </com.google.android.material.card.MaterialCardView>
@@ -175,7 +190,7 @@
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/btnImportMerge"
                     android:layout_width="0dp"
-                    android:layout_height="180dp"
+                    android:layout_height="@dimen/family_share_button_min_height"
                     android:layout_margin="6dp"
                     android:layout_weight="1"
                     android:clickable="true"
@@ -183,6 +198,7 @@
                     app:cardBackgroundColor="@color/elevated_surface"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="5dp"
+                    app:cardUseCompatPadding="true"
                     app:strokeWidth="0dp">
 
                     <TextView
@@ -191,7 +207,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:padding="12dp"
-                        android:textSize="20sp"
+                        android:textSize="@dimen/family_share_button_text"
                         android:textStyle="bold" />
 
                 </com.google.android.material.card.MaterialCardView>
