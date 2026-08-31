@@ -1,6 +1,6 @@
 # Promemoria — interventi trasversali (famiglia + Play)
 
-**Aggiornato:** 31/08/2026 (post **B4 CONVALIDATO**, SI Renato).
+**Aggiornato:** 31/08/2026 (post **B5 CONVALIDATO**, SI Renato, build **1.3-famigliaB5.2**).
 
 Elenco di fix/igiene **non legati a una sola fetta**, da affrontare quando si tocca l’area o in un giro dedicato (B7 igiene / sync Play).
 
@@ -8,9 +8,9 @@ Elenco di fix/igiene **non legati a una sola fetta**, da affrontare quando si to
 
 ## P0 — Segnalati in beta famiglia
 
-| ID | Area | Problema | Evidenza | Azione prevista |
-|----|------|----------|----------|-----------------|
-| **T1** | Utility → **Backup Archivio** → card «Backup Directory» | Il campo cartella mostra testo **illeggibile** (URI/encoded/id opaco base64) invece del **nome cartella** umano | Screenshot Renato, build **1.3-famigliaB5.1**, 31/08/2026 | **Fix B5.2:** `SafFolderLabel` interroga `COLUMN_DISPLAY_NAME`, rifiuta id opachi, cache `folder_label` in prefs. Ritestare con **SFOGLIA** (riselezione cartella) |
+| ID | Area | Problema | Evidenza | Stato |
+|----|------|----------|----------|-------|
+| **T1** | Utility → **Backup Archivio** → «Backup Directory» | Nome cartella illeggibile (id opaco base64) | Screenshot Renato, B5.1, 31/08/2026 | **CONVALIDATO** B5.2 (SI Renato): `SafFolderLabel` + cache `folder_label` |
 
 ---
 
@@ -25,7 +25,7 @@ Verificare **ogni** punto che scrive un file e allineare dove ha senso al criter
 
 **Già allineati in famiglia (B4):** Invia Condivisione Archivio (`KEY_FAMILY_SHARE`, box nome, OK post-salvataggio).
 
-**Da rivedere:** Backup Directory (T1), PRE_RESTORE, Genera Modello, Esporta vista (Play), altri punti elencati in sidecar B7.
+**Da rivedere:** PRE_RESTORE, Genera Modello, Esporta vista (Play), altri punti elencati in sidecar B7.
 
 ---
 

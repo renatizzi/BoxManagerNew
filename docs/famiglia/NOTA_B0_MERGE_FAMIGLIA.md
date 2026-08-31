@@ -1,6 +1,6 @@
 # Nota B0 — Merge famiglia (BoxManager)
 
-**Stato:** adottata (SI Renato, sessione continuità post Alpha 1.2). **B4 CONVALIDATO** (SI Renato, 31/08/2026, build **1.3-famigliaB4.10**). **B5 in corso** — non CONVALIDATO senza SI esplicito di Renato.  
+**Stato:** adottata (SI Renato, sessione continuità post Alpha 1.2). **B4 CONVALIDATO** (SI Renato, 31/08/2026, build **1.3-famigliaB4.10**). **B5 CONVALIDATO** (SI Renato, 31/08/2026, build **1.3-famigliaB5.2**).  
 **Ambito:** solo build **flavor `famiglia`** (betatest locale). **Non** pubblicare su Play Store.  
 **Track Play / Alpha:** resta **1.2 (versionCode 3)** su `main` — non modificare il comportamento release Play da questa Nota.  
 **Sidecar B7:** `docs/Nota_Integrata_9.1_B7.docx` non riaperta (D0–B7 chiusi); il merge famiglia B4 resta documentato qui.
@@ -225,7 +225,7 @@ Niente ACL: dopo il merge tutto resta dominio famiglia. Il nome serve a ripartir
 | **B2** | Pacchetto inventario per ID (legacy) + anteprima | No |
 | **B3** | Unione famiglia unificata (tabelle + inventario, guarigione) | No — superata da B4 |
 | **B4** | **Tabelle condivise** + **Archivio** separati; UI card = Utility (B4.3); Invia/Ricevi SAF e feedback OK (B4.10) | No — **CONVALIDATO** 31/08/2026 (SI Renato, build 1.3-famigliaB4.10) |
-| **B5** | Origine = **nome utente** Impostazioni su contenitori/oggetti; delete esplicito propagabile (tombstone + sezione CANCELLAZIONI); T1 SafFolderLabel | No — **in corso** (build `1.3-famigliaB5.0`; non CONVALIDATO senza SI Renato) |
+| **B5** | Origine = **nome utente** Impostazioni su contenitori/oggetti; delete propagabile (tombstone + `CANCELLAZIONI`); T1 Backup Directory | No — **CONVALIDATO** 31/08/2026 (SI Renato, build **1.3-famigliaB5.2**) |
 
 ---
 
