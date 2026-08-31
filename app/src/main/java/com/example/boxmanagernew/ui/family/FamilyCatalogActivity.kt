@@ -7,7 +7,6 @@ import android.provider.DocumentsContract
 import android.view.View
 import android.widget.ScrollView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -101,15 +100,8 @@ class FamilyCatalogActivity : BaseActivity() {
                     blockingError = true
                 )
             },
-            onExportCompleted = { folderName, fileName ->
-                val summary =
-                    FamilyMergeCopy.buildExportSummary(folderName, fileName)
-                Toast.makeText(this, summary, Toast.LENGTH_LONG).show()
-                showUserMessage(
-                    summary,
-                    blockingError = false,
-                    showDialog = false
-                )
+            onExportCompleted = {
+                // Come Esporta: nessun dialogo/toast di conferma post-salvataggio.
             },
             launchFolderPicker = {
                 folderPicker.launch(exportPersister.rememberedFolderUri())

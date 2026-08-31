@@ -133,7 +133,7 @@ Due sezioni, griglia 2 colonne (Invia | Ricevi), card allineate a Utility:
 - `MaterialCardView` altezza `180dp`, `layout_margin` `6dp`, padding contenitore `16dp`
 - `cardCornerRadius` `16dp`, `cardElevation` `5dp`, sfondo `@color/elevated_surface`
 - testo centrato `20sp` bold (telefono e tablet)
-- nessuna card cartella/SFOGLIA: **ogni Invia** apre il selettore cartella SAF; CONSENTI Android solo alla prima volta per cartella (poi riuso permesso persistito su `KEY_FAMILY_SHARE`); box nome file
+- nessuna card cartella/SFOGLIA: riuso cartella SAF (`KEY_FAMILY_SHARE`) dopo il primo CONSENTI (criterio Esporta/Backup); pulsante **Cartella** nel box nome file per cambiare destinazione; nessun dialogo di conferma post-salvataggio
 
 Terminologia in pagina: **tabelle condivise**, **tabelle locali**, **categorie e posizioni**. Non usare «struttura».
 

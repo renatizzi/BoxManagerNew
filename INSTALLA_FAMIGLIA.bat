@@ -45,5 +45,5 @@ if errorlevel 1 (
 
 echo.
 echo FATTO. Apri "BoxManager Famiglia" sul telefono.
-echo Versione attesa in topbar: 1.3-famigliaB4.8
+echo Versione attesa in topbar: 1.3-famigliaB4.9
 pause

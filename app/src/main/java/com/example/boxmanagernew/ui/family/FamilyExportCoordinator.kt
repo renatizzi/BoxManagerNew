@@ -13,9 +13,10 @@ import com.example.boxmanagernew.viewoutput.persist.ViewExportPersister
 /**
  * Export condivisione archivio: cartella dedicata + box nome file standard.
  *
- * 1. Ogni Invia apre il selettore cartella (l'utente può sempre cambiare destinazione).
- * 2. CONSENTI Android solo alla prima volta per cartella ([takePersistableUriPermission]
- *    + URI memorizzato; stessa cartella = niente nuovo consenso).
+ * Come Esporta/Backup ([salvataggio-file.mdc]):
+ * - Dopo il primo CONSENTI Android, riuso cartella memorizzata (KEY_FAMILY_SHARE)
+ *   senza riaprire il selettore né ripetere l'autorizzazione.
+ * - Nel box nome file, pulsante «Cartella» per cambiare destinazione in qualsiasi Invia.
  */
 class FamilyExportCoordinator(
     private val activity: AppCompatActivity,
@@ -24,7 +25,7 @@ class FamilyExportCoordinator(
         StorageFolderConfiguration.KEY_FAMILY_SHARE
     ),
     private val onFolderInaccessible: () -> Unit,
-    private val onExportCompleted: (folderName: String, fileName: String) -> Unit,
+    private val onExportCompleted: () -> Unit,
     private val launchFolderPicker: () -> Unit
 ) {
 
@@ -37,7 +38,16 @@ class FamilyExportCoordinator(
     ) {
         pendingDefaultName = defaultFileName
         pendingBytes = bytes
-        launchFolderPicker()
+
+        val saved = persister.rememberedFolderUri()
+        if (
+            saved != null &&
+            persister.folderDisplayName(saved) != null
+        ) {
+            askExportFileName(saved)
+        } else {
+            launchFolderPicker()
+        }
     }
 
     fun onFolderChosen(uri: Uri) {
@@ -78,6 +88,9 @@ class FamilyExportCoordinator(
             },
             onSave = { fileName, overwrite ->
                 writeExport(uri, bytes, fileName, overwrite)
+            },
+            onBrowseFolder = {
+                launchFolderPicker()
             }
         )
     }
@@ -88,7 +101,6 @@ class FamilyExportCoordinator(
         fileName: String,
         overwrite: Boolean
     ) {
-        val folderName = persister.folderDisplayName(uri).orEmpty()
         val result = persister.persist(
             uri,
             fileName,
@@ -103,7 +115,7 @@ class FamilyExportCoordinator(
                 onFolderInaccessible()
             }
             result.success -> {
-                onExportCompleted(folderName, ViewOutputConfiguration.csvFileName(fileName))
+                onExportCompleted()
             }
             else -> {
                 FeedbackUtils.alert(activity)
