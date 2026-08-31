@@ -6,10 +6,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.boxmanagernew.data.local.entity.CategoryEntity
+import com.example.boxmanagernew.BuildConfig
 import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
 import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
 import com.example.boxmanagernew.domain.model.Box
 import com.example.boxmanagernew.domain.search.SearchConfiguration
+import com.example.boxmanagernew.family.deletion.FamilyPropagatingDelete
 import com.example.boxmanagernew.util.CanonicalNormalizer
 import com.example.boxmanagernew.util.SimpleSearch
 import kotlinx.coroutines.Job
@@ -17,7 +19,8 @@ import kotlinx.coroutines.launch
 
 class BoxViewModel(
     private val repository: BoxRepositoryImpl,
-    private val objectRepository: ObjectRepositoryImpl
+    private val objectRepository: ObjectRepositoryImpl,
+    private val familyDelete: FamilyPropagatingDelete? = null
 ) : ViewModel() {
 
     companion object {
@@ -205,26 +208,35 @@ class BoxViewModel(
     }
 
     fun deleteBox(
-        id: Int
+        id: Int,
+        deletedBy: String = ""
     ) {
 
         viewModelScope.launch {
 
-            repository.deleteBox(id)
+            if (BuildConfig.FAMILY_BETA && familyDelete != null) {
+                familyDelete.deleteBox(id, deletedBy)
+            } else {
+                repository.deleteBox(id)
+            }
 
             clearSelection()
         }
     }
 
     fun deleteBoxes(
-        ids: List<Int>
+        ids: List<Int>,
+        deletedBy: String = ""
     ) {
 
         viewModelScope.launch {
 
-            ids.forEach {
-
-                repository.deleteBox(it)
+            if (BuildConfig.FAMILY_BETA && familyDelete != null) {
+                familyDelete.deleteBoxes(ids, deletedBy)
+            } else {
+                ids.forEach {
+                    repository.deleteBox(it)
+                }
             }
 
             clearSelection()

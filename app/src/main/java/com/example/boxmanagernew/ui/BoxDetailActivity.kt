@@ -25,6 +25,7 @@ import com.example.boxmanagernew.domain.search.SearchConfiguration
 import com.example.boxmanagernew.ui.categories.CategorySpinnerAdapter
 import com.example.boxmanagernew.ui.categories.CategoryViewModel
 import com.example.boxmanagernew.ui.categories.IconMapper
+import com.example.boxmanagernew.family.deletion.FamilyDeleteProvider
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.CreatedByResolver
 import com.example.boxmanagernew.ui.common.DialogUtils
@@ -221,14 +222,21 @@ class BoxDetailActivity : BaseActivity() {
                 db.objectTypeDao()
             )
 
+        val boxRepo =
+            BoxRepositoryImpl(db.boxDao())
+
+        val familyDelete =
+            FamilyDeleteProvider.create(
+                db,
+                boxRepo,
+                objectRepo
+            )
+
         objectViewModel =
             ViewModelProvider(
                 this,
-                ObjectViewModelFactory(objectRepo)
+                ObjectViewModelFactory(objectRepo, familyDelete)
             )[ObjectViewModel::class.java]
-
-        val boxRepo =
-            BoxRepositoryImpl(db.boxDao())
 
         boxViewModel =
             ViewModelProvider(
@@ -241,7 +249,8 @@ class BoxDetailActivity : BaseActivity() {
 
                         return BoxViewModel(
                             boxRepo,
-                            objectRepo
+                            objectRepo,
+                            familyDelete
                         ) as T
                     }
                 }
@@ -367,7 +376,10 @@ class BoxDetailActivity : BaseActivity() {
                 context = this
             ) {
 
-                objectViewModel.deleteObjects(ids)
+                objectViewModel.deleteObjects(
+                    ids,
+                    CreatedByResolver.current(this@BoxDetailActivity)
+                )
             }
         }
 

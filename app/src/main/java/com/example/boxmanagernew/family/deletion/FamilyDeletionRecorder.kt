@@ -5,8 +5,7 @@ import com.example.boxmanagernew.data.local.entity.FamilyDeletionTombstoneEntity
 import com.example.boxmanagernew.ui.common.CreatedByResolver
 
 /**
- * Registra tombstone per delete esplicito propagabile (B5).
- * La UI decide quando chiamarlo («Rimuovi anche in famiglia»).
+ * Registra tombstone per delete esplicito propagabile in merge famiglia (B5).
  */
 class FamilyDeletionRecorder(
     private val tombstoneDao: FamilyDeletionTombstoneDao

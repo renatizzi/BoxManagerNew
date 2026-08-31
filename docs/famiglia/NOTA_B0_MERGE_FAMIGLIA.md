@@ -48,7 +48,7 @@ Cloud eventuale solo come canale di scambio file/catalogo — non in B1.
 | ID assente in archivio locale | **Insert** |
 | Stesso ID, payload diverso | **Update** se `lastModified` remoto > locale; altrimenti ignora o anteprima conflitto |
 | Stesso ID, identico | Ignora |
-| Cancellazione | **Non propagata** in automatico nella prima fetta; eventuale «rimuovi anche in famiglia» esplicito dopo |
+| Cancellazione | **Non propagata** in automatico nella prima fetta; **B5 famiglia:** ogni delete locale scrive tombstone e viaggia in `CANCELLAZIONI` al prossimo Invia Archivio (archivio unico, nessuna opzione «solo qui») |
 | Ripristino ZIP | Resta **replace wipe** — **vietato** come strumento di unione |
 
 ### 3.3 CSV import V1 attuale

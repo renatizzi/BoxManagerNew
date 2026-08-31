@@ -1,15 +1,18 @@
 package com.example.boxmanagernew.ui.boxdetail
 
 import androidx.lifecycle.*
+import com.example.boxmanagernew.BuildConfig
+import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
 import com.example.boxmanagernew.domain.model.Object
 import com.example.boxmanagernew.domain.model.ObjectWithType
-import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
+import com.example.boxmanagernew.family.deletion.FamilyPropagatingDelete
 import com.example.boxmanagernew.domain.search.ObjectSearchMatcher
 import com.example.boxmanagernew.util.SimpleSearch
 import kotlinx.coroutines.launch
 
 class ObjectViewModel(
-    private val repository: ObjectRepositoryImpl
+    private val repository: ObjectRepositoryImpl,
+    private val familyDelete: FamilyPropagatingDelete? = null
 ) : ViewModel() {
 
     private val _selectedItems = MutableLiveData<Set<Int>>(emptySet())
@@ -197,7 +200,10 @@ class ObjectViewModel(
             false
     }
 
-    fun deleteObjects(ids: List<Int>) {
+    fun deleteObjects(
+        ids: List<Int>,
+        deletedBy: String = ""
+    ) {
 
         if (ids.isEmpty()) {
             return
@@ -205,7 +211,11 @@ class ObjectViewModel(
 
         viewModelScope.launch {
 
-            repository.deleteByIds(ids)
+            if (BuildConfig.FAMILY_BETA && familyDelete != null) {
+                familyDelete.deleteObjects(ids, deletedBy)
+            } else {
+                repository.deleteByIds(ids)
+            }
 
             clearSelection()
         }
