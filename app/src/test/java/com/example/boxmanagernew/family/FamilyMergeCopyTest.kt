@@ -32,9 +32,15 @@ class FamilyMergeCopyTest {
 
     @Test
     fun sectionHints_useRequestedWording() {
+        assertFalse(
+            FamilyMergeCopy.SECTION_SHARED_TABLES_HINT.contains(
+                "operazione rischiosa",
+                ignoreCase = true
+            )
+        )
         assertTrue(
             FamilyMergeCopy.SECTION_SHARED_TABLES_HINT.contains(
-                "operazione rischiosa"
+                "esportare"
             )
         )
         assertTrue(
@@ -49,12 +55,18 @@ class FamilyMergeCopyTest {
         )
         assertTrue(
             FamilyMergeCopy.SECTION_ARCHIVE_HINT.contains(
-                "tasto \"Invia\""
+                "esportare"
             )
         )
         assertTrue(
             FamilyMergeCopy.SECTION_ARCHIVE_HINT.contains(
-                "intero archivio condiviso"
+                "riconoscendo gli stessi contenitori e oggetti"
+            )
+        )
+        assertFalse(
+            FamilyMergeCopy.SECTION_ARCHIVE_HINT.contains(
+                "intero archivio",
+                ignoreCase = true
             )
         )
         assertTrue(

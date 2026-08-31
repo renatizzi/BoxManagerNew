@@ -21,9 +21,9 @@ object FamilyMergeCopy {
     const val SECTION_SHARED_TABLES = "Tabelle condivise (categorie e posizioni)"
 
     const val SECTION_SHARED_TABLES_HINT =
-        "Usa il tasto \"Invia\" per unire e condividere con i tuoi familiari solo " +
-            "le categorie e le posizioni abituali (operazione rischiosa). Usa il " +
-            "tasto \"Ricevi\" per ripristinarle sul tuo archivio."
+        "Usa il tasto \"Invia\" per esportare e condividere con i tuoi familiari solo " +
+            "le categorie e le posizioni abituali. Usa il tasto \"Ricevi\" per " +
+            "ripristinarle sul tuo archivio."
 
     const val BUTTON_SEND_SHARED_TABLES = "📤 Invia tabelle condivise"
 
@@ -32,9 +32,9 @@ object FamilyMergeCopy {
     const val SECTION_ARCHIVE = "Archivio (contenitori e oggetti)"
 
     const val SECTION_ARCHIVE_HINT =
-        "Usa il tasto \"Invia\" per unire e condividere con i tuoi familiari tutti i " +
-            "dati del tuo archivio. Usa il tasto \"Ricevi\" per ripristinare " +
-            "l'intero archivio condiviso."
+        "Usa il tasto \"Invia\" per esportare e condividere con i tuoi familiari tutti i " +
+            "dati del tuo archivio. Usa il tasto \"Ricevi\" per unire al tuo archivio " +
+            "quello condiviso, riconoscendo gli stessi contenitori e oggetti."
 
     const val BUTTON_SEND = "📤 Invia Archivio"
 
