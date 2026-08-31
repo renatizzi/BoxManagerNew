@@ -10,7 +10,7 @@ Elenco di fix/igiene **non legati a una sola fetta**, da affrontare quando si to
 
 | ID | Area | Problema | Evidenza | Azione prevista |
 |----|------|----------|----------|-----------------|
-| **T1** | Utility → **Backup Archivio** → card «Backup Directory» | Il campo cartella mostra testo **illeggibile** (URI/encoded, es. `acc=1;doc=encoded=…`) invece del **nome cartella** umano; feedback percepito come **toast** / non persistente in pagina | Screenshot Renato, build **1.3-famigliaB4.10**, 31/08/2026 | Ripristinare etichetta leggibile via `SafFolderLabel` (o equivalente); verificare `restoreSavedFolder` / `persistFolder` in `BackupActivity`; allineare a criterio `salvataggio-file.mdc` (nome cartella visibile, non URI grezzo) |
+| **T1** | Utility → **Backup Archivio** → card «Backup Directory» | Il campo cartella mostra testo **illeggibile** (URI/encoded, es. `acc=1;doc=encoded=…`) invece del **nome cartella** umano; feedback percepito come **toast** / non persistente in pagina | Screenshot Renato, build **1.3-famigliaB4.10**, 31/08/2026 | **Fix in B5.0** (`SafFolderLabel` gestisce `acc=…;doc=encoded=…` + test). Chiusura solo con **SI Renato** su device |
 
 ---
 

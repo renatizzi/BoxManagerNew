@@ -14,7 +14,7 @@ object SafFolderLabel {
     ): String {
 
         val fallback = tree.name
-            ?.takeIf { it.isNotBlank() && !looksLikeUri(it) }
+            ?.takeIf { it.isNotBlank() && !looksLikeEncodedUri(it) }
             ?: "Cartella selezionata"
 
         val docId = try {
@@ -31,6 +31,11 @@ object SafFolderLabel {
         fallback: String
     ): String {
 
+        val fromEncoded = extractEncodedDocumentPath(documentId)
+        if (fromEncoded != null) {
+            return fromEncoded
+        }
+
         val relative = documentId
             .substringAfter(':', documentId)
             .replace('\\', '/')
@@ -38,9 +43,39 @@ object SafFolderLabel {
 
         val decoded = decodePath(relative)
 
-        return decoded.takeIf { it.isNotBlank() && !looksLikeUri(it) }
-            ?: fallback.takeUnless { looksLikeUri(it) }
+        return decoded.takeIf { it.isNotBlank() && !looksLikeEncodedUri(it) }
+            ?: fallback.takeUnless { looksLikeEncodedUri(it) }
             ?: "Cartella selezionata"
+    }
+
+    /**
+     * Alcuni provider espongono tree id tipo
+     * `acc=1;doc=encoded=...` invece di `primary:Download/...`.
+     */
+    private fun extractEncodedDocumentPath(documentId: String): String? {
+        if (!documentId.contains("encoded=", ignoreCase = true)) {
+            return null
+        }
+        val encodedPart = documentId
+            .substringAfter("encoded=", "")
+            .substringBefore(';')
+            .trim()
+        if (encodedPart.isEmpty()) {
+            return null
+        }
+        val decoded = decodePath(encodedPart)
+            .replace('\\', '/')
+            .trim('/')
+        if (decoded.isBlank() || looksLikeEncodedUri(decoded)) {
+            return null
+        }
+        // Spesso l'encoded include volume + path (primary:Download/X) o solo path.
+        val relative = if (decoded.contains(':')) {
+            decoded.substringAfter(':').trim('/')
+        } else {
+            decoded
+        }
+        return relative.takeIf { it.isNotBlank() && !looksLikeEncodedUri(it) }
     }
 
     private fun decodePath(value: String): String {
@@ -48,15 +83,32 @@ object SafFolderLabel {
             return value
         }
         return try {
-            URLDecoder.decode(value, StandardCharsets.UTF_8.name())
+            var current = value
+            // Doppio encoding frequente su alcuni SAF provider.
+            repeat(2) {
+                val next = URLDecoder.decode(current, StandardCharsets.UTF_8.name())
+                if (next == current) {
+                    return@repeat
+                }
+                current = next
+            }
+            current
         } catch (_: Exception) {
             value
         }
     }
 
-    private fun looksLikeUri(value: String): Boolean {
-        return value.startsWith("content://", ignoreCase = true) ||
-            value.contains("%3A", ignoreCase = true) &&
-            value.contains("documents/tree", ignoreCase = true)
+    private fun looksLikeEncodedUri(value: String): Boolean {
+        val lower = value.lowercase()
+        return lower.startsWith("content://") ||
+            lower.contains("documents/tree") ||
+            (
+                lower.contains("acc=") &&
+                    lower.contains("doc=")
+                ) ||
+            (
+                value.contains("%3A", ignoreCase = true) &&
+                    lower.contains("documents/tree")
+                )
     }
 }

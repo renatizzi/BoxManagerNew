@@ -48,4 +48,26 @@ class SafFolderLabelTest {
             )
         )
     }
+
+    @Test
+    fun encodedAccDocPattern_isReadablePath() {
+        assertEquals(
+            "Download/Boxmanager_Bck",
+            SafFolderLabel.fromDocumentId(
+                "acc=1;doc=encoded=primary%3ADownload%2FBoxmanager_Bck",
+                "Cartella selezionata"
+            )
+        )
+    }
+
+    @Test
+    fun rawAccDocFallback_rejectedForReadableName() {
+        assertEquals(
+            "Cartella selezionata",
+            SafFolderLabel.fromDocumentId(
+                "acc=1;doc=raw",
+                "acc=1;doc=encoded=broken"
+            )
+        )
+    }
 }
