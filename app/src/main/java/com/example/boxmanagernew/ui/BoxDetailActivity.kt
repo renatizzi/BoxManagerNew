@@ -630,7 +630,7 @@ class BoxDetailActivity : BaseActivity() {
 
             currentBox = box
 
-            updateHeader(
+            refreshHeader(
                 textCategory,
                 imageCategoryIcon,
                 textPosition,
@@ -640,24 +640,41 @@ class BoxDetailActivity : BaseActivity() {
 
         categoryViewModel.categories.observe(this) {
 
-            val box =
-                currentBox
-                    ?: return@observe
+            if (currentBox == null) {
+                return@observe
+            }
 
-            val category =
-                it.find {
-                    it.id == box.categoryId
-                }
-
-            currentCategory = category
-
-            updateHeader(
+            refreshHeader(
                 textCategory,
                 imageCategoryIcon,
                 textPosition,
                 textLastModified
             )
         }
+    }
+
+    private fun refreshHeader(
+        textCategory: TextView,
+        imageCategoryIcon: ImageView,
+        textPosition: TextView,
+        textLastModified: TextView
+    ) {
+
+        val box =
+            currentBox
+                ?: return
+
+        currentCategory =
+            categoryViewModel.categories.value?.find {
+                it.id == box.categoryId
+            }
+
+        updateHeader(
+            textCategory,
+            imageCategoryIcon,
+            textPosition,
+            textLastModified
+        )
     }
     private fun initViews() {
 

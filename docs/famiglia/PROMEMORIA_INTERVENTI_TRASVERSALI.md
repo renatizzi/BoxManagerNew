@@ -1,8 +1,19 @@
 # Promemoria — interventi trasversali (famiglia + Play)
 
-**Aggiornato:** 31/08/2026 (post **B5 CONVALIDATO**, SI Renato, build **1.3-famigliaB5.2**).
+**Aggiornato:** 31/08/2026 (post **B5 CONVALIDATO**; fix **T2** in corso su branch `cursor/fix-category-list-promemoria-7b83`).
 
 Elenco di fix/igiene **non legati a una sola fetta**, da affrontare quando si tocca l’area o in un giro dedicato (B7 igiene / sync Play).
+
+---
+
+## Contesto post–Play 1.2 (transizione)
+
+Dopo il rilascio Play **1.2**, due filoni paralleli (decisione Renato):
+
+| Filone | Documento | Stato |
+|--------|-----------|-------|
+| **Famiglia** — condivisione archivio | [NOTA_B0_MERGE_FAMIGLIA.md](NOTA_B0_MERGE_FAMIGLIA.md) B0–B5 | **CONVALIDATO** |
+| **Multilingua** — Scelta lingua UI | Nota Integrata 3.6.6 Impostazioni («Prossime implementazioni»); **non** ancora in NOTA famiglia | **Da pianificare** (filone M) |
 
 ---
 
@@ -11,6 +22,8 @@ Elenco di fix/igiene **non legati a una sola fetta**, da affrontare quando si to
 | ID | Area | Problema | Evidenza | Stato |
 |----|------|----------|----------|-------|
 | **T1** | Utility → **Backup Archivio** → «Backup Directory» | Nome cartella illeggibile (id opaco base64) | Screenshot Renato, B5.1, 31/08/2026 | **CONVALIDATO** B5.2 (SI Renato): `SafFolderLabel` + cache `folder_label` |
+| **T2** | **Lista Oggetti** (header contenitore) e **Lista Oggetti Trovati** (gruppo per box) | Categoria/icona assenti o incoerenti tra schermo e stampa/export (race osservatori LiveData; snapshot export senza risoluzione per `categoryId`) | Segnalazione Renato beta famiglia; assicurato in chat ma **non trascritto** al commit `32dbeaf` | **Fix in corso** — `BoxDetailActivity.refreshHeader`, `SearchResultActivity.resolveCategoryForGroup` |
+| **T3** | *(da recuperare)* | Secondo bug segnalato insieme a T2 in sessione precedente | Da chat Renato | **Aperto** — descrizione mancante in repo |
 
 ---
 
