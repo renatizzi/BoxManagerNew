@@ -101,7 +101,7 @@ class FamilyCatalogActivity : BaseActivity() {
                 )
             },
             onExportCompleted = {
-                // Come Esporta: nessun dialogo/toast di conferma post-salvataggio.
+                showExportCompletedDialog()
             },
             launchFolderPicker = {
                 folderPicker.launch(exportPersister.rememberedFolderUri())
@@ -264,6 +264,13 @@ class FamilyCatalogActivity : BaseActivity() {
             return
         }
         mergeViewModel.importArchiveText(text)
+    }
+
+    private fun showExportCompletedDialog() {
+        AlertDialog.Builder(this)
+            .setMessage(FamilyMergeCopy.MSG_EXPORT_COMPLETED)
+            .setPositiveButton("OK", null)
+            .show()
     }
 
     private fun showUserMessage(
