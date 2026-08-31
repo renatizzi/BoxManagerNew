@@ -112,7 +112,7 @@ class FamilyCatalogActivity : BaseActivity() {
                 )
             },
             launchFolderPicker = {
-                folderPicker.launch(null)
+                folderPicker.launch(exportPersister.rememberedFolderUri())
             }
         )
 

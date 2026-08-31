@@ -12,8 +12,10 @@ import com.example.boxmanagernew.viewoutput.persist.ViewExportPersister
 
 /**
  * Export condivisione archivio: cartella dedicata + box nome file standard.
- * Come Esporta/Backup: primo Invia → selettore cartella + CONSENTI Android;
- * poi riuso cartella memorizzata (KEY_FAMILY_SHARE) senza ripetere permesso.
+ *
+ * 1. Ogni Invia apre il selettore cartella (l'utente può sempre cambiare destinazione).
+ * 2. CONSENTI Android solo alla prima volta per cartella ([takePersistableUriPermission]
+ *    + URI memorizzato; stessa cartella = niente nuovo consenso).
  */
 class FamilyExportCoordinator(
     private val activity: AppCompatActivity,
@@ -35,20 +37,11 @@ class FamilyExportCoordinator(
     ) {
         pendingDefaultName = defaultFileName
         pendingBytes = bytes
-
-        val saved = persister.rememberedFolderUri()
-        if (
-            saved != null &&
-            persister.folderDisplayName(saved) != null
-        ) {
-            askExportFileName(saved)
-        } else {
-            launchFolderPicker()
-        }
+        launchFolderPicker()
     }
 
     fun onFolderChosen(uri: Uri) {
-        val bytes = pendingBytes ?: return
+        if (pendingBytes == null) return
 
         try {
             activity.contentResolver.takePersistableUriPermission(
