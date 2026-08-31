@@ -11,6 +11,9 @@ data class ObjectWithTypeName(
     val boxId: Int,
     val description: String?,
     val quantity: Int?,
+    val objectPermanentId: String = "",
+    val lastModified: Long = 0L,
+    val createdBy: String = "",
     val typeName: String
 )
 
@@ -34,6 +37,9 @@ interface ObjectDao {
             o.boxId,
             o.description,
             o.quantity,
+            o.objectPermanentId,
+            o.lastModified,
+            o.createdBy,
             t.name AS typeName
         FROM objects o
         INNER JOIN object_types t

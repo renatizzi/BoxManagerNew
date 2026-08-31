@@ -6,7 +6,7 @@ import android.view.View
 import android.widget.TextView
 import com.example.boxmanagernew.BuildConfig
 import com.example.boxmanagernew.R
-import com.example.boxmanagernew.domain.family.FamilyCatalogCopy
+import com.example.boxmanagernew.domain.family.FamilyMergeCopy
 import com.example.boxmanagernew.domain.premium.PremiumFeature
 import com.example.boxmanagernew.ui.backup.BackupActivity
 import com.example.boxmanagernew.ui.common.BaseActivity
@@ -92,7 +92,7 @@ class UtilityActivity : BaseActivity() {
         if (BuildConfig.FAMILY_BETA) {
             familyRow.visibility = View.VISIBLE
             findViewById<TextView>(R.id.textFamilyCatalog).text =
-                FamilyCatalogCopy.UTILITY_CARD_LABEL
+                FamilyMergeCopy.UTILITY_CARD_LABEL
             familyButton.setOnClickListener {
                 startActivity(
                     Intent(

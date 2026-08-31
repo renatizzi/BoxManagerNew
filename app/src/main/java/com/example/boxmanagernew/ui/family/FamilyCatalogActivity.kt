@@ -1,11 +1,15 @@
 package com.example.boxmanagernew.ui.family
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.DocumentsContract
+import android.view.View
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.boxmanagernew.BuildConfig
 import com.example.boxmanagernew.R
@@ -14,18 +18,22 @@ import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
 import com.example.boxmanagernew.data.repository.CategoryRepositoryImpl
 import com.example.boxmanagernew.data.repository.LocationRepositoryImpl
 import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
-import com.example.boxmanagernew.domain.family.FamilyCatalogCopy
+import com.example.boxmanagernew.domain.family.FamilyMergeCopy
 import com.example.boxmanagernew.family.config.FamilyCatalogConfiguration
 import com.example.boxmanagernew.family.config.FamilyInventoryConfiguration
+import com.example.boxmanagernew.family.config.FamilyMergeConfiguration
+import com.example.boxmanagernew.family.config.FamilySharedTablesConfiguration
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.FeedbackUtils
+import com.example.boxmanagernew.storage.StorageFolderConfiguration
+import com.example.boxmanagernew.viewoutput.persist.ViewExportPersister
 import com.google.android.material.card.MaterialCardView
 
 class FamilyCatalogActivity : BaseActivity() {
 
-    private lateinit var catalogViewModel: FamilyCatalogViewModel
-    private lateinit var inventoryViewModel: FamilyInventoryViewModel
+    private lateinit var mergeViewModel: FamilyMergeViewModel
     private lateinit var persister: FamilyCatalogPersister
+    private lateinit var exportPersister: ViewExportPersister
     private lateinit var exportCoordinator: FamilyExportCoordinator
     private lateinit var tvMessages: TextView
     private lateinit var scrollView: ScrollView
@@ -41,21 +49,21 @@ class FamilyCatalogActivity : BaseActivity() {
             }
         }
 
-    private val catalogFilePicker =
+    private val sharedTablesFilePicker =
         registerForActivityResult(
-            ActivityResultContracts.OpenDocument()
-        ) { uri ->
-            if (uri != null) {
-                onCatalogImportChosen(uri)
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == AppCompatActivity.RESULT_OK) {
+                result.data?.data?.let { onSharedTablesImportChosen(it) }
             }
         }
 
-    private val inventoryFilePicker =
+    private val archiveFilePicker =
         registerForActivityResult(
-            ActivityResultContracts.OpenDocument()
-        ) { uri ->
-            if (uri != null) {
-                onInventoryImportChosen(uri)
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == AppCompatActivity.RESULT_OK) {
+                result.data?.data?.let { onArchiveImportChosen(it) }
             }
         }
 
@@ -71,168 +79,198 @@ class FamilyCatalogActivity : BaseActivity() {
 
         setupAppShell()
         setupPageHeader(
-            title = FamilyCatalogCopy.PAGE_TITLE,
-            subtitle = FamilyCatalogCopy.PAGE_SUBTITLE
+            title = FamilyMergeCopy.PAGE_TITLE,
+            subtitle = FamilyMergeCopy.PAGE_SUBTITLE
         )
         setupBottomNav()
 
         persister = FamilyCatalogPersister(this)
+        exportPersister = ViewExportPersister(
+            this,
+            StorageFolderConfiguration.KEY_FAMILY_SHARE
+        )
         tvMessages = findViewById(R.id.tvMessages)
         scrollView = findViewById(R.id.familyCatalogScroll)
         exportCoordinator = FamilyExportCoordinator(
             activity = this,
+            persister = exportPersister,
             onFolderInaccessible = {
                 showUserMessage(
-                    FamilyCatalogCopy.MSG_FOLDER_INACCESSIBLE,
+                    FamilyMergeCopy.MSG_FOLDER_INACCESSIBLE,
                     blockingError = true
                 )
             },
             onExportCompleted = {
-                showUserMessage(
-                    FamilyCatalogCopy.MSG_EXPORT_COMPLETED,
-                    blockingError = false,
-                    showDialog = true
-                )
+                showExportCompletedDialog()
             },
             launchFolderPicker = {
-                folderPicker.launch(null)
+                folderPicker.launch(exportPersister.rememberedFolderUri())
             }
         )
 
         val db = DatabaseProvider.getDatabase(applicationContext)
-        catalogViewModel = ViewModelProvider(
+        mergeViewModel = ViewModelProvider(
             this,
-            FamilyCatalogViewModelFactory(
-                CategoryRepositoryImpl(db.categoryDao(), db.boxDao()),
-                LocationRepositoryImpl(db.locationDao(), db.boxDao())
-            )
-        )[FamilyCatalogViewModel::class.java]
-        inventoryViewModel = ViewModelProvider(
-            this,
-            FamilyInventoryViewModelFactory(
+            FamilyMergeViewModelFactory(
                 db,
+                CategoryRepositoryImpl(db.categoryDao(), db.boxDao()),
+                LocationRepositoryImpl(db.locationDao(), db.boxDao()),
                 BoxRepositoryImpl(db.boxDao()),
                 ObjectRepositoryImpl(db.objectDao(), db.objectTypeDao())
             )
-        )[FamilyInventoryViewModel::class.java]
+        )[FamilyMergeViewModel::class.java]
 
-        findViewById<MaterialCardView>(R.id.btnExportCatalog)
-            .setOnClickListener { catalogViewModel.requestExport() }
+        findViewById<MaterialCardView>(R.id.btnExportSharedTables)
+            .setOnClickListener { mergeViewModel.requestSharedTablesExport() }
 
-        findViewById<MaterialCardView>(R.id.btnImportCatalog)
-            .setOnClickListener {
-                catalogFilePicker.launch(csvMimeTypes())
-            }
+        findViewById<MaterialCardView>(R.id.btnImportSharedTables)
+            .setOnClickListener { launchSharedTablesFilePicker() }
 
-        findViewById<MaterialCardView>(R.id.btnExportInventory)
-            .setOnClickListener { inventoryViewModel.requestExport() }
+        findViewById<MaterialCardView>(R.id.btnExportMerge)
+            .setOnClickListener { mergeViewModel.requestArchiveExport() }
 
-        findViewById<MaterialCardView>(R.id.btnImportInventory)
-            .setOnClickListener {
-                inventoryFilePicker.launch(csvMimeTypes())
-            }
+        findViewById<MaterialCardView>(R.id.btnImportMerge)
+            .setOnClickListener { launchArchiveFilePicker() }
 
         findViewById<TextView>(R.id.textFamilyIntro).text =
-            FamilyCatalogCopy.INTRO
-        findViewById<TextView>(R.id.textSectionCatalog).text =
-            FamilyCatalogCopy.SECTION_CATALOG
-        findViewById<TextView>(R.id.textSectionCatalogHint).text =
-            FamilyCatalogCopy.SECTION_CATALOG_HINT
-        findViewById<TextView>(R.id.textExportCatalog).text =
-            FamilyCatalogCopy.BUTTON_SEND
-        findViewById<TextView>(R.id.textImportCatalog).text =
-            FamilyCatalogCopy.BUTTON_RECEIVE
-        findViewById<TextView>(R.id.textSectionInventory).text =
-            FamilyCatalogCopy.SECTION_INVENTORY
-        findViewById<TextView>(R.id.textSectionInventoryHint).text =
-            FamilyCatalogCopy.SECTION_INVENTORY_HINT
-        findViewById<TextView>(R.id.textExportInventory).text =
-            FamilyCatalogCopy.BUTTON_SEND_INVENTORY
-        findViewById<TextView>(R.id.textImportInventory).text =
-            FamilyCatalogCopy.BUTTON_RECEIVE_INVENTORY
+            FamilyMergeCopy.INTRO
+        findViewById<TextView>(R.id.textSectionSharedTables).text =
+            FamilyMergeCopy.SECTION_SHARED_TABLES
+        findViewById<TextView>(R.id.textSectionSharedTablesHint).text =
+            FamilyMergeCopy.SECTION_SHARED_TABLES_HINT
+        findViewById<TextView>(R.id.textExportSharedTables).text =
+            FamilyMergeCopy.BUTTON_SEND_SHARED_TABLES
+        findViewById<TextView>(R.id.textImportSharedTables).text =
+            FamilyMergeCopy.BUTTON_RECEIVE_SHARED_TABLES
+        findViewById<TextView>(R.id.textSectionArchive).text =
+            FamilyMergeCopy.SECTION_ARCHIVE
+        findViewById<TextView>(R.id.textSectionArchiveHint).text =
+            FamilyMergeCopy.SECTION_ARCHIVE_HINT
+        findViewById<TextView>(R.id.textExportMerge).text =
+            FamilyMergeCopy.BUTTON_SEND
+        findViewById<TextView>(R.id.textImportMerge).text =
+            FamilyMergeCopy.BUTTON_RECEIVE
 
-        catalogViewModel.message.observe(this) { text ->
+        mergeViewModel.message.observe(this) { text ->
             showUserMessage(text, blockingError = false, showDialog = true)
         }
 
-        inventoryViewModel.message.observe(this) { text ->
-            showUserMessage(text, blockingError = false, showDialog = true)
-        }
-
-        catalogViewModel.exportBytes.observe(this) { payload ->
+        mergeViewModel.exportBytes.observe(this) { payload ->
             if (payload == null) {
                 return@observe
             }
-            catalogViewModel.clearExport()
+            mergeViewModel.clearExport()
             exportCoordinator.beginExport(
                 defaultFileName = payload.first,
                 bytes = payload.second
             )
         }
 
-        inventoryViewModel.exportBytes.observe(this) { payload ->
-            if (payload == null) {
-                return@observe
-            }
-            inventoryViewModel.clearExport()
-            exportCoordinator.beginExport(
-                defaultFileName = payload.first,
-                bytes = payload.second
-            )
-        }
-
-        inventoryViewModel.preview.observe(this) { preview ->
+        mergeViewModel.sharedTablesPreview.observe(this) { preview ->
             if (preview == null) {
                 return@observe
             }
-            showInventoryPreview(preview)
+            showSharedTablesPreview(preview)
+        }
+
+        mergeViewModel.archivePreview.observe(this) { preview ->
+            if (preview == null) {
+                return@observe
+            }
+            showArchivePreview(preview)
         }
     }
 
-    private fun showInventoryPreview(
-        preview: FamilyInventoryViewModel.Preview
+    private fun showSharedTablesPreview(
+        preview: FamilyMergeViewModel.SharedTablesPreview
     ) {
         AlertDialog.Builder(this)
-            .setTitle("Ricevi Inventario")
+            .setTitle("Ricevi tabelle condivise")
             .setMessage(preview.summary)
             .setPositiveButton("SI") { _, _ ->
-                inventoryViewModel.confirmImport()
+                mergeViewModel.confirmSharedTablesImport()
             }
             .setNegativeButton("NO") { _, _ ->
-                inventoryViewModel.clearPreview()
+                mergeViewModel.clearSharedTablesPreview()
             }
             .show()
     }
 
-    private fun csvMimeTypes(): Array<String> {
-        return arrayOf(
-            FamilyCatalogConfiguration.CSV_MIME_TYPE,
-            FamilyInventoryConfiguration.CSV_MIME_TYPE,
-            "text/*",
-            "*/*"
+    private fun showArchivePreview(
+        preview: FamilyMergeViewModel.ArchivePreview
+    ) {
+        AlertDialog.Builder(this)
+            .setTitle("Ricevi Archivio")
+            .setMessage(preview.summary)
+            .setPositiveButton("SI") { _, _ ->
+                mergeViewModel.confirmArchiveImport()
+            }
+            .setNegativeButton("NO") { _, _ ->
+                mergeViewModel.clearArchivePreview()
+            }
+            .show()
+    }
+
+    private fun launchSharedTablesFilePicker() {
+        sharedTablesFilePicker.launch(
+            buildFamilyFilePickerIntent(
+                FamilySharedTablesConfiguration.CSV_MIME_TYPE,
+                FamilyCatalogConfiguration.CSV_MIME_TYPE
+            )
         )
     }
 
-    private fun onCatalogImportChosen(uri: Uri) {
-        val text = persister.readText(uri) ?: run {
-            showUserMessage(
-                FamilyCatalogCopy.MSG_READ_FAILED,
-                blockingError = true
+    private fun launchArchiveFilePicker() {
+        archiveFilePicker.launch(
+            buildFamilyFilePickerIntent(
+                FamilyMergeConfiguration.CSV_MIME_TYPE,
+                FamilyCatalogConfiguration.CSV_MIME_TYPE,
+                FamilyInventoryConfiguration.CSV_MIME_TYPE
             )
-            return
-        }
-        catalogViewModel.importCatalogText(text)
+        )
     }
 
-    private fun onInventoryImportChosen(uri: Uri) {
+    private fun buildFamilyFilePickerIntent(vararg mimeTypes: String): Intent {
+        return Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "*/*"
+            putExtra(
+                Intent.EXTRA_MIME_TYPES,
+                arrayOf(*mimeTypes, "text/*", "*/*")
+            )
+            exportPersister.rememberedFolderUri()?.let { folderUri ->
+                putExtra(DocumentsContract.EXTRA_INITIAL_URI, folderUri)
+            }
+        }
+    }
+
+    private fun onSharedTablesImportChosen(uri: Uri) {
         val text = persister.readText(uri) ?: run {
             showUserMessage(
-                FamilyCatalogCopy.MSG_READ_FAILED,
+                FamilyMergeCopy.MSG_READ_FAILED,
                 blockingError = true
             )
             return
         }
-        inventoryViewModel.importInventoryText(text)
+        mergeViewModel.importSharedTablesText(text)
+    }
+
+    private fun onArchiveImportChosen(uri: Uri) {
+        val text = persister.readText(uri) ?: run {
+            showUserMessage(
+                FamilyMergeCopy.MSG_READ_FAILED,
+                blockingError = true
+            )
+            return
+        }
+        mergeViewModel.importArchiveText(text)
+    }
+
+    private fun showExportCompletedDialog() {
+        AlertDialog.Builder(this)
+            .setMessage(FamilyMergeCopy.MSG_EXPORT_COMPLETED)
+            .setPositiveButton("OK", null)
+            .show()
     }
 
     private fun showUserMessage(
@@ -241,9 +279,11 @@ class FamilyCatalogActivity : BaseActivity() {
         showDialog: Boolean = false
     ) {
         if (text.isBlank()) {
+            tvMessages.visibility = View.GONE
             return
         }
         tvMessages.text = text
+        tvMessages.visibility = View.VISIBLE
         scrollView.scrollTo(0, 0)
         if (blockingError) {
             FeedbackUtils.alert(this)

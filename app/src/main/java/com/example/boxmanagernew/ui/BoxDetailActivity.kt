@@ -25,7 +25,9 @@ import com.example.boxmanagernew.domain.search.SearchConfiguration
 import com.example.boxmanagernew.ui.categories.CategorySpinnerAdapter
 import com.example.boxmanagernew.ui.categories.CategoryViewModel
 import com.example.boxmanagernew.ui.categories.IconMapper
+import com.example.boxmanagernew.family.deletion.FamilyDeleteProvider
 import com.example.boxmanagernew.ui.common.BaseActivity
+import com.example.boxmanagernew.ui.common.CreatedByResolver
 import com.example.boxmanagernew.ui.common.DialogUtils
 import com.example.boxmanagernew.ui.common.FeedbackUtils
 import com.example.boxmanagernew.ui.common.UiUtils
@@ -220,14 +222,21 @@ class BoxDetailActivity : BaseActivity() {
                 db.objectTypeDao()
             )
 
+        val boxRepo =
+            BoxRepositoryImpl(db.boxDao())
+
+        val familyDelete =
+            FamilyDeleteProvider.create(
+                db,
+                boxRepo,
+                objectRepo
+            )
+
         objectViewModel =
             ViewModelProvider(
                 this,
-                ObjectViewModelFactory(objectRepo)
+                ObjectViewModelFactory(objectRepo, familyDelete)
             )[ObjectViewModel::class.java]
-
-        val boxRepo =
-            BoxRepositoryImpl(db.boxDao())
 
         boxViewModel =
             ViewModelProvider(
@@ -240,7 +249,8 @@ class BoxDetailActivity : BaseActivity() {
 
                         return BoxViewModel(
                             boxRepo,
-                            objectRepo
+                            objectRepo,
+                            familyDelete
                         ) as T
                     }
                 }
@@ -366,7 +376,10 @@ class BoxDetailActivity : BaseActivity() {
                 context = this
             ) {
 
-                objectViewModel.deleteObjects(ids)
+                objectViewModel.deleteObjects(
+                    ids,
+                    CreatedByResolver.current(this@BoxDetailActivity)
+                )
             }
         }
 
@@ -617,7 +630,7 @@ class BoxDetailActivity : BaseActivity() {
 
             currentBox = box
 
-            updateHeader(
+            refreshHeader(
                 textCategory,
                 imageCategoryIcon,
                 textPosition,
@@ -627,24 +640,41 @@ class BoxDetailActivity : BaseActivity() {
 
         categoryViewModel.categories.observe(this) {
 
-            val box =
-                currentBox
-                    ?: return@observe
+            if (currentBox == null) {
+                return@observe
+            }
 
-            val category =
-                it.find {
-                    it.id == box.categoryId
-                }
-
-            currentCategory = category
-
-            updateHeader(
+            refreshHeader(
                 textCategory,
                 imageCategoryIcon,
                 textPosition,
                 textLastModified
             )
         }
+    }
+
+    private fun refreshHeader(
+        textCategory: TextView,
+        imageCategoryIcon: ImageView,
+        textPosition: TextView,
+        textLastModified: TextView
+    ) {
+
+        val box =
+            currentBox
+                ?: return
+
+        currentCategory =
+            categoryViewModel.categories.value?.find {
+                it.id == box.categoryId
+            }
+
+        updateHeader(
+            textCategory,
+            imageCategoryIcon,
+            textPosition,
+            textLastModified
+        )
     }
     private fun initViews() {
 
@@ -896,7 +926,8 @@ class BoxDetailActivity : BaseActivity() {
                         boxName,
                         category.id,
                         dialogViews.position.selectedItem
-                            .toString()
+                            .toString(),
+                        CreatedByResolver.current(this@BoxDetailActivity)
                     )
 
                 objectViewModel.moveObjects(
@@ -1137,7 +1168,8 @@ class BoxDetailActivity : BaseActivity() {
                         .ifBlank { null },
                     dialogViews.quantity.text
                         .toString()
-                        .toIntOrNull()
+                        .toIntOrNull(),
+                    CreatedByResolver.current(this@BoxDetailActivity)
                 )
 
                 dialog.dismiss()

@@ -79,6 +79,31 @@ class ContainerViewSnapshotFactoryTest {
     }
 
     @Test
+    fun searchResultGroupBlock_prefersResolvedCategoryOverJoinName() {
+
+        val block =
+            ContainerViewSnapshotFactory.searchResultGroupBlock(
+                items = listOf(
+                    SearchResult(
+                        objectName = "Viti",
+                        description = null,
+                        quantity = 1,
+                        boxId = 1,
+                        boxName = "Box A",
+                        boxPosition = "Cantina",
+                        categoryName = null
+                    )
+                ),
+                categoryIconOfName = { 0 },
+                resolvedCategoryName = "Utensili",
+                resolvedCategoryIconRes = 9
+            )
+
+        assertEquals("Utensili", block.category)
+        assertEquals(9, block.categoryIconRes)
+    }
+
+    @Test
     fun fromSearchResults_empty_hasNoBoxes() {
 
         val snapshot =

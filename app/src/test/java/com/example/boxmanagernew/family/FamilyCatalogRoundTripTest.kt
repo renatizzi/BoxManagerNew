@@ -39,6 +39,25 @@ class FamilyCatalogRoundTripTest {
     }
 
     @Test
+    fun reader_preservesLocationNameWithSemicolon() {
+        val csv = buildString {
+            append("formato;")
+            append(FamilyCatalogConfiguration.FORMAT_NAME)
+            append(";1\n")
+            append("sezione;POSIZIONI\n")
+            append("nome\n")
+            append("Garage\n")
+            append("sezione;CONTENITORI\n")
+        }
+
+        val parsed = FamilyCatalogReader().parse(csv)
+        assertTrue(parsed is FamilyCatalogReader.Result.Ok)
+        val ok = parsed as FamilyCatalogReader.Result.Ok
+        assertEquals(2, ok.snapshot.locations.size)
+        assertEquals("sezione;CONTENITORI", ok.snapshot.locations[1].name)
+    }
+
+    @Test
     fun merger_addsOnlyMissingNames() {
         val incoming = FamilyCatalogSnapshot(
             categories = listOf(

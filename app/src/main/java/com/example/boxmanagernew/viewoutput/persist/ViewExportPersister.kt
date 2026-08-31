@@ -6,13 +6,15 @@ import android.net.Uri
 import android.provider.DocumentsContract
 import androidx.documentfile.provider.DocumentFile
 import com.example.boxmanagernew.backup.config.BackupConfiguration
+import com.example.boxmanagernew.storage.StorageFolderConfiguration
 import com.example.boxmanagernew.importdata.config.ImportConfiguration
 import com.example.boxmanagernew.ui.common.SafFolderLabel
 import com.example.boxmanagernew.viewoutput.config.ViewOutputConfiguration
 import java.io.File
 
 class ViewExportPersister(
-    private val context: Context
+    private val context: Context,
+    private val folderUriKey: String = StorageFolderConfiguration.KEY_IMPORT_EXPORT
 ) {
 
     data class Result(
@@ -28,7 +30,7 @@ class ViewExportPersister(
             return null
         }
 
-        return SafFolderLabel.of(treeUri, tree)
+        return SafFolderLabel.of(context, treeUri, tree)
     }
 
     fun rememberedFolderUri(): Uri? {
@@ -38,7 +40,7 @@ class ViewExportPersister(
                 BackupConfiguration.PREFS_NAME,
                 Context.MODE_PRIVATE
             ).getString(
-                BackupConfiguration.PREFS_KEY_FOLDER_URI,
+                folderUriKey,
                 null
             ) ?: return null
 
@@ -56,7 +58,7 @@ class ViewExportPersister(
             Context.MODE_PRIVATE
         ).edit()
             .putString(
-                BackupConfiguration.PREFS_KEY_FOLDER_URI,
+                folderUriKey,
                 uri.toString()
             )
             .apply()

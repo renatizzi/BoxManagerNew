@@ -48,6 +48,8 @@ object BackupConfiguration {
 
     const val PREFS_KEY_FOLDER_URI = "folder_uri"
 
+    const val PREFS_KEY_FOLDER_LABEL = "folder_label"
+
     const val ZIP_MIME_TYPE = "application/zip"
 
     const val MSG_BACKUP_COMPLETED = "Backup completato"

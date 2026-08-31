@@ -48,10 +48,7 @@ class FamilyCatalogReader {
                 continue
             }
 
-            if (cols[0].equals("sezione", ignoreCase = true)) {
-                if (cols.size < 2) {
-                    return Result.Error(MSG_SECTION)
-                }
+            if (isSectionHeader(cols)) {
                 section = cols[1].uppercase(Locale.ROOT)
                 when (section) {
                     FamilyCatalogConfiguration.SECTION_CATEGORIES -> {
@@ -107,7 +104,7 @@ class FamilyCatalogReader {
                         }
                         return Result.Error(MSG_LOCATION_HEADER)
                     }
-                    val name = cols.getOrNull(0)?.trim().orEmpty()
+                    val name = line.trim()
                     if (name.isEmpty()) {
                         return Result.Error(MSG_LOCATION_NAME)
                     }
@@ -129,6 +126,17 @@ class FamilyCatalogReader {
         )
     }
 
+    private fun isSectionHeader(cols: List<String>): Boolean {
+        if (!cols[0].equals("sezione", ignoreCase = true) || cols.size < 2) {
+            return false
+        }
+        return when (cols[1].uppercase(Locale.ROOT)) {
+            FamilyCatalogConfiguration.SECTION_CATEGORIES,
+            FamilyCatalogConfiguration.SECTION_LOCATIONS -> true
+            else -> false
+        }
+    }
+
     private fun split(line: String): List<String> {
         return line.split(FamilyCatalogConfiguration.SEPARATOR)
     }
@@ -139,7 +147,7 @@ class FamilyCatalogReader {
             "Formato non riconosciuto. Serve BoxManager_FamilyCatalog v1."
         const val MSG_SECTION = "Sezione catalogo non valida."
         const val MSG_SECTION_ORDER =
-            "Struttura incompleta: servono sezioni CATEGORIE e/o POSIZIONI."
+            "File incompleto: servono sezioni CATEGORIE e/o POSIZIONI."
         const val MSG_CATEGORY_HEADER =
             "Intestazione CATEGORIE non valida (nome;icona)."
         const val MSG_LOCATION_HEADER =

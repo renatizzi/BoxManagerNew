@@ -96,6 +96,15 @@ class SearchResultActivity : BaseActivity() {
             val results =
                 repo.searchObjectsInline(searchQuery)
 
+            val grouped =
+                results
+                    .sortedBy {
+                        it.boxName.lowercase()
+                    }
+                    .groupBy {
+                        it.boxId
+                    }
+
             val iconNames =
                 results.mapNotNull { row ->
                     row.categoryName
@@ -115,31 +124,41 @@ class SearchResultActivity : BaseActivity() {
                     }
                 }
 
-            loadedSnapshot =
-                ContainerViewSnapshotFactory.fromSearchResults(
-                    results
-                ) { name ->
-                    icons[name] ?: 0
+            val snapshotBlocks =
+                grouped.map { (_, items) ->
+
+                    val resolved =
+                        resolveCategoryForGroup(
+                            items.first(),
+                            db
+                        )
+
+                    ContainerViewSnapshotFactory.searchResultGroupBlock(
+                        items = items,
+                        categoryIconOfName = { name ->
+                            icons[name] ?: 0
+                        },
+                        resolvedCategoryName =
+                            resolved.displayName,
+                        resolvedCategoryIconRes =
+                            resolved.iconRes
+                    )
                 }
+
+            loadedSnapshot =
+                ContainerViewSnapshot(snapshotBlocks)
             resultsLoaded =
                 true
 
-            results
-                .sortedBy {
-                    it.boxName.lowercase()
-                }
-                .groupBy {
-                    it.boxId
-                }
-                .forEach { (_, items) ->
+            grouped.forEach { (_, items) ->
 
-                    addGroup(
-                        container,
-                        items,
-                        searchQuery,
-                        db
-                    )
-                }
+                addGroup(
+                    container,
+                    items,
+                    searchQuery,
+                    db
+                )
+            }
         }
     }
 
@@ -239,6 +258,43 @@ class SearchResultActivity : BaseActivity() {
         }
     }
 
+    private data class ResolvedCategory(
+        val entity:
+            com.example.boxmanagernew.data.local.entity.CategoryEntity?,
+        val displayName: String,
+        val iconRes: Int
+    )
+
+    private suspend fun resolveCategoryForGroup(
+        first: SearchResult,
+        db: com.example.boxmanagernew.data.local.AppDatabase
+    ): ResolvedCategory {
+
+        val category =
+            db.boxDao().getById(first.boxId)?.categoryId?.let { categoryId ->
+                db.categoryDao().getById(categoryId)
+            } ?: db.categoryDao().getCategoryByName(
+                first.categoryName.orEmpty()
+            )
+
+        val displayName =
+            category?.name
+                ?: first.categoryName.orEmpty().ifBlank { "-" }
+
+        val iconRes =
+            if (category != null) {
+                IconMapper.getIconRes(category.icon)
+            } else {
+                0
+            }
+
+        return ResolvedCategory(
+            entity = category,
+            displayName = displayName,
+            iconRes = iconRes
+        )
+    }
+
     private suspend fun addGroup(
         parent: LinearLayout,
         items: List<SearchResult>,
@@ -253,11 +309,10 @@ class SearchResultActivity : BaseActivity() {
             "[M9] GROUPS=1 ITEMS=${items.size}"
         )
 
-        val category =
-            db.boxDao().getById(first.boxId)?.categoryId?.let { categoryId ->
-                db.categoryDao().getById(categoryId)
-            } ?: db.categoryDao().getCategoryByName(
-                first.categoryName.orEmpty()
+        val resolved =
+            resolveCategoryForGroup(
+                first,
+                db
             )
 
         val card =
@@ -337,21 +392,14 @@ class SearchResultActivity : BaseActivity() {
 
         body.addView(top)
 
-        val iconRes =
-            if (category != null) {
-                IconMapper.getIconRes(category.icon)
-            } else {
-                0
-            }
-
         val categoryView =
             TextView(this)
 
-        if (iconRes != 0) {
+        if (resolved.iconRes != 0) {
 
             categoryView
                 .setCompoundDrawablesWithIntrinsicBounds(
-                    iconRes,
+                    resolved.iconRes,
                     0,
                     0,
                     0
@@ -359,7 +407,7 @@ class SearchResultActivity : BaseActivity() {
         }
 
         categoryView.text =
-            " ${category?.name ?: first.categoryName ?: "-"}"
+            " ${resolved.displayName}"
 
         body.addView(categoryView)
 

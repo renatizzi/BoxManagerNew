@@ -408,7 +408,8 @@ object DialogUtils {
         context: Context,
         defaultName: String,
         exists: (String) -> Boolean,
-        onSave: (fileName: String, overwrite: Boolean) -> Unit
+        onSave: (fileName: String, overwrite: Boolean) -> Unit,
+        onBrowseFolder: (() -> Unit)? = null
     ) {
 
         val pad =
@@ -474,12 +475,17 @@ object DialogUtils {
             }
         )
 
-        val dialog =
+        val builder =
             AlertDialog.Builder(context)
                 .setView(column)
                 .setPositiveButton("SI", null)
                 .setNegativeButton("NO", null)
-                .create()
+
+        if (onBrowseFolder != null) {
+            builder.setNeutralButton("Cartella", null)
+        }
+
+        val dialog = builder.create()
 
         dialog.setOnShowListener {
 
@@ -499,6 +505,15 @@ object DialogUtils {
                 AlertDialog.BUTTON_NEGATIVE
             ).setOnClickListener {
                 dialog.dismiss()
+            }
+
+            if (onBrowseFolder != null) {
+                dialog.getButton(
+                    AlertDialog.BUTTON_NEUTRAL
+                ).setOnClickListener {
+                    dialog.dismiss()
+                    onBrowseFolder.invoke()
+                }
             }
         }
 

@@ -7,12 +7,13 @@ import androidx.lifecycle.viewModelScope
 import com.example.boxmanagernew.data.local.AppDatabase
 import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
 import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
-import com.example.boxmanagernew.domain.family.FamilyCatalogCopy
+import com.example.boxmanagernew.domain.family.FamilyMergeCopy
 import com.example.boxmanagernew.family.config.FamilyInventoryConfiguration
 import com.example.boxmanagernew.family.inventory.FamilyInventoryApplier
 import com.example.boxmanagernew.family.inventory.FamilyInventoryMerger
 import com.example.boxmanagernew.family.inventory.FamilyInventoryReader
 import com.example.boxmanagernew.family.inventory.FamilyInventoryWriter
+import com.example.boxmanagernew.family.model.FamilyDeletion
 import com.example.boxmanagernew.family.model.FamilyInventoryBox
 import com.example.boxmanagernew.family.model.FamilyInventoryObject
 import com.example.boxmanagernew.family.model.FamilyInventorySnapshot
@@ -93,7 +94,7 @@ class FamilyInventoryViewModel(
             }
             _preview.value = null
             _message.value = buildString {
-                appendLine(FamilyCatalogCopy.MSG_RECEIVE_COMPLETED)
+                appendLine(FamilyMergeCopy.MSG_RECEIVE_COMPLETED)
                 append(current.summary.removePrefix("Anteprima unione inventario:\n"))
             }
         }
@@ -116,7 +117,8 @@ class FamilyInventoryViewModel(
             localObjects = localObjects,
             categoryNames = categoryNames,
             objectTypeNames = objectTypeNames,
-            locationNames = locations.map { it.name }
+            locationNames = locations.map { it.name },
+            localTombstones = database.familyDeletionTombstoneDao().getAllSync()
         )
 
         if (plan.blockingErrors.isNotEmpty()) {
@@ -145,6 +147,15 @@ class FamilyInventoryViewModel(
                     "${plan.objectConflicts.size} conflitti, " +
                     "${plan.objectsIgnored} invariati."
             )
+            val deletes = plan.boxesToDelete.size + plan.objectsToDelete.size
+            if (deletes > 0 || plan.deletionConflicts.isNotEmpty()) {
+                appendLine()
+                append(
+                    "Cancellazioni: ${plan.boxesToDelete.size} contenitori, " +
+                        "${plan.objectsToDelete.size} oggetti, " +
+                        "${plan.deletionConflicts.size} conflitti."
+                )
+            }
             if (plan.hasConflicts) {
                 appendLine()
                 append(
@@ -172,7 +183,8 @@ class FamilyInventoryViewModel(
                 name = box.name,
                 category = categories[box.categoryId].orEmpty(),
                 position = box.position,
-                lastModified = box.lastModified
+                lastModified = box.lastModified,
+                createdBy = box.createdBy
             )
         }
 
@@ -183,13 +195,24 @@ class FamilyInventoryViewModel(
                 typeName = objectTypes[obj.typeObjectId].orEmpty(),
                 description = obj.description,
                 quantity = obj.quantity,
-                lastModified = obj.lastModified
+                lastModified = obj.lastModified,
+                createdBy = obj.createdBy
+            )
+        }
+
+        val deletions = database.familyDeletionTombstoneDao().getAllSync().map { tombstone ->
+            FamilyDeletion(
+                entityType = tombstone.entityType,
+                permanentId = tombstone.permanentId,
+                deletedAt = tombstone.deletedAt,
+                deletedBy = tombstone.deletedBy
             )
         }
 
         return FamilyInventorySnapshot(
             boxes = inventoryBoxes,
-            objects = inventoryObjects
+            objects = inventoryObjects,
+            deletions = deletions
         )
     }
 }

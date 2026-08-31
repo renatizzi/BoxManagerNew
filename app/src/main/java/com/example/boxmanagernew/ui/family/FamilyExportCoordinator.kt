@@ -6,15 +6,24 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.boxmanagernew.backup.config.BackupConfiguration
 import com.example.boxmanagernew.ui.common.DialogUtils
 import com.example.boxmanagernew.ui.common.FeedbackUtils
+import com.example.boxmanagernew.storage.StorageFolderConfiguration
 import com.example.boxmanagernew.viewoutput.config.ViewOutputConfiguration
 import com.example.boxmanagernew.viewoutput.persist.ViewExportPersister
 
 /**
- * Export Catalogo/Inventario famiglia: riuso cartella Backup + box nome file standard.
+ * Export condivisione archivio: cartella dedicata + box nome file standard.
+ *
+ * Come Esporta/Backup ([salvataggio-file.mdc]):
+ * - Dopo il primo CONSENTI Android, riuso cartella memorizzata (KEY_FAMILY_SHARE)
+ *   senza riaprire il selettore né ripetere l'autorizzazione.
+ * - Nel box nome file, pulsante «Cartella» per cambiare destinazione in qualsiasi Invia.
  */
 class FamilyExportCoordinator(
     private val activity: AppCompatActivity,
-    private val persister: ViewExportPersister = ViewExportPersister(activity),
+    private val persister: ViewExportPersister = ViewExportPersister(
+        activity,
+        StorageFolderConfiguration.KEY_FAMILY_SHARE
+    ),
     private val onFolderInaccessible: () -> Unit,
     private val onExportCompleted: () -> Unit,
     private val launchFolderPicker: () -> Unit
@@ -42,7 +51,7 @@ class FamilyExportCoordinator(
     }
 
     fun onFolderChosen(uri: Uri) {
-        val bytes = pendingBytes ?: return
+        if (pendingBytes == null) return
 
         try {
             activity.contentResolver.takePersistableUriPermission(
@@ -79,6 +88,9 @@ class FamilyExportCoordinator(
             },
             onSave = { fileName, overwrite ->
                 writeExport(uri, bytes, fileName, overwrite)
+            },
+            onBrowseFolder = {
+                launchFolderPicker()
             }
         )
     }
@@ -102,7 +114,9 @@ class FamilyExportCoordinator(
                 FeedbackUtils.alert(activity)
                 onFolderInaccessible()
             }
-            result.success -> onExportCompleted()
+            result.success -> {
+                onExportCompleted()
+            }
             else -> {
                 FeedbackUtils.alert(activity)
                 onFolderInaccessible()

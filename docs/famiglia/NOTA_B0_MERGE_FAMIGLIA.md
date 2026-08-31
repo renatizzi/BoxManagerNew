@@ -1,8 +1,9 @@
 # Nota B0 — Merge famiglia (BoxManager)
 
-**Stato:** adottata (SI Renato, sessione continuità post Alpha 1.2)  
+**Stato:** adottata (SI Renato, sessione continuità post Alpha 1.2). **B4 CONVALIDATO** (SI Renato, 31/08/2026, build **1.3-famigliaB4.10**). **B5 CONVALIDATO** (SI Renato, 31/08/2026, build **1.3-famigliaB5.2**).  
 **Ambito:** solo build **flavor `famiglia`** (betatest locale). **Non** pubblicare su Play Store.  
-**Track Play / Alpha:** resta **1.2 (versionCode 3)** su `main` — non modificare il comportamento release Play da questa Nota.
+**Track Play / Alpha:** resta **1.2 (versionCode 3)** su `main` — non modificare il comportamento release Play da questa Nota.  
+**Sidecar B7:** `docs/Nota_Integrata_9.1_B7.docx` non riaperta (D0–B7 chiusi); il merge famiglia B4 resta documentato qui.
 
 ---
 
@@ -21,9 +22,9 @@ Contesto familiare:
 
 | Strato | Contenuto | Ciclo di vita |
 |--------|-----------|----------------|
-| A — Struttura famiglia | Categorie + posizioni | Setup una volta; modifiche eccezionali |
+| A — Tabelle condivise | Categorie + posizioni | Setup una volta; modifiche eccezionali |
 | B — Inventario | Contenitori + oggetti | Lavoro quotidiano offline per membro |
-| C — Unione | Pacchetto merge esplicito | Periodico (file / condivisione) |
+| C — Condivisione | Pacchetto esplicito (file) | Periodico (file / condivisione) |
 
 Niente archivio inventariale cloud unico (fuori scope; «no C» prodotto).  
 Cloud eventuale solo come canale di scambio file/catalogo — non in B1.
@@ -47,7 +48,7 @@ Cloud eventuale solo come canale di scambio file/catalogo — non in B1.
 | ID assente in archivio locale | **Insert** |
 | Stesso ID, payload diverso | **Update** se `lastModified` remoto > locale; altrimenti ignora o anteprima conflitto |
 | Stesso ID, identico | Ignora |
-| Cancellazione | **Non propagata** in automatico nella prima fetta; eventuale «rimuovi anche in famiglia» esplicito dopo |
+| Cancellazione | **Non propagata** in automatico nella prima fetta; **B5 famiglia:** ogni delete locale scrive tombstone e viaggia in `CANCELLAZIONI` al prossimo Invia Archivio (archivio unico, nessuna opzione «solo qui») |
 | Ripristino ZIP | Resta **replace wipe** — **vietato** come strumento di unione |
 
 ### 3.3 CSV import V1 attuale
@@ -57,9 +58,94 @@ Non sostituisce B2; non va usato come sync di aggiornamenti.
 
 ---
 
-## 4. Catalogo famiglia (B1 — questa fetta)
+## 4. Unione famiglia unificata (B3 — questa fetta)
 
 ### 4.1 Formato file
+
+```
+formato;BoxManager_FamilyMerge;1
+sezione;CATEGORIE
+nome;icona
+…
+sezione;POSIZIONI
+nome
+…
+sezione;CONTENITORI
+permanentId;nome;categoria;posizione;lastModified;createdBy
+…
+sezione;OGGETTI
+objectPermanentId;boxPermanentId;tipo;descrizione;quantita;lastModified;createdBy
+…
+sezione;CANCELLAZIONI
+entityType;permanentId;deletedAt;deletedBy
+…
+```
+
+- Separatore `;`, UTF-8 con BOM.
+- `createdBy` e sezione `CANCELLAZIONI` sono **opzionali in lettura** (file B4 senza colonna/sezione restano validi). Export B5+ li scrive sempre.
+- Nome file proposto (B3, storico): `Unione_Famiglia_ddMMyy_HHmm.csv`.
+- In **B4** i nomi proposti principali sono `Tabelle_Condivise_ddMMyy_HHmm.csv` e `Condivisione_Archivio_ddMMyy_HHmm.csv` (vedi §4bis).
+- Accetta anche file legacy B1 (`BoxManager_FamilyCatalog`) e B2 (`BoxManager_FamilyInventory`).
+
+### 4.2 Semantica import unione (B3 — sostituita da B4 per il catalogo)
+
+1. **Catalogo additivo** (B3): aggiunge categorie/posizioni mancanti; non cancella voci locali.
+2. **Guarigione da contenitori**: se un contenitore in arrivo referenzia categoria/posizione assente in locale, la voce viene **ricreata** prima dell'inventario (icona categoria = default).
+3. **Inventario per ID stabili**: insert / update / conflitto come B2. **B5:** delete esplicito via tombstone / sezione `CANCELLAZIONI` (non automatico dalla sola assenza nel file).
+
+In **B4** il catalogo additivo non è più applicato da Ricevi Archivio: usare **Invia/Ricevi tabelle condivise**.
+
+### 4.3 Flusso famiglia (B3)
+
+1. Ogni membro censisce offline contenitori e oggetti sul proprio telefono.
+2. Periodicamente un membro **Invia Archivio** → condivide il CSV.
+3. Gli altri: **Ricevi Archivio** → archivio domestico allineato senza rifare tutto il censimento da zero.
+
+---
+
+## 4bis. Condivisione archivio in due passi (B4 — questa fetta)
+
+Pagina unica **Condivisione Archivio**, due operazioni distinte.
+
+### 4bis.1 Tabelle condivise (categorie e posizioni)
+
+| Azione | File | Semantica |
+|--------|------|-----------|
+| Invia tabelle condivise | `Tabelle_Condivise_ddMMyy_HHmm.csv` (`BoxManager_FamilyCatalog`) | Esporta le tabelle locali (categorie + posizioni) |
+| Ricevi tabelle condivise | stesso formato | **Allinea/sostituisce** le tabelle locali al file condiviso (anteprima SI/NO). Blocca la rimozione se contenitori locali usano ancora quella categoria/posizione |
+
+- **Passo 1** (setup famiglia): condividere le tabelle.
+- **Passo 3** (ripristino): dopo reinstallazione o per correggere errori nelle tabelle locali.
+
+### 4bis.2 Archivio (contenitori e oggetti)
+
+| Azione | File | Semantica |
+|--------|------|-----------|
+| Invia Archivio | `Condivisione_Archivio_ddMMyy_HHmm.csv` (`BoxManager_FamilyMerge`) | Esporta tabelle di riferimento + inventario |
+| Ricevi Archivio | stesso formato | Unisce inventario per ID stabili. **Non** importa additivamente le categorie/posizioni del file: solo **guarigione** da contenitori in arrivo |
+
+- **Passo 2** (periodico): aggiornare contenitori e oggetti in famiglia.
+
+Nessun master/slave: il file nella cartella condivisa è il riferimento; ogni membro può inviare o ricevere.
+
+### 4bis.3 Pagina UI (B4.3)
+
+Pagina unica **Condivisione Archivio** (`FamilyCatalogActivity` / `activity_family_catalog.xml`), non «Unione famiglia».
+
+Due sezioni, griglia 2 colonne (Invia | Ricevi), card allineate a Utility:
+
+- `MaterialCardView` altezza `180dp`, `layout_margin` `6dp`, padding contenitore `16dp`
+- `cardCornerRadius` `16dp`, `cardElevation` `5dp`, sfondo `@color/elevated_surface`
+- testo centrato `20sp` bold (telefono e tablet)
+- nessuna card cartella/SFOGLIA: riuso cartella SAF (`KEY_FAMILY_SHARE`) dopo il primo CONSENTI (criterio Esporta/Backup); pulsante **Cartella** nel box nome file; box **Salvataggio completato.** con OK post-Invia (senza toast né messaggio inline)
+
+Terminologia in pagina: **tabelle condivise**, **tabelle locali**, **categorie e posizioni**. Non usare «struttura».
+
+---
+
+## 5. Catalogo famiglia legacy (B1)
+
+### 5.1 Formato file
 
 ```
 formato;BoxManager_FamilyCatalog;1
@@ -71,28 +157,21 @@ nome
 …
 ```
 
-- Separatore `;`, UTF-8 con BOM, allineato allo stile Import V1.
 - Nome file proposto: `Catalogo_Famiglia_ddMMyy_HHmm.csv`.
+- Ancora leggibile da Ricevi Archivio (solo tabelle condivise).
 
-### 4.2 Semantica import catalogo
+### 5.2 Semantica import catalogo
 
 - Aggiunge categorie/posizioni **mancanti** (match nome case-insensitive).
-- Duplicati: ignorati (nessun overwrite icona in B1).
+- Duplicati: ignorati (nessun overwrite icona).
 - Non cancella voci locali assenti dal file.
 - Non tocca contenitori/oggetti.
 
-### 4.3 Flusso Setup famiglia
-
-1. Un membro (o insieme) definisce categorie + luoghi sul proprio telefono.
-2. **Esporta catalogo famiglia** → condivide il CSV.
-3. Gli altri: **Importa catalogo famiglia** → struttura allineata.
-4. Poi ciascuno censisce contenitori/oggetti; unione inventario = B2 (Invia/Ricevi Inventario).
-
 ---
 
-## 5. Inventario famiglia (B2 — questa fetta)
+## 6. Inventario famiglia legacy (B2)
 
-### 5.1 Formato file
+### 6.1 Formato file
 
 ```
 formato;BoxManager_FamilyInventory;1
@@ -104,26 +183,25 @@ objectPermanentId;boxPermanentId;tipo;descrizione;quantita;lastModified
 …
 ```
 
-- Separatore `;`, UTF-8 con BOM, allineato allo stile Catalogo B1.
 - Nome file proposto: `Inventario_Famiglia_ddMMyy_HHmm.csv`.
-- Riferimento oggetto→contenitore via `boxPermanentId` (non id Room locale).
+- Ancora leggibile da Ricevi Archivio (solo inventario; categorie/posizioni guarite dai contenitori).
 
-### 5.2 Semantica import inventario
+### 6.2 Semantica import inventario
 
 - **Insert** se l'ID stabile non esiste in locale.
 - **Update** se stesso ID e `lastModified` remoto > locale.
 - **Conflitto** (anteprima, non sovrascritto) se payload diverso e remoto ≤ locale.
 - **Ignora** se identico.
-- **Delete** non propagato in B2.
-- Categoria/posizione devono esistere (allineate con Catalogo B1).
+- **Delete** non propagato.
+- Categoria/posizione devono esistere (in B3: guarigione automatica).
 
-### 5.3 UI (flavor `famiglia`)
+### 6.3 UI (flavor `famiglia`)
 
-Pagina **Catalogo Famiglia** → sezione **Inventario**: Invia Inventario / Ricevi Inventario, con anteprima SI/NO prima dell'applicazione.
+Pagina B2 (superata): Unione famiglia → Invia unione / Ricevi unione. In B4 la pagina è **Condivisione Archivio** (vedi §4bis).
 
 ---
 
-## 6. Attribuzione — nome utente già in app
+## 7. Attribuzione — nome utente già in app
 
 **Non introdurre un secondo “membro famiglia”.** Si riusa il **nome utente** già in Impostazioni (`SharedPreferences` chiave `username`), oggi usato come etichetta locale (e per il check admin Archivio completo).
 
@@ -138,18 +216,20 @@ Niente ACL: dopo il merge tutto resta dominio famiglia. Il nome serve a ripartir
 
 ---
 
-## 7. Fette
+## 8. Fette
 
 | Fetta | Deliverable | Play |
 |-------|-------------|------|
 | **B0** | Questa Nota + policy sync beta | No |
-| **B1** | Catalogo famiglia export/import + Guida + flavor | No |
-| **B2** | Pacchetto unione per ID (insert+update) + anteprima | No — **CONVALIDA in corso** |
-| **B3** | Origine = **nome utente** Impostazioni su contenitori/oggetti; delete esplicito propagabile | No |
+| **B1** | Catalogo famiglia export/import (legacy) + Guida + flavor | No |
+| **B2** | Pacchetto inventario per ID (legacy) + anteprima | No |
+| **B3** | Unione famiglia unificata (tabelle + inventario, guarigione) | No — superata da B4 |
+| **B4** | **Tabelle condivise** + **Archivio** separati; UI card = Utility (B4.3); Invia/Ricevi SAF e feedback OK (B4.10) | No — **CONVALIDATO** 31/08/2026 (SI Renato, build 1.3-famigliaB4.10) |
+| **B5** | Origine = **nome utente** Impostazioni su contenitori/oggetti; delete propagabile (tombstone + `CANCELLAZIONI`); T1 Backup Directory | No — **CONVALIDATO** 31/08/2026 (SI Renato, build **1.3-famigliaB5.2**) |
 
 ---
 
-## 8. Vincoli non negoziabili
+## 9. Vincoli non negoziabili
 
 - Flavor `famiglia`: `applicationId` `it.renatizzi.boxmanager.famiglia` — installazione **affiancata** a Play 1.2.
 - Nessun upload AAB/APK `famiglia` sulla Console Play.

@@ -137,7 +137,7 @@ class BackupActivity : BaseActivity() {
 
         val fileName = viewModel.fileName.value.orEmpty()
 
-        if (persister.folderDisplayName(uri) == null) {
+        if (persister.resolvedFolderDisplayName(uri) == null) {
             showBlocking(BackupConfiguration.MSG_FOLDER_INACCESSIBLE)
             return
         }
@@ -180,7 +180,7 @@ class BackupActivity : BaseActivity() {
         } catch (_: Exception) {
         }
 
-        val displayName = persister.folderDisplayName(uri)
+        val displayName = persister.resolvedFolderDisplayName(uri)
 
         if (displayName == null) {
             showBlocking(BackupConfiguration.MSG_FOLDER_INACCESSIBLE)
@@ -196,6 +196,7 @@ class BackupActivity : BaseActivity() {
             .putString(BackupConfiguration.PREFS_KEY_FOLDER_URI, uri.toString())
             .apply()
 
+        persister.persistFolderLabel(displayName)
         viewModel.setSelectedFolder(displayName)
     }
 
@@ -208,7 +209,7 @@ class BackupActivity : BaseActivity() {
             ?: return
 
         val uri = Uri.parse(saved)
-        val displayName = persister.folderDisplayName(uri) ?: return
+        val displayName = persister.resolvedFolderDisplayName(uri) ?: return
 
         selectedUri = uri
         viewModel.setSelectedFolder(displayName)

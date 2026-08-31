@@ -13,7 +13,8 @@ App Android per inventariare contenitori e oggetti (`applicationId` Play: `it.re
 
 Documentazione: [`docs/famiglia/`](docs/famiglia/).
 
-- Branch: `cursor/family-b-beta-75ee`
+- Branch base: `cursor/family-b-beta-75ee`
+- Branch B4 in corso: `cursor/family-unione-unificata-e5b5` (`1.3-famigliaB4.3`)
 - Flavor: **`famiglia`** → id `it.renatizzi.boxmanager.famiglia` (affiancabile a Play)
 - Policy sync bugfix 1.2: [`docs/famiglia/BETA_SYNC_POLICY.md`](docs/famiglia/BETA_SYNC_POLICY.md)
 - Nota prodotto: [`docs/famiglia/NOTA_B0_MERGE_FAMIGLIA.md`](docs/famiglia/NOTA_B0_MERGE_FAMIGLIA.md)

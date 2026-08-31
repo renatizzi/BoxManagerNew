@@ -7,5 +7,6 @@ data class Object(
     val description: String?,
     val quantity: Int?,
     val objectPermanentId: String = "",
-    val lastModified: Long = 0L
+    val lastModified: Long = 0L,
+    val createdBy: String = ""
 )

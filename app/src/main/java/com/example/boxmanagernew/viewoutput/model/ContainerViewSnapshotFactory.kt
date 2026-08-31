@@ -85,28 +85,47 @@ object ContainerViewSnapshotFactory {
                 row.boxId
             }
             .map { (_, items) ->
-                val first = items.first()
-                val category = first.categoryName.orEmpty()
-                ViewBoxBlock(
-                    name = first.boxName,
-                    category = category.ifBlank { "-" },
-                    position = first.boxPosition,
-                    categoryIconRes = categoryIconOfName(category),
-                    objects = items
-                        .sortedBy { row ->
-                            row.objectName.lowercase()
-                        }
-                        .map { row ->
-                            ViewObjectLine(
-                                name = row.objectName,
-                                description = row.description.orEmpty(),
-                                quantity = row.quantity?.toString().orEmpty()
-                            )
-                        }
+                searchResultGroupBlock(
+                    items,
+                    categoryIconOfName
                 )
             }
 
         return ContainerViewSnapshot(boxes)
+    }
+
+    fun searchResultGroupBlock(
+        items: List<SearchResult>,
+        categoryIconOfName: (String) -> Int,
+        resolvedCategoryName: String? = null,
+        resolvedCategoryIconRes: Int? = null
+    ): ViewBoxBlock {
+
+        val first = items.first()
+        val categoryLabel =
+            resolvedCategoryName
+                ?: first.categoryName.orEmpty().ifBlank { "-" }
+        val categoryIcon =
+            resolvedCategoryIconRes
+                ?: categoryIconOfName(categoryLabel)
+
+        return ViewBoxBlock(
+            name = first.boxName,
+            category = categoryLabel,
+            position = first.boxPosition,
+            categoryIconRes = categoryIcon,
+            objects = items
+                .sortedBy { row ->
+                    row.objectName.lowercase()
+                }
+                .map { row ->
+                    ViewObjectLine(
+                        name = row.objectName,
+                        description = row.description.orEmpty(),
+                        quantity = row.quantity?.toString().orEmpty()
+                    )
+                }
+        )
     }
 
     fun fromCategories(

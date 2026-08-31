@@ -8,7 +8,7 @@ import com.example.boxmanagernew.data.repository.CategoryRepositoryImpl
 import com.example.boxmanagernew.data.repository.LocationRepositoryImpl
 import com.example.boxmanagernew.domain.model.Category
 import com.example.boxmanagernew.domain.model.Location
-import com.example.boxmanagernew.domain.family.FamilyCatalogCopy
+import com.example.boxmanagernew.domain.family.FamilyMergeCopy
 import com.example.boxmanagernew.family.catalog.FamilyCatalogMerger
 import com.example.boxmanagernew.family.catalog.FamilyCatalogReader
 import com.example.boxmanagernew.family.catalog.FamilyCatalogWriter
@@ -88,7 +88,7 @@ class FamilyCatalogViewModel(
         }
 
         _message.value = buildString {
-            appendLine(FamilyCatalogCopy.MSG_RECEIVE_COMPLETED)
+            appendLine(FamilyMergeCopy.MSG_RECEIVE_COMPLETED)
             appendLine(
                 "Aggiunte: ${result.categoriesToInsert.size} categorie, " +
                     "${result.locationsToInsert.size} posizioni."

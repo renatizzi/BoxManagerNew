@@ -3,10 +3,12 @@ package com.example.boxmanagernew.family.inventory
 import androidx.room.withTransaction
 import com.example.boxmanagernew.data.local.AppDatabase
 import com.example.boxmanagernew.data.local.entity.BoxEntity
+import com.example.boxmanagernew.data.local.entity.FamilyDeletionTombstoneEntity
 import com.example.boxmanagernew.data.local.entity.ObjectEntity
 import com.example.boxmanagernew.data.local.entity.ObjectTypeEntity
 import com.example.boxmanagernew.domain.model.BoxPermanentId
 import com.example.boxmanagernew.domain.model.ObjectPermanentId
+import com.example.boxmanagernew.ui.common.CreatedByResolver
 import java.util.Locale
 
 /**
@@ -31,6 +33,13 @@ class FamilyInventoryApplier(
                 .associate { it.permanentId.trim() to it.id }
                 .toMutableMap()
 
+            for (clear in plan.tombstonesToClear) {
+                database.familyDeletionTombstoneDao().delete(
+                    clear.entityType,
+                    clear.permanentId
+                )
+            }
+
             for (box in plan.boxesToInsert) {
                 val category = categoryByKey[key(box.category)]
                     ?: error("category")
@@ -43,7 +52,8 @@ class FamilyInventoryApplier(
                         categoryId = category.id,
                         position = location.name,
                         lastModified = box.lastModified,
-                        permanentId = BoxPermanentId.fromStored(box.permanentId)
+                        permanentId = BoxPermanentId.fromStored(box.permanentId),
+                        createdBy = CreatedByResolver.normalize(box.createdBy)
                     )
                 ).toInt()
                 boxIdByPermanentId[box.permanentId.trim()] = id
@@ -62,7 +72,8 @@ class FamilyInventoryApplier(
                         categoryId = category.id,
                         position = location.name,
                         lastModified = box.lastModified,
-                        permanentId = BoxPermanentId.fromStored(box.permanentId)
+                        permanentId = BoxPermanentId.fromStored(box.permanentId),
+                        createdBy = update.preservedCreatedBy
                     )
                 )
                 boxIdByPermanentId[box.permanentId.trim()] = update.localId
@@ -87,8 +98,29 @@ class FamilyInventoryApplier(
                         objectPermanentId = ObjectPermanentId.fromStored(
                             obj.objectPermanentId
                         ),
-                        lastModified = obj.lastModified
+                        lastModified = obj.lastModified,
+                        createdBy = update.preservedCreatedBy
                     )
+                )
+            }
+
+            for (objectId in plan.objectsToDelete) {
+                database.objectDao().deleteById(objectId)
+            }
+            for (boxId in plan.boxesToDelete) {
+                database.boxDao().deleteById(boxId)
+            }
+
+            if (plan.tombstonesToUpsert.isNotEmpty()) {
+                database.familyDeletionTombstoneDao().upsertAll(
+                    plan.tombstonesToUpsert.map { deletion ->
+                        FamilyDeletionTombstoneEntity(
+                            entityType = deletion.entityType,
+                            permanentId = deletion.permanentId,
+                            deletedAt = deletion.deletedAt,
+                            deletedBy = CreatedByResolver.normalize(deletion.deletedBy)
+                        )
+                    }
                 )
             }
         }
@@ -110,7 +142,8 @@ class FamilyInventoryApplier(
                 objectPermanentId = ObjectPermanentId.fromStored(
                     obj.objectPermanentId
                 ),
-                lastModified = obj.lastModified
+                lastModified = obj.lastModified,
+                createdBy = CreatedByResolver.normalize(obj.createdBy)
             )
         )
     }

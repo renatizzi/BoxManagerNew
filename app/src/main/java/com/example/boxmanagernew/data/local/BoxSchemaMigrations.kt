@@ -66,4 +66,32 @@ object BoxSchemaMigrations {
             )
         }
     }
+
+    val MIGRATION_7_8 = object : Migration(7, 8) {
+
+        override fun migrate(db: SupportSQLiteDatabase) {
+            db.execSQL(
+                "ALTER TABLE box ADD COLUMN createdBy TEXT NOT NULL DEFAULT ''"
+            )
+            db.execSQL(
+                "ALTER TABLE objects ADD COLUMN createdBy TEXT NOT NULL DEFAULT ''"
+            )
+            db.execSQL(
+                """
+                CREATE TABLE IF NOT EXISTS family_deletion_tombstone (
+                    entityType TEXT NOT NULL,
+                    permanentId TEXT NOT NULL,
+                    deletedAt INTEGER NOT NULL,
+                    deletedBy TEXT NOT NULL,
+                    PRIMARY KEY(entityType, permanentId)
+                )
+                """.trimIndent()
+            )
+            db.execSQL(
+                "CREATE UNIQUE INDEX IF NOT EXISTS " +
+                    "index_family_deletion_tombstone_entityType_permanentId " +
+                    "ON family_deletion_tombstone(entityType, permanentId)"
+            )
+        }
+    }
 }
