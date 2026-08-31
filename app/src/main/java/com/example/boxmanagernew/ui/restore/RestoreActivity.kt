@@ -208,7 +208,7 @@ class RestoreActivity : BaseActivity() {
             return
         }
 
-        if (persister.folderDisplayName(folderUri!!) == null) {
+        if (persister.resolvedFolderDisplayName(folderUri!!) == null) {
             showBlocking(BackupConfiguration.MSG_FOLDER_INACCESSIBLE)
             pendingRestoreAfterFolder = true
             folderPicker.launch(null)
@@ -222,7 +222,7 @@ class RestoreActivity : BaseActivity() {
 
         val uri = folderUri ?: return
 
-        if (persister.folderDisplayName(uri) == null) {
+        if (persister.resolvedFolderDisplayName(uri) == null) {
             showBlocking(BackupConfiguration.MSG_FOLDER_INACCESSIBLE)
             return
         }
@@ -278,7 +278,7 @@ class RestoreActivity : BaseActivity() {
         } catch (_: Exception) {
         }
 
-        val displayName = persister.folderDisplayName(uri)
+        val displayName = persister.resolvedFolderDisplayName(uri)
 
         if (displayName == null) {
             showBlocking(BackupConfiguration.MSG_FOLDER_INACCESSIBLE)
@@ -295,6 +295,7 @@ class RestoreActivity : BaseActivity() {
             .putString(BackupConfiguration.PREFS_KEY_FOLDER_URI, uri.toString())
             .apply()
 
+        persister.persistFolderLabel(displayName)
         showFolderName(displayName)
         refreshFileList()
 
@@ -310,7 +311,7 @@ class RestoreActivity : BaseActivity() {
             ?: return
 
         val uri = Uri.parse(saved)
-        val displayName = persister.folderDisplayName(uri) ?: return
+        val displayName = persister.resolvedFolderDisplayName(uri) ?: return
 
         folderUri = uri
         showFolderName(displayName)
@@ -321,7 +322,7 @@ class RestoreActivity : BaseActivity() {
 
         val uri = folderUri
 
-        if (uri == null || persister.folderDisplayName(uri) == null) {
+        if (uri == null || persister.resolvedFolderDisplayName(uri) == null) {
             fileAdapter.submit(emptyList(), selectedFileUri)
             tvEmptyFiles.visibility = View.GONE
             return

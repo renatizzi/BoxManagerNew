@@ -30,7 +30,7 @@ class ViewExportPersister(
             return null
         }
 
-        return SafFolderLabel.of(treeUri, tree)
+        return SafFolderLabel.of(context, treeUri, tree)
     }
 
     fun rememberedFolderUri(): Uri? {

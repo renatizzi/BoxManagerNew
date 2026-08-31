@@ -31,7 +31,39 @@ class BackupZipPersister(
             return null
         }
 
-        return SafFolderLabel.of(treeUri, tree)
+        return SafFolderLabel.of(context, treeUri, tree)
+    }
+
+    fun rememberedFolderLabel(): String? {
+        return context.getSharedPreferences(
+            BackupConfiguration.PREFS_NAME,
+            Context.MODE_PRIVATE
+        ).getString(BackupConfiguration.PREFS_KEY_FOLDER_LABEL, null)
+            ?.trim()
+            ?.takeIf { SafFolderLabel.isReadableLabel(it) }
+    }
+
+    fun persistFolderLabel(label: String) {
+        val trimmed = label.trim()
+        if (!SafFolderLabel.isReadableLabel(trimmed)) {
+            return
+        }
+        context.getSharedPreferences(
+            BackupConfiguration.PREFS_NAME,
+            Context.MODE_PRIVATE
+        ).edit()
+            .putString(BackupConfiguration.PREFS_KEY_FOLDER_LABEL, trimmed)
+            .apply()
+    }
+
+    fun resolvedFolderDisplayName(treeUri: Uri): String? {
+        val live = folderDisplayName(treeUri)
+        if (live != null && SafFolderLabel.isReadableLabel(live)) {
+            return live
+        }
+        return rememberedFolderLabel()
+            ?: live?.takeIf { it != SafFolderLabel.DEFAULT_LABEL }
+            ?: live
     }
 
     data class ZipFileItem(
@@ -133,7 +165,7 @@ class BackupZipPersister(
             return Result(
                 success = true,
                 fileName = created.name ?: zipName,
-                folderName = SafFolderLabel.of(treeUri, tree),
+                folderName = resolvedFolderDisplayName(treeUri).orEmpty(),
                 sizeBytes = size
             )
 

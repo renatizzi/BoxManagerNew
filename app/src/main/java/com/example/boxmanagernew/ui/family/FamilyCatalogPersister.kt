@@ -58,7 +58,7 @@ class FamilyCatalogPersister(
             return Result(
                 success = true,
                 fileName = fileName,
-                folderName = SafFolderLabel.of(treeUri, tree)
+                folderName = SafFolderLabel.of(context, treeUri, tree)
             )
         } catch (_: Exception) {
             created?.delete()

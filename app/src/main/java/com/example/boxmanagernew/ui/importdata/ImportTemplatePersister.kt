@@ -27,7 +27,7 @@ class ImportTemplatePersister(
             return null
         }
 
-        return SafFolderLabel.of(treeUri, tree)
+        return SafFolderLabel.of(context, treeUri, tree)
     }
 
     fun existingFile(
@@ -93,7 +93,7 @@ class ImportTemplatePersister(
             return Result(
                 success = true,
                 fileName = created.name ?: ImportConfiguration.FILE_NAME,
-                folderName = SafFolderLabel.of(treeUri, tree)
+                folderName = SafFolderLabel.of(context, treeUri, tree)
             )
 
         } catch (_: Exception) {
