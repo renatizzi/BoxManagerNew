@@ -1,6 +1,6 @@
 # Promemoria — interventi trasversali (famiglia + Play)
 
-**Aggiornato:** 31/08/2026 — build **1.3-famigliaB5.3** (fix T2); assessment e strategia in [ASSESSMENT_CORRETTIVI.md](ASSESSMENT_CORRETTIVI.md) e [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md).
+**Aggiornato:** 31/08/2026 — SI Renato filone **correttivi**; build **1.3-famigliaB5.3**; ingresso sessione → [PROMPT_CONTINUITA_CORRETTIVI.md](PROMPT_CONTINUITA_CORRETTIVI.md).
 
 Elenco di fix/igiene **non legati a una sola fetta**, da affrontare quando si tocca l’area o in un giro dedicato (B7 igiene / sync Play).
 

@@ -12,7 +12,7 @@ Documento di assessment (punto 1 del piano Renato). Per la strategia operativa v
 
 | Priorità | Voci | Azione |
 |----------|------|--------|
-| **P0** | T1 chiuso; T2 fix pronto; T3 non recuperato | Ritest T2 su device → SI; T3 chiuso fino a nuova segnalazione |
+| **P0** | T1 chiuso; T2 fix B5.3; T3 chiuso | Ritest T2 → SI; poi P1 |
 | **P1** | Igiene salvataggio file (5 punti) | Giro dedicato **dopo** chiusura P0; non blocca test Play |
 | **P2** | Sync bugfix Play ↔ famiglia | Processo continuo (vedi strategia) |
 | **Filone M** | Multilingua / Scelta lingua | **Fuori** da questo assessment — pianificazione separata |
@@ -75,6 +75,7 @@ Criterio di riferimento: nome datato, riuso cartella SAF, box nome + SI/NO; `Mod
 
 ## Ordine di lavoro concordato
 
-1. **Questo assessment** (fatto).
-2. **Sistemare versione famiglia** — merge T2, bump **1.3-famigliaB5.3**, ritest.
-3. **Strategia unificazione** — test Play = solo bug tester; famiglia = correttivi P0 + merge da `main`.
+1. **Assessment** — fatto (SI Renato).
+2. **Versione famiglia B5.3** — fatto; merge T2 su `cursor/family-unione-unificata-e5b5`.
+3. **Strategia unificazione** — documentata.
+4. **Prossima sessione** — [PROMPT_CONTINUITA_CORRETTIVI.md](PROMPT_CONTINUITA_CORRETTIVI.md): chiusura T2 (SI device), P1, sync Play.
