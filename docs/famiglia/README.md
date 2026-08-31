@@ -9,7 +9,7 @@
 | [DUE_APP_CINQUE_TELEFONI.md](DUE_APP_CINQUE_TELEFONI.md) | Come far convivere Play 1.2 e beta in famiglia |
 | [INSTALLA_SENZA_RUN.md](INSTALLA_SENZA_RUN.md) | Se Run / Terminale non funzionano (script `.bat`) |
 
-**Fetta corrente sul branch:** **B4 CONVALIDATO** (1.3-famigliaB4.10) → **B5** (createdBy + delete esplicito).
+**Fetta corrente sul branch:** **B5 in corso** (`1.3-famigliaB5.0`) — createdBy + delete esplicito. B4 CONVALIDATO (1.3-famigliaB4.10).
 
 ## Aggiornare la beta (solo Renato)
 

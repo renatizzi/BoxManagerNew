@@ -15,7 +15,7 @@ Correggere bug della **1.2** (Play / Alpha) **senza** far divergere la betatest 
 Su questi branch esistono due product flavor:
 
 - **`play`** — stessi `applicationId` / versionCode 3 / versionName 1.2; `FAMILY_BETA=false` (verifica regressione locale).
-- **`famiglia`** — `applicationId` `…boxmanager.famiglia`; versionName `1.3-famigliaB4.10` (versionCode 1318) su `cursor/family-unione-unificata-e5b5`; `FAMILY_BETA=true`.
+- **`famiglia`** — `applicationId` `…boxmanager.famiglia`; versionName `1.3-famigliaB5.0` (versionCode 1319) su branch B5; `FAMILY_BETA=true`.
 
 ## Regola d’oro
 
