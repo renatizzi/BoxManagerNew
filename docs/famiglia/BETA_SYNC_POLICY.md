@@ -10,12 +10,12 @@ Correggere bug della **1.2** (Play / Alpha) **senza** far divergere la betatest 
 |---------|-----------------|-----------|
 | Play 1.2 | branch `main` → `assemblePlayRelease` (o release storica senza flavor se si builda solo `main` pulito) | Play Store / Alpha |
 | Beta famiglia (base B2.2) | branch `cursor/family-b-beta-75ee` → `assembleFamigliaRelease` (o `famigliaDebug`) | Solo sideload familiare |
-| Beta famiglia (B4 in corso) | branch `cursor/family-unione-unificata-e5b5` → `assembleFamigliaDebug` | Solo sideload; PR verso `family-b-beta-75ee` |
+| Beta famiglia (B4 CONVALIDATO → B5) | branch `cursor/family-unione-unificata-e5b5` → `assembleFamigliaDebug` | Solo sideload; PR verso `family-b-beta-75ee` |
 
 Su questi branch esistono due product flavor:
 
 - **`play`** — stessi `applicationId` / versionCode 3 / versionName 1.2; `FAMILY_BETA=false` (verifica regressione locale).
-- **`famiglia`** — `applicationId` `…boxmanager.famiglia`; versionName `1.3-famigliaB4.3` (versionCode 1311) su `cursor/family-unione-unificata-e5b5`; `FAMILY_BETA=true`.
+- **`famiglia`** — `applicationId` `…boxmanager.famiglia`; versionName `1.3-famigliaB4.10` (versionCode 1318) su `cursor/family-unione-unificata-e5b5`; `FAMILY_BETA=true`.
 
 ## Regola d’oro
 

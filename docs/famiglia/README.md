@@ -3,11 +3,13 @@
 | Documento | Contenuto |
 |-----------|-----------|
 | [NOTA_B0_MERGE_FAMIGLIA.md](NOTA_B0_MERGE_FAMIGLIA.md) | Modello prodotto e regole merge |
+| [PROMEMORIA_INTERVENTI_TRASVERSALI.md](PROMEMORIA_INTERVENTI_TRASVERSALI.md) | Fix trasversali (Backup Directory T1, igiene file, sync) |
+| [PROMPT_CONTINUITA_B5.md](PROMPT_CONTINUITA_B5.md) | Prompt copia-incolla per sessione B5 |
 | [BETA_SYNC_POLICY.md](BETA_SYNC_POLICY.md) | Allineamento bugfix 1.2 ↔ beta famiglia |
 | [DUE_APP_CINQUE_TELEFONI.md](DUE_APP_CINQUE_TELEFONI.md) | Come far convivere Play 1.2 e beta in famiglia |
 | [INSTALLA_SENZA_RUN.md](INSTALLA_SENZA_RUN.md) | Se Run / Terminale non funzionano (script `.bat`) |
 
-**Fetta corrente sul branch:** B0–B3 (superate) + **B4** (tabelle condivise + archivio; **CONVALIDA in corso**, non CONVALIDATO). UI pulsanti = stile Utility da `1.3-famigliaB4.3`.
+**Fetta corrente sul branch:** **B4 CONVALIDATO** (1.3-famigliaB4.10) → **B5** (createdBy + delete esplicito).
 
 ## Aggiornare la beta (solo Renato)
 
