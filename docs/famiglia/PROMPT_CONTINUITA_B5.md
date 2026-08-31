@@ -8,23 +8,18 @@
 
 | Voce | Valore |
 |------|--------|
-| **B4** | **CONVALIDATO** (SI Renato). Ultima build verificata: **1.3-famigliaB4.10** (1318) |
-| **Branch** | `cursor/family-unione-unificata-e5b5` → PR #8 → base `cursor/family-b-beta-75ee` |
-| **Flavor** | solo `famiglia` (`it.renatizzi.boxmanager.famiglia`) |
-| **Play** | resta **1.2** (versionCode 3) su `main` — non pubblicare famiglia su Play |
+| **B5** | **CONVALIDATO** (SI Renato). Build: **1.3-famigliaB5.2** (1321) |
+| **B4** | **CONVALIDATO** (1.3-famigliaB4.10) |
+| **Branch** | `cursor/family-b5-createdby-delete-7b83` → PR #9 |
+| **Flavor** | solo `famiglia` |
+| **Play** | resta **1.2** su `main` |
 
-### B4 chiuso — cosa funziona
+### B5 chiuso — deliverable
 
-- Pagina **Condivisione Archivio**: UI card = Utility; testi B4.5; layout telefono B4.4.
-- **Invia** (tabelle + archivio): riuso cartella SAF dopo primo CONSENTI; pulsante **Cartella** nel box nome; box **Salvataggio completato.** + OK post-export.
-- **Ricevi**: anteprima SI/NO; merge per ID stabili.
+- `createdBy` su contenitori/oggetti (CSV retrocompatibile)
+- Delete familiare automatica (tombstone + `CANCELLAZIONI`)
+- **T1** Backup Directory leggibile (B5.2)
 - Test: `./gradlew :app:testFamigliaDebugUnitTest --tests "com.example.boxmanagernew.family.*"`
-
-### Interventi trasversali aperti
-
-Leggere [PROMEMORIA_INTERVENTI_TRASVERSALI.md](PROMEMORIA_INTERVENTI_TRASVERSALI.md):
-
-- **T1 (P0):** Backup Archivio — campo «Backup Directory» con URI illeggibile / feedback toast → sistemare in B5 o giro igiene dedicato.
 
 ---
 
