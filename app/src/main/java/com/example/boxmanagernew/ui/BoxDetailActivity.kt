@@ -26,6 +26,7 @@ import com.example.boxmanagernew.ui.categories.CategorySpinnerAdapter
 import com.example.boxmanagernew.ui.categories.CategoryViewModel
 import com.example.boxmanagernew.ui.categories.IconMapper
 import com.example.boxmanagernew.ui.common.BaseActivity
+import com.example.boxmanagernew.ui.common.CreatedByResolver
 import com.example.boxmanagernew.ui.common.DialogUtils
 import com.example.boxmanagernew.ui.common.FeedbackUtils
 import com.example.boxmanagernew.ui.common.UiUtils
@@ -896,7 +897,8 @@ class BoxDetailActivity : BaseActivity() {
                         boxName,
                         category.id,
                         dialogViews.position.selectedItem
-                            .toString()
+                            .toString(),
+                        CreatedByResolver.current(this@BoxDetailActivity)
                     )
 
                 objectViewModel.moveObjects(
@@ -1137,7 +1139,8 @@ class BoxDetailActivity : BaseActivity() {
                         .ifBlank { null },
                     dialogViews.quantity.text
                         .toString()
-                        .toIntOrNull()
+                        .toIntOrNull(),
+                    CreatedByResolver.current(this@BoxDetailActivity)
                 )
 
                 dialog.dismiss()

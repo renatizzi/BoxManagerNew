@@ -25,5 +25,7 @@ data class ObjectEntity(
 
     val objectPermanentId: String,
 
-    val lastModified: Long
+    val lastModified: Long,
+
+    val createdBy: String = ""
 )

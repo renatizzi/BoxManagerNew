@@ -100,7 +100,12 @@ class BackupDeserializer {
                     } else {
                         null
                     }
-                )
+                ),
+                createdBy = if (item.has("createdBy") && !item.isNull("createdBy")) {
+                    item.getString("createdBy")
+                } else {
+                    ""
+                }
             )
         }
     }
@@ -134,6 +139,11 @@ class BackupDeserializer {
                     item.getLong("lastModified")
                 } else {
                     now
+                },
+                createdBy = if (item.has("createdBy") && !item.isNull("createdBy")) {
+                    item.getString("createdBy")
+                } else {
+                    ""
                 }
             )
         }

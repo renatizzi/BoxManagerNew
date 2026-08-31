@@ -1,12 +1,14 @@
 package com.example.boxmanagernew.family.inventory
 
 import com.example.boxmanagernew.family.config.FamilyInventoryConfiguration
+import com.example.boxmanagernew.family.model.FamilyDeletion
 import com.example.boxmanagernew.family.model.FamilyInventoryBox
 import com.example.boxmanagernew.family.model.FamilyInventoryObject
 import com.example.boxmanagernew.family.model.FamilyInventorySnapshot
 
 /**
- * Serializza l'inventario famiglia nel tracciato ufficiale B2.
+ * Serializza l'inventario famiglia nel tracciato ufficiale B2/B5.
+ * createdBy e CANCELLAZIONI sono colonne/sezioni opzionali retrocompatibili.
  */
 object FamilyInventoryWriter {
 
@@ -23,7 +25,8 @@ object FamilyInventoryWriter {
             FamilyInventoryConfiguration.COL_NAME,
             FamilyInventoryConfiguration.COL_CATEGORY,
             FamilyInventoryConfiguration.COL_POSITION,
-            FamilyInventoryConfiguration.COL_LAST_MODIFIED
+            FamilyInventoryConfiguration.COL_LAST_MODIFIED,
+            FamilyInventoryConfiguration.COL_CREATED_BY
         ).joinToString(sep)
         for (box in snapshot.boxes) {
             if (box.permanentId.trim().isEmpty()) {
@@ -34,7 +37,8 @@ object FamilyInventoryWriter {
                 escape(box.name),
                 escape(box.category),
                 escape(box.position),
-                box.lastModified.toString()
+                box.lastModified.toString(),
+                escape(box.createdBy)
             ).joinToString(sep)
         }
 
@@ -45,7 +49,8 @@ object FamilyInventoryWriter {
             FamilyInventoryConfiguration.COL_TYPE,
             FamilyInventoryConfiguration.COL_DESCRIPTION,
             FamilyInventoryConfiguration.COL_QUANTITY,
-            FamilyInventoryConfiguration.COL_LAST_MODIFIED
+            FamilyInventoryConfiguration.COL_LAST_MODIFIED,
+            FamilyInventoryConfiguration.COL_CREATED_BY
         ).joinToString(sep)
         for (obj in snapshot.objects) {
             if (
@@ -60,7 +65,27 @@ object FamilyInventoryWriter {
                 escape(obj.typeName.ifBlank { FamilyInventoryReader.DEFAULT_OBJECT_TYPE }),
                 escape(obj.description.orEmpty()),
                 obj.quantity?.toString().orEmpty(),
-                obj.lastModified.toString()
+                obj.lastModified.toString(),
+                escape(obj.createdBy)
+            ).joinToString(sep)
+        }
+
+        lines += "sezione$sep${FamilyInventoryConfiguration.SECTION_DELETIONS}"
+        lines += listOf(
+            FamilyInventoryConfiguration.COL_ENTITY_TYPE,
+            FamilyInventoryConfiguration.COL_PERMANENT_ID,
+            FamilyInventoryConfiguration.COL_DELETED_AT,
+            FamilyInventoryConfiguration.COL_DELETED_BY
+        ).joinToString(sep)
+        for (deletion in snapshot.deletions) {
+            if (deletion.permanentId.trim().isEmpty()) {
+                continue
+            }
+            lines += listOf(
+                escape(deletion.entityType),
+                escape(deletion.permanentId),
+                deletion.deletedAt.toString(),
+                escape(deletion.deletedBy)
             ).joinToString(sep)
         }
 

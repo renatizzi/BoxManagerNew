@@ -142,7 +142,8 @@ class BoxViewModel(
     fun addBox(
         name: String,
         categoryId: Int,
-        position: String
+        position: String,
+        createdBy: String = ""
     ) {
 
         viewModelScope.launch {
@@ -154,7 +155,8 @@ class BoxViewModel(
                     null,
                     categoryId,
                     position,
-                    System.currentTimeMillis()
+                    System.currentTimeMillis(),
+                    createdBy = createdBy
                 )
             )
         }
@@ -163,7 +165,8 @@ class BoxViewModel(
     suspend fun addBoxAndReturnId(
         name: String,
         categoryId: Int,
-        position: String
+        position: String,
+        createdBy: String = ""
     ): Int {
 
         return repository.insertBox(
@@ -173,7 +176,8 @@ class BoxViewModel(
                 null,
                 categoryId,
                 position,
-                System.currentTimeMillis()
+                System.currentTimeMillis(),
+                createdBy = createdBy
             )
         ).toInt()
     }

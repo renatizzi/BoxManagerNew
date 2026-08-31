@@ -29,6 +29,7 @@ import com.example.boxmanagernew.domain.search.SearchConfiguration
 import com.example.boxmanagernew.ui.boxdetail.BoxDetailActivity
 import com.example.boxmanagernew.ui.categories.IconMapper
 import com.example.boxmanagernew.ui.common.BaseActivity
+import com.example.boxmanagernew.ui.common.CreatedByResolver
 import com.example.boxmanagernew.ui.common.DialogUtils
 import com.example.boxmanagernew.ui.common.FeedbackUtils
 import com.example.boxmanagernew.ui.common.UiUtils
@@ -1326,7 +1327,8 @@ class MainActivity : BaseActivity() {
                             boxName,
                             category.id,
                             (dialogViews.position.selectedItem as Location)
-                                .name
+                                .name,
+                            CreatedByResolver.current(this@MainActivity)
                         )
 
                     moveObjectsAndDeleteBoxes(
@@ -1415,7 +1417,8 @@ class MainActivity : BaseActivity() {
                     n,
                     cat.id,
                     (dialogViews.position.selectedItem as Location)
-                        .name
+                        .name,
+                    CreatedByResolver.current(this@MainActivity)
                 )
             }
         )

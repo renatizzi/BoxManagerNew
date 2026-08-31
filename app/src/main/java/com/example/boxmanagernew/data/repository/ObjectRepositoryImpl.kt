@@ -35,7 +35,10 @@ class ObjectRepositoryImpl(
                         it.typeObjectId,
                         it.boxId,
                         it.description,
-                        it.quantity
+                        it.quantity,
+                        it.objectPermanentId,
+                        it.lastModified,
+                        it.createdBy
                     )
                 }
             }
@@ -56,7 +59,10 @@ class ObjectRepositoryImpl(
                             it.typeObjectId,
                             it.boxId,
                             it.description,
-                            it.quantity
+                            it.quantity,
+                            it.objectPermanentId,
+                            it.lastModified,
+                            it.createdBy
                         ),
                         it.typeName
                     )
@@ -173,7 +179,8 @@ class ObjectRepositoryImpl(
                 it.description,
                 it.quantity,
                 it.objectPermanentId,
-                it.lastModified
+                it.lastModified,
+                it.createdBy
             )
         }
     }
@@ -182,7 +189,8 @@ class ObjectRepositoryImpl(
         name:String,
         boxId:Int,
         description:String?,
-        quantity:Int?
+        quantity:Int?,
+        createdBy: String = ""
     ){
 
         var type =
@@ -210,7 +218,8 @@ class ObjectRepositoryImpl(
                 description,
                 quantity,
                 objectPermanentId = ObjectPermanentId.generate(),
-                lastModified = now
+                lastModified = now,
+                createdBy = createdBy.trim()
             )
         )
     }
@@ -251,7 +260,8 @@ class ObjectRepositoryImpl(
                 objectPermanentId = ObjectPermanentId.fromStored(
                     existing?.objectPermanentId
                 ),
-                lastModified = now
+                lastModified = now,
+                createdBy = existing?.createdBy.orEmpty()
             )
         )
     }

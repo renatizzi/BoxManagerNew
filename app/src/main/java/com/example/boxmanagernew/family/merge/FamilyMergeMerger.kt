@@ -44,7 +44,9 @@ class FamilyMergeMerger(
         localObjects: List<ObjectEntity>,
         existingCategoryNames: Collection<String>,
         existingLocationNames: Collection<String>,
-        objectTypeNames: Map<Int, String>
+        objectTypeNames: Map<Int, String>,
+        localTombstones: List<com.example.boxmanagernew.data.local.entity.FamilyDeletionTombstoneEntity> =
+            emptyList()
     ): Plan {
         val categoryKeys =
             existingCategoryNames.map { key(it) }.toMutableSet()
@@ -92,7 +94,8 @@ class FamilyMergeMerger(
             localObjects = localObjects,
             categoryNames = projectedCategoryNames,
             objectTypeNames = objectTypeNames,
-            locationNames = projectedLocationNames
+            locationNames = projectedLocationNames,
+            localTombstones = localTombstones
         )
 
         return Plan(

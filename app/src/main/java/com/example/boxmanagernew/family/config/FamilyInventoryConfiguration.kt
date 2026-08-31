@@ -46,6 +46,16 @@ object FamilyInventoryConfiguration {
 
     const val COL_LAST_MODIFIED = "lastModified"
 
+    const val COL_CREATED_BY = "createdBy"
+
+    const val SECTION_DELETIONS = "CANCELLAZIONI"
+
+    const val COL_ENTITY_TYPE = "entityType"
+
+    const val COL_DELETED_AT = "deletedAt"
+
+    const val COL_DELETED_BY = "deletedBy"
+
     val UTF8_BOM: ByteArray = byteArrayOf(
         0xEF.toByte(),
         0xBB.toByte(),

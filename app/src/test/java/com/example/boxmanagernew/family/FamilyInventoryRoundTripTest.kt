@@ -6,6 +6,7 @@ import com.example.boxmanagernew.family.config.FamilyInventoryConfiguration
 import com.example.boxmanagernew.family.inventory.FamilyInventoryMerger
 import com.example.boxmanagernew.family.inventory.FamilyInventoryReader
 import com.example.boxmanagernew.family.inventory.FamilyInventoryWriter
+import com.example.boxmanagernew.family.model.FamilyDeletion
 import com.example.boxmanagernew.family.model.FamilyInventoryBox
 import com.example.boxmanagernew.family.model.FamilyInventoryObject
 import com.example.boxmanagernew.family.model.FamilyInventorySnapshot
@@ -24,7 +25,8 @@ class FamilyInventoryRoundTripTest {
                     name = "Scatola A",
                     category = "Hobby",
                     position = "Garage",
-                    lastModified = 1000L
+                    lastModified = 1000L,
+                    createdBy = "Marco"
                 )
             ),
             objects = listOf(
@@ -34,7 +36,16 @@ class FamilyInventoryRoundTripTest {
                     typeName = "Trapano",
                     description = "Rosso",
                     quantity = 1,
-                    lastModified = 2000L
+                    lastModified = 2000L,
+                    createdBy = "Anna"
+                )
+            ),
+            deletions = listOf(
+                FamilyDeletion(
+                    entityType = "OBJECT",
+                    permanentId = "obj-gone",
+                    deletedAt = 3000L,
+                    deletedBy = "Marco"
                 )
             )
         )
@@ -46,9 +57,15 @@ class FamilyInventoryRoundTripTest {
         val ok = parsed as FamilyInventoryReader.Result.Ok
         assertEquals(1, ok.snapshot.boxes.size)
         assertEquals("Scatola A", ok.snapshot.boxes[0].name)
+        assertEquals("Marco", ok.snapshot.boxes[0].createdBy)
         assertEquals(1, ok.snapshot.objects.size)
         assertEquals("Trapano", ok.snapshot.objects[0].typeName)
+        assertEquals("Anna", ok.snapshot.objects[0].createdBy)
+        assertEquals(1, ok.snapshot.deletions.size)
+        assertEquals("obj-gone", ok.snapshot.deletions[0].permanentId)
         assertTrue(csv.contains(FamilyInventoryConfiguration.FORMAT_NAME))
+        assertTrue(csv.contains(FamilyInventoryConfiguration.COL_CREATED_BY))
+        assertTrue(csv.contains(FamilyInventoryConfiguration.SECTION_DELETIONS))
     }
 
     @Test
@@ -238,5 +255,145 @@ class FamilyInventoryRoundTripTest {
             "formato;BoxManager_FamilyCatalog;1\n"
         )
         assertTrue(result is FamilyInventoryReader.Result.Error)
+    }
+
+    @Test
+    fun reader_acceptsLegacyWithoutCreatedBy() {
+        val legacy = buildString {
+            append("formato;")
+            append(FamilyInventoryConfiguration.FORMAT_NAME)
+            append(";1\n")
+            append("sezione;CONTENITORI\n")
+            append("permanentId;nome;categoria;posizione;lastModified\n")
+            append("box-1;Scatola;Hobby;Garage;1000\n")
+            append("sezione;OGGETTI\n")
+            append("objectPermanentId;boxPermanentId;tipo;descrizione;quantita;lastModified\n")
+            append("obj-1;box-1;Trapano;Rosso;1;2000\n")
+        }
+
+        val parsed = FamilyInventoryReader().parse(legacy)
+        assertTrue(parsed is FamilyInventoryReader.Result.Ok)
+        val ok = parsed as FamilyInventoryReader.Result.Ok
+        assertEquals("", ok.snapshot.boxes[0].createdBy)
+        assertEquals("", ok.snapshot.objects[0].createdBy)
+        assertTrue(ok.snapshot.deletions.isEmpty())
+    }
+
+    @Test
+    fun merger_preservesLocalCreatedByOnUpdate() {
+        val incoming = FamilyInventorySnapshot(
+            boxes = listOf(
+                FamilyInventoryBox(
+                    permanentId = "box-1",
+                    name = "Nuovo nome",
+                    category = "Hobby",
+                    position = "Garage",
+                    lastModified = 3000L,
+                    createdBy = "Remoto"
+                )
+            ),
+            objects = emptyList()
+        )
+
+        val plan = FamilyInventoryMerger().plan(
+            incoming = incoming,
+            localBoxes = listOf(
+                BoxEntity(
+                    id = 10,
+                    name = "Vecchio nome",
+                    categoryId = 1,
+                    position = "Garage",
+                    lastModified = 1000L,
+                    permanentId = "box-1",
+                    createdBy = "Locale"
+                )
+            ),
+            localObjects = emptyList(),
+            categoryNames = mapOf(1 to "Hobby"),
+            objectTypeNames = emptyMap(),
+            locationNames = listOf("Garage")
+        )
+
+        assertEquals(1, plan.boxesToUpdate.size)
+        assertEquals("Locale", plan.boxesToUpdate[0].preservedCreatedBy)
+    }
+
+    @Test
+    fun merger_appliesExplicitDeletionWhenNewerThanLocal() {
+        val incoming = FamilyInventorySnapshot(
+            boxes = emptyList(),
+            objects = emptyList(),
+            deletions = listOf(
+                FamilyDeletion(
+                    entityType = "BOX",
+                    permanentId = "box-1",
+                    deletedAt = 5000L,
+                    deletedBy = "Marco"
+                )
+            )
+        )
+
+        val plan = FamilyInventoryMerger().plan(
+            incoming = incoming,
+            localBoxes = listOf(
+                BoxEntity(
+                    id = 10,
+                    name = "Scatola",
+                    categoryId = 1,
+                    position = "Garage",
+                    lastModified = 1000L,
+                    permanentId = "box-1",
+                    createdBy = "Anna"
+                )
+            ),
+            localObjects = emptyList(),
+            categoryNames = mapOf(1 to "Hobby"),
+            objectTypeNames = emptyMap(),
+            locationNames = listOf("Garage")
+        )
+
+        assertEquals(listOf(10), plan.boxesToDelete)
+        assertEquals(1, plan.tombstonesToUpsert.size)
+        assertTrue(plan.canApply)
+    }
+
+    @Test
+    fun merger_deletionConflictsWhenLocalIsNewer() {
+        val incoming = FamilyInventorySnapshot(
+            boxes = emptyList(),
+            objects = emptyList(),
+            deletions = listOf(
+                FamilyDeletion(
+                    entityType = "OBJECT",
+                    permanentId = "obj-1",
+                    deletedAt = 500L,
+                    deletedBy = "Marco"
+                )
+            )
+        )
+
+        val plan = FamilyInventoryMerger().plan(
+            incoming = incoming,
+            localBoxes = emptyList(),
+            localObjects = listOf(
+                ObjectEntity(
+                    id = 7,
+                    typeObjectId = 1,
+                    boxId = 1,
+                    description = null,
+                    quantity = 1,
+                    objectPermanentId = "obj-1",
+                    lastModified = 2000L,
+                    createdBy = "Anna"
+                )
+            ),
+            categoryNames = emptyMap(),
+            objectTypeNames = mapOf(1 to "Trapano"),
+            locationNames = emptyList()
+        )
+
+        assertTrue(plan.objectsToDelete.isEmpty())
+        assertEquals(1, plan.deletionConflicts.size)
+        assertTrue(plan.hasConflicts)
     }
 }

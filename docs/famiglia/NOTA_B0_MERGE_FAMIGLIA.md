@@ -71,14 +71,18 @@ sezione;POSIZIONI
 nome
 …
 sezione;CONTENITORI
-permanentId;nome;categoria;posizione;lastModified
+permanentId;nome;categoria;posizione;lastModified;createdBy
 …
 sezione;OGGETTI
-objectPermanentId;boxPermanentId;tipo;descrizione;quantita;lastModified
+objectPermanentId;boxPermanentId;tipo;descrizione;quantita;lastModified;createdBy
+…
+sezione;CANCELLAZIONI
+entityType;permanentId;deletedAt;deletedBy
 …
 ```
 
 - Separatore `;`, UTF-8 con BOM.
+- `createdBy` e sezione `CANCELLAZIONI` sono **opzionali in lettura** (file B4 senza colonna/sezione restano validi). Export B5+ li scrive sempre.
 - Nome file proposto (B3, storico): `Unione_Famiglia_ddMMyy_HHmm.csv`.
 - In **B4** i nomi proposti principali sono `Tabelle_Condivise_ddMMyy_HHmm.csv` e `Condivisione_Archivio_ddMMyy_HHmm.csv` (vedi §4bis).
 - Accetta anche file legacy B1 (`BoxManager_FamilyCatalog`) e B2 (`BoxManager_FamilyInventory`).
@@ -87,7 +91,7 @@ objectPermanentId;boxPermanentId;tipo;descrizione;quantita;lastModified
 
 1. **Catalogo additivo** (B3): aggiunge categorie/posizioni mancanti; non cancella voci locali.
 2. **Guarigione da contenitori**: se un contenitore in arrivo referenzia categoria/posizione assente in locale, la voce viene **ricreata** prima dell'inventario (icona categoria = default).
-3. **Inventario per ID stabili**: insert / update / conflitto come B2; delete non propagato.
+3. **Inventario per ID stabili**: insert / update / conflitto come B2. **B5:** delete esplicito via tombstone / sezione `CANCELLAZIONI` (non automatico dalla sola assenza nel file).
 
 In **B4** il catalogo additivo non è più applicato da Ricevi Archivio: usare **Invia/Ricevi tabelle condivise**.
 
@@ -221,7 +225,7 @@ Niente ACL: dopo il merge tutto resta dominio famiglia. Il nome serve a ripartir
 | **B2** | Pacchetto inventario per ID (legacy) + anteprima | No |
 | **B3** | Unione famiglia unificata (tabelle + inventario, guarigione) | No — superata da B4 |
 | **B4** | **Tabelle condivise** + **Archivio** separati; UI card = Utility (B4.3); Invia/Ricevi SAF e feedback OK (B4.10) | No — **CONVALIDATO** 31/08/2026 (SI Renato, build 1.3-famigliaB4.10) |
-| **B5** | Origine = **nome utente** Impostazioni su contenitori/oggetti; delete esplicito propagabile | No — **in corso** |
+| **B5** | Origine = **nome utente** Impostazioni su contenitori/oggetti; delete esplicito propagabile (tombstone + sezione CANCELLAZIONI); T1 SafFolderLabel | No — **in corso** (build `1.3-famigliaB5.0`; non CONVALIDATO senza SI Renato) |
 
 ---
 

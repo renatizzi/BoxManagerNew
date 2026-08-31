@@ -17,5 +17,6 @@ data class BoxEntity(
     val categoryId: Int,
     val position: String,
     val lastModified: Long,
-    val permanentId: String
+    val permanentId: String,
+    val createdBy: String = ""
 )

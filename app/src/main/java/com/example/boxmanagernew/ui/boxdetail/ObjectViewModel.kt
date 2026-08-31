@@ -238,7 +238,8 @@ class ObjectViewModel(
         name: String,
         boxId: Int,
         description: String?,
-        quantity: Int?
+        quantity: Int?,
+        createdBy: String = ""
     ) {
 
         if (name.isBlank())
@@ -250,7 +251,8 @@ class ObjectViewModel(
                 name,
                 boxId,
                 description,
-                quantity
+                quantity,
+                createdBy
             )
         }
     }

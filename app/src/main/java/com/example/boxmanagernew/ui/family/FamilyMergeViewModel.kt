@@ -22,6 +22,7 @@ import com.example.boxmanagernew.family.merge.FamilyMergeWriter
 import com.example.boxmanagernew.family.model.FamilyCatalogCategory
 import com.example.boxmanagernew.family.model.FamilyCatalogLocation
 import com.example.boxmanagernew.family.model.FamilyCatalogSnapshot
+import com.example.boxmanagernew.family.model.FamilyDeletion
 import com.example.boxmanagernew.family.model.FamilyInventoryBox
 import com.example.boxmanagernew.family.model.FamilyInventoryObject
 import com.example.boxmanagernew.family.model.FamilyInventorySnapshot
@@ -251,7 +252,8 @@ class FamilyMergeViewModel(
             localObjects = localObjects,
             existingCategoryNames = categories.map { it.name },
             existingLocationNames = locations.map { it.name },
-            objectTypeNames = objectTypeNames
+            objectTypeNames = objectTypeNames,
+            localTombstones = database.familyDeletionTombstoneDao().getAllSync()
         )
 
         if (plan.inventoryPlan.blockingErrors.isNotEmpty()) {
@@ -292,6 +294,17 @@ class FamilyMergeViewModel(
                     "${plan.inventoryPlan.objectConflicts.size} conflitti, " +
                     "${plan.inventoryPlan.objectsIgnored} invariati."
             )
+            val deletes =
+                plan.inventoryPlan.boxesToDelete.size +
+                    plan.inventoryPlan.objectsToDelete.size
+            if (deletes > 0 || plan.inventoryPlan.deletionConflicts.isNotEmpty()) {
+                appendLine()
+                append(
+                    "Cancellazioni: ${plan.inventoryPlan.boxesToDelete.size} contenitori, " +
+                        "${plan.inventoryPlan.objectsToDelete.size} oggetti, " +
+                        "${plan.inventoryPlan.deletionConflicts.size} conflitti."
+                )
+            }
             if (plan.hasConflicts) {
                 appendLine()
                 append(
@@ -340,7 +353,8 @@ class FamilyMergeViewModel(
                 name = box.name,
                 category = categoryNames[box.categoryId].orEmpty(),
                 position = box.position,
-                lastModified = box.lastModified
+                lastModified = box.lastModified,
+                createdBy = box.createdBy
             )
         }
 
@@ -356,7 +370,17 @@ class FamilyMergeViewModel(
                 typeName = objectTypes[obj.typeObjectId].orEmpty(),
                 description = obj.description,
                 quantity = obj.quantity,
-                lastModified = obj.lastModified
+                lastModified = obj.lastModified,
+                createdBy = obj.createdBy
+            )
+        }
+
+        val deletions = database.familyDeletionTombstoneDao().getAllSync().map { tombstone ->
+            FamilyDeletion(
+                entityType = tombstone.entityType,
+                permanentId = tombstone.permanentId,
+                deletedAt = tombstone.deletedAt,
+                deletedBy = tombstone.deletedBy
             )
         }
 
@@ -364,7 +388,8 @@ class FamilyMergeViewModel(
             catalog = shared,
             inventory = FamilyInventorySnapshot(
                 boxes = inventoryBoxes,
-                objects = inventoryObjects
+                objects = inventoryObjects,
+                deletions = deletions
             )
         )
     }
