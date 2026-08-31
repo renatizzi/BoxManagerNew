@@ -10,12 +10,12 @@ Correggere bug della **1.2** (Play / Alpha) **senza** far divergere la betatest 
 |---------|-----------------|-----------|
 | Play 1.2 | branch `main` → `assemblePlayRelease` (o release storica senza flavor se si builda solo `main` pulito) | Play Store / Alpha |
 | Beta famiglia (base B2.2) | branch `cursor/family-b-beta-75ee` → `assembleFamigliaRelease` (o `famigliaDebug`) | Solo sideload familiare |
-| Beta famiglia (B5 CONVALIDATO) | branch `cursor/family-b5-createdby-delete-7b83` → `assembleFamigliaDebug` | Solo sideload; PR #9 → `cursor/family-unione-unificata-e5b5` |
+| Beta famiglia (B5 + correttivi) | branch `cursor/family-unione-unificata-e5b5` → `assembleFamigliaDebug` | Solo sideload; v. **1.3-famigliaB5.3** |
 
 Su questi branch esistono due product flavor:
 
 - **`play`** — stessi `applicationId` / versionCode 3 / versionName 1.2; `FAMILY_BETA=false` (verifica regressione locale).
-- **`famiglia`** — `applicationId` `…boxmanager.famiglia`; versionName **`1.3-famigliaB5.2`** (versionCode 1321); `FAMILY_BETA=true`.
+- **`famiglia`** — `applicationId` `…boxmanager.famiglia`; versionName **`1.3-famigliaB5.3`** (versionCode 1322); `FAMILY_BETA=true`.
 
 ## Regola d’oro
 
@@ -50,6 +50,10 @@ APK debug tipico:
 - Stesso codice bugfix in entrambi i binari dopo il merge.
 - `applicationId` diverso → Play non sovrascrive la beta in famiglia (e viceversa).
 - Feature B dietro `BuildConfig.FAMILY_BETA` / UI solo flavor famiglia → il path `play` resta comportamentalmente 1.2.
+
+## Periodo test chiuso Play
+
+Durante il test Google Console: su **`main`** si accettano **solo bugfix** da feedback tester. Dopo ogni fix Play, merge su `cursor/family-unione-unificata-e5b5`. Dettaglio: [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md).
 
 ## Cosa fare in caso di conflitto di merge
 
