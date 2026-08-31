@@ -133,7 +133,7 @@ Due sezioni, griglia 2 colonne (Invia | Ricevi), card allineate a Utility:
 - `MaterialCardView` altezza `180dp`, `layout_margin` `6dp`, padding contenitore `16dp`
 - `cardCornerRadius` `16dp`, `cardElevation` `5dp`, sfondo `@color/elevated_surface`
 - testo centrato `20sp` bold (telefono e tablet)
-- nessuna card cartella/SFOGLIA: la cartella SAF (`KEY_FAMILY_SHARE`) si sceglie al tap su **Invia**, poi viene riusata
+- nessuna card cartella/SFOGLIA: la cartella SAF (`KEY_FAMILY_SHARE`) si sceglie **ad ogni tap su Invia** (selettore Android), poi box nome file
 
 Terminologia in pagina: **tabelle condivise**, **tabelle locali**, **categorie e posizioni**. Non usare «struttura».
 
