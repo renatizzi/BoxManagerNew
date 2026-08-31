@@ -12,7 +12,8 @@ import com.example.boxmanagernew.viewoutput.persist.ViewExportPersister
 
 /**
  * Export condivisione archivio: cartella dedicata + box nome file standard.
- * Ad ogni Invia l'utente sceglie di nuovo la cartella SAF (nessun riuso automatico).
+ * Come Esporta/Backup: primo Invia → selettore cartella + CONSENTI Android;
+ * poi riuso cartella memorizzata (KEY_FAMILY_SHARE) senza ripetere permesso.
  */
 class FamilyExportCoordinator(
     private val activity: AppCompatActivity,
@@ -34,7 +35,16 @@ class FamilyExportCoordinator(
     ) {
         pendingDefaultName = defaultFileName
         pendingBytes = bytes
-        launchFolderPicker()
+
+        val saved = persister.rememberedFolderUri()
+        if (
+            saved != null &&
+            persister.folderDisplayName(saved) != null
+        ) {
+            askExportFileName(saved)
+        } else {
+            launchFolderPicker()
+        }
     }
 
     fun onFolderChosen(uri: Uri) {

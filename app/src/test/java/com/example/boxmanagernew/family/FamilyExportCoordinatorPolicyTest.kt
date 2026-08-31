@@ -1,6 +1,5 @@
 package com.example.boxmanagernew.family
 
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.io.File
@@ -8,16 +7,16 @@ import java.io.File
 class FamilyExportCoordinatorPolicyTest {
 
     @Test
-    fun beginExport_alwaysLaunchesFolderPicker() {
+    fun beginExport_reusesRememberedFolderLikeEsporta() {
         val beginExportBody = coordinatorSource()
             .substringAfter("fun beginExport")
             .substringBefore("fun onFolderChosen")
 
-        assertTrue(beginExportBody.contains("launchFolderPicker()"))
-        assertFalse(
-            "beginExport non deve riusare la cartella memorizzata",
-            beginExportBody.contains("rememberedFolderUri")
+        assertTrue(
+            beginExportBody.contains("rememberedFolderUri()")
         )
+        assertTrue(beginExportBody.contains("askExportFileName(saved)"))
+        assertTrue(beginExportBody.contains("launchFolderPicker()"))
     }
 
     private fun coordinatorSource(): String {
