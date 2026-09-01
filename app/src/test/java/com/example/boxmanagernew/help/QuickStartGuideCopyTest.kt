@@ -10,6 +10,31 @@ import org.junit.Test
 class QuickStartGuideCopyTest {
 
     @Test
+    fun header_keepsTitleAndUsesRequestedIntroAndHeading() {
+        assertEquals("Guida rapida", QuickStartGuideCopy.PAGE_TITLE)
+        assertEquals(
+            "BoxManager, un'app che ti aiuta a cercare ciò che non trovi...",
+            QuickStartGuideCopy.PAGE_SUBTITLE
+        )
+        assertEquals(
+            "Come usare BoxManager in tre mosse",
+            QuickStartGuideCopy.WORKFLOW_TITLE
+        )
+        assertEquals(
+            "1. Configura",
+            QuickStartGuideCopy.Phase.CONFIG.numberedLabel()
+        )
+        assertEquals(
+            "2. Censisci",
+            QuickStartGuideCopy.Phase.CENSUS.numberedLabel()
+        )
+        assertEquals(
+            "3. Utilizza",
+            QuickStartGuideCopy.Phase.USAGE.numberedLabel()
+        )
+    }
+
+    @Test
     fun sections_coverSevenStepsInThreePhases() {
         assertEquals(7, QuickStartGuideCopy.sections.size)
         assertEquals(

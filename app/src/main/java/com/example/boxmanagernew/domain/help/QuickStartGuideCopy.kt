@@ -12,17 +12,10 @@ object QuickStartGuideCopy {
         "Guida rapida"
 
     const val PAGE_SUBTITLE =
-        "Come orientarsi in BoxManager"
+        "BoxManager, un'app che ti aiuta a cercare ciò che non trovi..."
 
     const val WORKFLOW_TITLE =
-        "Il workflow in sintesi"
-
-    const val WORKFLOW_LINE =
-        "Configura → Censisci → Utilizza"
-
-    const val INTRO =
-        "BoxManager organizza contenitori e oggetti. " +
-            "Segui le tre macro-fasi nell'ordine indicato."
+        "Come usare BoxManager in tre mosse"
 
     enum class Phase(
         val label: String,
@@ -39,7 +32,11 @@ object QuickStartGuideCopy {
         USAGE(
             "Utilizza",
             com.example.boxmanagernew.R.color.guide_phase_usage
-        )
+        );
+
+        fun numberedLabel(): String {
+            return "${ordinal + 1}. $label"
+        }
     }
 
     data class Section(
