@@ -43,7 +43,9 @@ object QuickStartGuideCopy {
         val phase: Phase,
         val number: Int,
         val title: String,
-        val bullets: List<String>
+        val bullets: List<String>,
+        val bodyIntro: String? = null,
+        val bodyClosing: String? = null
     )
 
     val sections: List<Section>
@@ -108,12 +110,15 @@ object QuickStartGuideCopy {
                 phase = Phase.USAGE,
                 number = 6,
                 title = "Strumenti contestuali",
+                bodyIntro =
+                    "Gli elementi visualizzati nelle liste possono essere",
                 bullets = listOf(
-                    "Gli elementi visualizzati nelle liste possono essere stampati.",
-                    "Esportati su file CSV per interagire con file esterni (*).",
+                    "stampati.",
+                    "esportati su file CSV per interagire con file esterni (*)."
+                ),
+                bodyClosing =
                     "Per i contenitori è possibile richiedere la stampa " +
                         "dell'etichetta QR."
-                )
             )
         )
     }
@@ -201,6 +206,6 @@ object QuickStartGuideCopy {
         }
 
     const val FOOTER_NOTE =
-        "Ricerca avanzata, QR, import ed export richiedono Archivio completo " +
-            "(prova a tempo, poi rinnovo tramite condivisione o codice)."
+        "Nota: alcune funzioni sono \"premium\" e sono soggette a " +
+            "restrizioni temporali."
 }

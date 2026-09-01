@@ -58,8 +58,10 @@ class QuickStartGuideActivity : BaseActivity() {
 
         refreshChipHighlight()
 
-        findViewById<TextView>(R.id.textFooterNote).text =
-            QuickStartGuideCopy.FOOTER_NOTE
+        findViewById<TextView>(R.id.textFooterNote).apply {
+            text = QuickStartGuideCopy.FOOTER_NOTE
+            setTypeface(typeface, android.graphics.Typeface.ITALIC)
+        }
 
         findViewById<TextView>(R.id.textCsvFootnote).text =
             QuickStartGuideCopy.CSV_FOOTNOTE
@@ -177,7 +179,7 @@ class QuickStartGuideActivity : BaseActivity() {
             "${section.number}. ${section.title}"
 
         card.findViewById<TextView>(R.id.textSectionBody).text =
-            section.bullets.joinToString("\n") { "• $it" }
+            formatSectionBody(section)
 
         card.findViewById<TextView>(R.id.textExampleTitle).visibility =
             View.GONE
@@ -185,5 +187,21 @@ class QuickStartGuideActivity : BaseActivity() {
             View.GONE
 
         return card
+    }
+
+    private fun formatSectionBody(
+        section: QuickStartGuideCopy.Section
+    ): String {
+
+        return buildString {
+            section.bodyIntro?.let { appendLine(it) }
+            section.bullets.forEach { appendLine("• $it") }
+            section.bodyClosing?.let {
+                if (isNotEmpty()) {
+                    appendLine()
+                }
+                append(it)
+            }
+        }.trimEnd()
     }
 }

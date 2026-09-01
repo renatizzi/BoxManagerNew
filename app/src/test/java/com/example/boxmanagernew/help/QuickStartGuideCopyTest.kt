@@ -59,9 +59,12 @@ class QuickStartGuideCopyTest {
     }
 
     @Test
-    fun footer_mentionsArchivioCompleto() {
+    fun footer_mentionsPremiumRestrictions() {
         assertTrue(
-            QuickStartGuideCopy.FOOTER_NOTE.contains("Archivio completo")
+            QuickStartGuideCopy.FOOTER_NOTE.contains("premium")
+        )
+        assertTrue(
+            QuickStartGuideCopy.FOOTER_NOTE.contains("restrizioni temporali")
         )
     }
 
@@ -101,8 +104,20 @@ class QuickStartGuideCopyTest {
             }
 
         assertEquals("Strumenti contestuali", tools.title)
+        assertEquals(
+            "Gli elementi visualizzati nelle liste possono essere",
+            tools.bodyIntro
+        )
+        assertEquals(2, tools.bullets.size)
+        assertEquals("stampati.", tools.bullets[0])
         assertTrue(
-            tools.bullets.any { it.contains("(*)") }
+            tools.bullets[1].startsWith("esportati su file CSV")
+        )
+        assertTrue(
+            tools.bullets[1].contains("(*)")
+        )
+        assertTrue(
+            tools.bodyClosing.orEmpty().contains("etichetta QR")
         )
     }
 
