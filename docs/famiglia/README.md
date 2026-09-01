@@ -12,7 +12,8 @@
 | [DUE_APP_CINQUE_TELEFONI.md](DUE_APP_CINQUE_TELEFONI.md) | Come far convivere Play 1.2 e beta in famiglia |
 | [INSTALLA_SENZA_RUN.md](INSTALLA_SENZA_RUN.md) | Se Run / Terminale non funzionano (script `.bat`) |
 
-**Fetta B5:** **CONVALIDATO** (SI Renato, 31/08/2026). **Correttivo T2:** build **1.3-famigliaB5.3** su branch `cursor/family-unione-unificata-e5b5` (attende SI ritest).
+**Fetta B5:** **CONVALIDATO** (SI Renato, 31/08/2026). **Correttivo T2:** **CONVALIDATO** (SI Renato, 01/09/2026) su build **1.3-famigliaB5.3**.  
+**Fonte ufficiale:** `docs/Nota_Integrata_9.2.docx` su **`main`**, **Allegato 4.20** (i file di questa cartella sono copie di lavoro).
 
 ## Aggiornare la beta (solo Renato)
 
