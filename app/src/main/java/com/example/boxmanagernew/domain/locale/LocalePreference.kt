@@ -17,7 +17,7 @@ object LocalePreference {
     fun resolve(stored: String?): String {
         val value = stored?.trim()?.lowercase().orEmpty()
         return when {
-            value == EN || value.startsWith("$EN-") || value.startsWith("$EN_") ->
+            value == EN || value.startsWith("$EN-") || value.startsWith("${EN}_") ->
                 EN
             else ->
                 IT
