@@ -36,7 +36,7 @@
 | **M1a** | Infrastruttura Scelta lingua (3.6.6) | — |
 | **M1b** | Layout → `strings.xml` + `values-en` | — |
 | **M1c** | Copy/Configuration + DialogUtils → risorse | — |
-| **M1d** | Guida, Premium, Famiglia copy + sweep Kotlin | **CK1** |
+| **M1d** | **Guida rapida in-app** (`QuickStartGuideCopy`, topbar «Guida») + Premium + Famiglia + sweep Kotlin | **CK1** |
 | **M2a** | Bozza tabelle EN in Nota | **CK0** (prima di M2b) |
 | **M2b** | Motore ricerca locale-aware EN | — |
 | **M2c** | UI ricerca + test suite EN | **CK2** |
@@ -80,6 +80,10 @@ CK0 non ancora richiesto (no domain/search EN)
 ```
 
 ---
+
+## Guida rapida in-app (non dimenticare)
+
+La **Guida** da topbar (`QuickStartGuideCopy` / `QuickStartGuideActivity`) fa parte di **M1 obbligatorio**, non è opzionale né posticipabile a M2. Include §8 famiglia su flavor `famiglia`. CK1 deve coprire lettura completa in EN.
 
 ## Fuori scope V1
 

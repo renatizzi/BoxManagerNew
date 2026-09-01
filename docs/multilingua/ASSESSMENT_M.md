@@ -65,7 +65,7 @@ La **Scelta lingua** (3.6.6) riguarda **UI + motore ricerca**, non riscrive l’
 
 | File | Righe indicative | Contenuto |
 |------|------------------|-----------|
-| `QuickStartGuideCopy.kt` | ~78 stringhe | Guida in-app (§8 famiglia incluso) |
+| **`QuickStartGuideCopy.kt`** | **~78 stringhe** | **Guida rapida in-app** (topbar «Guida») — **obbligatoria M1**, non marginale: titoli, intro, 7 sezioni CONFIG/CENSUS/USAGE, esempio CSV, footer premium, **§8 Setup famiglia (beta)** su flavor famiglia |
 | `ArchivioCompletoCopy.kt` | ~208 | Premium / prova / paywall |
 | `FamilyMergeCopy.kt` | ~73 | Condividi Archivio (solo flavor famiglia) |
 | `PrivacyPolicy.kt` | ~26 | Privacy (Play) |
@@ -187,12 +187,13 @@ Ogni pacchetto è **chiudibile dall’agente** senza intervento Renato, salvo i 
 | **Escluso** | `SearchConfiguration`, `SearchCoreAliases`, matrici ricerca (M2) |
 | **Test** | `:app:testPlayDebugUnitTest` + `:app:testFamigliaDebugUnitTest` verdi |
 
-#### M1d — Sweep e Guida/Premium/Famiglia
+#### M1d — Guida rapida in-app + Premium/Famiglia + sweep
 
 | | |
 |-|-|
-| **Scope** | `QuickStartGuideCopy`, `ArchivioCompletoCopy`, `FamilyMergeCopy`, Kotlin residuo |
-| **Test** | Guida apre in EN; card famiglia EN su flavor famiglia |
+| **Scope** | **`QuickStartGuideCopy` per intero** (guida «online» in-app da topbar — IT/EN); `ArchivioCompletoCopy`, `FamilyMergeCopy`; Kotlin residuo |
+| **Nota** | La guida **non** è catalogo 2.6: traduzione prodotto con revisione Renato; aggiornare `QuickStartGuideCopyTest` se cambiano conteggi sezioni |
+| **Test** | Topbar **Guida** → tutte le sezioni leggibili in EN; §8 famiglia visibile solo su flavor famiglia ma tradotto; footer Archivio completo coerente |
 
 **Esito M1:** app navigabile in EN; ricerca avanzata **ancora solo IT** (messaggio chiaro se locale EN? — opzionale: banner «advanced search Italian only until M2»).
 
@@ -254,7 +255,7 @@ L’agente lavora in autonomia **tra** un checkpoint e l’altro.
 | ID | Quando | Cosa chiediamo a Renato | Blocca |
 |----|--------|-------------------------|--------|
 | **CK0** | Prima del **primo commit M2** (motore ricerca) | **SI** sulla bozza tabelle EN in Nota (alias Core, indicatori, 2.6, F7/F8) | M2b–M2c |
-| **CK1** | M1 completo (M1a–M1d) | **SI device**: Scelta lingua; navigazione principale EN; backup/import leggibili | M2 (consigliato) / release M1 |
+| **CK1** | M1 completo (M1a–M1d) | **SI device**: Scelta lingua; navigazione principale EN; **Guida rapida (topbar) intera in EN**; backup/import leggibili | M2 (consigliato) / release M1 |
 | **CK2** | M2 completo | **SI device**: campione **10 domande EN** da Matrice Test (stessi esiti attesi che IT) | Chiusura filone M |
 
 **M0** e lavoro interno M1a–M1c **non** richiedono checkpoint intermedî.
@@ -265,6 +266,7 @@ L’agente lavora in autonomia **tra** un checkpoint e l’altro.
 
 ### M1 done
 - [ ] Impostazioni → Scelta lingua IT/EN persistente
+- [ ] **Guida rapida in-app (`QuickStartGuideActivity`) tradotta per intero**, incluso §8 famiglia se `FAMILY_BETA`
 - [ ] Nessun testo utente visibile solo in italiano nelle schermate core (dashboard, contenitori, categorie, utility, impostazioni)
 - [ ] Test unitari play + famiglia verdi
 - [ ] CK1 **SI Renato**
