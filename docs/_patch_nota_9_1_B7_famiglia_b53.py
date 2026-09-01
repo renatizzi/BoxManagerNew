@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
-"""Sidecar 9.1_B7: Allegato 4.20 — merge famiglia B0–B5 + correttivi B5.3.
-
-Fonte da recepire (non riassumere): docs/famiglia/NOTA_B0_MERGE_FAMIGLIA.md,
-ASSESSMENT_CORRETTIVI.md, STRATEGIA_UNIFICAZIONE.md, PROMEMORIA (T2 SI 01/09/2026).
-La Nota su main resta l'unica fonte ufficiale; i markdown famiglia puntano qui.
+"""STORICO. Non rieseguire: la fonte viva è docs/_patch_nota_9_2.py
+e docs/Nota_Integrata_9.2.docx.
 """
+from __future__ import annotations
+# Original 4.20 insert lived here; 9.2 reorders allegati and fixes Titolo2.
 from __future__ import annotations
 
 import re
@@ -14,7 +13,7 @@ from pathlib import Path
 from xml.etree import ElementTree as ET
 
 ROOT = Path(__file__).resolve().parent
-DOC = ROOT / "Nota_Integrata_9.1_B7.docx"
+DOC = ROOT / "Nota_Integrata_9.2.docx"
 
 W = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
 XML_SPACE = "{http://www.w3.org/XML/1998/namespace}space"
