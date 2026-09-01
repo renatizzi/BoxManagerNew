@@ -78,9 +78,14 @@ Grazie!
 
 Il codice amico `BOXMANAGER-AMICO` resta valido per il rinnovo via condivisione.
 
+## Freeze 1.2 (01/09/2026)
+
+Snapshot nominato di questo `main` Play: branch `cursor/versione-test-5409` — vedi [FREEZE_1_2.md](FREEZE_1_2.md).  
+Durante il test chiuso: bugfix solo su `main`; **non** invertire con la beta famiglia.
+
 ## Test chiuso — checklist (solo sul tuo PC / Console)
 
-**Stato repo (già fatto in remoto):** `main` con G1+G2, `versionCode = 2`, `versionName = 1.1`. Topbar in app: `v. 1.1` automatico da Gradle.
+**Stato repo:** `main` → Play **1.2** (`versionCode = 3`). Topbar in app: `v. 1.2` da Gradle. Freeze: `cursor/versione-test-5409`.
 
 ### Tu — passo 1: aggiorna e genera AAB
 
