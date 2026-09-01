@@ -65,6 +65,22 @@ object ImportConfiguration {
         FORMAT_VERSION.toString()
     )
 
+    fun isOfficialFormatLine(fields: List<String>): Boolean {
+        val cols = fields.dropLastWhile { it.isBlank() }
+        if (cols.size != FORMAT_FIELDS.size) {
+            return false
+        }
+        return cols[0].equals(FORMAT_FIELDS[0], ignoreCase = true) &&
+                cols[1] == FORMAT_NAME &&
+                cols[2] == FORMAT_VERSION.toString()
+    }
+
+    val IMPORT_OPEN_MIME_TYPES: Array<String> = arrayOf(
+        CSV_MIME_TYPE,
+        "text/comma-separated-values",
+        "text/plain"
+    )
+
     val BOX_HEADER_FIELDS: List<String> = listOf(
         COL_NAME,
         COL_CATEGORY,

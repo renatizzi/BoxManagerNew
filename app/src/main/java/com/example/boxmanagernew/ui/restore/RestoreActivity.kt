@@ -4,11 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.DocumentsContract
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -47,6 +49,7 @@ class RestoreActivity : BaseActivity() {
     private var folderUri: Uri? = null
     private var selectedFileUri: Uri? = null
     private var pendingRestoreAfterFolder = false
+    private var pendingPickFileAfterFolder = false
     private var showSafetyCopies = false
 
     private val folderPicker =
@@ -59,10 +62,24 @@ class RestoreActivity : BaseActivity() {
 
                 if (saved && pendingRestoreAfterFolder) {
                     pendingRestoreAfterFolder = false
+                    pendingPickFileAfterFolder = false
                     confirmAndRestore()
+                } else if (saved && pendingPickFileAfterFolder) {
+                    pendingPickFileAfterFolder = false
+                    launchZipFilePicker()
                 } else {
                     pendingRestoreAfterFolder = false
+                    pendingPickFileAfterFolder = false
                 }
+            }
+        }
+
+    private val zipFilePicker =
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == RESULT_OK) {
+                result.data?.data?.let { onBackupZipChosen(it) }
             }
         }
 
@@ -163,7 +180,16 @@ class RestoreActivity : BaseActivity() {
         }
 
         btnBrowseFile.setOnClickListener {
+            startChooseBackupFile()
+        }
+
+        btnBrowseFile.setOnLongClickListener {
             folderPicker.launch(null)
+            true
+        }
+
+        tvEmptyFiles.setOnClickListener {
+            startChooseBackupFile()
         }
 
         btnRestore.setOnClickListener {
@@ -198,6 +224,59 @@ class RestoreActivity : BaseActivity() {
         }
 
         viewModel.inspect(label, bytes)
+    }
+
+    private fun startChooseBackupFile() {
+
+        val uri = folderUri
+
+        if (
+            uri != null &&
+            persister.resolvedFolderDisplayName(uri) != null
+        ) {
+            launchZipFilePicker()
+            return
+        }
+
+        pendingPickFileAfterFolder = true
+        folderPicker.launch(null)
+    }
+
+    private fun launchZipFilePicker() {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = BackupConfiguration.ZIP_MIME_TYPE
+            addFlags(
+                Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                    Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
+            )
+            putExtra(
+                Intent.EXTRA_MIME_TYPES,
+                arrayOf(
+                    BackupConfiguration.ZIP_MIME_TYPE,
+                    "application/x-zip-compressed"
+                )
+            )
+            folderUri?.let { tree ->
+                putExtra(DocumentsContract.EXTRA_INITIAL_URI, tree)
+            }
+        }
+        zipFilePicker.launch(intent)
+    }
+
+    private fun onBackupZipChosen(uri: Uri) {
+        try {
+            contentResolver.takePersistableUriPermission(
+                uri,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION
+            )
+        } catch (_: Exception) {
+        }
+
+        val name = DocumentFile.fromSingleUri(this, uri)?.name
+            ?: uri.lastPathSegment.orEmpty()
+
+        inspectFile(uri, name)
     }
 
     private fun startRestore() {
@@ -244,7 +323,8 @@ class RestoreActivity : BaseActivity() {
             normalizeName = { raw ->
                 val trimmed = raw.trim().ifBlank { proposedName }
                 BackupZipPersister.zipFileName(trimmed)
-            }
+            },
+            title = "Copia di sicurezza"
         )
     }
 

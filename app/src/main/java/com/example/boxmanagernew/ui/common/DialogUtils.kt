@@ -410,7 +410,8 @@ object DialogUtils {
         exists: (String) -> Boolean,
         onSave: (fileName: String, overwrite: Boolean) -> Unit,
         onBrowseFolder: (() -> Unit)? = null,
-        normalizeName: (String) -> String = { ViewOutputConfiguration.csvFileName(it) }
+        normalizeName: (String) -> String = { ViewOutputConfiguration.csvFileName(it) },
+        title: String? = null
     ) {
 
         val pad =
@@ -479,6 +480,10 @@ object DialogUtils {
                 .setView(column)
                 .setPositiveButton("SI", null)
                 .setNegativeButton("NO", null)
+
+        if (!title.isNullOrBlank()) {
+            builder.setTitle(title)
+        }
 
         if (onBrowseFolder != null) {
             builder.setNeutralButton("Cartella", null)

@@ -145,6 +145,14 @@ class ImportActivity : BaseActivity() {
 
     private fun onImportFileChosen(uri: Uri) {
 
+        try {
+            contentResolver.takePersistableUriPermission(
+                uri,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION
+            )
+        } catch (_: Exception) {
+        }
+
         val fileName = DocumentFile.fromSingleUri(this, uri)?.name
             ?: uri.lastPathSegment.orEmpty()
 
@@ -262,17 +270,16 @@ class ImportActivity : BaseActivity() {
     private fun launchImportFilePicker() {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
             addCategory(Intent.CATEGORY_OPENABLE)
-            type = "*/*"
+            type = ImportConfiguration.CSV_MIME_TYPE
+            addFlags(
+                Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                    Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
+            )
             putExtra(
                 Intent.EXTRA_MIME_TYPES,
-                arrayOf(
-                    ImportConfiguration.CSV_MIME_TYPE,
-                    "text/comma-separated-values",
-                    "text/plain",
-                    "*/*"
-                )
+                ImportConfiguration.IMPORT_OPEN_MIME_TYPES
             )
-            importExportFolderUri?.let { folderUri ->
+            (backupFolderUri ?: importExportFolderUri)?.let { folderUri ->
                 putExtra(DocumentsContract.EXTRA_INITIAL_URI, folderUri)
             }
         }

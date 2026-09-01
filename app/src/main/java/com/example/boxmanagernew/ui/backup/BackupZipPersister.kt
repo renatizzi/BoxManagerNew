@@ -80,11 +80,7 @@ class BackupZipPersister(
 
         return tree.listFiles()
             .filter { file ->
-                file.isFile &&
-                        file.name?.endsWith(
-                            BackupConfiguration.BACKUP_FILE_EXTENSION,
-                            ignoreCase = true
-                        ) == true
+                file.isFile && isBackupZip(file)
             }
             .sortedByDescending { it.lastModified() }
             .map { file ->
@@ -233,6 +229,26 @@ class BackupZipPersister(
             } else {
                 trimmed + extension
             }
+        }
+
+        fun isBackupZip(file: DocumentFile): Boolean {
+            val name = file.name.orEmpty()
+            if (name.endsWith(
+                    BackupConfiguration.BACKUP_FILE_EXTENSION,
+                    ignoreCase = true
+                )
+            ) {
+                return true
+            }
+            val type = file.type.orEmpty()
+            return type.equals(
+                BackupConfiguration.ZIP_MIME_TYPE,
+                ignoreCase = true
+            ) ||
+                type.equals(
+                    "application/x-zip-compressed",
+                    ignoreCase = true
+                )
         }
     }
 }

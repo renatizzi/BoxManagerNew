@@ -59,4 +59,31 @@ class ImportPreBackupNameTest {
             ImportConfiguration.TEMPLATE_FOLDER_KEY
         )
     }
+
+    @Test
+    fun importOpenMimeTypes_areCsvNotZip() {
+        val types = ImportConfiguration.IMPORT_OPEN_MIME_TYPES.toList()
+        assertTrue(types.contains(ImportConfiguration.CSV_MIME_TYPE))
+        assertTrue(types.none { it.contains("zip", ignoreCase = true) })
+        assertTrue(types.none { it == "*/*" })
+    }
+
+    @Test
+    fun officialFormatLine_acceptsTrailingEmptyAndIgnoresFormatoCase() {
+        assertTrue(
+            ImportConfiguration.isOfficialFormatLine(
+                listOf("formato", "BoxManager_Import", "1")
+            )
+        )
+        assertTrue(
+            ImportConfiguration.isOfficialFormatLine(
+                listOf("Formato", "BoxManager_Import", "1", "")
+            )
+        )
+        assertTrue(
+            !ImportConfiguration.isOfficialFormatLine(
+                listOf("formato", "BoxManager_FamilyCatalog", "1")
+            )
+        )
+    }
 }

@@ -47,7 +47,7 @@ class ImportFileInspector {
 
         var index = 0
         val format = splitCsv(lines[index])
-        if (format != ImportConfiguration.FORMAT_FIELDS) {
+        if (!ImportConfiguration.isOfficialFormatLine(format)) {
             return Result.Failed(ImportConfiguration.CHECK_FORMAT)
         }
         index++
