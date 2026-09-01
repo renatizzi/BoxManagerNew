@@ -42,6 +42,32 @@ def make_p(text: str) -> ET.Element:
     return p
 
 
+def make_title2(text: str) -> ET.Element:
+    p = ET.Element(W + "p")
+    ppr = ET.SubElement(p, W + "pPr")
+    style = ET.SubElement(ppr, W + "pStyle")
+    style.set(W + "val", "Titolo2")
+    r = ET.SubElement(p, W + "r")
+    t = ET.SubElement(r, W + "t")
+    t.set(XML_SPACE, "preserve")
+    t.text = text
+    return p
+
+
+def ensure_title2(el: ET.Element) -> bool:
+    ppr = el.find(W + "pPr")
+    if ppr is None:
+        ppr = ET.Element(W + "pPr")
+        el.insert(0, ppr)
+    style = ppr.find(W + "pStyle")
+    if style is None:
+        style = ET.SubElement(ppr, W + "pStyle")
+    if style.get(W + "val") == "Titolo2":
+        return False
+    style.set(W + "val", "Titolo2")
+    return True
+
+
 def replace_p_text(el: ET.Element, new_text: str) -> None:
     first = None
     for t in el.iter(W + "t"):
@@ -346,10 +372,17 @@ def main() -> None:
     if insert_at is None:
         raise SystemExit("4.14 not found")
     if not already:
-        extra = [make_p(text) for text in allegato_420_paragraphs(stamp)]
+        paras = allegato_420_paragraphs(stamp)
+        extra = [make_title2(paras[0])] + [make_p(text) for text in paras[1:]]
         for offset, p in enumerate(extra):
             children.insert(insert_at + offset, p)
         n += len(extra)
+    else:
+        for el in children:
+            if ptext(el).startswith("4.20 Merge famiglia"):
+                if ensure_title2(el):
+                    n += 1
+                break
 
     for child in list(body):
         body.remove(child)
