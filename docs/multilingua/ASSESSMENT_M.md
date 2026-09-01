@@ -1,0 +1,312 @@
+# Assessment filone M — Multilingua IT/EN
+
+**Data:** 01/09/2026  
+**SI Renato:** mini-assessment approvato (sessione continuità)  
+**Obiettivo prodotto:** massimizzare distribuzione Play con **italiano + inglese** (non 29 lingue in V1)  
+**Strumento:** **Cursor** (repo + Nota ufficiale); Play Console solo canale publish / listing opzionale  
+**Riferimento prodotto:** Nota Integrata **3.6.6** Scelta lingua (Impostazioni — «Prossime implementazioni»)  
+**Timing:** **dopo** test chiuso Play verde o SI esplicito a deviare — **non** mescolare con correttivi P0/P1/P2 in corso
+
+---
+
+## 1. Riepilogo esecutivo
+
+| Domanda | Risposta |
+|---------|----------|
+| Play Console traduce l’app? | Solo `strings.xml` nel bundle; **non** Kotlin, **non** ricerca avanzata |
+| Basta listing EN su Play? | Aiuta **scoperta**, non **uso** |
+| IT + EN è realistico? | **Sì**, in **due strati** separati |
+| Ricerca avanzata = traduzione UI? | **No** — motore linguistico con tabelle ufficiali (Nota 1.3.3, 2.6, matrice indicatori) |
+| Dove si lavora? | **Tutto in Cursor**; checkpoint umani **3** (vedi §6) |
+
+**Ordine obbligatorio:** infrastruttura + UI (M1) → estensione Nota EN + motore ricerca (M2).  
+**Vietato:** tradurre a memoria gli alias italiani; importare elenco intero da fonte ufficiale aggiornata.
+
+---
+
+## 2. Stato attuale (analisi codebase)
+
+### 2.1 Panoramica numerica
+
+| Strato | Dove | Volume indicativo | Localizzabile con `strings.xml` solo? |
+|--------|------|-------------------|----------------------------------------|
+| Layout XML | `app/src/main/res/layout/` | **86** `android:text` hardcoded in **23** file | Sì (dopo estrazione) |
+| Risorse esistenti | `values/strings.xml` | **~32** righe | Già lì |
+| Letterali Kotlin | `app/src/main/java/**/*.kt` | **~1277** match `"..."` (include log, chiavi, formati) | **No** — refactor |
+| Titoli activity | Kotlin `title = "..."` | **~27** | Refactor |
+| Oggetti *Copy* / *Configuration* | vedi §2.3 | **~15** file centrali + DialogUtils | Refactor mirato |
+| Dominio ricerca | `domain/search/` | **62** file Kotlin | **Locale-aware**, non stringhe |
+| Alias Core ufficiali | `SearchCoreAliases.kt` | **~149** termini IT | Tabella EN **separata** in Nota |
+| Test ricerca | `app/src/test/.../search/` | **102** `@Test` (pipeline ~2125 righe solo OfficialPipeline) | Duplicare/estendere per EN |
+| Flavor famiglia | `FamilyMergeCopy`, ecc. | ~73 righe copy famiglia | Come UI (M1), dopo o con M1 |
+
+**Conclusione:** l’app è **italiano-centrica by design**; meno del **5%** del testo utente passa oggi da `strings.xml`.
+
+### 2.2 Cosa NON va tradotto (dati utente)
+
+Restano nella lingua scelta dall’utente al censimento:
+
+- Nomi **contenitori**, **oggetti**, **categorie**, **posizioni**
+- File CSV import/export (header italiani nel modello ufficiale `Modello_Importazione.csv` — decisione separata se header bilingue)
+- QR payload / ID permanenti
+
+La **Scelta lingua** (3.6.6) riguarda **UI + motore ricerca**, non riscrive l’archivio.
+
+### 2.3 Inventario testi per area (priorità M1)
+
+#### A — Catalogo 2.6 (vincolante, importare non riformulare)
+
+| File | Ruolo | Note EN |
+|------|-------|---------|
+| `SearchConfiguration.kt` | Messaggi ricerca interrogativa | **M2** — duplicato EN da Nota 2.6 EN |
+| `QrConfiguration.kt` | Testi stampa QR 3.4.4 | M1 o M2 (fuori ricerca pipeline) |
+
+#### B — Copy prodotto (non 2.6, traducibili in M1)
+
+| File | Righe indicative | Contenuto |
+|------|------------------|-----------|
+| `QuickStartGuideCopy.kt` | ~78 stringhe | Guida in-app (§8 famiglia incluso) |
+| `ArchivioCompletoCopy.kt` | ~208 | Premium / prova / paywall |
+| `FamilyMergeCopy.kt` | ~73 | Condividi Archivio (solo flavor famiglia) |
+| `PrivacyPolicy.kt` | ~26 | Privacy (Play) |
+| `ViewOutputConfiguration.kt` | titoli stampa/export | M1 |
+| `BackupConfiguration.kt` | messaggi backup/restore | M1 |
+| `ImportConfiguration.kt` | messaggi import + report | M1 (header CSV = decisione CK0 opzionale) |
+| `StorageFolderConfiguration.kt` | messaggi cartella | M1 |
+| `DialogUtils.kt` | ~575 | Dialoghi condivisi (nome file, SI/NO, delete…) |
+
+#### C — Layout (M1b)
+
+Tutti i file in `res/layout/` con testo inline: dashboard, utility, settings, box detail, search, import, restore, dialog_*, bottom nav, topbar.
+
+#### D — Kotlin sparso (M1c)
+
+Activity e ViewModel con messaggi one-off (`Toast`, `appendLine` report, placeholder search card in `SearchResultActivity`, ecc.) — grep `"` per sweep finale.
+
+### 2.4 Ricerca avanzata — perché è un filone a sé (M2)
+
+Componenti **intrinsecamente linguistici** (non derivabili da Gemini Play):
+
+| Componente | Italiano oggi | Lavoro EN |
+|------------|---------------|-----------|
+| `SearchCoreAliases` | 4× set ufficiali Nota 1.3.3 | **Elenco EN ufficiale** (Excel/Nota) — ~4 righe Core + espansioni |
+| `SearchLexicalIndicatorMatrix` | `dove`, `quali`, `tutti`, `uguale`, … | Set EN (`where`, `which`, `all`, `same`, …) da Nota |
+| `SearchNormalizer` | Contrazioni `dov'è`, `cos'è`, … | Regole EN (`what's`, `where's`, …) se previste in Nota |
+| `SearchNameMatcher` / `SearchEngineA` | Stopwords + imperativi IT (`trova`, `cerca`, …) | Set EN (`find`, `search`, …) |
+| `SearchSatisfiabilityEvaluator` | Termini confronto | Allineamento matrice |
+| `SearchF7Pattern` / `SearchF8Pattern` | **Varianti domanda intere IT** (5+5) | Variant EN da Matrice Test Ricerca |
+| `SearchConfiguration` | Catalogo 2.6 | Messaggi EN catalogo 2.6 |
+| `GlobalSearchDispatcher` + pipeline 0–10 | Invariante | **Locale** in input a normalizer/alias |
+
+**Partial EN oggi:** in `boxTerms` esistono già `box`, `container`, `containers`, `cover`, … — insufficiente per domande naturali EN.
+
+**Test:** `SearchOfficialPipelineTest` (~2125 righe) è la rete di sicurezza; M2 richiede **`SearchOfficialPipelineTestEn`** o parametrizzazione locale — stessa copertura casi Nota, lingua EN.
+
+**Regola workspace:** prima di codice alias/messaggi EN → aprire artefatto ufficiale (Nota / Excel progetto) e recepire **elenco intero** (`.cursor/rules/fonti-ufficiali.mdc`, `pipeline-ufficiale.mdc`).
+
+### 2.5 Flavor play / famiglia
+
+| Aspetto | Regola M |
+|---------|----------|
+| Scelta lingua | **Comune** (Impostazioni, entrambi i flavor) |
+| Copy famiglia (`FamilyMergeCopy`) | Localizzare in M1; visibile solo `FAMILY_BETA` |
+| Merge famiglia → `main` | Solo dopo strategia C2 (non durante test Play) |
+| Branch lavoro suggerito | `cursor/multilingua-m*-5409` off `family-unione` o `main` post-test |
+
+### 2.6 Play Console — valore effettivo per BoxManager
+
+| Servizio Console | Utilità BoxManager | Cursor |
+|------------------|-------------------|--------|
+| Store listing Gemini | Bassa–media (testo scheda) | **Preferito:** `docs/play/store-listing-en.md` |
+| App strings Gemini | **Nulla finché M1 non finisce** | Estrazione + `values-en` |
+| Traduzione ricerca | **Impossibile** | Unico percorso |
+
+---
+
+## 3. Architettura target (IT + EN)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│ LocalePreference (Impostazioni 3.6.6)                        │
+│   it | en  →  AppCompatDelegate / attachBaseContext         │
+└───────────────────────────┬─────────────────────────────────┘
+                            │
+         ┌──────────────────┴──────────────────┐
+         ▼                                      ▼
+┌─────────────────────┐              ┌─────────────────────┐
+│ UI: strings.xml     │              │ SearchLocaleContext │
+│ values / values-en  │              │ alias + matrix +    │
+│ + Copy → @string    │              │ normalizer + 2.6    │
+└─────────────────────┘              └─────────────────────┘
+```
+
+**Default:** italiano (comportamento attuale).  
+**Switch:** persistito in `SharedPreferences` (chiave da allineare a Nota 3.6.6).
+
+---
+
+## 4. Piano di lavoro — pacchetti autonomi
+
+Ogni pacchetto è **chiudibile dall’agente** senza intervento Renato, salvo i **checkpoint** in §6.
+
+### M0 — Scheda Play EN (opzionale, zero codice)
+
+| | |
+|-|-|
+| **Deliverable** | `docs/play/store-listing-en.md` (titolo, short, full description, release notes template) |
+| **Autonomia** | Totale |
+| **Test** | Revisione testuale Renato opzionale (non blocca M1) |
+| **Durata relativa** | Piccola |
+
+---
+
+### M1 — UI bilingue + Scelta lingua
+
+#### M1a — Infrastruttura locale
+
+| | |
+|-|-|
+| **Scope** | `LocaleManager` / preferenza; voce Impostazioni; applicazione locale a Activity; default IT |
+| **File tipici** | `SettingsActivity`, `BaseActivity`, nuovo `LocalePreference` |
+| **Test** | Unit: persistenza + resolve locale; smoke: label Impostazioni cambia |
+| **Non toccare** | Pipeline ricerca |
+
+#### M1b — Estrazione layout → `strings.xml`
+
+| | |
+|-|-|
+| **Scope** | **86** testi layout → `@string/`; creare `values-en/strings.xml` (traduzione EN) |
+| **Ordine** | bottom nav → topbar → dashboard → flussi Utility (backup/import/restore) → CRUD |
+| **Test** | Layout lint; snapshot manuale IT/EN |
+
+#### M1c — Estrazione Copy/Configuration + DialogUtils
+
+| | |
+|-|-|
+| **Scope** | Spostare testi utente da §2.3 B in risorse; Kotlin usa `getString(R.string....)` |
+| **Escluso** | `SearchConfiguration`, `SearchCoreAliases`, matrici ricerca (M2) |
+| **Test** | `:app:testPlayDebugUnitTest` + `:app:testFamigliaDebugUnitTest` verdi |
+
+#### M1d — Sweep e Guida/Premium/Famiglia
+
+| | |
+|-|-|
+| **Scope** | `QuickStartGuideCopy`, `ArchivioCompletoCopy`, `FamilyMergeCopy`, Kotlin residuo |
+| **Test** | Guida apre in EN; card famiglia EN su flavor famiglia |
+
+**Esito M1:** app navigabile in EN; ricerca avanzata **ancora solo IT** (messaggio chiaro se locale EN? — opzionale: banner «advanced search Italian only until M2»).
+
+---
+
+### M2 — Ricerca avanzata EN
+
+#### M2a — Documentazione ufficiale EN (blocco legale/prodotto)
+
+| | |
+|-|-|
+| **Scope** | Allegato / tabella Excel: alias Core EN, indicatori, messaggi 2.6 EN, varianti F7/F8 EN |
+| **Output** | Aggiornamento Nota Integrata (sidecar o 9.x) — **prerequisito codice** |
+| **Agente** | Può **preparare bozza** da IT; **CK0** Renato prima dell’import |
+
+#### M2b — Implementazione motore EN
+
+| | |
+|-|-|
+| **Scope** | `SearchLocale` + repository alias/matrix per `en`; normalizer EN; `SearchConfiguration` locale-aware |
+| **Vincolo** | Pipeline 0–10 invariata; stessi test logici, input EN |
+| **Test** | `SearchCoreAliasesTest`, `SearchOfficialPipelineTest` estesi; **102+** casi EN |
+
+#### M2c — UI ricerca + messaggi runtime
+
+| | |
+|-|-|
+| **Scope** | Hint, placeholder, card `GlobalSearchActivity`, messaggi dispatcher in EN |
+| **Test** | E2E manuale campione Matrice Test Ricerca EN |
+
+---
+
+### M3 — Consolidamento (post M1+M2)
+
+| | |
+|-|-|
+| **Scope** | Screenshot Play EN; allineamento `main` se test Play chiuso; bump versione |
+| **Dipende** | Test Play verde + merge policy famiglia |
+
+---
+
+## 5. Rischi e mitigazioni
+
+| Rischio | Mitigazione |
+|---------|-------------|
+| Traduzione ad hoc alias EN | CK0 + regola fonti-ufficiali |
+| Regressioni pipeline IT | Test IT invariati; locale esplicito nei test |
+| Dimenticare stringhe in Kotlin | Checklist grep `"[A-ZÀ-9]` post M1 |
+| Scope creep (29 lingue) | **Fuori scope** V1 — solo IT/EN |
+| Conflitto con test Play | M1/M2 su branch dedicato; merge `main` solo post-test o SI |
+| CSV / import header italiani | Decidere in CK0 se header restano IT (consigliato V1) |
+
+---
+
+## 6. Checkpoint umani (solo 3)
+
+L’agente lavora in autonomia **tra** un checkpoint e l’altro.
+
+| ID | Quando | Cosa chiediamo a Renato | Blocca |
+|----|--------|-------------------------|--------|
+| **CK0** | Prima del **primo commit M2** (motore ricerca) | **SI** sulla bozza tabelle EN in Nota (alias Core, indicatori, 2.6, F7/F8) | M2b–M2c |
+| **CK1** | M1 completo (M1a–M1d) | **SI device**: Scelta lingua; navigazione principale EN; backup/import leggibili | M2 (consigliato) / release M1 |
+| **CK2** | M2 completo | **SI device**: campione **10 domande EN** da Matrice Test (stessi esiti attesi che IT) | Chiusura filone M |
+
+**M0** e lavoro interno M1a–M1c **non** richiedono checkpoint intermedî.
+
+---
+
+## 7. Criteri di done
+
+### M1 done
+- [ ] Impostazioni → Scelta lingua IT/EN persistente
+- [ ] Nessun testo utente visibile solo in italiano nelle schermate core (dashboard, contenitori, categorie, utility, impostazioni)
+- [ ] Test unitari play + famiglia verdi
+- [ ] CK1 **SI Renato**
+
+### M2 done
+- [ ] Domande EN attraversano pipeline 0–10 come IT
+- [ ] Suite test ricerca EN verde
+- [ ] CK2 **SI Renato**
+- [ ] Nota ufficiale aggiornata e referenziata in repo
+
+---
+
+## 8. Sequenza consigliata vs filone correttivi
+
+| Periodo | Filone |
+|---------|--------|
+| **Ora** | Correttivi P2; test Play chiuso; famiglia B5.7 |
+| **Parallelo possibile** | Solo **M0** (testo listing) |
+| **Dopo test Play verde** | **M1** → CK1 → **M2** (+ CK0 prima di M2 code) |
+| **Non fare** | M1/M2 su `main` durante test senza SI |
+
+---
+
+## 9. Riferimenti
+
+| Documento | Ruolo |
+|-----------|--------|
+| [PROMPT_CONTINUITA_M.md](PROMPT_CONTINUITA_M.md) | Ingresso sessione agente filone M |
+| [../famiglia/STRATEGIA_UNIFICAZIONE.md](../famiglia/STRATEGIA_UNIFICAZIONE.md) | Fase C — filone M |
+| [../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md) | Tracking filoni paralleli |
+| `.cursor/rules/fonti-ufficiali.mdc` | Import elenchi, non riassumere |
+| `.cursor/rules/pipeline-ufficiale.mdc` | Sequenza 0–10 invariata |
+| Nota Integrata 3.6.6 | Scelta lingua UI |
+| Nota 1.3.3 / Excel Matrice | Alias e indicatori |
+
+---
+
+## 10. Messaggio tipo per avviare M1 (dopo SI timing)
+
+```
+Filone M — UI bilingue da docs/multilingua/PROMPT_CONTINUITA_M.md
+Pacchetto: M1a (infrastruttura Scelta lingua)
+Branch: cursor/multilingua-m1a-5409
+Non toccare domain/search finché CK0 non è chiuso per M2.
+```

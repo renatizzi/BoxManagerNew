@@ -72,7 +72,7 @@ Obiettivo: **un solo codice condiviso** per i bugfix, **due binari distinti** (P
 |---------|--------|------|
 | **C1** — Play resta 1.2.x, famiglia continua B5.x | Test ok, famiglia ancora in uso domestico | Stato attuale prolungato |
 | **C2** — Portare famiglia in `main` dietro flag (futuro) | SI esplicito prodotto | Non in questo periodo |
-| **C3** — Filone multilingua (M) | Dopo stabilizzazione bug | Nota 3.6.6 Scelta lingua; branch o fetta dedicata |
+| **C3** — Filone multilingua (M) | Dopo stabilizzazione bug / test Play verde | [ASSESSMENT_M.md](../multilingua/ASSESSMENT_M.md) — IT+EN; M1 UI then M2 ricerca |
 
 Nessuna unificazione «big bang» durante i 14 giorni di test: solo **sync bugfix**.
 
