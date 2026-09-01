@@ -1,6 +1,6 @@
 # Promemoria — interventi trasversali (famiglia + Play)
 
-**Aggiornato:** 01/09/2026 — T2 **CONVALIDATO**; freeze Play `cursor/versione-test-5409`; P1 in **1.3-famigliaB5.7**. Ingresso sessione → [PROMPT_CONTINUITA_CORRETTIVI.md](PROMPT_CONTINUITA_CORRETTIVI.md).
+**Aggiornato:** 01/09/2026 — T2 **CONVALIDATO**; P1 **CONVALIDATO** B5.7 (SI Renato device); freeze Play `cursor/versione-test-5409`. Ingresso sessione → [PROMPT_CONTINUITA_CORRETTIVI.md](PROMPT_CONTINUITA_CORRETTIVI.md).
 
 Elenco di fix/igiene **non legati a una sola fetta**, da affrontare quando si tocca l’area o in un giro dedicato (B7 igiene / sync Play).
 
@@ -38,12 +38,13 @@ Verificare **ogni** punto che scrive un file e allineare dove ha senso al criter
 
 **Già allineati in famiglia (B4):** Invia Condivisione Archivio (`KEY_FAMILY_SHARE`, box nome, OK post-salvataggio).
 
-**B5.5 (P1, attende SI device):**
+**B5.7 (P1 CONVALIDATO, SI Renato device 01/09/2026):**
 
-- **PRE_RESTORE** — box unico nome editabile + SI/NO (stesso criterio Esporta), poi conferma ripristino.
-- **Genera Modello** — `Modello_Importazione.csv` fisso come proposto; riuso cartella Backup; box SI/NO.
+- **PRE_RESTORE** — SFOGLIA sceglie il ZIP; box unico nome editabile + SI/NO (titolo «Copia di sicurezza»), poi conferma ripristino.
+- **Genera Modello** — `Modello_Importazione.csv` fisso; riuso cartella Backup; box con cartella visibile + pulsante **Cartella**.
+- **Importa** — picker CSV (non ZIP); parte dalla cartella Backup.
 
-**Già OK:** Backup, Esporta vista, Import auto-backup.
+**Già OK:** Backup, Esporta vista, Import auto-backup, Invia famiglia B4.
 
 ---
 

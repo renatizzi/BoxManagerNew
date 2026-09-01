@@ -1,6 +1,6 @@
 # Assessment interventi correttivi — famiglia + Play
 
-**Data:** 01/09/2026 (freeze Play + P1)  
+**Data:** 01/09/2026 (P1 CONVALIDATO)  
 **Branch riferimento famiglia:** `cursor/p1-igiene-file-5409` → merge in `cursor/family-unione-unificata-e5b5`  
 **Play Store:** `main` → **1.2** (versionCode 3); freeze `cursor/versione-test-5409`  
 **Fonte ufficiale:** `docs/Nota_Integrata_9.2.docx` su **`main`**, **Allegato 4.20**
@@ -14,7 +14,7 @@ Documento di assessment (punto 1 del piano Renato). Per la strategia operativa v
 | Priorità | Voci | Azione |
 |----------|------|--------|
 | **P0** | T1, T2, T3 chiusi | T2 **CONVALIDATO** 01/09/2026 |
-| **P1** | Igiene salvataggio file | **B5.5** in ritest (PRE_RESTORE + Genera Modello); non blocca test Play |
+| **P1** | Igiene salvataggio file | **CONVALIDATO** B5.7 (SI Renato device 01/09/2026) |
 | **P2** | Sync bugfix Play ↔ famiglia | Processo continuo; **non** invertire famiglia su `main` durante il test |
 | **Filone M** | Multilingua / Scelta lingua | **Fuori** da questo assessment — pianificazione separata |
 
@@ -43,14 +43,14 @@ Criterio di riferimento: nome datato, riuso cartella SAF, box nome + SI/NO; `Mod
 | Punto | Prefisso / nome | Cartella | Box SI/NO | Valutazione |
 |-------|-----------------|----------|-----------|-------------|
 | Backup | `BCK_ddMMyy_HHmm.zip` | `KEY_BACKUP` | Sì | **OK** |
-| PRE_RESTORE | `PRE_RESTORE_ddMMyy_HHmm.zip` | Stessa Backup | Box unico nome + SI/NO | **B5.5** — ritest device |
+| PRE_RESTORE | `PRE_RESTORE_ddMMyy_HHmm.zip` | Stessa Backup | Box unico nome + SI/NO + Cartella/SFOGLIA ZIP | **CONVALIDATO** B5.7 |
 | Esporta vista Play | `ESPORTA_…csv` | `KEY_IMPORT_EXPORT` | Sì | **OK** (criterio matrice) |
-| Genera Modello | `Modello_Importazione.csv` | Cartella Backup (`KEY_BACKUP`) | Box unico SI/NO | **B5.5** — ritest device |
+| Genera Modello | `Modello_Importazione.csv` | Cartella Backup (`KEY_BACKUP`) | Box unico SI/NO + pulsante Cartella | **CONVALIDATO** B5.7 |
 | Import auto-backup | `BCK_…` | Backup | Sì | **OK** |
 | Invia/Ricevi famiglia B4 | datato | `KEY_FAMILY_SHARE` | Sì | **OK** |
 | Etichetta QR → PDF | contesto QR | — | flusso dedicato | Fuori criterio Esporta |
 
-**Raccomandazione:** P1 in **B5.5** — ritest device; nessun blocco per closed test Play.
+**Raccomandazione:** P1 **chiuso**. Prossimo filone correttivi = P2 (sync bug Play → famiglia). Nessun blocco per closed test Play.
 
 ---
 
@@ -79,4 +79,4 @@ Criterio di riferimento: nome datato, riuso cartella SAF, box nome + SI/NO; `Mod
 1. **Assessment** — fatto (SI Renato).
 2. **Versione famiglia B5.3** — fatto; T2 **CONVALIDATO** 01/09/2026.
 3. **Strategia unificazione** — documentata; freeze `cursor/versione-test-5409`; **non** invertire su `main`.
-4. **P1** — codice in **B5.5**; chiusura solo dopo SI device (PRE_RESTORE + Genera Modello).
+4. **P1** — **CONVALIDATO** 01/09/2026 (SI Renato, build **1.3-famigliaB5.7**). Prossimo: P2.

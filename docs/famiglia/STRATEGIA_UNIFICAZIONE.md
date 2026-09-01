@@ -60,7 +60,7 @@ Obiettivo: **un solo codice condiviso** per i bugfix, **due binari distinti** (P
 | Branch sorgente | `cursor/family-unione-unificata-e5b5` |
 | Build | `assembleFamigliaDebug` / `installFamigliaDebug` |
 | Correttivi P0 | T1–T2 **CONVALIDATO**; T3 chiuso |
-| P1 igiene file | **B5.5** — PRE_RESTORE + Genera Modello; chiusura con SI device |
+| P1 igiene file | **CONVALIDATO** B5.7 (SI Renato 01/09/2026) |
 | Versione | `1.3-famigliaB5.x` — incrementare a ogni consegna testabile |
 | Telefoni famiglia | Solo APK famiglia; Play 1.2 resta installabile affiancata ([DUE_APP_CINQUE_TELEFONI.md](DUE_APP_CINQUE_TELEFONI.md)) |
 

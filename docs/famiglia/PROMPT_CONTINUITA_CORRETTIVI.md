@@ -1,6 +1,6 @@
 # Prompt di continuità — Correttivi post-B5 (famiglia + sync Play)
 
-**SI Renato, 31/08/2026** — piano a 3 passi. **01/09/2026:** T2 CONVALIDATO; freeze Play 1.2; **non** invertire famiglia su `main`; P1 in B5.5.
+**SI Renato, 31/08/2026** — piano a 3 passi. **01/09/2026:** T2 CONVALIDATO; freeze Play 1.2; **non** invertire famiglia su `main`; **P1 CONVALIDATO** B5.7.
 
 Usare questo file come **unico ingresso** per la prossima sessione agente sul filone **correzioni** (non riaprire B5 prodotto né filone multilingua M).
 
@@ -16,7 +16,7 @@ Usare questo file come **unico ingresso** per la prossima sessione agente sul fi
 | **Freeze Play 1.2** | `cursor/versione-test-5409` (snapshot `main`; PR #14) |
 | **Inversione famiglia → main** | **No** durante il test chiuso (idea accantonata; C2 solo dopo SI) |
 | **B0–B5 merge** | **CONVALIDATO** — Nota Integrata **9.2** Allegato **4.20** |
-| **Filone correttivi** | P0 chiuso; **P1** in ritest device; P2 continuo |
+| **Filone correttivi** | P0 chiuso; **P1 CONVALIDATO** B5.7; P2 continuo |
 
 ### Documenti vincolanti (leggere prima di codice)
 
@@ -57,15 +57,16 @@ CONVALIDATO 01/09/2026. File: `BoxDetailActivity.refreshHeader()`, `SearchResult
 4. **T2 CONVALIDATO** (01/09/2026). Non riaprire.
 5. **Non** riaprire T3 senza evidenza nuova.
 
-### Fase 3 — P1 igiene salvataggio file (**B5.5**, ritest device)
+### Fase 3 — P1 igiene salvataggio file (**CONVALIDATO** B5.7)
 
-| Punto | Stato codice |
-|-------|----------------|
-| **PRE_RESTORE** | Box unico nome editabile + `Confermi?` / `File già esistente. Sostituirlo?`; poi conferma ripristino |
-| **Genera Modello** | Nome proposto `Modello_Importazione.csv`; riuso cartella **Backup**; stesso box SI/NO |
-| **Esporta vista** | Già OK (criterio matrice) |
+| Punto | Stato |
+|-------|--------|
+| **PRE_RESTORE** | SFOGLIA ZIP; box «Copia di sicurezza» nome + SI/NO; poi conferma ripristino |
+| **Genera Modello** | `Modello_Importazione.csv`; cartella Backup visibile; pulsante **Cartella** |
+| **Importa** | Picker CSV (non ZIP); cartella Backup |
+| **Esporta vista** | Già OK |
 
-Chiusura P1: solo dopo **SI Renato** su device (Ripristino copia di sicurezza + Genera Modello).
+Non riaprire P1 senza nuova evidenza.
 
 ### Fase 4 — P2 sync Play (continuo)
 
@@ -143,9 +144,9 @@ Branch: cursor/family-unione-unificata-e5b5
 Build: 1.3-famigliaB5.7
 
 Priorità:
-1) Ritest P1 (PRE_RESTORE + Genera Modello) → SI/KO
+1) P2: merge main se bug Play tester
 2) Non invertire famiglia su main durante il test Play
-3) Merge main se bug Play tester
+3) Non riaprire P0/P1 senza evidenza nuova
 
 Leggi ASSESSMENT + STRATEGIA + PROMEMORIA prima del codice.
 ```
