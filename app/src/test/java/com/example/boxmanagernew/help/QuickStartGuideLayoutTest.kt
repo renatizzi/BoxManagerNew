@@ -11,11 +11,12 @@ class QuickStartGuideLayoutTest {
     fun processBlock_isStickyOutsideScroll() {
         val xml = layoutSource()
         val processIndex = xml.indexOf("android:id=\"@+id/processBlock\"")
-        val scrollIndex = xml.indexOf("android:id=\"@+id/guideScroll\"")
+        val scrollTagIndex = xml.indexOf("<ScrollView")
+        val scrollIdIndex = xml.indexOf("android:id=\"@+id/guideScroll\"")
         assertTrue(processIndex > 0)
-        assertTrue(scrollIndex > processIndex)
-        val processToScroll = xml.substring(processIndex, scrollIndex)
-        assertFalse(processToScroll.contains("<ScrollView"))
+        assertTrue(scrollTagIndex > 0)
+        assertTrue(scrollIdIndex > scrollTagIndex)
+        assertTrue(processIndex < scrollTagIndex)
     }
 
     @Test
