@@ -67,7 +67,8 @@ class ArchivioCompletoActivity : BaseActivity() {
             ArchivioCompletoCopy.packageShareHint(
                 access.trialDays(),
                 access.shareBonusDays(),
-                access.shareFriendsRequired()
+                access.shareFriendsRequired(),
+                BuildConfig.FAMILY_BETA
             )
 
         findViewById<TextView>(R.id.textLockedFooter).text =

@@ -76,21 +76,27 @@ class QuickStartGuideCopyTest {
     }
 
     @Test
-    fun familyBetaSections_addSetupFamiglia() {
+    fun familyBetaSections_addArchivioCondiviso() {
         val sections =
             QuickStartGuideCopy.sectionsFor(includeFamilyBeta = true)
         assertEquals(8, sections.size)
         val family = sections.single { it.number == 8 }
-        assertEquals("Setup famiglia (beta)", family.title)
+        assertEquals("Archivio condiviso", family.title)
         assertTrue(
-            family.bullets.any { it.contains("Catalogo Famiglia") }
+            family.bullets.any { it.contains("Condividi Archivio") }
+        )
+        assertTrue(
+            family.bullets.any { it.contains("Archivio completo") }
         )
         val utility = sections.single { it.number == 5 }
         assertTrue(
-            utility.bullets.any { it.contains("Catalogo Famiglia") }
+            utility.bullets.any { it.contains("Archivio condiviso") }
         )
         assertTrue(
-            utility.bullets.any { it.contains("Inventario Famiglia") }
+            QuickStartGuideCopy.footerNote(true).contains("Archivio condiviso")
+        )
+        assertTrue(
+            !QuickStartGuideCopy.footerNote(false).contains("Archivio condiviso")
         )
     }
 }

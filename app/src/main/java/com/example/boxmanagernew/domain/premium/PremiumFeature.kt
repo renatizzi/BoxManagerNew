@@ -5,7 +5,8 @@ enum class PremiumFeature {
     QR_SCAN,
     QR_LABEL,
     IMPORT,
-    EXPORT
+    EXPORT,
+    FAMILY_SHARE
 }
 
 enum class ShareActionResult {

@@ -99,7 +99,8 @@ object ArchivioCompletoNav {
                 BottomNavManager.TAB_DASHBOARD
 
             PremiumFeature.QR_SCAN,
-            PremiumFeature.IMPORT ->
+            PremiumFeature.IMPORT,
+            PremiumFeature.FAMILY_SHARE ->
                 BottomNavManager.TAB_UTILITY
 
             PremiumFeature.QR_LABEL,

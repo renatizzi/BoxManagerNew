@@ -59,7 +59,7 @@ class QuickStartGuideActivity : BaseActivity() {
         )
 
         findViewById<TextView>(R.id.textFooterNote).text =
-            QuickStartGuideCopy.FOOTER_NOTE
+            QuickStartGuideCopy.footerNote(BuildConfig.FAMILY_BETA)
     }
 
     private fun stylePhaseChip(

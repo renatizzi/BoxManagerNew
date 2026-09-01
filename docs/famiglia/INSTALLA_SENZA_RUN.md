@@ -18,4 +18,4 @@ Se Android Studio non mostra Run o il Terminale dà `JAVA_HOME is not set`, usa 
 4. Copia `app-famiglia-debug.apk` sul telefono (USB, Drive, WhatsApp)
 5. Sul telefono: apri il file → Installa
 
-Versione attesa: **1.3-famigliaB5.3**
+Versione attesa: **1.3-famigliaB5.4**
