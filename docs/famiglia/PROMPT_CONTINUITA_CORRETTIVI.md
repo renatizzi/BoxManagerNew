@@ -11,7 +11,7 @@ Usare questo file come **unico ingresso** per la prossima sessione agente sul fi
 | Voce | Valore |
 |------|--------|
 | **Branch famiglia** | `cursor/family-unione-unificata-e5b5` (integrazione) |
-| **Build famiglia** | **1.3-famigliaB5.6** (versionCode **1325**) — P1 su `cursor/p1-igiene-file-5409` |
+| **Build famiglia** | **1.3-famigliaB5.7** (versionCode **1326**) — P1 su `cursor/p1-igiene-file-5409` |
 | **Play** | `main` → **1.2** (vc 3) — test chiuso Console |
 | **Freeze Play 1.2** | `cursor/versione-test-5409` (snapshot `main`; PR #14) |
 | **Inversione famiglia → main** | **No** durante il test chiuso (idea accantonata; C2 solo dopo SI) |
@@ -50,7 +50,7 @@ CONVALIDATO 01/09/2026. File: `BoxDetailActivity.refreshHeader()`, `SearchResult
 
 1. `git checkout cursor/family-unione-unificata-e5b5 && git pull`
 2. Leggere tabella P0 in [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) e [ASSESSMENT](ASSESSMENT_CORRETTIVI.md).
-3. Verificare topbar attesa **1.3-famigliaB5.6** in `app/build.gradle.kts` (flavor `famiglia`).
+3. Verificare topbar attesa **1.3-famigliaB5.7** in `app/build.gradle.kts` (flavor `famiglia`).
 
 ### Fase 2 — P0 residuo
 
@@ -109,7 +109,7 @@ git merge origin/main
 ./gradlew :app:testFamigliaDebugUnitTest --tests "com.example.boxmanagernew.viewoutput.ContainerViewSnapshotFactoryTest"
 ```
 
-**Windows:** `INSTALLA_FAMIGLIA.bat` — topbar attesa **1.3-famigliaB5.6**.
+**Windows:** `INSTALLA_FAMIGLIA.bat` — topbar attesa **1.3-famigliaB5.7**.
 
 **Play locale (regressione):** `./gradlew :app:assemblePlayDebug`
 
@@ -119,7 +119,7 @@ git merge origin/main
 
 | Tipo | versionName famiglia | Quando |
 |------|----------------------|--------|
-| Fix P0/P1 testabile | `1.3-famigliaB5.6`, `B5.7`, … | Incrementare `versionCode` flavor famiglia |
+| Fix P0/P1 testabile | `1.3-famigliaB5.7`, `B5.8`, … | Incrementare `versionCode` flavor famiglia |
 | Solo doc | Invariato | OK senza bump |
 | Play release tester | `1.2.x` su `main` | Solo flavor `play`, SI Renato |
 
@@ -140,7 +140,7 @@ Aggiornare sempre: `app/build.gradle.kts`, `INSTALLA_FAMIGLIA.bat`, `docs/famigl
 Continua filone CORRETTIVI post-B5 da docs/famiglia/PROMPT_CONTINUITA_CORRETTIVI.md.
 
 Branch: cursor/family-unione-unificata-e5b5
-Build: 1.3-famigliaB5.6
+Build: 1.3-famigliaB5.7
 
 Priorità:
 1) Ritest P1 (PRE_RESTORE + Genera Modello) → SI/KO

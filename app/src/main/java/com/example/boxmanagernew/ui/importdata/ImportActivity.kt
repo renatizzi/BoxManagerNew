@@ -225,6 +225,11 @@ class ImportActivity : BaseActivity() {
 
         backupFolderUri = uri
 
+        val displayName = backupPersister.folderDisplayName(uri)
+        if (displayName != null) {
+            backupPersister.persistFolderLabel(displayName)
+        }
+
         getSharedPreferences(
             StorageFolderConfiguration.PREFS_NAME,
             Context.MODE_PRIVATE
@@ -318,9 +323,15 @@ class ImportActivity : BaseActivity() {
                     persister = templatePersister
                 )
             },
+            onBrowseFolder = {
+                pendingTemplateAfterFolder = true
+                backupFolderPicker.launch(null)
+            },
             normalizeName = { raw ->
                 ImportConfiguration.templateFileName(raw)
-            }
+            },
+            folderName = backupPersister.resolvedFolderDisplayName(uri)
+                ?: templatePersister.folderDisplayName(uri)
         )
     }
 

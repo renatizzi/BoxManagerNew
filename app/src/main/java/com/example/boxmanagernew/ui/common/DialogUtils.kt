@@ -411,7 +411,8 @@ object DialogUtils {
         onSave: (fileName: String, overwrite: Boolean) -> Unit,
         onBrowseFolder: (() -> Unit)? = null,
         normalizeName: (String) -> String = { ViewOutputConfiguration.csvFileName(it) },
-        title: String? = null
+        title: String? = null,
+        folderName: String? = null
     ) {
 
         val pad =
@@ -433,6 +434,14 @@ object DialogUtils {
             LinearLayout(context).apply {
                 orientation = LinearLayout.VERTICAL
                 setPadding(pad, pad, pad, pad)
+                if (!folderName.isNullOrBlank()) {
+                    addView(
+                        TextView(context).apply {
+                            text = folderName
+                            setPadding(0, 0, 0, pad)
+                        }
+                    )
+                }
                 addView(name)
                 addView(prompt)
             }

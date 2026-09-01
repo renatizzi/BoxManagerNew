@@ -110,7 +110,7 @@ INSTALLA_FAMIGLIA.bat
 ./gradlew :app:installFamigliaDebug
 ```
 
-Topbar attesa dopo P1: **1.3-famigliaB5.6**.
+Topbar attesa dopo P1: **1.3-famigliaB5.7**.
 
 ---
 

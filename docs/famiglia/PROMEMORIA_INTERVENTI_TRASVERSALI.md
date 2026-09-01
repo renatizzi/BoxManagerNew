@@ -1,6 +1,6 @@
 # Promemoria — interventi trasversali (famiglia + Play)
 
-**Aggiornato:** 01/09/2026 — T2 **CONVALIDATO**; freeze Play `cursor/versione-test-5409`; P1 in **1.3-famigliaB5.6**. Ingresso sessione → [PROMPT_CONTINUITA_CORRETTIVI.md](PROMPT_CONTINUITA_CORRETTIVI.md).
+**Aggiornato:** 01/09/2026 — T2 **CONVALIDATO**; freeze Play `cursor/versione-test-5409`; P1 in **1.3-famigliaB5.7**. Ingresso sessione → [PROMPT_CONTINUITA_CORRETTIVI.md](PROMPT_CONTINUITA_CORRETTIVI.md).
 
 Elenco di fix/igiene **non legati a una sola fetta**, da affrontare quando si tocca l’area o in un giro dedicato (B7 igiene / sync Play).
 

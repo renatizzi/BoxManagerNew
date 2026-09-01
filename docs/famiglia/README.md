@@ -12,7 +12,7 @@
 | [DUE_APP_CINQUE_TELEFONI.md](DUE_APP_CINQUE_TELEFONI.md) | Come far convivere Play 1.2 e beta in famiglia |
 | [INSTALLA_SENZA_RUN.md](INSTALLA_SENZA_RUN.md) | Se Run / Terminale non funzionano (script `.bat`) |
 
-**Fetta B5:** **CONVALIDATO** (SI Renato, 31/08/2026). **T2 CONVALIDATO** B5.3. **P1:** build **1.3-famigliaB5.6**. Play freeze: `cursor/versione-test-5409` — **non** invertire su `main`.
+**Fetta B5:** **CONVALIDATO** (SI Renato, 31/08/2026). **T2 CONVALIDATO** B5.3. **P1:** build **1.3-famigliaB5.7**. Play freeze: `cursor/versione-test-5409` — **non** invertire su `main`.
 
 ## Aggiornare la beta (solo Renato)
 
