@@ -37,7 +37,8 @@ class BoxRepositoryImpl(
             categoryId = entity.categoryId,
             position = entity.position,
             lastModified = entity.lastModified,
-            permanentId = entity.permanentId
+            permanentId = entity.permanentId,
+            createdBy = entity.createdBy
         )
     }
 
@@ -66,7 +67,8 @@ class BoxRepositoryImpl(
                 lastModified = box.lastModified,
                 permanentId = BoxPermanentId.fromStored(
                     box.permanentId
-                )
+                ),
+                createdBy = box.createdBy.trim()
             )
         )
     }
@@ -88,7 +90,9 @@ class BoxRepositoryImpl(
                 permanentId = BoxPermanentId.fromStored(
                     existing?.permanentId
                         ?: box.permanentId
-                )
+                ),
+                createdBy = existing?.createdBy
+                    ?: box.createdBy.trim()
             )
         )
     }

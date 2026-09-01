@@ -2,10 +2,15 @@ package com.example.boxmanagernew.ui.utility
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.TextView
+import com.example.boxmanagernew.BuildConfig
 import com.example.boxmanagernew.R
-import com.example.boxmanagernew.ui.backup.BackupActivity
+import com.example.boxmanagernew.domain.family.FamilyMergeCopy
 import com.example.boxmanagernew.domain.premium.PremiumFeature
+import com.example.boxmanagernew.ui.backup.BackupActivity
 import com.example.boxmanagernew.ui.common.BaseActivity
+import com.example.boxmanagernew.ui.family.FamilyCatalogActivity
 import com.example.boxmanagernew.ui.importdata.ImportActivity
 import com.example.boxmanagernew.ui.premium.ArchivioCompletoNav
 import com.example.boxmanagernew.ui.qr.QRActivity
@@ -79,6 +84,25 @@ class UtilityActivity : BaseActivity() {
                     QRActivity::class.java
                 )
             )
+        }
+
+        val familyRow = findViewById<View>(R.id.rowFamilyCatalog)
+        val familyButton =
+            findViewById<MaterialCardView>(R.id.btnFamilyCatalog)
+        if (BuildConfig.FAMILY_BETA) {
+            familyRow.visibility = View.VISIBLE
+            findViewById<TextView>(R.id.textFamilyCatalog).text =
+                FamilyMergeCopy.UTILITY_CARD_LABEL
+            familyButton.setOnClickListener {
+                startActivity(
+                    Intent(
+                        this,
+                        FamilyCatalogActivity::class.java
+                    )
+                )
+            }
+        } else {
+            familyRow.visibility = View.GONE
         }
     }
 }

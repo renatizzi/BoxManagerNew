@@ -11,6 +11,9 @@ data class ObjectWithTypeName(
     val boxId: Int,
     val description: String?,
     val quantity: Int?,
+    val objectPermanentId: String = "",
+    val lastModified: Long = 0L,
+    val createdBy: String = "",
     val typeName: String
 )
 
@@ -18,7 +21,7 @@ data class ObjectWithTypeName(
 interface ObjectDao {
 
     @Insert
-    suspend fun insert(obj: ObjectEntity)
+    suspend fun insert(obj: ObjectEntity): Long
 
     @Update
     suspend fun update(obj: ObjectEntity)
@@ -34,6 +37,9 @@ interface ObjectDao {
             o.boxId,
             o.description,
             o.quantity,
+            o.objectPermanentId,
+            o.lastModified,
+            o.createdBy,
             t.name AS typeName
         FROM objects o
         INNER JOIN object_types t
@@ -99,6 +105,18 @@ interface ObjectDao {
 
     @Query(
         """
+        SELECT *
+        FROM objects
+        WHERE id = :id
+        LIMIT 1
+        """
+    )
+    suspend fun getById(
+        id: Int
+    ): ObjectEntity?
+
+    @Query(
+        """
         UPDATE objects
         SET boxId = :targetBoxId
         WHERE id IN (:ids)
@@ -125,6 +143,18 @@ interface ObjectDao {
 
     @Query("DELETE FROM objects WHERE id IN (:ids)")
     suspend fun deleteByIds(ids: List<Int>)
+
+    @Query(
+        """
+        SELECT *
+        FROM objects
+        WHERE objectPermanentId = :permanentId
+        LIMIT 1
+        """
+    )
+    suspend fun getByPermanentId(
+        permanentId: String
+    ): ObjectEntity?
 
     @Query("DELETE FROM objects")
     suspend fun deleteAll()

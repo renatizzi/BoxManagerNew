@@ -8,6 +8,7 @@ import com.example.boxmanagernew.backup.model.BackupMetadata
 import com.example.boxmanagernew.data.local.entity.BoxEntity
 import com.example.boxmanagernew.data.local.entity.CategoryEntity
 import com.example.boxmanagernew.data.local.entity.LocationEntity
+import com.example.boxmanagernew.domain.model.ObjectPermanentId
 import com.example.boxmanagernew.data.local.entity.ObjectEntity
 import com.example.boxmanagernew.data.local.entity.ObjectTypeEntity
 import com.example.boxmanagernew.domain.model.BoxPermanentId
@@ -99,12 +100,18 @@ class BackupDeserializer {
                     } else {
                         null
                     }
-                )
+                ),
+                createdBy = if (item.has("createdBy") && !item.isNull("createdBy")) {
+                    item.getString("createdBy")
+                } else {
+                    ""
+                }
             )
         }
     }
 
     private fun parseObjects(array: JSONArray): List<ObjectEntity> {
+        val now = System.currentTimeMillis()
         return (0 until array.length()).map { index ->
             val item = array.getJSONObject(index)
             ObjectEntity(
@@ -120,6 +127,23 @@ class BackupDeserializer {
                     null
                 } else {
                     item.getInt("quantity")
+                },
+                objectPermanentId = ObjectPermanentId.fromStored(
+                    if (item.has("objectPermanentId") && !item.isNull("objectPermanentId")) {
+                        item.getString("objectPermanentId")
+                    } else {
+                        null
+                    }
+                ),
+                lastModified = if (item.has("lastModified") && !item.isNull("lastModified")) {
+                    item.getLong("lastModified")
+                } else {
+                    now
+                },
+                createdBy = if (item.has("createdBy") && !item.isNull("createdBy")) {
+                    item.getString("createdBy")
+                } else {
+                    ""
                 }
             )
         }

@@ -77,7 +77,8 @@ class BackupSerializer {
         "{\"id\":${box.id},\"name\":\"${escape(box.name)}\"," +
                 "\"categoryId\":${box.categoryId},\"position\":\"${escape(box.position)}\"," +
                 "\"lastModified\":${box.lastModified}," +
-                "\"permanentId\":\"${escape(box.permanentId)}\"}"
+                "\"permanentId\":\"${escape(box.permanentId)}\"," +
+                "\"createdBy\":\"${escape(box.createdBy)}\"}"
     }
 
     private fun serializeObjects(
@@ -86,7 +87,10 @@ class BackupSerializer {
 
         "{\"id\":${obj.id},\"typeObjectId\":${obj.typeObjectId}," +
                 "\"boxId\":${obj.boxId},\"description\":${jsonStringOrNull(obj.description)}," +
-                "\"quantity\":${obj.quantity ?: "null"}}"
+                "\"quantity\":${obj.quantity ?: "null"}," +
+                "\"objectPermanentId\":\"${escape(obj.objectPermanentId)}\"," +
+                "\"lastModified\":${obj.lastModified}," +
+                "\"createdBy\":\"${escape(obj.createdBy)}\"}"
     }
 
     private fun serializeCategories(

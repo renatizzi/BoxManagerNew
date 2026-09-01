@@ -26,9 +26,11 @@ import com.example.boxmanagernew.domain.model.Object
 import com.example.boxmanagernew.domain.model.Location
 import com.example.boxmanagernew.backup.config.BackupConfiguration
 import com.example.boxmanagernew.domain.search.SearchConfiguration
+import com.example.boxmanagernew.family.deletion.FamilyDeleteProvider
 import com.example.boxmanagernew.ui.boxdetail.BoxDetailActivity
 import com.example.boxmanagernew.ui.categories.IconMapper
 import com.example.boxmanagernew.ui.common.BaseActivity
+import com.example.boxmanagernew.ui.common.CreatedByResolver
 import com.example.boxmanagernew.ui.common.DialogUtils
 import com.example.boxmanagernew.ui.common.FeedbackUtils
 import com.example.boxmanagernew.ui.common.UiUtils
@@ -122,6 +124,7 @@ class MainActivity : BaseActivity() {
         setupViewOutputActions()
 
         setupViewModel(
+            db,
             repository,
             objectRepository
         )
@@ -259,9 +262,16 @@ class MainActivity : BaseActivity() {
     }
 
     private fun setupViewModel(
+        db: com.example.boxmanagernew.data.local.AppDatabase,
         repository: BoxRepositoryImpl,
         objectRepository: ObjectRepositoryImpl
     ) {
+        val familyDelete =
+            FamilyDeleteProvider.create(
+                db,
+                repository,
+                objectRepository
+            )
         viewModel =
             ViewModelProvider(
                 this,
@@ -272,7 +282,8 @@ class MainActivity : BaseActivity() {
                     ): T {
                         return BoxViewModel(
                             repository,
-                            objectRepository
+                            objectRepository,
+                            familyDelete
                         ) as T
                     }
                 }
@@ -1182,7 +1193,10 @@ class MainActivity : BaseActivity() {
 
                         onDelete = {
 
-                            viewModel.deleteBoxes(ids)
+                            viewModel.deleteBoxes(
+                                ids,
+                                CreatedByResolver.current(this@MainActivity)
+                            )
                         },
 
                         onMoveObjects = {
@@ -1201,7 +1215,10 @@ class MainActivity : BaseActivity() {
                     context = this@MainActivity
                 ) {
 
-                    viewModel.deleteBoxes(ids)
+                    viewModel.deleteBoxes(
+                        ids,
+                        CreatedByResolver.current(this@MainActivity)
+                    )
                 }
             }
         }
@@ -1326,7 +1343,8 @@ class MainActivity : BaseActivity() {
                             boxName,
                             category.id,
                             (dialogViews.position.selectedItem as Location)
-                                .name
+                                .name,
+                            CreatedByResolver.current(this@MainActivity)
                         )
 
                     moveObjectsAndDeleteBoxes(
@@ -1382,7 +1400,8 @@ class MainActivity : BaseActivity() {
             if (deleteAfterMove) {
 
                 viewModel.deleteBoxes(
-                    sourceBoxIds
+                    sourceBoxIds,
+                    CreatedByResolver.current(this@MainActivity)
                 )
             }
         }
@@ -1415,7 +1434,8 @@ class MainActivity : BaseActivity() {
                     n,
                     cat.id,
                     (dialogViews.position.selectedItem as Location)
-                        .name
+                        .name,
+                    CreatedByResolver.current(this@MainActivity)
                 )
             }
         )
@@ -1529,7 +1549,10 @@ class MainActivity : BaseActivity() {
 
                         onDelete = {
 
-                            viewModel.deleteBox(id)
+                            viewModel.deleteBox(
+                                id,
+                                CreatedByResolver.current(this@MainActivity)
+                            )
                         },
 
                         onMoveObjects = {
@@ -1548,7 +1571,10 @@ class MainActivity : BaseActivity() {
                     context = this@MainActivity
                 ) {
 
-                    viewModel.deleteBox(id)
+                    viewModel.deleteBox(
+                        id,
+                        CreatedByResolver.current(this@MainActivity)
+                    )
                 }
             }
         }

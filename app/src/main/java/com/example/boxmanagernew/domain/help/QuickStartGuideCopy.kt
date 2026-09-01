@@ -54,8 +54,11 @@ object QuickStartGuideCopy {
     const val CSV_EXAMPLE_TITLE =
         "Esempio come appare in Excel o Fogli Google"
 
-    val sections: List<Section> =
-        listOf(
+    val sections: List<Section>
+        get() = sectionsFor(includeFamilyBeta = false)
+
+    fun sectionsFor(includeFamilyBeta: Boolean): List<Section> {
+        val base = listOf(
             Section(
                 phase = Phase.CONFIG,
                 number = 1,
@@ -63,7 +66,7 @@ object QuickStartGuideCopy {
                 bullets = listOf(
                     "Definisci i luoghi abituali di custodia (casa, garage, cantina…).",
                     "Scegli il tema colore dell'interfaccia.",
-                    "Il nome utente è facoltativo: serve solo come etichetta locale."
+                    "Il nome utente (Impostazioni) compare in topbar e, in beta famiglia, marca chi ha censito contenitori/oggetti."
                 )
             ),
             Section(
@@ -100,11 +103,21 @@ object QuickStartGuideCopy {
                 phase = Phase.USAGE,
                 number = 5,
                 title = "Utility",
-                bullets = listOf(
-                    "Backup e Ripristino per salvare l'archivio su file.",
-                    "Importa ed Esporta dati in CSV (vedi sezione 7).",
-                    "Codice QR per aprire un contenitore dalla fotocamera."
-                )
+                bullets = buildList {
+                    add("Backup e Ripristino per salvare l'archivio su file.")
+                    add("Importa ed Esporta dati in CSV (vedi sezione 7).")
+                    add("Codice QR per aprire un contenitore dalla fotocamera.")
+                    if (includeFamilyBeta) {
+                        add(
+                            "Catalogo Famiglia: allinea categorie e luoghi " +
+                                "tra i telefoni (setup una volta)."
+                        )
+                        add(
+                            "Inventario Famiglia: unisci contenitori e oggetti " +
+                                "per ID stabili con anteprima."
+                        )
+                    }
+                }
             ),
             Section(
                 phase = Phase.USAGE,
@@ -125,6 +138,21 @@ object QuickStartGuideCopy {
                 spreadsheetExample = csvSpreadsheetExample()
             )
         )
+        if (!includeFamilyBeta) {
+            return base
+        }
+        return base + Section(
+            phase = Phase.CONFIG,
+            number = 8,
+            title = "Setup famiglia (beta)",
+            bullets = listOf(
+                "Allineate categorie e luoghi con Utility → Catalogo Famiglia.",
+                "Un familiare invia il Catalogo; gli altri lo ricevono.",
+                "Poi ciascuno censisce contenitori e oggetti; unite l'inventario con Invia/Ricevi Inventario.",
+                "Non usare Ripristino per unire archivi: sostituisce tutto."
+            )
+        )
+    }
 
     private fun csvGuideBullets(): List<String> {
         val boxColumns =

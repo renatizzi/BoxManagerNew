@@ -11,6 +11,7 @@ import com.example.boxmanagernew.domain.model.Object
 import com.example.boxmanagernew.domain.model.ObjectWithType
 import com.example.boxmanagernew.domain.model.SearchResult
 import com.example.boxmanagernew.domain.repository.ObjectRepository
+import com.example.boxmanagernew.domain.model.ObjectPermanentId
 import com.example.boxmanagernew.domain.search.ObjectSearchMatcher
 import com.example.boxmanagernew.domain.search.SearchConfiguration
 import com.example.boxmanagernew.util.SimpleSearch
@@ -34,7 +35,10 @@ class ObjectRepositoryImpl(
                         it.typeObjectId,
                         it.boxId,
                         it.description,
-                        it.quantity
+                        it.quantity,
+                        it.objectPermanentId,
+                        it.lastModified,
+                        it.createdBy
                     )
                 }
             }
@@ -55,7 +59,10 @@ class ObjectRepositoryImpl(
                             it.typeObjectId,
                             it.boxId,
                             it.description,
-                            it.quantity
+                            it.quantity,
+                            it.objectPermanentId,
+                            it.lastModified,
+                            it.createdBy
                         ),
                         it.typeName
                     )
@@ -170,7 +177,25 @@ class ObjectRepositoryImpl(
                 it.typeObjectId,
                 it.boxId,
                 it.description,
-                it.quantity
+                it.quantity,
+                it.objectPermanentId,
+                it.lastModified,
+                it.createdBy
+            )
+        }
+    }
+
+    suspend fun getObjectById(id: Int): Object? {
+        return dao.getById(id)?.let { entity ->
+            Object(
+                entity.id,
+                entity.typeObjectId,
+                entity.boxId,
+                entity.description,
+                entity.quantity,
+                entity.objectPermanentId,
+                entity.lastModified,
+                entity.createdBy
             )
         }
     }
@@ -179,7 +204,8 @@ class ObjectRepositoryImpl(
         name:String,
         boxId:Int,
         description:String?,
-        quantity:Int?
+        quantity:Int?,
+        createdBy: String = ""
     ){
 
         var type =
@@ -197,13 +223,18 @@ class ObjectRepositoryImpl(
                 typeDao.getByName(name)
         }
 
+        val now = System.currentTimeMillis()
+
         dao.insert(
             ObjectEntity(
                 0,
                 type?.id ?: return,
                 boxId,
                 description,
-                quantity
+                quantity,
+                objectPermanentId = ObjectPermanentId.generate(),
+                lastModified = now,
+                createdBy = createdBy.trim()
             )
         )
     }
@@ -231,13 +262,21 @@ class ObjectRepositoryImpl(
                 typeDao.getByName(name)
         }
 
+        val existing = dao.getById(id)
+        val now = System.currentTimeMillis()
+
         dao.update(
             ObjectEntity(
                 id,
                 type?.id ?: return,
                 boxId,
                 description,
-                quantity
+                quantity,
+                objectPermanentId = ObjectPermanentId.fromStored(
+                    existing?.objectPermanentId
+                ),
+                lastModified = now,
+                createdBy = existing?.createdBy.orEmpty()
             )
         )
     }

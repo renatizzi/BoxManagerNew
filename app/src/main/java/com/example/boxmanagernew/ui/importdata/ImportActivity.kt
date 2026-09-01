@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.DocumentsContract
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.documentfile.provider.DocumentFile
@@ -11,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.boxmanagernew.BuildConfig
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.backup.config.BackupConfiguration
+import com.example.boxmanagernew.storage.StorageFolderConfiguration
 import com.example.boxmanagernew.backup.facade.BackupFacade
 import com.example.boxmanagernew.data.local.DatabaseProvider
 import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
@@ -36,17 +38,9 @@ class ImportActivity : BaseActivity() {
     private lateinit var btnGenerateTemplate: MaterialCardView
     private lateinit var btnImportData: MaterialCardView
 
+    private var importExportFolderUri: Uri? = null
     private var backupFolderUri: Uri? = null
-
-    private val folderPicker =
-        registerForActivityResult(
-            ActivityResultContracts.OpenDocumentTree()
-        ) { uri ->
-
-            if (uri != null) {
-                onTemplateFolderChosen(uri)
-            }
-        }
+    private var pendingTemplateAfterFolder = false
 
     private val backupFolderPicker =
         registerForActivityResult(
@@ -54,17 +48,23 @@ class ImportActivity : BaseActivity() {
         ) { uri ->
 
             if (uri != null && persistBackupFolder(uri)) {
-                startAutoBackup()
+                if (pendingTemplateAfterFolder) {
+                    pendingTemplateAfterFolder = false
+                    askTemplateFileName(uri)
+                } else {
+                    startAutoBackup()
+                }
+            } else {
+                pendingTemplateAfterFolder = false
             }
         }
 
     private val filePicker =
         registerForActivityResult(
-            ActivityResultContracts.OpenDocument()
-        ) { uri ->
-
-            if (uri != null) {
-                onImportFileChosen(uri)
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == RESULT_OK) {
+                result.data?.data?.let { onImportFileChosen(it) }
             }
         }
 
@@ -110,6 +110,7 @@ class ImportActivity : BaseActivity() {
         btnGenerateTemplate = findViewById(R.id.btnGenerateTemplate)
         btnImportData = findViewById(R.id.btnImportData)
 
+        restoreSavedImportExportFolder()
         restoreSavedBackupFolder()
 
         viewModel.message.observe(this) { userMessage ->
@@ -138,18 +139,19 @@ class ImportActivity : BaseActivity() {
         }
 
         btnImportData.setOnClickListener {
-            filePicker.launch(
-                arrayOf(
-                    ImportConfiguration.CSV_MIME_TYPE,
-                    "text/comma-separated-values",
-                    "text/plain",
-                    "*/*"
-                )
-            )
+            launchImportFilePicker()
         }
     }
 
     private fun onImportFileChosen(uri: Uri) {
+
+        try {
+            contentResolver.takePersistableUriPermission(
+                uri,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION
+            )
+        } catch (_: Exception) {
+        }
 
         val fileName = DocumentFile.fromSingleUri(this, uri)?.name
             ?: uri.lastPathSegment.orEmpty()
@@ -223,11 +225,16 @@ class ImportActivity : BaseActivity() {
 
         backupFolderUri = uri
 
+        val displayName = backupPersister.folderDisplayName(uri)
+        if (displayName != null) {
+            backupPersister.persistFolderLabel(displayName)
+        }
+
         getSharedPreferences(
-            BackupConfiguration.PREFS_NAME,
+            StorageFolderConfiguration.PREFS_NAME,
             Context.MODE_PRIVATE
         ).edit()
-            .putString(BackupConfiguration.PREFS_KEY_FOLDER_URI, uri.toString())
+            .putString(StorageFolderConfiguration.KEY_BACKUP, uri.toString())
             .apply()
 
         return true
@@ -236,9 +243,9 @@ class ImportActivity : BaseActivity() {
     private fun restoreSavedBackupFolder() {
 
         val saved = getSharedPreferences(
-            BackupConfiguration.PREFS_NAME,
+            StorageFolderConfiguration.PREFS_NAME,
             Context.MODE_PRIVATE
-        ).getString(BackupConfiguration.PREFS_KEY_FOLDER_URI, null)
+        ).getString(StorageFolderConfiguration.KEY_BACKUP, null)
             ?: return
 
         val uri = Uri.parse(saved)
@@ -257,41 +264,74 @@ class ImportActivity : BaseActivity() {
             uri != null &&
             templatePersister.folderDisplayName(uri) != null
         ) {
-            writeTemplate(uri)
+            askTemplateFileName(uri)
             return
         }
 
-        folderPicker.launch(null)
+        pendingTemplateAfterFolder = true
+        backupFolderPicker.launch(null)
     }
 
-    private fun onTemplateFolderChosen(uri: Uri) {
+    private fun launchImportFilePicker() {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = ImportConfiguration.CSV_MIME_TYPE
+            addFlags(
+                Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                    Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
+            )
+            putExtra(
+                Intent.EXTRA_MIME_TYPES,
+                ImportConfiguration.IMPORT_OPEN_MIME_TYPES
+            )
+            (backupFolderUri ?: importExportFolderUri)?.let { folderUri ->
+                putExtra(DocumentsContract.EXTRA_INITIAL_URI, folderUri)
+            }
+        }
+        filePicker.launch(intent)
+    }
 
-        if (!persistBackupFolder(uri)) {
+    private fun restoreSavedImportExportFolder() {
+
+        val saved = getSharedPreferences(
+            StorageFolderConfiguration.PREFS_NAME,
+            Context.MODE_PRIVATE
+        ).getString(StorageFolderConfiguration.KEY_IMPORT_EXPORT, null)
+            ?: return
+
+        val uri = Uri.parse(saved)
+        if (templatePersister.folderDisplayName(uri) == null) {
             return
         }
 
-        writeTemplate(uri)
+        importExportFolderUri = uri
     }
 
-    private fun writeTemplate(uri: Uri) {
+    private fun askTemplateFileName(uri: Uri) {
 
-        if (templatePersister.existingFile(uri) != null) {
-
-            DialogUtils.showReplaceBackupConfirmation(this) {
+        DialogUtils.showExportFileName(
+            this,
+            ImportConfiguration.FILE_NAME,
+            exists = { fileName ->
+                templatePersister.existingFile(uri, fileName) != null
+            },
+            onSave = { fileName, overwrite ->
                 viewModel.persistTemplate(
                     treeUri = uri,
-                    overwrite = true,
+                    fileName = fileName,
+                    overwrite = overwrite,
                     persister = templatePersister
                 )
-            }
-
-            return
-        }
-
-        viewModel.persistTemplate(
-            treeUri = uri,
-            overwrite = false,
-            persister = templatePersister
+            },
+            onBrowseFolder = {
+                pendingTemplateAfterFolder = true
+                backupFolderPicker.launch(null)
+            },
+            normalizeName = { raw ->
+                ImportConfiguration.templateFileName(raw)
+            },
+            folderName = backupPersister.resolvedFolderDisplayName(uri)
+                ?: templatePersister.folderDisplayName(uri)
         )
     }
 

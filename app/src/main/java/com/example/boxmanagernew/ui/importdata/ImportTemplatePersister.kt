@@ -27,15 +27,16 @@ class ImportTemplatePersister(
             return null
         }
 
-        return SafFolderLabel.of(treeUri, tree)
+        return SafFolderLabel.of(context, treeUri, tree)
     }
 
     fun existingFile(
-        treeUri: Uri
+        treeUri: Uri,
+        fileName: String = ImportConfiguration.FILE_NAME
     ): DocumentFile? {
 
         val tree = tree(treeUri) ?: return null
-        val csvName = ImportConfiguration.FILE_NAME
+        val csvName = ImportConfiguration.templateFileName(fileName)
 
         return tree.listFiles().firstOrNull { child ->
             val name = child.name ?: return@firstOrNull false
@@ -45,6 +46,7 @@ class ImportTemplatePersister(
 
     fun persist(
         treeUri: Uri,
+        fileName: String = ImportConfiguration.FILE_NAME,
         bytes: ByteArray,
         overwrite: Boolean
     ): Result {
@@ -58,7 +60,8 @@ class ImportTemplatePersister(
             )
         }
 
-        val existing = existingFile(treeUri)
+        val csvName = ImportConfiguration.templateFileName(fileName)
+        val existing = existingFile(treeUri, csvName)
         var temp: File? = null
         var created: DocumentFile? = null
 
@@ -78,9 +81,7 @@ class ImportTemplatePersister(
                 }
             }
 
-            val baseName = ImportConfiguration.FILE_NAME.removeSuffix(
-                ImportConfiguration.FILE_EXTENSION
-            )
+            val baseName = ImportConfiguration.templateStem(csvName)
 
             created = tree.createFile(
                 ImportConfiguration.CSV_MIME_TYPE,
@@ -92,8 +93,8 @@ class ImportTemplatePersister(
 
             return Result(
                 success = true,
-                fileName = created.name ?: ImportConfiguration.FILE_NAME,
-                folderName = SafFolderLabel.of(treeUri, tree)
+                fileName = created.name ?: csvName,
+                folderName = SafFolderLabel.of(context, treeUri, tree)
             )
 
         } catch (_: Exception) {

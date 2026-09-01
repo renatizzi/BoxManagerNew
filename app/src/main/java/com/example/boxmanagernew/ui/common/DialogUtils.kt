@@ -408,7 +408,11 @@ object DialogUtils {
         context: Context,
         defaultName: String,
         exists: (String) -> Boolean,
-        onSave: (fileName: String, overwrite: Boolean) -> Unit
+        onSave: (fileName: String, overwrite: Boolean) -> Unit,
+        onBrowseFolder: (() -> Unit)? = null,
+        normalizeName: (String) -> String = { ViewOutputConfiguration.csvFileName(it) },
+        title: String? = null,
+        folderName: String? = null
     ) {
 
         val pad =
@@ -430,14 +434,20 @@ object DialogUtils {
             LinearLayout(context).apply {
                 orientation = LinearLayout.VERTICAL
                 setPadding(pad, pad, pad, pad)
+                if (!folderName.isNullOrBlank()) {
+                    addView(
+                        TextView(context).apply {
+                            text = folderName
+                            setPadding(0, 0, 0, pad)
+                        }
+                    )
+                }
                 addView(name)
                 addView(prompt)
             }
 
         fun typedFileName(): String {
-            return ViewOutputConfiguration.csvFileName(
-                name.text.toString()
-            )
+            return normalizeName(name.text.toString())
         }
 
         fun refreshPrompt() {
@@ -474,12 +484,21 @@ object DialogUtils {
             }
         )
 
-        val dialog =
+        val builder =
             AlertDialog.Builder(context)
                 .setView(column)
                 .setPositiveButton("SI", null)
                 .setNegativeButton("NO", null)
-                .create()
+
+        if (!title.isNullOrBlank()) {
+            builder.setTitle(title)
+        }
+
+        if (onBrowseFolder != null) {
+            builder.setNeutralButton("Cartella", null)
+        }
+
+        val dialog = builder.create()
 
         dialog.setOnShowListener {
 
@@ -499,6 +518,15 @@ object DialogUtils {
                 AlertDialog.BUTTON_NEGATIVE
             ).setOnClickListener {
                 dialog.dismiss()
+            }
+
+            if (onBrowseFolder != null) {
+                dialog.getButton(
+                    AlertDialog.BUTTON_NEUTRAL
+                ).setOnClickListener {
+                    dialog.dismiss()
+                    onBrowseFolder.invoke()
+                }
             }
         }
 

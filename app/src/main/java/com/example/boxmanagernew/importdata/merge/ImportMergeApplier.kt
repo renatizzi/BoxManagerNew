@@ -6,6 +6,7 @@ import com.example.boxmanagernew.data.local.entity.BoxEntity
 import com.example.boxmanagernew.data.local.entity.ObjectEntity
 import com.example.boxmanagernew.data.local.entity.ObjectTypeEntity
 import com.example.boxmanagernew.domain.model.BoxPermanentId
+import com.example.boxmanagernew.domain.model.ObjectPermanentId
 import java.util.Locale
 
 class ImportMergeApplier(
@@ -62,7 +63,9 @@ class ImportMergeApplier(
                         typeObjectId = typeId,
                         boxId = boxId,
                         description = obj.description,
-                        quantity = obj.quantity
+                        quantity = obj.quantity,
+                        objectPermanentId = ObjectPermanentId.generate(),
+                        lastModified = now
                     )
                 )
             }

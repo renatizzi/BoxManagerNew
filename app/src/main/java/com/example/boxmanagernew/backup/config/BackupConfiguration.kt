@@ -1,5 +1,9 @@
 package com.example.boxmanagernew.backup.config
 
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+
 /**
  * Configurazione centralizzata del modulo Backup.
  *
@@ -48,6 +52,8 @@ object BackupConfiguration {
 
     const val PREFS_KEY_FOLDER_URI = "folder_uri"
 
+    const val PREFS_KEY_FOLDER_LABEL = "folder_label"
+
     const val ZIP_MIME_TYPE = "application/zip"
 
     const val MSG_BACKUP_COMPLETED = "Backup completato"
@@ -65,6 +71,16 @@ object BackupConfiguration {
         "File già esistente. Sostituirlo?"
 
     const val PRE_RESTORE_PREFIX = "PRE_RESTORE_"
+
+    fun proposedPreRestoreFileName(now: Date = Date()): String {
+        val formatter = SimpleDateFormat(
+            "ddMMyy_HHmm",
+            Locale.getDefault()
+        )
+        return PRE_RESTORE_PREFIX +
+                formatter.format(now) +
+                BACKUP_FILE_EXTENSION
+    }
 
     const val MSG_RESTORE_REPLACE_WARNING =
         "Il ripristino sostituirà l'archivio attuale."
