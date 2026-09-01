@@ -201,19 +201,8 @@ class RestoreViewModel(
         }
     }
 
-    fun preRestoreFileName(): String {
-        return generatePreRestoreFileName()
-    }
-
-    private fun generatePreRestoreFileName(): String {
-
-        val formatter = SimpleDateFormat(
-            "ddMMyy_HHmm",
-            Locale.getDefault()
-        )
-
-        return BackupConfiguration.PRE_RESTORE_PREFIX +
-                formatter.format(Date())
+    fun preRestoreFileName(now: Date = Date()): String {
+        return BackupConfiguration.proposedPreRestoreFileName(now)
     }
 
     private fun buildPreview(

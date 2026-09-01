@@ -1,5 +1,6 @@
 package com.example.boxmanagernew.importdata.config
 
+import com.example.boxmanagernew.storage.StorageFolderConfiguration
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -19,6 +20,12 @@ object ImportConfiguration {
     const val FILE_NAME = "Modello_Importazione.csv"
 
     const val FILE_EXTENSION = ".csv"
+
+    /**
+     * Genera Modello riusa la cartella Backup (Nota B7 / salvataggio-file),
+     * non [StorageFolderConfiguration.KEY_IMPORT_EXPORT].
+     */
+    const val TEMPLATE_FOLDER_KEY = StorageFolderConfiguration.KEY_BACKUP
 
     const val CSV_MIME_TYPE = "text/csv"
 
@@ -56,6 +63,22 @@ object ImportConfiguration {
         "formato",
         FORMAT_NAME,
         FORMAT_VERSION.toString()
+    )
+
+    fun isOfficialFormatLine(fields: List<String>): Boolean {
+        val cols = fields.dropLastWhile { it.isBlank() }
+        if (cols.size != FORMAT_FIELDS.size) {
+            return false
+        }
+        return cols[0].equals(FORMAT_FIELDS[0], ignoreCase = true) &&
+                cols[1] == FORMAT_NAME &&
+                cols[2] == FORMAT_VERSION.toString()
+    }
+
+    val IMPORT_OPEN_MIME_TYPES: Array<String> = arrayOf(
+        CSV_MIME_TYPE,
+        "text/comma-separated-values",
+        "text/plain"
     )
 
     val BOX_HEADER_FIELDS: List<String> = listOf(
@@ -107,5 +130,22 @@ object ImportConfiguration {
             Locale.getDefault()
         )
         return PRE_IMPORT_PREFIX + formatter.format(now)
+    }
+
+    fun templateFileName(fileName: String): String {
+        val trimmed = fileName.trim().ifBlank { FILE_NAME }
+        return if (trimmed.endsWith(FILE_EXTENSION, ignoreCase = true)) {
+            trimmed
+        } else {
+            trimmed + FILE_EXTENSION
+        }
+    }
+
+    fun templateStem(fileName: String): String {
+        val csvName = templateFileName(fileName)
+        return csvName.substring(
+            0,
+            csvName.length - FILE_EXTENSION.length
+        )
     }
 }

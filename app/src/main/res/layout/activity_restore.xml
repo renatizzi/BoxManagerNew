@@ -82,6 +82,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
+                android:clickable="false"
+                android:focusable="false"
                 android:minHeight="200dp">
 
                 <LinearLayout
@@ -105,6 +107,8 @@
                         android:layout_marginTop="8dp"
                         android:text="Nessun file ZIP in questa cartella."
                         android:textColor="@color/text_secondary"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:visibility="gone" />
 
                     <androidx.recyclerview.widget.RecyclerView

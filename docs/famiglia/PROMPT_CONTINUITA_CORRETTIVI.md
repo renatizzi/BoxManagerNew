@@ -1,20 +1,22 @@
 # Prompt di continuità — Correttivi post-B5 (famiglia + sync Play)
 
-**SI Renato, 31/08/2026** — via piano a 3 passi: assessment, versione famiglia **B5.3**, strategia unificazione.
+**SI Renato, 31/08/2026** — piano a 3 passi. **01/09/2026:** T2 CONVALIDATO; freeze Play 1.2; **non** invertire famiglia su `main`; **P1 CONVALIDATO** B5.7.
 
 Usare questo file come **unico ingresso** per la prossima sessione agente sul filone **correzioni** (non riaprire B5 prodotto né filone multilingua M).
 
 ---
 
-## Stato al 31/08/2026
+## Stato al 01/09/2026
 
 | Voce | Valore |
 |------|--------|
-| **Branch famiglia** | `cursor/family-unione-unificata-e5b5` @ `de8c04a` (o successivo) |
-| **Build famiglia** | **1.3-famigliaB5.3** (versionCode **1322**) |
+| **Branch famiglia** | `cursor/family-unione-unificata-e5b5` (integrazione) |
+| **Build famiglia** | **1.3-famigliaB5.7** (versionCode **1326**) — P1 su `cursor/p1-igiene-file-5409` |
 | **Play** | `main` → **1.2** (vc 3) — test chiuso Console |
-| **B0–B5 merge** | **CONVALIDATO** — vedi [NOTA_B0_MERGE_FAMIGLIA.md](NOTA_B0_MERGE_FAMIGLIA.md) |
-| **Filone correttivi** | **APERTO** (SI Renato) — P0 → P1 → sync P2 |
+| **Freeze Play 1.2** | `cursor/versione-test-5409` (snapshot `main`; PR #14) |
+| **Inversione famiglia → main** | **No** durante il test chiuso (idea accantonata; C2 solo dopo SI) |
+| **B0–B5 merge** | **CONVALIDATO** — Nota Integrata **9.2** Allegato **4.20** |
+| **Filone correttivi** | P0 chiuso; **P1 CONVALIDATO** B5.7; P2 continuo |
 
 ### Documenti vincolanti (leggere prima di codice)
 
@@ -33,22 +35,12 @@ Usare questo file come **unico ingresso** per la prossima sessione agente sul fi
 | ID | Stato | Azione prossima sessione |
 |----|-------|--------------------------|
 | **T1** Backup Directory | **CONVALIDATO** B5.2 | Nessuna |
-| **T2** Categoria lista oggetti | Fix **B5.3** in branch | Se Renato non ha ancora dato SI device: chiedere ritest checklist sotto; se KO → fix e bump B5.4 |
+| **T2** Categoria lista oggetti | **CONVALIDATO** B5.3 (SI device 01/09/2026) | Nessuna |
 | **T3** Secondo bug | **Chiuso** (non recuperato) | Ignorare salvo nuova segnalazione con evidenza |
 
-### Checklist ritest T2 (device, famiglia B5.3)
+### T2 (storico B5.3)
 
-1. Contenitore → **Lista Oggetti**: header **categoria + icona** al primo caricamento.
-2. Dashboard → ambito **Oggetti** → **Lista Oggetti Trovati**: categoria corretta per gruppo contenitore.
-3. Stampa / Esporta da (2): stessa categoria a schermo.
-
-**Chiusura T2:** solo dopo **SI Renato** esplicito su device → aggiornare PROMEMORIA + ASSESSMENT.
-
-### File toccati da T2 (B5.3)
-
-- `app/.../ui/BoxDetailActivity.kt` — `refreshHeader()`
-- `app/.../ui/search/SearchResultActivity.kt` — `resolveCategoryForGroup()`
-- `app/.../viewoutput/model/ContainerViewSnapshotFactory.kt` — `searchResultGroupBlock()`
+CONVALIDATO 01/09/2026. File: `BoxDetailActivity.refreshHeader()`, `SearchResultActivity.resolveCategoryForGroup()`, `ContainerViewSnapshotFactory.searchResultGroupBlock()`.
 
 ---
 
@@ -58,26 +50,23 @@ Usare questo file come **unico ingresso** per la prossima sessione agente sul fi
 
 1. `git checkout cursor/family-unione-unificata-e5b5 && git pull`
 2. Leggere tabella P0 in [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) e [ASSESSMENT](ASSESSMENT_CORRETTIVI.md).
-3. Verificare topbar attesa **1.3-famigliaB5.3** in `app/build.gradle.kts` (flavor `famiglia`).
+3. Verificare topbar attesa **1.3-famigliaB5.7** in `app/build.gradle.kts` (flavor `famiglia`).
 
 ### Fase 2 — P0 residuo
 
-4. **T2:** attendere o registrare SI/KO Renato sul ritest device.
-   - Se **SI** → CONVALIDATO in doc, commit doc only se serve.
-   - Se **KO** → fix mirato, test, bump `1.3-famigliaB5.4`, aggiornare `INSTALLA_FAMIGLIA.bat` + README.
+4. **T2 CONVALIDATO** (01/09/2026). Non riaprire.
 5. **Non** riaprire T3 senza evidenza nuova.
 
-### Fase 3 — P1 igiene salvataggio file (dopo P0 chiuso o se Renato dice SI esplicito a parallelo)
+### Fase 3 — P1 igiene salvataggio file (**CONVALIDATO** B5.7)
 
-Priorità da [ASSESSMENT](ASSESSMENT_CORRETTIVI.md) § P1:
+| Punto | Stato |
+|-------|--------|
+| **PRE_RESTORE** | SFOGLIA ZIP; box «Copia di sicurezza» nome + SI/NO; poi conferma ripristino |
+| **Genera Modello** | `Modello_Importazione.csv`; cartella Backup visibile; pulsante **Cartella** |
+| **Importa** | Picker CSV (non ZIP); cartella Backup |
+| **Esporta vista** | Già OK |
 
-| Punto | Intervento tipico |
-|-------|-------------------|
-| **PRE_RESTORE** | Allineare box nome + SI/NO se manca; valutare nome editabile |
-| **Genera Modello** | Riuso cartella Backup (Nota B7) vs `KEY_IMPORT_EXPORT` attuale |
-| **Esporta vista Play** | Verifica finale criterio Esporta (già OK in assessment) |
-
-Regola: criterio [salvataggio-file.mdc](../../.cursor/rules/salvataggio-file.mdc). Bump **B5.x** solo se cambia comportamento utente testabile.
+Non riaprire P1 senza nuova evidenza.
 
 ### Fase 4 — P2 sync Play (continuo)
 
@@ -121,7 +110,7 @@ git merge origin/main
 ./gradlew :app:testFamigliaDebugUnitTest --tests "com.example.boxmanagernew.viewoutput.ContainerViewSnapshotFactoryTest"
 ```
 
-**Windows:** `INSTALLA_FAMIGLIA.bat` — topbar attesa **1.3-famigliaB5.3** (o B5.x successivo).
+**Windows:** `INSTALLA_FAMIGLIA.bat` — topbar attesa **1.3-famigliaB5.7**.
 
 **Play locale (regressione):** `./gradlew :app:assemblePlayDebug`
 
@@ -131,7 +120,7 @@ git merge origin/main
 
 | Tipo | versionName famiglia | Quando |
 |------|----------------------|--------|
-| Fix P0/P1 testabile | `1.3-famigliaB5.4`, `B5.5`, … | Incrementare `versionCode` flavor famiglia |
+| Fix P0/P1 testabile | `1.3-famigliaB5.7`, `B5.8`, … | Incrementare `versionCode` flavor famiglia |
 | Solo doc | Invariato | OK senza bump |
 | Play release tester | `1.2.x` su `main` | Solo flavor `play`, SI Renato |
 
@@ -152,12 +141,12 @@ Aggiornare sempre: `app/build.gradle.kts`, `INSTALLA_FAMIGLIA.bat`, `docs/famigl
 Continua filone CORRETTIVI post-B5 da docs/famiglia/PROMPT_CONTINUITA_CORRETTIVI.md.
 
 Branch: cursor/family-unione-unificata-e5b5
-Build: 1.3-famigliaB5.3
+Build: 1.3-famigliaB5.7
 
 Priorità:
-1) Stato T2 (SI device o fix)
-2) P1 igiene salvataggio se P0 chiuso
-3) Merge main se bug Play tester
+1) P2: merge main se bug Play tester
+2) Non invertire famiglia su main durante il test Play
+3) Non riaprire P0/P1 senza evidenza nuova
 
 Leggi ASSESSMENT + STRATEGIA + PROMEMORIA prima del codice.
 ```

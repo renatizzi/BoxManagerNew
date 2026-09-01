@@ -60,6 +60,32 @@ class ImportFileInspectorTest {
     }
 
     @Test
+    fun trailingEmptyFormatField_isOfficial() {
+        val result = inspector.inspect(
+            csv(
+                "formato;BoxManager_Import;1;",
+                "sezione;CONTENITORI",
+                "nome;categoria;posizione",
+                "sezione;OGGETTI",
+                "nome;contenitore;descrizione;quantita"
+            )
+        )
+
+        assertTrue(result is ImportFileInspector.Result.Ready)
+    }
+
+    @Test
+    fun zipBytes_failFormatCheck() {
+        val zipHeader = byteArrayOf(0x50, 0x4B, 0x03, 0x04) +
+            "not-a-csv".toByteArray()
+        val result = inspector.inspect(zipHeader)
+        assertEquals(
+            ImportConfiguration.CHECK_FORMAT,
+            (result as ImportFileInspector.Result.Failed).check
+        )
+    }
+
+    @Test
     fun wrongBoxHeader_failsStructure() {
         val result = inspector.inspect(
             csv(

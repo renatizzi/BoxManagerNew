@@ -409,7 +409,10 @@ object DialogUtils {
         defaultName: String,
         exists: (String) -> Boolean,
         onSave: (fileName: String, overwrite: Boolean) -> Unit,
-        onBrowseFolder: (() -> Unit)? = null
+        onBrowseFolder: (() -> Unit)? = null,
+        normalizeName: (String) -> String = { ViewOutputConfiguration.csvFileName(it) },
+        title: String? = null,
+        folderName: String? = null
     ) {
 
         val pad =
@@ -431,14 +434,20 @@ object DialogUtils {
             LinearLayout(context).apply {
                 orientation = LinearLayout.VERTICAL
                 setPadding(pad, pad, pad, pad)
+                if (!folderName.isNullOrBlank()) {
+                    addView(
+                        TextView(context).apply {
+                            text = folderName
+                            setPadding(0, 0, 0, pad)
+                        }
+                    )
+                }
                 addView(name)
                 addView(prompt)
             }
 
         fun typedFileName(): String {
-            return ViewOutputConfiguration.csvFileName(
-                name.text.toString()
-            )
+            return normalizeName(name.text.toString())
         }
 
         fun refreshPrompt() {
@@ -480,6 +489,10 @@ object DialogUtils {
                 .setView(column)
                 .setPositiveButton("SI", null)
                 .setNegativeButton("NO", null)
+
+        if (!title.isNullOrBlank()) {
+            builder.setTitle(title)
+        }
 
         if (onBrowseFolder != null) {
             builder.setNeutralButton("Cartella", null)

@@ -56,6 +56,7 @@ class ImportViewModel(
 
     fun persistTemplate(
         treeUri: Uri,
+        fileName: String,
         overwrite: Boolean,
         persister: ImportTemplatePersister
     ) {
@@ -69,6 +70,7 @@ class ImportViewModel(
                 val result = withContext(Dispatchers.IO) {
                     persister.persist(
                         treeUri = treeUri,
+                        fileName = fileName,
                         bytes = templateBuilder.build(),
                         overwrite = overwrite
                     )

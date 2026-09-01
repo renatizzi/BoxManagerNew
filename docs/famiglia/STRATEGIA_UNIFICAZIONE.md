@@ -1,7 +1,7 @@
 # Strategia unificazione — Play (test Console) + beta famiglia
 
-**Data:** 31/08/2026  
-**Contesto:** Play **1.2** in (o verso) **test chiuso** Google Console; beta **famiglia** in sideload familiare.
+**Data:** 01/09/2026  
+**Contesto:** Play **1.2** in test chiuso Google Console; freeze nominato `cursor/versione-test-5409`; beta **famiglia** in sideload. **Non** portare famiglia su `main` durante il test.
 
 Obiettivo: **un solo codice condiviso** per i bugfix, **due binari distinti** (Play vs famiglia), senza mescolare feature né pubblicare famiglia su Play.
 
@@ -39,6 +39,8 @@ Obiettivo: **un solo codice condiviso** per i bugfix, **due binari distinti** (P
 | Nuove feature Play | **No** (privacy/Data safety/AAB già in roadmap Progetto 1; niente scope creep) |
 | Feature famiglia (B4/B5, merge CSV) | **Solo** branch famiglia — non entrano in AAB Play |
 | Versione Play | `versionCode` / `versionName` su `main` solo per release tester approvata |
+| Freeze 1.2 | Branch `cursor/versione-test-5409` — snapshot; i tester restano su `main` |
+| Famiglia su `main` | **No** in Fase A (C2 solo dopo SI a test Play verde) |
 | Dopo ogni fix Play | `git merge origin/main` su `cursor/family-unione-unificata-e5b5` |
 
 ### Flusso bug tester Play
@@ -57,8 +59,8 @@ Obiettivo: **un solo codice condiviso** per i bugfix, **due binari distinti** (P
 |------|--------|
 | Branch sorgente | `cursor/family-unione-unificata-e5b5` |
 | Build | `assembleFamigliaDebug` / `installFamigliaDebug` |
-| Correttivi P0 | T2 in **B5.3** — chiusura con SI Renato dopo ritest |
-| P1 igiene file | Giro dedicato post-P0 |
+| Correttivi P0 | T1–T2 **CONVALIDATO**; T3 chiuso |
+| P1 igiene file | **CONVALIDATO** B5.7 (SI Renato 01/09/2026) |
 | Versione | `1.3-famigliaB5.x` — incrementare a ogni consegna testabile |
 | Telefoni famiglia | Solo APK famiglia; Play 1.2 resta installabile affiancata ([DUE_APP_CINQUE_TELEFONI.md](DUE_APP_CINQUE_TELEFONI.md)) |
 
@@ -79,6 +81,7 @@ Nessuna unificazione «big bang» durante i 14 giorni di test: solo **sync bugfi
 ## Cosa NON fare
 
 - Pubblicare APK `famiglia` su Play Console.
+- Invertire famiglia su `main` durante il test chiuso (freeze = `cursor/versione-test-5409`).
 - Sviluppare feature famiglia solo su `main`.
 - Fixare su famiglia senza riportare su `main` se lo stesso bug esiste in Play.
 - Riaprire Motore B / pipeline ricerca per correttivi trasversali.
@@ -107,7 +110,7 @@ INSTALLA_FAMIGLIA.bat
 ./gradlew :app:installFamigliaDebug
 ```
 
-Topbar attesa dopo B5.3: **1.3-famigliaB5.3**.
+Topbar attesa dopo P1: **1.3-famigliaB5.7**.
 
 ---
 
