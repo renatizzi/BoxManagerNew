@@ -1,6 +1,6 @@
 # Promemoria — interventi trasversali (famiglia + Play)
 
-**Aggiornato:** 01/09/2026 — T2 **CONVALIDATO**; P1 **CONVALIDATO** B5.7 (SI Renato device); freeze Play `cursor/versione-test-5409`. Ingresso sessione → [PROMPT_CONTINUITA_CORRETTIVI.md](PROMPT_CONTINUITA_CORRETTIVI.md).
+**Aggiornato:** 01/09/2026 — T2 **CONVALIDATO**; P1 **CONVALIDATO** B5.7; filone **M** pianificato ([ASSESSMENT_M](../multilingua/ASSESSMENT_M.md), SI Renato). Ingresso sessione → [PROMPT_CONTINUITA_CORRETTIVI.md](PROMPT_CONTINUITA_CORRETTIVI.md).
 
 Elenco di fix/igiene **non legati a una sola fetta**, da affrontare quando si tocca l’area o in un giro dedicato (B7 igiene / sync Play).
 
