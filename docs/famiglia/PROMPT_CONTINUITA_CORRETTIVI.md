@@ -70,9 +70,11 @@ Non riaprire P1 senza nuova evidenza.
 
 ### Fase 4 — P2 sync Play (continuo)
 
-6. Se arriva bugfix su `main` (tester Play): merge su branch famiglia, test famiglia, **non** invertire l’ordine.
-7. Se fix nato su famiglia e vale anche Play: cherry-pick su `main` **prima** o insieme al merge.
-8. **Mai** `assembleFamigliaRelease` / APK famiglia su Play Console.
+6. **Segnalazioni tester Play:** Renato le inoltra quando arrivano; intervento su branch **famiglia** **poco prima** della fine del test chiuso (~2 sett.), non in parallelo al filone M salvo urgenza concordata.
+7. Se fix su `main` (tester Play): merge su branch famiglia, test famiglia, **non** invertire l’ordine.
+8. Se fix nato su famiglia e vale anche Play: cherry-pick su `main` **prima** o insieme al merge — tipicamente **a fine test** (es. T2 categoria).
+9. **Mai** `assembleFamigliaRelease` / APK famiglia su Play Console.
+10. **Filone M (multilingua):** sessione **separata** — [PROMPT_CONTINUITA_M.md](../multilingua/PROMPT_CONTINUITA_M.md); avvio **SI Renato 01/09/2026** in parallelo al test.
 
 ### Fuori scope (non iniziare senza SI)
 

@@ -283,10 +283,17 @@ L’agente lavora in autonomia **tra** un checkpoint e l’altro.
 
 | Periodo | Filone |
 |---------|--------|
-| **Ora** | Correttivi P2; test Play chiuso; famiglia B5.7 |
-| **Parallelo possibile** | Solo **M0** (testo listing) |
-| **Dopo test Play verde** | **M1** → CK1 → **M2** (+ CK0 prima di M2 code) |
-| **Non fare** | M1/M2 su `main` durante test senza SI |
+| **Ora (~2 sett. test Play)** | **M1** (poi M2) su branch `cursor/multilingua-*-5409` — **SI Renato 01/09/2026** |
+| **Parallelo** | M0 listing EN (doc) se utile |
+| **Segnalazioni tester Play** | Renato le inoltra; fix su **famiglia** **poco prima** fine test — sessione [PROMPT_CONTINUITA_CORRETTIVI](../famiglia/PROMPT_CONTINUITA_CORRETTIVI.md) |
+| **Fine test Play** | Allineamento `main` (T2 categoria, eventuali bugfix); valutare merge M → play |
+| **Non fare** | Merge famiglia/M su `main` durante test **senza SI**; invertire famiglia su main |
+
+---
+
+## 8b. Chiusura sessione pianificazione (01/09/2026)
+
+**SI Renato:** piano M approvato; Guida rapida in-app esplicita in M1/CK1; prossima sessione = **filone M** (messaggio in PROMPT_CONTINUITA_M). Ritocchi guida (semplificazione copy IT) possono arrivare da Renato entro M1d.
 
 ---
 

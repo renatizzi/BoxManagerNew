@@ -12,8 +12,11 @@
 | Inizi **M0**, **M1** o **M2** (codice o doc filone M) | **SÌ** — contesto pulito, solo filone M |
 | Solo correttivi P2 / bug Play / famiglia B5.7 | **No** — usa [PROMPT_CONTINUITA_CORRETTIVI.md](../famiglia/PROMPT_CONTINUITA_CORRETTIVI.md) |
 | Attesa test Play chiuso, nessun lavoro M | **No** — non aprire sessione M ancora |
+| **SI Renato 01/09/2026** — M in parallelo al test (~2 sett.) | **SÌ** — nuova sessione filone M (M1a…) |
 
 **Regola:** una sessione = un filone (M **oppure** correttivi), per non mescolare regole pipeline / checkpoint.
+
+**Bug Play durante il test:** Renato segnala quando arrivano; fix su branch **famiglia** **poco prima** della fine del test (non bloccano M1). Vedi [PROMPT_CONTINUITA_CORRETTIVI.md](../famiglia/PROMPT_CONTINUITA_CORRETTIVI.md).
 
 ---
 
@@ -25,10 +28,10 @@
 | **Piano** | **Approvato SI Renato** |
 | **Lingue V1** | Italiano (default) + English |
 | **Play Console traduzione app** | **Non usare** — lavoro in Cursor |
-| **Prossimo pacchetto** | **M1a** (Scelta lingua) quando SI timing; **M0** opzionale anytime |
+| **Prossimo pacchetto** | **M1a** (Scelta lingua) — **avvio SI Renato**; M0 opzionale anytime |
 | **Branch base** | `cursor/family-unione-unificata-e5b5` o `cursor/p1-igiene-file-5409` (B5.7) |
-| **Play** | `main` **1.2** — test chiuso; **non** merge M su `main` senza SI |
-| **Famiglia** | **1.3-famigliaB5.7** — P1 CONVALIDATO |
+| **Play** | `main` **1.2** — test chiuso ~2 sett.; **non** merge M su `main` senza SI |
+| **Famiglia** | **1.3-famigliaB5.7** — P1 CONVALIDATO; eventuali bug Play → fix famiglia **a fine test** |
 | **Ricerca avanzata EN** | **M2** — **CK0** prima di `domain/search` EN |
 | **Checkpoint** | **CK0**, **CK1**, **CK2** (assessment §6) |
 
@@ -51,7 +54,7 @@
 3. **Dati utente:** nomi archivio non tradotti.
 4. **Test Play aperto:** branch M dedicato; merge `main` solo con SI / post-test.
 5. **CK0 obbligatorio** prima del primo commit che tocca `domain/search` per EN.
-6. **Guida rapida in-app** (`QuickStartGuideCopy`, topbar «Guida»): **M1 obbligatorio**, verificata in **CK1** (§8 famiglia incluso).
+6. **Guida rapida in-app** (`QuickStartGuideCopy`, topbar «Guida»): **M1 obbligatorio**, verificata in **CK1** (§8 famiglia incluso). **Ritocchi testuali** (semplificazione) possono essere integrati da Renato in M1d prima del CK1.
 
 ---
 
