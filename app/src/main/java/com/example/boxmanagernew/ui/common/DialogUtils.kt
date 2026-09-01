@@ -409,7 +409,8 @@ object DialogUtils {
         defaultName: String,
         exists: (String) -> Boolean,
         onSave: (fileName: String, overwrite: Boolean) -> Unit,
-        onBrowseFolder: (() -> Unit)? = null
+        onBrowseFolder: (() -> Unit)? = null,
+        normalizeName: (String) -> String = { ViewOutputConfiguration.csvFileName(it) }
     ) {
 
         val pad =
@@ -436,9 +437,7 @@ object DialogUtils {
             }
 
         fun typedFileName(): String {
-            return ViewOutputConfiguration.csvFileName(
-                name.text.toString()
-            )
+            return normalizeName(name.text.toString())
         }
 
         fun refreshPrompt() {

@@ -227,24 +227,24 @@ class RestoreActivity : BaseActivity() {
             return
         }
 
-        val preName = viewModel.preRestoreFileName()
-        val existing = persister.existingFile(uri, preName)
+        val proposedName = viewModel.preRestoreFileName()
 
-        if (existing != null) {
-
-            DialogUtils.showReplaceBackupConfirmation(this) {
+        DialogUtils.showExportFileName(
+            this,
+            proposedName,
+            exists = { fileName ->
+                persister.existingFile(uri, fileName) != null
+            },
+            onSave = { fileName, overwrite ->
                 showRestoreConfirmation(
-                    preRestoreFileName = preName,
-                    overwritePreRestore = true
+                    preRestoreFileName = fileName,
+                    overwritePreRestore = overwrite
                 )
+            },
+            normalizeName = { raw ->
+                val trimmed = raw.trim().ifBlank { proposedName }
+                BackupZipPersister.zipFileName(trimmed)
             }
-
-            return
-        }
-
-        showRestoreConfirmation(
-            preRestoreFileName = preName,
-            overwritePreRestore = false
         )
     }
 

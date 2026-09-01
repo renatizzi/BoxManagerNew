@@ -1,8 +1,9 @@
 # Assessment interventi correttivi — famiglia + Play
 
-**Data:** 31/08/2026  
-**Branch riferimento famiglia:** `cursor/family-unione-unificata-e5b5` (dopo merge fix T2 → **1.3-famigliaB5.3**)  
-**Play Store:** `main` → **1.2** (versionCode 3)
+**Data:** 01/09/2026 (freeze Play + P1)  
+**Branch riferimento famiglia:** `cursor/p1-igiene-file-5409` → merge in `cursor/family-unione-unificata-e5b5`  
+**Play Store:** `main` → **1.2** (versionCode 3); freeze `cursor/versione-test-5409`  
+**Fonte ufficiale:** `docs/Nota_Integrata_9.2.docx` su **`main`**, **Allegato 4.20**
 
 Documento di assessment (punto 1 del piano Renato). Per la strategia operativa vedi [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md).
 
@@ -12,9 +13,9 @@ Documento di assessment (punto 1 del piano Renato). Per la strategia operativa v
 
 | Priorità | Voci | Azione |
 |----------|------|--------|
-| **P0** | T1 chiuso; T2 fix B5.3; T3 chiuso | Ritest T2 → SI; poi P1 |
-| **P1** | Igiene salvataggio file (5 punti) | Giro dedicato **dopo** chiusura P0; non blocca test Play |
-| **P2** | Sync bugfix Play ↔ famiglia | Processo continuo (vedi strategia) |
+| **P0** | T1, T2, T3 chiusi | T2 **CONVALIDATO** 01/09/2026 |
+| **P1** | Igiene salvataggio file | **B5.5** in ritest (PRE_RESTORE + Genera Modello); non blocca test Play |
+| **P2** | Sync bugfix Play ↔ famiglia | Processo continuo; **non** invertire famiglia su `main` durante il test |
 | **Filone M** | Multilingua / Scelta lingua | **Fuori** da questo assessment — pianificazione separata |
 
 ---
@@ -24,7 +25,7 @@ Documento di assessment (punto 1 del piano Renato). Per la strategia operativa v
 | ID | Area | Problema | Root cause (codice) | Intervento | Stato |
 |----|------|----------|---------------------|------------|-------|
 | **T1** | Backup → Directory | Nome cartella illeggibile | `SafFolderLabel` + id opaco SAF | B5.2 | **CONVALIDATO** |
-| **T2** | Lista Oggetti / Lista Oggetti Trovati | Categoria o icona assenti o diversi in stampa/export | Race `BoxDetailActivity` (box prima delle categorie); `SearchResultActivity` export senza risoluzione `categoryId` | `refreshHeader`, `resolveCategoryForGroup` | **Fix in B5.3** — attende SI device |
+| **T2** | Lista Oggetti / Lista Oggetti Trovati | Categoria o icona assenti o diversi in stampa/export | Race `BoxDetailActivity` (box prima delle categorie); `SearchResultActivity` export senza risoluzione `categoryId` | `refreshHeader`, `resolveCategoryForGroup` | **CONVALIDATO** B5.3 (SI Renato, 01/09/2026, tre prove OK) |
 | **T3** | *(non identificato)* | Secondo bug citato in chat, non trascritto | — | — | **Chiuso (non recuperabile)** — riaprire solo con nuova evidenza |
 
 ### Ritest T2 (checklist Renato)
@@ -42,14 +43,14 @@ Criterio di riferimento: nome datato, riuso cartella SAF, box nome + SI/NO; `Mod
 | Punto | Prefisso / nome | Cartella | Box SI/NO | Valutazione |
 |-------|-----------------|----------|-----------|-------------|
 | Backup | `BCK_ddMMyy_HHmm.zip` | `KEY_BACKUP` | Sì | **OK** |
-| PRE_RESTORE | `PRE_RESTORE_ddMMyy_HHmm.zip` | Stessa Backup | Parziale (nome non editabile) | **Da rivedere** |
+| PRE_RESTORE | `PRE_RESTORE_ddMMyy_HHmm.zip` | Stessa Backup | Box unico nome + SI/NO | **B5.5** — ritest device |
 | Esporta vista Play | `ESPORTA_…csv` | `KEY_IMPORT_EXPORT` | Sì | **OK** (criterio matrice) |
-| Genera Modello | `Modello_Importazione.csv` | Usa import/export, non Backup | Scrittura diretta | **Da rivedere** (Nota: riuso cartella Backup) |
+| Genera Modello | `Modello_Importazione.csv` | Cartella Backup (`KEY_BACKUP`) | Box unico SI/NO | **B5.5** — ritest device |
 | Import auto-backup | `BCK_…` | Backup | Sì | **OK** |
 | Invia/Ricevi famiglia B4 | datato | `KEY_FAMILY_SHARE` | Sì | **OK** |
 | Etichetta QR → PDF | contesto QR | — | flusso dedicato | Fuori criterio Esporta |
 
-**Raccomandazione:** giro P1 dedicato **dopo** SI su T2 e avvio stabile test Play; nessun blocco per closed test.
+**Raccomandazione:** P1 in **B5.5** — ritest device; nessun blocco per closed test Play.
 
 ---
 
@@ -76,6 +77,6 @@ Criterio di riferimento: nome datato, riuso cartella SAF, box nome + SI/NO; `Mod
 ## Ordine di lavoro concordato
 
 1. **Assessment** — fatto (SI Renato).
-2. **Versione famiglia B5.3** — fatto; merge T2 su `cursor/family-unione-unificata-e5b5`.
-3. **Strategia unificazione** — documentata.
-4. **Prossima sessione** — [PROMPT_CONTINUITA_CORRETTIVI.md](PROMPT_CONTINUITA_CORRETTIVI.md): chiusura T2 (SI device), P1, sync Play.
+2. **Versione famiglia B5.3** — fatto; T2 **CONVALIDATO** 01/09/2026.
+3. **Strategia unificazione** — documentata; freeze `cursor/versione-test-5409`; **non** invertire su `main`.
+4. **P1** — codice in **B5.5**; chiusura solo dopo SI device (PRE_RESTORE + Genera Modello).

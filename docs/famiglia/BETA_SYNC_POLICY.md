@@ -8,14 +8,15 @@ Correggere bug della **1.2** (Play / Alpha) **senza** far divergere la betatest 
 
 | Binario | Come si ottiene | Dove vive |
 |---------|-----------------|-----------|
-| Play 1.2 | branch `main` → `assemblePlayRelease` (o release storica senza flavor se si builda solo `main` pulito) | Play Store / Alpha |
+| Play 1.2 | branch `main` → `assemblePlayRelease` | Play Store / test chiuso |
+| Freeze Play 1.2 | branch `cursor/versione-test-5409` (snapshot di `main`) | Solo ripristino snapshot; **non** sostituisce `main` |
 | Beta famiglia (base B2.2) | branch `cursor/family-b-beta-75ee` → `assembleFamigliaRelease` (o `famigliaDebug`) | Solo sideload familiare |
-| Beta famiglia (B5 + correttivi) | branch `cursor/family-unione-unificata-e5b5` → `assembleFamigliaDebug` | Solo sideload; v. **1.3-famigliaB5.3** |
+| Beta famiglia (B5 + correttivi) | branch `cursor/family-unione-unificata-e5b5` → `assembleFamigliaDebug` | Solo sideload; v. **1.3-famigliaB5.5** |
 
 Su questi branch esistono due product flavor:
 
 - **`play`** — stessi `applicationId` / versionCode 3 / versionName 1.2; `FAMILY_BETA=false` (verifica regressione locale).
-- **`famiglia`** — `applicationId` `…boxmanager.famiglia`; versionName **`1.3-famigliaB5.3`** (versionCode 1322); `FAMILY_BETA=true`.
+- **`famiglia`** — `applicationId` `…boxmanager.famiglia`; versionName **`1.3-famigliaB5.5`** (versionCode 1324); `FAMILY_BETA=true`.
 
 ## Regola d’oro
 
@@ -53,7 +54,7 @@ APK debug tipico:
 
 ## Periodo test chiuso Play
 
-Durante il test Google Console: su **`main`** si accettano **solo bugfix** da feedback tester. Dopo ogni fix Play, merge su `cursor/family-unione-unificata-e5b5`. Dettaglio: [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md).
+Durante il test Google Console: su **`main`** si accettano **solo bugfix** da feedback tester. Freeze nominato: `cursor/versione-test-5409`. **Non** spostare famiglia su `main`. Dopo ogni fix Play, merge su `cursor/family-unione-unificata-e5b5`. Dettaglio: [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md).
 
 ## Cosa fare in caso di conflitto di merge
 

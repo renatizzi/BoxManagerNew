@@ -10,10 +10,10 @@ object StorageFolderConfiguration {
 
     const val PREFS_NAME = BackupConfiguration.PREFS_NAME
 
-    /** Backup e Ripristino. */
+    /** Backup, Ripristino e Genera Modello. */
     const val KEY_BACKUP = BackupConfiguration.PREFS_KEY_FOLDER_URI
 
-    /** Importa dati, Esporta dati e modello importazione. */
+    /** Importa dati (scelta file) e Esporta vista. */
     const val KEY_IMPORT_EXPORT = "folder_uri_import_export"
 
     /** Condivisione archivio (flavor famiglia). */
