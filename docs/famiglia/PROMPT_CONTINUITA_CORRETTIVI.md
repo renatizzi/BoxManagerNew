@@ -38,19 +38,9 @@ Usare questo file come **unico ingresso** per la prossima sessione agente sul fi
 | **T2** Categoria lista oggetti | **CONVALIDATO** B5.3 (SI device 01/09/2026) | Nessuna |
 | **T3** Secondo bug | **Chiuso** (non recuperato) | Ignorare salvo nuova segnalazione con evidenza |
 
-### Checklist ritest T2 (device, famiglia B5.3)
+### T2 (storico B5.3)
 
-1. Contenitore → **Lista Oggetti**: header **categoria + icona** al primo caricamento.
-2. Dashboard → ambito **Oggetti** → **Lista Oggetti Trovati**: categoria corretta per gruppo contenitore.
-3. Stampa / Esporta da (2): stessa categoria a schermo.
-
-**Chiusura T2:** solo dopo **SI Renato** esplicito su device → aggiornare PROMEMORIA + ASSESSMENT.
-
-### File toccati da T2 (B5.3)
-
-- `app/.../ui/BoxDetailActivity.kt` — `refreshHeader()`
-- `app/.../ui/search/SearchResultActivity.kt` — `resolveCategoryForGroup()`
-- `app/.../viewoutput/model/ContainerViewSnapshotFactory.kt` — `searchResultGroupBlock()`
+CONVALIDATO 01/09/2026. File: `BoxDetailActivity.refreshHeader()`, `SearchResultActivity.resolveCategoryForGroup()`, `ContainerViewSnapshotFactory.searchResultGroupBlock()`.
 
 ---
 
