@@ -2,7 +2,7 @@
 
 **SI Renato, 01/09/2026** — T2 **CONVALIDATO**; Nota ufficiale su `main` **Allegato 4.20**.
 
-Usare questo file come **ingresso operativo** per il filone **correzioni**. Fonte prodotto: `docs/Nota_Integrata_9.1_B7.docx` su **`main`** (non riaprire D0–B7 core; non riaprire B5 prodotto né filone M).
+Usare questo file come **ingresso operativo** per il filone **correzioni**. Fonte prodotto: `docs/Nota_Integrata_9.2.docx` su **`main`** (non riaprire D0–B7 core; non riaprire B5 prodotto né filone M).
 
 ---
 
@@ -10,7 +10,7 @@ Usare questo file come **ingresso operativo** per il filone **correzioni**. Font
 
 | Voce | Valore |
 |------|--------|
-| **Nota ufficiale** | `docs/Nota_Integrata_9.1_B7.docx` su **`main`**, **Allegato 4.20** |
+| **Nota ufficiale** | `docs/Nota_Integrata_9.2.docx` su **`main`**, **Allegato 4.20** |
 | **Branch famiglia** | `cursor/family-unione-unificata-e5b5` (codice) |
 | **Build famiglia** | **1.3-famigliaB5.3** (versionCode **1322**) |
 | **Play** | `main` → **1.2** (vc 3) — test chiuso Console |
@@ -22,7 +22,7 @@ Usare questo file come **ingresso operativo** per il filone **correzioni**. Font
 
 | File | Ruolo |
 |------|--------|
-| `docs/Nota_Integrata_9.1_B7.docx` su **`main`** | **Fonte ufficiale** — Allegato **4.20** (famiglia + T2) |
+| `docs/Nota_Integrata_9.2.docx` su **`main`** | **Fonte ufficiale** — Allegato **4.20** (famiglia + T2) |
 | [ASSESSMENT_CORRETTIVI.md](ASSESSMENT_CORRETTIVI.md) | Elenco P0–P2, audit salvataggio file (copia; prevale Nota 4.20) |
 | [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md) | Play = solo bug tester; merge `main` → famiglia |
 | [PROMEMORIA_INTERVENTI_TRASVERSALI.md](PROMEMORIA_INTERVENTI_TRASVERSALI.md) | Tracking T1–T3, P1, P2 |

@@ -3,7 +3,7 @@
 **Data:** 01/09/2026 (T2 SI device)  
 **Branch riferimento famiglia:** `cursor/family-unione-unificata-e5b5` (dopo merge fix T2 → **1.3-famigliaB5.3**)  
 **Play Store:** `main` → **1.2** (versionCode 3)  
-**Fonte ufficiale:** `docs/Nota_Integrata_9.1_B7.docx` su **`main`**, **Allegato 4.20**
+**Fonte ufficiale:** `docs/Nota_Integrata_9.2.docx` su **`main`**, **Allegato 4.20**
 
 Documento di assessment (punto 1 del piano Renato). Per la strategia operativa vedi [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md).
 
