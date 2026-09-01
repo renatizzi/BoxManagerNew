@@ -1,6 +1,7 @@
 package com.example.boxmanagernew
 
 import android.app.Application
+import com.example.boxmanagernew.ui.common.LocaleManager
 import com.example.boxmanagernew.ui.common.ThemeManager
 
 class BoxManagerApplication : Application() {
@@ -12,5 +13,6 @@ class BoxManagerApplication : Application() {
         ThemeManager.applyStoredNightMode(
             this
         )
+        LocaleManager.applyStored(this)
     }
 }

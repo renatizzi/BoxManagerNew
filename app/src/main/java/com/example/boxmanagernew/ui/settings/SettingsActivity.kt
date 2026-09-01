@@ -16,11 +16,13 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.boxmanagernew.BuildConfig
 import com.example.boxmanagernew.R
+import com.example.boxmanagernew.domain.locale.LocalePreference
 import com.example.boxmanagernew.domain.premium.ArchivioCompletoAccess
 import com.example.boxmanagernew.domain.premium.ArchivioCompletoCopy
 import com.example.boxmanagernew.domain.premium.ArchivioCompletoPolicy
 import com.example.boxmanagernew.domain.privacy.PrivacyPolicy
 import com.example.boxmanagernew.ui.common.BaseActivity
+import com.example.boxmanagernew.ui.common.LocaleManager
 import com.example.boxmanagernew.ui.common.ThemeManager
 import com.google.android.material.switchmaterial.SwitchMaterial
 
@@ -47,6 +49,9 @@ class SettingsActivity : BaseActivity() {
     private lateinit var cardLocations: View
     private lateinit var cardPrivacy: View
 
+    private lateinit var optionItalian: LinearLayout
+    private lateinit var optionEnglish: LinearLayout
+
     private var currentPalette =
         ThemeManager.PALETTE_ORANGE
 
@@ -65,6 +70,7 @@ class SettingsActivity : BaseActivity() {
         loadPreferences()
         setupListeners()
         setupPaletteSelector()
+        setupLanguageSelector()
         updateThemeLabel()
         setupDebugUnlock()
         setupUnlockCode()
@@ -108,6 +114,12 @@ class SettingsActivity : BaseActivity() {
 
         cardPrivacy =
             findViewById(R.id.cardPrivacy)
+
+        optionItalian =
+            findViewById(R.id.optionItalian)
+
+        optionEnglish =
+            findViewById(R.id.optionEnglish)
 
         findViewById<TextView>(R.id.textPrivacyLabel).text =
             PrivacyPolicy.SETTINGS_LABEL
@@ -207,6 +219,75 @@ class SettingsActivity : BaseActivity() {
                 ThemeManager.PALETTE_GREEN
             )
         }
+    }
+
+    private fun setupLanguageSelector() {
+
+        updateLanguageSelection()
+
+        optionItalian.setOnClickListener {
+            selectLanguage(LocalePreference.IT)
+        }
+
+        optionEnglish.setOnClickListener {
+            selectLanguage(LocalePreference.EN)
+        }
+    }
+
+    private fun selectLanguage(languageTag: String) {
+
+        if (
+            LocaleManager.storedTag(this) ==
+            LocalePreference.resolve(languageTag)
+        ) {
+            return
+        }
+
+        LocaleManager.setLanguage(this, languageTag)
+    }
+
+    private fun updateLanguageSelection() {
+
+        resetPalette(optionItalian)
+        resetPalette(optionEnglish)
+
+        val selected =
+            if (
+                LocalePreference.isEnglish(
+                    LocaleManager.storedTag(this)
+                )
+            ) {
+                optionEnglish
+            } else {
+                optionItalian
+            }
+
+        val drawable =
+            GradientDrawable().apply {
+
+                shape =
+                    GradientDrawable.RECTANGLE
+
+                cornerRadius =
+                    16f
+
+                setColor(
+                    ContextCompat.getColor(
+                        this@SettingsActivity,
+                        R.color.list_row_fill
+                    )
+                )
+
+                setStroke(
+                    6,
+                    ThemeManager.getAccentDarkColor(
+                        this@SettingsActivity
+                    )
+                )
+            }
+
+        selected.background =
+            drawable
     }
 
     private fun detectCurrentPalette(): String {

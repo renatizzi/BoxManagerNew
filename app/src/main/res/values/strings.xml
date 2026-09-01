@@ -30,4 +30,8 @@
         Tocca qui per tornare alla Dashboard
     </string>
 
+    <string name="settings_language_title">Scelta lingua</string>
+    <string name="settings_language_italian">Italiano</string>
+    <string name="settings_language_english">English</string>
+
 </resources>
