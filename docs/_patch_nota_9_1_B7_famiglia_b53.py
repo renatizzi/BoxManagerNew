@@ -269,6 +269,9 @@ def allegato_420_paragraphs(stamp: str) -> list[str]:
 
 
 def main() -> None:
+    raise SystemExit(
+        "Script storico. Usare docs/_patch_nota_9_2.py sulla Nota Integrata 9.2."
+    )
     if not DOC.exists():
         raise SystemExit(f"Missing {DOC}")
     stamp = datetime.now(timezone.utc).astimezone().strftime("%d/%m/%Y %H:%M")
