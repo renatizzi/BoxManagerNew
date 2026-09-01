@@ -109,12 +109,8 @@ object QuickStartGuideCopy {
                     add("Codice QR per aprire un contenitore dalla fotocamera.")
                     if (includeFamilyBeta) {
                         add(
-                            "Catalogo Famiglia: allinea categorie e luoghi " +
-                                "tra i telefoni (setup una volta)."
-                        )
-                        add(
-                            "Inventario Famiglia: unisci contenitori e oggetti " +
-                                "per ID stabili con anteprima."
+                            "Archivio condiviso: Utility → Condividi Archivio " +
+                                "(funzione avanzata, Archivio completo)."
                         )
                     }
                 }
@@ -142,13 +138,14 @@ object QuickStartGuideCopy {
             return base
         }
         return base + Section(
-            phase = Phase.CONFIG,
+            phase = Phase.USAGE,
             number = 8,
-            title = "Setup famiglia (beta)",
+            title = "Archivio condiviso",
             bullets = listOf(
-                "Allineate categorie e luoghi con Utility → Catalogo Famiglia.",
-                "Un familiare invia il Catalogo; gli altri lo ricevono.",
-                "Poi ciascuno censisce contenitori e oggetti; unite l'inventario con Invia/Ricevi Inventario.",
+                "Da Utility apri Condividi Archivio: pagina Condivisione Archivio.",
+                "Passo 1: Invia o Ricevi tabelle condivise (categorie e luoghi) per allineare il setup famiglia.",
+                "Passo 2: Invia o Ricevi Archivio per unire contenitori e oggetti per ID stabili.",
+                "È una funzione avanzata: richiede Archivio completo, come ricerca avanzata, QR, import ed export.",
                 "Non usare Ripristino per unire archivi: sostituisce tutto."
             )
         )
@@ -243,4 +240,14 @@ object QuickStartGuideCopy {
     const val FOOTER_NOTE =
         "Ricerca avanzata, QR, import ed export richiedono Archivio completo " +
             "(prova a tempo, poi rinnovo tramite condivisione o codice)."
+
+    fun footerNote(includeFamilyShare: Boolean): String {
+        return if (includeFamilyShare) {
+            "Ricerca avanzata, QR, import, export e Archivio condiviso " +
+                "richiedono Archivio completo (prova a tempo, poi rinnovo " +
+                "tramite condivisione o codice)."
+        } else {
+            FOOTER_NOTE
+        }
+    }
 }

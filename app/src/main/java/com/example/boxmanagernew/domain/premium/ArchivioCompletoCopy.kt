@@ -27,6 +27,20 @@ object ArchivioCompletoCopy {
     const val SETTINGS_UNLOCK_HINT =
         "Solo in questa installazione di prova: attiva per usare ricerca avanzata, QR, import ed export senza limiti. Disattiva e usa i tasti sotto per simulare fine prova o ricominciare il periodo di prova."
 
+    fun settingsUnlockHint(includeFamilyShare: Boolean): String {
+        return "Solo in questa installazione di prova: attiva per usare " +
+            advancedFunctionsList(includeFamilyShare) +
+            " senza limiti. Disattiva e usa i tasti sotto per simulare fine prova o ricominciare il periodo di prova."
+    }
+
+    fun advancedFunctionsList(includeFamilyShare: Boolean): String {
+        return if (includeFamilyShare) {
+            "ricerca avanzata, QR, import, export e Archivio condiviso"
+        } else {
+            "ricerca avanzata, QR, import ed export"
+        }
+    }
+
     const val SETTINGS_EXPIRE_TRIAL =
         "Simula fine prova"
 
@@ -78,7 +92,8 @@ object ArchivioCompletoCopy {
     fun packageShareHint(
         trialDays: Int,
         bonusDays: Int,
-        friends: Int
+        friends: Int,
+        includeFamilyShare: Boolean = false
     ): String {
         val friendPart =
             if (friends <= 1) {
@@ -87,7 +102,8 @@ object ArchivioCompletoCopy {
                 "Condividi BoxManager con $friends amici"
             }
         return "Il periodo di prova di $trialDays giorni è terminato. " +
-            "$friendPart: ottieni altri $bonusDays giorni su ricerca avanzata, QR, import ed export."
+            "$friendPart: ottieni altri $bonusDays giorni su " +
+            "${advancedFunctionsList(includeFamilyShare)}."
     }
 
     fun shareGranted(bonusDays: Int): String {
@@ -113,6 +129,8 @@ object ArchivioCompletoCopy {
                 "Importa dati"
             PremiumFeature.EXPORT ->
                 "Esporta dati"
+            PremiumFeature.FAMILY_SHARE ->
+                "Archivio condiviso"
         }
     }
 
@@ -156,6 +174,14 @@ object ArchivioCompletoCopy {
                         "Insieme a Importa dati, questa funzione ti consente di gestire facilmente archivi già utilizzati sul tuo dispositivo.",
                     example =
                         "esporta in formato CSV il contenuto parziale o totale del mio archivio su foglio elettronico"
+                )
+
+            PremiumFeature.FAMILY_SHARE ->
+                FeaturePitch(
+                    lead =
+                        "Condividi categorie, luoghi, contenitori e oggetti tra i telefoni di famiglia con un file, senza cloud.",
+                    example =
+                        "Invia tabelle condivise una volta, poi Invia Archivio quando censisci"
                 )
         }
     }

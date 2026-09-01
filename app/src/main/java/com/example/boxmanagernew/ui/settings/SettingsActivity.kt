@@ -524,7 +524,9 @@ class SettingsActivity : BaseActivity() {
             ArchivioCompletoCopy.SETTINGS_UNLOCK_TITLE
 
         findViewById<TextView>(R.id.textDebugUnlockHint).text =
-            ArchivioCompletoCopy.SETTINGS_UNLOCK_HINT
+            ArchivioCompletoCopy.settingsUnlockHint(
+                BuildConfig.FAMILY_BETA
+            )
 
         val switchUnlock =
             findViewById<SwitchMaterial>(R.id.switchDebugUnlock)

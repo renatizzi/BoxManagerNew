@@ -94,7 +94,9 @@ class UtilityActivity : BaseActivity() {
             findViewById<TextView>(R.id.textFamilyCatalog).text =
                 FamilyMergeCopy.UTILITY_CARD_LABEL
             familyButton.setOnClickListener {
-                startActivity(
+                ArchivioCompletoNav.start(
+                    this,
+                    PremiumFeature.FAMILY_SHARE,
                     Intent(
                         this,
                         FamilyCatalogActivity::class.java
