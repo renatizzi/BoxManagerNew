@@ -809,7 +809,11 @@ class MainActivity : BaseActivity() {
                     fileName,
                     overwrite
                 )
-            }
+            },
+            onBrowseFolder = {
+                exportFolderPicker.launch(null)
+            },
+            folderName = exportPersister.folderDisplayName(uri)
         )
     }
 

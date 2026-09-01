@@ -210,7 +210,11 @@ class ViewOutputController(
                     fileName,
                     overwrite
                 )
-            }
+            },
+            onBrowseFolder = {
+                launchFolderPicker()
+            },
+            folderName = persister.folderDisplayName(uri)
         )
     }
 
