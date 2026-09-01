@@ -2,7 +2,7 @@
 
 **SI Renato, 31/08/2026** — piano a 3 passi. **01/09/2026:** T2 CONVALIDATO; freeze Play 1.2; **non** invertire famiglia su `main`; **P1 CONVALIDATO** B5.7.
 
-Usare questo file come **unico ingresso** per la prossima sessione agente sul filone **correzioni** (non riaprire B5 prodotto né filone multilingua M).
+Usare questo file come **unico ingresso** per la prossima sessione agente sul filone **correzioni** (non riaprire B5 prodotto). Per **multilingua IT/EN** aprire **nuova sessione** con [PROMPT_CONTINUITA_M.md](../multilingua/PROMPT_CONTINUITA_M.md).
 
 ---
 
