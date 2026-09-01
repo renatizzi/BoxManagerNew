@@ -12,12 +12,6 @@ import java.util.Locale
 
 object TopBarUtils {
 
-    private const val DEFAULT_USERNAME =
-        "Utente"
-
-    private const val APP_TITLE =
-        "BoxManager"
-
     private const val DATE_PATTERN =
         "dd/MM/yyyy HH:mm"
 
@@ -61,7 +55,7 @@ object TopBarUtils {
     ) {
 
         titleView.text =
-            APP_TITLE
+            context.getString(R.string.app_name)
 
         titleView.setTextColor(
             ThemeManager.getTopBarTitle(
@@ -85,7 +79,10 @@ object TopBarUtils {
                 ?: return
 
         versionView.text =
-            "v. ${BuildConfig.VERSION_NAME}"
+            context.getString(
+                R.string.topbar_version_prefix,
+                BuildConfig.VERSION_NAME
+            )
 
         versionView.setTextColor(
             ThemeManager.getTopBarSubtitle(
@@ -103,7 +100,9 @@ object TopBarUtils {
             .getString(SettingsActivity.KEY_USERNAME, "")
             ?.trim()
             .orEmpty()
-        return stored.ifEmpty { DEFAULT_USERNAME }
+        return stored.ifEmpty {
+            context.getString(R.string.topbar_default_username)
+        }
     }
 
     fun buildSubtitle(context: Context): String {
@@ -112,7 +111,7 @@ object TopBarUtils {
 
     /** Retrocompat: senza Context resta il default. */
     fun buildSubtitle(): String {
-        return "$DEFAULT_USERNAME - ${getCurrentDateTime()}"
+        return "Utente - ${getCurrentDateTime()}"
     }
 
     private fun getCurrentDateTime(): String {

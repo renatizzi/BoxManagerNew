@@ -44,7 +44,7 @@
                         android:id="@+id/textTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Lista Oggetti"
+                        android:text="@string/box_detail_title"
                         android:textSize="24sp"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary" />
@@ -54,7 +54,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:text="Contenuto del box"
+                        android:text="@string/box_detail_subtitle"
                         android:textColor="@color/text_primary"
                         android:textSize="15sp"
                         android:textStyle="normal" />
@@ -166,7 +166,7 @@
                         android:id="@+id/editSearchObjects"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Cerca..."
+                        android:hint="@string/common_search_hint"
                         android:imeOptions="actionDone"
                         android:minHeight="48dp"
                         android:singleLine="true"
@@ -177,7 +177,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:minHeight="44dp"
-                        android:text="ORDINA ▲" />
+                        android:text="@string/common_sort_asc" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -212,7 +212,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Lista Oggetti (0)"
+                android:text="@string/box_detail_count_sample"
                 android:textColor="@color/text_primary"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -254,7 +254,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:minHeight="44dp"
-                    android:text="⇄ SPOSTA" />
+                    android:text="@string/common_move" />
 
                 <Space
                     android:layout_width="8dp"
@@ -266,7 +266,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:minHeight="44dp"
-                    android:text="🗑 ELIMINA" />
+                    android:text="@string/common_delete" />
 
             </LinearLayout>
 

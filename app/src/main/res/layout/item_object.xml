@@ -27,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="🧱"
+                android:text="@string/item_object_icon"
                 android:textSize="18sp" />
         </FrameLayout>
 
@@ -78,7 +78,7 @@
             android:layout_width="@dimen/menu_size"
             android:layout_height="@dimen/menu_size"
             android:gravity="center"
-            android:text="⋮"
+            android:text="@string/common_menu_overflow"
             android:textSize="@dimen/text_menu"
             android:clickable="true"
             android:focusable="true"

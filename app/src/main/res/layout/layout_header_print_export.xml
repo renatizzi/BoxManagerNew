@@ -12,7 +12,7 @@
         android:layout_width="44dp"
         android:layout_height="44dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="Stampa"
+        android:contentDescription="@string/common_print_cd"
         android:padding="8dp"
         android:src="@drawable/ic_print_view"
         app:tint="@color/text_primary" />
@@ -23,10 +23,10 @@
         android:layout_height="44dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
-        android:contentDescription="Esporta"
+        android:contentDescription="@string/common_export_cd"
         android:focusable="true"
         android:gravity="center"
-        android:text="📤"
+        android:text="@string/common_export_icon"
         android:textSize="20sp" />
 
 </LinearLayout>

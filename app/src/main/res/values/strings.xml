@@ -2,36 +2,136 @@
 
     <string name="app_name">BoxManager</string>
 
-    <string name="global_search_title">
-        Ricerca avanzata archivio
-    </string>
+    <!-- Bottom navigation -->
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_boxes">Contenitori</string>
+    <string name="nav_categories">Categorie</string>
+    <string name="nav_utility">Utility</string>
+    <string name="nav_settings_icon">⚙</string>
 
-    <string name="global_search_subtitle">
-        Trova ciò che cerchi con una semplice domanda
-    </string>
+    <!-- Global top bar -->
+    <string name="topbar_help">Guida</string>
+    <string name="topbar_help_cd">Guida rapida</string>
+    <string name="topbar_dark_mode">Dark</string>
+    <string name="topbar_version_sample">v. 1.2</string>
+    <string name="topbar_version_prefix">v. %1$s</string>
+    <string name="topbar_default_username">Utente</string>
 
-    <string name="global_search_intro">
-        Qui puoi cercare contenitori, oggetti, categorie o posizioni formulando una domanda in modo naturale. Se il risultato non è quello atteso, prova a riformulare la richiesta usando termini diversi.
-    </string>
+    <!-- Common -->
+    <string name="common_search_hint">Cerca…</string>
+    <string name="common_add_cd">Aggiungi</string>
+    <string name="common_print_cd">Stampa</string>
+    <string name="common_export_cd">Esporta</string>
+    <string name="common_export_icon">📤</string>
+    <string name="common_browse">SFOGLIA</string>
+    <string name="common_chevron_right">›</string>
+    <string name="common_arrow_right">→</string>
+    <string name="common_menu_overflow">⋮</string>
+    <string name="common_sort_asc">ORDINA ▲</string>
+    <string name="common_move">⇄ SPOSTA</string>
+    <string name="common_delete">🗑 ELIMINA</string>
+    <string name="common_no_folder_selected">Nessuna cartella selezionata</string>
+    <string name="common_required_field">Dato obbligatorio</string>
+    <string name="common_chevron_nav">></string>
 
-    <string name="global_search_hint">
-        Scrivi una domanda...
-    </string>
+    <!-- Dashboard -->
+    <string name="dashboard_boxes_card">📦 Contenitori</string>
+    <string name="dashboard_boxes_total">Totale archivio</string>
+    <string name="dashboard_boxes_empty">di cui vuoti</string>
+    <string name="dashboard_categories_card">🏷 Categorie</string>
+    <string name="dashboard_categories_total">Totale categorie</string>
+    <string name="dashboard_categories_in_use">di cui in uso</string>
+    <string name="dashboard_search_title">🔎 Ricerca archivio</string>
+    <string name="dashboard_quick_access">⚡ Accesso rapido</string>
+    <string name="dashboard_quick_backup">☁ Backup</string>
+    <string name="dashboard_quick_restore">↺ Ripristino</string>
+    <string name="dashboard_quick_qr">▣ Codice QR</string>
+    <string name="dashboard_quick_import">📥 Importa Dati</string>
+    <string name="dashboard_count_zero">0</string>
 
-    <string name="global_search_processing">
-        Sto analizzando la richiesta...
-    </string>
+    <!-- Main / boxes list -->
+    <string name="main_count_boxes_sample">N. Contenitori: 0</string>
 
-    <string name="global_search_fallback">
-        Non riesco a capire esattamente quello che stai cercando. Prova a formulare la richiesta con parole più chiare.
-    </string>
+    <!-- Categories -->
+    <string name="categories_sort">Ordina</string>
+    <string name="categories_count_sample">N. Categorie: 0</string>
 
-    <string name="global_search_goodbye">
-        Tocca qui per tornare alla Dashboard
-    </string>
+    <!-- Locations -->
+    <string name="locations_count_sample">N. Luoghi: 0</string>
 
+    <!-- Box detail -->
+    <string name="box_detail_title">Lista Oggetti</string>
+    <string name="box_detail_subtitle">Contenuto del box</string>
+    <string name="box_detail_count_sample">Lista Oggetti (0)</string>
+
+    <!-- Utility -->
+    <string name="utility_backup">💾 Backup</string>
+    <string name="utility_restore">🔄 Ripristino</string>
+    <string name="utility_import">📥 Importa dati</string>
+    <string name="utility_qr">📱 Codice QR</string>
+    <string name="utility_family_catalog">📋 Catalogo Famiglia</string>
+
+    <!-- Backup -->
+    <string name="backup_folder_cd">Cartella backup</string>
+    <string name="backup_folder_label">Backup Directory</string>
+    <string name="backup_create_title">Crea nuovo backup</string>
+    <string name="backup_file_name_label">Nome file</string>
+    <string name="backup_file_name_hint">BCK_GGMMAA_HHMM</string>
+    <string name="backup_create_button">CREA BACKUP</string>
+
+    <!-- Restore -->
+    <string name="restore_folder_label">Cartella backup</string>
+    <string name="restore_file_label">File di backup</string>
+    <string name="restore_no_zip">Nessun file ZIP in questa cartella.</string>
+    <string name="restore_preview">Anteprima</string>
+    <string name="restore_button">RIPRISTINA</string>
+
+    <!-- Import -->
+    <string name="import_generate_template">Genera Modello di Importazione</string>
+    <string name="import_data_button">Importa dati</string>
+
+    <!-- Global search (layout label) -->
+    <string name="global_search_form_label">Formula la tua domanda</string>
+
+    <string name="global_search_title">Ricerca avanzata archivio</string>
+    <string name="global_search_subtitle">Trova ciò che cerchi con una semplice domanda</string>
+    <string name="global_search_intro">Qui puoi cercare contenitori, oggetti, categorie o posizioni formulando una domanda in modo naturale. Se il risultato non è quello atteso, prova a riformulare la richiesta usando termini diversi.</string>
+    <string name="global_search_hint">Scrivi una domanda…</string>
+    <string name="global_search_processing">Sto analizzando la richiesta…</string>
+    <string name="global_search_fallback">Non riesco a capire esattamente quello che stai cercando. Prova a formulare la richiesta con parole più chiare.</string>
+    <string name="global_search_goodbye">Tocca qui per tornare alla Dashboard</string>
+
+    <!-- Settings (layout) -->
+    <string name="settings_profile">Profilo</string>
+    <string name="settings_username_hint">Nome utente</string>
+    <string name="settings_appearance">Aspetto</string>
+    <string name="settings_theme_current_light">Tema corrente: Light</string>
+    <string name="settings_palette_preview">Preview set di colori</string>
+    <string name="settings_palette_orange">Arancione</string>
+    <string name="settings_palette_orange_default">Default</string>
+    <string name="settings_palette_blue">Blu</string>
+    <string name="settings_palette_green">Verde</string>
+    <string name="settings_locations_card">Luoghi abituali di custodia</string>
+    <string name="settings_save">SALVA</string>
+    <string name="settings_saved">Salvato</string>
     <string name="settings_language_title">Scelta lingua</string>
     <string name="settings_language_italian">Italiano</string>
     <string name="settings_language_english">English</string>
+
+    <!-- Dialogs -->
+    <string name="dialog_object_name_hint">Nome oggetto</string>
+    <string name="dialog_object_description_hint">Descrizione</string>
+    <string name="dialog_object_quantity_hint">Quantità</string>
+    <string name="dialog_category_name_hint">Nome categoria</string>
+    <string name="dialog_category_pick_icon">Seleziona icona</string>
+    <string name="dialog_box_name_hint">Nome contenitore</string>
+    <string name="dialog_box_last_modified">Ultima modifica</string>
+
+    <!-- QR label -->
+    <string name="qr_print_label">Stampa etichetta</string>
+    <string name="qr_export_pdf">Esporta PDF</string>
+
+    <!-- List item placeholders -->
+    <string name="item_object_icon">🧱</string>
 
 </resources>

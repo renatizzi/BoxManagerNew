@@ -48,7 +48,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
-                    android:hint="Cerca..."
+                    android:hint="@string/common_search_hint"
                     android:imeOptions="actionDone"
                     android:minHeight="48dp"
                     android:singleLine="true"
@@ -59,7 +59,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="44dp"
-                    android:text="ORDINA ▲" />
+                    android:text="@string/common_sort_asc" />
 
             </LinearLayout>
 
@@ -101,7 +101,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="N. Contenitori: 0"
+            android:text="@string/main_count_boxes_sample"
             android:textColor="@color/text_primary"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -110,7 +110,7 @@
             android:id="@+id/fabAdd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="Aggiungi"
+            android:contentDescription="@string/common_add_cd"
             android:src="@android:drawable/ic_input_add"
             app:backgroundTint="?attr/colorPrimary"
             app:tint="@android:color/white" />
@@ -138,7 +138,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:minHeight="44dp"
-                android:text="⇄ SPOSTA" />
+                android:text="@string/common_move" />
 
             <Space
                 android:layout_width="8dp"
@@ -150,7 +150,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:minHeight="44dp"
-                android:text="🗑 ELIMINA" />
+                android:text="@string/common_delete" />
 
         </LinearLayout>
 

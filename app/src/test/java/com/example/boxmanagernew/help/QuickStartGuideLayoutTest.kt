@@ -27,7 +27,7 @@ class QuickStartGuideLayoutTest {
         assertTrue(xml.contains("android:id=\"@+id/chipUsage\""))
         assertTrue(xml.contains("android:id=\"@+id/arrowConfigCensus\""))
         assertTrue(xml.contains("android:id=\"@+id/arrowCensusUsage\""))
-        assertTrue(xml.contains("android:text=\"→\""))
+        assertTrue(xml.contains("android:text=\"@string/common_arrow_right\""))
         assertTrue(xml.contains("android:textSize=\"14sp\""))
         assertFalse(xml.contains("textWorkflowLine"))
         assertFalse(xml.contains("textIntro"))

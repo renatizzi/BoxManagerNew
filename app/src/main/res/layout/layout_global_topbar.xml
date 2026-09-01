@@ -35,7 +35,7 @@
                     android:id="@+id/textGlobalTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="BoxManager"
+                    android:text="@string/app_name"
                     android:textColor="?attr/topBarTitleColor"
                     android:textStyle="bold"
                     android:textSize="18sp"/>
@@ -46,7 +46,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginBottom="1dp"
-                    android:text="v. 1.2"
+                    android:text="@string/topbar_version_sample"
                     android:textSize="11sp"
                     android:textColor="?attr/topBarSubtitleColor"/>
 
@@ -71,18 +71,18 @@
             android:paddingEnd="4dp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:text="Guida"
+            android:text="@string/topbar_help"
             android:textColor="?attr/topBarTitleColor"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:focusable="true"
-            android:contentDescription="Guida rapida" />
+            android:contentDescription="@string/topbar_help_cd" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/switchTheme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Dark"
+            android:text="@string/topbar_dark_mode"
             android:textColor="?attr/topBarTitleColor"
             app:thumbTint="@color/switch_thumb_selector"
             app:trackTint="@color/switch_track_selector"/>

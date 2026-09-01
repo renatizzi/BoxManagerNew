@@ -1,8 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="app_name">BoxManager</string>
+
+    <!-- Bottom navigation -->
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_boxes">Containers</string>
+    <string name="nav_categories">Categories</string>
+    <string name="nav_utility">Utility</string>
+    <string name="nav_settings_icon">⚙</string>
+
+    <!-- Global top bar -->
+    <string name="topbar_help">Guide</string>
+    <string name="topbar_help_cd">Quick guide</string>
+    <string name="topbar_dark_mode">Dark</string>
+    <string name="topbar_version_sample">v. 1.2</string>
+    <string name="topbar_version_prefix">v. %1$s</string>
+    <string name="topbar_default_username">User</string>
+
+    <!-- Common -->
+    <string name="common_search_hint">Search…</string>
+    <string name="common_add_cd">Add</string>
+    <string name="common_print_cd">Print</string>
+    <string name="common_export_cd">Export</string>
+    <string name="common_export_icon">📤</string>
+    <string name="common_browse">BROWSE</string>
+    <string name="common_chevron_right">›</string>
+    <string name="common_arrow_right">→</string>
+    <string name="common_menu_overflow">⋮</string>
+    <string name="common_sort_asc">SORT ▲</string>
+    <string name="common_move">⇄ MOVE</string>
+    <string name="common_delete">🗑 DELETE</string>
+    <string name="common_no_folder_selected">No folder selected</string>
+    <string name="common_required_field">Required field</string>
+    <string name="common_chevron_nav">></string>
+
+    <!-- Dashboard -->
+    <string name="dashboard_boxes_card">📦 Containers</string>
+    <string name="dashboard_boxes_total">Archive total</string>
+    <string name="dashboard_boxes_empty">of which empty</string>
+    <string name="dashboard_categories_card">🏷 Categories</string>
+    <string name="dashboard_categories_total">Total categories</string>
+    <string name="dashboard_categories_in_use">of which in use</string>
+    <string name="dashboard_search_title">🔎 Archive search</string>
+    <string name="dashboard_quick_access">⚡ Quick access</string>
+    <string name="dashboard_quick_backup">☁ Backup</string>
+    <string name="dashboard_quick_restore">↺ Restore</string>
+    <string name="dashboard_quick_qr">▣ QR code</string>
+    <string name="dashboard_quick_import">📥 Import data</string>
+    <string name="dashboard_count_zero">0</string>
+
+    <!-- Main / boxes list -->
+    <string name="main_count_boxes_sample">No. containers: 0</string>
+
+    <!-- Categories -->
+    <string name="categories_sort">Sort</string>
+    <string name="categories_count_sample">No. categories: 0</string>
+
+    <!-- Locations -->
+    <string name="locations_count_sample">No. locations: 0</string>
+
+    <!-- Box detail -->
+    <string name="box_detail_title">Object list</string>
+    <string name="box_detail_subtitle">Box contents</string>
+    <string name="box_detail_count_sample">Object list (0)</string>
+
+    <!-- Utility -->
+    <string name="utility_backup">💾 Backup</string>
+    <string name="utility_restore">🔄 Restore</string>
+    <string name="utility_import">📥 Import data</string>
+    <string name="utility_qr">📱 QR code</string>
+    <string name="utility_family_catalog">📋 Family catalog</string>
+
+    <!-- Backup -->
+    <string name="backup_folder_cd">Backup folder</string>
+    <string name="backup_folder_label">Backup directory</string>
+    <string name="backup_create_title">Create new backup</string>
+    <string name="backup_file_name_label">File name</string>
+    <string name="backup_file_name_hint">BCK_GGMMAA_HHMM</string>
+    <string name="backup_create_button">CREATE BACKUP</string>
+
+    <!-- Restore -->
+    <string name="restore_folder_label">Backup folder</string>
+    <string name="restore_file_label">Backup file</string>
+    <string name="restore_no_zip">No ZIP file in this folder.</string>
+    <string name="restore_preview">Preview</string>
+    <string name="restore_button">RESTORE</string>
+
+    <!-- Import -->
+    <string name="import_generate_template">Generate import template</string>
+    <string name="import_data_button">Import data</string>
+
+    <!-- Global search (layout label) -->
+    <string name="global_search_form_label">Ask your question</string>
+
+    <string name="global_search_title">Advanced archive search</string>
+    <string name="global_search_subtitle">Find what you need with a simple question</string>
+    <string name="global_search_intro">Here you can search containers, objects, categories or locations by asking a question in natural language. If the result is not what you expected, try rephrasing the request with different terms.</string>
+    <string name="global_search_hint">Type a question…</string>
+    <string name="global_search_processing">Analyzing the request…</string>
+    <string name="global_search_fallback">I cannot understand exactly what you are looking for. Try rephrasing the request with clearer words.</string>
+    <string name="global_search_goodbye">Tap here to return to the Dashboard</string>
+
+    <!-- Settings (layout) -->
+    <string name="settings_profile">Profile</string>
+    <string name="settings_username_hint">Username</string>
+    <string name="settings_appearance">Appearance</string>
+    <string name="settings_theme_current_light">Current theme: Light</string>
+    <string name="settings_palette_preview">Color set preview</string>
+    <string name="settings_palette_orange">Orange</string>
+    <string name="settings_palette_orange_default">Default</string>
+    <string name="settings_palette_blue">Blue</string>
+    <string name="settings_palette_green">Green</string>
+    <string name="settings_locations_card">Usual storage locations</string>
+    <string name="settings_save">SAVE</string>
+    <string name="settings_saved">Saved</string>
     <string name="settings_language_title">Language</string>
     <string name="settings_language_italian">Italiano</string>
     <string name="settings_language_english">English</string>
+
+    <!-- Dialogs -->
+    <string name="dialog_object_name_hint">Object name</string>
+    <string name="dialog_object_description_hint">Description</string>
+    <string name="dialog_object_quantity_hint">Quantity</string>
+    <string name="dialog_category_name_hint">Category name</string>
+    <string name="dialog_category_pick_icon">Select icon</string>
+    <string name="dialog_box_name_hint">Container name</string>
+    <string name="dialog_box_last_modified">Last modified</string>
+
+    <!-- QR label -->
+    <string name="qr_print_label">Print label</string>
+    <string name="qr_export_pdf">Export PDF</string>
+
+    <!-- List item placeholders -->
+    <string name="item_object_icon">🧱</string>
 
 </resources>
