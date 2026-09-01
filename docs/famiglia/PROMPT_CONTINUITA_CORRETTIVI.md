@@ -1,26 +1,29 @@
 # Prompt di continuità — Correttivi post-B5 (famiglia + sync Play)
 
-**SI Renato, 31/08/2026** — via piano a 3 passi: assessment, versione famiglia **B5.3**, strategia unificazione.
+**SI Renato, 01/09/2026** — T2 **CONVALIDATO**; Nota ufficiale su `main` **Allegato 4.20**.
 
-Usare questo file come **unico ingresso** per la prossima sessione agente sul filone **correzioni** (non riaprire B5 prodotto né filone multilingua M).
+Usare questo file come **ingresso operativo** per il filone **correzioni**. Fonte prodotto: `docs/Nota_Integrata_9.1_B7.docx` su **`main`** (non riaprire D0–B7 core; non riaprire B5 prodotto né filone M).
 
 ---
 
-## Stato al 31/08/2026
+## Stato al 01/09/2026
 
 | Voce | Valore |
 |------|--------|
-| **Branch famiglia** | `cursor/family-unione-unificata-e5b5` @ `de8c04a` (o successivo) |
+| **Nota ufficiale** | `docs/Nota_Integrata_9.1_B7.docx` su **`main`**, **Allegato 4.20** |
+| **Branch famiglia** | `cursor/family-unione-unificata-e5b5` (codice) |
 | **Build famiglia** | **1.3-famigliaB5.3** (versionCode **1322**) |
 | **Play** | `main` → **1.2** (vc 3) — test chiuso Console |
-| **B0–B5 merge** | **CONVALIDATO** — vedi [NOTA_B0_MERGE_FAMIGLIA.md](NOTA_B0_MERGE_FAMIGLIA.md) |
-| **Filone correttivi** | **APERTO** (SI Renato) — P0 → P1 → sync P2 |
+| **B0–B5 merge** | **CONVALIDATO** — Nota 4.20; copia [NOTA_B0_MERGE_FAMIGLIA.md](NOTA_B0_MERGE_FAMIGLIA.md) |
+| **T2** | **CONVALIDATO** 01/09/2026 (SI Renato, tre prove OK) |
+| **Filone correttivi** | P0 chiuso → **P1** (attendere SI a procedere) → sync P2 |
 
 ### Documenti vincolanti (leggere prima di codice)
 
 | File | Ruolo |
 |------|--------|
-| [ASSESSMENT_CORRETTIVI.md](ASSESSMENT_CORRETTIVI.md) | Elenco P0–P2, audit salvataggio file |
+| `docs/Nota_Integrata_9.1_B7.docx` su **`main`** | **Fonte ufficiale** — Allegato **4.20** (famiglia + T2) |
+| [ASSESSMENT_CORRETTIVI.md](ASSESSMENT_CORRETTIVI.md) | Elenco P0–P2, audit salvataggio file (copia; prevale Nota 4.20) |
 | [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md) | Play = solo bug tester; merge `main` → famiglia |
 | [PROMEMORIA_INTERVENTI_TRASVERSALI.md](PROMEMORIA_INTERVENTI_TRASVERSALI.md) | Tracking T1–T3, P1, P2 |
 | [BETA_SYNC_POLICY.md](BETA_SYNC_POLICY.md) | Regola d’oro merge |
@@ -33,7 +36,7 @@ Usare questo file come **unico ingresso** per la prossima sessione agente sul fi
 | ID | Stato | Azione prossima sessione |
 |----|-------|--------------------------|
 | **T1** Backup Directory | **CONVALIDATO** B5.2 | Nessuna |
-| **T2** Categoria lista oggetti | Fix **B5.3** in branch | Se Renato non ha ancora dato SI device: chiedere ritest checklist sotto; se KO → fix e bump B5.4 |
+| **T2** Categoria lista oggetti | **CONVALIDATO** B5.3 (SI 01/09/2026) | Nessuna |
 | **T3** Secondo bug | **Chiuso** (non recuperato) | Ignorare salvo nuova segnalazione con evidenza |
 
 ### Checklist ritest T2 (device, famiglia B5.3)
@@ -42,7 +45,7 @@ Usare questo file come **unico ingresso** per la prossima sessione agente sul fi
 2. Dashboard → ambito **Oggetti** → **Lista Oggetti Trovati**: categoria corretta per gruppo contenitore.
 3. Stampa / Esporta da (2): stessa categoria a schermo.
 
-**Chiusura T2:** solo dopo **SI Renato** esplicito su device → aggiornare PROMEMORIA + ASSESSMENT.
+**Chiusura T2:** **CONVALIDATO** 01/09/2026 (SI Renato). Checklist storica conservata. Non riaprire.
 
 ### File toccati da T2 (B5.3)
 
@@ -62,9 +65,7 @@ Usare questo file come **unico ingresso** per la prossima sessione agente sul fi
 
 ### Fase 2 — P0 residuo
 
-4. **T2:** attendere o registrare SI/KO Renato sul ritest device.
-   - Se **SI** → CONVALIDATO in doc, commit doc only se serve.
-   - Se **KO** → fix mirato, test, bump `1.3-famigliaB5.4`, aggiornare `INSTALLA_FAMIGLIA.bat` + README.
+4. **T2:** **CONVALIDATO** 01/09/2026. Non riaprire.
 5. **Non** riaprire T3 senza evidenza nuova.
 
 ### Fase 3 — P1 igiene salvataggio file (dopo P0 chiuso o se Renato dice SI esplicito a parallelo)
@@ -167,4 +168,4 @@ Leggi ASSESSMENT + STRATEGIA + PROMEMORIA prima del codice.
 ## Riferimenti chiusi (non riaprire)
 
 - [PROMPT_CONTINUITA_B5.md](PROMPT_CONTINUITA_B5.md) — B5 CONVALIDATO B5.2
-- NOTA sidecar B0–B7 Play — chiusi
+- NOTA sidecar D0–B7 Play — chiusi (non riaprire il core). Famiglia e T2: **Allegato 4.20** sulla stessa Nota su `main`.

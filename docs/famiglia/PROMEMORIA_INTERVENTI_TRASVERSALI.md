@@ -1,6 +1,6 @@
 # Promemoria — interventi trasversali (famiglia + Play)
 
-**Aggiornato:** 31/08/2026 — SI Renato filone **correttivi**; build **1.3-famigliaB5.3**; ingresso sessione → [PROMPT_CONTINUITA_CORRETTIVI.md](PROMPT_CONTINUITA_CORRETTIVI.md).
+**Aggiornato:** 01/09/2026 — T2 **CONVALIDATO** (SI Renato device); build **1.3-famigliaB5.3**; fonte ufficiale → `docs/Nota_Integrata_9.1_B7.docx` su `main` **Allegato 4.20**. Ingresso sessione → [PROMPT_CONTINUITA_CORRETTIVI.md](PROMPT_CONTINUITA_CORRETTIVI.md).
 
 Elenco di fix/igiene **non legati a una sola fetta**, da affrontare quando si tocca l’area o in un giro dedicato (B7 igiene / sync Play).
 
@@ -22,7 +22,7 @@ Dopo il rilascio Play **1.2**, due filoni paralleli (decisione Renato):
 | ID | Area | Problema | Evidenza | Stato |
 |----|------|----------|----------|-------|
 | **T1** | Utility → **Backup Archivio** → «Backup Directory» | Nome cartella illeggibile (id opaco base64) | Screenshot Renato, B5.1, 31/08/2026 | **CONVALIDATO** B5.2 (SI Renato) |
-| **T2** | **Lista Oggetti** / **Lista Oggetti Trovati** | Categoria/icona assenti o incoerenti (header / stampa-export) | Segnalazione beta famiglia | **Fix B5.3** — attende **SI Renato** (ritest device) |
+| **T2** | **Lista Oggetti** / **Lista Oggetti Trovati** | Categoria/icona assenti o incoerenti (header / stampa-export) | Segnalazione beta famiglia; ritest 01/09/2026 tre prove OK | **CONVALIDATO** B5.3 (SI Renato) |
 | **T3** | — | Secondo bug non recuperato dalle chat | — | **Chiuso** — riaprire solo con nuova evidenza |
 
 ---
@@ -52,4 +52,4 @@ Vedi [BETA_SYNC_POLICY.md](BETA_SYNC_POLICY.md) e [STRATEGIA_UNIFICAZIONE.md](ST
 
 - Aprire una **nuova sessione** correttivi: leggere [ASSESSMENT_CORRETTIVI.md](ASSESSMENT_CORRETTIVI.md) + tabella P0.
 - Chiudere una voce solo dopo **SI Renato** (o criterio equivalente CONVALIDATO).
-- Non duplicare qui il dettaglio prodotto delle fette B0–B5 → [NOTA_B0_MERGE_FAMIGLIA.md](NOTA_B0_MERGE_FAMIGLIA.md).
+- Non duplicare qui il dettaglio prodotto delle fette B0–B5 → Nota ufficiale **Allegato 4.20**; copia di lavoro [NOTA_B0_MERGE_FAMIGLIA.md](NOTA_B0_MERGE_FAMIGLIA.md).

@@ -26,7 +26,7 @@ Obiettivo: **un solo codice condiviso** per i bugfix, **due binari distinti** (P
 ```
 
 - **Play:** unico canale Play Store; durante il test si toccano **solo bug** segnalati dai tester.
-- **Famiglia:** laboratorio merge + correttivi P0/P1; **mai** upload su Console.
+- **Famiglia:** laboratorio merge + correttivi P0/P1; **mai** upload su Console. Fonte prodotto: Nota **Allegato 4.20** su `main`.
 - **Unificazione** = stesso motore bugfix su `main`, riportato su branch famiglia — **non** un solo APK unico in questa fase.
 
 ---
@@ -57,7 +57,7 @@ Obiettivo: **un solo codice condiviso** per i bugfix, **due binari distinti** (P
 |------|--------|
 | Branch sorgente | `cursor/family-unione-unificata-e5b5` |
 | Build | `assembleFamigliaDebug` / `installFamigliaDebug` |
-| Correttivi P0 | T2 in **B5.3** — chiusura con SI Renato dopo ritest |
+| Correttivi P0 | T1 **CONVALIDATO** B5.2; T2 **CONVALIDATO** B5.3 (SI Renato 01/09/2026) |
 | P1 igiene file | Giro dedicato post-P0 |
 | Versione | `1.3-famigliaB5.x` — incrementare a ogni consegna testabile |
 | Telefoni famiglia | Solo APK famiglia; Play 1.2 resta installabile affiancata ([DUE_APP_CINQUE_TELEFONI.md](DUE_APP_CINQUE_TELEFONI.md)) |
@@ -113,7 +113,7 @@ Topbar attesa dopo B5.3: **1.3-famigliaB5.3**.
 
 ## Riferimenti
 
-- [ASSESSMENT_CORRETTIVI.md](ASSESSMENT_CORRETTIVI.md) — elenco interventi
+- [ASSESSMENT_CORRETTIVI.md](ASSESSMENT_CORRETTIVI.md) — elenco interventi (copia; prevale Nota 4.20 su `main`)
 - [PROMEMORIA_INTERVENTI_TRASVERSALI.md](PROMEMORIA_INTERVENTI_TRASVERSALI.md) — tracking P0–P2
 - [BETA_SYNC_POLICY.md](BETA_SYNC_POLICY.md) — regola d’oro merge
 - [docs/play/README.md](../play/README.md) — closed test Play

@@ -53,7 +53,7 @@ APK debug tipico:
 
 ## Periodo test chiuso Play
 
-Durante il test Google Console: su **`main`** si accettano **solo bugfix** da feedback tester. Dopo ogni fix Play, merge su `cursor/family-unione-unificata-e5b5`. Dettaglio: [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md).
+Durante il test Google Console: su **`main`** si accettano **solo bugfix** da feedback tester. Dopo ogni fix Play, merge su `cursor/family-unione-unificata-e5b5`. Dettaglio: [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md). Fonte prodotto famiglia: Nota Integrata su `main`, **Allegato 4.20**.
 
 ## Cosa fare in caso di conflitto di merge
 
