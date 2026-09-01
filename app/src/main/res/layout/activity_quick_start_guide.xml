@@ -150,6 +150,14 @@
                 android:orientation="vertical" />
 
             <TextView
+                android:id="@+id/textCsvFootnote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:textSize="13sp"
+                android:textColor="@color/text_secondary" />
+
+            <TextView
                 android:id="@+id/textFooterNote"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

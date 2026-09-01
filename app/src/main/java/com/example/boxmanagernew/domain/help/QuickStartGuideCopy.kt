@@ -43,27 +43,29 @@ object QuickStartGuideCopy {
         val phase: Phase,
         val number: Int,
         val title: String,
-        val bullets: List<String>,
-        val spreadsheetExampleTitle: String? = null,
-        val spreadsheetExample: String? = null
+        val bullets: List<String>
     )
-
-    const val CSV_EXAMPLE_TITLE =
-        "Esempio come appare in Excel o Fogli Google"
 
     val sections: List<Section>
         get() = sectionsFor(includeFamilyBeta = false)
 
     fun sectionsFor(includeFamilyBeta: Boolean): List<Section> {
-        val base = listOf(
+        return listOf(
             Section(
                 phase = Phase.CONFIG,
                 number = 1,
                 title = "Impostazioni",
                 bullets = listOf(
-                    "Definisci i luoghi abituali di custodia (casa, garage, cantina…).",
+                    "Inserisci il tuo nome che apparirà nella topbar. " +
+                        "Se usi Archivio Condiviso, sarà annotato come ultimo " +
+                        "familiare che ha modificato un determinato box e/o " +
+                        "il suo contenuto.",
                     "Scegli il tema colore dell'interfaccia.",
-                    "Il nome utente (Impostazioni) compare in topbar e, in beta famiglia, marca chi ha censito contenitori/oggetti."
+                    "Informativa sulla Privacy.",
+                    "Definisci i luoghi abituali di custodia che, insieme " +
+                        "alle categorie, costituiranno le tue tabelle di " +
+                        "riferimento (da salvare su cartella diversa da app " +
+                        "ed eventualmente ripristinare all'occorrenza)."
                 )
             ),
             Section(
@@ -100,142 +102,103 @@ object QuickStartGuideCopy {
                 phase = Phase.USAGE,
                 number = 5,
                 title = "Utility",
-                bullets = buildList {
-                    add("Backup e Ripristino per salvare l'archivio su file.")
-                    add("Importa ed Esporta dati in CSV (vedi sezione 7).")
-                    add("Codice QR per aprire un contenitore dalla fotocamera.")
-                    if (includeFamilyBeta) {
-                        add(
-                            "Catalogo Famiglia: allinea categorie e luoghi " +
-                                "tra i telefoni (setup una volta)."
-                        )
-                        add(
-                            "Inventario Famiglia: unisci contenitori e oggetti " +
-                                "per ID stabili con anteprima."
-                        )
-                    }
-                }
+                bullets = utilityBullets(includeFamilyBeta)
             ),
             Section(
                 phase = Phase.USAGE,
                 number = 6,
                 title = "Strumenti contestuali",
                 bullets = listOf(
-                    "Nelle liste puoi selezionare più elementi.",
-                    "Stampa, esporta CSV o etichetta QR su ciò che hai selezionato.",
-                    "Utile per inventari mirati e stampa di etichette."
+                    "Gli elementi visualizzati nelle liste possono essere stampati.",
+                    "Esportati su file CSV per interagire con file esterni (*).",
+                    "Per i contenitori è possibile richiedere la stampa " +
+                        "dell'etichetta QR."
                 )
-            ),
-            Section(
-                phase = Phase.USAGE,
-                number = 7,
-                title = "Import ed export CSV",
-                bullets = csvGuideBullets(),
-                spreadsheetExampleTitle = CSV_EXAMPLE_TITLE,
-                spreadsheetExample = csvSpreadsheetExample()
             )
         )
-        if (!includeFamilyBeta) {
-            return base
+    }
+
+    private fun utilityBullets(
+        includeFamilyBeta: Boolean
+    ): List<String> {
+
+        return buildList {
+            add(
+                "Backup e Ripristino per salvare l'archivio " +
+                    "(usa cartella diversa da app)."
+            )
+            add(
+                "Importa dati da file CSV per interagire con file esterni (*)."
+            )
+            add(
+                "Codice QR per vedere il contenuto di un box " +
+                    "usando la fotocamera."
+            )
+            if (includeFamilyBeta) {
+                add(
+                    "Condividi Archivio per aggiornare e condividere con i " +
+                        "tuoi familiari i dati del tuo archivio."
+                )
+                add(
+                    "Per unire i dati usa Invia/Ricevi Archivio, non " +
+                        "Ripristino (sostituisce tutto l'archivio)."
+                )
+            }
         }
-        return base + Section(
-            phase = Phase.CONFIG,
-            number = 8,
-            title = "Setup famiglia (beta)",
-            bullets = listOf(
-                "Allineate categorie e luoghi con Utility → Catalogo Famiglia.",
-                "Un familiare invia il Catalogo; gli altri lo ricevono.",
-                "Poi ciascuno censisce contenitori e oggetti; unite l'inventario con Invia/Ricevi Inventario.",
-                "Non usare Ripristino per unire archivi: sostituisce tutto."
-            )
-        )
     }
 
-    private fun csvGuideBullets(): List<String> {
-        val boxColumns =
-            ImportConfiguration.BOX_HEADER_FIELDS.joinToString(
-                ", "
-            )
-        val objectColumns =
-            ImportConfiguration.OBJECT_HEADER_FIELDS.joinToString(
-                ", "
-            )
-        return listOf(
-            "Di solito si lavora con un foglio elettronico: genera " +
-                ImportConfiguration.FILE_NAME +
-                " dall'app (Utility → Importa dati) oppure " +
-                "modifica un file esportato.",
-            "Salva come CSV con separatore punto e virgola (.csv): " +
-                "in Excel «CSV (delimitato da punto e virgola)», " +
-                "in Fogli «Valori separati da virgola» con separatore ;.",
-            "Formato ufficiale ${ImportConfiguration.FORMAT_NAME} " +
-                "v${ImportConfiguration.FORMAT_VERSION}: prima " +
-                "${ImportConfiguration.SECTION_BOXES} " +
-                "($boxColumns), poi ${ImportConfiguration.SECTION_OBJECTS} " +
-                "($objectColumns). Vedi l'esempio sotto.",
-            "Prima di importare: crea in app le categorie e le posizioni " +
-                "che scrivi nel foglio; negli oggetti il contenitore deve " +
-                "essere già presente nel blocco contenitori o in archivio.",
-            "All'import l'app salva un backup " +
-                "${ImportConfiguration.PRE_IMPORT_PREFIX}ddMMyy_HHmm " +
-                "nella cartella del Backup. Se qualcosa non torna, " +
-                "l'archivio non cambia. I duplicati vengono ignorati.",
-            "Esporta dalla selezione nelle liste o da Utility: nome " +
-                "proposto ${ViewOutputConfiguration.EXPORT_FILE_PREFIX}" +
-                "ddMMyy_HHmm.csv, stesso schema del modello."
-        )
-    }
-
-    private fun csvSpreadsheetExample(): String {
-        val boxName = "Scatola garage"
-        val category = "Attrezzi"
-        val position = "Garage"
-        val objectName = "Trapano"
-        val description = "Bosch verde"
-        val quantity = "1"
-
-        return buildString {
+    val CSV_FOOTNOTE: String
+        get() = buildString {
             appendLine(
-                "Ogni riga del foglio = una riga del file. " +
-                    "Le colonne sono separate dal punto e virgola del CSV."
+                "(*) I file di import ed export devono essere in formato CSV " +
+                    "(con separatore \"${ImportConfiguration.SEPARATOR}\")."
             )
             appendLine()
             appendLine(
-                "     A              B                 C"
+                "Formato file Importa dati (${ImportConfiguration.FILE_NAME})"
+            )
+            appendLine()
+            appendLine("Intestazione:")
+            appendLine(
+                "formato${ImportConfiguration.SEPARATOR}" +
+                    "${ImportConfiguration.FORMAT_NAME}" +
+                    ImportConfiguration.SEPARATOR +
+                    ImportConfiguration.FORMAT_VERSION
             )
             appendLine(
-                "1    formato        ${ImportConfiguration.FORMAT_NAME}  " +
-                    "${ImportConfiguration.FORMAT_VERSION}"
+                "sezione${ImportConfiguration.SEPARATOR}" +
+                    ImportConfiguration.SECTION_BOXES
             )
             appendLine(
-                "2    sezione        ${ImportConfiguration.SECTION_BOXES}"
-            )
-            appendLine(
-                "3    ${ImportConfiguration.COL_NAME}           " +
-                    "${ImportConfiguration.COL_CATEGORY}         " +
+                ImportConfiguration.COL_NAME +
+                    " ${ImportConfiguration.COL_CATEGORY} " +
                     ImportConfiguration.COL_POSITION
             )
             appendLine(
-                "4    $boxName  $category          $position"
+                "sezione${ImportConfiguration.SEPARATOR}" +
+                    ImportConfiguration.SECTION_OBJECTS
+            )
+            appendLine(
+                "${ImportConfiguration.COL_NAME} (oggetto) " +
+                    "${ImportConfiguration.COL_BOX} " +
+                    "${ImportConfiguration.COL_DESCRIPTION} (oggetto) " +
+                    "${ImportConfiguration.COL_QUANTITY} (oggetto)"
             )
             appendLine()
             appendLine(
-                "     A        B              C             D"
+                "Le relative categorie e posizioni (obbligatorie) devono " +
+                    "essere preliminarmente create in archivio. In fase di " +
+                    "Import l'app salva un backup automatico " +
+                    "(${ImportConfiguration.PRE_IMPORT_PREFIX}ddMMyy_HHmm) " +
+                    "da ripristinare in caso di necessità."
             )
+            appendLine()
             appendLine(
-                "5    sezione  ${ImportConfiguration.SECTION_OBJECTS}"
+                "Formato file Esporta dati " +
+                    "(${ViewOutputConfiguration.EXPORT_FILE_PREFIX}ddMMyy_HHmm.csv)"
             )
-            appendLine(
-                "6    ${ImportConfiguration.COL_NAME}     " +
-                    "${ImportConfiguration.COL_BOX}    " +
-                    "${ImportConfiguration.COL_DESCRIPTION}   " +
-                    ImportConfiguration.COL_QUANTITY
-            )
-            appendLine(
-                "7    $objectName  $boxName  $description  $quantity"
-            )
-        }.trimEnd()
-    }
+            append("• Stesso schema del modello Importa dati.")
+        }
 
     const val FOOTER_NOTE =
         "Ricerca avanzata, QR, import ed export richiedono Archivio completo " +

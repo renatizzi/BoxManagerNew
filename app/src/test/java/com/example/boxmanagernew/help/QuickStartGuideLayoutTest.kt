@@ -31,6 +31,7 @@ class QuickStartGuideLayoutTest {
         assertTrue(xml.contains("android:textSize=\"14sp\""))
         assertFalse(xml.contains("textWorkflowLine"))
         assertFalse(xml.contains("textIntro"))
+        assertTrue(xml.contains("android:id=\"@+id/textCsvFootnote\""))
     }
 
     private fun layoutSource(): String {

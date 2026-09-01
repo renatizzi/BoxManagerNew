@@ -4,6 +4,7 @@ import com.example.boxmanagernew.domain.help.QuickStartGuideCopy
 import com.example.boxmanagernew.importdata.config.ImportConfiguration
 import com.example.boxmanagernew.viewoutput.config.ViewOutputConfiguration
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -35,8 +36,8 @@ class QuickStartGuideCopyTest {
     }
 
     @Test
-    fun sections_coverSevenStepsInThreePhases() {
-        assertEquals(7, QuickStartGuideCopy.sections.size)
+    fun sections_coverSixStepsInThreePhases() {
+        assertEquals(6, QuickStartGuideCopy.sections.size)
         assertEquals(
             1,
             QuickStartGuideCopy.sections.count {
@@ -50,7 +51,7 @@ class QuickStartGuideCopyTest {
             }
         )
         assertEquals(
-            4,
+            3,
             QuickStartGuideCopy.sections.count {
                 it.phase == QuickStartGuideCopy.Phase.USAGE
             }
@@ -65,57 +66,75 @@ class QuickStartGuideCopyTest {
     }
 
     @Test
-    fun csvSection_alignsWithImportConfiguration() {
-        val csvSection =
-            QuickStartGuideCopy.sections.single {
-                it.number == 7
-            }
-        val body =
-            (
-                csvSection.bullets +
-                    listOfNotNull(csvSection.spreadsheetExample)
-                ).joinToString(" ")
+    fun csvFootnote_alignsWithImportConfiguration() {
+        val footnote = QuickStartGuideCopy.CSV_FOOTNOTE
 
-        assertEquals("Import ed export CSV", csvSection.title)
-        assertEquals(
-            QuickStartGuideCopy.CSV_EXAMPLE_TITLE,
-            csvSection.spreadsheetExampleTitle
-        )
-        assertTrue(
-            body.contains("Excel") || body.contains("Fogli")
-        )
-        assertTrue(body.contains(ImportConfiguration.FILE_NAME))
-        assertTrue(body.contains(ImportConfiguration.FORMAT_NAME))
-        assertTrue(body.contains(ImportConfiguration.SECTION_BOXES))
-        assertTrue(body.contains(ImportConfiguration.SECTION_OBJECTS))
-        assertTrue(body.contains(ImportConfiguration.PRE_IMPORT_PREFIX))
-        assertTrue(body.contains(ViewOutputConfiguration.EXPORT_FILE_PREFIX))
-        assertTrue(body.contains("Scatola garage"))
-        assertTrue(body.contains("Trapano"))
-        ImportConfiguration.BOX_HEADER_FIELDS.forEach { column ->
-            assertTrue(body.contains(column))
-        }
-        ImportConfiguration.OBJECT_HEADER_FIELDS.forEach { column ->
-            assertTrue(body.contains(column))
-        }
+        assertTrue(footnote.startsWith("(*)"))
+        assertTrue(footnote.contains(ImportConfiguration.SEPARATOR))
+        assertTrue(footnote.contains(ImportConfiguration.FILE_NAME))
+        assertTrue(footnote.contains(ImportConfiguration.FORMAT_NAME))
+        assertTrue(footnote.contains(ImportConfiguration.SECTION_BOXES))
+        assertTrue(footnote.contains(ImportConfiguration.SECTION_OBJECTS))
+        assertTrue(footnote.contains(ImportConfiguration.PRE_IMPORT_PREFIX))
+        assertTrue(footnote.contains(ViewOutputConfiguration.EXPORT_FILE_PREFIX))
+        assertTrue(footnote.contains("Stesso schema del modello Importa dati"))
     }
 
     @Test
-    fun familyBetaSections_addSetupFamiglia() {
+    fun settingsSection_mentionsPrivacyAndArchivioCondiviso() {
+        val settings =
+            QuickStartGuideCopy.sections.single {
+                it.number == 1
+            }
+        val body = settings.bullets.joinToString(" ")
+
+        assertEquals("Impostazioni", settings.title)
+        assertTrue(body.contains("Privacy"))
+        assertTrue(body.contains("Archivio Condiviso"))
+    }
+
+    @Test
+    fun contextualToolsSection_referencesCsvFootnote() {
+        val tools =
+            QuickStartGuideCopy.sections.single {
+                it.number == 6
+            }
+
+        assertEquals("Strumenti contestuali", tools.title)
+        assertTrue(
+            tools.bullets.any { it.contains("(*)") }
+        )
+    }
+
+    @Test
+    fun playUtility_doesNotMentionFamilyShare() {
+        val utility =
+            QuickStartGuideCopy.sections.single {
+                it.number == 5
+            }
+
+        assertFalse(
+            utility.bullets.any { it.contains("Condividi Archivio") }
+        )
+        assertTrue(
+            utility.bullets.any { it.contains("(*)") }
+        )
+    }
+
+    @Test
+    fun familyBetaSections_addCondividiArchivioAndRestoreWarning() {
         val sections =
             QuickStartGuideCopy.sectionsFor(includeFamilyBeta = true)
-        assertEquals(8, sections.size)
-        val family = sections.single { it.number == 8 }
-        assertEquals("Setup famiglia (beta)", family.title)
-        assertTrue(
-            family.bullets.any { it.contains("Catalogo Famiglia") }
-        )
+
+        assertEquals(6, sections.size)
+        assertFalse(sections.any { it.number == 8 })
+
         val utility = sections.single { it.number == 5 }
         assertTrue(
-            utility.bullets.any { it.contains("Catalogo Famiglia") }
+            utility.bullets.any { it.contains("Condividi Archivio") }
         )
         assertTrue(
-            utility.bullets.any { it.contains("Inventario Famiglia") }
+            utility.bullets.any { it.contains("non Ripristino") }
         )
     }
 }
