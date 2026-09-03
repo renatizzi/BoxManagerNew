@@ -140,7 +140,10 @@ class ObjectAdapter(
                 View.VISIBLE
 
             holder.textQuantity.text =
-                "Quantità: ${item.obj.quantity}"
+                holder.itemView.context.getString(
+                    R.string.object_quantity_label,
+                    item.obj.quantity.toString()
+                )
         }
 
         val isSelected =
@@ -181,21 +184,21 @@ class ObjectAdapter(
                         view
                     )
 
-                popup.menu.add("Modifica")
-                popup.menu.add("Sposta")
-                popup.menu.add("Elimina")
+                popup.menu.add(0, MENU_EDIT, 0, R.string.menu_edit)
+                popup.menu.add(0, MENU_MOVE, 1, R.string.menu_move)
+                popup.menu.add(0, MENU_DELETE, 2, R.string.menu_delete)
 
                 popup.setOnMenuItemClickListener {
 
-                    when (it.title) {
+                    when (it.itemId) {
 
-                        "Modifica" ->
+                        MENU_EDIT ->
                             onEdit(id)
 
-                        "Sposta" ->
+                        MENU_MOVE ->
                             onMove(id)
 
-                        "Elimina" ->
+                        MENU_DELETE ->
                             onDelete(id)
                     }
 
@@ -334,5 +337,11 @@ class ObjectAdapter(
             return oldList[oldPos] ==
                     newList[newPos]
         }
+    }
+
+    companion object {
+        private const val MENU_EDIT = 1
+        private const val MENU_MOVE = 2
+        private const val MENU_DELETE = 3
     }
 }

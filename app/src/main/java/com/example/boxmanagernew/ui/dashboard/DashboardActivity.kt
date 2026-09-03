@@ -43,8 +43,8 @@ class DashboardActivity : BaseActivity() {
         setupAppShell()
 
         setupPageHeader(
-            title = "Dashboard",
-            subtitle = "Panoramica Archivio"
+            title = getString(R.string.page_dashboard_title),
+            subtitle = getString(R.string.page_dashboard_subtitle)
         )
 
         setupDashboardActions()

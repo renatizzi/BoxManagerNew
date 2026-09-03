@@ -52,7 +52,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
-                    android:hint="Cerca..."
+                    android:hint="@string/common_search_hint"
                     android:imeOptions="actionDone"
                     android:minHeight="48dp"
                     android:singleLine="true"
@@ -63,7 +63,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="44dp"
-                    android:text="Ordina" />
+                    android:text="@string/categories_sort" />
 
             </LinearLayout>
 
@@ -96,7 +96,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="N. Categorie: 0"
+            android:text="@string/categories_count_sample"
             android:textColor="@color/text_primary"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -105,7 +105,7 @@
             android:id="@+id/fabAddCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="Aggiungi"
+            android:contentDescription="@string/common_add_cd"
             android:src="@android:drawable/ic_input_add"
             app:backgroundTint="?attr/colorPrimary"
             app:tint="@android:color/white" />

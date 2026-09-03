@@ -159,7 +159,7 @@ class BoxDetailActivity : BaseActivity() {
             intent.getIntExtra("boxId", -1)
         val boxName =
             intent.getStringExtra("boxName")
-                ?: "Contenitore"
+                ?: getString(R.string.box_fallback_name)
 
         val initialSearchQuery =
             intent.getStringExtra(
@@ -180,19 +180,16 @@ class BoxDetailActivity : BaseActivity() {
             }
 
         textTitle.text =
-            "Lista Oggetti"
-
-        val base =
-            "Contenuto del box "
+            getString(R.string.box_detail_title)
 
         val full =
-            base + boxName
+            getString(R.string.box_detail_subtitle_named, boxName)
 
         val spannable =
             android.text.SpannableString(full)
 
         val start =
-            base.length
+            full.lastIndexOf(boxName).coerceAtLeast(0)
 
         spannable.setSpan(
             android.text.style.StyleSpan(
@@ -367,7 +364,7 @@ class BoxDetailActivity : BaseActivity() {
                     View.VISIBLE
 
                 textContextMessage.text =
-                    "Impossibile eliminare: alcuni elementi selezionati non sono visibili. Tocca qui per rimuovere il filtro."
+                    getString(R.string.msg_cannot_delete_hidden)
 
                 return@setOnClickListener
             }
@@ -584,8 +581,8 @@ class BoxDetailActivity : BaseActivity() {
         objectViewModel.isAscending.observe(this) {
 
             buttonSort.text =
-                if (it) "ORDINA ▲"
-                else "ORDINA ▼"
+                getString(R.string.common_sort) +
+                    if (it) " ▲" else " ▼"
         }
 
         objectViewModel.selectedItems.observe(this) {
@@ -616,7 +613,7 @@ class BoxDetailActivity : BaseActivity() {
             if (it) {
 
                 textContextMessage.text =
-                    "Alcuni elementi selezionati non sono visibili. Tocca qui per rimuovere il filtro."
+                    getString(R.string.msg_hidden_selection)
             }
         }
 
@@ -697,7 +694,7 @@ class BoxDetailActivity : BaseActivity() {
                 ViewExportPersister(this),
                 showFolderInaccessible = {
                     showOutputMessage(
-                        BackupConfiguration.MSG_FOLDER_INACCESSIBLE
+                        BackupConfiguration.folderInaccessible(this)
                     )
                 },
                 launchFolderPicker = {
@@ -783,12 +780,15 @@ class BoxDetailActivity : BaseActivity() {
 
         return ViewPrintHeader(
             title = ViewOutputConfiguration.objectsInBoxTitle(
+                this,
                 boxName
             ),
             filterLine = ViewOutputConfiguration.filterLine(
+                this,
                 editSearch.text.toString().trim()
             ),
             countLine = ViewOutputConfiguration.countObjects(
+                this,
                 snapshot.objectCount
             ),
             showBlockSubtotals = false
@@ -819,11 +819,15 @@ class BoxDetailActivity : BaseActivity() {
         textObjectsTitle.text =
             if (selectedCount > 0) {
 
-                "N. Oggetti: $totalObjects di cui $selectedCount selezionati"
+                getString(
+                    R.string.view_count_objects_selected,
+                    totalObjects,
+                    selectedCount
+                )
 
             } else {
 
-                "N. Oggetti: $totalObjects"
+                getString(R.string.view_count_objects, totalObjects)
             }
     }
 
@@ -852,7 +856,7 @@ class BoxDetailActivity : BaseActivity() {
 
         AlertDialog.Builder(this)
             .setTitle(
-                "Scegli contenitore di destinazione"
+                getString(R.string.dialog_choose_destination_box_of)
             )
             .setItems(
                 names.toTypedArray()
@@ -1032,17 +1036,17 @@ class BoxDetailActivity : BaseActivity() {
         val dialog =
             AlertDialog.Builder(this)
                 .setTitle(
-                    "Modifica oggetto"
+                    getString(R.string.dialog_edit_object)
                 )
                 .setView(
                     dialogViews.view
                 )
                 .setPositiveButton(
-                    "Salva",
+                    getString(R.string.common_save),
                     null
                 )
                 .setNegativeButton(
-                    "Annulla",
+                    getString(R.string.common_cancel),
                     null
                 )
                 .create()
@@ -1128,14 +1132,14 @@ class BoxDetailActivity : BaseActivity() {
 
         val dialog =
             AlertDialog.Builder(this)
-                .setTitle("Nuovo oggetto")
+                .setTitle(getString(R.string.dialog_new_object))
                 .setView(dialogViews.view)
                 .setPositiveButton(
-                    "Aggiungi",
+                    getString(R.string.common_add),
                     null
                 )
                 .setNegativeButton(
-                    "Annulla",
+                    getString(R.string.common_cancel),
                     null
                 )
                 .create()

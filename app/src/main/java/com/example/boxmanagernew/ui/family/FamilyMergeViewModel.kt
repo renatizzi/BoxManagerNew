@@ -4,12 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import android.content.Context
+import com.example.boxmanagernew.R
 import com.example.boxmanagernew.data.local.AppDatabase
 import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
 import com.example.boxmanagernew.data.repository.CategoryRepositoryImpl
 import com.example.boxmanagernew.data.repository.LocationRepositoryImpl
 import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
-import com.example.boxmanagernew.domain.family.FamilyMergeCopy
 import com.example.boxmanagernew.family.catalog.FamilyCatalogReader
 import com.example.boxmanagernew.family.catalog.FamilyCatalogWriter
 import com.example.boxmanagernew.family.config.FamilyCatalogConfiguration
@@ -34,6 +35,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class FamilyMergeViewModel(
+    private val appContext: Context,
     private val database: AppDatabase,
     private val categoryRepository: CategoryRepositoryImpl,
     private val locationRepository: LocationRepositoryImpl,
@@ -141,7 +143,7 @@ class FamilyMergeViewModel(
         val current = _sharedTablesPreview.value ?: return
         if (!current.plan.canApply) {
             _sharedTablesPreview.value = null
-            _message.value = "Nessuna modifica da applicare."
+            _message.value = appContext.getString(R.string.family_msg_no_changes)
             return
         }
         viewModelScope.launch {
@@ -150,10 +152,10 @@ class FamilyMergeViewModel(
             }
             _sharedTablesPreview.value = null
             _message.value = buildString {
-                appendLine(FamilyMergeCopy.MSG_RECEIVE_COMPLETED)
+                appendLine(appContext.getString(R.string.family_msg_receive_completed))
                 append(
                     current.summary.removePrefix(
-                        "Anteprima tabelle condivise:\n"
+                        appContext.getString(R.string.family_preview_shared_prefix)
                     )
                 )
             }
@@ -164,7 +166,7 @@ class FamilyMergeViewModel(
         val current = _archivePreview.value ?: return
         if (!current.plan.canApply) {
             _archivePreview.value = null
-            _message.value = "Nessuna novità da unire."
+            _message.value = appContext.getString(R.string.family_msg_nothing_to_merge)
             return
         }
         viewModelScope.launch {
@@ -173,10 +175,10 @@ class FamilyMergeViewModel(
             }
             _archivePreview.value = null
             _message.value = buildString {
-                appendLine(FamilyMergeCopy.MSG_RECEIVE_COMPLETED)
+                appendLine(appContext.getString(R.string.family_msg_receive_completed))
                 append(
                     current.summary.removePrefix(
-                        "Anteprima condivisione archivio:\n"
+                        appContext.getString(R.string.family_preview_archive_prefix)
                     )
                 )
             }
@@ -214,21 +216,27 @@ class FamilyMergeViewModel(
 
         if (!plan.canApply) {
             _message.postValue(
-                "Le tabelle locali sono già allineate alle tabelle condivise."
+                appContext.getString(R.string.family_msg_tables_aligned)
             )
             return null
         }
 
         val summary = buildString {
-            appendLine("Anteprima tabelle condivise:")
+            appendLine(appContext.getString(R.string.family_preview_shared_title))
             appendLine(
-                "Categorie: ${plan.categoriesToInsert.size} da aggiungere, " +
-                    "${plan.categoriesToUpdate.size} da aggiornare, " +
-                    "${plan.categoriesToRemove.size} da rimuovere."
+                appContext.getString(
+                    R.string.family_preview_shared_categories,
+                    plan.categoriesToInsert.size,
+                    plan.categoriesToUpdate.size,
+                    plan.categoriesToRemove.size
+                )
             )
             append(
-                "Posizioni: ${plan.locationsToInsert.size} da aggiungere, " +
-                    "${plan.locationsToRemove.size} da rimuovere."
+                appContext.getString(
+                    R.string.family_preview_shared_locations,
+                    plan.locationsToInsert.size,
+                    plan.locationsToRemove.size
+                )
             )
         }
 
@@ -264,35 +272,48 @@ class FamilyMergeViewModel(
         }
 
         if (!plan.canApply && !plan.hasConflicts) {
-            _message.postValue("Nessuna novità da unire.")
+            _message.postValue(
+                appContext.getString(R.string.family_msg_nothing_to_merge)
+            )
             return null
         }
 
         val summary = buildString {
-            appendLine("Anteprima condivisione archivio:")
+            appendLine(appContext.getString(R.string.family_preview_archive_title))
             if (skippedRows > 0) {
                 appendLine(
-                    "Righe non valide ignorate nel file: $skippedRows."
+                    appContext.getString(
+                        R.string.family_preview_skipped_rows,
+                        skippedRows
+                    )
                 )
             }
             if (plan.healedCategories.isNotEmpty() || plan.healedLocations.isNotEmpty()) {
                 appendLine(
-                    "Categorie/posizioni aggiunte dai contenitori in arrivo: " +
-                        "${plan.healedCategories.size} categorie, " +
-                        "${plan.healedLocations.size} posizioni."
+                    appContext.getString(
+                        R.string.family_preview_healed,
+                        plan.healedCategories.size,
+                        plan.healedLocations.size
+                    )
                 )
             }
             appendLine(
-                "Contenitori: ${plan.inventoryPlan.boxesToInsert.size} nuovi, " +
-                    "${plan.inventoryPlan.boxesToUpdate.size} aggiornamenti, " +
-                    "${plan.inventoryPlan.boxConflicts.size} conflitti, " +
-                    "${plan.inventoryPlan.boxesIgnored} invariati."
+                appContext.getString(
+                    R.string.family_preview_boxes,
+                    plan.inventoryPlan.boxesToInsert.size,
+                    plan.inventoryPlan.boxesToUpdate.size,
+                    plan.inventoryPlan.boxConflicts.size,
+                    plan.inventoryPlan.boxesIgnored
+                )
             )
             append(
-                "Oggetti: ${plan.inventoryPlan.objectsToInsert.size} nuovi, " +
-                    "${plan.inventoryPlan.objectsToUpdate.size} aggiornamenti, " +
-                    "${plan.inventoryPlan.objectConflicts.size} conflitti, " +
-                    "${plan.inventoryPlan.objectsIgnored} invariati."
+                appContext.getString(
+                    R.string.family_preview_objects,
+                    plan.inventoryPlan.objectsToInsert.size,
+                    plan.inventoryPlan.objectsToUpdate.size,
+                    plan.inventoryPlan.objectConflicts.size,
+                    plan.inventoryPlan.objectsIgnored
+                )
             )
             val deletes =
                 plan.inventoryPlan.boxesToDelete.size +
@@ -300,16 +321,18 @@ class FamilyMergeViewModel(
             if (deletes > 0 || plan.inventoryPlan.deletionConflicts.isNotEmpty()) {
                 appendLine()
                 append(
-                    "Cancellazioni: ${plan.inventoryPlan.boxesToDelete.size} contenitori, " +
-                        "${plan.inventoryPlan.objectsToDelete.size} oggetti, " +
-                        "${plan.inventoryPlan.deletionConflicts.size} conflitti."
+                    appContext.getString(
+                        R.string.family_preview_deletes,
+                        plan.inventoryPlan.boxesToDelete.size,
+                        plan.inventoryPlan.objectsToDelete.size,
+                        plan.inventoryPlan.deletionConflicts.size
+                    )
                 )
             }
             if (plan.hasConflicts) {
                 appendLine()
                 append(
-                    "I conflitti non verranno sovrascritti " +
-                        "(versione locale più recente o uguale)."
+                    appContext.getString(R.string.family_preview_conflicts_note)
                 )
             }
         }

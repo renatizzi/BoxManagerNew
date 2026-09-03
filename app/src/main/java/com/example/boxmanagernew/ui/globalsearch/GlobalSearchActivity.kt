@@ -220,6 +220,7 @@ class GlobalSearchActivity : BaseActivity() {
         trialView.visibility = View.VISIBLE
         trialView.text =
             ArchivioCompletoCopy.trialStatusLine(
+                this,
                 access.remainingDays(),
                 access.accessUntil()
             )
@@ -559,7 +560,7 @@ class GlobalSearchActivity : BaseActivity() {
                     viewModel.addMessage(
                         SearchMessage(
                             text =
-                                BackupConfiguration.MSG_FOLDER_INACCESSIBLE,
+                                BackupConfiguration.folderInaccessible(this),
                             fromUser = false
                         )
                     )
@@ -621,13 +622,15 @@ class GlobalSearchActivity : BaseActivity() {
                 snapshot,
                 ViewPrintHeader(
                     title =
-                        ViewOutputConfiguration.PAGE_TITLE,
+                        ViewOutputConfiguration.pageTitle(this@GlobalSearchActivity),
                     filterLine =
                         ViewOutputConfiguration.filterLine(
+                            this@GlobalSearchActivity,
                             printableQuestion
                         ),
                     countLine =
                         ViewOutputConfiguration.countBoxes(
+                            this@GlobalSearchActivity,
                             snapshot.boxes.size
                         )
                 )

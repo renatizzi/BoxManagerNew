@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.Uri
 import android.provider.DocumentsContract
 import androidx.documentfile.provider.DocumentFile
+import com.example.boxmanagernew.R
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
 
@@ -17,13 +18,19 @@ object SafFolderLabel {
         treeUri: Uri,
         tree: DocumentFile
     ): String {
-        return of(context.contentResolver, treeUri, tree)
+        return of(
+            context.contentResolver,
+            treeUri,
+            tree,
+            context.getString(R.string.folder_selected_label)
+        )
     }
 
     fun of(
         resolver: ContentResolver,
         treeUri: Uri,
-        tree: DocumentFile
+        tree: DocumentFile,
+        fallbackLabel: String = DEFAULT_LABEL
     ): String {
         queryDisplayName(resolver, treeUri)?.let { return it }
         queryDisplayName(resolver, tree.uri)?.let { return it }
@@ -47,7 +54,7 @@ object SafFolderLabel {
 
         return fromDocumentId(
             documentId.orEmpty(),
-            DEFAULT_LABEL
+            fallbackLabel
         )
     }
 

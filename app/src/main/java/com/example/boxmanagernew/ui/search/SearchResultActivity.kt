@@ -62,8 +62,8 @@ class SearchResultActivity : BaseActivity() {
         setupAppShell()
 
         setupPageHeader(
-            title = "Lista Oggetti Trovati",
-            subtitle = "Risultati ricerca archivio"
+            title = getString(R.string.page_search_results_title),
+            subtitle = getString(R.string.page_search_results_subtitle)
         )
 
         setupViewOutputActions()
@@ -175,7 +175,7 @@ class SearchResultActivity : BaseActivity() {
                 ViewExportPersister(this),
                 showFolderInaccessible = {
                     showOutputMessage(
-                        BackupConfiguration.MSG_FOLDER_INACCESSIBLE
+                        BackupConfiguration.folderInaccessible(this)
                     )
                 },
                 launchFolderPicker = {
@@ -203,11 +203,13 @@ class SearchResultActivity : BaseActivity() {
         outputController.print(
             snapshot,
             ViewPrintHeader(
-                title = ViewOutputConfiguration.PAGE_TITLE_FOUND_OBJECTS,
+                title = ViewOutputConfiguration.pageTitleFoundObjects(this),
                 filterLine = ViewOutputConfiguration.filterLine(
+                    this,
                     searchQuery
                 ),
                 countLine = ViewOutputConfiguration.countObjects(
+                    this,
                     snapshot.objectCount
                 ),
                 showBlockSubtotals = true

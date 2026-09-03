@@ -18,7 +18,6 @@ import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
 import com.example.boxmanagernew.data.repository.CategoryRepositoryImpl
 import com.example.boxmanagernew.data.repository.LocationRepositoryImpl
 import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
-import com.example.boxmanagernew.domain.family.FamilyMergeCopy
 import com.example.boxmanagernew.family.config.FamilyCatalogConfiguration
 import com.example.boxmanagernew.family.config.FamilyInventoryConfiguration
 import com.example.boxmanagernew.family.config.FamilyMergeConfiguration
@@ -79,8 +78,8 @@ class FamilyCatalogActivity : BaseActivity() {
 
         setupAppShell()
         setupPageHeader(
-            title = FamilyMergeCopy.PAGE_TITLE,
-            subtitle = FamilyMergeCopy.PAGE_SUBTITLE
+            title = getString(R.string.family_page_title),
+            subtitle = getString(R.string.family_page_subtitle)
         )
         setupBottomNav()
 
@@ -96,7 +95,7 @@ class FamilyCatalogActivity : BaseActivity() {
             persister = exportPersister,
             onFolderInaccessible = {
                 showUserMessage(
-                    FamilyMergeCopy.MSG_FOLDER_INACCESSIBLE,
+                    getString(R.string.msg_folder_inaccessible),
                     blockingError = true
                 )
             },
@@ -112,6 +111,7 @@ class FamilyCatalogActivity : BaseActivity() {
         mergeViewModel = ViewModelProvider(
             this,
             FamilyMergeViewModelFactory(
+                applicationContext,
                 db,
                 CategoryRepositoryImpl(db.categoryDao(), db.boxDao()),
                 LocationRepositoryImpl(db.locationDao(), db.boxDao()),
@@ -133,23 +133,23 @@ class FamilyCatalogActivity : BaseActivity() {
             .setOnClickListener { launchArchiveFilePicker() }
 
         findViewById<TextView>(R.id.textFamilyIntro).text =
-            FamilyMergeCopy.INTRO
+            getString(R.string.family_intro)
         findViewById<TextView>(R.id.textSectionSharedTables).text =
-            FamilyMergeCopy.SECTION_SHARED_TABLES
+            getString(R.string.family_section_shared_tables)
         findViewById<TextView>(R.id.textSectionSharedTablesHint).text =
-            FamilyMergeCopy.SECTION_SHARED_TABLES_HINT
+            getString(R.string.family_section_shared_tables_hint)
         findViewById<TextView>(R.id.textExportSharedTables).text =
-            FamilyMergeCopy.BUTTON_SEND_SHARED_TABLES
+            getString(R.string.family_button_send_shared_tables)
         findViewById<TextView>(R.id.textImportSharedTables).text =
-            FamilyMergeCopy.BUTTON_RECEIVE_SHARED_TABLES
+            getString(R.string.family_button_receive_shared_tables)
         findViewById<TextView>(R.id.textSectionArchive).text =
-            FamilyMergeCopy.SECTION_ARCHIVE
+            getString(R.string.family_section_archive)
         findViewById<TextView>(R.id.textSectionArchiveHint).text =
-            FamilyMergeCopy.SECTION_ARCHIVE_HINT
+            getString(R.string.family_section_archive_hint)
         findViewById<TextView>(R.id.textExportMerge).text =
-            FamilyMergeCopy.BUTTON_SEND
+            getString(R.string.family_button_send)
         findViewById<TextView>(R.id.textImportMerge).text =
-            FamilyMergeCopy.BUTTON_RECEIVE
+            getString(R.string.family_button_receive)
 
         mergeViewModel.message.observe(this) { text ->
             showUserMessage(text, blockingError = false, showDialog = true)
@@ -185,12 +185,12 @@ class FamilyCatalogActivity : BaseActivity() {
         preview: FamilyMergeViewModel.SharedTablesPreview
     ) {
         AlertDialog.Builder(this)
-            .setTitle("Ricevi tabelle condivise")
+            .setTitle(R.string.family_dialog_receive_shared_tables)
             .setMessage(preview.summary)
-            .setPositiveButton("SI") { _, _ ->
+            .setPositiveButton(R.string.common_yes) { _, _ ->
                 mergeViewModel.confirmSharedTablesImport()
             }
-            .setNegativeButton("NO") { _, _ ->
+            .setNegativeButton(R.string.common_no) { _, _ ->
                 mergeViewModel.clearSharedTablesPreview()
             }
             .show()
@@ -200,12 +200,12 @@ class FamilyCatalogActivity : BaseActivity() {
         preview: FamilyMergeViewModel.ArchivePreview
     ) {
         AlertDialog.Builder(this)
-            .setTitle("Ricevi Archivio")
+            .setTitle(R.string.family_dialog_receive_archive)
             .setMessage(preview.summary)
-            .setPositiveButton("SI") { _, _ ->
+            .setPositiveButton(R.string.common_yes) { _, _ ->
                 mergeViewModel.confirmArchiveImport()
             }
-            .setNegativeButton("NO") { _, _ ->
+            .setNegativeButton(R.string.common_no) { _, _ ->
                 mergeViewModel.clearArchivePreview()
             }
             .show()
@@ -247,7 +247,7 @@ class FamilyCatalogActivity : BaseActivity() {
     private fun onSharedTablesImportChosen(uri: Uri) {
         val text = persister.readText(uri) ?: run {
             showUserMessage(
-                FamilyMergeCopy.MSG_READ_FAILED,
+                getString(R.string.family_msg_read_failed),
                 blockingError = true
             )
             return
@@ -258,7 +258,7 @@ class FamilyCatalogActivity : BaseActivity() {
     private fun onArchiveImportChosen(uri: Uri) {
         val text = persister.readText(uri) ?: run {
             showUserMessage(
-                FamilyMergeCopy.MSG_READ_FAILED,
+                getString(R.string.family_msg_read_failed),
                 blockingError = true
             )
             return
@@ -268,8 +268,8 @@ class FamilyCatalogActivity : BaseActivity() {
 
     private fun showExportCompletedDialog() {
         AlertDialog.Builder(this)
-            .setMessage(FamilyMergeCopy.MSG_EXPORT_COMPLETED)
-            .setPositiveButton("OK", null)
+            .setMessage(R.string.family_msg_export_completed)
+            .setPositiveButton(R.string.common_ok, null)
             .show()
     }
 
@@ -291,7 +291,7 @@ class FamilyCatalogActivity : BaseActivity() {
         if (showDialog) {
             AlertDialog.Builder(this)
                 .setMessage(text)
-                .setPositiveButton("OK", null)
+                .setPositiveButton(R.string.common_ok, null)
                 .show()
         }
     }

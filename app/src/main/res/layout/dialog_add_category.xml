@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:gravity="start|center_vertical"
-        android:hint="Nome categoria"
+        android:hint="@string/dialog_category_name_hint"
         android:inputType="textCapWords"
         android:maxLines="1"
         android:minHeight="52dp"
@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="6dp"
-        android:text="Seleziona icona"
+        android:text="@string/dialog_category_pick_icon"
         android:textColor="@color/text_primary"
         android:textSize="14sp"
         android:textStyle="bold" />

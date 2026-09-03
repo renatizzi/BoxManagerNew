@@ -3,10 +3,8 @@ package com.example.boxmanagernew.ui.utility
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
 import com.example.boxmanagernew.BuildConfig
 import com.example.boxmanagernew.R
-import com.example.boxmanagernew.domain.family.FamilyMergeCopy
 import com.example.boxmanagernew.domain.premium.PremiumFeature
 import com.example.boxmanagernew.ui.backup.BackupActivity
 import com.example.boxmanagernew.ui.common.BaseActivity
@@ -28,8 +26,8 @@ class UtilityActivity : BaseActivity() {
         setupAppShell()
 
         setupPageHeader(
-            title = "Utility",
-            subtitle = "Strumenti di supporto alla gestione dell'archivio"
+            title = getString(R.string.page_utility_title),
+            subtitle = getString(R.string.page_utility_subtitle)
         )
 
         setupBottomNav()
@@ -91,8 +89,6 @@ class UtilityActivity : BaseActivity() {
             findViewById<MaterialCardView>(R.id.btnFamilyCatalog)
         if (BuildConfig.FAMILY_BETA) {
             familyRow.visibility = View.VISIBLE
-            findViewById<TextView>(R.id.textFamilyCatalog).text =
-                FamilyMergeCopy.UTILITY_CARD_LABEL
             familyButton.setOnClickListener {
                 startActivity(
                     Intent(

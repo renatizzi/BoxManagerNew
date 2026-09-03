@@ -48,7 +48,7 @@
 
                         <TextView
                             android:id="@+id/titleBoxes"
-                            android:text="📦 Contenitori"
+                            android:text="@string/dashboard_boxes_card"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:layout_width="wrap_content"
@@ -67,10 +67,10 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Totale archivio"/>
+                                android:text="@string/dashboard_boxes_total"/>
 
                             <TextView
-                                android:text="›"
+                                android:text="@string/common_chevron_right"
                                 android:textSize="26sp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
@@ -78,7 +78,7 @@
 
                         <TextView
                             android:id="@+id/textBoxesCount"
-                            android:text="0"
+                            android:text="@string/dashboard_count_zero"
                             android:textSize="22sp"
                             android:textStyle="bold"
                             android:layout_marginTop="4dp"
@@ -98,10 +98,10 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="di cui vuoti"/>
+                                android:text="@string/dashboard_boxes_empty"/>
 
                             <TextView
-                                android:text="›"
+                                android:text="@string/common_chevron_right"
                                 android:textSize="26sp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
@@ -109,7 +109,7 @@
 
                         <TextView
                             android:id="@+id/textEmptyBoxes"
-                            android:text="0"
+                            android:text="@string/dashboard_count_zero"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:layout_marginTop="4dp"
@@ -137,7 +137,7 @@
 
                         <TextView
                             android:id="@+id/titleCategories"
-                            android:text="🏷 Categorie"
+                            android:text="@string/dashboard_categories_card"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:layout_width="wrap_content"
@@ -156,10 +156,10 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Totale categorie"/>
+                                android:text="@string/dashboard_categories_total"/>
 
                             <TextView
-                                android:text="›"
+                                android:text="@string/common_chevron_right"
                                 android:textSize="26sp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
@@ -167,7 +167,7 @@
 
                         <TextView
                             android:id="@+id/textCategoriesCount"
-                            android:text="0"
+                            android:text="@string/dashboard_count_zero"
                             android:textSize="22sp"
                             android:textStyle="bold"
                             android:layout_marginTop="4dp"
@@ -187,10 +187,10 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="di cui in uso"/>
+                                android:text="@string/dashboard_categories_in_use"/>
 
                             <TextView
-                                android:text="›"
+                                android:text="@string/common_chevron_right"
                                 android:textSize="26sp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
@@ -198,7 +198,7 @@
 
                         <TextView
                             android:id="@+id/textUsedCategories"
-                            android:text="0"
+                            android:text="@string/dashboard_count_zero"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             android:layout_marginTop="4dp"
@@ -220,7 +220,7 @@
                 android:background="@android:color/darker_gray"/>
 
             <TextView
-                android:text="🔎 Ricerca archivio"
+                android:text="@string/dashboard_search_title"
                 android:textStyle="bold"
                 android:textSize="18sp"
                 android:layout_marginTop="6dp"
@@ -253,7 +253,7 @@
                         android:layout_height="52dp"
                         android:layout_marginTop="10dp"
                         android:background="@drawable/bg_search_rounded"
-                        android:hint="Cerca..."
+                        android:hint="@string/common_search_hint"
                         android:drawableEnd="@android:drawable/ic_btn_speak_now"
                         android:singleLine="true"/>
 
@@ -262,7 +262,7 @@
             </com.google.android.material.card.MaterialCardView>
 
             <TextView
-                android:text="⚡ Accesso rapido"
+                android:text="@string/dashboard_quick_access"
                 android:textStyle="bold"
                 android:textSize="18sp"
                 android:layout_marginTop="14dp"
@@ -283,7 +283,8 @@
                     app:cardBackgroundColor="@color/elevated_surface">
 
                     <TextView
-                        android:text="☁ Backup"
+                        android:id="@+id/textDashboardQuickBackup"
+                        android:text="@string/dashboard_quick_backup"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:gravity="center"
@@ -301,7 +302,8 @@
                     app:cardBackgroundColor="@color/elevated_surface">
 
                     <TextView
-                        android:text="↺ Ripristino"
+                        android:id="@+id/textDashboardQuickRestore"
+                        android:text="@string/dashboard_quick_restore"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:gravity="center"
@@ -319,10 +321,10 @@
                     app:cardBackgroundColor="@color/elevated_surface">
 
                     <TextView
-                        android:text="▣ Codice QR"
+                        android:id="@+id/textDashboardQuickQr"
+                        android:text="@string/dashboard_quick_qr"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:textColor="@color/text_primary"
                         android:gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
@@ -338,7 +340,8 @@
                     app:cardBackgroundColor="@color/elevated_surface">
 
                     <TextView
-                        android:text="📥 Importa Dati"
+                        android:id="@+id/textDashboardQuickImport"
+                        android:text="@string/dashboard_quick_import"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:gravity="center"

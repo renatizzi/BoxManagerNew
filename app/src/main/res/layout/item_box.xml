@@ -76,7 +76,7 @@
             android:layout_width="@dimen/menu_size"
             android:layout_height="@dimen/menu_size"
             android:gravity="center"
-            android:text="⋮"
+            android:text="@string/common_menu_overflow"
             android:textSize="@dimen/text_menu"
             android:clickable="true"
             android:focusable="true"

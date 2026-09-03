@@ -53,7 +53,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="💾 Backup"
+                        android:text="@string/utility_backup"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
@@ -77,7 +77,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="🔄 Ripristino"
+                        android:text="@string/utility_restore"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
@@ -108,7 +108,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="📥 Importa dati"
+                        android:text="@string/utility_import"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
@@ -132,7 +132,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="📱 Codice QR"
+                        android:text="@string/utility_qr"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
@@ -165,7 +165,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="📋 Catalogo Famiglia"
+                        android:text="@string/utility_family_catalog"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 

@@ -67,18 +67,18 @@ class LocationAdapter(
                 holder.menu
             ).apply {
 
-                menu.add("Modifica")
+                menu.add(0, MENU_EDIT, 0, R.string.menu_edit)
 
-                menu.add("Elimina")
+                menu.add(0, MENU_DELETE, 1, R.string.menu_delete)
 
                 setOnMenuItemClickListener {
 
-                    when (it.title) {
+                    when (it.itemId) {
 
-                        "Modifica" ->
+                        MENU_EDIT ->
                             onEdit(item)
 
-                        "Elimina" ->
+                        MENU_DELETE ->
                             onDelete(item)
                     }
 
@@ -100,5 +100,10 @@ class LocationAdapter(
         data = list
 
         notifyDataSetChanged()
+    }
+
+    companion object {
+        private const val MENU_EDIT = 1
+        private const val MENU_DELETE = 2
     }
 }

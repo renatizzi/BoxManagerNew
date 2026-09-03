@@ -55,7 +55,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Profilo"
+                        android:text="@string/settings_profile"
                         android:textStyle="bold"
                         android:textSize="16sp"
                         android:textColor="@color/text_primary" />
@@ -70,7 +70,7 @@
                             android:id="@+id/editUserName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Nome utente"
+                            android:hint="@string/settings_username_hint"
                             android:imeOptions="actionDone"
                             android:inputType="textPersonName"
                             android:maxLines="1"
@@ -78,6 +78,96 @@
                             android:textColorHint="@color/text_secondary" />
 
                     </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardLanguage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:id="@+id/textLanguageTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_language_title"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:textColor="@color/text_primary" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="@string/settings_language_hint"
+                        android:textSize="13sp"
+                        android:textColor="@color/text_secondary" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:id="@+id/optionItalian"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_box_selector"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="10dp">
+
+                            <TextView
+                                android:id="@+id/textOptionItalian"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/settings_language_italian"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/text_primary" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/optionEnglish"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_box_selector"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="10dp">
+
+                            <TextView
+                                android:id="@+id/textOptionEnglish"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/settings_language_english"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/text_primary" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -101,7 +191,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Aspetto"
+                        android:text="@string/settings_appearance"
                         android:textStyle="bold"
                         android:textSize="16sp"
                         android:textColor="@color/text_primary" />
@@ -111,14 +201,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="Tema corrente: Light"
+                        android:text="@string/settings_theme_current_light"
                         android:textColor="@color/text_secondary" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="14dp"
-                        android:text="Preview set di colori"
+                        android:text="@string/settings_palette_preview"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary" />
 
@@ -157,7 +247,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="6dp"
-                                android:text="Arancione"
+                                android:text="@string/settings_palette_orange"
                                 android:textSize="12sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/text_primary"/>
@@ -165,7 +255,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Default"
+                                android:text="@string/settings_palette_orange_default"
                                 android:textSize="11sp"
                                 android:textColor="@color/text_secondary"/>
 
@@ -199,7 +289,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="6dp"
-                                android:text="Blu"
+                                android:text="@string/settings_palette_blue"
                                 android:textSize="12sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/text_primary"/>
@@ -234,7 +324,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="6dp"
-                                android:text="Verde"
+                                android:text="@string/settings_palette_green"
                                 android:textSize="12sp"
                                 android:textStyle="bold"
                                 android:textColor="@color/text_primary"/>
@@ -269,7 +359,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Luoghi abituali di custodia"
+                        android:text="@string/settings_locations_card"
                         android:textStyle="bold"
                         android:textSize="16sp"
                         android:textColor="@color/text_primary"/>
@@ -277,7 +367,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=">"
+                        android:text="@string/common_chevron_nav"
                         android:textColor="@color/text_secondary"/>
 
                 </LinearLayout>
@@ -312,7 +402,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=">"
+                        android:text="@string/common_chevron_nav"
                         android:textColor="@color/text_secondary"/>
 
                 </LinearLayout>
@@ -560,14 +650,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
-                android:text="SALVA" />
+                android:text="@string/settings_save" />
 
             <TextView
                 android:id="@+id/textSaveMessage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Salvato"
+                android:text="@string/settings_saved"
                 android:textStyle="bold"
                 android:textColor="@android:color/holo_green_dark"
                 android:visibility="gone" />

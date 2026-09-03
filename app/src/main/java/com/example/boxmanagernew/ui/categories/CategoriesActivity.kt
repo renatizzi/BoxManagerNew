@@ -115,8 +115,8 @@ class CategoriesActivity : BaseActivity() {
 
     private fun setupViews() {
         setupPageHeader(
-            "Categorie",
-            "Classificazione Contenitori"
+            getString(R.string.page_categories_title),
+            getString(R.string.page_categories_subtitle)
         )
 
         contextCard =
@@ -195,11 +195,13 @@ class CategoriesActivity : BaseActivity() {
         outputController.print(
             snapshot,
             ViewPrintHeader(
-                title = ViewOutputConfiguration.PAGE_TITLE_CATEGORIES,
+                title = ViewOutputConfiguration.pageTitleCategories(this),
                 filterLine = ViewOutputConfiguration.filterLine(
+                    this,
                     editSearch.text.toString().trim()
                 ),
                 countLine = ViewOutputConfiguration.countCategories(
+                    this,
                     snapshot.boxes.size
                 ),
                 nameListStyle = NameListStyle.CATEGORY_ICON
@@ -267,7 +269,7 @@ class CategoriesActivity : BaseActivity() {
 
         viewModel.allCategoriesCount.observe(this) {
             textCategoryCount.text =
-                "N. Categorie: $it"
+                getString(R.string.view_count_categories, it)
         }
 
         viewModel.selectedCategory.observe(this) {
@@ -347,7 +349,7 @@ class CategoriesActivity : BaseActivity() {
                 )
 
                 showWarningMessage(
-                    "Categoria in uso. Eliminazione non consentita"
+                    getString(R.string.category_msg_in_use_delete)
                 )
 
             } else {
@@ -560,9 +562,9 @@ class CategoriesActivity : BaseActivity() {
 
         val dialog =
             createCategoryAlertDialog(
-                "Nuova categoria",
+                getString(R.string.dialog_new_category),
                 d.view,
-                "Aggiungi"
+                getString(R.string.common_add)
             )
 
         setupCategoryDialogConfirm(
@@ -607,7 +609,7 @@ class CategoriesActivity : BaseActivity() {
                 )
 
                 showWarningMessage(
-                    "Categoria in uso: modificandola, i contenitori verranno aggiornati. Tocca qui per annullare."
+                    getString(R.string.category_msg_in_use_edit)
                 )
             }
 
@@ -618,9 +620,9 @@ class CategoriesActivity : BaseActivity() {
 
             val dialog =
                 createCategoryAlertDialog(
-                    "Modifica categoria",
+                    getString(R.string.dialog_edit_category),
                     d.view,
-                    "Salva"
+                    getString(R.string.common_save)
                 )
 
             dialog.setOnDismissListener {
@@ -717,7 +719,7 @@ class CategoriesActivity : BaseActivity() {
             .setTitle(title)
             .setView(view)
             .setNegativeButton(
-                "Annulla",
+                getString(R.string.common_cancel),
                 null
             )
             .setPositiveButton(
@@ -758,7 +760,7 @@ class CategoriesActivity : BaseActivity() {
                     FeedbackUtils.alert(this)
 
                     textError.text =
-                        "Dato obbligatorio"
+                        getString(R.string.common_required_field)
 
                     textError.visibility =
                         View.VISIBLE
@@ -773,7 +775,7 @@ class CategoriesActivity : BaseActivity() {
                     FeedbackUtils.alert(this)
 
                     textError.text =
-                        "Seleziona un'icona"
+                        getString(R.string.dialog_category_pick_icon)
 
                     textError.visibility =
                         View.VISIBLE
@@ -804,7 +806,7 @@ class CategoriesActivity : BaseActivity() {
         } else {
 
             textError.text =
-                "Categoria già esistente"
+                getString(R.string.category_msg_exists)
 
             textError.visibility =
                 View.VISIBLE

@@ -16,8 +16,6 @@ import com.example.boxmanagernew.data.local.entity.CategoryEntity
 import com.example.boxmanagernew.domain.model.Box
 import com.example.boxmanagernew.domain.model.Location
 import com.example.boxmanagernew.backup.config.BackupConfiguration
-import com.example.boxmanagernew.domain.privacy.PrivacyPolicy
-import com.example.boxmanagernew.domain.qr.QrConfiguration
 import com.example.boxmanagernew.ui.categories.CategorySpinnerAdapter
 import com.example.boxmanagernew.ui.settings.LocationSpinnerAdapter
 import com.example.boxmanagernew.viewoutput.config.ViewOutputConfiguration
@@ -59,7 +57,7 @@ object DialogUtils {
 
         val error =
             TextView(context).apply {
-                text = "Dato obbligatorio"
+                text = context.getString(R.string.common_required_field)
                 visibility = View.GONE
                 setTextColor(
                     context.getColor(
@@ -117,9 +115,10 @@ object DialogUtils {
         }
 
         date.text =
-            "Ultima modifica: ${
+            context.getString(
+                R.string.dialog_last_modified_prefix,
                 UiUtils.formatDate(timestamp)
-            }"
+            )
 
         if (box != null) {
 
@@ -234,8 +233,8 @@ object DialogUtils {
 
         return AlertDialog.Builder(context)
             .setView(view)
-            .setPositiveButton("Conferma", null)
-            .setNegativeButton("Annulla", null)
+            .setPositiveButton(context.getString(R.string.common_confirm), null)
+            .setNegativeButton(context.getString(R.string.common_cancel), null)
             .create()
     }
 
@@ -295,14 +294,14 @@ object DialogUtils {
         )
 
         AlertDialog.Builder(context)
-            .setTitle("Nuova posizione")
+            .setTitle(context.getString(R.string.dialog_new_location))
             .setView(input)
-            .setPositiveButton("Conferma") { _, _ ->
+            .setPositiveButton(context.getString(R.string.common_confirm)) { _, _ ->
                 onConfirm(
                     input.text.toString().trim()
                 )
             }
-            .setNegativeButton("Annulla", null)
+            .setNegativeButton(context.getString(R.string.common_cancel), null)
             .show()
     }
 
@@ -314,12 +313,12 @@ object DialogUtils {
 
         AlertDialog.Builder(context)
             .setMessage(
-                "Confermi anche l'eliminazione degli oggetti contenuti?"
+                context.getString(R.string.dialog_delete_contained_objects)
             )
-            .setPositiveButton("SI") { _, _ ->
+            .setPositiveButton(context.getString(R.string.common_yes)) { _, _ ->
                 onDelete()
             }
-            .setNegativeButton("NO") { _, _ ->
+            .setNegativeButton(context.getString(R.string.common_no)) { _, _ ->
                 onMoveObjects()
             }
             .show()
@@ -331,11 +330,11 @@ object DialogUtils {
     ) {
 
         AlertDialog.Builder(context)
-            .setMessage("Conferma eliminazione?")
-            .setPositiveButton("SI") { _, _ ->
+            .setMessage(context.getString(R.string.dialog_delete_confirm))
+            .setPositiveButton(context.getString(R.string.common_yes)) { _, _ ->
                 onConfirm()
             }
-            .setNegativeButton("NO", null)
+            .setNegativeButton(context.getString(R.string.common_no), null)
             .show()
     }
 
@@ -345,11 +344,11 @@ object DialogUtils {
     ) {
 
         AlertDialog.Builder(context)
-            .setMessage(QrConfiguration.MSG_DELETE)
-            .setPositiveButton("SI") { _, _ ->
+            .setMessage(context.getString(R.string.qr_delete_confirm))
+            .setPositiveButton(context.getString(R.string.common_yes)) { _, _ ->
                 onConfirm()
             }
-            .setNegativeButton("NO", null)
+            .setNegativeButton(context.getString(R.string.common_no), null)
             .show()
     }
 
@@ -360,14 +359,14 @@ object DialogUtils {
     ): AlertDialog {
 
         return AlertDialog.Builder(context)
-            .setMessage(PrivacyPolicy.CAMERA_RATIONALE)
+            .setMessage(context.getString(R.string.privacy_camera_rationale))
             .setPositiveButton(
-                PrivacyPolicy.CAMERA_RATIONALE_CONTINUE
+                context.getString(R.string.privacy_camera_continue)
             ) { _, _ ->
                 onContinue()
             }
             .setNegativeButton(
-                PrivacyPolicy.CAMERA_RATIONALE_CANCEL
+                context.getString(R.string.privacy_camera_cancel)
             ) { _, _ ->
                 onCancel()
             }
@@ -394,11 +393,11 @@ object DialogUtils {
     ) {
 
         AlertDialog.Builder(context)
-            .setMessage(BackupConfiguration.MSG_FILE_EXISTS)
-            .setPositiveButton("SI") { _, _ ->
+            .setMessage(BackupConfiguration.fileExists(context))
+            .setPositiveButton(context.getString(R.string.common_yes)) { _, _ ->
                 onConfirm()
             }
-            .setNegativeButton("NO") { _, _ ->
+            .setNegativeButton(context.getString(R.string.common_no)) { _, _ ->
                 onDecline?.invoke()
             }
             .show()
@@ -453,6 +452,7 @@ object DialogUtils {
         fun refreshPrompt() {
             prompt.text =
                 ViewOutputConfiguration.exportFilePrompt(
+                    context,
                     exists(typedFileName())
                 )
         }
@@ -487,15 +487,15 @@ object DialogUtils {
         val builder =
             AlertDialog.Builder(context)
                 .setView(column)
-                .setPositiveButton("SI", null)
-                .setNegativeButton("NO", null)
+                .setPositiveButton(context.getString(R.string.common_yes), null)
+                .setNegativeButton(context.getString(R.string.common_no), null)
 
         if (!title.isNullOrBlank()) {
             builder.setTitle(title)
         }
 
         if (onBrowseFolder != null) {
-            builder.setNeutralButton("Cartella", null)
+            builder.setNeutralButton(context.getString(R.string.common_folder), null)
         }
 
         val dialog = builder.create()
@@ -539,11 +539,11 @@ object DialogUtils {
     ) {
 
         AlertDialog.Builder(context)
-            .setMessage(BackupConfiguration.MSG_RESTORE_CONFIRM)
-            .setPositiveButton("SI") { _, _ ->
+            .setMessage(BackupConfiguration.restoreConfirm(context))
+            .setPositiveButton(context.getString(R.string.common_yes)) { _, _ ->
                 onConfirm()
             }
-            .setNegativeButton("NO", null)
+            .setNegativeButton(context.getString(R.string.common_no), null)
             .show()
     }
 
@@ -553,11 +553,11 @@ object DialogUtils {
     ) {
 
         AlertDialog.Builder(context)
-            .setMessage("Conferma spostamento?")
-            .setPositiveButton("SI") { _, _ ->
+            .setMessage(context.getString(R.string.dialog_move_confirm))
+            .setPositiveButton(context.getString(R.string.common_yes)) { _, _ ->
                 onConfirm()
             }
-            .setNegativeButton("NO", null)
+            .setNegativeButton(context.getString(R.string.common_no), null)
             .show()
     }
 

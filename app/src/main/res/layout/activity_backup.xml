@@ -47,7 +47,7 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:src="@drawable/ic_backup_folder"
-                        android:contentDescription="Cartella backup" />
+                        android:contentDescription="@string/backup_folder_cd" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -59,7 +59,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Backup Directory"
+                            android:text="@string/backup_folder_label"
                             android:textStyle="bold"
                             android:textColor="@color/text_primary"
                             android:textSize="18sp" />
@@ -70,7 +70,7 @@
                             android:layout_height="wrap_content"
                             android:background="@null"
                             android:enabled="false"
-                            android:hint="Nessuna cartella selezionata"
+                            android:hint="@string/common_no_folder_selected"
                             android:textColor="@color/text_secondary"
                             android:textColorHint="@color/text_secondary"
                             android:padding="0dp"
@@ -82,7 +82,7 @@
                         android:id="@+id/btnBrowse"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="SFOGLIA" />
+                        android:text="@string/common_browse" />
 
                 </LinearLayout>
 
@@ -102,7 +102,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Crea nuovo backup"
+                        android:text="@string/backup_create_title"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary"
                         android:textSize="18sp" />
@@ -111,7 +111,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="Nome file"
+                        android:text="@string/backup_file_name_label"
                         android:textStyle="bold"
                         android:textColor="@color/text_primary" />
 
@@ -121,7 +121,7 @@
                         android:layout_height="52dp"
                         android:layout_marginTop="8dp"
                         android:background="@drawable/bg_search_rounded"
-                        android:hint="BCK_GGMMAA_HHMM"
+                        android:hint="@string/backup_file_name_hint"
                         android:inputType="text"
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp"
@@ -134,7 +134,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
                         android:enabled="false"
-                        android:text="CREA BACKUP"
+                        android:text="@string/backup_create_button"
                         android:textColor="@android:color/white" />
 
                     <TextView

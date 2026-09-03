@@ -62,7 +62,8 @@ class BoxAdapter(
 
         val category = categories.find { it.id == box.categoryId }
 
-        val categoryName = category?.name ?: "Categoria sconosciuta"
+        val categoryName = category?.name
+            ?: holder.itemView.context.getString(R.string.category_unknown)
         val positionText = box.position
 
         holder.textSubtitle.text =
@@ -127,20 +128,20 @@ class BoxAdapter(
             val popup =
                 PopupMenu(view.context, view)
 
-            popup.menu.add("Modifica")
-            popup.menu.add("Elimina")
-            popup.menu.add("Visualizza etichetta QR")
+            popup.menu.add(0, MENU_EDIT, 0, R.string.menu_edit)
+            popup.menu.add(0, MENU_DELETE, 1, R.string.menu_delete)
+            popup.menu.add(0, MENU_VIEW_QR, 2, R.string.menu_view_qr_label)
 
             popup.setOnMenuItemClickListener {
 
-                when (it.title) {
+                when (it.itemId) {
 
-                    "Modifica" -> onEdit(box)
+                    MENU_EDIT -> onEdit(box)
 
-                    "Visualizza etichetta QR" ->
+                    MENU_VIEW_QR ->
                         onShowQrLabel(box)
 
-                    "Elimina" -> onDelete(box)
+                    MENU_DELETE -> onDelete(box)
                 }
 
                 true
@@ -302,5 +303,11 @@ class BoxAdapter(
             }
 
         return result
+    }
+
+    companion object {
+        private const val MENU_EDIT = 1
+        private const val MENU_DELETE = 2
+        private const val MENU_VIEW_QR = 3
     }
 }

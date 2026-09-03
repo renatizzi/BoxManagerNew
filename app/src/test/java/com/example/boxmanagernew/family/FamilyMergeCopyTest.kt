@@ -1,10 +1,13 @@
 package com.example.boxmanagernew.family
 
+import com.example.boxmanagernew.R
 import com.example.boxmanagernew.domain.family.FamilyMergeCopy
+import com.example.boxmanagernew.ui.common.ThemeAccentTextViews
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import java.io.File
 
 class FamilyMergeCopyTest {
 
@@ -12,6 +15,23 @@ class FamilyMergeCopyTest {
     fun utilityCard_usesEmojiSingleLine() {
         assertEquals("📤 Condividi Archivio", FamilyMergeCopy.UTILITY_CARD_LABEL)
         assertFalse(FamilyMergeCopy.UTILITY_CARD_LABEL.contains("\n"))
+    }
+
+    @Test
+    fun utilityScreen_usesLocalizedFamilyCardString() {
+        val source = File("src/main/java/com/example/boxmanagernew/ui/utility/UtilityActivity.kt")
+            .takeIf { it.isFile }
+            ?.readText()
+            ?: File("app/src/main/java/com/example/boxmanagernew/ui/utility/UtilityActivity.kt")
+                .readText()
+        assertFalse(
+            source.contains("FamilyMergeCopy.UTILITY_CARD_LABEL")
+        )
+        val layout = File("src/main/res/layout/activity_utility.xml")
+            .takeIf { it.isFile }
+            ?.readText()
+            ?: File("app/src/main/res/layout/activity_utility.xml").readText()
+        assertTrue(layout.contains("@string/utility_family_catalog"))
     }
 
     @Test
@@ -107,12 +127,31 @@ class FamilyMergeCopyTest {
     }
 
     @Test
-    fun accentCardTexts_includeAllFamilyLabels() {
-        val accents = FamilyMergeCopy.accentCardTexts()
-        assertTrue(accents.contains(FamilyMergeCopy.UTILITY_CARD_LABEL))
-        assertTrue(accents.contains(FamilyMergeCopy.BUTTON_SEND_SHARED_TABLES))
-        assertTrue(accents.contains(FamilyMergeCopy.BUTTON_RECEIVE_SHARED_TABLES))
-        assertTrue(accents.contains(FamilyMergeCopy.BUTTON_SEND))
-        assertTrue(accents.contains(FamilyMergeCopy.BUTTON_RECEIVE))
+    fun familyShareLabels_areRegisteredForPaletteAccent() {
+        assertTrue(
+            ThemeAccentTextViews.appliesAccent(
+                R.id.textFamilyCatalog
+            )
+        )
+        assertTrue(
+            ThemeAccentTextViews.appliesAccent(
+                R.id.textExportSharedTables
+            )
+        )
+        assertTrue(
+            ThemeAccentTextViews.appliesAccent(
+                R.id.textImportSharedTables
+            )
+        )
+        assertTrue(
+            ThemeAccentTextViews.appliesAccent(
+                R.id.textExportMerge
+            )
+        )
+        assertTrue(
+            ThemeAccentTextViews.appliesAccent(
+                R.id.textImportMerge
+            )
+        )
     }
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.boxmanagernew.R
 import com.example.boxmanagernew.backup.config.BackupConfiguration
 import com.example.boxmanagernew.backup.facade.BackupFacade
 import com.example.boxmanagernew.data.local.dao.ObjectTypeDao
@@ -34,7 +35,8 @@ class ImportViewModel(
     private val templateBuilder: ImportTemplateBuilder = ImportTemplateBuilder(),
     private val fileInspector: ImportFileInspector = ImportFileInspector(),
     private val dependencyValidator: ImportDependencyValidator = ImportDependencyValidator(),
-    private val mergePlanner: ImportMergePlanner = ImportMergePlanner()
+    private val mergePlanner: ImportMergePlanner = ImportMergePlanner(),
+    private val appContext: android.content.Context
 ) : ViewModel() {
 
     data class UserMessage(
@@ -85,7 +87,7 @@ class ImportViewModel(
                 } else if (result.folderInaccessible) {
 
                     _message.value = UserMessage(
-                        BackupConfiguration.MSG_FOLDER_INACCESSIBLE,
+                        BackupConfiguration.folderInaccessible(appContext),
                         blockingError = true
                     )
 
@@ -214,7 +216,7 @@ class ImportViewModel(
 
                     pendingImport = null
                     _message.value = UserMessage(
-                        BackupConfiguration.MSG_FOLDER_INACCESSIBLE,
+                        BackupConfiguration.folderInaccessible(appContext),
                         blockingError = true
                     )
 
@@ -222,7 +224,7 @@ class ImportViewModel(
 
                     pendingImport = null
                     _message.value = UserMessage(
-                        BackupConfiguration.MSG_WRITE_FAILED,
+                        BackupConfiguration.writeFailed(appContext),
                         blockingError = true
                     )
                 }
@@ -300,7 +302,7 @@ class ImportViewModel(
                 _message.value = UserMessage(
                     buildFinalReport(backup, plan) +
                         "\n\n" +
-                        ImportConfiguration.MSG_IMPORT_CANCELLED,
+                        ImportConfiguration.importCancelled(appContext),
                     blockingError = true
                 )
             }
@@ -309,7 +311,7 @@ class ImportViewModel(
 
             pendingImport = null
             _message.value = UserMessage(
-                ImportConfiguration.MSG_IMPORT_CANCELLED,
+                        ImportConfiguration.importCancelled(appContext),
                 blockingError = true
             )
         }
@@ -323,14 +325,14 @@ class ImportViewModel(
         return buildString {
             appendLine(lastPreview)
             appendLine()
-            appendLine(BackupConfiguration.MSG_BACKUP_COMPLETED)
-            appendLine("Nome file: ${backup.fileName}")
-            appendLine("Cartella: ${backup.folderName}")
+            appendLine(BackupConfiguration.backupCompleted(appContext))
+            appendLine(appContext.getString(R.string.label_file_name, backup.fileName))
+            appendLine(appContext.getString(R.string.label_folder_name, backup.folderName))
             appendLine()
-            appendLine("${ImportConfiguration.REPORT_RECORDS_READ}: ${plan.recordsRead}")
-            appendLine("${ImportConfiguration.REPORT_IMPORTED}: ${plan.imported}")
-            appendLine("${ImportConfiguration.REPORT_IGNORED}: ${plan.ignoredDuplicates}")
-            append("${ImportConfiguration.REPORT_DISCARDED}: ${plan.discardedErrors}")
+            appendLine("${ImportConfiguration.reportRecordsRead(appContext)}: ${plan.recordsRead}")
+            appendLine("${ImportConfiguration.reportImported(appContext)}: ${plan.imported}")
+            appendLine("${ImportConfiguration.reportIgnored(appContext)}: ${plan.ignoredDuplicates}")
+            append("${ImportConfiguration.reportDiscarded(appContext)}: ${plan.discardedErrors}")
         }
     }
 
@@ -341,9 +343,9 @@ class ImportViewModel(
         return buildString {
             appendLine(lastPreview)
             appendLine()
-            appendLine(BackupConfiguration.MSG_BACKUP_COMPLETED)
-            appendLine("Nome file: ${result.fileName}")
-            append("Cartella: ${result.folderName}")
+            appendLine(BackupConfiguration.backupCompleted(appContext))
+            appendLine(appContext.getString(R.string.label_file_name, result.fileName))
+            append(appContext.getString(R.string.label_folder_name, result.folderName))
         }
     }
 
@@ -353,10 +355,10 @@ class ImportViewModel(
     ): String {
 
         return buildString {
-            appendLine("Nome file: $fileName")
-            appendLine("${ImportConfiguration.REPORT_RECORDS_READ}: ${ready.recordsRead}")
-            appendLine("Contenitori: ${ready.boxes.size}")
-            append("Oggetti: ${ready.objects.size}")
+            appendLine(appContext.getString(R.string.label_file_name, fileName))
+            appendLine("${ImportConfiguration.reportRecordsRead(appContext)}: ${ready.recordsRead}")
+            appendLine(appContext.getString(R.string.label_containers_count, ready.boxes.size))
+            append(appContext.getString(R.string.label_objects_count, ready.objects.size))
         }
     }
 
@@ -365,9 +367,9 @@ class ImportViewModel(
     ): String {
 
         return buildString {
-            appendLine(message)
+            appendLine(ImportConfiguration.localizeDependency(appContext, message))
             appendLine()
-            append(ImportConfiguration.MSG_RELATION_CANCELLED)
+            append(ImportConfiguration.relationCancelled(appContext))
         }
     }
 
@@ -376,9 +378,9 @@ class ImportViewModel(
     ): String {
 
         return buildString {
-            appendLine(check)
+            appendLine(ImportConfiguration.localizeCheck(appContext, check))
             appendLine()
-            append(ImportConfiguration.MSG_IMPORT_CANCELLED)
+            append(ImportConfiguration.importCancelled(appContext))
         }
     }
 
@@ -387,8 +389,8 @@ class ImportViewModel(
     ): String {
 
         return buildString {
-            appendLine("Nome file: ${result.fileName}")
-            append("Cartella: ${result.folderName}")
+            appendLine(appContext.getString(R.string.label_file_name, result.fileName))
+            append(appContext.getString(R.string.label_folder_name, result.folderName))
         }
     }
 }

@@ -21,4 +21,10 @@ object CreatedByResolver {
     fun display(value: String?): String {
         return normalize(value).ifEmpty { FALLBACK }
     }
+
+    fun display(context: Context, value: String?): String {
+        return normalize(value).ifEmpty {
+            context.getString(com.example.boxmanagernew.R.string.topbar_default_username)
+        }
+    }
 }

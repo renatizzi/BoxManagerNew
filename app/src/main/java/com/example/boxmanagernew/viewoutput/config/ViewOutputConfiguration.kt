@@ -1,5 +1,7 @@
 package com.example.boxmanagernew.viewoutput.config
 
+import android.content.Context
+import com.example.boxmanagernew.R
 import com.example.boxmanagernew.backup.config.BackupConfiguration
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -17,6 +19,58 @@ object ViewOutputConfiguration {
         } else {
             MSG_CONFIRM
         }
+    }
+
+    fun exportFilePrompt(context: Context, fileExists: Boolean): String {
+        return if (fileExists) {
+            context.getString(R.string.dialog_file_exists)
+        } else {
+            context.getString(R.string.dialog_confirm_question)
+        }
+    }
+
+    fun pageTitle(context: Context) =
+        context.getString(R.string.view_page_title_boxes)
+
+    fun pageTitleFoundObjects(context: Context) =
+        context.getString(R.string.view_page_title_found_objects)
+
+    fun pageTitleCategories(context: Context) =
+        context.getString(R.string.view_page_title_categories)
+
+    fun pageTitleLocations(context: Context) =
+        context.getString(R.string.view_page_title_locations)
+
+    fun objectsInBoxTitle(context: Context, boxName: String): String {
+        return context.getString(R.string.view_objects_in_box, boxName)
+    }
+
+    fun filterLine(
+        context: Context,
+        query: String,
+        now: Date = Date()
+    ): String {
+        val stamp = SimpleDateFormat(
+            "dd/MM/yyyy - HH:mm",
+            Locale.getDefault()
+        ).format(now)
+        return context.getString(R.string.view_filter_line, query, stamp)
+    }
+
+    fun countBoxes(context: Context, count: Int): String {
+        return context.getString(R.string.view_count_boxes, count)
+    }
+
+    fun countObjects(context: Context, count: Int): String {
+        return context.getString(R.string.view_count_objects, count)
+    }
+
+    fun countCategories(context: Context, count: Int): String {
+        return context.getString(R.string.view_count_categories, count)
+    }
+
+    fun countLocations(context: Context, count: Int): String {
+        return context.getString(R.string.view_count_locations, count)
     }
 
     const val PAGE_TITLE =

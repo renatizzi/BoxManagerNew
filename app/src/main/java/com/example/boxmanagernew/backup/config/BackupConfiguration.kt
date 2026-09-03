@@ -1,5 +1,7 @@
 package com.example.boxmanagernew.backup.config
 
+import android.content.Context
+import com.example.boxmanagernew.R
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -98,4 +100,37 @@ object BackupConfiguration {
 
     const val MSG_RESTORE_FAILED =
         "Ripristino non eseguito. Riprovare."
+
+    fun folderInaccessible(context: Context) =
+        context.getString(R.string.msg_folder_inaccessible)
+
+    fun backupCompleted(context: Context) =
+        context.getString(R.string.msg_backup_completed)
+
+    fun writeFailed(context: Context) =
+        context.getString(R.string.msg_backup_write_failed)
+
+    fun invalidArchive(context: Context) =
+        context.getString(R.string.msg_backup_invalid_archive)
+
+    fun fileExists(context: Context) =
+        context.getString(R.string.dialog_file_exists)
+
+    fun restoreReplaceWarning(context: Context) =
+        context.getString(R.string.msg_restore_replace_warning)
+
+    fun restoreConfirm(context: Context) =
+        context.getString(R.string.msg_restore_confirm)
+
+    fun restoreCompleted(context: Context) =
+        context.getString(R.string.msg_restore_completed)
+
+    fun restoreInvalidFile(context: Context) =
+        context.getString(R.string.msg_restore_invalid_file)
+
+    fun restoreIncompatible(context: Context) =
+        context.getString(R.string.msg_restore_incompatible)
+
+    fun restoreFailed(context: Context) =
+        context.getString(R.string.msg_restore_failed)
 }

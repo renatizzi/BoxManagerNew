@@ -51,8 +51,8 @@ class LocationsActivity : BaseActivity() {
         setupAppShell()
 
         setupPageHeader(
-            "Posizione",
-            "Luoghi abituali di custodia"
+            getString(R.string.page_locations_title),
+            getString(R.string.page_locations_subtitle)
         )
         setupPrintAction()
 
@@ -125,7 +125,7 @@ class LocationsActivity : BaseActivity() {
         viewModel.locations.observe(this) {
             adapter.updateData(it)
             counter.text =
-                "N. Posizioni: ${it.size}"
+                getString(R.string.view_count_locations, it.size)
         }
 
         hideWarning()
@@ -176,9 +176,10 @@ class LocationsActivity : BaseActivity() {
         outputController.print(
             snapshot,
             ViewPrintHeader(
-                title = ViewOutputConfiguration.PAGE_TITLE_LOCATIONS,
-                filterLine = ViewOutputConfiguration.filterLine(""),
+                title = ViewOutputConfiguration.pageTitleLocations(this),
+                filterLine = ViewOutputConfiguration.filterLine(this, ""),
                 countLine = ViewOutputConfiguration.countLocations(
+                    this,
                     snapshot.boxes.size
                 ),
                 nameListStyle = NameListStyle.PLACE_ICON
@@ -223,10 +224,10 @@ class LocationsActivity : BaseActivity() {
 
         val dialog =
             AlertDialog.Builder(this)
-                .setTitle("Nuova posizione")
+                .setTitle(getString(R.string.dialog_new_location))
                 .setView(container)
-                .setNegativeButton("Annulla", null)
-                .setPositiveButton("Aggiungi", null)
+                .setNegativeButton(getString(R.string.common_cancel), null)
+                .setPositiveButton(getString(R.string.common_add), null)
                 .create()
 
         dialog.setOnShowListener {
@@ -255,7 +256,7 @@ class LocationsActivity : BaseActivity() {
                         )
 
                         error.text =
-                            "Posizione già esistente"
+                            getString(R.string.location_msg_exists)
 
                         error.visibility =
                             TextView.VISIBLE
@@ -286,10 +287,10 @@ class LocationsActivity : BaseActivity() {
 
         val dialog =
             AlertDialog.Builder(this)
-                .setTitle("Modifica posizione")
+                .setTitle(getString(R.string.dialog_edit_location))
                 .setView(container)
-                .setNegativeButton("Annulla", null)
-                .setPositiveButton("Salva", null)
+                .setNegativeButton(getString(R.string.common_cancel), null)
+                .setPositiveButton(getString(R.string.common_save), null)
                 .create()
 
         dialog.setOnShowListener {
@@ -318,7 +319,7 @@ class LocationsActivity : BaseActivity() {
                         )
 
                         error.text =
-                            "Posizione già esistente"
+                            getString(R.string.location_msg_exists)
 
                         error.visibility =
                             TextView.VISIBLE
@@ -344,7 +345,7 @@ class LocationsActivity : BaseActivity() {
             if (!deleted) {
 
                 showWarning(
-                    "Posizione in uso. Eliminazione non consentita"
+                    getString(R.string.location_msg_in_use_delete)
                 )
 
                 return@launch
