@@ -29,23 +29,25 @@
 | **Lingue V1** | Italiano (default) + English |
 | **Play Console traduzione app** | **Non usare** — lavoro in Cursor |
 | **M1 / CK1** | **CONVALIDATO SI Renato device 03/09/2026** (M1a–M1d su PR **#18**) |
-| **Prossimo pacchetto** | **M2a** — bozza tabelle EN in Nota → **CK0** prima di `domain/search` |
-| **Branch lavoro** | `cursor/multilingua-m1a-5409` (PR **#18**) |
-| **Branch base** | `cursor/p1-igiene-file-5409` (B5.7) |
+| **M2a** | **EN verificata** su delega Renato 03/09/2026 — [BOZZA_TABELLE_EN_CK0.md](BOZZA_TABELLE_EN_CK0.md) + Allegato **4.21** |
+| **Prossimo pacchetto** | **M2b** solo con **SI esplicito** sul motore — **non** toccare `domain/search` prima |
+| **Branch lavoro** | `cursor/multilingua-m2a-5409` (M2a; include M1) |
+| **Branch base** | `cursor/multilingua-m1a-5409` (HEAD `8a16d6a`, già allineato a `p1-igiene-file-5409` B5.7) |
 | **Play** | `main` **1.2** — test chiuso ~2 sett.; **non** merge M su `main` senza SI |
 | **Famiglia** | **1.3-famigliaB5.7** — P1 CONVALIDATO; eventuali bug Play → fix famiglia **a fine test** |
-| **Ricerca avanzata EN** | **M2** — **CK0** obbligatorio prima di toccare `domain/search` |
-| **Checkpoint** | **CK0** (prossimo), **CK1** ✅, **CK2** |
+| **Ricerca avanzata EN** | **M2b** — **CK0** obbligatorio prima di toccare `domain/search` |
+| **Checkpoint** | **CK0** (EN verificata su delega; SI M2b ancora da dare), **CK1** ✅, **CK2** |
 
 ### Documenti vincolanti (leggere prima di codice)
 
 | File | Ruolo |
 |------|--------|
 | [ASSESSMENT_M.md](ASSESSMENT_M.md) | Piano M0–M3, inventario, architettura |
+| [BOZZA_TABELLE_EN_CK0.md](BOZZA_TABELLE_EN_CK0.md) | Bozza EN 1:1 da Nota (CK0) |
 | `.cursor/rules/fonti-ufficiali.mdc` | Elenchi alias/messaggi — importare, non riassumere |
 | `.cursor/rules/pipeline-ufficiale.mdc` | Ricerca: pipeline 0–10 invariata |
 | Nota Integrata **3.6.6** | Scelta lingua Impostazioni |
-| Nota **1.3.3** / Excel | Alias Core (**M2**, dopo CK0) |
+| Nota **1.3.3** / Allegato **4.21** | Alias Core EN **bozza** — import in codice solo dopo CK0 |
 
 ---
 
@@ -61,6 +63,12 @@
 8. **Allineamento obbligatorio prima di ogni sessione:** eseguire `git fetch origin` e verificare che il branch di lavoro contenga i commit più recenti del branch base famiglia. Se c'è uno scarto, allineare **prima** di scrivere codice. Documentare il commit HEAD di partenza nel primo messaggio di sessione.
 9. **Scelta lingua:** la voce di selezione lingua (IT/EN) si trova in **Impostazioni** — non spostarla altrove.
 10. **Topbar 1.2:** il titolo in-app è sempre **BoxManager** (`topbar_app_title`). `app_name` serve solo al launcher (flavor famiglia = «BoxManager Famiglia»). Non collegare i due.
+
+## Istruzioni CK0 per Renato (nessun device)
+
+M2a **non** cambia l’app. La verifica dell’inglese è **già fatta** (delega 03/09/2026). Per aprire M2b basta dire di procedere col motore: non serve rileggere le tabelle in inglese.
+
+CSV: header italiani. `locale` resta fuori dalla riga ufficiale LOCATION.
 
 ## Regole per le istruzioni di test a Renato
 
@@ -111,7 +119,7 @@ L’agente esegue **M1a→M1d** in sequenza senza fermarsi, salvo KO test/build.
 ### Fase 3 — Checkpoint
 
 8. **CK1** solo a fine **M1d** (device: lingua + **Guida intera EN** + flussi core).
-9. **CK0** solo prima di **M2b** (SI tabelle EN in Nota).
+9. **CK0** solo prima di **M2b** (SI tabelle EN in [BOZZA_TABELLE_EN_CK0.md](BOZZA_TABELLE_EN_CK0.md) / Allegato 4.21). **M2a è chiuso in bozza; fermarsi qui.**
 10. **CK2** a fine **M2c** (device: campione domande EN Matrice Test).
 
 ---
@@ -141,27 +149,30 @@ git checkout -b cursor/multilingua-m1a-5409
 
 ## Messaggio tipo per **nuova sessione** (copia-incolla)
 
+**Ora (dopo M2a):** non aprire M2b. Attendere **CK0 SI Renato** su [BOZZA_TABELLE_EN_CK0.md](BOZZA_TABELLE_EN_CK0.md).
+
 ```
 Continua filone M — Multilingua IT/EN da docs/multilingua/PROMPT_CONTINUITA_M.md
 
 Piano: APPROVATO SI Renato (01/09/2026)
 Assessment: docs/multilingua/ASSESSMENT_M.md (PR #16)
+CK0: SI Renato sulle tabelle EN (BOZZA_TABELLE_EN_CK0.md / Allegato 4.21)
 
-Pacchetto da eseguire: M1a
-Branch nuovo: cursor/multilingua-m1a-5409
-Base: cursor/p1-igiene-file-5409 (1.3-famigliaB5.7) — oppure family-unione se merge P1 fatto
+Pacchetto da eseguire: M2b
+Branch nuovo: cursor/multilingua-m2b-5409
+Base: cursor/multilingua-m2a-5409 (include M1 + bozza CK0)
 
 Vincoli:
 - Solo IT + EN in V1
-- NON toccare domain/search EN (CK0 non ancora)
-- Guida rapida in-app: obbligatoria in M1d / CK1
+- Importare elenchi interi dalla bozza SI, non tradurre a memoria
+- Pipeline 0–10 invariata
 - Play main 1.2: non merge senza SI
-- Leggere ASSESSMENT_M §4–§6 e fonti-ufficiali.mdc prima del codice
+- Leggere ASSESSMENT_M §4–§6, pipeline-ufficiale.mdc, fonti-ufficiali.mdc
 
-Obiettivo sessione: chiudere M1a (Scelta lingua 3.6.6) + test; poi proseguire M1b se tempo.
+Obiettivo sessione: M2b motore ricerca locale-aware EN; non aprire M2c se manca tempo.
 ```
 
-*(Sostituire `M1a` con `M0`, `M1b`, … quando si apre la sessione successiva.)*
+*(Usare questo messaggio **solo** dopo CK0 SI. Senza SI: nessuna sessione M2b.)*
 
 ---
 
