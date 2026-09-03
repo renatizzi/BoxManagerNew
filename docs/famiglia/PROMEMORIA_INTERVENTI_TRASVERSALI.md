@@ -23,7 +23,7 @@ Dopo il rilascio Play **1.2**, due filoni in **parallelo al test** (decisione Re
 | Filone | Documento | Stato |
 |--------|-----------|-------|
 | **Archivio condiviso** | [NOTA_B0_MERGE_FAMIGLIA.md](NOTA_B0_MERGE_FAMIGLIA.md) B0–B5 | **CONVALIDATO** — funzione di BoxManager, non un’altra app |
-| **Inglese** (scelta lingua + ricerca EN) | [../multilingua/PROMPT_CONTINUITA_M.md](../multilingua/PROMPT_CONTINUITA_M.md) | **M1/CK1 CONVALIDATO**; M2b motore (S1–S3 SI). Stessa BoxManager. |
+| **Inglese** (scelta lingua + ricerca EN) | [../multilingua/PROMPT_CONTINUITA_M.md](../multilingua/PROMPT_CONTINUITA_M.md) | **M1/CK1 CONVALIDATO**; M2b+M2c codice fatto; **CK2** device. Stessa BoxManager. |
 
 ---
 
