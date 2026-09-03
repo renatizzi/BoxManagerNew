@@ -20,7 +20,7 @@ Su questi branch esistono due product flavor:
 
 ## Regola d’oro
 
-1. **Bug della 1.2** → fix su **`main`** (o PR verso `main`), convalida, eventuale AAB Play solo se SI.
+1. **Bug bloccante della 1.2** (unica ragione per toccare `main` durante il test) → fix su **`main`**, convalida, AAB Play solo per pubblicare quel fix.
 2. Subito dopo: sul branch famiglia  
    `git fetch github main && git merge github/main`  
    (oppure `git pull` da remote dove sta `main`).
@@ -54,7 +54,9 @@ APK debug tipico:
 
 ## Periodo test chiuso Play
 
-Durante il test Google Console: su **`main`** si accettano **solo bugfix** da feedback tester. Freeze nominato: `cursor/versione-test-5409`. **Non** spostare famiglia su `main`. Dopo ogni fix Play, merge su `cursor/family-unione-unificata-e5b5`. Dettaglio: [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md).
+**Fonte congelata:** [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md) riquadro «1.2, sviluppo, ufficiale» (conferma Renato 03/09/2026).
+
+Durante il test: su **`main`** la 1.2 resta **identica**. Si accetta **solo** un aggiornamento per **bug bloccanti** dei tester. Freeze nominato: `cursor/versione-test-5409`. Lo sviluppo (famiglia, inglese) **non** entra in 1.2 a metà test. Alla fine del test quello sviluppo **diventa** l’ufficiale e sostituisce la 1.2. Dopo ogni fix Play (se c’è), merge su `cursor/family-unione-unificata-e5b5`.
 
 ## Cosa fare in caso di conflitto di merge
 

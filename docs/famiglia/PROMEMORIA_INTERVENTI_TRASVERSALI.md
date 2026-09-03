@@ -8,12 +8,12 @@ Elenco di fix/igiene **non legati a una sola fetta**, da affrontare quando si to
 
 ## Contesto post–Play 1.2 (transizione)
 
-Dopo il rilascio Play **1.2**, due filoni paralleli (decisione Renato):
+Dopo il rilascio Play **1.2**, due filoni in **parallelo al test** (decisione Renato, confermata 03/09/2026): la 1.2 su `main` resta identica; questo sviluppo **diventa** l’ufficiale a test chiuso e **sostituisce** la 1.2. Si tocca 1.2 solo per bug bloccanti. Fonte: [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md).
 
 | Filone | Documento | Stato |
 |--------|-----------|-------|
 | **Famiglia** — condivisione archivio | [NOTA_B0_MERGE_FAMIGLIA.md](NOTA_B0_MERGE_FAMIGLIA.md) B0–B5 | **CONVALIDATO** |
-| **Multilingua** — Scelta lingua UI + ricerca EN | [../multilingua/PROMPT_CONTINUITA_M.md](../multilingua/PROMPT_CONTINUITA_M.md) | **M1/CK1 CONVALIDATO**; M2a EN ok; M2b analisi equivoci (S1–S3) |
+| **Multilingua** — Scelta lingua UI + ricerca EN | [../multilingua/PROMPT_CONTINUITA_M.md](../multilingua/PROMPT_CONTINUITA_M.md) | **M1/CK1 CONVALIDATO**; M2a EN ok; M2b motore (S1–S3 SI). Rapporto 1.2: [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md) |
 
 ---
 

@@ -12,9 +12,9 @@ Usare questo file come **unico ingresso** per la prossima sessione agente sul fi
 |------|--------|
 | **Branch famiglia** | `cursor/family-unione-unificata-e5b5` (integrazione) |
 | **Build famiglia** | **1.3-famigliaB5.7** (versionCode **1326**) — P1 su `cursor/p1-igiene-file-5409` |
-| **Play** | `main` → **1.2** (vc 3) — test chiuso Console |
+| **Play** | `main` → **1.2** (vc 3) — test chiuso; **identica** salvo bug bloccanti |
 | **Freeze Play 1.2** | `cursor/versione-test-5409` (snapshot `main`; PR #14) |
-| **Inversione famiglia → main** | **No** durante il test chiuso (idea accantonata; C2 solo dopo SI) |
+| **Dopo il test** | Lo sviluppo (famiglia + inglese) **sostituisce** la 1.2 come ufficiale. Non è un optional. [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md) |
 | **B0–B5 merge** | **CONVALIDATO** — Nota Integrata **9.2** Allegato **4.20** |
 | **Filone correttivi** | P0 chiuso; **P1 CONVALIDATO** B5.7; P2 continuo |
 
@@ -89,7 +89,7 @@ Non riaprire P1 senza nuova evidenza.
 - `BuildConfig.FAMILY_BETA` / UI famiglia solo su flavor `famiglia`.
 - Room: **no** `fallbackToDestructiveMigration()`; `allowBackup=false`.
 - Chiusura voci PROMEMORIA solo con **SI Renato** (o CONVALIDATO equivalente).
-- Play test period: **solo bugfix** su `main` ([STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md)).
+- Play test period: 1.2 su `main` **identica**, salvo bug **bloccanti** ([STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md)).
 
 ---
 
@@ -122,7 +122,7 @@ git merge origin/main
 |------|----------------------|--------|
 | Fix P0/P1 testabile | `1.3-famigliaB5.7`, `B5.8`, … | Incrementare `versionCode` flavor famiglia |
 | Solo doc | Invariato | OK senza bump |
-| Play release tester | `1.2.x` su `main` | Solo flavor `play`, SI Renato |
+| Play release tester | `1.2.x` su `main` | **Solo** se bug **bloccante**; flavor `play` |
 
 Aggiornare sempre: `app/build.gradle.kts`, `INSTALLA_FAMIGLIA.bat`, `docs/famiglia/README.md`, riga famiglia in `BETA_SYNC_POLICY.md`.
 
@@ -144,8 +144,8 @@ Branch: cursor/family-unione-unificata-e5b5
 Build: 1.3-famigliaB5.7
 
 Priorità:
-1) P2: merge main se bug Play tester
-2) Non invertire famiglia su main durante il test Play
+1) P2: se bug **bloccante** Play, fix 1.2 su main poi merge in famiglia
+2) Durante il test non mettere lo sviluppo su main
 3) Non riaprire P0/P1 senza evidenza nuova
 
 Leggi ASSESSMENT + STRATEGIA + PROMEMORIA prima del codice.

@@ -16,7 +16,7 @@
 
 **Regola:** una sessione = un filone (M **oppure** correttivi), per non mescolare regole pipeline / checkpoint.
 
-**Bug Play durante il test:** Renato segnala quando arrivano; fix su branch **famiglia** **poco prima** della fine del test (non bloccano M1). Vedi [PROMPT_CONTINUITA_CORRETTIVI.md](../famiglia/PROMPT_CONTINUITA_CORRETTIVI.md).
+**Bug Play durante il test:** solo se **bloccante**. Allora si aggiorna la **1.2** (`main`), non si mescola lo sviluppo. Sessione [PROMPT_CONTINUITA_CORRETTIVI.md](../famiglia/PROMPT_CONTINUITA_CORRETTIVI.md). Il filone M non si ferma.
 
 ---
 
@@ -34,7 +34,7 @@
 | **Prossimo pacchetto** | Completare M2b (test EN campione) poi **M2c** UI ricerca |
 | **Branch lavoro** | `cursor/multilingua-m2b-5409` |
 | **Branch base** | `cursor/multilingua-m2a-5409` (EN verificata) |
-| **Play** | `main` **1.2** — test chiuso ~2 sett.; **non** merge M su `main` senza SI |
+| **Play** | `main` **1.2** identica per tutto il test. Sviluppo (famiglia + EN) in parallelo; a test chiuso **diventa** l’ufficiale e **sostituisce** la 1.2. Si tocca 1.2 **solo** per bug bloccanti. Fonte: [STRATEGIA_UNIFICAZIONE.md](../famiglia/STRATEGIA_UNIFICAZIONE.md) |
 | **Famiglia** | **1.3-famigliaB5.7** — P1 CONVALIDATO; eventuali bug Play → fix famiglia **a fine test** |
 | **Ricerca avanzata EN** | Pipeline 0–10 invariata; **niente** traduttore EN→IT; **niente** interprete semantico (Nota 3.3.9) |
 | **Checkpoint** | **CK0** tabelle EN verificate; **S1–S3 SI**; **CK1** ✅, **CK2** |
@@ -58,7 +58,7 @@
 1. **Fonti ufficiali:** alias, messaggi 2.6, matrice indicatori EN → importare da Nota/Excel, non tradurre a memoria.
 2. **Pipeline 0–10:** invariata; solo input locale-aware (`pipeline-ufficiale.mdc`).
 3. **Dati utente:** nomi archivio non tradotti.
-4. **Test Play aperto:** branch M dedicato; merge `main` solo con SI / post-test.
+4. **Test Play aperto:** la 1.2 su `main` resta identica. M e famiglia **non** si copiano su `main` a metà test. A test chiuso quello sviluppo **è** la nuova ufficiale (sostituisce 1.2). Unica eccezione: bug **bloccante** tester → aggiornamento 1.2. Vietato dire «merge su main solo con SI» per le feature. Dettaglio: [STRATEGIA_UNIFICAZIONE.md](../famiglia/STRATEGIA_UNIFICAZIONE.md).
 5. **CK0 obbligatorio** prima del primo commit che tocca `domain/search` per EN.
 6. **Guida rapida in-app** (`QuickStartGuideCopy`, topbar «Guida»): **M1 obbligatorio**, verificata in **CK1** (§8 famiglia incluso). **Ritocchi testuali** (semplificazione) possono essere integrati da Renato in M1d prima del CK1.
 7. **Branch base:** tutto il nuovo sviluppo va su `famiglia` (e suoi feature branch `cursor/...`). `main` è riservato al test Google Play — **mai** usarlo come base di sviluppo.
@@ -94,7 +94,7 @@ Renato non programma e non gestisce branch da riga di comando. Le istruzioni di 
 | **M2a** | Bozza tabelle EN in Nota | **CK0** (prima di M2b) |
 | **M2b** | Motore ricerca locale-aware EN | — |
 | **M2c** | UI ricerca + test suite EN | **CK2** |
-| **M3** | Screenshot Play, merge main, release | SI prodotto |
+| **M3** | Passaggio in Play della versione ufficiale (famiglia + EN al posto della 1.2), screenshot, versionCode | Via Console a **test chiuso** |
 
 L’agente esegue **M1a→M1d** in sequenza senza fermarsi, salvo KO test/build.
 

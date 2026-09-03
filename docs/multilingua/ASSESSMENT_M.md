@@ -5,7 +5,7 @@
 **Obiettivo prodotto:** massimizzare distribuzione Play con **italiano + inglese** (non 29 lingue in V1)  
 **Strumento:** **Cursor** (repo + Nota ufficiale); Play Console solo canale publish / listing opzionale  
 **Riferimento prodotto:** Nota Integrata **3.6.6** Scelta lingua (Impostazioni — «Prossime implementazioni»)  
-**Timing:** **dopo** test chiuso Play verde o SI esplicito a deviare — **non** mescolare con correttivi P0/P1/P2 in corso
+**Timing:** in **parallelo** al test Play 1.2 (SI 01/09/2026). La 1.2 su `main` resta identica; a test chiuso questo sviluppo **sostituisce** la 1.2. Non mescolare le sessioni con i correttivi P2.
 
 ---
 
@@ -110,8 +110,8 @@ Componenti **intrinsecamente linguistici** (non derivabili da Gemini Play):
 |---------|----------|
 | Scelta lingua | **Comune** (Impostazioni, entrambi i flavor) |
 | Copy famiglia (`FamilyMergeCopy`) | Localizzare in M1; visibile solo `FAMILY_BETA` |
-| Merge famiglia → `main` | Solo dopo strategia C2 (non durante test Play) |
-| Branch lavoro suggerito | `cursor/multilingua-m*-5409` off `family-unione` o `main` post-test |
+| Rapporto con Play 1.2 | Durante il test: M **non** entra in 1.2. A test chiuso: M (con famiglia) **è** l’ufficiale. [STRATEGIA_UNIFICAZIONE.md](../famiglia/STRATEGIA_UNIFICAZIONE.md) |
+| Branch lavoro | `cursor/multilingua-m*-5409` da base famiglia — **mai** da `main` durante il test |
 
 ### 2.6 Play Console — valore effettivo per BoxManager
 
@@ -230,8 +230,8 @@ Ogni pacchetto è **chiudibile dall’agente** senza intervento Renato, salvo i 
 
 | | |
 |-|-|
-| **Scope** | Screenshot Play EN; allineamento `main` se test Play chiuso; bump versione |
-| **Dipende** | Test Play verde + merge policy famiglia |
+| **Scope** | A test Play **chiuso**: la versione di sviluppo (famiglia + EN) **sostituisce** la 1.2 come ufficiale; screenshot EN; versionCode |
+| **Dipende** | Fine test + via Console (non un secondo «SI vuoi l’inglese in Play?») |
 
 ---
 
@@ -243,7 +243,7 @@ Ogni pacchetto è **chiudibile dall’agente** senza intervento Renato, salvo i 
 | Regressioni pipeline IT | Test IT invariati; locale esplicito nei test |
 | Dimenticare stringhe in Kotlin | Checklist grep `"[A-ZÀ-9]` post M1 |
 | Scope creep (29 lingue) | **Fuori scope** V1 — solo IT/EN |
-| Conflitto con test Play | M1/M2 su branch dedicato; merge `main` solo post-test o SI |
+| Conflitto con test Play | M1/M2 su branch dedicato. `main` / 1.2 identica fino a fine test, salvo bug bloccanti. Poi lo sviluppo **è** l’ufficiale. |
 | CSV / import header italiani | Decidere in CK0 se header restano IT (consigliato V1) |
 
 ---
@@ -285,11 +285,11 @@ L’agente lavora in autonomia **tra** un checkpoint e l’altro.
 
 | Periodo | Filone |
 |---------|--------|
-| **Ora (~2 sett. test Play)** | **M2b motore EN** in corso (`cursor/multilingua-m2b-5409`). S1–S3 SI. Non merge su `main` senza SI |
+| **Ora (test Play 1.2 aperto)** | **M2b motore EN** in corso. La 1.2 su `main` **non si tocca**. A fine test questa linea di sviluppo **sostituisce** la 1.2. |
 | **Parallelo** | M0 listing EN (doc) se utile |
-| **Segnalazioni tester Play** | Renato le inoltra; fix su **famiglia** **poco prima** fine test — sessione [PROMPT_CONTINUITA_CORRETTIVI](../famiglia/PROMPT_CONTINUITA_CORRETTIVI.md) |
-| **Fine test Play** | Allineamento `main` (T2 categoria, eventuali bugfix); valutare merge M → play |
-| **Non fare** | Merge famiglia/M su `main` durante test **senza SI**; invertire famiglia su main |
+| **Segnalazioni tester Play** | Solo se **bloccanti** → aggiornamento **1.2** (`main`). Sessione [PROMPT_CONTINUITA_CORRETTIVI](../famiglia/PROMPT_CONTINUITA_CORRETTIVI.md) |
+| **Fine test Play** | Lo sviluppo (famiglia + EN + correttivi) **diventa** l’app ufficiale e sostituisce la 1.2. Via Console in sessione dedicata. |
+| **Non fare** | Feature su `main` durante il test. Chiedere «SI per merge M su main» come se fosse optional. Tenere la 1.2 come ufficiale dopo il test. |
 
 ---
 
