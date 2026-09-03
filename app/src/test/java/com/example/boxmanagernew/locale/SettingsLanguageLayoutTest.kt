@@ -10,6 +10,11 @@ class SettingsLanguageLayoutTest {
     fun settings_hasLanguageChoiceCard() {
         val xml = layoutSource()
         assertTrue(xml.contains("android:id=\"@+id/cardLanguage\""))
+        assertTrue(xml.contains("@string/settings_language_hint"))
+        val languageIndex = xml.indexOf("android:id=\"@+id/cardLanguage\"")
+        val appearanceIndex = xml.indexOf("@string/settings_appearance")
+        assertTrue(languageIndex > 0)
+        assertTrue(appearanceIndex > languageIndex)
         assertTrue(xml.contains("android:id=\"@+id/optionItalian\""))
         assertTrue(xml.contains("android:id=\"@+id/optionEnglish\""))
         assertTrue(xml.contains("@string/settings_language_title"))

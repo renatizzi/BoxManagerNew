@@ -115,6 +115,7 @@
     <string name="settings_save">SALVA</string>
     <string name="settings_saved">Salvato</string>
     <string name="settings_language_title">Scelta lingua</string>
+    <string name="settings_language_hint">Italiano o English. La scelta resta salvata.</string>
     <string name="settings_language_italian">Italiano</string>
     <string name="settings_language_english">English</string>
 

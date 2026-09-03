@@ -79,6 +79,7 @@ class SettingsActivity : BaseActivity() {
         setupBottomNav()
 
         refreshAppShell()
+        updateLanguageSelection()
     }
 
     private fun setupViews() {
@@ -222,6 +223,9 @@ class SettingsActivity : BaseActivity() {
     }
 
     private fun setupLanguageSelector() {
+
+        findViewById<View>(R.id.cardLanguage).visibility =
+            View.VISIBLE
 
         updateLanguageSelection()
 
