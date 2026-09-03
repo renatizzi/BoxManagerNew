@@ -177,6 +177,7 @@
 
     <!-- Dialog copy -->
     <string name="dialog_last_modified_prefix">Last modified: %1$s</string>
+    <string name="dialog_new_location">New location</string>
     <string name="dialog_new_category">New category</string>
     <string name="dialog_edit_category">Edit category</string>
     <string name="dialog_new_object">New object</string>
