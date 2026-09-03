@@ -319,6 +319,61 @@ class SearchOfficialPipelineEnTest {
     }
 
     @Test
+    fun f8OfficialVariants_routeToEngineB() {
+
+        val archive =
+            crossCategoryArchive()
+
+        SearchLocaleContext.run(
+            SearchLocale.EN
+        ) {
+            SearchF8Pattern.VARIANTS.forEach { question ->
+
+                val response =
+                    dispatchEn(
+                        question,
+                        archive
+                    )
+
+                assertFalse(
+                    question,
+                    response.requiresClarification
+                )
+                assertEquals(
+                    question,
+                    SearchRequestType.ARCHIVE_QUERY,
+                    response.requestType
+                )
+                assertTrue(
+                    question,
+                    response.success
+                )
+                assertTrue(
+                    question,
+                    response.message.startsWith(
+                        SearchF8Pattern.HEADING
+                    )
+                )
+                assertEquals(
+                    question,
+                    SearchF8Pattern.ID,
+                    response.debugMarker
+                        .orEmpty()
+                        .lineSequence()
+                        .first {
+                            it.startsWith(
+                                "[PATTERN]"
+                            )
+                        }
+                        .substringAfter(
+                            "[PATTERN] "
+                        )
+                )
+            }
+        }
+    }
+
+    @Test
     fun englishF8VariantsDoNotUseItalianIndexSix() {
 
         SearchLocaleContext.run(

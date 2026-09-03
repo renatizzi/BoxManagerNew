@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import com.example.boxmanagernew.domain.locale.LocalePreference
+import com.example.boxmanagernew.domain.search.SearchLocale
+import com.example.boxmanagernew.domain.search.SearchLocaleContext
 
 /**
  * Applica la lingua persistita (3.6.6) via AppCompat per-app locales.
@@ -44,6 +46,10 @@ object LocaleManager {
     ) {
         val resolved =
             LocalePreference.resolve(languageTag)
+
+        SearchLocaleContext.setDisplayLocale(
+            SearchLocale.fromTag(resolved)
+        )
 
         if (persist || !hasStoredValue(context)) {
             context.getSharedPreferences(
