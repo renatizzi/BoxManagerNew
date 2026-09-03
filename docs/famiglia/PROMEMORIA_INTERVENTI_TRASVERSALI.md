@@ -48,14 +48,23 @@ Verificare **ogni** punto che scrive un file e allineare dove ha senso al criter
 
 ---
 
-## P2 — Sync bugfix Play 1.2 ↔ BoxManager di sviluppo
+**P2** — Sync bugfix Play 1.2 ↔ sviluppo: [BETA_SYNC_POLICY.md](BETA_SYNC_POLICY.md).
 
-Vedi [BETA_SYNC_POLICY.md](BETA_SYNC_POLICY.md) e [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md): fix sulla 1.2 → riportarlo sullo sviluppo; non caricare lo sviluppo su Play durante il test.
+---
+
+## Backlog aperto — indicazioni Renato fuori contesto
+
+Quando Renato in test dice «annota» / «non c’entra con questa fetta»: **scrivere qui nella stessa sessione**, con ID, e committare. Non basta dirlo a voce né metterlo solo nel prompt del filone in corso.
+
+| ID | Data | Indicazione | Stato |
+|----|------|-------------|-------|
+| **B-SEL-CARTELLA** | sessione M1 (CK1) | Selettore cartella (Backup, Esporta, Condivisione tabelle, …): estendere la scelta anche ai drive **non riconosciuti direttamente da Android** (es. disco di rete locale / NAS SMB) | **Aperto** — fuori dalla fetta in cui è emerso; da fare in igiene file / dopo M |
 
 ---
 
 ## Come usare questo file
 
-- Aprire una **nuova sessione** correttivi: leggere [ASSESSMENT_CORRETTIVI.md](ASSESSMENT_CORRETTIVI.md) + tabella P0.
+- Aprire una **nuova sessione** correttivi: leggere [ASSESSMENT_CORRETTIVI.md](ASSESSMENT_CORRETTIVI.md) + tabella P0 + **Backlog aperto**.
 - Chiudere una voce solo dopo **SI Renato** (o criterio equivalente CONVALIDATO).
 - Non duplicare qui il dettaglio prodotto delle fette B0–B5 → [NOTA_B0_MERGE_FAMIGLIA.md](NOTA_B0_MERGE_FAMIGLIA.md).
+- Indicazione fuori contesto in un altro filone: stessa tabella Backlog aperto, stessa sessione, commit. Regola `.cursor/rules/annotazioni-renato.mdc`.

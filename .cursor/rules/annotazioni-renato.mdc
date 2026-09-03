@@ -1,0 +1,14 @@
+---
+description: Indicazioni Renato fuori contesto vanno nel Promemoria, committate nella stessa sessione.
+alwaysApply: true
+---
+
+# Annotazioni Renato (fuori contesto)
+
+Se durante un test Renato segnala un’anomalia o un miglioramento **fuori dalla fetta in corso** («annota», «prendi nota», «non c’entra ma è importante»):
+
+1. **Scriverlo subito** in `docs/famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md`, sezione **Backlog aperto**, con ID, data, testo suo, stato Aperto.
+2. **Committare e pushare in quella stessa sessione.** Confermare a Renato l’ID (es. `B-SEL-CARTELLA`).
+3. Non basta dirlo in chat. Non basta metterlo solo nel prompt del filone attuale (le sessioni successive non lo aprono).
+
+Voce già aperta: **B-SEL-CARTELLA** — selettore cartella anche su drive non visti da Android (NAS / disco di rete locale).

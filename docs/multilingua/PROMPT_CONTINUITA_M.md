@@ -177,7 +177,7 @@ Obiettivo: SearchLocale + alias/matrix EN; test IT invariati; campione EN 0–10
 
 | ID | Richiesta Renato | Note |
 |----|------------------|------|
-| **B-SEL-CARTELLA** | Selettore cartella (Backup, Esporta, Condivisione tabelle, …): estendere la scelta anche a drive non riconosciuti direttamente da Android (es. disco di rete locale / NAS SMB) | Fuori scope M1; valutare in filone igiene file o post-M1 |
+| **B-SEL-CARTELLA** | Selettore cartella (Backup, Esporta, Condivisione tabelle, …): estendere la scelta anche a drive non riconosciuti direttamente da Android (es. disco di rete locale / NAS SMB) | **Aperto** — copia viva in [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md) |
 | **B-PALETTE-ACCENT** | Colori card funzione devono seguire la palette Impostazioni **indipendentemente dalla lingua** | Risolto con `ThemeAccentTextViews` (ID view, non testo IT) |
 | **B-FAMILY-DOMAIN-ERR** | Errori dominio merge famiglia (`SharedTablesMerger` / `FamilyInventoryMerger` / reader) ancora IT in path blocco rarissimi | Opzionale post-M1d; non bloccano CK1 UI |
 
