@@ -20,7 +20,7 @@
 
 ---
 
-## Stato al 01/09/2026
+## Stato al 03/09/2026
 
 | Voce | Valore |
 |------|--------|
@@ -28,13 +28,14 @@
 | **Piano** | **Approvato SI Renato** |
 | **Lingue V1** | Italiano (default) + English |
 | **Play Console traduzione app** | **Non usare** — lavoro in Cursor |
-| **Prossimo pacchetto** | **M2a / CK0** (tabelle EN Nota) — **M1d chiuso**; stop prima di toccare `domain/search` |
-| **Branch lavoro** | `cursor/multilingua-m1a-5409` (include merge `cursor/guida-ritocchi-5409` PR #17) |
-| **Branch base** | `cursor/p1-igiene-file-5409` (B5.7) + **obbligatorio** `cursor/guida-ritocchi-5409` per Guida |
+| **M1 / CK1** | **CONVALIDATO SI Renato device 03/09/2026** (M1a–M1d su PR **#18**) |
+| **Prossimo pacchetto** | **M2a** — bozza tabelle EN in Nota → **CK0** prima di `domain/search` |
+| **Branch lavoro** | `cursor/multilingua-m1a-5409` (PR **#18**) |
+| **Branch base** | `cursor/p1-igiene-file-5409` (B5.7) |
 | **Play** | `main` **1.2** — test chiuso ~2 sett.; **non** merge M su `main` senza SI |
 | **Famiglia** | **1.3-famigliaB5.7** — P1 CONVALIDATO; eventuali bug Play → fix famiglia **a fine test** |
-| **Ricerca avanzata EN** | **M2** — **CK0** prima di `domain/search` EN |
-| **Checkpoint** | **CK0**, **CK1**, **CK2** (assessment §6) |
+| **Ricerca avanzata EN** | **M2** — **CK0** obbligatorio prima di toccare `domain/search` |
+| **Checkpoint** | **CK0** (prossimo), **CK1** ✅, **CK2** |
 
 ### Documenti vincolanti (leggere prima di codice)
 

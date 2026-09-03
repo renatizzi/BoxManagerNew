@@ -255,7 +255,7 @@ L’agente lavora in autonomia **tra** un checkpoint e l’altro.
 | ID | Quando | Cosa chiediamo a Renato | Blocca |
 |----|--------|-------------------------|--------|
 | **CK0** | Prima del **primo commit M2** (motore ricerca) | **SI** sulla bozza tabelle EN in Nota (alias Core, indicatori, 2.6, F7/F8) | M2b–M2c |
-| **CK1** | M1 completo (M1a–M1d) | **SI device**: Scelta lingua; navigazione principale EN; **Guida rapida (topbar) intera in EN**; backup/import leggibili | M2 (consigliato) / release M1 |
+| **CK1** | M1 completo (M1a–M1d) | **SI device 03/09/2026** — CONVALIDATO | — (sbloccato M2a / CK0) |
 | **CK2** | M2 completo | **SI device**: campione **10 domande EN** da Matrice Test (stessi esiti attesi che IT) | Chiusura filone M |
 
 **M0** e lavoro interno M1a–M1c **non** richiedono checkpoint intermedî.
@@ -265,11 +265,11 @@ L’agente lavora in autonomia **tra** un checkpoint e l’altro.
 ## 7. Criteri di done
 
 ### M1 done
-- [ ] Impostazioni → Scelta lingua IT/EN persistente
-- [ ] **Guida rapida in-app (`QuickStartGuideActivity`) tradotta per intero**, incluso §8 famiglia se `FAMILY_BETA`
-- [ ] Nessun testo utente visibile solo in italiano nelle schermate core (dashboard, contenitori, categorie, utility, impostazioni)
-- [ ] Test unitari play + famiglia verdi
-- [ ] CK1 **SI Renato**
+- [x] Impostazioni → Scelta lingua IT/EN persistente
+- [x] **Guida rapida in-app (`QuickStartGuideActivity`) tradotta per intero**, incluso §8 famiglia se `FAMILY_BETA`
+- [x] Nessun testo utente visibile solo in italiano nelle schermate core (dashboard, contenitori, categorie, utility, impostazioni)
+- [x] Test unitari play + famiglia verdi
+- [x] CK1 **SI Renato** (device 03/09/2026)
 
 ### M2 done
 - [ ] Domande EN attraversano pipeline 0–10 come IT
