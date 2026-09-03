@@ -138,4 +138,113 @@
     <!-- List item placeholders -->
     <string name="item_object_icon">🧱</string>
 
+    <!-- Common dialogs -->
+    <string name="common_yes">Yes</string>
+    <string name="common_no">No</string>
+    <string name="common_confirm">Confirm</string>
+    <string name="common_cancel">Cancel</string>
+    <string name="common_add">Add</string>
+    <string name="common_save">Save</string>
+    <string name="common_folder">Folder</string>
+    <string name="common_sort">SORT</string>
+
+    <!-- Page headers -->
+    <string name="page_dashboard_title">Dashboard</string>
+    <string name="page_dashboard_subtitle">Archive overview</string>
+    <string name="page_boxes_title">Containers</string>
+    <string name="page_boxes_subtitle">Managing containers and their contents</string>
+    <string name="page_utility_title">Utility</string>
+    <string name="page_utility_subtitle">Tools to help manage the archive</string>
+    <string name="page_settings_title">Settings</string>
+    <string name="page_settings_subtitle">Archive setup</string>
+    <string name="page_backup_title">Archive backup</string>
+    <string name="page_backup_subtitle">Create a full copy of the archive</string>
+    <string name="page_restore_title">Restore archive</string>
+    <string name="page_restore_subtitle">Full replacement of the archive</string>
+    <string name="page_import_title">Import data</string>
+    <string name="page_qr_title">QR code</string>
+    <string name="page_qr_label_title">Label preview</string>
+    <string name="page_search_results_title">Found objects</string>
+    <string name="page_search_results_subtitle">Archive search results</string>
+    <string name="page_categories_title">Categories</string>
+    <string name="page_categories_subtitle">Container classification</string>
+    <string name="page_locations_title">Location</string>
+    <string name="page_locations_subtitle">Usual storage locations</string>
+    <string name="restore_safety_copy">Safety copy</string>
+    <string name="restore_safety_copy_in">Safety copy in: %1$s</string>
+    <string name="restore_file_selected">Selected file: %1$s</string>
+    <string name="settings_theme_current_dark">Current theme: Dark</string>
+
+    <!-- Dialog copy -->
+    <string name="dialog_last_modified_prefix">Last modified: %1$s</string>
+    <string name="dialog_new_location">New location</string>
+    <string name="dialog_delete_contained_objects">Also delete the objects inside?</string>
+    <string name="dialog_delete_confirm">Confirm deletion?</string>
+    <string name="dialog_move_confirm">Confirm move?</string>
+    <string name="dialog_file_exists">File already exists. Replace it?</string>
+    <string name="dialog_confirm_question">Confirm?</string>
+    <string name="msg_cannot_delete_hidden">Cannot delete: some selected items are not visible. Tap here to remove the filter.</string>
+
+    <!-- Backup / restore messages -->
+    <string name="msg_backup_completed">Backup completed</string>
+    <string name="msg_folder_inaccessible">Folder not accessible. Choose the folder again.</string>
+    <string name="msg_backup_write_failed">Backup not created. Try again.</string>
+    <string name="msg_backup_invalid_archive">Backup not created. Invalid archive.</string>
+    <string name="msg_restore_replace_warning">Restore will replace the current archive.</string>
+    <string name="msg_restore_confirm">Restore will replace all data. Continue?</string>
+    <string name="msg_restore_completed">Restore completed</string>
+    <string name="msg_restore_invalid_file">Invalid backup file.</string>
+    <string name="msg_restore_incompatible">This backup is not compatible.</string>
+    <string name="msg_restore_failed">Restore not performed. Try again.</string>
+    <string name="label_file_name">File name: %1$s</string>
+    <string name="label_folder_name">Folder: %1$s</string>
+    <string name="label_size">Size: %1$s</string>
+    <string name="label_date">Date: %1$s</string>
+    <string name="label_bytes">%1$d bytes</string>
+    <string name="label_kilobytes">%1$.1f KB</string>
+
+    <!-- Import report (CSV headers stay Italian) -->
+    <string name="import_check_file_exists">file exists</string>
+    <string name="import_check_format">correct format</string>
+    <string name="import_check_structure">structure matches the official template</string>
+    <string name="import_check_required">required fields present</string>
+    <string name="import_msg_cancelled">If any check fails, import is cancelled without changing the archive.</string>
+    <string name="import_report_records_read">records read</string>
+    <string name="import_report_imported">records imported</string>
+    <string name="import_report_ignored">records ignored (duplicates)</string>
+    <string name="import_report_discarded">records discarded due to error</string>
+    <string name="import_msg_box_dependency">a Container cannot be imported if it refers to a Category or Location that does not exist</string>
+    <string name="import_msg_object_dependency">an Object cannot be imported if it refers to a Container that does not exist</string>
+    <string name="import_msg_relation_cancelled">any violation of the data model relationships cancels the import</string>
+    <string name="label_containers_count">Containers: %1$d</string>
+    <string name="label_objects_count">Objects: %1$d</string>
+    <string name="label_categories_count">Categories: %1$d</string>
+    <string name="label_locations_count">Locations: %1$d</string>
+
+    <!-- View / print / export -->
+    <string name="view_page_title_boxes">Containers - Managing containers and their contents</string>
+    <string name="view_page_title_found_objects">Found objects - Archive search results</string>
+    <string name="view_page_title_categories">Categories - Container classification</string>
+    <string name="view_page_title_locations">Location - Usual storage locations</string>
+    <string name="view_objects_in_box">Object list - Contents of box %1$s</string>
+    <string name="view_filter_line">List filtered by \"%1$s\" on %2$s</string>
+    <string name="view_count_boxes">No. containers: %1$d</string>
+    <string name="view_count_boxes_selected">No. containers: %1$d of which %2$d selected</string>
+    <string name="view_count_objects">No. objects: %1$d</string>
+    <string name="view_count_categories">No. categories: %1$d</string>
+    <string name="view_count_locations">No. locations: %1$d</string>
+
+    <!-- QR scan -->
+    <string name="qr_unrecognized">This QR code does not belong to a BoxManager archive.</string>
+    <string name="qr_box_missing">The container for this QR code is not in the archive.</string>
+    <string name="qr_read_error">Unable to read the QR code. Try again.</string>
+    <string name="qr_delete_confirm">If you delete the container, the QR label will no longer work. Confirm deletion?</string>
+
+    <!-- Privacy -->
+    <string name="privacy_settings_label">Privacy policy</string>
+    <string name="privacy_camera_rationale">BoxManager uses the camera only to read the container QR code. Images are not saved or sent.</string>
+    <string name="privacy_camera_continue">Continue</string>
+    <string name="privacy_camera_cancel">Cancel</string>
+    <string name="privacy_camera_denied">Camera permission not granted. The QR code cannot be read.</string>
+
 </resources>

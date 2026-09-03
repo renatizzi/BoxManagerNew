@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.boxmanagernew.R
 import com.example.boxmanagernew.backup.config.BackupConfiguration
 import com.example.boxmanagernew.backup.facade.BackupFacade
 import com.example.boxmanagernew.backup.model.BackupArchive
@@ -33,7 +34,8 @@ class RestoreViewModel(
     private val objectTypeDao: ObjectTypeDao,
     private val backupFacade: BackupFacade,
     private val inspector: BackupPackageInspector = BackupPackageInspector(),
-    private val zipReader: BackupZipReader = BackupZipReader()
+    private val zipReader: BackupZipReader = BackupZipReader(),
+    private val appContext: android.content.Context
 ) : ViewModel() {
 
     data class UserMessage(
@@ -95,7 +97,7 @@ class RestoreViewModel(
 
                         _preview.value = ""
                         _message.value = UserMessage(
-                            BackupConfiguration.MSG_RESTORE_INCOMPATIBLE,
+                            BackupConfiguration.restoreIncompatible(appContext),
                             blockingError = true
                         )
                     }
@@ -104,7 +106,7 @@ class RestoreViewModel(
 
                         _preview.value = ""
                         _message.value = UserMessage(
-                            BackupConfiguration.MSG_RESTORE_INVALID_FILE,
+                            BackupConfiguration.restoreInvalidFile(appContext),
                             blockingError = true
                         )
                     }
@@ -114,7 +116,7 @@ class RestoreViewModel(
 
                 _preview.value = ""
                 _message.value = UserMessage(
-                    BackupConfiguration.MSG_RESTORE_INVALID_FILE,
+                    BackupConfiguration.restoreInvalidFile(appContext),
                     blockingError = true
                 )
 
@@ -169,9 +171,9 @@ class RestoreViewModel(
 
                     _message.value = UserMessage(
                         if (preResult.folderInaccessible) {
-                            BackupConfiguration.MSG_FOLDER_INACCESSIBLE
+                            BackupConfiguration.folderInaccessible(appContext)
                         } else {
-                            BackupConfiguration.MSG_RESTORE_FAILED
+                            BackupConfiguration.restoreFailed(appContext)
                         },
                         blockingError = true
                     )
@@ -190,7 +192,7 @@ class RestoreViewModel(
             } catch (_: Exception) {
 
                 _message.value = UserMessage(
-                    BackupConfiguration.MSG_RESTORE_FAILED,
+                    BackupConfiguration.restoreFailed(appContext),
                     blockingError = true
                 )
 
@@ -212,12 +214,12 @@ class RestoreViewModel(
         val metadata = result.metadata
 
         return buildString {
-            appendLine("Contenitori: ${metadata.boxCount}")
-            appendLine("Oggetti: ${metadata.objectCount}")
-            appendLine("Categorie: ${metadata.categoryCount}")
-            appendLine("Luoghi: ${metadata.locationCount}")
+            appendLine(appContext.getString(R.string.label_containers_count, metadata.boxCount))
+            appendLine(appContext.getString(R.string.label_objects_count, metadata.objectCount))
+            appendLine(appContext.getString(R.string.label_categories_count, metadata.categoryCount))
+            appendLine(appContext.getString(R.string.label_locations_count, metadata.locationCount))
             appendLine()
-            append(BackupConfiguration.MSG_RESTORE_REPLACE_WARNING)
+            append(BackupConfiguration.restoreReplaceWarning(appContext))
         }
     }
 
@@ -231,10 +233,10 @@ class RestoreViewModel(
         ).format(Date())
 
         return buildString {
-            appendLine(BackupConfiguration.MSG_RESTORE_COMPLETED)
+            appendLine(BackupConfiguration.restoreCompleted(appContext))
             appendLine()
-            appendLine("Nome file: $sourceFile")
-            append("Data: $whenText")
+            appendLine(appContext.getString(R.string.label_file_name, sourceFile))
+            append(appContext.getString(R.string.label_date, whenText))
         }
     }
 }

@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import com.example.boxmanagernew.R
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -15,7 +16,6 @@ object UiUtils {
 
     private const val SORT_ASC = "▲"
     private const val SORT_DESC = "▼"
-    private const val SORT_LABEL = "ORDINA"
     private const val SORT_TEXT_SIZE = 18f
     private const val DATE_PATTERN = "dd/MM/yyyy HH:mm"
 
@@ -29,7 +29,9 @@ object UiUtils {
             else SORT_DESC
 
         button.text =
-            "$SORT_LABEL $arrow"
+            button.context.getString(
+                R.string.common_sort
+            ) + " $arrow"
 
         button.textSize =
             SORT_TEXT_SIZE

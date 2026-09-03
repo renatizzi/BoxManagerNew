@@ -91,8 +91,8 @@ class RestoreActivity : BaseActivity() {
         setupAppShell()
 
         setupPageHeader(
-            title = "Ripristino Archivio",
-            subtitle = "Sostituzione completa dell'archivio"
+            title = getString(R.string.page_restore_title),
+            subtitle = getString(R.string.page_restore_subtitle)
         )
 
         setupBottomNav()
@@ -108,7 +108,8 @@ class RestoreActivity : BaseActivity() {
             CategoryRepositoryImpl(db.categoryDao(), db.boxDao()),
             LocationRepositoryImpl(db.locationDao(), db.boxDao()),
             db.objectTypeDao(),
-            BackupFacade()
+            BackupFacade(),
+            applicationContext
         )
 
         viewModel = ViewModelProvider(this, factory)[RestoreViewModel::class.java]
@@ -142,7 +143,7 @@ class RestoreActivity : BaseActivity() {
                 if (name.isBlank()) {
                     ""
                 } else {
-                    "File selezionato: $name"
+                    getString(R.string.restore_file_selected, name)
                 }
         }
 
@@ -155,13 +156,13 @@ class RestoreActivity : BaseActivity() {
 
             if (
                 userMessage.text.startsWith(
-                    BackupConfiguration.MSG_RESTORE_COMPLETED
+                    BackupConfiguration.restoreCompleted(this)
                 )
             ) {
                 showSafetyCopies = false
                 refreshFileList()
             } else if (
-                userMessage.text == BackupConfiguration.MSG_RESTORE_FAILED
+                userMessage.text == BackupConfiguration.restoreFailed(this)
             ) {
                 showSafetyCopies = true
                 refreshFileList()
@@ -219,7 +220,7 @@ class RestoreActivity : BaseActivity() {
         }
 
         if (bytes == null) {
-            showBlocking(BackupConfiguration.MSG_RESTORE_INVALID_FILE)
+            showBlocking(BackupConfiguration.restoreInvalidFile(this))
             return
         }
 
@@ -288,7 +289,7 @@ class RestoreActivity : BaseActivity() {
         }
 
         if (persister.resolvedFolderDisplayName(folderUri!!) == null) {
-            showBlocking(BackupConfiguration.MSG_FOLDER_INACCESSIBLE)
+            showBlocking(BackupConfiguration.folderInaccessible(this))
             pendingRestoreAfterFolder = true
             folderPicker.launch(null)
             return
@@ -302,7 +303,7 @@ class RestoreActivity : BaseActivity() {
         val uri = folderUri ?: return
 
         if (persister.resolvedFolderDisplayName(uri) == null) {
-            showBlocking(BackupConfiguration.MSG_FOLDER_INACCESSIBLE)
+            showBlocking(BackupConfiguration.folderInaccessible(this))
             return
         }
 
@@ -324,7 +325,7 @@ class RestoreActivity : BaseActivity() {
                 val trimmed = raw.trim().ifBlank { proposedName }
                 BackupZipPersister.zipFileName(trimmed)
             },
-            title = "Copia di sicurezza"
+            title = getString(R.string.restore_safety_copy)
         )
     }
 
@@ -361,7 +362,7 @@ class RestoreActivity : BaseActivity() {
         val displayName = persister.resolvedFolderDisplayName(uri)
 
         if (displayName == null) {
-            showBlocking(BackupConfiguration.MSG_FOLDER_INACCESSIBLE)
+            showBlocking(BackupConfiguration.folderInaccessible(this))
             return false
         }
 
@@ -438,7 +439,7 @@ class RestoreActivity : BaseActivity() {
 
         etRestoreFolder.setText(displayName)
         tvPreRestoreFolder.text =
-            "Copia di sicurezza in: $displayName"
+            getString(R.string.restore_safety_copy_in, displayName)
     }
 
     private fun showBlocking(text: String) {

@@ -37,7 +37,7 @@ class FamilyExportCoordinatorPolicyTest {
     @Test
     fun req1_dialogUtils_hasCartellaNeutralButton() {
         val source = dialogUtilsSource()
-        assertTrue(source.contains("setNeutralButton(\"Cartella\""))
+        assertTrue(source.contains("R.string.common_folder"))
         assertTrue(source.contains("onBrowseFolder"))
     }
 

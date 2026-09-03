@@ -51,8 +51,8 @@ class LocationsActivity : BaseActivity() {
         setupAppShell()
 
         setupPageHeader(
-            "Posizione",
-            "Luoghi abituali di custodia"
+            getString(R.string.page_locations_title),
+            getString(R.string.page_locations_subtitle)
         )
         setupPrintAction()
 
@@ -176,9 +176,10 @@ class LocationsActivity : BaseActivity() {
         outputController.print(
             snapshot,
             ViewPrintHeader(
-                title = ViewOutputConfiguration.PAGE_TITLE_LOCATIONS,
-                filterLine = ViewOutputConfiguration.filterLine(""),
+                title = ViewOutputConfiguration.pageTitleLocations(this),
+                filterLine = ViewOutputConfiguration.filterLine(this, ""),
                 countLine = ViewOutputConfiguration.countLocations(
+                    this,
                     snapshot.boxes.size
                 ),
                 nameListStyle = NameListStyle.PLACE_ICON
@@ -223,10 +224,10 @@ class LocationsActivity : BaseActivity() {
 
         val dialog =
             AlertDialog.Builder(this)
-                .setTitle("Nuova posizione")
+                .setTitle(getString(R.string.dialog_new_location))
                 .setView(container)
-                .setNegativeButton("Annulla", null)
-                .setPositiveButton("Aggiungi", null)
+                .setNegativeButton(getString(R.string.common_cancel), null)
+                .setPositiveButton(getString(R.string.common_add), null)
                 .create()
 
         dialog.setOnShowListener {
@@ -288,8 +289,8 @@ class LocationsActivity : BaseActivity() {
             AlertDialog.Builder(this)
                 .setTitle("Modifica posizione")
                 .setView(container)
-                .setNegativeButton("Annulla", null)
-                .setPositiveButton("Salva", null)
+                .setNegativeButton(getString(R.string.common_cancel), null)
+                .setPositiveButton(getString(R.string.common_save), null)
                 .create()
 
         dialog.setOnShowListener {

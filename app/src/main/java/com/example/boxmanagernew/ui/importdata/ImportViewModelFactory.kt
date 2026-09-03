@@ -17,7 +17,8 @@ class ImportViewModelFactory(
     private val locationRepository: LocationRepositoryImpl,
     private val objectTypeDao: ObjectTypeDao,
     private val backupFacade: BackupFacade,
-    private val mergeApplier: ImportMergeApplier
+    private val mergeApplier: ImportMergeApplier,
+    private val appContext: android.content.Context
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -32,7 +33,8 @@ class ImportViewModelFactory(
                 locationRepository = locationRepository,
                 objectTypeDao = objectTypeDao,
                 backupFacade = backupFacade,
-                mergeApplier = mergeApplier
+                mergeApplier = mergeApplier,
+                appContext = appContext
             ) as T
         }
 

@@ -51,7 +51,7 @@ class QrLabelActivity : BaseActivity() {
         setupAppShell()
 
         setupPageHeader(
-            title = "Anteprima etichetta",
+            title = getString(R.string.page_qr_label_title),
             subtitle = ""
         )
 

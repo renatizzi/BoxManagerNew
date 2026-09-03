@@ -63,6 +63,10 @@ class LayoutStringsExtractionTest {
         assertEquals("Contenitori", stringIt("nav_boxes"))
         assertEquals("📤 Share Archive", stringEn("utility_family_catalog"))
         assertEquals("📤 Condividi Archivio", stringIt("utility_family_catalog"))
+        assertEquals("Settings", stringEn("page_settings_title"))
+        assertEquals("Impostazioni", stringIt("page_settings_title"))
+        assertEquals("Yes", stringEn("common_yes"))
+        assertEquals("SI", stringIt("common_yes"))
     }
 
     private fun layout(name: String): String {

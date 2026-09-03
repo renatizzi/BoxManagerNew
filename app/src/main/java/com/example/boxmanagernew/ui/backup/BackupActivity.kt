@@ -52,8 +52,8 @@ class BackupActivity : BaseActivity() {
         setupAppShell()
 
         setupPageHeader(
-            title = "Backup Archivio",
-            subtitle = "Creazione copia completa dell'archivio"
+            title = getString(R.string.page_backup_title),
+            subtitle = getString(R.string.page_backup_subtitle)
         )
 
         setupBottomNav()
@@ -68,7 +68,8 @@ class BackupActivity : BaseActivity() {
             CategoryRepositoryImpl(db.categoryDao(), db.boxDao()),
             LocationRepositoryImpl(db.locationDao(), db.boxDao()),
             db.objectTypeDao(),
-            BackupFacade()
+            BackupFacade(),
+            applicationContext
         )
 
         viewModel = ViewModelProvider(this, factory)[BackupViewModel::class.java]
@@ -131,14 +132,14 @@ class BackupActivity : BaseActivity() {
         val uri = selectedUri
 
         if (uri == null) {
-            showBlocking(BackupConfiguration.MSG_FOLDER_INACCESSIBLE)
+            showBlocking(BackupConfiguration.folderInaccessible(this))
             return
         }
 
         val fileName = viewModel.fileName.value.orEmpty()
 
         if (persister.resolvedFolderDisplayName(uri) == null) {
-            showBlocking(BackupConfiguration.MSG_FOLDER_INACCESSIBLE)
+            showBlocking(BackupConfiguration.folderInaccessible(this))
             return
         }
 
@@ -183,7 +184,7 @@ class BackupActivity : BaseActivity() {
         val displayName = persister.resolvedFolderDisplayName(uri)
 
         if (displayName == null) {
-            showBlocking(BackupConfiguration.MSG_FOLDER_INACCESSIBLE)
+            showBlocking(BackupConfiguration.folderInaccessible(this))
             return
         }
 

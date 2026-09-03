@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.boxmanagernew.R
 import com.example.boxmanagernew.backup.config.BackupConfiguration
 import com.example.boxmanagernew.backup.facade.BackupFacade
 import com.example.boxmanagernew.data.local.dao.ObjectTypeDao
@@ -25,7 +26,8 @@ class BackupViewModel(
     private val categoryRepository: CategoryRepositoryImpl,
     private val locationRepository: LocationRepositoryImpl,
     private val objectTypeDao: ObjectTypeDao,
-    private val backupFacade: BackupFacade
+    private val backupFacade: BackupFacade,
+    private val appContext: android.content.Context
 ) : ViewModel() {
 
     data class UserMessage(
@@ -124,7 +126,7 @@ class BackupViewModel(
 
                     _message.value =
                         UserMessage(
-                            BackupConfiguration.MSG_FOLDER_INACCESSIBLE,
+                            BackupConfiguration.folderInaccessible(appContext),
                             blockingError = true
                         )
 
@@ -132,7 +134,7 @@ class BackupViewModel(
 
                     _message.value =
                         UserMessage(
-                            BackupConfiguration.MSG_WRITE_FAILED,
+                            BackupConfiguration.writeFailed(appContext),
                             blockingError = true
                         )
                 }
@@ -141,7 +143,7 @@ class BackupViewModel(
 
                 _message.value =
                     UserMessage(
-                        BackupConfiguration.MSG_INVALID_ARCHIVE,
+                        BackupConfiguration.invalidArchive(appContext),
                         blockingError = true
                     )
 
@@ -149,7 +151,7 @@ class BackupViewModel(
 
                 _message.value =
                     UserMessage(
-                        BackupConfiguration.MSG_WRITE_FAILED,
+                        BackupConfiguration.writeFailed(appContext),
                         blockingError = true
                     )
 
@@ -193,19 +195,19 @@ class BackupViewModel(
 
         return buildString {
 
-            appendLine(BackupConfiguration.MSG_BACKUP_COMPLETED)
+            appendLine(BackupConfiguration.backupCompleted(appContext))
             appendLine()
-            appendLine("Nome file: ${result.fileName}")
-            appendLine("Cartella: ${result.folderName}")
-            appendLine("Dimensione: ${formatSize(result.sizeBytes)}")
-            append("Data: $whenText")
+            appendLine(appContext.getString(R.string.label_file_name, result.fileName))
+            appendLine(appContext.getString(R.string.label_folder_name, result.folderName))
+            appendLine(appContext.getString(R.string.label_size, formatSize(result.sizeBytes)))
+            append(appContext.getString(R.string.label_date, whenText))
         }
     }
 
     private fun formatSize(bytes: Long): String {
 
         if (bytes < 1024) {
-            return "$bytes byte"
+            return appContext.getString(R.string.label_bytes, bytes)
         }
 
         val kilo = bytes / 1024.0

@@ -26,8 +26,8 @@ class UtilityActivity : BaseActivity() {
         setupAppShell()
 
         setupPageHeader(
-            title = "Utility",
-            subtitle = "Strumenti di supporto alla gestione dell'archivio"
+            title = getString(R.string.page_utility_title),
+            subtitle = getString(R.string.page_utility_subtitle)
         )
 
         setupBottomNav()

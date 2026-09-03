@@ -115,8 +115,8 @@ class CategoriesActivity : BaseActivity() {
 
     private fun setupViews() {
         setupPageHeader(
-            "Categorie",
-            "Classificazione Contenitori"
+            getString(R.string.page_categories_title),
+            getString(R.string.page_categories_subtitle)
         )
 
         contextCard =
@@ -195,11 +195,13 @@ class CategoriesActivity : BaseActivity() {
         outputController.print(
             snapshot,
             ViewPrintHeader(
-                title = ViewOutputConfiguration.PAGE_TITLE_CATEGORIES,
+                title = ViewOutputConfiguration.pageTitleCategories(this),
                 filterLine = ViewOutputConfiguration.filterLine(
+                    this,
                     editSearch.text.toString().trim()
                 ),
                 countLine = ViewOutputConfiguration.countCategories(
+                    this,
                     snapshot.boxes.size
                 ),
                 nameListStyle = NameListStyle.CATEGORY_ICON
@@ -717,7 +719,7 @@ class CategoriesActivity : BaseActivity() {
             .setTitle(title)
             .setView(view)
             .setNegativeButton(
-                "Annulla",
+                getString(R.string.common_cancel),
                 null
             )
             .setPositiveButton(

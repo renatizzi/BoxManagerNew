@@ -1,5 +1,7 @@
 package com.example.boxmanagernew.importdata.config
 
+import android.content.Context
+import com.example.boxmanagernew.R
 import com.example.boxmanagernew.storage.StorageFolderConfiguration
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -121,6 +123,48 @@ object ImportConfiguration {
 
     const val MSG_RELATION_CANCELLED =
         "qualsiasi violazione delle relazioni previste dal modello dati comporta l'annullamento dell'importazione"
+
+    fun localizeCheck(context: Context, check: String): String {
+        return when (check) {
+            CHECK_FILE_EXISTS ->
+                context.getString(R.string.import_check_file_exists)
+            CHECK_FORMAT ->
+                context.getString(R.string.import_check_format)
+            CHECK_STRUCTURE ->
+                context.getString(R.string.import_check_structure)
+            CHECK_REQUIRED ->
+                context.getString(R.string.import_check_required)
+            else -> check
+        }
+    }
+
+    fun localizeDependency(context: Context, message: String): String {
+        return when (message) {
+            MSG_BOX_DEPENDENCY ->
+                context.getString(R.string.import_msg_box_dependency)
+            MSG_OBJECT_DEPENDENCY ->
+                context.getString(R.string.import_msg_object_dependency)
+            else -> message
+        }
+    }
+
+    fun importCancelled(context: Context) =
+        context.getString(R.string.import_msg_cancelled)
+
+    fun relationCancelled(context: Context) =
+        context.getString(R.string.import_msg_relation_cancelled)
+
+    fun reportRecordsRead(context: Context) =
+        context.getString(R.string.import_report_records_read)
+
+    fun reportImported(context: Context) =
+        context.getString(R.string.import_report_imported)
+
+    fun reportIgnored(context: Context) =
+        context.getString(R.string.import_report_ignored)
+
+    fun reportDiscarded(context: Context) =
+        context.getString(R.string.import_report_discarded)
 
     const val PRE_IMPORT_PREFIX = "PRE_IMPORT_"
 

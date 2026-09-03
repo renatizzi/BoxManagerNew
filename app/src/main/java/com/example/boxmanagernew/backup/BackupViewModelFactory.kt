@@ -15,7 +15,8 @@ class BackupViewModelFactory(
     private val categoryRepository: CategoryRepositoryImpl,
     private val locationRepository: LocationRepositoryImpl,
     private val objectTypeDao: ObjectTypeDao,
-    private val backupFacade: BackupFacade
+    private val backupFacade: BackupFacade,
+    private val appContext: android.content.Context
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -29,7 +30,8 @@ class BackupViewModelFactory(
                 categoryRepository = categoryRepository,
                 locationRepository = locationRepository,
                 objectTypeDao = objectTypeDao,
-                backupFacade = backupFacade
+                backupFacade = backupFacade,
+                appContext = appContext
             ) as T
         }
 

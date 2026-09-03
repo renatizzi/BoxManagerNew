@@ -163,8 +163,8 @@ class MainActivity : BaseActivity() {
     private fun setupViews() {
 
         setupPageHeader(
-            title = "Contenitori",
-            subtitle = "Gestione Contenitori e loro contenuti"
+            title = getString(R.string.page_boxes_title),
+            subtitle = getString(R.string.page_boxes_subtitle)
         )
 
         contextCard =
@@ -789,7 +789,7 @@ class MainActivity : BaseActivity() {
             pendingCsvBytes = null
             FeedbackUtils.alert(this)
             showContextMessage(
-                BackupConfiguration.MSG_FOLDER_INACCESSIBLE
+                BackupConfiguration.folderInaccessible(this)
             )
             return
         }
@@ -837,7 +837,7 @@ class MainActivity : BaseActivity() {
         if (result.folderInaccessible) {
             FeedbackUtils.alert(this)
             showContextMessage(
-                BackupConfiguration.MSG_FOLDER_INACCESSIBLE
+                BackupConfiguration.folderInaccessible(this)
             )
         }
     }
@@ -868,13 +868,15 @@ class MainActivity : BaseActivity() {
             SearchConfiguration.INVENTORY_CATEGORY ->
                 ViewPrintHeader(
                     title =
-                        ViewOutputConfiguration.PAGE_TITLE_CATEGORIES,
+                        ViewOutputConfiguration.pageTitleCategories(this),
                     filterLine =
                         ViewOutputConfiguration.filterLine(
+                            this,
                             filterQuery
                         ),
                     countLine =
                         ViewOutputConfiguration.countCategories(
+                            this,
                             snapshot.boxes.size
                         ),
                     nameListStyle =
@@ -884,13 +886,15 @@ class MainActivity : BaseActivity() {
             SearchConfiguration.INVENTORY_LOCATION ->
                 ViewPrintHeader(
                     title =
-                        ViewOutputConfiguration.PAGE_TITLE_LOCATIONS,
+                        ViewOutputConfiguration.pageTitleLocations(this),
                     filterLine =
                         ViewOutputConfiguration.filterLine(
+                            this,
                             filterQuery
                         ),
                     countLine =
                         ViewOutputConfiguration.countLocations(
+                            this,
                             snapshot.boxes.size
                         ),
                     nameListStyle =
@@ -900,13 +904,15 @@ class MainActivity : BaseActivity() {
             else ->
                 ViewPrintHeader(
                     title =
-                        ViewOutputConfiguration.PAGE_TITLE,
+                        ViewOutputConfiguration.pageTitle(this),
                     filterLine =
                         ViewOutputConfiguration.filterLine(
+                            this,
                             filterQuery
                         ),
                     countLine =
                         ViewOutputConfiguration.countBoxes(
+                            this,
                             snapshot.boxes.size
                         )
                 )
@@ -1136,12 +1142,13 @@ class MainActivity : BaseActivity() {
 
         textSelectionCount.text =
             if (selectedCount > 0) {
-
-                "N. Contenitori: $totalBoxes di cui $selectedCount selezionati"
-
+                getString(
+                    R.string.view_count_boxes_selected,
+                    totalBoxes,
+                    selectedCount
+                )
             } else {
-
-                "N. Contenitori: $totalBoxes"
+                getString(R.string.view_count_boxes, totalBoxes)
             }
     }
 
@@ -1157,7 +1164,7 @@ class MainActivity : BaseActivity() {
             FeedbackUtils.alert(this)
 
             showContextMessage(
-                "Impossibile eliminare: alcuni elementi selezionati non sono visibili. Tocca qui per rimuovere il filtro."
+                getString(R.string.msg_cannot_delete_hidden)
             )
 
             return

@@ -282,6 +282,7 @@ object ViewPrintPdf {
                 y += 4f
                 drawWrapped(
                     ViewOutputConfiguration.countObjects(
+                        context,
                         box.objects.size
                     ),
                     countPaint,

@@ -584,8 +584,8 @@ class BoxDetailActivity : BaseActivity() {
         objectViewModel.isAscending.observe(this) {
 
             buttonSort.text =
-                if (it) "ORDINA ▲"
-                else "ORDINA ▼"
+                getString(R.string.common_sort) +
+                    if (it) " ▲" else " ▼"
         }
 
         objectViewModel.selectedItems.observe(this) {
@@ -697,7 +697,7 @@ class BoxDetailActivity : BaseActivity() {
                 ViewExportPersister(this),
                 showFolderInaccessible = {
                     showOutputMessage(
-                        BackupConfiguration.MSG_FOLDER_INACCESSIBLE
+                        BackupConfiguration.folderInaccessible(this)
                     )
                 },
                 launchFolderPicker = {
@@ -783,12 +783,15 @@ class BoxDetailActivity : BaseActivity() {
 
         return ViewPrintHeader(
             title = ViewOutputConfiguration.objectsInBoxTitle(
+                this,
                 boxName
             ),
             filterLine = ViewOutputConfiguration.filterLine(
+                this,
                 editSearch.text.toString().trim()
             ),
             countLine = ViewOutputConfiguration.countObjects(
+                this,
                 snapshot.objectCount
             ),
             showBlockSubtotals = false
@@ -1042,7 +1045,7 @@ class BoxDetailActivity : BaseActivity() {
                     null
                 )
                 .setNegativeButton(
-                    "Annulla",
+                    getString(R.string.common_cancel),
                     null
                 )
                 .create()
@@ -1135,7 +1138,7 @@ class BoxDetailActivity : BaseActivity() {
                     null
                 )
                 .setNegativeButton(
-                    "Annulla",
+                    getString(R.string.common_cancel),
                     null
                 )
                 .create()

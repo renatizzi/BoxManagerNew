@@ -28,7 +28,7 @@
 | **Piano** | **Approvato SI Renato** |
 | **Lingue V1** | Italiano (default) + English |
 | **Play Console traduzione app** | **Non usare** — lavoro in Cursor |
-| **Prossimo pacchetto** | **M1c** (Copy/Configuration + DialogUtils → risorse) — M1b chiuso in questa sessione |
+| **Prossimo pacchetto** | **M1d** (Guida rapida + Premium + Famiglia + sweep Kotlin) — M1c chiuso in questa sessione |
 | **Branch lavoro** | `cursor/multilingua-m1a-5409` (include merge `cursor/guida-ritocchi-5409` PR #17) |
 | **Branch base** | `cursor/p1-igiene-file-5409` (B5.7) + **obbligatorio** `cursor/guida-ritocchi-5409` per Guida |
 | **Play** | `main` **1.2** — test chiuso ~2 sett.; **non** merge M su `main` senza SI |

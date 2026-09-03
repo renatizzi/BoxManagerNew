@@ -85,7 +85,7 @@ class ImportActivity : BaseActivity() {
         setupAppShell()
 
         setupPageHeader(
-            title = "Importa Dati",
+            title = getString(R.string.page_import_title),
             subtitle = ""
         )
 
@@ -102,7 +102,8 @@ class ImportActivity : BaseActivity() {
             LocationRepositoryImpl(db.locationDao(), db.boxDao()),
             db.objectTypeDao(),
             BackupFacade(),
-            ImportMergeApplier(db)
+            ImportMergeApplier(db),
+            applicationContext
         )
         viewModel = ViewModelProvider(this, factory)[ImportViewModel::class.java]
 
@@ -175,7 +176,7 @@ class ImportActivity : BaseActivity() {
         val uri = backupFolderUri
 
         if (uri == null || backupPersister.folderDisplayName(uri) == null) {
-            showBlocking(BackupConfiguration.MSG_FOLDER_INACCESSIBLE)
+            showBlocking(BackupConfiguration.folderInaccessible(this))
             backupFolderPicker.launch(null)
             return
         }
@@ -219,7 +220,7 @@ class ImportActivity : BaseActivity() {
         }
 
         if (backupPersister.folderDisplayName(uri) == null) {
-            showBlocking(BackupConfiguration.MSG_FOLDER_INACCESSIBLE)
+            showBlocking(BackupConfiguration.folderInaccessible(this))
             return false
         }
 

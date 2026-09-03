@@ -85,8 +85,8 @@ class SettingsActivity : BaseActivity() {
     private fun setupViews() {
 
         setupPageHeader(
-            "Impostazioni",
-            "Setup Archivio"
+            getString(R.string.page_settings_title),
+            getString(R.string.page_settings_subtitle)
         )
 
         editUserName =
@@ -123,7 +123,7 @@ class SettingsActivity : BaseActivity() {
             findViewById(R.id.optionEnglish)
 
         findViewById<TextView>(R.id.textPrivacyLabel).text =
-            PrivacyPolicy.SETTINGS_LABEL
+            getString(R.string.privacy_settings_label)
     }
 
     private fun loadPreferences() {
@@ -393,9 +393,9 @@ class SettingsActivity : BaseActivity() {
                     this
                 )
             ) {
-                "Tema corrente: Dark"
+                getString(R.string.settings_theme_current_dark)
             } else {
-                "Tema corrente: Light"
+                getString(R.string.settings_theme_current_light)
             }
     }
 
