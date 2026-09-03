@@ -52,7 +52,21 @@ class GlobalSearchDispatcher(
 
     fun dispatch(
         question: String,
-        archiveIndex: SearchArchiveIndex? = null
+        archiveIndex: SearchArchiveIndex? = null,
+        locale: SearchLocale = SearchLocale.IT
+    ): SearchResponse {
+
+        return SearchLocaleContext.run(locale) {
+            dispatchPipeline(
+                question,
+                archiveIndex
+            )
+        }
+    }
+
+    private fun dispatchPipeline(
+        question: String,
+        archiveIndex: SearchArchiveIndex?
     ): SearchResponse {
 
         val normalizedQuestion =

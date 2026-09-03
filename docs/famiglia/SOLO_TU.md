@@ -1,13 +1,15 @@
 # Solo ciò che puoi fare tu (Renato)
 
-Il resto (codice, Nota B0, flavor, catalogo B1, patch/bundle) è già pronto sull’agent.
+Il resto (codice, Nota B0, flavor Gradle, catalogo, patch/bundle) è già pronto sull’agent.
+
+Una sola app: **BoxManager**. Qui installi la copia di **sviluppo** accanto alla 1.2, non un’altra app.
 
 ## Dispositivi (fatto tuo)
 
 | Dispositivo | Azione |
 |-------------|--------|
-| **Tablet** | Lascia **solo BoxManager 1.2** da Play — test Google. Non installare Famiglia. |
-| **Telefono** | Qui installerai **BoxManager Famiglia** (beta). Può restare anche la 1.2 affiancata. |
+| **Tablet** | Lascia **solo BoxManager 1.2** da Play — test Google. Non installare lo sviluppo. |
+| **Telefono** | Qui installerai **BoxManager** di sviluppo. Può restare anche la 1.2 affiancata. |
 
 ## PC — una volta sola (git + GitHub)
 
@@ -38,17 +40,17 @@ git push -u origin cursor/family-b-beta-75ee
 
 1. Apri il progetto `BoxManagerNew` (branch `cursor/family-b-beta-75ee`)
 2. Attendi Sync Gradle
-3. Seleziona variante **`famigliaDebug`** (non `play`)
+3. Seleziona variante **`famigliaDebug`** (build di sviluppo; non `play`)
 4. Run / installa sul **telefono**
-5. Apri l’icona **BoxManager Famiglia** → Impostazioni → imposta il **nome utente** (es. Renato)
+5. Apri **BoxManager** (copia di sviluppo; topbar `1.3-…`) → Impostazioni → imposta il **nome utente** (es. Renato)
 
 ## Stop — non fare
 
-- Non caricare AAB/APK Famiglia su Play Console  
+- Non caricare la build di sviluppo su Play Console **durante** il test  
 - Non disinstallare 1.2 dal tablet  
 - Non usare Ripristino ZIP per “unire” archivi  
 
 ## Quando hai finito
 
-Scrivi solo: branch pushato sì/no + app Famiglia avviata sul telefono sì/no.  
-Al passo successivo ti guido sul **Catalogo famiglia** (Utility).
+Scrivi solo: branch pushato sì/no + BoxManager di sviluppo avviata sul telefono sì/no.  
+Al passo successivo ti guido sul **Catalogo** (Utility) per l’archivio condiviso.

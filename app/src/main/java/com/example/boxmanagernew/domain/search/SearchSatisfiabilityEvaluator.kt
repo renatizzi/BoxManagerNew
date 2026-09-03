@@ -257,12 +257,17 @@ class SearchSatisfiabilityEvaluator {
 
     companion object {
 
-        private val DUPLICATE_CONFRONTO =
-            setOf(
-                "uguale",
-                "stesso",
-                "duplicato",
-                "doppione"
-            )
+        private val DUPLICATE_CONFRONTO: Set<String>
+            get() =
+                if (SearchLocaleContext.isEnglish()) {
+                    SearchLanguageTablesEn.duplicateConfronto
+                } else {
+                    setOf(
+                        "uguale",
+                        "stesso",
+                        "duplicato",
+                        "doppione"
+                    )
+                }
     }
 }

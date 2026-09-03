@@ -1,11 +1,11 @@
-# Assessment filone M — Multilingua IT/EN
+# Assessment filone M — inglese in BoxManager
 
 **Data:** 01/09/2026  
 **SI Renato:** mini-assessment approvato (sessione continuità)  
-**Obiettivo prodotto:** massimizzare distribuzione Play con **italiano + inglese** (non 29 lingue in V1)  
-**Strumento:** **Cursor** (repo + Nota ufficiale); Play Console solo canale publish / listing opzionale  
+**Obiettivo prodotto:** BoxManager in **italiano + inglese** (non 29 lingue in V1). Non è un’altra app.  
+**Strumento:** **Cursor** (repo + Nota ufficiale); Play Console solo canale publish a test chiuso  
 **Riferimento prodotto:** Nota Integrata **3.6.6** Scelta lingua (Impostazioni — «Prossime implementazioni»)  
-**Timing:** **dopo** test chiuso Play verde o SI esplicito a deviare — **non** mescolare con correttivi P0/P1/P2 in corso
+**Timing:** in **parallelo** al test Play 1.2 (SI 01/09/2026). La 1.2 su `main` resta identica; a test chiuso questa BoxManager **sostituisce** la 1.2. Non mescolare le sessioni con i correttivi P2.
 
 ---
 
@@ -65,9 +65,9 @@ La **Scelta lingua** (3.6.6) riguarda **UI + motore ricerca**, non riscrive l’
 
 | File | Righe indicative | Contenuto |
 |------|------------------|-----------|
-| **`QuickStartGuideCopy.kt`** | **~78 stringhe** | **Guida rapida in-app** (topbar «Guida») — **obbligatoria M1**, non marginale: titoli, intro, 7 sezioni CONFIG/CENSUS/USAGE, esempio CSV, footer premium, **§8 Setup famiglia (beta)** su flavor famiglia |
+| **`QuickStartGuideCopy.kt`** | **~78 stringhe** | **Guida rapida in-app** (topbar «Guida») — **obbligatoria M1**: titoli, intro, 7 sezioni CONFIG/CENSUS/USAGE, esempio CSV, footer premium, **sezione archivio condiviso** se `FAMILY_BETA` |
 | `ArchivioCompletoCopy.kt` | ~208 | Premium / prova / paywall |
-| `FamilyMergeCopy.kt` | ~73 | Condividi Archivio (solo flavor famiglia) |
+| `FamilyMergeCopy.kt` | ~73 | Condividi Archivio (visibile se `FAMILY_BETA`) |
 | `PrivacyPolicy.kt` | ~26 | Privacy (Play) |
 | `ViewOutputConfiguration.kt` | titoli stampa/export | M1 |
 | `BackupConfiguration.kt` | messaggi backup/restore | M1 |
@@ -104,14 +104,14 @@ Componenti **intrinsecamente linguistici** (non derivabili da Gemini Play):
 
 **Regola workspace:** prima di codice alias/messaggi EN → aprire artefatto ufficiale (Nota / Excel progetto) e recepire **elenco intero** (`.cursor/rules/fonti-ufficiali.mdc`, `pipeline-ufficiale.mdc`).
 
-### 2.5 Flavor play / famiglia
+### 2.5 Due flavor Gradle, una sola app
 
 | Aspetto | Regola M |
 |---------|----------|
 | Scelta lingua | **Comune** (Impostazioni, entrambi i flavor) |
-| Copy famiglia (`FamilyMergeCopy`) | Localizzare in M1; visibile solo `FAMILY_BETA` |
-| Merge famiglia → `main` | Solo dopo strategia C2 (non durante test Play) |
-| Branch lavoro suggerito | `cursor/multilingua-m*-5409` off `family-unione` o `main` post-test |
+| Copy archivio condiviso (`FamilyMergeCopy`) | Localizzare in M1; visibile se `FAMILY_BETA` |
+| Rapporto con Play 1.2 | Durante il test: l’inglese **non** entra in 1.2. A test chiuso: questa BoxManager **è** l’ufficiale. [STRATEGIA_UNIFICAZIONE.md](../famiglia/STRATEGIA_UNIFICAZIONE.md) |
+| Branch lavoro | `cursor/multilingua-m*-5409` dalla base di sviluppo — **mai** da `main` durante il test |
 
 ### 2.6 Play Console — valore effettivo per BoxManager
 
@@ -187,13 +187,13 @@ Ogni pacchetto è **chiudibile dall’agente** senza intervento Renato, salvo i 
 | **Escluso** | `SearchConfiguration`, `SearchCoreAliases`, matrici ricerca (M2) |
 | **Test** | `:app:testPlayDebugUnitTest` + `:app:testFamigliaDebugUnitTest` verdi |
 
-#### M1d — Guida rapida in-app + Premium/Famiglia + sweep
+#### M1d — Guida rapida in-app + Premium + archivio condiviso + sweep
 
 | | |
 |-|-|
 | **Scope** | **`QuickStartGuideCopy` per intero** (guida «online» in-app da topbar — IT/EN); `ArchivioCompletoCopy`, `FamilyMergeCopy`; Kotlin residuo |
 | **Nota** | La guida **non** è catalogo 2.6: traduzione prodotto con revisione Renato; aggiornare `QuickStartGuideCopyTest` se cambiano conteggi sezioni |
-| **Test** | Topbar **Guida** → tutte le sezioni leggibili in EN; §8 famiglia visibile solo su flavor famiglia ma tradotto; footer Archivio completo coerente |
+| **Test** | Topbar **Guida** → tutte le sezioni leggibili in EN; sezione archivio condiviso visibile se `FAMILY_BETA`; footer Archivio completo coerente |
 
 **Esito M1:** app navigabile in EN; ricerca avanzata **ancora solo IT** (messaggio chiaro se locale EN? — opzionale: banner «advanced search Italian only until M2»).
 
@@ -207,7 +207,7 @@ Ogni pacchetto è **chiudibile dall’agente** senza intervento Renato, salvo i 
 |-|-|
 | **Scope** | Allegato / tabella Excel: alias Core EN, indicatori, messaggi 2.6 EN, varianti F7/F8 EN |
 | **Output** | [BOZZA_TABELLE_EN_CK0.md](BOZZA_TABELLE_EN_CK0.md) + sidecar Nota Allegato **4.21** — **prerequisito codice** |
-| **Agente** | Bozza 1:1 da IT ufficiale (03/09/2026). **CK0** Renato prima dell’import. **M2b non iniziato.** |
+| **Agente** | Bozza 1:1 da IT ufficiale (03/09/2026). **CK0** tabelle verificate. **S1–S3 SI** 03/09/2026. |
 
 #### M2b — Implementazione motore EN
 
@@ -230,8 +230,8 @@ Ogni pacchetto è **chiudibile dall’agente** senza intervento Renato, salvo i 
 
 | | |
 |-|-|
-| **Scope** | Screenshot Play EN; allineamento `main` se test Play chiuso; bump versione |
-| **Dipende** | Test Play verde + merge policy famiglia |
+| **Scope** | A test Play **chiuso**: la BoxManager di sviluppo **sostituisce** la 1.2 come ufficiale; screenshot EN; versionCode |
+| **Dipende** | Fine test + via Console (non un secondo «SI vuoi l’inglese in Play?») |
 
 ---
 
@@ -243,7 +243,7 @@ Ogni pacchetto è **chiudibile dall’agente** senza intervento Renato, salvo i 
 | Regressioni pipeline IT | Test IT invariati; locale esplicito nei test |
 | Dimenticare stringhe in Kotlin | Checklist grep `"[A-ZÀ-9]` post M1 |
 | Scope creep (29 lingue) | **Fuori scope** V1 — solo IT/EN |
-| Conflitto con test Play | M1/M2 su branch dedicato; merge `main` solo post-test o SI |
+| Conflitto con test Play | M1/M2 su branch dedicato. `main` / 1.2 identica fino a fine test, salvo bug bloccanti. Poi lo sviluppo **è** l’ufficiale. |
 | CSV / import header italiani | Decidere in CK0 se header restano IT (consigliato V1) |
 
 ---
@@ -254,7 +254,7 @@ L’agente lavora in autonomia **tra** un checkpoint e l’altro.
 
 | ID | Quando | Cosa chiediamo a Renato | Blocca |
 |----|--------|-------------------------|--------|
-| **CK0** | Prima del **primo commit M2b** (motore ricerca) | Lingua EN **verificata su delega Renato 03/09/2026** ([BOZZA_TABELLE_EN_CK0.md](BOZZA_TABELLE_EN_CK0.md), Allegato 4.21). **SI esplicito ancora necessario per aprire M2b** (codice). D7 CSV IT e D8 `locale` fuori: confermati. | M2b–M2c |
+| **CK0** | Prima del **primo commit M2b codice** (motore ricerca) | Tabelle EN verificate su delega; **SI procedere** 03/09/2026. **S1–S3 SI** 03/09/2026. | Motore EN |
 | **CK1** | M1 completo (M1a–M1d) | **SI device 03/09/2026** — CONVALIDATO | — (sbloccato M2a / CK0) |
 | **CK2** | M2 completo | **SI device**: campione **10 domande EN** da Matrice Test (stessi esiti attesi che IT) | Chiusura filone M |
 
@@ -266,7 +266,7 @@ L’agente lavora in autonomia **tra** un checkpoint e l’altro.
 
 ### M1 done
 - [x] Impostazioni → Scelta lingua IT/EN persistente
-- [x] **Guida rapida in-app (`QuickStartGuideActivity`) tradotta per intero**, incluso §8 famiglia se `FAMILY_BETA`
+- [x] **Guida rapida in-app (`QuickStartGuideActivity`) tradotta per intero**, inclusa la sezione archivio condiviso se `FAMILY_BETA`
 - [x] Nessun testo utente visibile solo in italiano nelle schermate core (dashboard, contenitori, categorie, utility, impostazioni)
 - [x] Test unitari play + famiglia verdi
 - [x] CK1 **SI Renato** (device 03/09/2026)
@@ -276,7 +276,8 @@ L’agente lavora in autonomia **tra** un checkpoint e l’altro.
 - [ ] Suite test ricerca EN verde
 - [ ] CK2 **SI Renato**
 - [ ] Nota ufficiale aggiornata e referenziata in repo
-- [x] M2a bozza tabelle EN **verificata in EN** su delega Renato — 03/09/2026 (SI M2b codice ancora da dare)
+- [x] M2a bozza tabelle EN **verificata in EN** su delega Renato — 03/09/2026
+- [x] S1–S3 **SI** 03/09/2026 (niente traduttore EN→IT; rumore fase 1 `in order to`; non strippare `type of`)
 
 ---
 
@@ -284,11 +285,11 @@ L’agente lavora in autonomia **tra** un checkpoint e l’altro.
 
 | Periodo | Filone |
 |---------|--------|
-| **Ora (~2 sett. test Play)** | **M2a EN verificata su delega.** M2b vietato senza SI esplicito sul codice. Branch `cursor/multilingua-m2a-5409` |
+| **Ora (test Play 1.2 aperto)** | **M2b motore EN** in corso. La 1.2 su `main` **non si tocca**. A fine test questa linea di sviluppo **sostituisce** la 1.2. |
 | **Parallelo** | M0 listing EN (doc) se utile |
-| **Segnalazioni tester Play** | Renato le inoltra; fix su **famiglia** **poco prima** fine test — sessione [PROMPT_CONTINUITA_CORRETTIVI](../famiglia/PROMPT_CONTINUITA_CORRETTIVI.md) |
-| **Fine test Play** | Allineamento `main` (T2 categoria, eventuali bugfix); valutare merge M → play |
-| **Non fare** | Merge famiglia/M su `main` durante test **senza SI**; invertire famiglia su main |
+| **Segnalazioni tester Play** | Solo se **bloccanti** → aggiornamento **1.2** (`main`). Sessione [PROMPT_CONTINUITA_CORRETTIVI](../famiglia/PROMPT_CONTINUITA_CORRETTIVI.md) |
+| **Fine test Play** | La BoxManager di sviluppo **diventa** l’ufficiale e sostituisce la 1.2. Via Console in sessione dedicata. |
+| **Non fare** | Funzioni nuove su `main` durante il test. Parlare di «app famiglia» / «app multilingue». Chiedere «SI per merge M su main». Tenere la 1.2 come ufficiale dopo il test. |
 
 ---
 
@@ -316,8 +317,8 @@ L’agente lavora in autonomia **tra** un checkpoint e l’altro.
 ## 10. Messaggio tipo per avviare M1 (dopo SI timing)
 
 ```
-Filone M — UI bilingue da docs/multilingua/PROMPT_CONTINUITA_M.md
+Filone M — inglese in BoxManager da docs/multilingua/PROMPT_CONTINUITA_M.md
 Pacchetto: M1a (infrastruttura Scelta lingua)
 Branch: cursor/multilingua-m1a-5409
-Non toccare domain/search finché CK0 non è chiuso per M2.
+Una sola app: BoxManager. Non toccare domain/search finché CK0 non è chiuso per M2.
 ```

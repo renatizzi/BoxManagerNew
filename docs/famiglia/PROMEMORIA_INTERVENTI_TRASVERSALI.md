@@ -1,28 +1,38 @@
-# Promemoria — interventi trasversali (famiglia + Play)
+# Promemoria — interventi trasversali (BoxManager)
 
-**Aggiornato:** 01/09/2026 — T2 **CONVALIDATO**; P1 **CONVALIDATO** B5.7 (SI Renato device); freeze Play `cursor/versione-test-5409`. Ingresso sessione → [PROMPT_CONTINUITA_CORRETTIVI.md](PROMPT_CONTINUITA_CORRETTIVI.md).
+**Aggiornato:** 03/09/2026. Ingresso sessione → [PROMPT_CONTINUITA_CORRETTIVI.md](PROMPT_CONTINUITA_CORRETTIVI.md).  
+Regola: `.cursor/rules/annotazioni-renato.mdc`.
 
-Elenco di fix/igiene **non legati a una sola fetta**, da affrontare quando si tocca l’area o in un giro dedicato (B7 igiene / sync Play).
+---
+
+## Backlog aperto (in evidenza)
+
+Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino alla presa in carico**. Non implementare prima del SI. Scrivere nella stessa sessione, committare, confermare l’ID.
+
+| ID | Data | Indicazione | Stato |
+|----|------|-------------|-------|
+| **B-SEL-CARTELLA** | M1 / CK1 | Selettore cartella (Backup, Esporta, Condivisione tabelle, …): estendere la scelta anche ai drive **non riconosciuti direttamente da Android** (es. disco di rete locale / NAS SMB) | **Aperto** |
+| **B-RICERCA-SENZA-SPECIFICHE** | 03/09/2026 | I motori di ricerca (filtri) non consentono di cercare **senza stringa**: si vuole poter **stampare tutto** (es. tutti i contenitori in archivio) senza digitare nulla | **Aperto** |
 
 ---
 
 ## Contesto post–Play 1.2 (transizione)
 
-Dopo il rilascio Play **1.2**, due filoni paralleli (decisione Renato):
+Dopo il rilascio Play **1.2**, due filoni in **parallelo al test** (decisione Renato, confermata 03/09/2026): la 1.2 su `main` resta identica; questo sviluppo **diventa** l’ufficiale a test chiuso e **sostituisce** la 1.2. Si tocca 1.2 solo per bug bloccanti. Fonte: [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md).
 
 | Filone | Documento | Stato |
 |--------|-----------|-------|
-| **Famiglia** — condivisione archivio | [NOTA_B0_MERGE_FAMIGLIA.md](NOTA_B0_MERGE_FAMIGLIA.md) B0–B5 | **CONVALIDATO** |
-| **Multilingua** — Scelta lingua UI + ricerca EN | [../multilingua/PROMPT_CONTINUITA_M.md](../multilingua/PROMPT_CONTINUITA_M.md) | **M1/CK1 CONVALIDATO**; **M2a EN verificata** (delega); attesa SI M2b |
+| **Archivio condiviso** | [NOTA_B0_MERGE_FAMIGLIA.md](NOTA_B0_MERGE_FAMIGLIA.md) B0–B5 | **CONVALIDATO** — funzione di BoxManager, non un’altra app |
+| **Inglese** (scelta lingua + ricerca EN) | [../multilingua/PROMPT_CONTINUITA_M.md](../multilingua/PROMPT_CONTINUITA_M.md) | **M1/CK1 CONVALIDATO**; M2b motore (S1–S3 SI). Stessa BoxManager. |
 
 ---
 
-## P0 — Segnalati in beta famiglia
+## P0 — Segnalati sulla BoxManager di sviluppo
 
 | ID | Area | Problema | Evidenza | Stato |
 |----|------|----------|----------|-------|
 | **T1** | Utility → **Backup Archivio** → «Backup Directory» | Nome cartella illeggibile (id opaco base64) | Screenshot Renato, B5.1, 31/08/2026 | **CONVALIDATO** B5.2 (SI Renato) |
-| **T2** | **Lista Oggetti** / **Lista Oggetti Trovati** | Categoria/icona assenti o incoerenti (header / stampa-export) | Segnalazione beta famiglia; ritest 01/09/2026 tre prove OK | **CONVALIDATO** B5.3 (SI Renato) |
+| **T2** | **Lista Oggetti** / **Lista Oggetti Trovati** | Categoria/icona assenti o incoerenti (header / stampa-export) | Segnalazione su sviluppo; ritest 01/09/2026 tre prove OK | **CONVALIDATO** B5.3 (SI Renato) |
 | **T3** | — | Secondo bug non recuperato dalle chat | — | **Chiuso** — riaprire solo con nuova evidenza |
 
 ---
@@ -48,14 +58,13 @@ Verificare **ogni** punto che scrive un file e allineare dove ha senso al criter
 
 ---
 
-## P2 — Sync bugfix Play 1.2 ↔ beta famiglia
-
-Vedi [BETA_SYNC_POLICY.md](BETA_SYNC_POLICY.md) e [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md): fix su `main` → merge nel branch famiglia; mai pubblicare flavor `famiglia` su Play.
+**P2** — Sync bugfix Play 1.2 ↔ sviluppo: [BETA_SYNC_POLICY.md](BETA_SYNC_POLICY.md).
 
 ---
 
 ## Come usare questo file
 
-- Aprire una **nuova sessione** correttivi: leggere [ASSESSMENT_CORRETTIVI.md](ASSESSMENT_CORRETTIVI.md) + tabella P0.
+- Aprire una **nuova sessione** correttivi: leggere [ASSESSMENT_CORRETTIVI.md](ASSESSMENT_CORRETTIVI.md) + tabella P0 + **Backlog aperto**.
 - Chiudere una voce solo dopo **SI Renato** (o criterio equivalente CONVALIDATO).
 - Non duplicare qui il dettaglio prodotto delle fette B0–B5 → [NOTA_B0_MERGE_FAMIGLIA.md](NOTA_B0_MERGE_FAMIGLIA.md).
+- Indicazione fuori contesto in un altro filone: stessa tabella Backlog aperto, stessa sessione, commit. Regola `.cursor/rules/annotazioni-renato.mdc`.

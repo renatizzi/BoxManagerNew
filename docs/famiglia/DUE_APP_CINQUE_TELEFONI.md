@@ -1,48 +1,44 @@
-# Due app, cinque telefoni — senza casino
+# Due installazioni durante il test — stessa BoxManager
 
-Contesto: tutta la famiglia ha **Play 1.2**. La beta merge è un’**altra app** (`…boxmanager.famiglia`), installabile **accanto** a 1.2.
+Contesto: sui telefoni di casa c’è **BoxManager 1.2** da Play. Durante il test si può installare **accanto** una seconda copia: la **stessa** BoxManager di sviluppo (funzioni in più). Android le tiene distinte perché il package della build di sviluppo è diverso (`…boxmanager.famiglia` è etichetta tecnica Gradle, **non** un altro nome di app).
+
+Non esistono «l’app famiglia» né «l’app multilingue».
 
 ## Regola d’oro
 
-| App | Ruolo | Chi la usa |
-|-----|--------|------------|
-| **BoxManager** (Play 1.2) | Test chiuso Alpha + uso “ufficiale” quotidiano | **Tutti e 5**, sempre |
-| **BoxManager Famiglia** (sideload) | Solo sperimentazione merge B | **Solo chi sta provando B** (di solito 1–2 telefoni, o Renato) |
+| Installazione | Ruolo | Chi la usa |
+|---------------|--------|------------|
+| **BoxManager 1.2** (Play) | Test chiuso + uso quotidiano dei tester | **Tutti**, sempre, fino a fine test |
+| **BoxManager sviluppo** (installazione locale) | Provare le funzioni in più (archivio condiviso, inglese, …) | Chi sta verificando lo sviluppo (di solito Renato) |
 
-Non disinstallare 1.2. Non smettere il test Play (conteggio 14 giorni).
+Non disinstallare la 1.2. Non smettere il test Play (conteggio giorni Console).
 
 ## Cosa NON fare
 
-- Non sostituire 1.2 con la beta su tutti i 5 telefoni “perché è la nuova”.
-- Non usare Ripristino ZIP da 1.2 verso Famiglia pensando che “unisca” (è replace).
-- Non caricare AAB Famiglia su Play.
-- Non censire lo stesso pezzo di inventario in **entrambe** le app come se fossero un solo archivio: sono **due database separati**.
+- Non sostituire la 1.2 con lo sviluppo su tutti i telefoni “perché è la nuova” **durante** il test.
+- Non usare Ripristino ZIP dalla 1.2 verso lo sviluppo pensando che “unisca” (è replace).
+- Non caricare la build di sviluppo su Play **durante** il test.
+- Non censire lo stesso inventario in **entrambe** le installazioni come se fosse un solo archivio: sono **due database** Android, stessa app.
 
 ## Come conviverle sul telefono
 
-1. Icona **BoxManager** = Play 1.2 (aggiornamenti Store).  
-2. Icona **BoxManager Famiglia** = beta (APK sideload; versione tipo `1.3-famigliaB1` in topbar).  
-3. In **Famiglia** → Impostazioni: nome utente = nome reale del familiare (Marco, Anna, …).  
-4. Dati: se serve portare categorie/contenitori da 1.2 a Famiglia, usare **export CSV / backup** consapevolmente (copy), non mescolare a caso.
+1. Icona della **1.2** = aggiornamenti Store; topbar `1.2`.
+2. Seconda icona = BoxManager di sviluppo; topbar tipo `1.3-famigliaB…` (etichetta di build). Il titolo in-app è **BoxManager**.
+3. Nello sviluppo → Impostazioni: nome utente = nome reale di chi usa il telefono (Marco, Anna, …) se si prova l’archivio condiviso.
+4. Dati: se serve copiare categorie/contenitori dalla 1.2 allo sviluppo, usare **export CSV / backup** consapevolmente, non mescolare a caso.
 
-## Piano consigliato con 5 persone
+## Piano con più telefoni
 
-**Fase Alpha (ora)**  
-- Tutti restano su **solo 1.2** per il test Play.  
-- Renato (eventualmente +1) installa **anche** Famiglia per provare catalogo B1 / poi B2.  
-- Gli altri **non** installano Famiglia finché B2 non è usabile e non c’è SI “prova famiglia”.
+**Durante il test Play**  
+- Tutti restano sulla **1.2** per il test Store.  
+- Renato (eventualmente +1) può avere **anche** la BoxManager di sviluppo.  
+- Gli altri **non** devono passare allo sviluppo come se fosse già l’ufficiale.
 
-**Fase prova merge (dopo B2, SI)**  
-- 2–3 telefoni con Famiglia affiancata a 1.2.  
-- Catalogo + unioni solo tra app Famiglia.  
-- 1.2 resta per Play / backup di sicurezza.
-
-**Fase “famiglia a regime” (molto dopo, Nota Integrata + SI Play)**  
-- Solo allora si valuta se portare pezzi di B su una release Play.  
-- Fino ad allora: Famiglia = laboratorio; 1.2 = produzione test.
+**A test chiuso**  
+- La BoxManager di sviluppo **sostituisce** la 1.2 su Play. Vedi [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md).
 
 ## Come riconoscere quale stai aprendo
 
-- Titolo launcher: **BoxManager** vs **BoxManager Famiglia**  
-- Versione in topbar: `1.2` vs `1.3-famigliaB…`  
-- Utility: solo Famiglia ha la card **Catalogo Famiglia** e la pagina con Invia/Ricevi Catalogo e Inventario
+- Versione in topbar: `1.2` vs etichetta di sviluppo (`1.3-famigliaB…`)
+- Utility: solo lo sviluppo ha le card dell’archivio condiviso (Invia/Ricevi Catalogo e Inventario)
+- Titolo: **BoxManager** in entrambi i casi

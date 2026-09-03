@@ -11,7 +11,23 @@ object SearchF8Pattern {
     const val ID =
         "PATTERN_008"
 
-    val VARIANTS =
+    val VARIANTS: List<String>
+        get() =
+            if (SearchLocaleContext.isEnglish()) {
+                SearchLanguageTablesEn.f8Variants
+            } else {
+                variantsIt
+            }
+
+    val HEADING: String
+        get() =
+            if (SearchLocaleContext.isEnglish()) {
+                SearchLanguageTablesEn.F8_HEADING
+            } else {
+                "Elenco dei contenitori che hanno categoria diversa e contengono oggetti uguali"
+            }
+
+    private val variantsIt =
         listOf(
             "Cerca i contenitori con categoria diversa che contengono lo stesso tipo di oggetto",
             "Quali contenitori hanno categoria diversa e contengono oggetti uguali",
@@ -83,7 +99,8 @@ object SearchF8Pattern {
                     CanonicalNormalizer.wholeWordMatches(
                         token,
                         "diversa"
-                    )
+                    ) ||
+                    token.equals("different", ignoreCase = true)
             }
 
         val hasSameObject =
@@ -95,7 +112,9 @@ object SearchF8Pattern {
                     CanonicalNormalizer.wholeWordMatches(
                         token,
                         "stesso"
-                    )
+                    ) ||
+                    token.equals("identical", ignoreCase = true) ||
+                    token.equals("same", ignoreCase = true)
             }
 
         return hasCategory &&

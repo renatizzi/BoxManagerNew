@@ -7,29 +7,86 @@ import com.example.boxmanagernew.domain.search.model.CoreEntityType
  */
 object SearchConfiguration {
 
-    const val MSG_NOT_UNDERSTOOD =
+    private const val MSG_NOT_UNDERSTOOD_IT =
         "Non ho compreso la richiesta."
 
-    const val MSG_CLARIFY =
+    private const val MSG_CLARIFY_IT =
         "Puoi formulare la richiesta in modo più preciso?"
 
-    private const val MSG_HOMONYM_CLARIFY_PREFIX =
+    private const val MSG_HOMONYM_CLARIFY_PREFIX_IT =
         "Riformula la domanda in modo che sia chiaro se ti riferisci"
+
+    private const val MSG_NO_RESULTS_IT =
+        "Nessun risultato trovato."
+
+    private const val MSG_INTERROGATION_UNAVAILABLE_IT =
+        "Questo tipo di richiesta non è ancora disponibile."
+
+    val MSG_NOT_UNDERSTOOD: String
+        get() =
+            if (SearchLocaleContext.isEnglish()) {
+                SearchLanguageTablesEn.MSG_NOT_UNDERSTOOD
+            } else {
+                MSG_NOT_UNDERSTOOD_IT
+            }
+
+    val MSG_CLARIFY: String
+        get() =
+            if (SearchLocaleContext.isEnglish()) {
+                SearchLanguageTablesEn.MSG_CLARIFY
+            } else {
+                MSG_CLARIFY_IT
+            }
+
+    val MSG_NO_RESULTS: String
+        get() =
+            if (SearchLocaleContext.isEnglish()) {
+                SearchLanguageTablesEn.MSG_NO_RESULTS
+            } else {
+                MSG_NO_RESULTS_IT
+            }
+
+    val MSG_INTERROGATION_UNAVAILABLE: String
+        get() =
+            if (SearchLocaleContext.isEnglish()) {
+                SearchLanguageTablesEn.MSG_INTERROGATION_UNAVAILABLE
+            } else {
+                MSG_INTERROGATION_UNAVAILABLE_IT
+            }
 
     fun homonymClarifyMessage(
         cores: Set<CoreEntityType>
     ): String {
 
+        val english =
+            SearchLocaleContext.isEnglish()
+
         val phrases =
             listOf(
                 CoreEntityType.OBJECT to
-                    "a un oggetto",
+                    if (english) {
+                        SearchLanguageTablesEn.PHRASE_OBJECT
+                    } else {
+                        "a un oggetto"
+                    },
                 CoreEntityType.BOX to
-                    "a un contenitore",
+                    if (english) {
+                        SearchLanguageTablesEn.PHRASE_BOX
+                    } else {
+                        "a un contenitore"
+                    },
                 CoreEntityType.LOCATION to
-                    "a una posizione",
+                    if (english) {
+                        SearchLanguageTablesEn.PHRASE_LOCATION
+                    } else {
+                        "a una posizione"
+                    },
                 CoreEntityType.CATEGORY to
-                    "a una categoria"
+                    if (english) {
+                        SearchLanguageTablesEn.PHRASE_CATEGORY
+                    } else {
+                        "a una categoria"
+                    }
             ).mapNotNull { (core, phrase) ->
 
                 if (core in cores) {
@@ -43,23 +100,31 @@ object SearchConfiguration {
             return MSG_CLARIFY
         }
 
+        val orWord =
+            if (english) {
+                "or"
+            } else {
+                "o"
+            }
+
         val joined =
             if (phrases.size == 2) {
-                "${phrases[0]} o ${phrases[1]}"
+                "${phrases[0]} $orWord ${phrases[1]}"
             } else {
                 phrases.dropLast(1).joinToString(
                     ", "
-                ) + " o " + phrases.last()
+                ) + " $orWord " + phrases.last()
             }
 
-        return "$MSG_HOMONYM_CLARIFY_PREFIX $joined."
+        val prefix =
+            if (english) {
+                SearchLanguageTablesEn.MSG_HOMONYM_PREFIX
+            } else {
+                MSG_HOMONYM_CLARIFY_PREFIX_IT
+            }
+
+        return "$prefix $joined."
     }
-
-    const val MSG_NO_RESULTS =
-        "Nessun risultato trovato."
-
-    const val MSG_INTERROGATION_UNAVAILABLE =
-        "Questo tipo di richiesta non è ancora disponibile."
 
     const val EXTRA_SEARCH_QUESTION =
         "dashboardSearchQuery"
