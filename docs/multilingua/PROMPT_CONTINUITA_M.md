@@ -11,7 +11,7 @@ Fonte viva: [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md). Rest
 
 | ID | Indicazione |
 |----|-------------|
-| **B-NOME-AUTO-SAVE** | Impostazioni: memorizzare il nome utente appena inserito, senza tasto Salva |
+| **B-NOME-AUTO-SAVE** | Impostazioni: memorizzare il nome utente appena inserito (restando modificabile), senza tasto Salva |
 | **B-DEFAULT-IT-EN** | Tradurre i default (3 location + 16 category) al primo switch italiano → inglese |
 | **B-SEL-CARTELLA** | Selettore cartella anche su drive non visti da Android (NAS / disco di rete) |
 | **B-RICERCA-SENZA-SPECIFICHE** | Stampare tutto senza stringa (es. tutti i contenitori), oggi i filtri ricerca lo impediscono |
@@ -258,7 +258,7 @@ Vincoli: non toccare main/1.2; non implementare B-NOME-AUTO-SAVE né B-DEFAULT-I
 
 | ID | Richiesta Renato | Note |
 |----|------------------|------|
-| **B-NOME-AUTO-SAVE** | In Impostazioni il Salva serve solo al nome utente; memorizzarlo appena inserito, senza tasto Salva | **Aperto** |
+| **B-NOME-AUTO-SAVE** | In Impostazioni il Salva serve solo al nome utente; memorizzarlo appena inserito, senza tasto Salva, lasciando la possibilità di modificarlo | **Aperto** |
 | **B-DEFAULT-IT-EN** | Tradurre i valori di default (3 location + 16 category) da usare al **primo switch** italiano → inglese | **Aperto** |
 | **B-SEL-CARTELLA** | Selettore cartella anche su drive non visti da Android (NAS / disco di rete) | **Aperto** |
 | **B-RICERCA-SENZA-SPECIFICHE** | Stampare tutto senza stringa (es. tutti i contenitori); oggi i filtri ricerca lo impediscono | **Aperto** |

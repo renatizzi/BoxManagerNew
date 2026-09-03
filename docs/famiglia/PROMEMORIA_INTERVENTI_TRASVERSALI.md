@@ -11,7 +11,7 @@ Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino
 
 | ID | Data | Indicazione | Stato |
 |----|------|-------------|-------|
-| **B-NOME-AUTO-SAVE** | 03/09/2026 | In Impostazioni il Salva serve solo al nome utente (da quello che ho capito, non serve ad altro). Proverei a memorizzarlo non appena viene inserito, senza bisogno di salvare con il tasto | **Aperto** |
+| **B-NOME-AUTO-SAVE** | 03/09/2026 | In Impostazioni il Salva serve solo al nome utente (da quello che ho capito, non serve ad altro). Proverei a memorizzarlo non appena viene inserito, senza bisogno di salvare con il tasto. Ovviamente lasciando la possibilità di modificarlo | **Aperto** |
 | **B-DEFAULT-IT-EN** | 03/09/2026 | Tradurre i valori di default (3 location + 16 category) da usare al **primo switch** italiano → inglese | **Aperto** |
 | **B-SEL-CARTELLA** | M1 / CK1 | Selettore cartella (Backup, Esporta, Condivisione tabelle, …): estendere la scelta anche ai drive **non riconosciuti direttamente da Android** (es. disco di rete locale / NAS SMB) | **Aperto** |
 | **B-RICERCA-SENZA-SPECIFICHE** | 03/09/2026 | I motori di ricerca (filtri) non consentono di cercare **senza stringa**: si vuole poter **stampare tutto** (es. tutti i contenitori in archivio) senza digitare nulla | **Aperto** |
