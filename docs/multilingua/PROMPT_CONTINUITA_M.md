@@ -30,14 +30,14 @@
 | **Play Console traduzione app** | **Non usare** — lavoro in Cursor |
 | **M1 / CK1** | **CONVALIDATO SI Renato device 03/09/2026** (M1a–M1d su PR **#18**) |
 | **M2a** | **EN verificata** su delega Renato 03/09/2026 — [BOZZA_TABELLE_EN_CK0.md](BOZZA_TABELLE_EN_CK0.md) + Allegato **4.21** |
-| **M2b** | **SI procedere** 03/09/2026 — prima fetta: semantica / equivoci ([SEMANTICA_EN_EQUIVOCI.md](SEMANTICA_EN_EQUIVOCI.md)). **`domain/search` non toccato** finché S1–S3 |
-| **Prossimo pacchetto** | Motore EN (M2b codice) **dopo SI S1–S3** |
+| **M2b** | **S1–S3 SI** 03/09/2026 — motore locale-aware in corso ([SEMANTICA_EN_EQUIVOCI.md](SEMANTICA_EN_EQUIVOCI.md)) |
+| **Prossimo pacchetto** | Completare M2b (test EN campione) poi **M2c** UI ricerca |
 | **Branch lavoro** | `cursor/multilingua-m2b-5409` |
 | **Branch base** | `cursor/multilingua-m2a-5409` (EN verificata) |
 | **Play** | `main` **1.2** — test chiuso ~2 sett.; **non** merge M su `main` senza SI |
 | **Famiglia** | **1.3-famigliaB5.7** — P1 CONVALIDATO; eventuali bug Play → fix famiglia **a fine test** |
 | **Ricerca avanzata EN** | Pipeline 0–10 invariata; **niente** traduttore EN→IT; **niente** interprete semantico (Nota 3.3.9) |
-| **Checkpoint** | **CK0** (tabelle EN + SI procedere; attesa S1–S3), **CK1** ✅, **CK2** |
+| **Checkpoint** | **CK0** tabelle EN verificate; **S1–S3 SI**; **CK1** ✅, **CK2** |
 
 ### Documenti vincolanti (leggere prima di codice)
 
@@ -112,14 +112,14 @@ L’agente esegue **M1a→M1d** in sequenza senza fermarsi, salvo KO test/build.
 ### Fase 2 — Esecuzione pacchetto
 
 4. Implementare il pacchetto indicato nel messaggio sessione (M0 / M1a / …).
-5. **Non** toccare `domain/search` per EN finché **S1–S3** in [SEMANTICA_EN_EQUIVOCI.md](SEMANTICA_EN_EQUIVOCI.md) non sono SI (tabelle CK0 già verificate).
+5. **Non** toccare `domain/search` per EN finché **S1–S3** in [SEMANTICA_EN_EQUIVOCI.md](SEMANTICA_EN_EQUIVOCI.md) non sono SI (tabelle CK0 già verificate). **S1–S3 sono SI** (03/09/2026).
 6. Test: `assemblePlayDebug` + `assembleFamigliaDebug` + unit test verdi.
 7. Commit, push, PR draft; aggiornare questo file se cambia «prossimo pacchetto».
 
 ### Fase 3 — Checkpoint
 
 8. **CK1** solo a fine **M1d** (device: lingua + **Guida intera EN** + flussi core).
-9. **CK0** tabelle EN: **verificate**. **S1–S3** (equivoci) prima del primo commit su `domain/search`.
+9. **CK0** tabelle EN: **verificate**. **S1–S3 SI** (03/09/2026). Motore EN in M2b.
 10. **CK2** a fine **M2c** (device: campione domande EN Matrice Test).
 
 ---
@@ -149,7 +149,7 @@ git checkout -b cursor/multilingua-m1a-5409
 
 ## Messaggio tipo per **nuova sessione** (copia-incolla)
 
-**Ora:** M2b in analisi equivoci. Dopo **SI S1–S3** su [SEMANTICA_EN_EQUIVOCI.md](SEMANTICA_EN_EQUIVOCI.md):
+**Ora:** M2b codice motore. **S1–S3 SI** 03/09/2026.
 
 ```
 Continua filone M — Multilingua IT/EN da docs/multilingua/PROMPT_CONTINUITA_M.md
@@ -159,8 +159,6 @@ Vincoli: pipeline 0–10 invariata; niente traduttore EN→IT; niente interprete
 importare elenchi interi bozza CK0; rumore fase 1 solo elenco chiuso.
 Obiettivo: SearchLocale + alias/matrix EN; test IT invariati; campione EN 0–10.
 ```
-
-*(Senza SI S1–S3: non toccare `domain/search`.)*
 
 ---
 

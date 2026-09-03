@@ -207,7 +207,7 @@ Ogni pacchetto è **chiudibile dall’agente** senza intervento Renato, salvo i 
 |-|-|
 | **Scope** | Allegato / tabella Excel: alias Core EN, indicatori, messaggi 2.6 EN, varianti F7/F8 EN |
 | **Output** | [BOZZA_TABELLE_EN_CK0.md](BOZZA_TABELLE_EN_CK0.md) + sidecar Nota Allegato **4.21** — **prerequisito codice** |
-| **Agente** | Bozza 1:1 da IT ufficiale (03/09/2026). **CK0** Renato prima dell’import. **M2b non iniziato.** |
+| **Agente** | Bozza 1:1 da IT ufficiale (03/09/2026). **CK0** tabelle verificate. **S1–S3 SI** 03/09/2026. |
 
 #### M2b — Implementazione motore EN
 
@@ -254,7 +254,7 @@ L’agente lavora in autonomia **tra** un checkpoint e l’altro.
 
 | ID | Quando | Cosa chiediamo a Renato | Blocca |
 |----|--------|-------------------------|--------|
-| **CK0** | Prima del **primo commit M2b codice** (motore ricerca) | Tabelle EN verificate su delega; **SI procedere** 03/09/2026. Prima del codice: SI **S1–S3** in [SEMANTICA_EN_EQUIVOCI.md](SEMANTICA_EN_EQUIVOCI.md) (niente traduttore EN→IT; rumore fase 1 tipo `in order to`; non strippare `type of`). | Motore EN |
+| **CK0** | Prima del **primo commit M2b codice** (motore ricerca) | Tabelle EN verificate su delega; **SI procedere** 03/09/2026. **S1–S3 SI** 03/09/2026. | Motore EN |
 | **CK1** | M1 completo (M1a–M1d) | **SI device 03/09/2026** — CONVALIDATO | — (sbloccato M2a / CK0) |
 | **CK2** | M2 completo | **SI device**: campione **10 domande EN** da Matrice Test (stessi esiti attesi che IT) | Chiusura filone M |
 
@@ -276,7 +276,8 @@ L’agente lavora in autonomia **tra** un checkpoint e l’altro.
 - [ ] Suite test ricerca EN verde
 - [ ] CK2 **SI Renato**
 - [ ] Nota ufficiale aggiornata e referenziata in repo
-- [x] M2a bozza tabelle EN **verificata in EN** su delega Renato — 03/09/2026 (SI M2b codice ancora da dare)
+- [x] M2a bozza tabelle EN **verificata in EN** su delega Renato — 03/09/2026
+- [x] S1–S3 **SI** 03/09/2026 (niente traduttore EN→IT; rumore fase 1 `in order to`; non strippare `type of`)
 
 ---
 
@@ -284,7 +285,7 @@ L’agente lavora in autonomia **tra** un checkpoint e l’altro.
 
 | Periodo | Filone |
 |---------|--------|
-| **Ora (~2 sett. test Play)** | **M2a EN verificata su delega.** M2b vietato senza SI esplicito sul codice. Branch `cursor/multilingua-m2a-5409` |
+| **Ora (~2 sett. test Play)** | **M2b motore EN** in corso (`cursor/multilingua-m2b-5409`). S1–S3 SI. Non merge su `main` senza SI |
 | **Parallelo** | M0 listing EN (doc) se utile |
 | **Segnalazioni tester Play** | Renato le inoltra; fix su **famiglia** **poco prima** fine test — sessione [PROMPT_CONTINUITA_CORRETTIVI](../famiglia/PROMPT_CONTINUITA_CORRETTIVI.md) |
 | **Fine test Play** | Allineamento `main` (T2 categoria, eventuali bugfix); valutare merge M → play |

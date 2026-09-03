@@ -1,8 +1,9 @@
 # Semantica EN — tipi di equivoco (M2b, prima del motore)
 
 **Data:** 03/09/2026  
-**SI Renato:** procedere con M2b; pipeline **invariata**; niente interprete del “senso” della frase.  
-**Stato:** analisi; **`domain/search` non toccato**. Motore EN solo dopo le decisioni in fondo.
+**SI Renato 03/09/2026:** **S1–S3 approvati** («Proposta approvata»). Motore EN in corso su `cursor/multilingua-m2b-5409`.
+
+**Stato:** S1–S3 **SI**. Pipeline **invariata**; niente interprete del “senso” della frase; niente traduttore EN→IT.
 
 Renato non deve leggere l’inglese: ogni esempio EN è spiegato in italiano.
 
@@ -140,11 +141,11 @@ Esempi (alias già in tabella A, una parola): *cover* (custodia / «coprire»), 
 
 Tutto ciò che è già congelato in Nota **non si rivota**. Servono solo queste tre:
 
-| ID | Domanda | Proposta agente | Effetto |
-|----|---------|-----------------|---------|
-| **S1** | Vietare il traduttore EN→IT davanti alla pipeline? | **Sì** (Tipo J) | Motore locale-aware, non un dizionario di frasi |
-| **S2** | In fase 1, togliere solo locuzioni-rumore fisse (prima: `in order to`), elenco chiuso in Nota/bozza, niente “capire la frase”? | **Sì** (Tipo D, come 4.4) | Evita che *order* accenda CATEGORY a vuoto |
-| **S3** | Lasciare `type` / `kind` / `type of` come in IT «tipo» (niente strip, F7/F8 restano)? | **Sì** (Tipo B, E) | F7-04 e F8 EN restano allineati a 4.17 |
+| ID | Domanda | Proposta agente | Effetto | Esito |
+|----|---------|-----------------|---------|-------|
+| **S1** | Vietare il traduttore EN→IT davanti alla pipeline? | **Sì** (Tipo J) | Motore locale-aware, non un dizionario di frasi | **SI 03/09/2026** |
+| **S2** | In fase 1, togliere solo locuzioni-rumore fisse (prima: `in order to`), elenco chiuso in Nota/bozza, niente “capire la frase”? | **Sì** (Tipo D, come 4.4) | Evita che *order* accenda CATEGORY a vuoto | **SI 03/09/2026** |
+| **S3** | Lasciare `type` / `kind` / `type of` come in IT «tipo» (niente strip, F7/F8 restano)? | **Sì** (Tipo B, E) | F7-04 e F8 EN restano allineati a 4.17 | **SI 03/09/2026** |
 
 A, C, F, G, H, I si applicano **da soli** con le regole già SI (R8, R19, 4.3, 4.7, 4.17, 3.3.9).
 
@@ -164,7 +165,7 @@ Campione minimo (stesso archivio di `SearchOfficialPipelineTest`):
 | Dove trovo lo stesso tipo di oggetti | Where do I find the same type of objects | F7, *where* non instrada |
 | Cerca i contenitori con categoria diversa che contengono lo stesso tipo di oggetto | Search the containers with a different category that contain the same type of object | F8 |
 
-Il motore (M2b codice) parte **dopo** S1–S3.
+Il motore (M2b codice) è **aperto**: S1–S3 **SI** 03/09/2026.
 
 ---
 
