@@ -1035,13 +1035,13 @@ class BoxDetailActivity : BaseActivity() {
         val dialog =
             AlertDialog.Builder(this)
                 .setTitle(
-                    "Modifica oggetto"
+                    getString(R.string.dialog_edit_object)
                 )
                 .setView(
                     dialogViews.view
                 )
                 .setPositiveButton(
-                    "Salva",
+                    getString(R.string.common_save),
                     null
                 )
                 .setNegativeButton(
@@ -1131,10 +1131,10 @@ class BoxDetailActivity : BaseActivity() {
 
         val dialog =
             AlertDialog.Builder(this)
-                .setTitle("Nuovo oggetto")
+                .setTitle(getString(R.string.dialog_new_object))
                 .setView(dialogViews.view)
                 .setPositiveButton(
-                    "Aggiungi",
+                    getString(R.string.common_add),
                     null
                 )
                 .setNegativeButton(

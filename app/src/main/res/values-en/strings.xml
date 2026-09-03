@@ -177,7 +177,11 @@
 
     <!-- Dialog copy -->
     <string name="dialog_last_modified_prefix">Last modified: %1$s</string>
-    <string name="dialog_new_location">New location</string>
+    <string name="dialog_new_category">New category</string>
+    <string name="dialog_edit_category">Edit category</string>
+    <string name="dialog_new_object">New object</string>
+    <string name="dialog_edit_object">Edit object</string>
+    <string name="dialog_edit_location">Edit location</string>
     <string name="dialog_delete_contained_objects">Also delete the objects inside?</string>
     <string name="dialog_delete_confirm">Confirm deletion?</string>
     <string name="dialog_move_confirm">Confirm move?</string>

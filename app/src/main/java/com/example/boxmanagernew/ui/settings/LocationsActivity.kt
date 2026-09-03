@@ -287,7 +287,7 @@ class LocationsActivity : BaseActivity() {
 
         val dialog =
             AlertDialog.Builder(this)
-                .setTitle("Modifica posizione")
+                .setTitle(getString(R.string.dialog_edit_location))
                 .setView(container)
                 .setNegativeButton(getString(R.string.common_cancel), null)
                 .setPositiveButton(getString(R.string.common_save), null)

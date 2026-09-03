@@ -562,9 +562,9 @@ class CategoriesActivity : BaseActivity() {
 
         val dialog =
             createCategoryAlertDialog(
-                "Nuova categoria",
+                getString(R.string.dialog_new_category),
                 d.view,
-                "Aggiungi"
+                getString(R.string.common_add)
             )
 
         setupCategoryDialogConfirm(
@@ -620,9 +620,9 @@ class CategoriesActivity : BaseActivity() {
 
             val dialog =
                 createCategoryAlertDialog(
-                    "Modifica categoria",
+                    getString(R.string.dialog_edit_category),
                     d.view,
-                    "Salva"
+                    getString(R.string.common_save)
                 )
 
             dialog.setOnDismissListener {
