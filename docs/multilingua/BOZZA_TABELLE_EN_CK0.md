@@ -1,8 +1,8 @@
 # Bozza tabelle EN — Ricerca avanzata (M2a)
 
-**Stato:** BOZZA in attesa di **CK0 SI Renato**.  
-**Data:** 03/09/2026  
-**Non è codice.** Finché CK0 non è SI, `domain/search` non si tocca.
+**Stato:** BOZZA **verificata in EN** su delega Renato (03/09/2026). Lingua chiusa; `domain/search` resta intatto.  
+**Data verifica:** 03/09/2026  
+**Non è codice.** M2b parte solo con SI esplicito sul motore.
 
 Fonte IT (elenco intero, non riassunto):
 
@@ -28,26 +28,38 @@ Sidecar Nota: Allegato **4.21** in `docs/Nota_Integrata_9.1_B7.docx` (stesso con
 
 ---
 
-## Cosa chiedere a Renato (CK0)
+## CK0 — verifica EN (delega Renato 03/09/2026)
 
-Leggere le tabelle. Per ogni punto: **SI** così com’è, oppure segnare la riga EN da cambiare.
+Renato non rivede l’inglese: la verifica linguistica è dell’agente. Struttura e D7/D8 restano come proposti (nessuna obiezione).
 
-Non servono git né Android Studio: è solo testo.
+| # | Decisione | Esito verifica |
+|---|-----------|----------------|
+| D1–D6 | Elenchi 1:1 + inglese usabile dal motore | **Corretto** (vedi registro sotto) |
+| D7 | Header CSV italiani in V1 | **Confermato** |
+| D8 | `locale` fuori da LOCATION 1.3.3 | **Confermato** |
+| D9–D10 | F1–F6/F9 e R19 | Allineati alle stesse correzioni |
 
-| # | Decisione | Proposta agente | Serve SI |
-|---|-----------|-----------------|----------|
-| D1 | Quattro righe alias 1.3.3 EN | Tabelle A1–A4 | **Sì** — blocca M2b |
-| D2 | Perifrasi 1.3.3 EN | Tabella B | **Sì** |
-| D3 | Indicatori confronto / aggregazione / `dove` | Tabella C | **Sì** |
-| D4 | Sette messaggi ricerca 2.6 / 4.5 EN | Tabella D | **Sì** |
-| D5 | Cinque varianti F7 + heading EN | Tabella E | **Sì** |
-| D6 | Quattro varianti F8 + heading EN | Tabella F | **Sì** |
-| D7 | Header CSV `Modello_Importazione.csv` | Restano **italiani** in V1 | **Sì** (consigliato: restano IT) |
-| D8 | `locale` (Allegato 4.3 / codice; **non** in riga LOCATION 1.3.3) | Non importare in tabella ufficiale EN | **Sì** se si vuole aggiungerlo |
-| D9 | F1–F6 / F9 EN (supporto CK2) | Tabelle G | Consigliato nello stesso SI |
-| D10 | Frase R19 omonimi (non è una riga autonoma del catalogo 2.6) | Tabella H | Consigliato |
+Il motore spezza la domanda in **parole singole**. Un alias EN di due parole (es. `jewelry box`) **non** verrebbe mai riconosciuto. Questa era la correzione principale.
 
-Fuori da questo SI: PATTERN_005 / F5 (BACKLOG V2) e PATTERN_010 (SOSPESO). Tradotti in coda solo per non accorciare Allegato 1; **non** entrano in M2b.
+### Registro correzioni EN (IT ufficiale invariato)
+
+| Riga | Prima (calco / due parole) | Dopo (token unico, inglese d’uso) | Perché |
+|------|----------------------------|-----------------------------------|--------|
+| elemento | element | item | *element* in inglese è chimica/HTML; in un archivio si dice *item* |
+| bustone | large envelope | mailer | due parole = due token; *mailer* è la busta grande |
+| cassone | large chest | coffer | due parole; *chest* resta su *cassa* |
+| portaoggetti | storage case | organizer | due parole |
+| portagioie | jewelry box | jewelbox | due parole; *box* era già alias BOX |
+| portadocumenti | document holder | briefcase | due parole |
+| armadio | cupboard | closet | *cupboard* è più da cucina; *wardrobe* resta su *guardaroba* |
+| ambiente | environment | room | *environment* non si usa per i luoghi di casa |
+| fascia | band | tier | *band* è anche l’elastico |
+| uguale | equal | identical | *equal objects* suona da matematica; un inglese dice *identical* |
+| F7-01 / F8-01 *Cerca* | Find … | Search … | allineato a F1: *Cerca*=Search, *Trova*=Find |
+
+Messaggi 2.6 già in app (M1) **non** toccati.
+
+Fuori da M2b: PATTERN_005 / F5 (BACKLOG V2) e PATTERN_010 (SOSPESO).
 
 ---
 
@@ -62,6 +74,7 @@ L’inglese ha meno parole distinte dell’italiano. La bozza **non** inventa si
 | posizione / ubicazione | location / location | stesso token EN |
 | duplicato / doppione | duplicate / duplicate | `doppione` è in F7 ufficiale, non negli esempi 3.3.5 |
 | diverso / differente | different / different | |
+| ambiente / (locale D8) | room / fuori tabella | se si aggiunge `locale`, collassa su `room` |
 
 ---
 
@@ -75,7 +88,7 @@ Ordine = ordine della riga ufficiale. Canonico IT invariato: `oggetto` / `conten
 |---|--------------|----------|
 | 1 | oggetto | object |
 | 2 | articolo | article |
-| 3 | elemento | element |
+| 3 | elemento | item |
 | 4 | utensile | utensil |
 | 5 | cosa | thing |
 | 6 | affare | affair |
@@ -96,27 +109,27 @@ Ordine = ordine della riga ufficiale. Canonico IT invariato: `oggetto` / `conten
 | 7 | confezione | pack |
 | 8 | baule | trunk |
 | 9 | busta | envelope |
-| 10 | bustone | large envelope |
+| 10 | bustone | mailer |
 | 11 | cassetto | drawer |
 | 12 | barattolo | jar |
 | 13 | vaso | vase |
 | 14 | bacinella | basin |
 | 15 | recipiente | receptacle |
 | 16 | cassa | chest |
-| 17 | cassone | large chest |
+| 17 | cassone | coffer |
 | 18 | bidone | bin |
 | 19 | cassonetto | dumpster |
 | 20 | cassaforte | safe |
 | 21 | portafoglio | wallet |
-| 22 | portaoggetti | storage case |
-| 23 | portagioie | jewelry box |
-| 24 | portadocumenti | document holder |
+| 22 | portaoggetti | organizer |
+| 23 | portagioie | jewelbox |
+| 24 | portadocumenti | briefcase |
 | 25 | container | container |
 | 26 | involucro | wrapping |
 | 27 | custodia | case |
 | 28 | cover | cover |
 | 29 | imballaggio | packaging |
-| 30 | armadio | cupboard |
+| 30 | armadio | closet |
 | 31 | guardaroba | wardrobe |
 | 32 | stipo | cabinet |
 | 33 | libreria | bookcase |
@@ -137,7 +150,7 @@ Ordine = ordine della riga ufficiale. Canonico IT invariato: `oggetto` / `conten
 | 7 | zona | zone |
 | 8 | perimetro | perimeter |
 | 9 | spazio | space |
-| 10 | ambiente | environment |
+| 10 | ambiente | room |
 | 11 | città | city |
 | 12 | paese | town |
 | 13 | località | locality |
@@ -158,7 +171,7 @@ Ordine = ordine della riga ufficiale. Canonico IT invariato: `oggetto` / `conten
 | 9 | ordine | order |
 | 10 | divisione | division |
 | 11 | grado | grade |
-| 12 | fascia | band |
+| 12 | fascia | tier |
 | 13 | tipo | type |
 | 14 | tipologia | typology |
 | 15 | qualità | quality |
@@ -190,7 +203,7 @@ Elenco = gli esempi nominati in 3.3.5, senza aggiungere la «ecc.».
 
 | # | IT (3.3.5) | EN bozza |
 |---|------------|----------|
-| 1 | uguale | equal |
+| 1 | uguale | identical |
 | 2 | stesso | same |
 | 3 | duplicato | duplicate |
 | 4 | diverso | different |
@@ -244,17 +257,17 @@ Entità attese: OBJECT, BOX. Fulcro: OBJECT.
 
 | # | IT ufficiale | EN bozza |
 |---|--------------|----------|
-| 1 | Cerca tutti i contenitori che contengono doppioni | Find all the containers that contain duplicates |
-| 2 | In quali contenitori ci sono oggetti uguali | In which containers are there equal objects |
-| 3 | Elenco dei contenitori che hanno oggetti uguali | List of the containers that have equal objects |
+| 1 | Cerca tutti i contenitori che contengono doppioni | Search all the containers that contain duplicates |
+| 2 | In quali contenitori ci sono oggetti uguali | In which containers are there identical objects |
+| 3 | Elenco dei contenitori che hanno oggetti uguali | List of the containers that have identical objects |
 | 4 | Dove trovo lo stesso tipo di oggetti | Where do I find the same type of objects |
-| 5 | Trova i contenitori che hanno almeno un oggetto uguale | Find the containers that have at least one equal object |
+| 5 | Trova i contenitori che hanno almeno un oggetto uguale | Find the containers that have at least one identical object |
 
 Heading ufficiale F7:
 
 | IT | EN bozza |
 |----|----------|
-| Elenco dei contenitori che hanno oggetti uguali | List of the containers that have equal objects |
+| Elenco dei contenitori che hanno oggetti uguali | List of the containers that have identical objects |
 
 ---
 
@@ -265,16 +278,16 @@ Entità attese: OBJECT, BOX, CATEGORY. Fulcro: OBJECT.
 
 | # | IT ufficiale | EN bozza |
 |---|--------------|----------|
-| 1 | Cerca i contenitori con categoria diversa che contengono lo stesso tipo di oggetto | Find the containers with a different category that contain the same type of object |
-| 2 | Quali contenitori hanno categoria diversa e contengono oggetti uguali | Which containers have a different category and contain equal objects |
-| 3 | Trova contenitori con categoria diversa e oggetti uguali | Find containers with a different category and equal objects |
-| 4 | Elenco contenitori con categoria diversa e oggetti uguali | List of containers with a different category and equal objects |
+| 1 | Cerca i contenitori con categoria diversa che contengono lo stesso tipo di oggetto | Search the containers with a different category that contain the same type of object |
+| 2 | Quali contenitori hanno categoria diversa e contengono oggetti uguali | Which containers have a different category and contain identical objects |
+| 3 | Trova contenitori con categoria diversa e oggetti uguali | Find containers with a different category and identical objects |
+| 4 | Elenco contenitori con categoria diversa e oggetti uguali | List of containers with a different category and identical objects |
 
 Heading ufficiale F8:
 
 | IT | EN bozza |
 |----|----------|
-| Elenco dei contenitori che hanno categoria diversa e contengono oggetti uguali | List of the containers that have a different category and contain equal objects |
+| Elenco dei contenitori che hanno categoria diversa e contengono oggetti uguali | List of the containers that have a different category and contain identical objects |
 
 Non importare in EN (non sono varianti 4.17 / Allegato 1; oggi il codice IT le accetta come “famiglia” F8):
 
@@ -314,7 +327,7 @@ Stesso metodo 1:1. Placeholder: `<oggetto x>` → `<object x>`; `<contenitore x>
 | IT ufficiale | EN bozza |
 |--------------|----------|
 | Cerca i contenitori in \<posizione x\> | Search the containers in \<location x\> |
-| Quali contenitori ci sono in \<posizione x\> | Which containers are there in \<location x\> |
+| Quali contenitori ci sono in \<posizione x\> | Which containers are in \<location x\> |
 | Quali contenitori sono presenti in \<posizione x\> | Which containers are present in \<location x\> |
 | Quali sono i contenitori conservati in \<posizione x\> | Which are the containers stored in \<location x\> |
 | Elenco dei contenitori in \<posizione x\> | List of the containers in \<location x\> |
@@ -333,7 +346,7 @@ Stesso metodo 1:1. Placeholder: `<oggetto x>` → `<object x>`; `<contenitore x>
 
 | IT ufficiale | EN bozza |
 |--------------|----------|
-| Cerca in quali posti sono conservati \<oggetto1..n\> | Search in which spots \<object1..n\> are stored |
+| Cerca in quali posti sono conservati \<oggetto1..n\> | Search which spots \<object1..n\> are stored in |
 | Dove ho conservato \<oggetto1..n\> | Where did I store \<object1..n\> |
 | In quali luoghi ho conservato \<oggetto1..n\> | In which places did I store \<object1..n\> |
 | Elenco dei posti dove sono conservati \<oggetto1..n\> | List of the spots where \<object1..n\> are stored |
@@ -412,11 +425,13 @@ Non è un elenco Core. M2b lo applica solo dopo CK0.
 | `locale` | Allegato 4.3 («posto, locale, sito, luogo, posizione»); assente dalla riga LOCATION 1.3.3. Codice IT: commento «in più». EN se SI: `room` |
 | `pacco`, `valigia` | Solo esempi 3.3.5 BOX; non in riga 1.3.3 |
 | Header CSV | Modello ufficiale `Modello_Importazione.csv` resta nome fisso; colonne IT in V1 (D7) |
-| Stopword / imperativi del matcher (`trova`, `cerca`, …) | Non sono tabella 1.3.3; M2b potrà avere il set EN `find`, `search`, … solo come matching, dopo CK0 |
+| Stopword / imperativi del matcher (`trova`, `cerca`, …) | Non sono tabella 1.3.3; M2b: set EN `find`, `search`, … solo matching |
+| *equal* (letterale di *uguale*) | Solo matching, se serve; ufficiale = `identical` |
+| *jewelry* (da *portagioie*) | Solo matching; ufficiale = `jewelbox` (una parola) |
 
 ---
 
-## Dopo il SI
+## Dopo la verifica EN
 
-- **SI** → sessione **M2b** (motore locale-aware). Pipeline 0–10 invariata; importare **questi** elenchi, non una copia accorciata.
-- **NO / correzioni** → aggiornare questa bozza e l’Allegato 4.21; niente `domain/search` finché il SI non è sulle tabelle corrette.
+- Tabelle corrette = base per **M2b**. Pipeline 0–10 invariata; importare **questi** elenchi, non una copia accorciata.
+- **M2b non è iniziato.** Serve SI esplicito per toccare `domain/search`.

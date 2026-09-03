@@ -14,7 +14,7 @@ DOC = ROOT / "Nota_Integrata_9.1_B7.docx"
 W = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
 XML_SPACE = "{http://www.w3.org/XML/1998/namespace}space"
 
-TITLE = "4.21 Bozza tabelle EN ricerca avanzata (M2a — attesa CK0)"
+TITLE = "4.21 Bozza tabelle EN ricerca avanzata (M2a — EN verificata, attesa SI M2b)"
 
 
 def ptext(el: ET.Element) -> str:
@@ -65,36 +65,35 @@ def section_421() -> list[ET.Element]:
     return [
         make_p(TITLE, 2),
         make_p(
-            "BOZZA filone M2a, 03/09/2026. Non congelata. "
-            "CK0 SI Renato obbligatorio prima di qualsiasi commit su "
-            "domain/search per l'inglese. Pipeline 0–10 invariata. "
-            "Solo IT + EN in V1. Dati utente (nomi archivio) non si traducono. "
-            "Fonte viva di revisione: docs/multilingua/BOZZA_TABELLE_EN_CK0.md "
-            "(elenchi interi 1:1). Excel query_operative_V4.xlsx non è in repo; "
-            "la matrice Core usata è la copia già in 1.3.3."
+            "BOZZA filone M2a, 03/09/2026. Verifica EN su delega Renato "
+            "03/09/2026. Non congelata come codice: CK0 lingua chiusa; "
+            "M2b solo con SI esplicito su domain/search. Pipeline 0–10 "
+            "invariata. Solo IT + EN in V1. Dati utente non si traducono. "
+            "Fonte viva: docs/multilingua/BOZZA_TABELLE_EN_CK0.md. "
+            "Excel query_operative_V4.xlsx non è in repo; matrice Core = 1.3.3. "
+            "Alias EN = una sola parola (il motore spezza sugli spazi)."
         ),
         make_p(
-            "OBJECT EN (bozza, ordine 1.3.3): object, article, element, "
+            "OBJECT EN (verificata, ordine 1.3.3): object, article, item, "
             "utensil, thing, affair, stuff, product, tool."
         ),
         make_p(
-            "BOX EN (bozza, ordine 1.3.3): container, box, boxes, box, carton, "
-            "crate, pack, trunk, envelope, large envelope, drawer, jar, vase, "
-            "basin, receptacle, chest, large chest, bin, dumpster, safe, "
-            "wallet, storage case, jewelry box, document holder, container, "
-            "wrapping, case, cover, packaging, cupboard, wardrobe, cabinet, "
-            "bookcase, shelf."
+            "BOX EN (verificata, ordine 1.3.3): container, box, boxes, box, "
+            "carton, crate, pack, trunk, envelope, mailer, drawer, jar, vase, "
+            "basin, receptacle, chest, coffer, bin, dumpster, safe, wallet, "
+            "organizer, jewelbox, briefcase, container, wrapping, case, cover, "
+            "packaging, closet, wardrobe, cabinet, bookcase, shelf."
         ),
         make_p(
-            "LOCATION EN (bozza, ordine 1.3.3): location, place, spot, "
-            "location, site, area, zone, perimeter, space, environment, city, "
-            "town, locality, point. "
+            "LOCATION EN (verificata, ordine 1.3.3): location, place, spot, "
+            "location, site, area, zone, perimeter, space, room, city, town, "
+            "locality, point. "
             "«locale» non è in 1.3.3; resta D8 (Allegato 4.3 / codice)."
         ),
         make_p(
-            "CATEGORY EN (bozza, ordine 1.3.3): category, class, "
+            "CATEGORY EN (verificata, ordine 1.3.3): category, class, "
             "classification, group, aggregate, grouping, species, family, "
-            "order, division, grade, band, type, typology, quality, kind."
+            "order, division, grade, tier, type, typology, quality, kind."
         ),
         make_p(
             "Perifrasi EN (bozza, 1.3.3): OBJECT which; BOX which, in which, "
@@ -102,8 +101,8 @@ def section_421() -> list[ET.Element]:
             "to which."
         ),
         make_p(
-            "Indicatori EN (bozza, esempi 3.3.5 senza «ecc.»): confronto "
-            "equal, same, duplicate, different, different, comparison; "
+            "Indicatori EN (verificata, esempi 3.3.5 senza «ecc.»): confronto "
+            "identical, same, duplicate, different, different, comparison; "
             "aggregazione all, list, which; dove → where. "
             "doppione (variante ufficiale F7, non in 3.3.5) → duplicate."
         ),
@@ -118,24 +117,25 @@ def section_421() -> list[ET.Element]:
             "riscrivono."
         ),
         make_p(
-            "F7 EN (bozza, cinque varianti 4.17, elenco intero): "
-            "Find all the containers that contain duplicates; "
-            "In which containers are there equal objects; "
-            "List of the containers that have equal objects; "
+            "F7 EN (verificata, cinque varianti 4.17, elenco intero): "
+            "Search all the containers that contain duplicates; "
+            "In which containers are there identical objects; "
+            "List of the containers that have identical objects; "
             "Where do I find the same type of objects; "
-            "Find the containers that have at least one equal object. "
-            "Heading: List of the containers that have equal objects."
+            "Find the containers that have at least one identical object. "
+            "Heading: List of the containers that have identical objects."
         ),
         make_p(
-            "F8 EN (bozza, quattro varianti 4.17, elenco intero): "
-            "Find the containers with a different category that contain the "
+            "F8 EN (verificata, quattro varianti 4.17, elenco intero): "
+            "Search the containers with a different category that contain the "
             "same type of object; "
-            "Which containers have a different category and contain equal "
+            "Which containers have a different category and contain identical "
             "objects; "
-            "Find containers with a different category and equal objects; "
-            "List of containers with a different category and equal objects. "
+            "Find containers with a different category and identical objects; "
+            "List of containers with a different category and identical "
+            "objects. "
             "Heading: List of the containers that have a different category "
-            "and contain equal objects. "
+            "and contain identical objects. "
             "Non importare le varianti extra della famiglia F8 nel codice IT."
         ),
         make_p(
@@ -157,15 +157,22 @@ def patch_body(root: ET.Element) -> None:
         raise RuntimeError("No body")
     children = list(body)
 
-    if any(ptext(el).startswith("4.21 Bozza tabelle EN") for el in children):
-        print("4.21 already present — skip insert")
-        return
-
+    i421 = next(
+        (i for i, el in enumerate(children) if ptext(el).startswith("4.21 Bozza tabelle EN")),
+        None,
+    )
     i_414 = find_idx(children, "4.14 Storico allineamento pipeline")
     rebuilt: list[ET.Element] = []
-    rebuilt.extend(children[:i_414])
-    rebuilt.extend(section_421())
-    rebuilt.extend(children[i_414:])
+    if i421 is not None:
+        rebuilt.extend(children[:i421])
+        rebuilt.extend(section_421())
+        rebuilt.extend(children[i_414:])
+        print("4.21 replaced")
+    else:
+        rebuilt.extend(children[:i_414])
+        rebuilt.extend(section_421())
+        rebuilt.extend(children[i_414:])
+        print("4.21 inserted")
 
     for child in list(body):
         body.remove(child)

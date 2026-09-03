@@ -206,6 +206,11 @@ def numbered_it_column(md: str, heading: str) -> list[str]:
     return extract_table_column(md, heading, 1, numbered_only=True)
 
 
+def numbered_en_column(md: str, heading: str) -> list[str]:
+    """Tables with | # | IT | EN | → EN is column 2."""
+    return extract_table_column(md, heading, 2, numbered_only=True)
+
+
 def pair_it_column(md: str, heading: str) -> list[str]:
     """Tables with | IT | EN | → IT is column 0."""
     return extract_table_column(md, heading, 0)
@@ -292,6 +297,42 @@ def main() -> int:
     check(
         numbered_it_column(md, "A4 CATEGORY (16)") == CATEGORY_IT,
         "Bozza A4 CATEGORY = 1.3.3",
+        errors,
+    )
+
+    object_en = numbered_en_column(md, "A1 OBJECT (9)")
+    box_en = numbered_en_column(md, "A2 BOX (34)")
+    loc_en = numbered_en_column(md, "A3 LOCATION (14)")
+    cat_en = numbered_en_column(md, "A4 CATEGORY (16)")
+    confronto_en = numbered_en_column(md, "C1 Confronto")
+    check(
+        object_en[2] == "item",
+        "elemento → item (not element)",
+        errors,
+    )
+    check(
+        box_en[9] == "mailer"
+        and box_en[16] == "coffer"
+        and box_en[21] == "organizer"
+        and box_en[22] == "jewelbox"
+        and box_en[23] == "briefcase"
+        and box_en[29] == "closet",
+        "BOX EN single-token fixes (bustone/cassone/porta*/armadio)",
+        errors,
+    )
+    check(loc_en[9] == "room", "ambiente → room", errors)
+    check(cat_en[11] == "tier", "fascia → tier", errors)
+    check(confronto_en[0] == "identical", "uguale → identical", errors)
+    spaced = [
+        t
+        for t in object_en + box_en + loc_en + cat_en + confronto_en
+        if " " in t
+    ]
+    check(
+        not spaced,
+        "EN official aliases are single tokens (no spaces)"
+        if not spaced
+        else f"EN aliases with spaces: {spaced}",
         errors,
     )
 
