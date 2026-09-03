@@ -11,6 +11,7 @@ Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino
 
 | ID | Data | Indicazione | Stato |
 |----|------|-------------|-------|
+| **B-DEFAULT-IT-EN** | 03/09/2026 | Tradurre i valori di default (3 location + 16 category) da usare al **primo switch** italiano → inglese | **Aperto** |
 | **B-SEL-CARTELLA** | M1 / CK1 | Selettore cartella (Backup, Esporta, Condivisione tabelle, …): estendere la scelta anche ai drive **non riconosciuti direttamente da Android** (es. disco di rete locale / NAS SMB) | **Aperto** |
 | **B-RICERCA-SENZA-SPECIFICHE** | 03/09/2026 | I motori di ricerca (filtri) non consentono di cercare **senza stringa**: si vuole poter **stampare tutto** (es. tutti i contenitori in archivio) senza digitare nulla | **Aperto** |
 

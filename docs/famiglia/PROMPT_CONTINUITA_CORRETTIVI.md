@@ -12,6 +12,7 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md). Restano visibili
 
 | ID | Indicazione |
 |----|-------------|
+| **B-DEFAULT-IT-EN** | Tradurre i default (3 location + 16 category) al primo switch italiano → inglese |
 | **B-SEL-CARTELLA** | Selettore cartella anche su drive non visti da Android (NAS / disco di rete) |
 | **B-RICERCA-SENZA-SPECIFICHE** | Stampare tutto senza stringa (es. tutti i contenitori), oggi i filtri ricerca lo impediscono |
 
