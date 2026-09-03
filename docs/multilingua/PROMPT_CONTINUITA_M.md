@@ -56,6 +56,19 @@
 4. **Test Play aperto:** branch M dedicato; merge `main` solo con SI / post-test.
 5. **CK0 obbligatorio** prima del primo commit che tocca `domain/search` per EN.
 6. **Guida rapida in-app** (`QuickStartGuideCopy`, topbar «Guida»): **M1 obbligatorio**, verificata in **CK1** (§8 famiglia incluso). **Ritocchi testuali** (semplificazione) possono essere integrati da Renato in M1d prima del CK1.
+7. **Branch base:** tutto il nuovo sviluppo va su `famiglia` (e suoi feature branch `cursor/...`). `main` è riservato al test Google Play — **mai** usarlo come base di sviluppo.
+8. **Allineamento obbligatorio prima di ogni sessione:** eseguire `git fetch origin` e verificare che il branch di lavoro contenga i commit più recenti del branch base famiglia. Se c'è uno scarto, allineare **prima** di scrivere codice. Documentare il commit HEAD di partenza nel primo messaggio di sessione.
+9. **Scelta lingua:** la voce di selezione lingua (IT/EN) si trova in **Impostazioni** — non spostarla altrove.
+
+## Regole per le istruzioni di test a Renato
+
+Renato non programma e non gestisce branch da riga di comando. Le istruzioni di test devono:
+
+- **Non** richiedere operazioni git manuali.
+- Indicare solo **cosa fa Android Studio in automatico** (pull al Run, o `INSTALLA_FAMIGLIA.bat`).
+- Descrivere **solo le differenze rispetto al test precedente** (cosa è cambiato, dove guardare).
+- Elencare schermata per schermata cosa si vede in EN e cosa ancora in IT (normale, senza allarme).
+- Omettere commit SHA o nomi branch nelle istruzioni operative.
 
 ---
 
@@ -82,8 +95,9 @@ L’agente esegue **M1a→M1d** in sequenza senza fermarsi, salvo KO test/build.
 ### Fase 1 — Allineamento (obbligatoria)
 
 1. `git fetch origin`
-2. Leggere [ASSESSMENT_M.md](ASSESSMENT_M.md) §4–§7 e tabella checkpoint §6.
-3. Branch: `git checkout -b cursor/multilingua-m1a-5409` da base famiglia concordata.
+2. Confrontare `git log --oneline -5 origin/<branch-base>` con HEAD del branch di lavoro. Se il branch di lavoro è indietro, allineare con merge/rebase **prima** di toccare file.
+3. Leggere [ASSESSMENT_M.md](ASSESSMENT_M.md) §4–§7 e tabella checkpoint §6.
+4. Branch: `git checkout -b cursor/multilingua-<pacchetto>-5409` da base famiglia concordata (mai da `main`).
 
 ### Fase 2 — Esecuzione pacchetto
 
