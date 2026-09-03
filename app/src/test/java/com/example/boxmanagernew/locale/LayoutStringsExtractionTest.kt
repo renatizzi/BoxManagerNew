@@ -61,6 +61,8 @@ class LayoutStringsExtractionTest {
     fun englishNavLabels_differFromItalian() {
         assertEquals("Containers", stringEn("nav_boxes"))
         assertEquals("Contenitori", stringIt("nav_boxes"))
+        assertEquals("📤 Share Archive", stringEn("utility_family_catalog"))
+        assertEquals("📤 Condividi Archivio", stringIt("utility_family_catalog"))
     }
 
     private fun layout(name: String): String {

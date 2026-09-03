@@ -72,7 +72,7 @@
     <string name="utility_restore">🔄 Ripristino</string>
     <string name="utility_import">📥 Importa dati</string>
     <string name="utility_qr">📱 Codice QR</string>
-    <string name="utility_family_catalog">📋 Catalogo Famiglia</string>
+    <string name="utility_family_catalog">📤 Condividi Archivio</string>
 
     <!-- Backup -->
     <string name="backup_folder_cd">Cartella backup</string>

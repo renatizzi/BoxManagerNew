@@ -72,7 +72,7 @@
     <string name="utility_restore">🔄 Restore</string>
     <string name="utility_import">📥 Import data</string>
     <string name="utility_qr">📱 QR code</string>
-    <string name="utility_family_catalog">📋 Family catalog</string>
+    <string name="utility_family_catalog">📤 Share Archive</string>
 
     <!-- Backup -->
     <string name="backup_folder_cd">Backup folder</string>

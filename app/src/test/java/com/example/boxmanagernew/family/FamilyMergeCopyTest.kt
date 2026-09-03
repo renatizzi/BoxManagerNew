@@ -7,6 +7,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import java.io.File
 
 class FamilyMergeCopyTest {
 
@@ -14,6 +15,23 @@ class FamilyMergeCopyTest {
     fun utilityCard_usesEmojiSingleLine() {
         assertEquals("📤 Condividi Archivio", FamilyMergeCopy.UTILITY_CARD_LABEL)
         assertFalse(FamilyMergeCopy.UTILITY_CARD_LABEL.contains("\n"))
+    }
+
+    @Test
+    fun utilityScreen_usesLocalizedFamilyCardString() {
+        val source = File("src/main/java/com/example/boxmanagernew/ui/utility/UtilityActivity.kt")
+            .takeIf { it.isFile }
+            ?.readText()
+            ?: File("app/src/main/java/com/example/boxmanagernew/ui/utility/UtilityActivity.kt")
+                .readText()
+        assertFalse(
+            source.contains("FamilyMergeCopy.UTILITY_CARD_LABEL")
+        )
+        val layout = File("src/main/res/layout/activity_utility.xml")
+            .takeIf { it.isFile }
+            ?.readText()
+            ?: File("app/src/main/res/layout/activity_utility.xml").readText()
+        assertTrue(layout.contains("@string/utility_family_catalog"))
     }
 
     @Test
