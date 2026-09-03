@@ -11,6 +11,8 @@ Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino
 
 | ID | Data | Indicazione | Stato |
 |----|------|-------------|-------|
+| **B-NOME-AUTO-SAVE** | 03/09/2026 | In Impostazioni il Salva serve solo al nome utente (da quello che ho capito, non serve ad altro). Proverei a memorizzarlo non appena viene inserito, senza bisogno di salvare con il tasto. Ovviamente lasciando la possibilità di modificarlo | **Aperto** |
+| **B-DEFAULT-IT-EN** | 03/09/2026 | Tradurre i valori di default (3 location + 16 category) da usare al **primo switch** italiano → inglese | **Aperto** |
 | **B-SEL-CARTELLA** | M1 / CK1 | Selettore cartella (Backup, Esporta, Condivisione tabelle, …): estendere la scelta anche ai drive **non riconosciuti direttamente da Android** (es. disco di rete locale / NAS SMB) | **Aperto** |
 | **B-RICERCA-SENZA-SPECIFICHE** | 03/09/2026 | I motori di ricerca (filtri) non consentono di cercare **senza stringa**: si vuole poter **stampare tutto** (es. tutti i contenitori in archivio) senza digitare nulla | **Aperto** |
 
@@ -23,7 +25,7 @@ Dopo il rilascio Play **1.2**, due filoni in **parallelo al test** (decisione Re
 | Filone | Documento | Stato |
 |--------|-----------|-------|
 | **Archivio condiviso** | [NOTA_B0_MERGE_FAMIGLIA.md](NOTA_B0_MERGE_FAMIGLIA.md) B0–B5 | **CONVALIDATO** — funzione di BoxManager, non un’altra app |
-| **Inglese** (scelta lingua + ricerca EN) | [../multilingua/PROMPT_CONTINUITA_M.md](../multilingua/PROMPT_CONTINUITA_M.md) | **M1/CK1 CONVALIDATO**; M2b motore (S1–S3 SI). Stessa BoxManager. |
+| **Inglese** (scelta lingua + ricerca EN) | [../multilingua/PROMPT_CONTINUITA_M.md](../multilingua/PROMPT_CONTINUITA_M.md) | **M1/CK1 CONVALIDATO**; M2b+M2c codice fatto; **CK2** device. Stessa BoxManager. |
 
 ---
 

@@ -215,7 +215,8 @@ Ogni pacchetto è **chiudibile dall’agente** senza intervento Renato, salvo i 
 |-|-|
 | **Scope** | `SearchLocale` + repository alias/matrix per `en`; normalizer EN; `SearchConfiguration` locale-aware |
 | **Vincolo** | Pipeline 0–10 invariata; stessi test logici, input EN |
-| **Test** | `SearchCoreAliasesTest`, `SearchOfficialPipelineTest` estesi; **102+** casi EN |
+| **Test** | `SearchCoreAliasesTest`, `SearchOfficialPipelineTest` estesi; campione EN 0–10 |
+| **Stato** | **Fatto** 03/09/2026 |
 
 #### M2c — UI ricerca + messaggi runtime
 
@@ -223,6 +224,7 @@ Ogni pacchetto è **chiudibile dall’agente** senza intervento Renato, salvo i 
 |-|-|
 | **Scope** | Hint, placeholder, card `GlobalSearchActivity`, messaggi dispatcher in EN |
 | **Test** | E2E manuale campione Matrice Test Ricerca EN |
+| **Stato** | **Fatto** 03/09/2026 — messaggi 2.6 sul locale UI; `SearchUiLocaleTest`. **CK2** attende SI device |
 
 ---
 
@@ -272,12 +274,13 @@ L’agente lavora in autonomia **tra** un checkpoint e l’altro.
 - [x] CK1 **SI Renato** (device 03/09/2026)
 
 ### M2 done
-- [ ] Domande EN attraversano pipeline 0–10 come IT
-- [ ] Suite test ricerca EN verde
-- [ ] CK2 **SI Renato**
-- [ ] Nota ufficiale aggiornata e referenziata in repo
+- [x] Domande EN attraversano pipeline 0–10 come IT
+- [x] Suite test ricerca EN verde (`SearchOfficialPipelineEnTest` + `SearchUiLocaleTest`)
+- [ ] CK2 **SI Renato** (device — istruzioni in [PROMPT_CONTINUITA_M.md](PROMPT_CONTINUITA_M.md))
+- [x] Nota ufficiale aggiornata e referenziata in repo (Allegato 4.21 + bozza CK0)
 - [x] M2a bozza tabelle EN **verificata in EN** su delega Renato — 03/09/2026
 - [x] S1–S3 **SI** 03/09/2026 (niente traduttore EN→IT; rumore fase 1 `in order to`; non strippare `type of`)
+- [x] M2c UI messaggi ricerca sul locale Impostazioni
 
 ---
 
@@ -285,7 +288,7 @@ L’agente lavora in autonomia **tra** un checkpoint e l’altro.
 
 | Periodo | Filone |
 |---------|--------|
-| **Ora (test Play 1.2 aperto)** | **M2b motore EN** in corso. La 1.2 su `main` **non si tocca**. A fine test questa linea di sviluppo **sostituisce** la 1.2. |
+| **Ora (test Play 1.2 aperto)** | Codice M **chiuso** (M1+M2). Attesa **CK2** device. La 1.2 su `main` **non si tocca**. A fine test questa linea **sostituisce** la 1.2. |
 | **Parallelo** | M0 listing EN (doc) se utile |
 | **Segnalazioni tester Play** | Solo se **bloccanti** → aggiornamento **1.2** (`main`). Sessione [PROMPT_CONTINUITA_CORRETTIVI](../famiglia/PROMPT_CONTINUITA_CORRETTIVI.md) |
 | **Fine test Play** | La BoxManager di sviluppo **diventa** l’ufficiale e sostituisce la 1.2. Via Console in sessione dedicata. |

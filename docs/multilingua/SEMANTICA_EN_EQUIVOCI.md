@@ -1,7 +1,7 @@
 # Semantica EN — tipi di equivoco (M2b, prima del motore)
 
 **Data:** 03/09/2026  
-**SI Renato 03/09/2026:** **S1–S3 approvati** («Proposta approvata»). Motore EN in corso su `cursor/multilingua-m2b-5409`.
+**SI Renato 03/09/2026:** **S1–S3 approvati** («Proposta approvata»). Motore EN **fatto** (M2b). UI messaggi ricerca **fatta** (M2c). Attesa **CK2** device.
 
 **Stato:** S1–S3 **SI**. Pipeline **invariata**; niente interprete del “senso” della frase; niente traduttore EN→IT.
 
@@ -165,7 +165,7 @@ Campione minimo (stesso archivio di `SearchOfficialPipelineTest`):
 | Dove trovo lo stesso tipo di oggetti | Where do I find the same type of objects | F7, *where* non instrada |
 | Cerca i contenitori con categoria diversa che contengono lo stesso tipo di oggetto | Search the containers with a different category that contain the same type of object | F8 |
 
-Il motore (M2b codice) è **aperto**: S1–S3 **SI** 03/09/2026.
+Il motore (M2b) e i messaggi UI (M2c) sono **fatti**. Resta **CK2** sul device.
 
 ---
 

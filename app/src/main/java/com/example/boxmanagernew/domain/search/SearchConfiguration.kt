@@ -22,9 +22,18 @@ object SearchConfiguration {
     private const val MSG_INTERROGATION_UNAVAILABLE_IT =
         "Questo tipo di richiesta non è ancora disponibile."
 
+    /**
+     * Pipeline ThreadLocal **oppure** locale UI (liste vuote sul main thread).
+     * I test della Pipeline restano IT: display locale default IT.
+     */
+    private fun english(): Boolean {
+        return SearchLocaleContext.isEnglish() ||
+            SearchLocaleContext.displayIsEnglish()
+    }
+
     val MSG_NOT_UNDERSTOOD: String
         get() =
-            if (SearchLocaleContext.isEnglish()) {
+            if (english()) {
                 SearchLanguageTablesEn.MSG_NOT_UNDERSTOOD
             } else {
                 MSG_NOT_UNDERSTOOD_IT
@@ -32,7 +41,7 @@ object SearchConfiguration {
 
     val MSG_CLARIFY: String
         get() =
-            if (SearchLocaleContext.isEnglish()) {
+            if (english()) {
                 SearchLanguageTablesEn.MSG_CLARIFY
             } else {
                 MSG_CLARIFY_IT
@@ -40,7 +49,7 @@ object SearchConfiguration {
 
     val MSG_NO_RESULTS: String
         get() =
-            if (SearchLocaleContext.isEnglish()) {
+            if (english()) {
                 SearchLanguageTablesEn.MSG_NO_RESULTS
             } else {
                 MSG_NO_RESULTS_IT
@@ -48,7 +57,7 @@ object SearchConfiguration {
 
     val MSG_INTERROGATION_UNAVAILABLE: String
         get() =
-            if (SearchLocaleContext.isEnglish()) {
+            if (english()) {
                 SearchLanguageTablesEn.MSG_INTERROGATION_UNAVAILABLE
             } else {
                 MSG_INTERROGATION_UNAVAILABLE_IT
@@ -58,31 +67,31 @@ object SearchConfiguration {
         cores: Set<CoreEntityType>
     ): String {
 
-        val english =
-            SearchLocaleContext.isEnglish()
+        val inEnglish =
+            english()
 
         val phrases =
             listOf(
                 CoreEntityType.OBJECT to
-                    if (english) {
+                    if (inEnglish) {
                         SearchLanguageTablesEn.PHRASE_OBJECT
                     } else {
                         "a un oggetto"
                     },
                 CoreEntityType.BOX to
-                    if (english) {
+                    if (inEnglish) {
                         SearchLanguageTablesEn.PHRASE_BOX
                     } else {
                         "a un contenitore"
                     },
                 CoreEntityType.LOCATION to
-                    if (english) {
+                    if (inEnglish) {
                         SearchLanguageTablesEn.PHRASE_LOCATION
                     } else {
                         "a una posizione"
                     },
                 CoreEntityType.CATEGORY to
-                    if (english) {
+                    if (inEnglish) {
                         SearchLanguageTablesEn.PHRASE_CATEGORY
                     } else {
                         "a una categoria"
@@ -101,7 +110,7 @@ object SearchConfiguration {
         }
 
         val orWord =
-            if (english) {
+            if (inEnglish) {
                 "or"
             } else {
                 "o"
@@ -117,7 +126,7 @@ object SearchConfiguration {
             }
 
         val prefix =
-            if (english) {
+            if (inEnglish) {
                 SearchLanguageTablesEn.MSG_HOMONYM_PREFIX
             } else {
                 MSG_HOMONYM_CLARIFY_PREFIX_IT

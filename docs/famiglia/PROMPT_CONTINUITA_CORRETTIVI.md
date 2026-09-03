@@ -12,6 +12,8 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md). Restano visibili
 
 | ID | Indicazione |
 |----|-------------|
+| **B-NOME-AUTO-SAVE** | Impostazioni: memorizzare il nome utente appena inserito (restando modificabile), senza tasto Salva |
+| **B-DEFAULT-IT-EN** | Tradurre i default (3 location + 16 category) al primo switch italiano → inglese |
 | **B-SEL-CARTELLA** | Selettore cartella anche su drive non visti da Android (NAS / disco di rete) |
 | **B-RICERCA-SENZA-SPECIFICHE** | Stampare tutto senza stringa (es. tutti i contenitori), oggi i filtri ricerca lo impediscono |
 
@@ -28,7 +30,7 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md). Restano visibili
 | **Dopo il test** | La BoxManager di sviluppo **sostituisce** la 1.2 come ufficiale. Non è un optional. [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md) |
 | **Archivio condiviso B0–B5** | **CONVALIDATO** — Nota Integrata **9.2** Allegato **4.20** |
 | **Filone correttivi** | P0 chiuso; **P1 CONVALIDATO** B5.7; P2 continuo |
-| **Backlog aperto** | **B-SEL-CARTELLA**, **B-RICERCA-SENZA-SPECIFICHE** — in evidenza nel Promemoria; non in carico finché Renato non decide |
+| **Backlog aperto** | **B-NOME-AUTO-SAVE**, **B-DEFAULT-IT-EN**, **B-SEL-CARTELLA**, **B-RICERCA-SENZA-SPECIFICHE** — in evidenza nel Promemoria; non in carico finché Renato non decide |
 
 ### Documenti vincolanti (leggere prima di codice)
 

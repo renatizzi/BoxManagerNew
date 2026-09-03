@@ -11,8 +11,10 @@ Fonte viva: [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md). Rest
 
 | ID | Indicazione |
 |----|-------------|
+| **B-NOME-AUTO-SAVE** | Impostazioni: memorizzare il nome utente appena inserito (restando modificabile), senza tasto Salva |
+| **B-DEFAULT-IT-EN** | Tradurre i default (3 location + 16 category) al primo switch italiano → inglese |
 | **B-SEL-CARTELLA** | Selettore cartella anche su drive non visti da Android (NAS / disco di rete) |
-| **B-RICERCA-SENZA-SPECIFICHE** | I motori di ricerca (filtri) non consentono la ricerca senza specifiche |
+| **B-RICERCA-SENZA-SPECIFICHE** | Stampare tutto senza stringa (es. tutti i contenitori), oggi i filtri ricerca lo impediscono |
 
 ---
 
@@ -41,14 +43,15 @@ Fonte viva: [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md). Rest
 | **Play Console traduzione app** | **Non usare** — lavoro in Cursor |
 | **M1 / CK1** | **CONVALIDATO SI Renato device 03/09/2026** (M1a–M1d su PR **#18**) |
 | **M2a** | **EN verificata** su delega Renato 03/09/2026 — [BOZZA_TABELLE_EN_CK0.md](BOZZA_TABELLE_EN_CK0.md) + Allegato **4.21** |
-| **M2b** | **S1–S3 SI** 03/09/2026 — motore locale-aware in corso ([SEMANTICA_EN_EQUIVOCI.md](SEMANTICA_EN_EQUIVOCI.md)) |
-| **Prossimo pacchetto** | Completare M2b (test EN campione) poi **M2c** UI ricerca |
-| **Branch lavoro** | `cursor/multilingua-m2b-5409` |
-| **Branch base** | `cursor/multilingua-m2a-5409` (EN verificata) |
+| **M2b** | **Fatto** — motore locale-aware EN (S1–S3 SI 03/09/2026). [SEMANTICA_EN_EQUIVOCI.md](SEMANTICA_EN_EQUIVOCI.md) |
+| **M2c** | **Fatto** — messaggi 2.6 e card ricerca seguono il locale Impostazioni (PR **#21**) |
+| **Prossimo pacchetto** | **CK2** device Renato (campione domande EN). Poi **M3** solo a test Play chiuso |
+| **Branch lavoro** | `cursor/multilingua-m2c-d69a` |
+| **Branch base** | `cursor/multilingua-m2b-5409` |
 | **Play** | BoxManager **1.2** su `main`, identica per tutto il test. Lo **stesso** BoxManager di sviluppo (archivio condiviso + inglese) a test chiuso **sostituisce** la 1.2. Si tocca 1.2 **solo** per bug bloccanti. |
 | **Build sviluppo** | Topbar **1.3-famigliaB5.7** (etichetta di build, non un altro nome di app). P1 CONVALIDATO. |
 | **Ricerca avanzata EN** | Pipeline 0–10 invariata; **niente** traduttore EN→IT; **niente** interprete semantico (Nota 3.3.9) |
-| **Checkpoint** | **CK0** tabelle EN verificate; **S1–S3 SI**; **CK1** ✅, **CK2** |
+| **Checkpoint** | **CK0** ✅; **S1–S3 SI**; **CK1** ✅; **CK2** in attesa SI device |
 
 ### Documenti vincolanti (leggere prima di codice)
 
@@ -77,9 +80,78 @@ Fonte viva: [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md). Rest
 9. **Scelta lingua:** la voce IT/EN si trova in **Impostazioni** — non spostarla altrove.
 10. **Nome:** l’app si chiama **BoxManager** (`topbar_app_title`). Non esiste un secondo nome di prodotto. `app_name` del flavor Gradle non è un’altra app.
 
+## Istruzioni CK2 per Renato (device — chiusura filone M)
+
+Il codice inglese è **chiuso** (M1 + M2b + M2c). Manca solo il **SI** sul telefono. **M3** (Play al posto della 1.2) **non** è questo passo.
+
+### 1. Pull nel Terminale di Android Studio
+
+Apri il progetto `BoxManagerNew`. In basso: **Terminal**. Incolla **tutto il blocco**, Invio:
+
+```
+git fetch origin
+git checkout -B cursor/multilingua-m2c-d69a origin/cursor/multilingua-m2c-d69a
+```
+
+Poi: Sync Gradle se lo chiede; variante **famigliaDebug** (non `play`); **Run** sul telefono. Topbar attesa: **1.3-famigliaB5.7**.
+
+### 2. Archivio da inserire (se è vuoto)
+
+Posizioni e categorie **ci sono già** al primo avvio (Cantina, Garage, Alimenti e Bevande, Attrezzi…). **Non** crearne altre. Censisci solo quanto sotto. Nomi **esatti**, spazi compresi.
+
+**Cinque contenitori** (tutti in posizione **Cantina**):
+
+| Nome contenitore | Categoria |
+|------------------|-----------|
+| Box | Attrezzi, Strumenti e Ferramenta |
+| box prova | Attrezzi, Strumenti e Ferramenta |
+| Box 1 | Attrezzi, Strumenti e Ferramenta |
+| Cassetta 1 | Attrezzi, Strumenti e Ferramenta |
+| prova | Alimenti e Bevande |
+
+**Quattro oggetti** (due si chiamano uguale **Vite**):
+
+| Nome oggetto | Dentro |
+|--------------|--------|
+| Box | Cassetta 1 |
+| Trapano elettrico | Box 1 |
+| Vite | Cassetta 1 |
+| Vite | prova |
+
+Attenzione: `Box 1` con spazio (non `Box1`); `box prova` minuscolo; un contenitore **e** un oggetto si chiamano entrambi `Box`.
+
+### 3. Cosa è cambiato rispetto a CK1
+
+CK1 era la **lingua delle schermate**. **Nuovo:** le **risposte** della Ricerca avanzata (chiarificazione, nessun risultato, F7/F8) in inglese.
+
+### 4. Domande (dopo Impostazioni → English)
+
+Archivio completo → Ricerca avanzata. Digitare **esatto**:
+
+| # | Domanda | Esito |
+|---|---------|-------|
+| 1 | Find box | Chiarificazione in inglese (*Rephrase the question so it is clear whether you mean an object or a container.*) |
+| 2 | Find container box | Lista: Box, box prova, Box 1 |
+| 3 | Where is the trapano elettrico? | Si apre **Box 1** |
+| 4 | Where do I find the same type of objects | Elenco F7 in inglese (Cassetta 1 e prova). *Where* non è un luogo |
+| 5 | Search the containers with a different category that contain the same type of object | Elenco F8 in inglese (stesso, categorie diverse) |
+| 6 | In order to find the trapano elettrico | Come il punto 3; *order* non è categoria |
+| 7 | Search all the containers that contain duplicates | Altra F7 |
+| 8 | Find containers with a different category and identical objects | Altra F8 |
+| 9 | List of the containers that have identical objects | Variante F7 |
+| 10 | Find the trapano elettrico | Come il punto 3, senza *where* |
+
+Italiano: Impostazioni → Italiano; *Trova box* e *Nessun risultato trovato.* come prima.
+
+### Cosa **non** è questo test
+
+- Cartella NAS / disco di rete (**B-SEL-CARTELLA**)
+- Stampare tutti i contenitori senza digitare (**B-RICERCA-SENZA-SPECIFICHE**)
+- Pubblicare su Play (**M3**)
+
 ## Istruzioni CK0 per Renato (nessun device)
 
-M2a **non** cambia l’app. La verifica dell’inglese è **già fatta**. M2b è aperto sull’analisi degli equivoci: [SEMANTICA_EN_EQUIVOCI.md](SEMANTICA_EN_EQUIVOCI.md). Per il codice motore servono S1–S3 (sì/no, in italiano).
+M2a **non** cambia l’app. La verifica delle tabelle EN è **già fatta**. **S1–S3 SI** 03/09/2026. M2b/M2c codice **fatto**.
 
 ## Regole per le istruzioni di test a Renato
 
@@ -160,15 +232,13 @@ git checkout -b cursor/multilingua-m1a-5409
 
 ## Messaggio tipo per **nuova sessione** (copia-incolla)
 
-**Ora:** M2b codice motore. **S1–S3 SI** 03/09/2026.
+**Ora:** codice M chiuso. Attesa **CK2** device. Non aprire M3 finché il test Play 1.2 è aperto.
 
 ```
 Continua filone M — inglese in BoxManager da docs/multilingua/PROMPT_CONTINUITA_M.md
-Pacchetto: M2b codice motore (S1–S3 già SI)
-Branch: cursor/multilingua-m2b-5409
-Vincoli: pipeline 0–10 invariata; niente traduttore EN→IT; niente interprete semantico (3.3.9);
-importare elenchi interi bozza CK0; rumore fase 1 solo elenco chiuso.
-Obiettivo: SearchLocale + alias/matrix EN; test IT invariati; campione EN 0–10.
+Pacchetto: CK2 (SI device Renato) oppure attesa; M3 solo a test Play chiuso
+Branch: cursor/multilingua-m2c-d69a
+Vincoli: non toccare main/1.2; non implementare B-NOME-AUTO-SAVE né B-DEFAULT-IT-EN né B-SEL-CARTELLA né B-RICERCA-SENZA-SPECIFICHE.
 ```
 
 ---
@@ -188,6 +258,8 @@ Obiettivo: SearchLocale + alias/matrix EN; test IT invariati; campione EN 0–10
 
 | ID | Richiesta Renato | Note |
 |----|------------------|------|
+| **B-NOME-AUTO-SAVE** | In Impostazioni il Salva serve solo al nome utente; memorizzarlo appena inserito, senza tasto Salva, lasciando la possibilità di modificarlo | **Aperto** |
+| **B-DEFAULT-IT-EN** | Tradurre i valori di default (3 location + 16 category) da usare al **primo switch** italiano → inglese | **Aperto** |
 | **B-SEL-CARTELLA** | Selettore cartella anche su drive non visti da Android (NAS / disco di rete) | **Aperto** |
 | **B-RICERCA-SENZA-SPECIFICHE** | Stampare tutto senza stringa (es. tutti i contenitori); oggi i filtri ricerca lo impediscono | **Aperto** |
 

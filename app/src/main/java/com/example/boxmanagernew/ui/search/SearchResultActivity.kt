@@ -587,7 +587,10 @@ class SearchResultActivity : BaseActivity() {
                 TextView(context).apply {
 
                     text =
-                        "Quantità: ${item.quantity ?: "-"}"
+                        context.getString(
+                            R.string.object_quantity_label,
+                            item.quantity ?: "-"
+                        )
 
                     textSize = 13f
                     alpha = 0.65f

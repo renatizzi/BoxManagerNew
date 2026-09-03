@@ -537,15 +537,22 @@ class GlobalSearchActivity : BaseActivity() {
         text: String
     ) {
 
+        val locale =
+            SearchLocale.fromTag(
+                LocaleManager.storedTag(this)
+            )
+
         val visible =
-            if (
-                text.startsWith("[") ||
-                text.contains("LOOKUP") ||
-                text.contains("ENGINE_")
-            ) {
-                SearchConfiguration.MSG_NOT_UNDERSTOOD
-            } else {
-                text
+            SearchLocaleContext.run(locale) {
+                if (
+                    text.startsWith("[") ||
+                    text.contains("LOOKUP") ||
+                    text.contains("ENGINE_")
+                ) {
+                    SearchConfiguration.MSG_NOT_UNDERSTOOD
+                } else {
+                    text
+                }
             }
 
         viewModel.replaceLastAssistantMessage(
@@ -682,7 +689,7 @@ class GlobalSearchActivity : BaseActivity() {
         if (boxNames.isEmpty()) {
 
             showOutputNotice(
-                SearchConfiguration.MSG_NO_RESULTS
+                noResultsMessage()
             )
 
             return null
@@ -806,11 +813,23 @@ class GlobalSearchActivity : BaseActivity() {
         if (snapshot == null) {
 
             showOutputNotice(
-                SearchConfiguration.MSG_NO_RESULTS
+                noResultsMessage()
             )
         }
 
         return snapshot
+    }
+
+    private fun noResultsMessage(): String {
+
+        val locale =
+            SearchLocale.fromTag(
+                LocaleManager.storedTag(this)
+            )
+
+        return SearchLocaleContext.run(locale) {
+            SearchConfiguration.MSG_NO_RESULTS
+        }
     }
 
     private fun showOutputNotice(
