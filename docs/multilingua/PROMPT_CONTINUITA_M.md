@@ -82,44 +82,70 @@ Fonte viva: [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md). Rest
 
 Il codice inglese è **chiuso** (M1 + M2b + M2c). Manca solo il **SI** sul telefono. **M3** (Play al posto della 1.2) **non** è questo passo.
 
-### Come installare (niente git)
+### 1. Pull nel Terminale di Android Studio
 
-Come l’ultima volta: apri il progetto in Android Studio e fai **Run** (pull automatico), oppure `INSTALLA_FAMIGLIA.bat`.
+Apri il progetto `BoxManagerNew`. In basso: **Terminal**. Incolla **tutto il blocco**, Invio:
 
-### Cosa è cambiato rispetto a CK1
+```
+git fetch origin
+git checkout -B cursor/multilingua-m2c-d69a origin/cursor/multilingua-m2c-d69a
+```
 
-CK1 era la **lingua delle schermate** (Impostazioni → English: menu, Guida, card). Quello resta.
+Poi: Sync Gradle se lo chiede; variante **famigliaDebug** (non `play`); **Run** sul telefono. Topbar attesa: **1.3-famigliaB5.7**.
 
-**Nuovo:** le **risposte** della Ricerca avanzata. Chiarificazione, «nessun risultato», elenchi F7/F8 escono in inglese. I **nomi** di oggetti/contenitori/posizioni restano come li hai scritti in archivio: non tradurli nella domanda.
+### 2. Archivio da inserire (se è vuoto)
 
-### Cosa fare
+Posizioni e categorie **ci sono già** al primo avvio (Cantina, Garage, Alimenti e Bevande, Attrezzi…). **Non** crearne altre. Censisci solo quanto sotto. Nomi **esatti**, spazi compresi.
 
-1. Impostazioni → English (già visto in CK1).
-2. Archivio completo → Ricerca avanzata. Titolo/hint già in inglese.
-3. Digita le domande sotto **usando i nomi veri del tuo archivio** (esempio di laboratorio: `trapano elettrico`, `box`).
+**Cinque contenitori** (tutti in posizione **Cantina**):
 
-| # | Domanda da digitare | Cosa ti aspetti |
-|---|---------------------|-----------------|
-| 1 | Find box | Se `box` è sia oggetto sia contenitore: messaggio di chiarificazione **in inglese** (*Rephrase the question so it is clear whether you mean an object or a container.*) |
-| 2 | Find container box | Lista dei contenitori di nome box (nomi originali) |
-| 3 | Where is the trapano elettrico? | Si apre il contenitore di quell’oggetto. Non scrivere “electric drill” se in archivio si chiama trapano. |
-| 4 | Where do I find the same type of objects | Elenco F7 in inglese. *Where* **non** è un luogo. |
-| 5 | Search the containers with a different category that contain the same type of object | Elenco F8 in inglese (serve lo stesso oggetto in due categorie diverse) |
-| 6 | In order to find the trapano elettrico | Come «trova l’oggetto»; *order* **non** è una categoria |
-| 7 | Search all the containers that contain duplicates | Altra variante F7 |
-| 8 | Find containers with a different category and identical objects | Altra variante F8 |
-| 9 | List of the containers that have identical objects | Variante F7 / titolo elenco |
+| Nome contenitore | Categoria |
+|------------------|-----------|
+| Box | Attrezzi, Strumenti e Ferramenta |
+| box prova | Attrezzi, Strumenti e Ferramenta |
+| Box 1 | Attrezzi, Strumenti e Ferramenta |
+| Cassetta 1 | Attrezzi, Strumenti e Ferramenta |
+| prova | Alimenti e Bevande |
+
+**Quattro oggetti** (due si chiamano uguale **Vite**):
+
+| Nome oggetto | Dentro |
+|--------------|--------|
+| Box | Cassetta 1 |
+| Trapano elettrico | Box 1 |
+| Vite | Cassetta 1 |
+| Vite | prova |
+
+Attenzione: `Box 1` con spazio (non `Box1`); `box prova` minuscolo; un contenitore **e** un oggetto si chiamano entrambi `Box`.
+
+### 3. Cosa è cambiato rispetto a CK1
+
+CK1 era la **lingua delle schermate**. **Nuovo:** le **risposte** della Ricerca avanzata (chiarificazione, nessun risultato, F7/F8) in inglese.
+
+### 4. Domande (dopo Impostazioni → English)
+
+Archivio completo → Ricerca avanzata. Digitare **esatto**:
+
+| # | Domanda | Esito |
+|---|---------|-------|
+| 1 | Find box | Chiarificazione in inglese (*Rephrase the question so it is clear whether you mean an object or a container.*) |
+| 2 | Find container box | Lista: Box, box prova, Box 1 |
+| 3 | Where is the trapano elettrico? | Si apre **Box 1** |
+| 4 | Where do I find the same type of objects | Elenco F7 in inglese (Cassetta 1 e prova). *Where* non è un luogo |
+| 5 | Search the containers with a different category that contain the same type of object | Elenco F8 in inglese (stesso, categorie diverse) |
+| 6 | In order to find the trapano elettrico | Come il punto 3; *order* non è categoria |
+| 7 | Search all the containers that contain duplicates | Altra F7 |
+| 8 | Find containers with a different category and identical objects | Altra F8 |
+| 9 | List of the containers that have identical objects | Variante F7 |
 | 10 | Find the trapano elettrico | Come il punto 3, senza *where* |
-
-Se un caso F7/F8 non ha dati nel tuo archivio, l’esito corretto è **No results found.** (non la frase italiana).
 
 Italiano: Impostazioni → Italiano; *Trova box* e *Nessun risultato trovato.* come prima.
 
 ### Cosa **non** è questo test
 
-- Cartella NAS / disco di rete (**B-SEL-CARTELLA**) — backlog, non questa fetta.
-- Stampare tutti i contenitori senza digitare nulla (**B-RICERCA-SENZA-SPECIFICHE**) — backlog, non questa fetta.
-- Pubblicare su Play (**M3**) — dopo la chiusura del test 1.2.
+- Cartella NAS / disco di rete (**B-SEL-CARTELLA**)
+- Stampare tutti i contenitori senza digitare (**B-RICERCA-SENZA-SPECIFICHE**)
+- Pubblicare su Play (**M3**)
 
 ## Istruzioni CK0 per Renato (nessun device)
 
