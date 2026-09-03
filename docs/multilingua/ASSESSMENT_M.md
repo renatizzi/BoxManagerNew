@@ -254,7 +254,7 @@ L’agente lavora in autonomia **tra** un checkpoint e l’altro.
 
 | ID | Quando | Cosa chiediamo a Renato | Blocca |
 |----|--------|-------------------------|--------|
-| **CK0** | Prima del **primo commit M2b** (motore ricerca) | Lingua EN **verificata su delega Renato 03/09/2026** ([BOZZA_TABELLE_EN_CK0.md](BOZZA_TABELLE_EN_CK0.md), Allegato 4.21). **SI esplicito ancora necessario per aprire M2b** (codice). D7 CSV IT e D8 `locale` fuori: confermati. | M2b–M2c |
+| **CK0** | Prima del **primo commit M2b codice** (motore ricerca) | Tabelle EN verificate su delega; **SI procedere** 03/09/2026. Prima del codice: SI **S1–S3** in [SEMANTICA_EN_EQUIVOCI.md](SEMANTICA_EN_EQUIVOCI.md) (niente traduttore EN→IT; rumore fase 1 tipo `in order to`; non strippare `type of`). | Motore EN |
 | **CK1** | M1 completo (M1a–M1d) | **SI device 03/09/2026** — CONVALIDATO | — (sbloccato M2a / CK0) |
 | **CK2** | M2 completo | **SI device**: campione **10 domande EN** da Matrice Test (stessi esiti attesi che IT) | Chiusura filone M |
 

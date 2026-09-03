@@ -30,13 +30,14 @@
 | **Play Console traduzione app** | **Non usare** — lavoro in Cursor |
 | **M1 / CK1** | **CONVALIDATO SI Renato device 03/09/2026** (M1a–M1d su PR **#18**) |
 | **M2a** | **EN verificata** su delega Renato 03/09/2026 — [BOZZA_TABELLE_EN_CK0.md](BOZZA_TABELLE_EN_CK0.md) + Allegato **4.21** |
-| **Prossimo pacchetto** | **M2b** solo con **SI esplicito** sul motore — **non** toccare `domain/search` prima |
-| **Branch lavoro** | `cursor/multilingua-m2a-5409` (M2a; include M1) |
-| **Branch base** | `cursor/multilingua-m1a-5409` (HEAD `8a16d6a`, già allineato a `p1-igiene-file-5409` B5.7) |
+| **M2b** | **SI procedere** 03/09/2026 — prima fetta: semantica / equivoci ([SEMANTICA_EN_EQUIVOCI.md](SEMANTICA_EN_EQUIVOCI.md)). **`domain/search` non toccato** finché S1–S3 |
+| **Prossimo pacchetto** | Motore EN (M2b codice) **dopo SI S1–S3** |
+| **Branch lavoro** | `cursor/multilingua-m2b-5409` |
+| **Branch base** | `cursor/multilingua-m2a-5409` (EN verificata) |
 | **Play** | `main` **1.2** — test chiuso ~2 sett.; **non** merge M su `main` senza SI |
 | **Famiglia** | **1.3-famigliaB5.7** — P1 CONVALIDATO; eventuali bug Play → fix famiglia **a fine test** |
-| **Ricerca avanzata EN** | **M2b** — **CK0** obbligatorio prima di toccare `domain/search` |
-| **Checkpoint** | **CK0** (EN verificata su delega; SI M2b ancora da dare), **CK1** ✅, **CK2** |
+| **Ricerca avanzata EN** | Pipeline 0–10 invariata; **niente** traduttore EN→IT; **niente** interprete semantico (Nota 3.3.9) |
+| **Checkpoint** | **CK0** (tabelle EN + SI procedere; attesa S1–S3), **CK1** ✅, **CK2** |
 
 ### Documenti vincolanti (leggere prima di codice)
 
@@ -44,6 +45,7 @@
 |------|--------|
 | [ASSESSMENT_M.md](ASSESSMENT_M.md) | Piano M0–M3, inventario, architettura |
 | [BOZZA_TABELLE_EN_CK0.md](BOZZA_TABELLE_EN_CK0.md) | Bozza EN 1:1 da Nota (CK0) |
+| [SEMANTICA_EN_EQUIVOCI.md](SEMANTICA_EN_EQUIVOCI.md) | Tipi di domanda EN equivoci; decisioni S1–S3 prima del motore |
 | `.cursor/rules/fonti-ufficiali.mdc` | Elenchi alias/messaggi — importare, non riassumere |
 | `.cursor/rules/pipeline-ufficiale.mdc` | Ricerca: pipeline 0–10 invariata |
 | Nota Integrata **3.6.6** | Scelta lingua Impostazioni |
@@ -66,9 +68,7 @@
 
 ## Istruzioni CK0 per Renato (nessun device)
 
-M2a **non** cambia l’app. La verifica dell’inglese è **già fatta** (delega 03/09/2026). Per aprire M2b basta dire di procedere col motore: non serve rileggere le tabelle in inglese.
-
-CSV: header italiani. `locale` resta fuori dalla riga ufficiale LOCATION.
+M2a **non** cambia l’app. La verifica dell’inglese è **già fatta**. M2b è aperto sull’analisi degli equivoci: [SEMANTICA_EN_EQUIVOCI.md](SEMANTICA_EN_EQUIVOCI.md). Per il codice motore servono S1–S3 (sì/no, in italiano).
 
 ## Regole per le istruzioni di test a Renato
 
@@ -112,14 +112,14 @@ L’agente esegue **M1a→M1d** in sequenza senza fermarsi, salvo KO test/build.
 ### Fase 2 — Esecuzione pacchetto
 
 4. Implementare il pacchetto indicato nel messaggio sessione (M0 / M1a / …).
-5. **Non** toccare `domain/search` per EN finché **CK0** non è chiuso.
+5. **Non** toccare `domain/search` per EN finché **S1–S3** in [SEMANTICA_EN_EQUIVOCI.md](SEMANTICA_EN_EQUIVOCI.md) non sono SI (tabelle CK0 già verificate).
 6. Test: `assemblePlayDebug` + `assembleFamigliaDebug` + unit test verdi.
 7. Commit, push, PR draft; aggiornare questo file se cambia «prossimo pacchetto».
 
 ### Fase 3 — Checkpoint
 
 8. **CK1** solo a fine **M1d** (device: lingua + **Guida intera EN** + flussi core).
-9. **CK0** solo prima di **M2b** (SI tabelle EN in [BOZZA_TABELLE_EN_CK0.md](BOZZA_TABELLE_EN_CK0.md) / Allegato 4.21). **M2a è chiuso in bozza; fermarsi qui.**
+9. **CK0** tabelle EN: **verificate**. **S1–S3** (equivoci) prima del primo commit su `domain/search`.
 10. **CK2** a fine **M2c** (device: campione domande EN Matrice Test).
 
 ---
@@ -149,30 +149,18 @@ git checkout -b cursor/multilingua-m1a-5409
 
 ## Messaggio tipo per **nuova sessione** (copia-incolla)
 
-**Ora (dopo M2a):** non aprire M2b. Attendere **CK0 SI Renato** su [BOZZA_TABELLE_EN_CK0.md](BOZZA_TABELLE_EN_CK0.md).
+**Ora:** M2b in analisi equivoci. Dopo **SI S1–S3** su [SEMANTICA_EN_EQUIVOCI.md](SEMANTICA_EN_EQUIVOCI.md):
 
 ```
 Continua filone M — Multilingua IT/EN da docs/multilingua/PROMPT_CONTINUITA_M.md
-
-Piano: APPROVATO SI Renato (01/09/2026)
-Assessment: docs/multilingua/ASSESSMENT_M.md (PR #16)
-CK0: SI Renato sulle tabelle EN (BOZZA_TABELLE_EN_CK0.md / Allegato 4.21)
-
-Pacchetto da eseguire: M2b
-Branch nuovo: cursor/multilingua-m2b-5409
-Base: cursor/multilingua-m2a-5409 (include M1 + bozza CK0)
-
-Vincoli:
-- Solo IT + EN in V1
-- Importare elenchi interi dalla bozza SI, non tradurre a memoria
-- Pipeline 0–10 invariata
-- Play main 1.2: non merge senza SI
-- Leggere ASSESSMENT_M §4–§6, pipeline-ufficiale.mdc, fonti-ufficiali.mdc
-
-Obiettivo sessione: M2b motore ricerca locale-aware EN; non aprire M2c se manca tempo.
+Pacchetto: M2b codice motore (S1–S3 già SI)
+Branch: cursor/multilingua-m2b-5409
+Vincoli: pipeline 0–10 invariata; niente traduttore EN→IT; niente interprete semantico (3.3.9);
+importare elenchi interi bozza CK0; rumore fase 1 solo elenco chiuso.
+Obiettivo: SearchLocale + alias/matrix EN; test IT invariati; campione EN 0–10.
 ```
 
-*(Usare questo messaggio **solo** dopo CK0 SI. Senza SI: nessuna sessione M2b.)*
+*(Senza SI S1–S3: non toccare `domain/search`.)*
 
 ---
 

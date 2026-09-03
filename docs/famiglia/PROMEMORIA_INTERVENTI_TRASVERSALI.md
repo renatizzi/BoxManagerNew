@@ -13,7 +13,7 @@ Dopo il rilascio Play **1.2**, due filoni paralleli (decisione Renato):
 | Filone | Documento | Stato |
 |--------|-----------|-------|
 | **Famiglia** — condivisione archivio | [NOTA_B0_MERGE_FAMIGLIA.md](NOTA_B0_MERGE_FAMIGLIA.md) B0–B5 | **CONVALIDATO** |
-| **Multilingua** — Scelta lingua UI + ricerca EN | [../multilingua/PROMPT_CONTINUITA_M.md](../multilingua/PROMPT_CONTINUITA_M.md) | **M1/CK1 CONVALIDATO**; **M2a EN verificata** (delega); attesa SI M2b |
+| **Multilingua** — Scelta lingua UI + ricerca EN | [../multilingua/PROMPT_CONTINUITA_M.md](../multilingua/PROMPT_CONTINUITA_M.md) | **M1/CK1 CONVALIDATO**; M2a EN ok; M2b analisi equivoci (S1–S3) |
 
 ---
 
