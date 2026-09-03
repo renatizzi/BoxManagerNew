@@ -59,6 +59,7 @@
 7. **Branch base:** tutto il nuovo sviluppo va su `famiglia` (e suoi feature branch `cursor/...`). `main` è riservato al test Google Play — **mai** usarlo come base di sviluppo.
 8. **Allineamento obbligatorio prima di ogni sessione:** eseguire `git fetch origin` e verificare che il branch di lavoro contenga i commit più recenti del branch base famiglia. Se c'è uno scarto, allineare **prima** di scrivere codice. Documentare il commit HEAD di partenza nel primo messaggio di sessione.
 9. **Scelta lingua:** la voce di selezione lingua (IT/EN) si trova in **Impostazioni** — non spostarla altrove.
+10. **Topbar 1.2:** il titolo in-app è sempre **BoxManager** (`topbar_app_title`). `app_name` serve solo al launcher (flavor famiglia = «BoxManager Famiglia»). Non collegare i due.
 
 ## Regole per le istruzioni di test a Renato
 

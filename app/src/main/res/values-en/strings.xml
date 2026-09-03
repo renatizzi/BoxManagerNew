@@ -11,6 +11,8 @@
     <string name="nav_settings_icon">⚙</string>
 
     <!-- Global top bar -->
+    <!-- In-app topbar title: always BoxManager (same as 1.2). Not app_name. -->
+    <string name="topbar_app_title">BoxManager</string>
     <string name="topbar_help">Guide</string>
     <string name="topbar_help_cd">Quick guide</string>
     <string name="topbar_dark_mode">Dark</string>

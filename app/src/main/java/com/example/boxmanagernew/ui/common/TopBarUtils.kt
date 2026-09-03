@@ -54,8 +54,10 @@ object TopBarUtils {
         titleView: TextView
     ) {
 
+        // Come 1.2: titolo in-app sempre "BoxManager".
+        // app_name è il launcher (sul flavor famiglia: "BoxManager Famiglia").
         titleView.text =
-            context.getString(R.string.app_name)
+            context.getString(R.string.topbar_app_title)
 
         titleView.setTextColor(
             ThemeManager.getTopBarTitle(
