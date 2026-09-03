@@ -1,0 +1,24 @@
+---
+description: Una sola app BoxManager. Archivio condiviso e inglese sono funzioni, non altre app. 1.2 è il test.
+alwaysApply: true
+---
+
+# Identità app (congelato 03/09/2026)
+
+L’unica app si chiama **BoxManager**.
+
+- **1.2** = la copia sul test Play (tester). Snapshot. Non è un altro prodotto.
+- **Sviluppo** = la stessa BoxManager, con **funzioni in più** (archivio condiviso, inglese, …). A test chiuso **sostituisce** la 1.2.
+
+## Vietato (trappola già caduta)
+
+- Parlare di «app famiglia», «app multilingue», «beta famiglia» come se fossero prodotti distinti.
+- Chiedere SI per «unire» quelle «app» su Play: non ci sono due app da unire.
+- Usare il launcher «BoxManager Famiglia» o il filone M come **nome dell’app**.
+
+## Consentito (etichette di lavoro, non di prodotto)
+
+- Flavor Gradle `play` / `famiglia`, `FAMILY_BETA`, `applicationId` diverso: servono **durante il test** perché Android possa tenere la 1.2 Store accanto alla build di sviluppo, senza sovrascriverla.
+- Cartelle `docs/famiglia`, filone M, branch `cursor/…`: sono fette di lavoro sulla **stessa** BoxManager.
+
+Fonte: `docs/famiglia/STRATEGIA_UNIFICAZIONE.md`.

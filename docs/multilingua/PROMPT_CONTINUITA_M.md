@@ -1,7 +1,9 @@
-# Prompt di continuità — Filone M (Multilingua IT/EN)
+# Prompt di continuità — Filone M (inglese in BoxManager)
 
 **SI Renato, 01/09/2026** — mini-assessment e piano **approvati**; **Guida rapida in-app** obbligatoria in M1/CK1.  
-**Ingresso unico** per sessioni agente sul multilingua. Non confondere con [PROMPT_CONTINUITA_CORRETTIVI.md](../famiglia/PROMPT_CONTINUITA_CORRETTIVI.md).
+**Ingresso unico** per sessioni agente sull’**inglese** (funzione della stessa BoxManager). Non confondere con [PROMPT_CONTINUITA_CORRETTIVI.md](../famiglia/PROMPT_CONTINUITA_CORRETTIVI.md).
+
+**Identità:** non esiste un’«app multilingue». Si lavora su **BoxManager**. La 1.2 è la copia dei tester; questa linea è la stessa app con le funzioni in più. Fonte: [STRATEGIA_UNIFICAZIONE.md](../famiglia/STRATEGIA_UNIFICAZIONE.md), `.cursor/rules/identita-app.mdc`.
 
 ---
 
@@ -34,8 +36,8 @@
 | **Prossimo pacchetto** | Completare M2b (test EN campione) poi **M2c** UI ricerca |
 | **Branch lavoro** | `cursor/multilingua-m2b-5409` |
 | **Branch base** | `cursor/multilingua-m2a-5409` (EN verificata) |
-| **Play** | `main` **1.2** identica per tutto il test. Sviluppo (famiglia + EN) in parallelo; a test chiuso **diventa** l’ufficiale e **sostituisce** la 1.2. Si tocca 1.2 **solo** per bug bloccanti. Fonte: [STRATEGIA_UNIFICAZIONE.md](../famiglia/STRATEGIA_UNIFICAZIONE.md) |
-| **Famiglia** | **1.3-famigliaB5.7** — P1 CONVALIDATO; eventuali bug Play → fix famiglia **a fine test** |
+| **Play** | BoxManager **1.2** su `main`, identica per tutto il test. Lo **stesso** BoxManager di sviluppo (archivio condiviso + inglese) a test chiuso **sostituisce** la 1.2. Si tocca 1.2 **solo** per bug bloccanti. |
+| **Build sviluppo** | Topbar **1.3-famigliaB5.7** (etichetta di build, non un altro nome di app). P1 CONVALIDATO. |
 | **Ricerca avanzata EN** | Pipeline 0–10 invariata; **niente** traduttore EN→IT; **niente** interprete semantico (Nota 3.3.9) |
 | **Checkpoint** | **CK0** tabelle EN verificate; **S1–S3 SI**; **CK1** ✅, **CK2** |
 
@@ -58,13 +60,13 @@
 1. **Fonti ufficiali:** alias, messaggi 2.6, matrice indicatori EN → importare da Nota/Excel, non tradurre a memoria.
 2. **Pipeline 0–10:** invariata; solo input locale-aware (`pipeline-ufficiale.mdc`).
 3. **Dati utente:** nomi archivio non tradotti.
-4. **Test Play aperto:** la 1.2 su `main` resta identica. M e famiglia **non** si copiano su `main` a metà test. A test chiuso quello sviluppo **è** la nuova ufficiale (sostituisce 1.2). Unica eccezione: bug **bloccante** tester → aggiornamento 1.2. Vietato dire «merge su main solo con SI» per le feature. Dettaglio: [STRATEGIA_UNIFICAZIONE.md](../famiglia/STRATEGIA_UNIFICAZIONE.md).
+4. **Test Play aperto:** la 1.2 su `main` resta identica. Lo sviluppo **non** si copia su `main` a metà test. A test chiuso quella BoxManager **è** la nuova ufficiale (sostituisce 1.2). Unica eccezione: bug **bloccante** tester → aggiornamento 1.2. Vietato dire «merge su main solo con SI» e vietato parlare di «app famiglia» / «app multilingue». Dettaglio: [STRATEGIA_UNIFICAZIONE.md](../famiglia/STRATEGIA_UNIFICAZIONE.md).
 5. **CK0 obbligatorio** prima del primo commit che tocca `domain/search` per EN.
-6. **Guida rapida in-app** (`QuickStartGuideCopy`, topbar «Guida»): **M1 obbligatorio**, verificata in **CK1** (§8 famiglia incluso). **Ritocchi testuali** (semplificazione) possono essere integrati da Renato in M1d prima del CK1.
-7. **Branch base:** tutto il nuovo sviluppo va su `famiglia` (e suoi feature branch `cursor/...`). `main` è riservato al test Google Play — **mai** usarlo come base di sviluppo.
-8. **Allineamento obbligatorio prima di ogni sessione:** eseguire `git fetch origin` e verificare che il branch di lavoro contenga i commit più recenti del branch base famiglia. Se c'è uno scarto, allineare **prima** di scrivere codice. Documentare il commit HEAD di partenza nel primo messaggio di sessione.
-9. **Scelta lingua:** la voce di selezione lingua (IT/EN) si trova in **Impostazioni** — non spostarla altrove.
-10. **Topbar 1.2:** il titolo in-app è sempre **BoxManager** (`topbar_app_title`). `app_name` serve solo al launcher (flavor famiglia = «BoxManager Famiglia»). Non collegare i due.
+6. **Guida rapida in-app** (`QuickStartGuideCopy`, topbar «Guida»): **M1 obbligatorio**, verificata in **CK1** (sezione archivio condiviso inclusa). **Ritocchi testuali** (semplificazione) possono essere integrati da Renato in M1d prima del CK1.
+7. **Branch base:** tutto il nuovo sviluppo va sui branch dedicati (e feature `cursor/...`), **non** su `main`. `main` è la 1.2 del test Play.
+8. **Allineamento obbligatorio prima di ogni sessione:** `git fetch origin` e verificare che il branch di lavoro contenga i commit più recenti della base di sviluppo. Se c'è uno scarto, allineare **prima** di scrivere codice.
+9. **Scelta lingua:** la voce IT/EN si trova in **Impostazioni** — non spostarla altrove.
+10. **Nome:** l’app si chiama **BoxManager** (`topbar_app_title`). Non esiste un secondo nome di prodotto. `app_name` del flavor Gradle non è un’altra app.
 
 ## Istruzioni CK0 per Renato (nessun device)
 
@@ -90,11 +92,11 @@ Renato non programma e non gestisce branch da riga di comando. Le istruzioni di 
 | **M1a** | Infrastruttura Scelta lingua (3.6.6) | — |
 | **M1b** | Layout → `strings.xml` + `values-en` | — |
 | **M1c** | Copy/Configuration + DialogUtils → risorse | — |
-| **M1d** | **Guida rapida in-app** + Premium + Famiglia + sweep Kotlin | **CK1** |
+| **M1d** | **Guida rapida in-app** + Premium + testi archivio condiviso + sweep Kotlin | **CK1** |
 | **M2a** | Bozza tabelle EN in Nota | **CK0** (prima di M2b) |
 | **M2b** | Motore ricerca locale-aware EN | — |
 | **M2c** | UI ricerca + test suite EN | **CK2** |
-| **M3** | Passaggio in Play della versione ufficiale (famiglia + EN al posto della 1.2), screenshot, versionCode | Via Console a **test chiuso** |
+| **M3** | Passaggio in Play della BoxManager ufficiale (sviluppo al posto della 1.2), screenshot, versionCode | Via Console a **test chiuso** |
 
 L’agente esegue **M1a→M1d** in sequenza senza fermarsi, salvo KO test/build.
 
@@ -107,7 +109,7 @@ L’agente esegue **M1a→M1d** in sequenza senza fermarsi, salvo KO test/build.
 1. `git fetch origin`
 2. Confrontare `git log --oneline -5 origin/<branch-base>` con HEAD del branch di lavoro. Se il branch di lavoro è indietro, allineare con merge/rebase **prima** di toccare file.
 3. Leggere [ASSESSMENT_M.md](ASSESSMENT_M.md) §4–§7 e tabella checkpoint §6.
-4. Branch: `git checkout -b cursor/multilingua-<pacchetto>-5409` da base famiglia concordata (mai da `main`).
+4. Branch: `git checkout -b cursor/multilingua-<pacchetto>-5409` dalla base di sviluppo concordata (mai da `main`).
 
 ### Fase 2 — Esecuzione pacchetto
 
@@ -152,7 +154,7 @@ git checkout -b cursor/multilingua-m1a-5409
 **Ora:** M2b codice motore. **S1–S3 SI** 03/09/2026.
 
 ```
-Continua filone M — Multilingua IT/EN da docs/multilingua/PROMPT_CONTINUITA_M.md
+Continua filone M — inglese in BoxManager da docs/multilingua/PROMPT_CONTINUITA_M.md
 Pacchetto: M2b codice motore (S1–S3 già SI)
 Branch: cursor/multilingua-m2b-5409
 Vincoli: pipeline 0–10 invariata; niente traduttore EN→IT; niente interprete semantico (3.3.9);
@@ -184,4 +186,4 @@ Obiettivo: SearchLocale + alias/matrix EN; test IT invariati; campione EN 0–10
 ## Riferimenti chiusi (non riaprire in sessione M)
 
 - Filone correttivi P0/P1 — [PROMPT_CONTINUITA_CORRETTIVI.md](../famiglia/PROMPT_CONTINUITA_CORRETTIVI.md)
-- B0–B5 famiglia prodotto — CONVALIDATO
+- Archivio condiviso B0–B5 — CONVALIDATO (funzione di BoxManager, non un’altra app)

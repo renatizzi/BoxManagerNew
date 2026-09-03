@@ -1,9 +1,9 @@
-# Nota B0 — Merge famiglia (BoxManager)
+# Nota B0 — Archivio condiviso (BoxManager)
 
 **Stato:** adottata (SI Renato, sessione continuità post Alpha 1.2). **B4 CONVALIDATO** (SI Renato, 31/08/2026, build **1.3-famigliaB4.10**). **B5 CONVALIDATO** (SI Renato, 31/08/2026, build **1.3-famigliaB5.2**).  
-**Ambito:** solo build **flavor `famiglia`** (betatest locale). **Non** pubblicare su Play Store.  
-**Track Play / Alpha:** resta **1.2 (versionCode 3)** su `main` — non modificare il comportamento release Play da questa Nota.  
-**Sidecar B7:** `docs/Nota_Integrata_9.1_B7.docx` non riaperta (D0–B7 chiusi); il merge famiglia B4 resta documentato qui.
+**Ambito:** funzione di **BoxManager**, accesa sulla build di sviluppo (`FAMILY_BETA` / flavor Gradle `famiglia`). **Non** è un’altra app. **Non** pubblicare questa build su Play **durante** il test 1.2.  
+**Track Play / Alpha:** resta **1.2 (versionCode 3)** su `main` — non modificare il comportamento della 1.2 da questa Nota.  
+**Sidecar B7:** `docs/Nota_Integrata_9.1_B7.docx` non riaperta (D0–B7 chiusi); il merge B4 resta documentato qui.
 
 ---
 
@@ -210,7 +210,7 @@ Pagina B2 (superata): Unione famiglia → Invia unione / Ricevi unione. In B4 la
 | Topbar | Mostra il nome salvato (non un default fisso) |
 | Nuovo contenitore / oggetto | Alla creazione si memorizza `createdBy` = nome utente corrente (trim); immutabile dopo create salvo SI |
 | Merge | Il campo viaggia nel pacchetto unione; utile per «chi ha censito», **non** per nascondere dati |
-| Nome vuoto | Fallback `Utente` in UI; in beta famiglia si invita a impostare un nome **distinto** per ciascun familiare (es. Marco, Anna) |
+| Nome vuoto | Fallback `Utente` in UI; si invita a impostare un nome **distinto** per ciascun familiare (es. Marco, Anna) |
 
 Niente ACL: dopo il merge tutto resta dominio famiglia. Il nome serve a ripartire il lavoro e a leggere l’origine.
 

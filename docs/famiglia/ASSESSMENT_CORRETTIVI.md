@@ -1,11 +1,11 @@
-# Assessment interventi correttivi — famiglia + Play
+# Assessment interventi correttivi — BoxManager
 
 **Data:** 01/09/2026 (P1 CONVALIDATO)  
-**Branch riferimento famiglia:** `cursor/p1-igiene-file-5409` → merge in `cursor/family-unione-unificata-e5b5`  
-**Play Store:** `main` → **1.2** (versionCode 3); freeze `cursor/versione-test-5409`  
+**Branch riferimento sviluppo:** `cursor/p1-igiene-file-5409` → merge in `cursor/family-unione-unificata-e5b5`  
+**Play Store:** `main` → BoxManager **1.2** (versionCode 3); freeze `cursor/versione-test-5409`  
 **Fonte ufficiale:** `docs/Nota_Integrata_9.2.docx` su **`main`**, **Allegato 4.20**
 
-Documento di assessment (punto 1 del piano Renato). Per la strategia operativa vedi [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md).
+Una sola app: **BoxManager**. Documento di assessment (punto 1 del piano Renato). Strategia: [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md).
 
 ---
 
@@ -15,12 +15,12 @@ Documento di assessment (punto 1 del piano Renato). Per la strategia operativa v
 |----------|------|--------|
 | **P0** | T1, T2, T3 chiusi | T2 **CONVALIDATO** 01/09/2026 |
 | **P1** | Igiene salvataggio file | **CONVALIDATO** B5.7 (SI Renato device 01/09/2026) |
-| **P2** | Sync bugfix Play ↔ famiglia | Processo continuo; **non** invertire famiglia su `main` durante il test |
-| **Filone M** | Multilingua / Scelta lingua | **Fuori** da questo assessment — pianificazione separata |
+| **P2** | Sync bugfix Play 1.2 ↔ sviluppo | Processo continuo; **non** mettere lo sviluppo su `main` durante il test |
+| **Filone M** | Inglese / Scelta lingua | **Fuori** da questo assessment — stessa BoxManager, sessione separata |
 
 ---
 
-## P0 — Bug segnalati (beta famiglia)
+## P0 — Bug segnalati (BoxManager di sviluppo)
 
 | ID | Area | Problema | Root cause (codice) | Intervento | Stato |
 |----|------|----------|---------------------|------------|-------|
@@ -50,18 +50,18 @@ Criterio di riferimento: nome datato, riuso cartella SAF, box nome + SI/NO; `Mod
 | Invia/Ricevi famiglia B4 | datato | `KEY_FAMILY_SHARE` | Sì | **OK** |
 | Etichetta QR → PDF | contesto QR | — | flusso dedicato | Fuori criterio Esporta |
 
-**Raccomandazione:** P1 **chiuso**. Prossimo filone correttivi = P2 (sync bug Play → famiglia). Nessun blocco per closed test Play.
+**Raccomandazione:** P1 **chiuso**. Prossimo filone correttivi = P2 (sync bug 1.2 → sviluppo). Nessun blocco per closed test Play.
 
 ---
 
-## P2 — Allineamento codice Play ↔ famiglia
+## P2 — Allineamento codice 1.2 ↔ sviluppo
 
 | Aspetto | Stato attuale | Nota |
 |---------|---------------|------|
-| Due flavor (`play` / `famiglia`) | Operativo | `applicationId` distinti → convivenza su stesso telefono |
-| Bugfix Play su `main` | Da mergiare su branch famiglia | Regola in [BETA_SYNC_POLICY.md](BETA_SYNC_POLICY.md) |
-| Feature famiglia | Solo `FAMILY_BETA` / flavor famiglia | Non su Play |
-| Pubblicazione famiglia su Play | **Vietata** | Invariato |
+| Due flavor Gradle (`play` / `famiglia`) | Operativo | `applicationId` distinti → due *installazioni*, stessa BoxManager |
+| Bugfix 1.2 su `main` | Da riportare sul branch di sviluppo | [BETA_SYNC_POLICY.md](BETA_SYNC_POLICY.md) |
+| Funzione archivio condiviso | `FAMILY_BETA` sulla build di sviluppo | Non nella 1.2 dei tester |
+| Pubblicazione sviluppo su Play durante il test | **Vietata** | A test chiuso lo sviluppo **è** l’ufficiale |
 
 ---
 
@@ -69,14 +69,14 @@ Criterio di riferimento: nome datato, riuso cartella SAF, box nome + SI/NO; `Mod
 
 | Filone | Stato | Documento |
 |--------|-------|-----------|
-| Condivisione famiglia B0–B5 | **CONVALIDATO** | [NOTA_B0_MERGE_FAMIGLIA.md](NOTA_B0_MERGE_FAMIGLIA.md) |
-| Multilingua (Scelta lingua) | Da pianificare | Nota 3.6.6; filone **M** — non in scope correttivi |
+| Archivio condiviso B0–B5 | **CONVALIDATO** | [NOTA_B0_MERGE_FAMIGLIA.md](NOTA_B0_MERGE_FAMIGLIA.md) |
+| Inglese (scelta lingua) | In corso (M) | Nota 3.6.6; stessa BoxManager — non in scope correttivi |
 
 ---
 
 ## Ordine di lavoro concordato
 
 1. **Assessment** — fatto (SI Renato).
-2. **Versione famiglia B5.3** — fatto; T2 **CONVALIDATO** 01/09/2026.
-3. **Strategia unificazione** — documentata; freeze `cursor/versione-test-5409`; **non** invertire su `main`.
+2. **Versione sviluppo B5.3** — fatto; T2 **CONVALIDATO** 01/09/2026.
+3. **Strategia** — documentata; freeze `cursor/versione-test-5409`; **non** mettere lo sviluppo su `main` durante il test.
 4. **P1** — **CONVALIDATO** 01/09/2026 (SI Renato, build **1.3-famigliaB5.7**). Prossimo: P2.

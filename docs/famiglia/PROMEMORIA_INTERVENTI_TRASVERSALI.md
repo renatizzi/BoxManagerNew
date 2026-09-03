@@ -1,6 +1,6 @@
-# Promemoria — interventi trasversali (famiglia + Play)
+# Promemoria — interventi trasversali (BoxManager)
 
-**Aggiornato:** 01/09/2026 — T2 **CONVALIDATO**; P1 **CONVALIDATO** B5.7 (SI Renato device); freeze Play `cursor/versione-test-5409`. Ingresso sessione → [PROMPT_CONTINUITA_CORRETTIVI.md](PROMPT_CONTINUITA_CORRETTIVI.md).
+**Aggiornato:** 03/09/2026 — identità: una sola BoxManager. T2 **CONVALIDATO**; P1 **CONVALIDATO** B5.7. Ingresso sessione → [PROMPT_CONTINUITA_CORRETTIVI.md](PROMPT_CONTINUITA_CORRETTIVI.md).
 
 Elenco di fix/igiene **non legati a una sola fetta**, da affrontare quando si tocca l’area o in un giro dedicato (B7 igiene / sync Play).
 
@@ -12,17 +12,17 @@ Dopo il rilascio Play **1.2**, due filoni in **parallelo al test** (decisione Re
 
 | Filone | Documento | Stato |
 |--------|-----------|-------|
-| **Famiglia** — condivisione archivio | [NOTA_B0_MERGE_FAMIGLIA.md](NOTA_B0_MERGE_FAMIGLIA.md) B0–B5 | **CONVALIDATO** |
-| **Multilingua** — Scelta lingua UI + ricerca EN | [../multilingua/PROMPT_CONTINUITA_M.md](../multilingua/PROMPT_CONTINUITA_M.md) | **M1/CK1 CONVALIDATO**; M2a EN ok; M2b motore (S1–S3 SI). Rapporto 1.2: [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md) |
+| **Archivio condiviso** | [NOTA_B0_MERGE_FAMIGLIA.md](NOTA_B0_MERGE_FAMIGLIA.md) B0–B5 | **CONVALIDATO** — funzione di BoxManager, non un’altra app |
+| **Inglese** (scelta lingua + ricerca EN) | [../multilingua/PROMPT_CONTINUITA_M.md](../multilingua/PROMPT_CONTINUITA_M.md) | **M1/CK1 CONVALIDATO**; M2b motore (S1–S3 SI). Stessa BoxManager. |
 
 ---
 
-## P0 — Segnalati in beta famiglia
+## P0 — Segnalati sulla BoxManager di sviluppo
 
 | ID | Area | Problema | Evidenza | Stato |
 |----|------|----------|----------|-------|
 | **T1** | Utility → **Backup Archivio** → «Backup Directory» | Nome cartella illeggibile (id opaco base64) | Screenshot Renato, B5.1, 31/08/2026 | **CONVALIDATO** B5.2 (SI Renato) |
-| **T2** | **Lista Oggetti** / **Lista Oggetti Trovati** | Categoria/icona assenti o incoerenti (header / stampa-export) | Segnalazione beta famiglia; ritest 01/09/2026 tre prove OK | **CONVALIDATO** B5.3 (SI Renato) |
+| **T2** | **Lista Oggetti** / **Lista Oggetti Trovati** | Categoria/icona assenti o incoerenti (header / stampa-export) | Segnalazione su sviluppo; ritest 01/09/2026 tre prove OK | **CONVALIDATO** B5.3 (SI Renato) |
 | **T3** | — | Secondo bug non recuperato dalle chat | — | **Chiuso** — riaprire solo con nuova evidenza |
 
 ---
@@ -48,9 +48,9 @@ Verificare **ogni** punto che scrive un file e allineare dove ha senso al criter
 
 ---
 
-## P2 — Sync bugfix Play 1.2 ↔ beta famiglia
+## P2 — Sync bugfix Play 1.2 ↔ BoxManager di sviluppo
 
-Vedi [BETA_SYNC_POLICY.md](BETA_SYNC_POLICY.md) e [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md): fix su `main` → merge nel branch famiglia; mai pubblicare flavor `famiglia` su Play.
+Vedi [BETA_SYNC_POLICY.md](BETA_SYNC_POLICY.md) e [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md): fix sulla 1.2 → riportarlo sullo sviluppo; non caricare lo sviluppo su Play durante il test.
 
 ---
 

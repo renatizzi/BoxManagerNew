@@ -1,4 +1,6 @@
-# Prompt di continuità — B5 (famiglia) — **CHIUSO / CONVALIDATO**
+# Prompt di continuità — B5 (archivio condiviso) — **CHIUSO / CONVALIDATO**
+
+Storico. L’app è **BoxManager**; B5 non era un’altra app. Sessione viva: [PROMPT_CONTINUITA_CORRETTIVI.md](PROMPT_CONTINUITA_CORRETTIVI.md).
 
 **SI Renato, 31/08/2026** — build verificata **1.3-famigliaB5.2** (1321). Branch: `cursor/family-b5-createdby-delete-7b83` (PR #9).
 

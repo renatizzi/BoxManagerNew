@@ -1,8 +1,10 @@
-# Prompt di continuità — Correttivi post-B5 (famiglia + sync Play)
+# Prompt di continuità — Correttivi (BoxManager sviluppo + sync 1.2)
 
-**SI Renato, 31/08/2026** — piano a 3 passi. **01/09/2026:** T2 CONVALIDATO; freeze Play 1.2; **non** invertire famiglia su `main`; **P1 CONVALIDATO** B5.7.
+**SI Renato, 31/08/2026** — piano a 3 passi. **01/09/2026:** T2 CONVALIDATO; freeze Play 1.2; **P1 CONVALIDATO** B5.7.
 
-Usare questo file come **unico ingresso** per la prossima sessione agente sul filone **correzioni** (non riaprire B5 prodotto né filone multilingua M).
+Usare questo file come **unico ingresso** per la sessione agente sui **correttivi**. Non riaprire B5 prodotto né il filone inglese (M).
+
+**Identità:** una sola **BoxManager**. Non esiste un’«app famiglia». La 1.2 è la copia dei tester; qui si corregge la **stessa** app di sviluppo. Fonte: [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md), `.cursor/rules/identita-app.mdc`.
 
 ---
 
@@ -10,12 +12,12 @@ Usare questo file come **unico ingresso** per la prossima sessione agente sul fi
 
 | Voce | Valore |
 |------|--------|
-| **Branch famiglia** | `cursor/family-unione-unificata-e5b5` (integrazione) |
-| **Build famiglia** | **1.3-famigliaB5.7** (versionCode **1326**) — P1 su `cursor/p1-igiene-file-5409` |
-| **Play** | `main` → **1.2** (vc 3) — test chiuso; **identica** salvo bug bloccanti |
+| **Branch sviluppo** | `cursor/family-unione-unificata-e5b5` (integrazione) |
+| **Build sviluppo** | **1.3-famigliaB5.7** (versionCode **1326**) — etichetta di build, non nome app |
+| **Play** | BoxManager **1.2** su `main` (vc 3) — test chiuso; **identica** salvo bug bloccanti |
 | **Freeze Play 1.2** | `cursor/versione-test-5409` (snapshot `main`; PR #14) |
-| **Dopo il test** | Lo sviluppo (famiglia + inglese) **sostituisce** la 1.2 come ufficiale. Non è un optional. [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md) |
-| **B0–B5 merge** | **CONVALIDATO** — Nota Integrata **9.2** Allegato **4.20** |
+| **Dopo il test** | La BoxManager di sviluppo **sostituisce** la 1.2 come ufficiale. Non è un optional. [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md) |
+| **Archivio condiviso B0–B5** | **CONVALIDATO** — Nota Integrata **9.2** Allegato **4.20** |
 | **Filone correttivi** | P0 chiuso; **P1 CONVALIDATO** B5.7; P2 continuo |
 
 ### Documenti vincolanti (leggere prima di codice)
@@ -23,7 +25,7 @@ Usare questo file come **unico ingresso** per la prossima sessione agente sul fi
 | File | Ruolo |
 |------|--------|
 | [ASSESSMENT_CORRETTIVI.md](ASSESSMENT_CORRETTIVI.md) | Elenco P0–P2, audit salvataggio file |
-| [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md) | Play = solo bug tester; merge `main` → famiglia |
+| [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md) | Una sola BoxManager; 1.2 identica in test; sviluppo = ufficiale a fine test |
 | [PROMEMORIA_INTERVENTI_TRASVERSALI.md](PROMEMORIA_INTERVENTI_TRASVERSALI.md) | Tracking T1–T3, P1, P2 |
 | [BETA_SYNC_POLICY.md](BETA_SYNC_POLICY.md) | Regola d’oro merge |
 | `.cursor/rules/salvataggio-file.mdc` | Criterio P1 |
@@ -50,7 +52,7 @@ CONVALIDATO 01/09/2026. File: `BoxDetailActivity.refreshHeader()`, `SearchResult
 
 1. `git checkout cursor/family-unione-unificata-e5b5 && git pull`
 2. Leggere tabella P0 in [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) e [ASSESSMENT](ASSESSMENT_CORRETTIVI.md).
-3. Verificare topbar attesa **1.3-famigliaB5.7** in `app/build.gradle.kts` (flavor `famiglia`).
+3. Verificare topbar attesa **1.3-famigliaB5.7** in `app/build.gradle.kts` (flavor Gradle `famiglia` = build di sviluppo).
 
 ### Fase 2 — P0 residuo
 
@@ -70,13 +72,13 @@ Non riaprire P1 senza nuova evidenza.
 
 ### Fase 4 — P2 sync Play (continuo)
 
-6. Se arriva bugfix su `main` (tester Play): merge su branch famiglia, test famiglia, **non** invertire l’ordine.
-7. Se fix nato su famiglia e vale anche Play: cherry-pick su `main` **prima** o insieme al merge.
-8. **Mai** `assembleFamigliaRelease` / APK famiglia su Play Console.
+6. Se arriva bugfix su `main` (tester Play): merge sul branch di sviluppo, test, **non** invertire l’ordine (prima 1.2, poi sviluppo).
+7. Se fix nato sullo sviluppo e vale anche per la 1.2: cherry-pick su `main` **prima** o insieme al merge.
+8. **Mai** caricare la build di sviluppo su Play Console **durante** il test.
 
 ### Fuori scope (non iniziare senza SI)
 
-- Filone **multilingua** (M) — Nota 3.6.6 Scelta lingua
+- Filone **inglese** (M) — Nota 3.6.6 Scelta lingua; stessa BoxManager, altra sessione
 - Nuove fette B6 famiglia prodotto
 - Motore B / pipeline ricerca (B7 chiuso)
 - Feature Play oltre bugfix tester
@@ -85,8 +87,8 @@ Non riaprire P1 senza nuova evidenza.
 
 ## Vincoli non negoziabili
 
-- Flavor `famiglia`: `applicationId` `…boxmanager.famiglia` — **non** su Play.
-- `BuildConfig.FAMILY_BETA` / UI famiglia solo su flavor `famiglia`.
+- Flavor Gradle `famiglia`: `applicationId` `…boxmanager.famiglia` — seconda *installazione* durante il test, **non** un’altra app; **non** su Play finché il test 1.2 è aperto.
+- `BuildConfig.FAMILY_BETA` / UI archivio condiviso solo su quella build di sviluppo.
 - Room: **no** `fallbackToDestructiveMigration()`; `allowBackup=false`.
 - Chiusura voci PROMEMORIA solo con **SI Renato** (o CONVALIDATO equivalente).
 - Play test period: 1.2 su `main` **identica**, salvo bug **bloccanti** ([STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md)).
@@ -118,9 +120,9 @@ git merge origin/main
 
 ## Versioning correttivi
 
-| Tipo | versionName famiglia | Quando |
-|------|----------------------|--------|
-| Fix P0/P1 testabile | `1.3-famigliaB5.7`, `B5.8`, … | Incrementare `versionCode` flavor famiglia |
+| Tipo | versionName (etichetta build) | Quando |
+|------|------------------------------|--------|
+| Fix P0/P1 testabile | `1.3-famigliaB5.7`, `B5.8`, … | Incrementare `versionCode` flavor Gradle `famiglia` |
 | Solo doc | Invariato | OK senza bump |
 | Play release tester | `1.2.x` su `main` | **Solo** se bug **bloccante**; flavor `play` |
 
@@ -144,9 +146,10 @@ Branch: cursor/family-unione-unificata-e5b5
 Build: 1.3-famigliaB5.7
 
 Priorità:
-1) P2: se bug **bloccante** Play, fix 1.2 su main poi merge in famiglia
+1) P2: se bug **bloccante** Play, fix 1.2 su main poi riportarlo sullo sviluppo
 2) Durante il test non mettere lo sviluppo su main
 3) Non riaprire P0/P1 senza evidenza nuova
+4) Una sola app: BoxManager — niente «app famiglia»
 
 Leggi ASSESSMENT + STRATEGIA + PROMEMORIA prima del codice.
 ```
