@@ -27,6 +27,9 @@ import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
 import com.example.boxmanagernew.domain.model.Box
 import com.example.boxmanagernew.domain.search.GlobalSearchDispatcher
 import com.example.boxmanagernew.domain.search.SearchConfiguration
+import com.example.boxmanagernew.domain.search.SearchLocale
+import com.example.boxmanagernew.domain.search.SearchLocaleContext
+import com.example.boxmanagernew.ui.common.LocaleManager
 import com.example.boxmanagernew.domain.search.model.SearchArchiveBoxRecord
 import com.example.boxmanagernew.domain.search.model.SearchArchiveIndex
 import com.example.boxmanagernew.domain.search.model.SearchArchiveObjectRecord
@@ -256,6 +259,13 @@ class GlobalSearchActivity : BaseActivity() {
             val index =
                 loadArchiveIndex()
 
+            val locale =
+                SearchLocale.fromTag(
+                    LocaleManager.storedTag(
+                        this@GlobalSearchActivity
+                    )
+                )
+
             val response =
                 withContext(
                     Dispatchers.Default
@@ -263,13 +273,21 @@ class GlobalSearchActivity : BaseActivity() {
 
                     dispatcher.dispatch(
                         question,
-                        index
+                        index,
+                        locale
                     )
+                }
+
+            val unavailable =
+                SearchLocaleContext.run(
+                    locale
+                ) {
+                    SearchConfiguration.MSG_INTERROGATION_UNAVAILABLE
                 }
 
             if (
                 response.message ==
-                SearchConfiguration.MSG_INTERROGATION_UNAVAILABLE
+                unavailable
             ) {
 
                 showReply(

@@ -41,28 +41,43 @@ class SearchLexicalIndicatorMatrix {
         const val AMBIGUITY =
             CONFRONTO
 
-        private val CONFRONTO_TERMS =
-            setOf(
-                "uguale",
-                "stesso",
-                "duplicato",
-                "doppione",
-                "diverso",
-                "differente",
-                "confronto"
-            )
+        private val CONFRONTO_TERMS: Set<String>
+            get() =
+                if (SearchLocaleContext.isEnglish()) {
+                    SearchLanguageTablesEn.confrontoTerms
+                } else {
+                    setOf(
+                        "uguale",
+                        "stesso",
+                        "duplicato",
+                        "doppione",
+                        "diverso",
+                        "differente",
+                        "confronto"
+                    )
+                }
 
-        private val AGGREGAZIONE_TERMS =
-            setOf(
-                "tutti",
-                "elenco",
-                "quali"
-            )
+        private val AGGREGAZIONE_TERMS: Set<String>
+            get() =
+                if (SearchLocaleContext.isEnglish()) {
+                    SearchLanguageTablesEn.aggregazioneTerms
+                } else {
+                    setOf(
+                        "tutti",
+                        "elenco",
+                        "quali"
+                    )
+                }
 
-        private val LOCATION_CLUES =
-            setOf(
-                "dove"
-            )
+        private val LOCATION_CLUES: Set<String>
+            get() =
+                if (SearchLocaleContext.isEnglish()) {
+                    SearchLanguageTablesEn.locationClues
+                } else {
+                    setOf(
+                        "dove"
+                    )
+                }
 
         fun isOfficialIndicator(
             token: String

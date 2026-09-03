@@ -157,6 +157,10 @@ class SearchEngineBTest {
 
         assertEquals(
             "Elenco dei contenitori che hanno oggetti uguali",
+            SearchF7Pattern.HEADING
+        )
+        assertEquals(
+            SearchF7Pattern.HEADING,
             SearchF7Pattern.VARIANTS[2]
         )
     }
@@ -365,6 +369,10 @@ class SearchEngineBTest {
 
         assertEquals(
             "Elenco dei contenitori che hanno categoria diversa e contengono oggetti uguali",
+            SearchF8Pattern.HEADING
+        )
+        assertEquals(
+            SearchF8Pattern.HEADING,
             SearchF8Pattern.VARIANTS[6]
         )
     }

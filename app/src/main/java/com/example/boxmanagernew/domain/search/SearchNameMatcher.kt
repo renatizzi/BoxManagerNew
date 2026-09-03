@@ -30,9 +30,15 @@ object SearchNameMatcher {
         token: String
     ): Boolean {
 
-        return functionWords.contains(
-            token.lowercase()
-        )
+        return if (SearchLocaleContext.isEnglish()) {
+            SearchLanguageTablesEn.functionWords.contains(
+                token.lowercase()
+            )
+        } else {
+            functionWords.contains(
+                token.lowercase()
+            )
+        }
     }
 
     fun contentTokens(
@@ -42,7 +48,7 @@ object SearchNameMatcher {
         return CanonicalNormalizer.wordTokens(
             question
         ).filterNot { token ->
-            functionWords.contains(token)
+            isFunctionWord(token)
         }
     }
 

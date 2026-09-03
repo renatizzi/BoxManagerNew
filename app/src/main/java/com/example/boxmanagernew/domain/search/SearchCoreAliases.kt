@@ -10,7 +10,39 @@ import com.example.boxmanagernew.util.CanonicalNormalizer
  */
 object SearchCoreAliases {
 
-    val objectTerms =
+    val objectTerms: Set<String>
+        get() =
+            if (SearchLocaleContext.isEnglish()) {
+                SearchLanguageTablesEn.objectTerms
+            } else {
+                objectTermsIt
+            }
+
+    val boxTerms: Set<String>
+        get() =
+            if (SearchLocaleContext.isEnglish()) {
+                SearchLanguageTablesEn.boxTerms
+            } else {
+                boxTermsIt
+            }
+
+    val locationTerms: Set<String>
+        get() =
+            if (SearchLocaleContext.isEnglish()) {
+                SearchLanguageTablesEn.locationTerms
+            } else {
+                locationTermsIt
+            }
+
+    val categoryTerms: Set<String>
+        get() =
+            if (SearchLocaleContext.isEnglish()) {
+                SearchLanguageTablesEn.categoryTerms
+            } else {
+                categoryTermsIt
+            }
+
+    private val objectTermsIt =
         setOf(
             "oggetto",
             "oggetti",
@@ -32,7 +64,7 @@ object SearchCoreAliases {
             "arnesi"
         )
 
-    val boxTerms =
+    private val boxTermsIt =
         setOf(
             "contenitore",
             "contenitori",
@@ -98,7 +130,7 @@ object SearchCoreAliases {
             "scaffali"
         )
 
-    val locationTerms =
+    private val locationTermsIt =
         setOf(
             "posizione",
             "posizioni",
@@ -132,7 +164,7 @@ object SearchCoreAliases {
             "locali"
         )
 
-    val categoryTerms =
+    private val categoryTermsIt =
         setOf(
             "categoria",
             "categorie",

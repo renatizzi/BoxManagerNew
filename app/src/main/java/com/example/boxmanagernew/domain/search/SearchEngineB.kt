@@ -47,7 +47,7 @@ class SearchEngineB {
                 boxesWithDuplicateObjects(
                     index
                 ),
-                SearchF7Pattern.VARIANTS[2]
+                SearchF7Pattern.HEADING
             )
         }
 
@@ -68,7 +68,7 @@ class SearchEngineB {
                 boxesWithCrossCategoryDuplicates(
                     index
                 ),
-                SearchF8Pattern.VARIANTS[6]
+                SearchF8Pattern.HEADING
             )
         }
 

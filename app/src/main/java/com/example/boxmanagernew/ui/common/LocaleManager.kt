@@ -7,7 +7,8 @@ import com.example.boxmanagernew.domain.locale.LocalePreference
 
 /**
  * Applica la lingua persistita (3.6.6) via AppCompat per-app locales.
- * Non tocca domain/search: il motore resta IT fino a CK0/M2.
+ * Persistenza UI 3.6.6. La Ricerca avanzata riceve lo stesso tag
+ * (SearchLocale) in GlobalSearchActivity; niente traduttore EN→IT.
  */
 object LocaleManager {
 
