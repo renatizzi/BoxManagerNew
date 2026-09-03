@@ -140,7 +140,10 @@ class ObjectAdapter(
                 View.VISIBLE
 
             holder.textQuantity.text =
-                "Quantità: ${item.obj.quantity}"
+                holder.itemView.context.getString(
+                    R.string.object_quantity_label,
+                    item.obj.quantity.toString()
+                )
         }
 
         val isSelected =

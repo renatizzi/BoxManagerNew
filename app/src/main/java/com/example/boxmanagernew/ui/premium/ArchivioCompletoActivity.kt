@@ -53,34 +53,36 @@ class ArchivioCompletoActivity : BaseActivity() {
         }
 
         setupPageHeader(
-            ArchivioCompletoCopy.featureTitle(feature),
-            ArchivioCompletoCopy.PAGE_SUBTITLE
+            ArchivioCompletoCopy.featureTitle(this, feature),
+            ArchivioCompletoCopy.pageSubtitle(this)
         )
 
         findViewById<TextView>(R.id.textPreviewBody).text =
             PremiumCopyFormatter.formatPitch(
-                ArchivioCompletoCopy.pitch(feature),
+                this,
+                ArchivioCompletoCopy.pitch(this, feature),
                 includeCallToAction = false
             )
 
         findViewById<TextView>(R.id.textTrialLine).text =
             ArchivioCompletoCopy.packageShareHint(
+                this,
                 access.trialDays(),
                 access.shareBonusDays(),
                 access.shareFriendsRequired()
             )
 
         findViewById<TextView>(R.id.textLockedFooter).text =
-            ArchivioCompletoCopy.CODE_HINT
+            ArchivioCompletoCopy.codeHint(this)
 
         findViewById<EditText>(R.id.editUnlockCode).hint =
-            ArchivioCompletoCopy.UNLOCK_CODE_HINT
+            ArchivioCompletoCopy.unlockCodeHint(this)
 
         val buttonShare =
             findViewById<Button>(R.id.buttonTry)
 
         buttonShare.text =
-            ArchivioCompletoCopy.BUTTON_SHARE
+            ArchivioCompletoCopy.buttonShare(this)
 
         buttonShare.setOnClickListener {
             shareForBonus()
@@ -90,14 +92,14 @@ class ArchivioCompletoActivity : BaseActivity() {
             android.view.View.GONE
 
         findViewById<Button>(R.id.buttonRedeemCode).text =
-            ArchivioCompletoCopy.BUTTON_REDEEM
+            ArchivioCompletoCopy.buttonRedeem(this)
 
         findViewById<Button>(R.id.buttonRedeemCode).setOnClickListener {
             redeemCode()
         }
 
         findViewById<Button>(R.id.buttonClose).text =
-            ArchivioCompletoCopy.BUTTON_CLOSE
+            ArchivioCompletoCopy.buttonClose(this)
 
         findViewById<Button>(R.id.buttonClose).setOnClickListener {
             ArchivioCompletoNav.pending = null
@@ -111,11 +113,12 @@ class ArchivioCompletoActivity : BaseActivity() {
     }
 
     private fun shareForBonus() {
-        when (val result = access.registerShareAction()) {
+        when (access.registerShareAction()) {
             ShareActionResult.GRANTED ->
                 Toast.makeText(
                     this,
                     ArchivioCompletoCopy.shareGranted(
+                        this,
                         access.shareBonusDays()
                     ),
                     Toast.LENGTH_SHORT
@@ -125,6 +128,7 @@ class ArchivioCompletoActivity : BaseActivity() {
                 Toast.makeText(
                     this,
                     ArchivioCompletoCopy.shareProgressLine(
+                        this,
                         access.shareProgress(),
                         access.shareFriendsRequired()
                     ),
@@ -135,6 +139,7 @@ class ArchivioCompletoActivity : BaseActivity() {
                 Toast.makeText(
                     this,
                     ArchivioCompletoCopy.shareCooldownLine(
+                        this,
                         access.cooldownRemainingMs(),
                         access.shareBonusDays()
                     ),
@@ -151,14 +156,14 @@ class ArchivioCompletoActivity : BaseActivity() {
                 type = "text/plain"
                 putExtra(
                     Intent.EXTRA_TEXT,
-                    ArchivioCompletoCopy.shareMessage(playUrl)
+                    ArchivioCompletoCopy.shareMessage(this@ArchivioCompletoActivity, playUrl)
                 )
             }
 
         shareLauncher.launch(
             Intent.createChooser(
                 send,
-                ArchivioCompletoCopy.BUTTON_SHARE
+                ArchivioCompletoCopy.buttonShare(this)
             )
         )
     }
@@ -172,7 +177,7 @@ class ArchivioCompletoActivity : BaseActivity() {
         if (!access.redeemCode(raw)) {
             Toast.makeText(
                 this,
-                ArchivioCompletoCopy.CODE_KO,
+                ArchivioCompletoCopy.codeKo(this),
                 Toast.LENGTH_SHORT
             ).show()
             return
@@ -180,7 +185,7 @@ class ArchivioCompletoActivity : BaseActivity() {
 
         Toast.makeText(
             this,
-            ArchivioCompletoCopy.CODE_OK,
+            ArchivioCompletoCopy.codeOk(this),
             Toast.LENGTH_SHORT
         ).show()
 

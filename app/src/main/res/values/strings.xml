@@ -302,4 +302,117 @@
     <string name="premium_code_ok">Archivio completo sbloccato su questo dispositivo.</string>
     <string name="premium_code_ko">Codice non valido.</string>
 
+
+    <!-- Quick start guide -->
+    <string name="guide_page_title">Guida rapida</string>
+    <string name="guide_page_subtitle">BoxManager, un\'app che ti aiuta a cercare ciò che non trovi...</string>
+    <string name="guide_workflow_title">Come usare BoxManager in tre mosse</string>
+    <string name="guide_phase_config">Configura</string>
+    <string name="guide_phase_census">Censisci</string>
+    <string name="guide_phase_usage">Utilizza</string>
+    <string name="guide_phase_numbered">%1$d. %2$s</string>
+    <string name="guide_section_numbered">%1$d. %2$s</string>
+    <string name="guide_section_settings_title">Impostazioni</string>
+    <string name="guide_section_settings_b1">Inserisci il tuo nome che apparirà nella topbar. Se usi Archivio Condiviso, sarà annotato come ultimo familiare che ha modificato un determinato box e/o il suo contenuto.</string>
+    <string name="guide_section_settings_b2">Scegli il tema colore dell\'interfaccia.</string>
+    <string name="guide_section_settings_b3">Informativa sulla Privacy.</string>
+    <string name="guide_section_settings_b4">Definisci i luoghi abituali di custodia che, insieme alle categorie, costituiranno le tue tabelle di riferimento (da salvare su cartella diversa da app ed eventualmente ripristinare all\'occorrenza).</string>
+    <string name="guide_section_categories_title">Categorie</string>
+    <string name="guide_section_categories_b1">Parti dalle categorie predefinite.</string>
+    <string name="guide_section_categories_b2">Puoi rinominarle, aggiungerne o eliminarle.</string>
+    <string name="guide_section_categories_b3">Servono a classificare i contenitori.</string>
+    <string name="guide_section_boxes_title">Contenitori e oggetti</string>
+    <string name="guide_section_boxes_b1">Registra i contenitori e assegna categoria e posizione.</string>
+    <string name="guide_section_boxes_b2">Apri un contenitore per aggiungere gli oggetti al suo interno.</string>
+    <string name="guide_section_boxes_b3">Così sai cosa c\'è e dove si trova.</string>
+    <string name="guide_section_dashboard_title">Dashboard</string>
+    <string name="guide_section_dashboard_b1">Vedi i totali dell\'archivio a colpo d\'occhio.</string>
+    <string name="guide_section_dashboard_b2">Ricerca semplice: digita o usa il microfono sulla vista corrente.</string>
+    <string name="guide_section_dashboard_b3">Ricerca avanzata (linguaggio naturale): da Archivio completo.</string>
+    <string name="guide_section_utility_title">Utility</string>
+    <string name="guide_utility_backup">Backup e Ripristino per salvare l\'archivio (usa cartella diversa da app).</string>
+    <string name="guide_utility_import">Importa dati da file CSV per interagire con file esterni (*).</string>
+    <string name="guide_utility_qr">Codice QR per vedere il contenuto di un box usando la fotocamera.</string>
+    <string name="guide_utility_family_share">Condividi Archivio per aggiornare e condividere con i tuoi familiari i dati del tuo archivio.</string>
+    <string name="guide_utility_family_merge">Per unire i dati usa Invia/Ricevi Archivio, non Ripristino (sostituisce tutto l\'archivio).</string>
+    <string name="guide_section_tools_title">Strumenti contestuali</string>
+    <string name="guide_section_tools_intro">Gli elementi visualizzati nelle liste possono essere</string>
+    <string name="guide_section_tools_b1">stampati.</string>
+    <string name="guide_section_tools_b2">esportati su file CSV per interagire con file esterni (*).</string>
+    <string name="guide_section_tools_closing">Per i contenitori è possibile richiedere la stampa dell\'etichetta QR.</string>
+    <string name="guide_footer_note">Nota: alcune funzioni sono \"premium\" e sono soggette a restrizioni temporali.</string>
+    <string name="guide_csv_intro">(*) I file di import ed export devono essere in formato CSV (con separatore \"%1$s\").</string>
+    <string name="guide_csv_import_format_title">Formato file Importa dati (%1$s)</string>
+    <string name="guide_csv_header_label">Intestazione:</string>
+    <string name="guide_csv_import_note">Le relative categorie e posizioni (obbligatorie) devono essere preliminarmente create in archivio. In fase di Import l\'app salva un backup automatico (%1$sddMMyy_HHmm) da ripristinare in caso di necessità.</string>
+    <string name="guide_csv_export_format_title">Formato file Esporta dati (%1$sddMMyy_HHmm.csv)</string>
+    <string name="guide_csv_export_same_schema">• Stesso schema del modello Importa dati.</string>
+
+    <!-- Premium / Full archive gate -->
+    <string name="premium_page_subtitle">Funzione avanzata</string>
+    <string name="premium_button_share">CONDIVIDI</string>
+    <string name="premium_button_close">CHIUDI</string>
+    <string name="premium_code_prompt">Hai un codice?</string>
+    <string name="premium_feature_advanced_search">Ricerca avanzata</string>
+    <string name="premium_feature_qr_scan">Codice QR</string>
+    <string name="premium_feature_qr_label">Etichetta QR</string>
+    <string name="premium_feature_import">Importa dati</string>
+    <string name="premium_feature_export">Esporta dati</string>
+    <string name="premium_pitch_advanced_search_lead">Questa potentissima funzione ti consente di fare ricerche articolate usando il linguaggio naturale.</string>
+    <string name="premium_pitch_advanced_search_example">Cosa ho in garage e in cantina?</string>
+    <string name="premium_pitch_qr_scan_lead">Con una sola inquadratura apri il contenitore giusto, anche in cantina o in garage, senza cercare a mano.</string>
+    <string name="premium_pitch_qr_scan_example">etichetta sulla scatola → scheda del contenitore</string>
+    <string name="premium_pitch_qr_label_lead">Genera etichette con QR da stampare e attaccare su ogni contenitore.</string>
+    <string name="premium_pitch_qr_label_example">BOX 12 — Ferramenta — Garage</string>
+    <string name="premium_pitch_import_lead">Insieme a Esporta dati, questa funzione ti consente di gestire facilmente archivi già utilizzati sul tuo dispositivo.</string>
+    <string name="premium_pitch_import_example">importa in formato CSV il contenuto di un archivio locale gestito su foglio elettronico</string>
+    <string name="premium_pitch_export_lead">Insieme a Importa dati, questa funzione ti consente di gestire facilmente archivi già utilizzati sul tuo dispositivo.</string>
+    <string name="premium_pitch_export_example">esporta in formato CSV il contenuto parziale o totale del mio archivio su foglio elettronico</string>
+    <string name="premium_example_prefix"> (Esempio: </string>
+    <string name="premium_example_suffix">).</string>
+    <string name="premium_share_hint_one">Il periodo di prova di %1$d giorni è terminato. Condividi BoxManager con un amico: ottieni altri %2$d giorni su ricerca avanzata, QR, import ed export.</string>
+    <string name="premium_share_hint_many">Il periodo di prova di %1$d giorni è terminato. Condividi BoxManager con %2$d amici: ottieni altri %3$d giorni su ricerca avanzata, QR, import ed export.</string>
+    <string name="premium_share_granted">Hai altri %1$d giorni di Archivio completo.</string>
+    <string name="premium_share_progress">Condivisione %1$d di %2$d. Continua con un altro amico.</string>
+    <string name="premium_trial_ended">Il periodo di prova è terminato.</string>
+    <string name="premium_trial_status_one">Archivio completo in prova fino a %1$s (scade entro 24 ore).</string>
+    <string name="premium_trial_status_many">Archivio completo in prova ancora %1$d giorni (fino a %2$s).</string>
+    <string name="premium_share_cooldown_one">Potrai ottenere altri %1$d giorni tra circa un\'ora.</string>
+    <string name="premium_share_cooldown_many">Potrai ottenere altri %1$d giorni tra circa %2$d ore.</string>
+    <string name="premium_share_message">Sto usando BoxManager per organizzare contenitori e oggetti. Provalo: %1$s</string>
+
+    <!-- Family merge messages -->
+    <string name="family_msg_no_changes">Nessuna modifica da applicare.</string>
+    <string name="family_msg_nothing_to_merge">Nessuna novità da unire.</string>
+    <string name="family_msg_tables_aligned">Le tabelle locali sono già allineate alle tabelle condivise.</string>
+    <string name="family_preview_shared_title">Anteprima tabelle condivise:</string>
+    <string name="family_preview_shared_categories">Categorie: %1$d da aggiungere, %2$d da aggiornare, %3$d da rimuovere.</string>
+    <string name="family_preview_shared_locations">Posizioni: %1$d da aggiungere, %2$d da rimuovere.</string>
+    <string name="family_preview_archive_title">Anteprima condivisione archivio:</string>
+    <string name="family_preview_skipped_rows">Righe non valide ignorate nel file: %1$d.</string>
+    <string name="family_preview_healed">Categorie/posizioni aggiunte dai contenitori in arrivo: %1$d categorie, %2$d posizioni.</string>
+    <string name="family_preview_boxes">Contenitori: %1$d nuovi, %2$d aggiornamenti, %3$d conflitti, %4$d invariati.</string>
+    <string name="family_preview_objects">Oggetti: %1$d nuovi, %2$d aggiornamenti, %3$d conflitti, %4$d invariati.</string>
+    <string name="family_preview_deletes">Cancellazioni: %1$d contenitori, %2$d oggetti, %3$d conflitti.</string>
+    <string name="family_preview_conflicts_note">I conflitti non verranno sovrascritti (versione locale più recente o uguale).</string>
+    <string name="family_preview_shared_prefix">Anteprima tabelle condivise:\n</string>
+    <string name="family_preview_archive_prefix">Anteprima condivisione archivio:\n</string>
+
+    <!-- Sweep: categories, locations, selection, QR -->
+    <string name="category_msg_in_use_delete">Categoria in uso. Eliminazione non consentita</string>
+    <string name="category_msg_in_use_edit">Categoria in uso: modificandola, i contenitori verranno aggiornati. Tocca qui per annullare.</string>
+    <string name="category_msg_exists">Categoria già esistente</string>
+    <string name="category_unknown">Categoria sconosciuta</string>
+    <string name="location_msg_exists">Posizione già esistente</string>
+    <string name="location_msg_in_use_delete">Posizione in uso. Eliminazione non consentita</string>
+    <string name="msg_hidden_selection">Alcuni elementi selezionati non sono visibili. Tocca qui per rimuovere il filtro.</string>
+    <string name="msg_cannot_move_hidden">Impossibile spostare: alcuni elementi selezionati non sono visibili. Tocca qui per rimuovere il filtro.</string>
+    <string name="dialog_choose_destination_box">Scegli contenitore destinazione</string>
+    <string name="dialog_choose_destination_box_of">Scegli contenitore di destinazione</string>
+    <string name="box_fallback_name">Contenitore</string>
+    <string name="object_quantity_label">Quantità: %1$s</string>
+    <string name="qr_label_pdf_name">Etichetta.pdf</string>
+    <string name="folder_selected_label">Cartella selezionata</string>
+    <string name="common_print">Stampa</string>
+
 </resources>

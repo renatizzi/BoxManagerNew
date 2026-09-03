@@ -28,7 +28,7 @@
 | **Piano** | **Approvato SI Renato** |
 | **Lingue V1** | Italiano (default) + English |
 | **Play Console traduzione app** | **Non usare** — lavoro in Cursor |
-| **Prossimo pacchetto** | **M1d** (Guida rapida + Premium + Famiglia + sweep Kotlin) — M1c chiuso in questa sessione |
+| **Prossimo pacchetto** | **M2a / CK0** (tabelle EN Nota) — **M1d chiuso**; stop prima di toccare `domain/search` |
 | **Branch lavoro** | `cursor/multilingua-m1a-5409` (include merge `cursor/guida-ritocchi-5409` PR #17) |
 | **Branch base** | `cursor/p1-igiene-file-5409` (B5.7) + **obbligatorio** `cursor/guida-ritocchi-5409` per Guida |
 | **Play** | `main` **1.2** — test chiuso ~2 sett.; **non** merge M su `main` senza SI |
@@ -179,6 +179,7 @@ Obiettivo sessione: chiudere M1a (Scelta lingua 3.6.6) + test; poi proseguire M1
 |----|------------------|------|
 | **B-SEL-CARTELLA** | Selettore cartella (Backup, Esporta, Condivisione tabelle, …): estendere la scelta anche a drive non riconosciuti direttamente da Android (es. disco di rete locale / NAS SMB) | Fuori scope M1; valutare in filone igiene file o post-M1 |
 | **B-PALETTE-ACCENT** | Colori card funzione devono seguire la palette Impostazioni **indipendentemente dalla lingua** | Risolto con `ThemeAccentTextViews` (ID view, non testo IT) |
+| **B-FAMILY-DOMAIN-ERR** | Errori dominio merge famiglia (`SharedTablesMerger` / `FamilyInventoryMerger` / reader) ancora IT in path blocco rarissimi | Opzionale post-M1d; non bloccano CK1 UI |
 
 ---
 

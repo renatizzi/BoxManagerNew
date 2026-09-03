@@ -9,7 +9,8 @@ import android.print.PrintDocumentAdapter
 import android.print.PrintDocumentInfo
 
 class QrLabelPrintAdapter(
-    private val pdfBytes: ByteArray
+    private val pdfBytes: ByteArray,
+    private val documentName: String = "Label.pdf"
 ) : PrintDocumentAdapter() {
 
     override fun onLayout(
@@ -26,7 +27,7 @@ class QrLabelPrintAdapter(
         }
 
         val info =
-            PrintDocumentInfo.Builder("Etichetta.pdf")
+            PrintDocumentInfo.Builder(documentName)
                 .setContentType(PrintDocumentInfo.CONTENT_TYPE_DOCUMENT)
                 .setPageCount(1)
                 .build()

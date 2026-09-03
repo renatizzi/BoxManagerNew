@@ -352,7 +352,7 @@ class MainActivity : BaseActivity() {
             if (hidden) {
 
                 showContextMessage(
-                    "Alcuni elementi selezionati non sono visibili. Tocca qui per rimuovere il filtro."
+                    getString(R.string.msg_hidden_selection)
                 )
 
             } else {
@@ -712,7 +712,7 @@ class MainActivity : BaseActivity() {
 
             try {
                 printManager.print(
-                    "Stampa",
+                    getString(R.string.common_print),
                     ViewPrintAdapter(
                         result.bytes,
                         result.pageCount
@@ -1253,7 +1253,7 @@ class MainActivity : BaseActivity() {
             FeedbackUtils.alert(this)
 
             showContextMessage(
-                "Impossibile spostare: alcuni elementi selezionati non sono visibili. Tocca qui per rimuovere il filtro."
+                getString(R.string.msg_cannot_move_hidden)
             )
 
             return
@@ -1294,7 +1294,7 @@ class MainActivity : BaseActivity() {
 
         AlertDialog.Builder(this)
             .setTitle(
-                "Scegli contenitore destinazione"
+                getString(R.string.dialog_choose_destination_box)
             )
             .setItems(
                 names.toTypedArray()

@@ -125,7 +125,7 @@ class LocationsActivity : BaseActivity() {
         viewModel.locations.observe(this) {
             adapter.updateData(it)
             counter.text =
-                "N. Posizioni: ${it.size}"
+                getString(R.string.view_count_locations, it.size)
         }
 
         hideWarning()
@@ -256,7 +256,7 @@ class LocationsActivity : BaseActivity() {
                         )
 
                         error.text =
-                            "Posizione già esistente"
+                            getString(R.string.location_msg_exists)
 
                         error.visibility =
                             TextView.VISIBLE
@@ -319,7 +319,7 @@ class LocationsActivity : BaseActivity() {
                         )
 
                         error.text =
-                            "Posizione già esistente"
+                            getString(R.string.location_msg_exists)
 
                         error.visibility =
                             TextView.VISIBLE
@@ -345,7 +345,7 @@ class LocationsActivity : BaseActivity() {
             if (!deleted) {
 
                 showWarning(
-                    "Posizione in uso. Eliminazione non consentita"
+                    getString(R.string.location_msg_in_use_delete)
                 )
 
                 return@launch

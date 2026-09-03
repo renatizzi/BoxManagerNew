@@ -37,8 +37,8 @@ class QuickStartGuideActivity : BaseActivity() {
         setupBottomNav()
 
         setupPageHeader(
-            title = QuickStartGuideCopy.PAGE_TITLE,
-            subtitle = QuickStartGuideCopy.PAGE_SUBTITLE
+            title = QuickStartGuideCopy.pageTitle(this),
+            subtitle = QuickStartGuideCopy.pageSubtitle(this)
         )
 
         chipConfig = findViewById(R.id.chipConfig)
@@ -54,17 +54,17 @@ class QuickStartGuideActivity : BaseActivity() {
 
     private fun bindWorkflow() {
         findViewById<TextView>(R.id.textWorkflowTitle).text =
-            QuickStartGuideCopy.WORKFLOW_TITLE
+            QuickStartGuideCopy.workflowTitle(this)
 
         refreshChipHighlight()
 
         findViewById<TextView>(R.id.textFooterNote).apply {
-            text = QuickStartGuideCopy.FOOTER_NOTE
+            text = QuickStartGuideCopy.footerNote(this@QuickStartGuideActivity)
             setTypeface(typeface, android.graphics.Typeface.ITALIC)
         }
 
         findViewById<TextView>(R.id.textCsvFootnote).text =
-            QuickStartGuideCopy.CSV_FOOTNOTE
+            QuickStartGuideCopy.csvFootnote(this)
     }
 
     private fun refreshChipHighlight() {
@@ -86,7 +86,7 @@ class QuickStartGuideActivity : BaseActivity() {
         view: TextView,
         phase: QuickStartGuideCopy.Phase
     ) {
-        view.text = phase.numberedLabel()
+        view.text = phase.numberedLabel(this)
         val active = phase == highlightedPhase
         val color =
             ContextCompat.getColor(this, phase.colorRes)
@@ -108,7 +108,7 @@ class QuickStartGuideActivity : BaseActivity() {
     }
 
     private fun bindSections() {
-        QuickStartGuideCopy.sectionsFor(BuildConfig.FAMILY_BETA)
+        QuickStartGuideCopy.sectionsFor(this, BuildConfig.FAMILY_BETA)
             .forEach { section ->
                 sectionsContainer.addView(createSectionCard(section))
             }
@@ -171,12 +171,16 @@ class QuickStartGuideActivity : BaseActivity() {
             .setBackgroundColor(phaseColor)
 
         card.findViewById<TextView>(R.id.textPhaseLabel).apply {
-            text = section.phase.label
+            text = section.phase.label(this@QuickStartGuideActivity)
             setTextColor(phaseColor)
         }
 
         card.findViewById<TextView>(R.id.textSectionTitle).text =
-            "${section.number}. ${section.title}"
+            getString(
+                R.string.guide_section_numbered,
+                section.number,
+                section.title
+            )
 
         card.findViewById<TextView>(R.id.textSectionBody).text =
             formatSectionBody(section)

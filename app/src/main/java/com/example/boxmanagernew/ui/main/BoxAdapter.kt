@@ -62,7 +62,8 @@ class BoxAdapter(
 
         val category = categories.find { it.id == box.categoryId }
 
-        val categoryName = category?.name ?: "Categoria sconosciuta"
+        val categoryName = category?.name
+            ?: holder.itemView.context.getString(R.string.category_unknown)
         val positionText = box.position
 
         holder.textSubtitle.text =

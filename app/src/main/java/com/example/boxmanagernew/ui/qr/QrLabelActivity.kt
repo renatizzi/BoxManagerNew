@@ -74,7 +74,7 @@ class QrLabelActivity : BaseActivity() {
         }
 
         btnExport.setOnClickListener {
-            createPdf.launch("Etichetta.pdf")
+            createPdf.launch(getString(R.string.qr_label_pdf_name))
         }
 
         val repository = BoxRepositoryImpl(
@@ -117,8 +117,11 @@ class QrLabelActivity : BaseActivity() {
 
         try {
             printManager.print(
-                "Stampa etichetta",
-                QrLabelPrintAdapter(pdfBytes),
+                getString(R.string.qr_print_label),
+                QrLabelPrintAdapter(
+                    pdfBytes,
+                    getString(R.string.qr_label_pdf_name)
+                ),
                 PrintAttributes.Builder()
                     .setMediaSize(PrintAttributes.MediaSize.ISO_A6)
                     .setColorMode(PrintAttributes.COLOR_MODE_MONOCHROME)

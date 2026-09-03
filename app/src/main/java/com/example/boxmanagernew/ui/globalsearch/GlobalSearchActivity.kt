@@ -220,6 +220,7 @@ class GlobalSearchActivity : BaseActivity() {
         trialView.visibility = View.VISIBLE
         trialView.text =
             ArchivioCompletoCopy.trialStatusLine(
+                this,
                 access.remainingDays(),
                 access.accessUntil()
             )

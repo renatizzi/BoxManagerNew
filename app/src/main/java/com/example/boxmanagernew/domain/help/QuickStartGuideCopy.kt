@@ -1,41 +1,43 @@
 package com.example.boxmanagernew.domain.help
 
+import android.content.Context
+import com.example.boxmanagernew.R
 import com.example.boxmanagernew.importdata.config.ImportConfiguration
 import com.example.boxmanagernew.viewoutput.config.ViewOutputConfiguration
 
 /**
  * Guida rapida in-app. Non fa parte del catalogo 2.6.
+ * Testi utente da risorse IT/EN.
  */
 object QuickStartGuideCopy {
 
-    const val PAGE_TITLE =
-        "Guida rapida"
-
-    const val PAGE_SUBTITLE =
-        "BoxManager, un'app che ti aiuta a cercare ciò che non trovi..."
-
-    const val WORKFLOW_TITLE =
-        "Come usare BoxManager in tre mosse"
-
     enum class Phase(
-        val label: String,
+        val labelRes: Int,
         val colorRes: Int
     ) {
         CONFIG(
-            "Configura",
-            com.example.boxmanagernew.R.color.guide_phase_config
+            R.string.guide_phase_config,
+            R.color.guide_phase_config
         ),
         CENSUS(
-            "Censisci",
-            com.example.boxmanagernew.R.color.guide_phase_census
+            R.string.guide_phase_census,
+            R.color.guide_phase_census
         ),
         USAGE(
-            "Utilizza",
-            com.example.boxmanagernew.R.color.guide_phase_usage
+            R.string.guide_phase_usage,
+            R.color.guide_phase_usage
         );
 
-        fun numberedLabel(): String {
-            return "${ordinal + 1}. $label"
+        fun label(context: Context): String {
+            return context.getString(labelRes)
+        }
+
+        fun numberedLabel(context: Context): String {
+            return context.getString(
+                R.string.guide_phase_numbered,
+                ordinal + 1,
+                label(context)
+            )
         }
     }
 
@@ -48,130 +50,122 @@ object QuickStartGuideCopy {
         val bodyClosing: String? = null
     )
 
-    val sections: List<Section>
-        get() = sectionsFor(includeFamilyBeta = false)
+    fun pageTitle(context: Context): String =
+        context.getString(R.string.guide_page_title)
 
-    fun sectionsFor(includeFamilyBeta: Boolean): List<Section> {
+    fun pageSubtitle(context: Context): String =
+        context.getString(R.string.guide_page_subtitle)
+
+    fun workflowTitle(context: Context): String =
+        context.getString(R.string.guide_workflow_title)
+
+    fun footerNote(context: Context): String =
+        context.getString(R.string.guide_footer_note)
+
+    fun sectionsFor(
+        context: Context,
+        includeFamilyBeta: Boolean
+    ): List<Section> {
         return listOf(
             Section(
                 phase = Phase.CONFIG,
                 number = 1,
-                title = "Impostazioni",
+                title = context.getString(R.string.guide_section_settings_title),
                 bullets = listOf(
-                    "Inserisci il tuo nome che apparirà nella topbar. " +
-                        "Se usi Archivio Condiviso, sarà annotato come ultimo " +
-                        "familiare che ha modificato un determinato box e/o " +
-                        "il suo contenuto.",
-                    "Scegli il tema colore dell'interfaccia.",
-                    "Informativa sulla Privacy.",
-                    "Definisci i luoghi abituali di custodia che, insieme " +
-                        "alle categorie, costituiranno le tue tabelle di " +
-                        "riferimento (da salvare su cartella diversa da app " +
-                        "ed eventualmente ripristinare all'occorrenza)."
+                    context.getString(R.string.guide_section_settings_b1),
+                    context.getString(R.string.guide_section_settings_b2),
+                    context.getString(R.string.guide_section_settings_b3),
+                    context.getString(R.string.guide_section_settings_b4)
                 )
             ),
             Section(
                 phase = Phase.CENSUS,
                 number = 2,
-                title = "Categorie",
+                title = context.getString(R.string.guide_section_categories_title),
                 bullets = listOf(
-                    "Parti dalle categorie predefinite.",
-                    "Puoi rinominarle, aggiungerne o eliminarle.",
-                    "Servono a classificare i contenitori."
+                    context.getString(R.string.guide_section_categories_b1),
+                    context.getString(R.string.guide_section_categories_b2),
+                    context.getString(R.string.guide_section_categories_b3)
                 )
             ),
             Section(
                 phase = Phase.CENSUS,
                 number = 3,
-                title = "Contenitori e oggetti",
+                title = context.getString(R.string.guide_section_boxes_title),
                 bullets = listOf(
-                    "Registra i contenitori e assegna categoria e posizione.",
-                    "Apri un contenitore per aggiungere gli oggetti al suo interno.",
-                    "Così sai cosa c'è e dove si trova."
+                    context.getString(R.string.guide_section_boxes_b1),
+                    context.getString(R.string.guide_section_boxes_b2),
+                    context.getString(R.string.guide_section_boxes_b3)
                 )
             ),
             Section(
                 phase = Phase.USAGE,
                 number = 4,
-                title = "Dashboard",
+                title = context.getString(R.string.guide_section_dashboard_title),
                 bullets = listOf(
-                    "Vedi i totali dell'archivio a colpo d'occhio.",
-                    "Ricerca semplice: digita o usa il microfono sulla vista corrente.",
-                    "Ricerca avanzata (linguaggio naturale): da Archivio completo."
+                    context.getString(R.string.guide_section_dashboard_b1),
+                    context.getString(R.string.guide_section_dashboard_b2),
+                    context.getString(R.string.guide_section_dashboard_b3)
                 )
             ),
             Section(
                 phase = Phase.USAGE,
                 number = 5,
-                title = "Utility",
-                bullets = utilityBullets(includeFamilyBeta)
+                title = context.getString(R.string.guide_section_utility_title),
+                bullets = utilityBullets(context, includeFamilyBeta)
             ),
             Section(
                 phase = Phase.USAGE,
                 number = 6,
-                title = "Strumenti contestuali",
-                bodyIntro =
-                    "Gli elementi visualizzati nelle liste possono essere",
+                title = context.getString(R.string.guide_section_tools_title),
+                bodyIntro = context.getString(R.string.guide_section_tools_intro),
                 bullets = listOf(
-                    "stampati.",
-                    "esportati su file CSV per interagire con file esterni (*)."
+                    context.getString(R.string.guide_section_tools_b1),
+                    context.getString(R.string.guide_section_tools_b2)
                 ),
-                bodyClosing =
-                    "Per i contenitori è possibile richiedere la stampa " +
-                        "dell'etichetta QR."
+                bodyClosing = context.getString(R.string.guide_section_tools_closing)
             )
         )
     }
 
     private fun utilityBullets(
+        context: Context,
         includeFamilyBeta: Boolean
     ): List<String> {
-
         return buildList {
-            add(
-                "Backup e Ripristino per salvare l'archivio " +
-                    "(usa cartella diversa da app)."
-            )
-            add(
-                "Importa dati da file CSV per interagire con file esterni (*)."
-            )
-            add(
-                "Codice QR per vedere il contenuto di un box " +
-                    "usando la fotocamera."
-            )
+            add(context.getString(R.string.guide_utility_backup))
+            add(context.getString(R.string.guide_utility_import))
+            add(context.getString(R.string.guide_utility_qr))
             if (includeFamilyBeta) {
-                add(
-                    "Condividi Archivio per aggiornare e condividere con i " +
-                        "tuoi familiari i dati del tuo archivio."
-                )
-                add(
-                    "Per unire i dati usa Invia/Ricevi Archivio, non " +
-                        "Ripristino (sostituisce tutto l'archivio)."
-                )
+                add(context.getString(R.string.guide_utility_family_share))
+                add(context.getString(R.string.guide_utility_family_merge))
             }
         }
     }
 
-    val CSV_FOOTNOTE: String
-        get() = buildString {
+    fun csvFootnote(context: Context): String {
+        val sep = ImportConfiguration.SEPARATOR
+        return buildString {
             appendLine(
-                "(*) I file di import ed export devono essere in formato CSV " +
-                    "(con separatore \"${ImportConfiguration.SEPARATOR}\")."
+                context.getString(R.string.guide_csv_intro, sep)
             )
             appendLine()
             appendLine(
-                "Formato file Importa dati (${ImportConfiguration.FILE_NAME})"
+                context.getString(
+                    R.string.guide_csv_import_format_title,
+                    ImportConfiguration.FILE_NAME
+                )
             )
             appendLine()
-            appendLine("Intestazione:")
+            appendLine(context.getString(R.string.guide_csv_header_label))
             appendLine(
-                "formato${ImportConfiguration.SEPARATOR}" +
+                "formato${sep}" +
                     "${ImportConfiguration.FORMAT_NAME}" +
-                    ImportConfiguration.SEPARATOR +
+                    sep +
                     ImportConfiguration.FORMAT_VERSION
             )
             appendLine(
-                "sezione${ImportConfiguration.SEPARATOR}" +
+                "sezione${sep}" +
                     ImportConfiguration.SECTION_BOXES
             )
             appendLine(
@@ -180,7 +174,7 @@ object QuickStartGuideCopy {
                     ImportConfiguration.COL_POSITION
             )
             appendLine(
-                "sezione${ImportConfiguration.SEPARATOR}" +
+                "sezione${sep}" +
                     ImportConfiguration.SECTION_OBJECTS
             )
             appendLine(
@@ -191,21 +185,19 @@ object QuickStartGuideCopy {
             )
             appendLine()
             appendLine(
-                "Le relative categorie e posizioni (obbligatorie) devono " +
-                    "essere preliminarmente create in archivio. In fase di " +
-                    "Import l'app salva un backup automatico " +
-                    "(${ImportConfiguration.PRE_IMPORT_PREFIX}ddMMyy_HHmm) " +
-                    "da ripristinare in caso di necessità."
+                context.getString(
+                    R.string.guide_csv_import_note,
+                    ImportConfiguration.PRE_IMPORT_PREFIX
+                )
             )
             appendLine()
             appendLine(
-                "Formato file Esporta dati " +
-                    "(${ViewOutputConfiguration.EXPORT_FILE_PREFIX}ddMMyy_HHmm.csv)"
+                context.getString(
+                    R.string.guide_csv_export_format_title,
+                    ViewOutputConfiguration.EXPORT_FILE_PREFIX
+                )
             )
-            append("• Stesso schema del modello Importa dati.")
+            append(context.getString(R.string.guide_csv_export_same_schema))
         }
-
-    const val FOOTER_NOTE =
-        "Nota: alcune funzioni sono \"premium\" e sono soggette a " +
-            "restrizioni temporali."
+    }
 }

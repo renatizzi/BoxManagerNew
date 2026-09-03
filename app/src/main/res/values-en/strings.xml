@@ -302,4 +302,117 @@
     <string name="premium_code_ok">Full archive unlocked on this device.</string>
     <string name="premium_code_ko">Invalid code.</string>
 
+
+    <!-- Quick start guide -->
+    <string name="guide_page_title">Quick guide</string>
+    <string name="guide_page_subtitle">BoxManager, an app that helps you find what you can\'t find...</string>
+    <string name="guide_workflow_title">How to use BoxManager in three steps</string>
+    <string name="guide_phase_config">Set up</string>
+    <string name="guide_phase_census">Catalog</string>
+    <string name="guide_phase_usage">Use</string>
+    <string name="guide_phase_numbered">%1$d. %2$s</string>
+    <string name="guide_section_numbered">%1$d. %2$s</string>
+    <string name="guide_section_settings_title">Settings</string>
+    <string name="guide_section_settings_b1">Enter your name, which appears in the top bar. If you use Shared Archive, it is recorded as the last family member who changed a given box and/or its contents.</string>
+    <string name="guide_section_settings_b2">Choose the interface color theme.</string>
+    <string name="guide_section_settings_b3">Privacy notice.</string>
+    <string name="guide_section_settings_b4">Define the usual storage places that, together with categories, will be your reference tables (save them in a folder outside the app and restore them when needed).</string>
+    <string name="guide_section_categories_title">Categories</string>
+    <string name="guide_section_categories_b1">Start from the predefined categories.</string>
+    <string name="guide_section_categories_b2">You can rename, add, or delete them.</string>
+    <string name="guide_section_categories_b3">They classify containers.</string>
+    <string name="guide_section_boxes_title">Containers and objects</string>
+    <string name="guide_section_boxes_b1">Register containers and assign category and location.</string>
+    <string name="guide_section_boxes_b2">Open a container to add the objects inside it.</string>
+    <string name="guide_section_boxes_b3">So you know what is there and where it is.</string>
+    <string name="guide_section_dashboard_title">Dashboard</string>
+    <string name="guide_section_dashboard_b1">See archive totals at a glance.</string>
+    <string name="guide_section_dashboard_b2">Simple search: type or use the microphone on the current view.</string>
+    <string name="guide_section_dashboard_b3">Advanced search (natural language): from Full archive.</string>
+    <string name="guide_section_utility_title">Utility</string>
+    <string name="guide_utility_backup">Backup and Restore to save the archive (use a folder outside the app).</string>
+    <string name="guide_utility_import">Import data from a CSV file to work with external files (*).</string>
+    <string name="guide_utility_qr">QR code to see a box\'s contents using the camera.</string>
+    <string name="guide_utility_family_share">Share Archive to update and share your archive data with your family.</string>
+    <string name="guide_utility_family_merge">To merge data use Send/Receive Archive, not Restore (which replaces the whole archive).</string>
+    <string name="guide_section_tools_title">Contextual tools</string>
+    <string name="guide_section_tools_intro">Items shown in lists can be</string>
+    <string name="guide_section_tools_b1">printed.</string>
+    <string name="guide_section_tools_b2">exported to a CSV file to work with external files (*).</string>
+    <string name="guide_section_tools_closing">For containers you can request printing of the QR label.</string>
+    <string name="guide_footer_note">Note: some features are \"premium\" and are subject to time limits.</string>
+    <string name="guide_csv_intro">(*) Import and export files must be CSV format (with separator \"%1$s\").</string>
+    <string name="guide_csv_import_format_title">Import data file format (%1$s)</string>
+    <string name="guide_csv_header_label">Header:</string>
+    <string name="guide_csv_import_note">Related categories and locations (required) must be created in the archive first. During Import the app saves an automatic backup (%1$sddMMyy_HHmm) to restore if needed.</string>
+    <string name="guide_csv_export_format_title">Export data file format (%1$sddMMyy_HHmm.csv)</string>
+    <string name="guide_csv_export_same_schema">• Same schema as the Import data template.</string>
+
+    <!-- Premium / Full archive gate -->
+    <string name="premium_page_subtitle">Advanced feature</string>
+    <string name="premium_button_share">SHARE</string>
+    <string name="premium_button_close">CLOSE</string>
+    <string name="premium_code_prompt">Do you have a code?</string>
+    <string name="premium_feature_advanced_search">Advanced search</string>
+    <string name="premium_feature_qr_scan">QR code</string>
+    <string name="premium_feature_qr_label">QR label</string>
+    <string name="premium_feature_import">Import data</string>
+    <string name="premium_feature_export">Export data</string>
+    <string name="premium_pitch_advanced_search_lead">This powerful feature lets you run rich searches using natural language.</string>
+    <string name="premium_pitch_advanced_search_example">What do I have in the garage and basement?</string>
+    <string name="premium_pitch_qr_scan_lead">With one scan you open the right container, even in the basement or garage, without searching by hand.</string>
+    <string name="premium_pitch_qr_scan_example">label on the box → container card</string>
+    <string name="premium_pitch_qr_label_lead">Generate QR labels to print and stick on every container.</string>
+    <string name="premium_pitch_qr_label_example">BOX 12 — Hardware — Garage</string>
+    <string name="premium_pitch_import_lead">Together with Export data, this feature lets you easily manage archives already used on your device.</string>
+    <string name="premium_pitch_import_example">import in CSV format the contents of a local archive managed in a spreadsheet</string>
+    <string name="premium_pitch_export_lead">Together with Import data, this feature lets you easily manage archives already used on your device.</string>
+    <string name="premium_pitch_export_example">export in CSV format a partial or full archive to a spreadsheet</string>
+    <string name="premium_example_prefix"> (Example: </string>
+    <string name="premium_example_suffix">).</string>
+    <string name="premium_share_hint_one">The %1$d-day trial has ended. Share BoxManager with a friend: get another %2$d days on advanced search, QR, import and export.</string>
+    <string name="premium_share_hint_many">The %1$d-day trial has ended. Share BoxManager with %2$d friends: get another %3$d days on advanced search, QR, import and export.</string>
+    <string name="premium_share_granted">You have another %1$d days of Full archive.</string>
+    <string name="premium_share_progress">Sharing %1$d of %2$d. Continue with another friend.</string>
+    <string name="premium_trial_ended">The trial period has ended.</string>
+    <string name="premium_trial_status_one">Full archive on trial until %1$s (expires within 24 hours).</string>
+    <string name="premium_trial_status_many">Full archive on trial for %1$d more days (until %2$s).</string>
+    <string name="premium_share_cooldown_one">You can get another %1$d days in about one hour.</string>
+    <string name="premium_share_cooldown_many">You can get another %1$d days in about %2$d hours.</string>
+    <string name="premium_share_message">I\'m using BoxManager to organize containers and objects. Try it: %1$s</string>
+
+    <!-- Family merge messages -->
+    <string name="family_msg_no_changes">No changes to apply.</string>
+    <string name="family_msg_nothing_to_merge">Nothing new to merge.</string>
+    <string name="family_msg_tables_aligned">Local tables are already aligned with the shared tables.</string>
+    <string name="family_preview_shared_title">Shared tables preview:</string>
+    <string name="family_preview_shared_categories">Categories: %1$d to add, %2$d to update, %3$d to remove.</string>
+    <string name="family_preview_shared_locations">Locations: %1$d to add, %2$d to remove.</string>
+    <string name="family_preview_archive_title">Archive share preview:</string>
+    <string name="family_preview_skipped_rows">Invalid rows ignored in the file: %1$d.</string>
+    <string name="family_preview_healed">Categories/locations added from incoming containers: %1$d categories, %2$d locations.</string>
+    <string name="family_preview_boxes">Containers: %1$d new, %2$d updates, %3$d conflicts, %4$d unchanged.</string>
+    <string name="family_preview_objects">Objects: %1$d new, %2$d updates, %3$d conflicts, %4$d unchanged.</string>
+    <string name="family_preview_deletes">Deletions: %1$d containers, %2$d objects, %3$d conflicts.</string>
+    <string name="family_preview_conflicts_note">Conflicts will not be overwritten (local version is newer or equal).</string>
+    <string name="family_preview_shared_prefix">Shared tables preview:\n</string>
+    <string name="family_preview_archive_prefix">Archive share preview:\n</string>
+
+    <!-- Sweep: categories, locations, selection, QR -->
+    <string name="category_msg_in_use_delete">Category in use. Deletion not allowed</string>
+    <string name="category_msg_in_use_edit">Category in use: changing it will update containers. Tap here to undo.</string>
+    <string name="category_msg_exists">Category already exists</string>
+    <string name="category_unknown">Unknown category</string>
+    <string name="location_msg_exists">Location already exists</string>
+    <string name="location_msg_in_use_delete">Location in use. Deletion not allowed</string>
+    <string name="msg_hidden_selection">Some selected items are not visible. Tap here to remove the filter.</string>
+    <string name="msg_cannot_move_hidden">Cannot move: some selected items are not visible. Tap here to remove the filter.</string>
+    <string name="dialog_choose_destination_box">Choose destination container</string>
+    <string name="dialog_choose_destination_box_of">Choose destination container</string>
+    <string name="box_fallback_name">Container</string>
+    <string name="object_quantity_label">Quantity: %1$s</string>
+    <string name="qr_label_pdf_name">Label.pdf</string>
+    <string name="folder_selected_label">Selected folder</string>
+    <string name="common_print">Print</string>
+
 </resources>

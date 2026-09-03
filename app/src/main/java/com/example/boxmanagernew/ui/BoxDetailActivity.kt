@@ -159,7 +159,7 @@ class BoxDetailActivity : BaseActivity() {
             intent.getIntExtra("boxId", -1)
         val boxName =
             intent.getStringExtra("boxName")
-                ?: "Contenitore"
+                ?: getString(R.string.box_fallback_name)
 
         val initialSearchQuery =
             intent.getStringExtra(
@@ -364,7 +364,7 @@ class BoxDetailActivity : BaseActivity() {
                     View.VISIBLE
 
                 textContextMessage.text =
-                    "Impossibile eliminare: alcuni elementi selezionati non sono visibili. Tocca qui per rimuovere il filtro."
+                    getString(R.string.msg_cannot_delete_hidden)
 
                 return@setOnClickListener
             }
@@ -613,7 +613,7 @@ class BoxDetailActivity : BaseActivity() {
             if (it) {
 
                 textContextMessage.text =
-                    "Alcuni elementi selezionati non sono visibili. Tocca qui per rimuovere il filtro."
+                    getString(R.string.msg_hidden_selection)
             }
         }
 
@@ -856,7 +856,7 @@ class BoxDetailActivity : BaseActivity() {
 
         AlertDialog.Builder(this)
             .setTitle(
-                "Scegli contenitore di destinazione"
+                getString(R.string.dialog_choose_destination_box_of)
             )
             .setItems(
                 names.toTypedArray()

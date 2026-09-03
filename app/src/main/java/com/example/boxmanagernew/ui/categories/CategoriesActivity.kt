@@ -269,7 +269,7 @@ class CategoriesActivity : BaseActivity() {
 
         viewModel.allCategoriesCount.observe(this) {
             textCategoryCount.text =
-                "N. Categorie: $it"
+                getString(R.string.view_count_categories, it)
         }
 
         viewModel.selectedCategory.observe(this) {
@@ -349,7 +349,7 @@ class CategoriesActivity : BaseActivity() {
                 )
 
                 showWarningMessage(
-                    "Categoria in uso. Eliminazione non consentita"
+                    getString(R.string.category_msg_in_use_delete)
                 )
 
             } else {
@@ -609,7 +609,7 @@ class CategoriesActivity : BaseActivity() {
                 )
 
                 showWarningMessage(
-                    "Categoria in uso: modificandola, i contenitori verranno aggiornati. Tocca qui per annullare."
+                    getString(R.string.category_msg_in_use_edit)
                 )
             }
 
@@ -760,7 +760,7 @@ class CategoriesActivity : BaseActivity() {
                     FeedbackUtils.alert(this)
 
                     textError.text =
-                        "Dato obbligatorio"
+                        getString(R.string.common_required_field)
 
                     textError.visibility =
                         View.VISIBLE
@@ -775,7 +775,7 @@ class CategoriesActivity : BaseActivity() {
                     FeedbackUtils.alert(this)
 
                     textError.text =
-                        "Seleziona un'icona"
+                        getString(R.string.dialog_category_pick_icon)
 
                     textError.visibility =
                         View.VISIBLE
@@ -806,7 +806,7 @@ class CategoriesActivity : BaseActivity() {
         } else {
 
             textError.text =
-                "Categoria già esistente"
+                getString(R.string.category_msg_exists)
 
             textError.visibility =
                 View.VISIBLE
