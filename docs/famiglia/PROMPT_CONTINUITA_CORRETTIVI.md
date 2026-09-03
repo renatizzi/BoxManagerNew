@@ -30,7 +30,7 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md). Restano visibili
 | **Dopo il test** | La BoxManager di sviluppo **sostituisce** la 1.2 come ufficiale. Non è un optional. [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md) |
 | **Archivio condiviso B0–B5** | **CONVALIDATO** — Nota Integrata **9.2** Allegato **4.20** |
 | **Filone correttivi** | P0 chiuso; **P1 CONVALIDATO** B5.7; P2 continuo |
-| **Backlog aperto** | **B-DEFAULT-IT-EN**, **B-SEL-CARTELLA**, **B-RICERCA-SENZA-SPECIFICHE** — in evidenza nel Promemoria; non in carico finché Renato non decide |
+| **Backlog aperto** | **B-NOME-AUTO-SAVE**, **B-DEFAULT-IT-EN**, **B-SEL-CARTELLA**, **B-RICERCA-SENZA-SPECIFICHE** — in evidenza nel Promemoria; non in carico finché Renato non decide |
 
 ### Documenti vincolanti (leggere prima di codice)
 

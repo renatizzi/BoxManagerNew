@@ -238,7 +238,7 @@ git checkout -b cursor/multilingua-m1a-5409
 Continua filone M — inglese in BoxManager da docs/multilingua/PROMPT_CONTINUITA_M.md
 Pacchetto: CK2 (SI device Renato) oppure attesa; M3 solo a test Play chiuso
 Branch: cursor/multilingua-m2c-d69a
-Vincoli: non toccare main/1.2; non implementare B-DEFAULT-IT-EN né B-SEL-CARTELLA né B-RICERCA-SENZA-SPECIFICHE.
+Vincoli: non toccare main/1.2; non implementare B-NOME-AUTO-SAVE né B-DEFAULT-IT-EN né B-SEL-CARTELLA né B-RICERCA-SENZA-SPECIFICHE.
 ```
 
 ---
@@ -258,6 +258,7 @@ Vincoli: non toccare main/1.2; non implementare B-DEFAULT-IT-EN né B-SEL-CARTEL
 
 | ID | Richiesta Renato | Note |
 |----|------------------|------|
+| **B-NOME-AUTO-SAVE** | In Impostazioni il Salva serve solo al nome utente; memorizzarlo appena inserito, senza tasto Salva | **Aperto** |
 | **B-DEFAULT-IT-EN** | Tradurre i valori di default (3 location + 16 category) da usare al **primo switch** italiano → inglese | **Aperto** |
 | **B-SEL-CARTELLA** | Selettore cartella anche su drive non visti da Android (NAS / disco di rete) | **Aperto** |
 | **B-RICERCA-SENZA-SPECIFICHE** | Stampare tutto senza stringa (es. tutti i contenitori); oggi i filtri ricerca lo impediscono | **Aperto** |
