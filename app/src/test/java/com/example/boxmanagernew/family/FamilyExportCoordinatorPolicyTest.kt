@@ -45,7 +45,7 @@ class FamilyExportCoordinatorPolicyTest {
     fun exportSuccess_showsDismissibleOkDialogNotInlineOrToast() {
         val source = activitySource()
         assertTrue(source.contains("showExportCompletedDialog()"))
-        assertTrue(source.contains("FamilyMergeCopy.MSG_EXPORT_COMPLETED"))
+        assertTrue(source.contains("R.string.family_msg_export_completed"))
         assertFalse(
             "Invia non deve riempire tvMessages (evita scroll)",
             source.contains("buildExportSummary")

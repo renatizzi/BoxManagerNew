@@ -252,4 +252,54 @@
     <string name="privacy_camera_cancel">Annulla</string>
     <string name="privacy_camera_denied">Permesso fotocamera non concesso. Non è possibile leggere il codice QR.</string>
 
+    <!-- Contextual menus -->
+    <string name="menu_edit">Modifica</string>
+    <string name="menu_delete">Elimina</string>
+    <string name="menu_move">Sposta</string>
+    <string name="menu_view_qr_label">Visualizza etichetta QR</string>
+
+    <!-- Box detail page header -->
+    <string name="box_detail_subtitle_named">Contenuto del box %1$s</string>
+    <string name="view_count_objects_selected">N. Oggetti: %1$d di cui %2$d selezionati</string>
+    <string name="common_ok">OK</string>
+
+    <!-- Family share page -->
+    <string name="family_page_title">Condivisione Archivio</string>
+    <string name="family_page_subtitle">Tabelle condivise e archivio domestico in famiglia</string>
+    <string name="family_intro">Aggiorna periodicamente e condividi con i tuoi familiari i dati del tuo archivio usando i tasti \"Invia\" e \"Ricevi\". Non sostituisce Importa ed Esporta Dati.</string>
+    <string name="family_section_shared_tables">Tabelle condivise (categorie e posizioni)</string>
+    <string name="family_section_shared_tables_hint">Usa il tasto \"Invia\" per esportare e condividere con i tuoi familiari solo le categorie e le posizioni abituali. Usa il tasto \"Ricevi\" per ripristinarle sul tuo archivio.</string>
+    <string name="family_button_send_shared_tables">📤 Invia tabelle condivise</string>
+    <string name="family_button_receive_shared_tables">📥 Ricevi tabelle condivise</string>
+    <string name="family_section_archive">Archivio (contenitori e oggetti)</string>
+    <string name="family_section_archive_hint">Usa il tasto \"Invia\" per esportare e condividere con i tuoi familiari tutti i dati del tuo archivio. Usa il tasto \"Ricevi\" per unire al tuo archivio quello condiviso, riconoscendo gli stessi contenitori e oggetti.</string>
+    <string name="family_button_send">📤 Invia Archivio</string>
+    <string name="family_button_receive">📥 Ricevi Archivio</string>
+    <string name="family_msg_export_completed">Salvataggio completato.</string>
+    <string name="family_msg_receive_completed">Ricezione completata.</string>
+    <string name="family_msg_read_failed">Impossibile leggere il file.</string>
+    <string name="family_msg_write_failed">Salvataggio non riuscito. Riprovare.</string>
+    <string name="family_dialog_receive_shared_tables">Ricevi tabelle condivise</string>
+    <string name="family_dialog_receive_archive">Ricevi Archivio</string>
+
+    <!-- Settings: Archivio completo (debug / unlock) -->
+    <string name="premium_settings_unlock_title">Archivio completo (prova)</string>
+    <string name="premium_settings_unlock_hint">Solo in questa installazione di prova: attiva per usare ricerca avanzata, QR, import ed export senza limiti. Disattiva e usa i tasti sotto per simulare fine prova o ricominciare il periodo di prova.</string>
+    <string name="premium_settings_expire_trial">Simula fine prova</string>
+    <string name="premium_settings_restart_trial">Ricomincia il periodo di prova</string>
+    <string name="premium_settings_params_title">Parametri Archivio completo</string>
+    <string name="premium_settings_params_hint">Solo per l\'amministratore: modifica prova, rinnovo e amici richiesti. I valori valgono su questo dispositivo.</string>
+    <string name="premium_settings_params_save">SALVA PARAMETRI</string>
+    <string name="premium_settings_params_saved">Parametri salvati.</string>
+    <string name="premium_settings_param_trial">Periodo di prova (giorni)</string>
+    <string name="premium_settings_param_bonus">Rinnovo per condivisione (giorni)</string>
+    <string name="premium_settings_param_friends">Amici da condividere</string>
+    <string name="premium_settings_code_title">Archivio completo</string>
+    <string name="premium_settings_code_hint">Inserisci il codice tester o amico per sbloccare le funzioni avanzate.</string>
+    <string name="premium_settings_code_active">Archivio completo attivo su questo dispositivo.</string>
+    <string name="premium_unlock_code_hint">Codice</string>
+    <string name="premium_button_redeem">USA CODICE</string>
+    <string name="premium_code_ok">Archivio completo sbloccato su questo dispositivo.</string>
+    <string name="premium_code_ko">Codice non valido.</string>
+
 </resources>

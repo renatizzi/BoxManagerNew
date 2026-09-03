@@ -118,16 +118,16 @@ class CategoryAdapter(
             val popup =
                 PopupMenu(view.context, view)
 
-            popup.menu.add("Modifica")
-            popup.menu.add("Elimina")
+            popup.menu.add(0, MENU_EDIT, 0, R.string.menu_edit)
+            popup.menu.add(0, MENU_DELETE, 1, R.string.menu_delete)
 
             popup.setOnMenuItemClickListener {
 
-                when (it.title) {
+                when (it.itemId) {
 
-                    "Modifica" -> onEdit(category)
+                    MENU_EDIT -> onEdit(category)
 
-                    "Elimina" -> onDelete(category)
+                    MENU_DELETE -> onDelete(category)
                 }
 
                 true
@@ -235,5 +235,10 @@ class CategoryAdapter(
             return oldList[oldItemPosition] ==
                     newList[newItemPosition]
         }
+    }
+
+    companion object {
+        private const val MENU_EDIT = 1
+        private const val MENU_DELETE = 2
     }
 }

@@ -1,6 +1,7 @@
 package com.example.boxmanagernew.locale
 
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.io.File
@@ -67,6 +68,65 @@ class LayoutStringsExtractionTest {
         assertEquals("Impostazioni", stringIt("page_settings_title"))
         assertEquals("Yes", stringEn("common_yes"))
         assertEquals("SI", stringIt("common_yes"))
+        assertEquals("Object list", stringEn("box_detail_title"))
+        assertEquals("Lista Oggetti", stringIt("box_detail_title"))
+        assertEquals("Share Archive", stringEn("family_page_title"))
+        assertEquals("Condivisione Archivio", stringIt("family_page_title"))
+        assertEquals("Full archive (trial)", stringEn("premium_settings_unlock_title"))
+        assertEquals("Archivio completo (prova)", stringIt("premium_settings_unlock_title"))
+        assertEquals("Edit", stringEn("menu_edit"))
+        assertEquals("Modifica", stringIt("menu_edit"))
+        assertEquals("View QR label", stringEn("menu_view_qr_label"))
+        assertEquals("Move", stringEn("menu_move"))
+    }
+
+    @Test
+    fun contextualMenus_useStringResourcesNotHardcodedItalian() {
+        val adapters = listOf(
+            "ui/main/BoxAdapter.kt",
+            "ui/boxdetail/ObjectAdapter.kt",
+            "ui/categories/CategoryAdapter.kt",
+            "ui/settings/LocationAdapter.kt"
+        )
+        for (relative in adapters) {
+            val source = kotlinSource(relative)
+            assertTrue(
+                "$relative deve usare R.string.menu_edit",
+                source.contains("R.string.menu_edit")
+            )
+            assertTrue(
+                "$relative deve usare R.string.menu_delete",
+                source.contains("R.string.menu_delete")
+            )
+            assertFalse(
+                "$relative non deve matchare sul titolo italiano",
+                source.contains("\"Modifica\"")
+            )
+            assertFalse(
+                "$relative non deve matchare sul titolo italiano",
+                source.contains("\"Elimina\"")
+            )
+        }
+        val boxDetail = kotlinSource("ui/BoxDetailActivity.kt")
+        assertTrue(boxDetail.contains("R.string.box_detail_title"))
+        assertTrue(boxDetail.contains("R.string.box_detail_subtitle_named"))
+        assertFalse(boxDetail.contains("\"Lista Oggetti\""))
+
+        val family = kotlinSource("ui/family/FamilyCatalogActivity.kt")
+        assertTrue(family.contains("R.string.family_page_title"))
+        assertFalse(family.contains("FamilyMergeCopy."))
+
+        val settings = kotlinSource("ui/settings/SettingsActivity.kt")
+        assertTrue(settings.contains("R.string.premium_settings_unlock_title"))
+        assertFalse(settings.contains("ArchivioCompletoCopy.SETTINGS_"))
+    }
+
+    private fun kotlinSource(relativeUnderJava: String): String {
+        val path = "com/example/boxmanagernew/$relativeUnderJava"
+        return File("app/src/main/java/$path")
+            .takeIf { it.isFile }
+            ?.readText()
+            ?: File("src/main/java/$path").readText()
     }
 
     private fun layout(name: String): String {

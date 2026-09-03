@@ -180,19 +180,16 @@ class BoxDetailActivity : BaseActivity() {
             }
 
         textTitle.text =
-            "Lista Oggetti"
-
-        val base =
-            "Contenuto del box "
+            getString(R.string.box_detail_title)
 
         val full =
-            base + boxName
+            getString(R.string.box_detail_subtitle_named, boxName)
 
         val spannable =
             android.text.SpannableString(full)
 
         val start =
-            base.length
+            full.lastIndexOf(boxName).coerceAtLeast(0)
 
         spannable.setSpan(
             android.text.style.StyleSpan(
@@ -822,11 +819,15 @@ class BoxDetailActivity : BaseActivity() {
         textObjectsTitle.text =
             if (selectedCount > 0) {
 
-                "N. Oggetti: $totalObjects di cui $selectedCount selezionati"
+                getString(
+                    R.string.view_count_objects_selected,
+                    totalObjects,
+                    selectedCount
+                )
 
             } else {
 
-                "N. Oggetti: $totalObjects"
+                getString(R.string.view_count_objects, totalObjects)
             }
     }
 

@@ -4,12 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import android.content.Context
+import com.example.boxmanagernew.R
 import com.example.boxmanagernew.data.local.AppDatabase
 import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
 import com.example.boxmanagernew.data.repository.CategoryRepositoryImpl
 import com.example.boxmanagernew.data.repository.LocationRepositoryImpl
 import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
-import com.example.boxmanagernew.domain.family.FamilyMergeCopy
 import com.example.boxmanagernew.family.catalog.FamilyCatalogReader
 import com.example.boxmanagernew.family.catalog.FamilyCatalogWriter
 import com.example.boxmanagernew.family.config.FamilyCatalogConfiguration
@@ -34,6 +35,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class FamilyMergeViewModel(
+    private val appContext: Context,
     private val database: AppDatabase,
     private val categoryRepository: CategoryRepositoryImpl,
     private val locationRepository: LocationRepositoryImpl,
@@ -150,7 +152,7 @@ class FamilyMergeViewModel(
             }
             _sharedTablesPreview.value = null
             _message.value = buildString {
-                appendLine(FamilyMergeCopy.MSG_RECEIVE_COMPLETED)
+                appendLine(appContext.getString(R.string.family_msg_receive_completed))
                 append(
                     current.summary.removePrefix(
                         "Anteprima tabelle condivise:\n"
@@ -173,7 +175,7 @@ class FamilyMergeViewModel(
             }
             _archivePreview.value = null
             _message.value = buildString {
-                appendLine(FamilyMergeCopy.MSG_RECEIVE_COMPLETED)
+                appendLine(appContext.getString(R.string.family_msg_receive_completed))
                 append(
                     current.summary.removePrefix(
                         "Anteprima condivisione archivio:\n"

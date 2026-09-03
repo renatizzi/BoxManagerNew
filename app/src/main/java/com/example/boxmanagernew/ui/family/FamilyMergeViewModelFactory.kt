@@ -9,6 +9,7 @@ import com.example.boxmanagernew.data.repository.LocationRepositoryImpl
 import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
 
 class FamilyMergeViewModelFactory(
+    private val appContext: android.content.Context,
     private val database: AppDatabase,
     private val categoryRepository: CategoryRepositoryImpl,
     private val locationRepository: LocationRepositoryImpl,
@@ -20,6 +21,7 @@ class FamilyMergeViewModelFactory(
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(FamilyMergeViewModel::class.java)) {
             return FamilyMergeViewModel(
+                appContext.applicationContext,
                 database,
                 categoryRepository,
                 locationRepository,

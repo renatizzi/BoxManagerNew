@@ -252,4 +252,54 @@
     <string name="privacy_camera_cancel">Cancel</string>
     <string name="privacy_camera_denied">Camera permission not granted. The QR code cannot be read.</string>
 
+    <!-- Contextual menus -->
+    <string name="menu_edit">Edit</string>
+    <string name="menu_delete">Delete</string>
+    <string name="menu_move">Move</string>
+    <string name="menu_view_qr_label">View QR label</string>
+
+    <!-- Box detail page header -->
+    <string name="box_detail_subtitle_named">Contents of box %1$s</string>
+    <string name="view_count_objects_selected">No. objects: %1$d of which %2$d selected</string>
+    <string name="common_ok">OK</string>
+
+    <!-- Family share page -->
+    <string name="family_page_title">Share Archive</string>
+    <string name="family_page_subtitle">Shared tables and household archive</string>
+    <string name="family_intro">Periodically update and share your archive data with your family using the \"Send\" and \"Receive\" buttons. It does not replace Import and Export Data.</string>
+    <string name="family_section_shared_tables">Shared tables (categories and locations)</string>
+    <string name="family_section_shared_tables_hint">Use \"Send\" to export and share with your family only the usual categories and locations. Use \"Receive\" to restore them on your archive.</string>
+    <string name="family_button_send_shared_tables">📤 Send shared tables</string>
+    <string name="family_button_receive_shared_tables">📥 Receive shared tables</string>
+    <string name="family_section_archive">Archive (containers and objects)</string>
+    <string name="family_section_archive_hint">Use \"Send\" to export and share all your archive data with your family. Use \"Receive\" to merge the shared archive into yours, recognizing the same containers and objects.</string>
+    <string name="family_button_send">📤 Send Archive</string>
+    <string name="family_button_receive">📥 Receive Archive</string>
+    <string name="family_msg_export_completed">Save completed.</string>
+    <string name="family_msg_receive_completed">Receive completed.</string>
+    <string name="family_msg_read_failed">Unable to read the file.</string>
+    <string name="family_msg_write_failed">Save failed. Try again.</string>
+    <string name="family_dialog_receive_shared_tables">Receive shared tables</string>
+    <string name="family_dialog_receive_archive">Receive Archive</string>
+
+    <!-- Settings: full archive (debug / unlock) -->
+    <string name="premium_settings_unlock_title">Full archive (trial)</string>
+    <string name="premium_settings_unlock_hint">Only in this trial install: turn on to use advanced search, QR, import and export without limits. Turn off and use the buttons below to simulate end of trial or restart the trial period.</string>
+    <string name="premium_settings_expire_trial">Simulate end of trial</string>
+    <string name="premium_settings_restart_trial">Restart trial period</string>
+    <string name="premium_settings_params_title">Full archive parameters</string>
+    <string name="premium_settings_params_hint">Administrator only: change trial, renewal and required friends. Values apply on this device.</string>
+    <string name="premium_settings_params_save">SAVE PARAMETERS</string>
+    <string name="premium_settings_params_saved">Parameters saved.</string>
+    <string name="premium_settings_param_trial">Trial period (days)</string>
+    <string name="premium_settings_param_bonus">Renewal for sharing (days)</string>
+    <string name="premium_settings_param_friends">Friends to share with</string>
+    <string name="premium_settings_code_title">Full archive</string>
+    <string name="premium_settings_code_hint">Enter the tester or friend code to unlock advanced features.</string>
+    <string name="premium_settings_code_active">Full archive is active on this device.</string>
+    <string name="premium_unlock_code_hint">Code</string>
+    <string name="premium_button_redeem">USE CODE</string>
+    <string name="premium_code_ok">Full archive unlocked on this device.</string>
+    <string name="premium_code_ko">Invalid code.</string>
+
 </resources>

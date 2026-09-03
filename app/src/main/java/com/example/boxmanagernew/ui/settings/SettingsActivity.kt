@@ -18,7 +18,6 @@ import com.example.boxmanagernew.BuildConfig
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.domain.locale.LocalePreference
 import com.example.boxmanagernew.domain.premium.ArchivioCompletoAccess
-import com.example.boxmanagernew.domain.premium.ArchivioCompletoCopy
 import com.example.boxmanagernew.domain.premium.ArchivioCompletoPolicy
 import com.example.boxmanagernew.domain.privacy.PrivacyPolicy
 import com.example.boxmanagernew.ui.common.BaseActivity
@@ -457,24 +456,24 @@ class SettingsActivity : BaseActivity() {
             findViewById<Button>(R.id.buttonRedeemUnlockCode)
 
         title.text =
-            ArchivioCompletoCopy.SETTINGS_CODE_TITLE
+            getString(R.string.premium_settings_code_title)
 
         editCode.hint =
-            ArchivioCompletoCopy.UNLOCK_CODE_HINT
+            getString(R.string.premium_unlock_code_hint)
 
         buttonRedeem.text =
-            ArchivioCompletoCopy.BUTTON_REDEEM
+            getString(R.string.premium_button_redeem)
 
         if (access.isOpen()) {
             hint.text =
-                ArchivioCompletoCopy.SETTINGS_CODE_ACTIVE
+                getString(R.string.premium_settings_code_active)
             inputLayout.visibility = View.GONE
             buttonRedeem.visibility = View.GONE
             return
         }
 
         hint.text =
-            ArchivioCompletoCopy.SETTINGS_CODE_HINT
+            getString(R.string.premium_settings_code_hint)
 
         inputLayout.visibility = View.VISIBLE
         buttonRedeem.visibility = View.VISIBLE
@@ -486,7 +485,7 @@ class SettingsActivity : BaseActivity() {
             if (!access.redeemCode(raw)) {
                 Toast.makeText(
                     this,
-                    ArchivioCompletoCopy.CODE_KO,
+                    getString(R.string.premium_code_ko),
                     Toast.LENGTH_SHORT
                 ).show()
                 return@setOnClickListener
@@ -494,7 +493,7 @@ class SettingsActivity : BaseActivity() {
 
             Toast.makeText(
                 this,
-                ArchivioCompletoCopy.CODE_OK,
+                getString(R.string.premium_code_ok),
                 Toast.LENGTH_SHORT
             ).show()
 
@@ -530,19 +529,19 @@ class SettingsActivity : BaseActivity() {
             ArchivioCompletoAccess(this)
 
         findViewById<TextView>(R.id.textAdminParamsTitle).text =
-            ArchivioCompletoCopy.SETTINGS_PARAMS_TITLE
+            getString(R.string.premium_settings_params_title)
 
         findViewById<TextView>(R.id.textAdminParamsHint).text =
-            ArchivioCompletoCopy.SETTINGS_PARAMS_HINT
+            getString(R.string.premium_settings_params_hint)
 
         findViewById<TextView>(R.id.textParamTrialLabel).text =
-            ArchivioCompletoCopy.SETTINGS_PARAM_TRIAL
+            getString(R.string.premium_settings_param_trial)
 
         findViewById<TextView>(R.id.textParamBonusLabel).text =
-            ArchivioCompletoCopy.SETTINGS_PARAM_BONUS
+            getString(R.string.premium_settings_param_bonus)
 
         findViewById<TextView>(R.id.textParamFriendsLabel).text =
-            ArchivioCompletoCopy.SETTINGS_PARAM_FRIENDS
+            getString(R.string.premium_settings_param_friends)
 
         val editTrial =
             findViewById<EditText>(R.id.editParamTrialDays)
@@ -561,7 +560,7 @@ class SettingsActivity : BaseActivity() {
             findViewById<Button>(R.id.buttonSaveAdminParams)
 
         saveParams.text =
-            ArchivioCompletoCopy.SETTINGS_PARAMS_SAVE
+            getString(R.string.premium_settings_params_save)
 
         saveParams.setOnClickListener {
             val trial =
@@ -584,7 +583,7 @@ class SettingsActivity : BaseActivity() {
 
             Toast.makeText(
                 this,
-                ArchivioCompletoCopy.SETTINGS_PARAMS_SAVED,
+                getString(R.string.premium_settings_params_saved),
                 Toast.LENGTH_SHORT
             ).show()
         }
@@ -606,10 +605,10 @@ class SettingsActivity : BaseActivity() {
             ArchivioCompletoAccess(this)
 
         findViewById<TextView>(R.id.textDebugUnlockTitle).text =
-            ArchivioCompletoCopy.SETTINGS_UNLOCK_TITLE
+            getString(R.string.premium_settings_unlock_title)
 
         findViewById<TextView>(R.id.textDebugUnlockHint).text =
-            ArchivioCompletoCopy.SETTINGS_UNLOCK_HINT
+            getString(R.string.premium_settings_unlock_hint)
 
         val switchUnlock =
             findViewById<SwitchMaterial>(R.id.switchDebugUnlock)
@@ -625,7 +624,7 @@ class SettingsActivity : BaseActivity() {
             findViewById<Button>(R.id.buttonResetTrials)
 
         expire.text =
-            ArchivioCompletoCopy.SETTINGS_EXPIRE_TRIAL
+            getString(R.string.premium_settings_expire_trial)
 
         expire.setOnClickListener {
             access.expireTrialForDebug()
@@ -636,7 +635,7 @@ class SettingsActivity : BaseActivity() {
             findViewById<Button>(R.id.buttonRestartTrial)
 
         restart.text =
-            ArchivioCompletoCopy.SETTINGS_RESTART_TRIAL
+            getString(R.string.premium_settings_restart_trial)
 
         restart.setOnClickListener {
             access.restartTrialForDebug()
