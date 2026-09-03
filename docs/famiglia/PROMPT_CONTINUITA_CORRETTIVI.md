@@ -13,7 +13,7 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md). Restano visibili
 | ID | Indicazione |
 |----|-------------|
 | **B-SEL-CARTELLA** | Selettore cartella anche su drive non visti da Android (NAS / disco di rete) |
-| **B-RICERCA-SENZA-SPECIFICHE** | I motori di ricerca (filtri) non consentono la ricerca senza specifiche |
+| **B-RICERCA-SENZA-SPECIFICHE** | Stampare tutto senza stringa (es. tutti i contenitori), oggi i filtri ricerca lo impediscono |
 
 ---
 

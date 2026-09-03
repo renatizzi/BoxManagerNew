@@ -189,7 +189,7 @@ Obiettivo: SearchLocale + alias/matrix EN; test IT invariati; campione EN 0–10
 | ID | Richiesta Renato | Note |
 |----|------------------|------|
 | **B-SEL-CARTELLA** | Selettore cartella anche su drive non visti da Android (NAS / disco di rete) | **Aperto** |
-| **B-RICERCA-SENZA-SPECIFICHE** | I motori di ricerca (filtri) non consentono la ricerca senza specifiche | **Aperto** |
+| **B-RICERCA-SENZA-SPECIFICHE** | Stampare tutto senza stringa (es. tutti i contenitori); oggi i filtri ricerca lo impediscono | **Aperto** |
 
 Storico (chiusi / note agente):
 

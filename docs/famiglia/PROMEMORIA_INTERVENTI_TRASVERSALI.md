@@ -12,7 +12,7 @@ Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino
 | ID | Data | Indicazione | Stato |
 |----|------|-------------|-------|
 | **B-SEL-CARTELLA** | M1 / CK1 | Selettore cartella (Backup, Esporta, Condivisione tabelle, …): estendere la scelta anche ai drive **non riconosciuti direttamente da Android** (es. disco di rete locale / NAS SMB) | **Aperto** |
-| **B-RICERCA-SENZA-SPECIFICHE** | 03/09/2026 | Gli attuali motori di ricerca (per filtri) **non consentono la ricerca senza specifiche** | **Aperto** |
+| **B-RICERCA-SENZA-SPECIFICHE** | 03/09/2026 | I motori di ricerca (filtri) non consentono di cercare **senza stringa**: si vuole poter **stampare tutto** (es. tutti i contenitori in archivio) senza digitare nulla | **Aperto** |
 
 ---
 
