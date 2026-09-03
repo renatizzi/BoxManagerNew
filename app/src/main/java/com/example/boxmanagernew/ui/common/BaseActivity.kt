@@ -21,7 +21,6 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.boxmanagernew.MainActivity
 import com.example.boxmanagernew.R
-import com.example.boxmanagernew.domain.family.FamilyMergeCopy
 import com.example.boxmanagernew.ui.categories.CategoriesActivity
 import com.example.boxmanagernew.ui.dashboard.DashboardActivity
 import com.example.boxmanagernew.ui.help.QuickStartGuideActivity
@@ -491,30 +490,8 @@ abstract class BaseActivity : AppCompatActivity() {
                         ColorStateList.valueOf(accent)
 
                 is TextView -> {
-
-                    val functionCardTexts =
-                        listOf(
-                            "📦 Contenitori",
-                            "🏷 Categorie",
-                            "☁ Backup",
-                            "↺ Ripristino",
-                            "▣ Codice QR",
-                            "📥 Importa Dati",
-                            "💾 Backup",
-                            "🔄 Ripristino",
-                            "📥 Importa dati",
-                            "📱 Codice QR"
-                        ) + FamilyMergeCopy.accentCardTexts()
-
-                    if (
-                        functionCardTexts.contains(
-                            child.text.toString()
-                        )
-                    ) {
-
-                        child.setTextColor(
-                            accent
-                        )
+                    if (ThemeAccentTextViews.appliesAccent(child)) {
+                        child.setTextColor(accent)
                     }
                 }
             }

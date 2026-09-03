@@ -1,6 +1,8 @@
 package com.example.boxmanagernew.family
 
+import com.example.boxmanagernew.R
 import com.example.boxmanagernew.domain.family.FamilyMergeCopy
+import com.example.boxmanagernew.ui.common.ThemeAccentTextViews
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -107,12 +109,31 @@ class FamilyMergeCopyTest {
     }
 
     @Test
-    fun accentCardTexts_includeAllFamilyLabels() {
-        val accents = FamilyMergeCopy.accentCardTexts()
-        assertTrue(accents.contains(FamilyMergeCopy.UTILITY_CARD_LABEL))
-        assertTrue(accents.contains(FamilyMergeCopy.BUTTON_SEND_SHARED_TABLES))
-        assertTrue(accents.contains(FamilyMergeCopy.BUTTON_RECEIVE_SHARED_TABLES))
-        assertTrue(accents.contains(FamilyMergeCopy.BUTTON_SEND))
-        assertTrue(accents.contains(FamilyMergeCopy.BUTTON_RECEIVE))
+    fun familyShareLabels_areRegisteredForPaletteAccent() {
+        assertTrue(
+            ThemeAccentTextViews.appliesAccent(
+                R.id.textFamilyCatalog
+            )
+        )
+        assertTrue(
+            ThemeAccentTextViews.appliesAccent(
+                R.id.textExportSharedTables
+            )
+        )
+        assertTrue(
+            ThemeAccentTextViews.appliesAccent(
+                R.id.textImportSharedTables
+            )
+        )
+        assertTrue(
+            ThemeAccentTextViews.appliesAccent(
+                R.id.textExportMerge
+            )
+        )
+        assertTrue(
+            ThemeAccentTextViews.appliesAccent(
+                R.id.textImportMerge
+            )
+        )
     }
 }

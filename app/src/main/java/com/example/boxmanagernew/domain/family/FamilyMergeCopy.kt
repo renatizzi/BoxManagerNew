@@ -2,7 +2,7 @@ package com.example.boxmanagernew.domain.family
 
 /**
  * Testi UI condivisione archivio (flavor famiglia).
- * Colori card: palette Impostazioni via [accentCardTexts].
+ * Colori card: palette Impostazioni via [ThemeAccentTextViews].
  */
 object FamilyMergeCopy {
 
@@ -61,13 +61,4 @@ object FamilyMergeCopy {
         "Cartella non accessibile. Scegli di nuovo la cartella."
 
     const val MSG_WRITE_FAILED = "Salvataggio non riuscito. Riprovare."
-
-    /** Testi card che ricevono il colore accent della palette Impostazioni. */
-    fun accentCardTexts(): List<String> = listOf(
-        UTILITY_CARD_LABEL,
-        BUTTON_SEND_SHARED_TABLES,
-        BUTTON_RECEIVE_SHARED_TABLES,
-        BUTTON_SEND,
-        BUTTON_RECEIVE
-    )
 }

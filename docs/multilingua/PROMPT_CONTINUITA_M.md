@@ -172,6 +172,15 @@ Obiettivo sessione: chiudere M1a (Scelta lingua 3.6.6) + test; poi proseguire M1
 
 ---
 
+## Backlog annotato (non perdere)
+
+| ID | Richiesta Renato | Note |
+|----|------------------|------|
+| **B-SEL-CARTELLA** | Selettore cartella (Backup, Esporta, Condivisione tabelle, …): estendere la scelta anche a drive non riconosciuti direttamente da Android (es. disco di rete locale / NAS SMB) | Fuori scope M1; valutare in filone igiene file o post-M1 |
+| **B-PALETTE-ACCENT** | Colori card funzione devono seguire la palette Impostazioni **indipendentemente dalla lingua** | Risolto con `ThemeAccentTextViews` (ID view, non testo IT) |
+
+---
+
 ## Riferimenti chiusi (non riaprire in sessione M)
 
 - Filone correttivi P0/P1 — [PROMPT_CONTINUITA_CORRETTIVI.md](../famiglia/PROMPT_CONTINUITA_CORRETTIVI.md)

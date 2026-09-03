@@ -283,6 +283,7 @@
                     app:cardBackgroundColor="@color/elevated_surface">
 
                     <TextView
+                        android:id="@+id/textDashboardQuickBackup"
                         android:text="@string/dashboard_quick_backup"
                         android:textSize="18sp"
                         android:textStyle="bold"
@@ -301,6 +302,7 @@
                     app:cardBackgroundColor="@color/elevated_surface">
 
                     <TextView
+                        android:id="@+id/textDashboardQuickRestore"
                         android:text="@string/dashboard_quick_restore"
                         android:textSize="18sp"
                         android:textStyle="bold"
@@ -319,10 +321,10 @@
                     app:cardBackgroundColor="@color/elevated_surface">
 
                     <TextView
+                        android:id="@+id/textDashboardQuickQr"
                         android:text="@string/dashboard_quick_qr"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:textColor="@color/text_primary"
                         android:gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
@@ -338,6 +340,7 @@
                     app:cardBackgroundColor="@color/elevated_surface">
 
                     <TextView
+                        android:id="@+id/textDashboardQuickImport"
                         android:text="@string/dashboard_quick_import"
                         android:textSize="18sp"
                         android:textStyle="bold"
