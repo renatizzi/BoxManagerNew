@@ -1,14 +1,24 @@
 ---
-description: Indicazioni Renato fuori contesto vanno nel Promemoria, committate nella stessa sessione.
+description: Ogni annotazione di Renato va nel Promemoria, in evidenza, fino alla presa in carico.
 alwaysApply: true
 ---
 
 # Annotazioni Renato (fuori contesto)
 
-Se durante un test Renato segnala un’anomalia o un miglioramento **fuori dalla fetta in corso** («annota», «prendi nota», «non c’entra ma è importante»):
+Già accaduto: confermato in chat «preso nota» e in sessione successiva la voce non c’era. **Non deve più succedere.**
 
-1. **Scriverlo subito** in `docs/famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md`, sezione **Backlog aperto**, con ID, data, testo suo, stato Aperto.
-2. **Committare e pushare in quella stessa sessione.** Confermare a Renato l’ID (es. `B-SEL-CARTELLA`).
-3. Non basta dirlo in chat. Non basta metterlo solo nel prompt del filone attuale (le sessioni successive non lo aprono).
+Se Renato chiede di **annotare** un’anomalia o un miglioramento («annota», «prendi nota», «non c’entra con questa fetta», «tieni traccia»):
 
-Voce già aperta: **B-SEL-CARTELLA** — selettore cartella anche su drive non visti da Android (NAS / disco di rete locale).
+1. **Stessa sessione, prima di chiudere:** aggiungere una riga in `docs/famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md`, sezione **Backlog aperto (in evidenza)** — in **cima** al file, non sotto i P0/P1 già chiusi.
+2. ID stabile (`B-…`), data, testo di Renato (non ricomporre), stato **Aperto**.
+3. Copiare l’elenco aperto anche in evidenza nei prompt di continuità (`PROMPT_CONTINUITA_M.md` e `PROMPT_CONTINUITA_CORRETTIVI.md`), riquadro **Backlog aperto**.
+4. **Commit + push nella stessa sessione.** Rispondere a Renato con l’ID.
+
+## Finché è Aperto
+
+- Resta **in evidenza** (cima Promemoria + riquadro nei prompt).
+- Non archiviare, non spostare in fondo, non «valutare in seguito» senza riga visibile.
+- **Non implementare** nella fetta in corso, salvo SI esplicito di presa in carico.
+- Chiudere o togliere dall’evidenza **solo** quando Renato decide la presa in carico (o CONVALIDATO dopo il lavoro).
+
+Non basta dirlo in chat. Non basta il solo prompt del filone attuale.

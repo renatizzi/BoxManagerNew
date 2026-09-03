@@ -5,6 +5,15 @@
 
 **Identità:** non esiste un’«app multilingue». Si lavora su **BoxManager**. La 1.2 è la copia dei tester; questa linea è la stessa app con le funzioni in più. Fonte: [STRATEGIA_UNIFICAZIONE.md](../famiglia/STRATEGIA_UNIFICAZIONE.md), `.cursor/rules/identita-app.mdc`.
 
+### Backlog aperto (in evidenza — non è questa fetta)
+
+Fonte viva: [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md). Restano visibili fino alla presa in carico.
+
+| ID | Indicazione |
+|----|-------------|
+| **B-SEL-CARTELLA** | Selettore cartella anche su drive non visti da Android (NAS / disco di rete) |
+| **B-RICERCA-SENZA-SPECIFICHE** | I motori di ricerca (filtri) non consentono la ricerca senza specifiche |
+
 ---
 
 ## Nuova sessione — sì o no?
@@ -175,11 +184,19 @@ Obiettivo: SearchLocale + alias/matrix EN; test IT invariati; campione EN 0–10
 
 ## Backlog annotato (non perdere)
 
+**Aperti — fonte viva in cima al [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md):**
+
 | ID | Richiesta Renato | Note |
 |----|------------------|------|
-| **B-SEL-CARTELLA** | Selettore cartella (Backup, Esporta, Condivisione tabelle, …): estendere la scelta anche a drive non riconosciuti direttamente da Android (es. disco di rete locale / NAS SMB) | **Aperto** — copia viva in [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md) |
-| **B-PALETTE-ACCENT** | Colori card funzione devono seguire la palette Impostazioni **indipendentemente dalla lingua** | Risolto con `ThemeAccentTextViews` (ID view, non testo IT) |
-| **B-FAMILY-DOMAIN-ERR** | Errori dominio merge famiglia (`SharedTablesMerger` / `FamilyInventoryMerger` / reader) ancora IT in path blocco rarissimi | Opzionale post-M1d; non bloccano CK1 UI |
+| **B-SEL-CARTELLA** | Selettore cartella anche su drive non visti da Android (NAS / disco di rete) | **Aperto** |
+| **B-RICERCA-SENZA-SPECIFICHE** | I motori di ricerca (filtri) non consentono la ricerca senza specifiche | **Aperto** |
+
+Storico (chiusi / note agente):
+
+| ID | Richiesta | Note |
+|----|-----------|------|
+| **B-PALETTE-ACCENT** | Colori card funzione = palette Impostazioni, indipendentemente dalla lingua | Risolto (`ThemeAccentTextViews`) |
+| **B-FAMILY-DOMAIN-ERR** | Errori dominio merge archivio condiviso ancora IT in path rari | Opzionale; non bloccano CK1 |
 
 ---
 

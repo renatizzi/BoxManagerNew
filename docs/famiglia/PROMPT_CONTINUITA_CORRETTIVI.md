@@ -6,6 +6,15 @@ Usare questo file come **unico ingresso** per la sessione agente sui **correttiv
 
 **Identità:** una sola **BoxManager**. Non esiste un’«app famiglia». La 1.2 è la copia dei tester; qui si corregge la **stessa** app di sviluppo. Fonte: [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md), `.cursor/rules/identita-app.mdc`.
 
+### Backlog aperto (in evidenza — non è questa fetta)
+
+Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md). Restano visibili fino alla presa in carico.
+
+| ID | Indicazione |
+|----|-------------|
+| **B-SEL-CARTELLA** | Selettore cartella anche su drive non visti da Android (NAS / disco di rete) |
+| **B-RICERCA-SENZA-SPECIFICHE** | I motori di ricerca (filtri) non consentono la ricerca senza specifiche |
+
 ---
 
 ## Stato al 01/09/2026
@@ -19,6 +28,7 @@ Usare questo file come **unico ingresso** per la sessione agente sui **correttiv
 | **Dopo il test** | La BoxManager di sviluppo **sostituisce** la 1.2 come ufficiale. Non è un optional. [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md) |
 | **Archivio condiviso B0–B5** | **CONVALIDATO** — Nota Integrata **9.2** Allegato **4.20** |
 | **Filone correttivi** | P0 chiuso; **P1 CONVALIDATO** B5.7; P2 continuo |
+| **Backlog aperto** | **B-SEL-CARTELLA**, **B-RICERCA-SENZA-SPECIFICHE** — in evidenza nel Promemoria; non in carico finché Renato non decide |
 
 ### Documenti vincolanti (leggere prima di codice)
 
@@ -26,7 +36,7 @@ Usare questo file come **unico ingresso** per la sessione agente sui **correttiv
 |------|--------|
 | [ASSESSMENT_CORRETTIVI.md](ASSESSMENT_CORRETTIVI.md) | Elenco P0–P2, audit salvataggio file |
 | [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md) | Una sola BoxManager; 1.2 identica in test; sviluppo = ufficiale a fine test |
-| [PROMEMORIA_INTERVENTI_TRASVERSALI.md](PROMEMORIA_INTERVENTI_TRASVERSALI.md) | Tracking T1–T3, P1, P2 |
+| [PROMEMORIA_INTERVENTI_TRASVERSALI.md](PROMEMORIA_INTERVENTI_TRASVERSALI.md) | Tracking T1–T3, P1, P2, **Backlog aperto** (indicazioni Renato fuori contesto) |
 | [BETA_SYNC_POLICY.md](BETA_SYNC_POLICY.md) | Regola d’oro merge |
 | `.cursor/rules/salvataggio-file.mdc` | Criterio P1 |
 

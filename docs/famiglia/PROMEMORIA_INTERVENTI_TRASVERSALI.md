@@ -1,8 +1,18 @@
 # Promemoria — interventi trasversali (BoxManager)
 
-**Aggiornato:** 03/09/2026 — identità: una sola BoxManager. T2 **CONVALIDATO**; P1 **CONVALIDATO** B5.7. Ingresso sessione → [PROMPT_CONTINUITA_CORRETTIVI.md](PROMPT_CONTINUITA_CORRETTIVI.md).
+**Aggiornato:** 03/09/2026. Ingresso sessione → [PROMPT_CONTINUITA_CORRETTIVI.md](PROMPT_CONTINUITA_CORRETTIVI.md).  
+Regola: `.cursor/rules/annotazioni-renato.mdc`.
 
-Elenco di fix/igiene **non legati a una sola fetta**, da affrontare quando si tocca l’area o in un giro dedicato (B7 igiene / sync Play).
+---
+
+## Backlog aperto (in evidenza)
+
+Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino alla presa in carico**. Non implementare prima del SI. Scrivere nella stessa sessione, committare, confermare l’ID.
+
+| ID | Data | Indicazione | Stato |
+|----|------|-------------|-------|
+| **B-SEL-CARTELLA** | M1 / CK1 | Selettore cartella (Backup, Esporta, Condivisione tabelle, …): estendere la scelta anche ai drive **non riconosciuti direttamente da Android** (es. disco di rete locale / NAS SMB) | **Aperto** |
+| **B-RICERCA-SENZA-SPECIFICHE** | 03/09/2026 | Gli attuali motori di ricerca (per filtri) **non consentono la ricerca senza specifiche** | **Aperto** |
 
 ---
 
@@ -49,16 +59,6 @@ Verificare **ogni** punto che scrive un file e allineare dove ha senso al criter
 ---
 
 **P2** — Sync bugfix Play 1.2 ↔ sviluppo: [BETA_SYNC_POLICY.md](BETA_SYNC_POLICY.md).
-
----
-
-## Backlog aperto — indicazioni Renato fuori contesto
-
-Quando Renato in test dice «annota» / «non c’entra con questa fetta»: **scrivere qui nella stessa sessione**, con ID, e committare. Non basta dirlo a voce né metterlo solo nel prompt del filone in corso.
-
-| ID | Data | Indicazione | Stato |
-|----|------|-------------|-------|
-| **B-SEL-CARTELLA** | sessione M1 (CK1) | Selettore cartella (Backup, Esporta, Condivisione tabelle, …): estendere la scelta anche ai drive **non riconosciuti direttamente da Android** (es. disco di rete locale / NAS SMB) | **Aperto** — fuori dalla fetta in cui è emerso; da fare in igiene file / dopo M |
 
 ---
 
