@@ -206,8 +206,8 @@ Ogni pacchetto è **chiudibile dall’agente** senza intervento Renato, salvo i 
 | | |
 |-|-|
 | **Scope** | Allegato / tabella Excel: alias Core EN, indicatori, messaggi 2.6 EN, varianti F7/F8 EN |
-| **Output** | Aggiornamento Nota Integrata (sidecar o 9.x) — **prerequisito codice** |
-| **Agente** | Può **preparare bozza** da IT; **CK0** Renato prima dell’import |
+| **Output** | [BOZZA_TABELLE_EN_CK0.md](BOZZA_TABELLE_EN_CK0.md) + sidecar Nota Allegato **4.21** — **prerequisito codice** |
+| **Agente** | Bozza 1:1 da IT ufficiale (03/09/2026). **CK0** Renato prima dell’import. **M2b non iniziato.** |
 
 #### M2b — Implementazione motore EN
 
@@ -254,7 +254,7 @@ L’agente lavora in autonomia **tra** un checkpoint e l’altro.
 
 | ID | Quando | Cosa chiediamo a Renato | Blocca |
 |----|--------|-------------------------|--------|
-| **CK0** | Prima del **primo commit M2** (motore ricerca) | **SI** sulla bozza tabelle EN in Nota (alias Core, indicatori, 2.6, F7/F8) | M2b–M2c |
+| **CK0** | Prima del **primo commit M2b** (motore ricerca) | **SI** sulla bozza tabelle EN ([BOZZA_TABELLE_EN_CK0.md](BOZZA_TABELLE_EN_CK0.md), Allegato 4.21): alias Core, indicatori, 2.6 ricerca, F7/F8. **Bozza M2a consegnata 03/09/2026 — attesa SI.** | M2b–M2c |
 | **CK1** | M1 completo (M1a–M1d) | **SI device 03/09/2026** — CONVALIDATO | — (sbloccato M2a / CK0) |
 | **CK2** | M2 completo | **SI device**: campione **10 domande EN** da Matrice Test (stessi esiti attesi che IT) | Chiusura filone M |
 
@@ -276,6 +276,7 @@ L’agente lavora in autonomia **tra** un checkpoint e l’altro.
 - [ ] Suite test ricerca EN verde
 - [ ] CK2 **SI Renato**
 - [ ] Nota ufficiale aggiornata e referenziata in repo
+- [x] M2a bozza tabelle EN (CK0 attesa SI) — 03/09/2026
 
 ---
 
@@ -283,7 +284,7 @@ L’agente lavora in autonomia **tra** un checkpoint e l’altro.
 
 | Periodo | Filone |
 |---------|--------|
-| **Ora (~2 sett. test Play)** | **M1** (poi M2) su branch `cursor/multilingua-*-5409` — **SI Renato 01/09/2026** |
+| **Ora (~2 sett. test Play)** | **M2a chiuso in bozza; attesa CK0.** M2b vietato senza SI. Branch `cursor/multilingua-m2a-5409` — **SI Renato 01/09/2026** sul piano |
 | **Parallelo** | M0 listing EN (doc) se utile |
 | **Segnalazioni tester Play** | Renato le inoltra; fix su **famiglia** **poco prima** fine test — sessione [PROMPT_CONTINUITA_CORRETTIVI](../famiglia/PROMPT_CONTINUITA_CORRETTIVI.md) |
 | **Fine test Play** | Allineamento `main` (T2 categoria, eventuali bugfix); valutare merge M → play |
@@ -302,6 +303,7 @@ L’agente lavora in autonomia **tra** un checkpoint e l’altro.
 | Documento | Ruolo |
 |-----------|--------|
 | [PROMPT_CONTINUITA_M.md](PROMPT_CONTINUITA_M.md) | Ingresso sessione agente filone M |
+| [BOZZA_TABELLE_EN_CK0.md](BOZZA_TABELLE_EN_CK0.md) | Bozza EN 1:1 — **CK0** |
 | [../famiglia/STRATEGIA_UNIFICAZIONE.md](../famiglia/STRATEGIA_UNIFICAZIONE.md) | Fase C — filone M |
 | [../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md) | Tracking filoni paralleli |
 | `.cursor/rules/fonti-ufficiali.mdc` | Import elenchi, non riassumere |
