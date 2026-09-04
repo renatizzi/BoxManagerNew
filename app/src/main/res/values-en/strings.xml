@@ -331,6 +331,7 @@
     <string name="guide_section_dashboard_b3">Advanced search (natural language): from Full archive.</string>
     <string name="guide_section_utility_title">Utility</string>
     <string name="guide_utility_backup">Backup and Restore to save the archive (use a folder outside the app).</string>
+    <string name="guide_utility_network_folder">To save to a NAS/network folder: install the free app CIFS Documents Provider, register the folder there, then in Backup tap Browse and select it (Files by Google is not enough).</string>
     <string name="guide_utility_import">Import data from a CSV file to work with external files (*).</string>
     <string name="guide_utility_qr">QR code to see a box\'s contents using the camera.</string>
     <string name="guide_utility_family_share">Share Archive to update and share your archive data with your family.</string>

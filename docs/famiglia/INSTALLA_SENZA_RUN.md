@@ -24,6 +24,8 @@ Versione attesa in topbar: **1.3-famigliaB5.8**
 
 ### Cartelle di rete / NAS (B-SEL-CARTELLA)
 
-Da **B5.16**, Sfoglia (Backup / Esporta / Condivisione / …) mostra prima le **radici già registrate** sul dispositivo: memorie, USB/SD, DocumentProvider di rete o cloud (es. Archiviazione di rete di File / My Files). Poi «Tutte le cartelle…» apre il selettore di sistema con radici avanzate.
+**Guida operativa (CIFS):** [GUIDA_CARTELLA_RETE_CIFS.md](GUIDA_CARTELLA_RETE_CIFS.md).
 
-Il NAS compare in quell’elenco **se Android (o un’app Documenti) lo ha già aggiunto**. BoxManager non monta SMB da solo: riusa SAF sulle aree già visibili al sistema.
+**Files di Google non basta** per il NAS. Serve l’app gratuita **CIFS Documents Provider** (Play / F-Droid): si registra lì la cartella di rete, poi in BoxManager → Sfoglia la si sceglie come le altre.
+
+Da **B5.16**, Sfoglia elenca anche le radici già registrate sul telefono e apre il selettore di sistema. BoxManager non monta SMB da solo.

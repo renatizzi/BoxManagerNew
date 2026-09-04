@@ -330,6 +330,7 @@
     <string name="guide_section_dashboard_b3">Ricerca avanzata (linguaggio naturale): da Archivio completo.</string>
     <string name="guide_section_utility_title">Utility</string>
     <string name="guide_utility_backup">Backup e Ripristino per salvare l\'archivio (usa cartella diversa da app).</string>
+    <string name="guide_utility_network_folder">Per salvare su NAS/rete: installa l\'app gratuita CIFS Documents Provider, registra lì la cartella, poi in Backup premi Sfoglia e sceglila (Files di Google non basta).</string>
     <string name="guide_utility_import">Importa dati da file CSV per interagire con file esterni (*).</string>
     <string name="guide_utility_qr">Codice QR per vedere il contenuto di un box usando la fotocamera.</string>
     <string name="guide_utility_family_share">Condividi Archivio per aggiornare e condividere con i tuoi familiari i dati del tuo archivio.</string>

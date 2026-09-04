@@ -11,7 +11,7 @@ Fonte viva: [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md). Rest
 
 | ID | Indicazione |
 |----|-------------|
-| **B-SEL-CARTELLA** | Selettore cartella su aree condivise / NAS già registrate — **B5.16 in ritest** |
+| **B-SEL-CARTELLA** | NAS via guida CIFS Documents Provider — B5.16 in ritest |
 
 ---
 
@@ -258,7 +258,7 @@ Vincoli: non toccare main/1.2; B-SEL-CARTELLA solo con SI prodotto; niente Motor
 
 | ID | Richiesta Renato | Note |
 |----|------------------|------|
-| **B-SEL-CARTELLA** | Selettore cartella su aree condivise / NAS già registrate | **B5.16 in ritest** — elenco radici + SAF; Nota/guida a fine ciclo |
+| **B-SEL-CARTELLA** | NAS via CIFS Documents Provider (guida operativa) | **B5.16 in ritest** — [GUIDA_CARTELLA_RETE_CIFS.md](../famiglia/GUIDA_CARTELLA_RETE_CIFS.md) |
 
 Storico (chiusi / note agente):
 

@@ -12,7 +12,7 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md). Restano visibili
 
 | ID | Indicazione |
 |----|-------------|
-| **B-SEL-CARTELLA** | Selettore cartella su aree condivise / NAS già registrate — **B5.16 in ritest** |
+| **B-SEL-CARTELLA** | NAS via guida CIFS Documents Provider — [GUIDA_CARTELLA_RETE_CIFS.md](GUIDA_CARTELLA_RETE_CIFS.md); B5.16 in ritest |
 
 ---
 
@@ -27,7 +27,7 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md). Restano visibili
 | **Dopo il test** | La BoxManager di sviluppo **sostituisce** la 1.2 come ufficiale. Non è un optional. [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md) |
 | **Archivio condiviso B0–B5** | **CONVALIDATO** — Nota Integrata **9.2** Allegato **4.20** |
 | **Filone correttivi** | P0 chiuso; **P1 CONVALIDATO** B5.7; P2 continuo |
-| **Backlog aperto** | **B-SEL-CARTELLA** — B5.16 in ritest (radici registrate + SAF). Guida/Nota a fine ciclo |
+| **Backlog aperto** | **B-SEL-CARTELLA** — guida CIFS + B5.16 in ritest; Nota ufficiale a fine ciclo |
 
 ### Documenti vincolanti (leggere prima di codice)
 

@@ -11,7 +11,7 @@ Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino
 
 | ID | Data | Indicazione | Stato |
 |----|------|-------------|-------|
-| **B-SEL-CARTELLA** | M1 / CK1 | Selettore cartella anche su aree condivise / NAS già registrate in Android (File, Archiviazione di rete, volumi montati). **B5.16:** elenco radici registrate + SAF SHOW_ADVANCED; niente client SMB in-app. Guida/Nota ufficiale da aggiornare a fine ciclo | **In ritest** |
+| **B-SEL-CARTELLA** | M1 / CK1 | Selettore cartella + NAS via **CIFS Documents Provider** (gratuita). Guida operativa: [GUIDA_CARTELLA_RETE_CIFS.md](GUIDA_CARTELLA_RETE_CIFS.md). B5.16 codice; Nota ufficiale a fine ciclo | **In ritest** |
 
 ---
 
