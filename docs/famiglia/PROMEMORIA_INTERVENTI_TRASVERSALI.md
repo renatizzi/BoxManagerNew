@@ -15,18 +15,18 @@ Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino
 
 ---
 
-## Fix ritest B5.8 → B5.10 (`cursor/promemoria-fix-d69a`)
+## Fix ritest B5.8 → B5.11 (`cursor/promemoria-fix-d69a`)
 
-Esito device Renato 04/09 su B5.8/B5.9:
+Regressione introdotta da **B-F7-FORMATO-LISTA**: l’apertura lista Contenitori
+per layout F7 aveva dirottato anche inventari/report degli altri Core.
 
-| KO | Causa / fix |
-|----|-------------|
-| **Motore B ad hoc** | B-F7 apriva lista per *tutte* le ARCHIVE_QUERY; messaggio+stampa ripristinati; lista solo F7 |
-| **Inventario altri Core → solo contenitori** | Inventario Motore A apriva sempre MainActivity; ora Categorie / Oggetti / Posizioni sulle Activity anagrafiche |
-| **Contenitori vuoti → tutti** | `FILTER_EMPTY_BOXES` se domanda con cue vuoto+box |
-| **Categorie seed ancora IT** | Sync EN *prima* del cambio lingua + riparazione Impostazioni + reverse EN→IT |
-| **Swipe Utility→Impostazioni** | Aggiunto in `navigateNext` |
-| **Card contenitore EN in IT** | Reverse seed al ritorno in IT |
+| Domanda | Output atteso (ripristinato) |
+|---------|------------------------------|
+| Categorie usate / elenco categorie | Lista Categorie con **solo usate** (`FILTER_USED`), non anagrafica intera |
+| Tutti gli oggetti in archivio | Report oggetti (`SearchResultActivity`), non contenitori |
+| Elenco posizioni | Lista Posizioni |
+| F7 (domande 4/7 CK2) | Lista contenitori con layout card (unico caso Motore B → lista) |
+| Altro Motore B | Messaggio + stampa ad hoc |
 
 ---
 

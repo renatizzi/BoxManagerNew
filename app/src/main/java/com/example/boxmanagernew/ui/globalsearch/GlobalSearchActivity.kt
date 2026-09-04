@@ -524,6 +524,7 @@ class GlobalSearchActivity : BaseActivity() {
                             response.locationTerms.isNotBlank()
                         ) {
 
+                            // Categorie usate in una posizione nominata.
                             putExtra(
                                 SearchConfiguration.EXTRA_LOCATION_TERMS,
                                 response.locationTerms
@@ -532,6 +533,14 @@ class GlobalSearchActivity : BaseActivity() {
                             putExtra(
                                 SearchConfiguration.EXTRA_SEARCH_QUESTION,
                                 question
+                            )
+                        } else {
+
+                            // Solo categorie presenti nei contenitori
+                            // (stesso layout Categorie, contenuto ad hoc).
+                            putExtra(
+                                "dashboardFilter",
+                                com.example.boxmanagernew.ui.categories.CategoryViewModel.FILTER_USED
                             )
                         }
                     }

@@ -19,7 +19,7 @@ class InventoryListRouterTest {
             InventoryListTarget.CATEGORIES,
             InventoryListRouter.target(
                 nav(SearchArchiveTransformation.CATEGORY_TO_BOX),
-                "Elenco di tutte le categorie"
+                "Elenco delle categorie usate"
             )
         )
     }

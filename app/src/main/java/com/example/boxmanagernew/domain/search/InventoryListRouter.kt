@@ -5,8 +5,15 @@ import com.example.boxmanagernew.domain.search.model.SearchResponse
 import com.example.boxmanagernew.util.CanonicalNormalizer
 
 /**
- * Inventario Motore A: quale lista anagrafica aprire a video.
- * Navigazione nominata (chiavi archivio) resta lista Contenitori.
+ * Inventario Motore A (type-only, senza chiave nominata): report ad hoc
+ * con layout delle liste predefinite, contenuto filtrato.
+ *
+ * - CATEGORY → Categorie **usate** (nei contenitori), non l'anagrafica intera
+ * - OBJECT → report oggetti (SearchResult), non lista contenitori
+ * - LOCATION → Posizioni
+ * - BOX / vuoti → Contenitori
+ *
+ * Navigazione nominata (termini object/box/category) → null (lista Contenitori).
  */
 enum class InventoryListTarget {
     BOXES,
