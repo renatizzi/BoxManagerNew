@@ -27,6 +27,8 @@ import com.example.boxmanagernew.ui.common.FeedbackUtils
 import com.example.boxmanagernew.storage.StorageFolderConfiguration
 import com.example.boxmanagernew.viewoutput.persist.ViewExportPersister
 import com.google.android.material.card.MaterialCardView
+import com.example.boxmanagernew.storage.OpenStorageTreeContract
+import com.example.boxmanagernew.storage.StorageFolderPicker
 
 class FamilyCatalogActivity : BaseActivity() {
 
@@ -39,7 +41,7 @@ class FamilyCatalogActivity : BaseActivity() {
 
     private val folderPicker =
         registerForActivityResult(
-            ActivityResultContracts.OpenDocumentTree()
+            OpenStorageTreeContract()
         ) { uri ->
             if (uri != null) {
                 exportCoordinator.onFolderChosen(uri)
@@ -103,7 +105,7 @@ class FamilyCatalogActivity : BaseActivity() {
                 showExportCompletedDialog()
             },
             launchFolderPicker = {
-                folderPicker.launch(exportPersister.rememberedFolderUri())
+                StorageFolderPicker.choose(this, folderPicker)
             }
         )
 

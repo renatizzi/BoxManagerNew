@@ -413,6 +413,13 @@
     <string name="object_quantity_label">Quantity: %1$s</string>
     <string name="qr_label_pdf_name">Label.pdf</string>
     <string name="folder_selected_label">Selected folder</string>
+    <string name="storage_folder_pick_title">Choose where to save</string>
+    <string name="storage_folder_browse_all">All folders…</string>
+    <string name="storage_folder_network_or_cloud">Network or cloud already registered</string>
+    <string name="storage_folder_volume_primary">Device storage</string>
+    <string name="storage_folder_volume_removable">Removable storage</string>
+    <string name="storage_folder_volume_shared">Shared / mounted area</string>
+    <string name="storage_folder_volume_fallback">Storage</string>
     <string name="common_print">Print</string>
 
 </resources>

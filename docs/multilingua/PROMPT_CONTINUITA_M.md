@@ -11,7 +11,7 @@ Fonte viva: [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md). Rest
 
 | ID | Indicazione |
 |----|-------------|
-| **B-SEL-CARTELLA** | Selettore cartella anche su drive non visti da Android (NAS); SAF non basta da solo — valutazione aperta |
+| **B-SEL-CARTELLA** | Selettore cartella su aree condivise / NAS già registrate — **B5.16 in ritest** |
 
 ---
 
@@ -47,7 +47,7 @@ Fonte viva: [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md). Rest
 | **Branch lavoro** | `cursor/promemoria-fix-d69a` |
 | **Branch base** | `cursor/promemoria-backlog-d69a` |
 | **Play** | BoxManager **1.2** su `main`, identica per tutto il test. Lo **stesso** BoxManager di sviluppo (archivio condiviso + inglese) a test chiuso **sostituisce** la 1.2. Si tocca 1.2 **solo** per bug bloccanti. |
-| **Build sviluppo** | Topbar **1.3-famigliaB5.15** (etichetta di build, non un altro nome di app). |
+| **Build sviluppo** | Topbar **1.3-famigliaB5.16** (etichetta di build, non un altro nome di app). |
 | **Ricerca avanzata EN** | Pipeline 0–10 invariata; **niente** traduttore EN→IT; **niente** interprete semantico (Nota 3.3.9) |
 | **Checkpoint** | **CK0** ✅; **S1–S3 SI**; **CK1** ✅; **CK2** ✅ |
 
@@ -91,9 +91,9 @@ git fetch origin
 git checkout -B cursor/promemoria-fix-d69a origin/cursor/promemoria-fix-d69a
 ```
 
-Poi: Sync Gradle se lo chiede; variante **famigliaDebug** (non `play`); **Run** sul telefono. Topbar attesa: **1.3-famigliaB5.15**.
+Poi: Sync Gradle se lo chiede; variante **famigliaDebug** (non `play`); **Run** sul telefono. Topbar attesa: **1.3-famigliaB5.16**.
 
-**Ritest B5.15 (EN):** List of all the objects → report oggetti (No. objects); What objects in the cellar → oggetti filtrati; categories/places in use → usate. Non B5.14 (router EN / function words ancora KO).
+**Ritest B5.16:** Sfoglia Backup (e Esporta / Condivisione) → elenco con memorie e eventuali reti/cloud già in File; «Tutte le cartelle…» per il selettore completo. NAS solo se già aggiunto in Archiviazione di rete / File.
 
 ### 2. Archivio da inserire (se è vuoto)
 
@@ -258,7 +258,7 @@ Vincoli: non toccare main/1.2; B-SEL-CARTELLA solo con SI prodotto; niente Motor
 
 | ID | Richiesta Renato | Note |
 |----|------------------|------|
-| **B-SEL-CARTELLA** | Selettore cartella anche su drive non visti da Android (NAS / disco di rete) | **Aperto** — SAF non elenca SMB da solo |
+| **B-SEL-CARTELLA** | Selettore cartella su aree condivise / NAS già registrate | **B5.16 in ritest** — elenco radici + SAF; Nota/guida a fine ciclo |
 
 Storico (chiusi / note agente):
 

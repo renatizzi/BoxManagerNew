@@ -24,4 +24,6 @@ Versione attesa in topbar: **1.3-famigliaB5.8**
 
 ### Cartelle di rete / NAS (B-SEL-CARTELLA)
 
-Android apre solo le fonti del selettore di sistema (Files / SAF). Un NAS compare se è già montato o esposto da un’app Documenti; BoxManager non può elencare da solo gli SMB non visti dal sistema.
+Da **B5.16**, Sfoglia (Backup / Esporta / Condivisione / …) mostra prima le **radici già registrate** sul dispositivo: memorie, USB/SD, DocumentProvider di rete o cloud (es. Archiviazione di rete di File / My Files). Poi «Tutte le cartelle…» apre il selettore di sistema con radici avanzate.
+
+Il NAS compare in quell’elenco **se Android (o un’app Documenti) lo ha già aggiunto**. BoxManager non monta SMB da solo: riusa SAF sulle aree già visibili al sistema.

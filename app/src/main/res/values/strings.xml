@@ -412,6 +412,13 @@
     <string name="object_quantity_label">Quantità: %1$s</string>
     <string name="qr_label_pdf_name">Etichetta.pdf</string>
     <string name="folder_selected_label">Cartella selezionata</string>
+    <string name="storage_folder_pick_title">Scegli dove salvare</string>
+    <string name="storage_folder_browse_all">Tutte le cartelle…</string>
+    <string name="storage_folder_network_or_cloud">Rete o cloud già registrati</string>
+    <string name="storage_folder_volume_primary">Memoria del dispositivo</string>
+    <string name="storage_folder_volume_removable">Memoria rimovibile</string>
+    <string name="storage_folder_volume_shared">Area condivisa / montata</string>
+    <string name="storage_folder_volume_fallback">Memoria</string>
     <string name="common_print">Stampa</string>
 
 </resources>
