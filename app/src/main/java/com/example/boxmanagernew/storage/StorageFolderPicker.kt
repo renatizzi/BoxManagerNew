@@ -15,9 +15,9 @@ import com.example.boxmanagernew.R
 /**
  * Selettore cartella Backup / Esporta / Condivisione.
  *
- * Usa SAF (`ACTION_OPEN_DOCUMENT_TREE`) con radici avanzate e, se presenti,
- * elenca prima i volumi e i DocumentProvider già registrati (rete / NAS /
- * cloud) così l’utente può aprirli senza cercare nel menu hamburger.
+ * Usa il selettore cartelle Android con radici avanzate e, se presenti,
+ * elenca prima i volumi e i dischi di rete / spazi online già collegati,
+ * così l’utente può aprirli senza cercare nel menu del sistema.
  */
 object StorageFolderPicker {
 

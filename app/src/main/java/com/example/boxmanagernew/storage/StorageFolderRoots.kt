@@ -11,11 +11,11 @@ import com.example.boxmanagernew.R
 
 /**
  * Radici selezionabili oltre al selettore generico: volumi montati
- * (USB / SD / eventuali reti OEM) e DocumentProvider già registrati
- * (cloud, archiviazione di rete, NAS esposti da File del sistema).
+ * (USB / SD / eventuali reti OEM) e provider già registrati
+ * (spazio online o disco di rete già reso visibile dal sistema).
  *
- * Non implementa SMB: BoxManager riusa SAF sulle aree già visibili
- * ad Android (B-SEL-CARTELLA).
+ * Non implementa il protocollo di rete: BoxManager riusa il selettore
+ * cartelle Android sulle aree già visibili ad Android (B-SEL-CARTELLA).
  */
 data class StorageFolderRoot(
     val title: String,

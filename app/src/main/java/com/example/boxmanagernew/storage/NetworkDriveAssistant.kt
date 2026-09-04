@@ -16,7 +16,7 @@ import com.example.boxmanagernew.R
  */
 object NetworkDriveAssistant {
 
-    /** Pacchetto Play / F-Droid dell’app consigliata (ponte verso il selettore). */
+    /** Pacchetto Play Store dell’app gratuita consigliata (non mostrare all’utente). */
     const val HELPER_PACKAGE =
         "com.wa2c.android.cifsdocumentsprovider"
 

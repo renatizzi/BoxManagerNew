@@ -1,4 +1,4 @@
-# Cartella di rete / NAS con BoxManager
+# Disco di rete con BoxManager
 
-**Documento spostato** (linguaggio più semplice per l’utente):  
+**Documento spostato** (linguaggio semplice, senza gergo):  
 → [GUIDA_DISCO_RETE.md](GUIDA_DISCO_RETE.md)

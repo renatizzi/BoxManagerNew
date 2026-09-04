@@ -11,7 +11,7 @@ Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino
 
 | ID | Data | Indicazione | Stato |
 |----|------|-------------|-------|
-| **B-SEL-CARTELLA** | M1 / CK1 | **Disco di rete:** card Impostazioni + guida semplice [GUIDA_DISCO_RETE.md](GUIDA_DISCO_RETE.md); app consigliata CIFS Documents Provider. Linguaggio utente senza gergo (no NAS). Nota ufficiale a fine ciclo | **In ritest** |
+| **B-SEL-CARTELLA** | M1 / CK1 | **Disco di rete:** card Impostazioni + guida semplice [GUIDA_DISCO_RETE.md](GUIDA_DISCO_RETE.md). Linguaggio utente basso profilo (no NAS/CIFS/SMB in UI e guida). Nota ufficiale a fine ciclo | **In ritest** |
 
 ---
 
