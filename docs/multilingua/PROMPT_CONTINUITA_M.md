@@ -11,6 +11,7 @@ Fonte viva: [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md). Rest
 
 | ID | Indicazione |
 |----|-------------|
+| **B-F7-FORMATO-LISTA** | F7 casi 4/7 IT+EN: oggetto comune tra parentesi + contenitori in formato lista |
 | **B-NOME-APP-BAT** | Nome app e installa/crea.bat: ancora «boxmanager famiglia» (nome errato) |
 | **B-VOCE-OGGETTO** | Inserimento vocale per nome e descrizione oggetto (da valutare) |
 | **B-NOME-AUTO-SAVE** | Impostazioni: memorizzare il nome utente appena inserito (restando modificabile), senza tasto Salva |
@@ -35,7 +36,7 @@ Fonte viva: [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md). Rest
 
 ---
 
-## Stato al 03/09/2026
+## Stato al 04/09/2026
 
 | Voce | Valore |
 |------|--------|
@@ -46,14 +47,15 @@ Fonte viva: [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md). Rest
 | **M1 / CK1** | **CONVALIDATO SI Renato device 03/09/2026** (M1a–M1d su PR **#18**) |
 | **M2a** | **EN verificata** su delega Renato 03/09/2026 — [BOZZA_TABELLE_EN_CK0.md](BOZZA_TABELLE_EN_CK0.md) + Allegato **4.21** |
 | **M2b** | **Fatto** — motore locale-aware EN (S1–S3 SI 03/09/2026). [SEMANTICA_EN_EQUIVOCI.md](SEMANTICA_EN_EQUIVOCI.md) |
-| **M2c** | **Fatto** — messaggi 2.6 e card ricerca seguono il locale Impostazioni (PR **#21**) |
-| **Prossimo pacchetto** | **CK2** device Renato (campione domande EN). Poi **M3** solo a test Play chiuso |
+| **M2c** | **Fatto** — messaggi 2.6 e card ricerca; locale UI allineato (PR **#21**, fix PR **#22**) |
+| **CK2** | **CONVALIDATO SI Renato device 04/09/2026** — 10/10 domande EN OK (dopo fix locale) |
+| **Prossimo pacchetto** | **M3** solo a test Play chiuso. Backlog aperto (es. **B-F7-FORMATO-LISTA**) non blocca CK2 |
 | **Branch lavoro** | `cursor/ck2-en-locale-d69a` |
 | **Branch base** | `cursor/multilingua-m2c-d69a` |
 | **Play** | BoxManager **1.2** su `main`, identica per tutto il test. Lo **stesso** BoxManager di sviluppo (archivio condiviso + inglese) a test chiuso **sostituisce** la 1.2. Si tocca 1.2 **solo** per bug bloccanti. |
 | **Build sviluppo** | Topbar **1.3-famigliaB5.7** (etichetta di build, non un altro nome di app). P1 CONVALIDATO. |
 | **Ricerca avanzata EN** | Pipeline 0–10 invariata; **niente** traduttore EN→IT; **niente** interprete semantico (Nota 3.3.9) |
-| **Checkpoint** | **CK0** ✅; **S1–S3 SI**; **CK1** ✅; **CK2** in attesa SI device |
+| **Checkpoint** | **CK0** ✅; **S1–S3 SI**; **CK1** ✅; **CK2** ✅ |
 
 ### Documenti vincolanti (leggere prima di codice)
 
@@ -242,7 +244,7 @@ git checkout -b cursor/multilingua-m1a-5409
 Continua filone M — inglese in BoxManager da docs/multilingua/PROMPT_CONTINUITA_M.md
 Pacchetto: CK2 (SI device Renato) oppure attesa; M3 solo a test Play chiuso
 Branch: cursor/ck2-en-locale-d69a
-Vincoli: non toccare main/1.2; non implementare B-NOME-APP-BAT né B-VOCE-OGGETTO né B-NOME-AUTO-SAVE né B-DEFAULT-IT-EN né B-SEL-CARTELLA né B-RICERCA-SENZA-SPECIFICHE.
+Vincoli: non toccare main/1.2; non implementare B-F7-FORMATO-LISTA né B-NOME-APP-BAT né B-VOCE-OGGETTO né B-NOME-AUTO-SAVE né B-DEFAULT-IT-EN né B-SEL-CARTELLA né B-RICERCA-SENZA-SPECIFICHE.
 ```
 
 ---
@@ -262,6 +264,7 @@ Vincoli: non toccare main/1.2; non implementare B-NOME-APP-BAT né B-VOCE-OGGETT
 
 | ID | Richiesta Renato | Note |
 |----|------------------|------|
+| **B-F7-FORMATO-LISTA** | Casi 4 e 7 F7 IT+EN: allineare a casi con oggetto comune tra parentesi; contenitori in formato lista (nome, icona+categoria, posizione, data) | **Aperto** |
 | **B-NOME-APP-BAT** | Nome dell'app e installa/crea.bat fanno ancora riferimento al nome dell'app errato (boxmanager famiglia) | **Aperto** |
 | **B-VOCE-OGGETTO** | Per nome e descrizione dell'oggetto potrebbe essere comodo l'inserimento vocale (da valutare) | **Aperto** |
 | **B-NOME-AUTO-SAVE** | In Impostazioni il Salva serve solo al nome utente; memorizzarlo appena inserito, senza tasto Salva, lasciando la possibilità di modificarlo | **Aperto** |

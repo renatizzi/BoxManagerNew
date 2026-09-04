@@ -11,6 +11,7 @@ Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino
 
 | ID | Data | Indicazione | Stato |
 |----|------|-------------|-------|
+| **B-F7-FORMATO-LISTA** | 04/09/2026 | Per i casi 4 e 7 (sia in italiano che in inglese) occorre allineare la risposta a casi simili dove è indicato l'oggetto comune (per tutti, meglio se l'oggetto viene messo tra parentesi ed i contenitori sono visualizzati con il formato delle liste. Esempio: Elenco dei contenitori che hanno oggetti uguali (Vite): [Nome Contenitore], sotto: [icona+categoria], sotto: [posizione], sotto: [data ultima modifica] | **Aperto** |
 | **B-NOME-APP-BAT** | 04/09/2026 | Nome dell'app e installa/crea.bat fanno ancora riferimento al nome dell'app errato (boxmanager famiglia) | **Aperto** |
 | **B-VOCE-OGGETTO** | 04/09/2026 | Per nome e descrizione dell'oggetto potrebbe essere comodo l'inserimento vocale (da valutare) | **Aperto** |
 | **B-NOME-AUTO-SAVE** | 03/09/2026 | In Impostazioni il Salva serve solo al nome utente (da quello che ho capito, non serve ad altro). Proverei a memorizzarlo non appena viene inserito, senza bisogno di salvare con il tasto. Ovviamente lasciando la possibilità di modificarlo | **Aperto** |
@@ -27,7 +28,7 @@ Dopo il rilascio Play **1.2**, due filoni in **parallelo al test** (decisione Re
 | Filone | Documento | Stato |
 |--------|-----------|-------|
 | **Archivio condiviso** | [NOTA_B0_MERGE_FAMIGLIA.md](NOTA_B0_MERGE_FAMIGLIA.md) B0–B5 | **CONVALIDATO** — funzione di BoxManager, non un’altra app |
-| **Inglese** (scelta lingua + ricerca EN) | [../multilingua/PROMPT_CONTINUITA_M.md](../multilingua/PROMPT_CONTINUITA_M.md) | **M1/CK1 CONVALIDATO**; M2b+M2c codice fatto; **CK2** device. Stessa BoxManager. |
+| **Inglese** (scelta lingua + ricerca EN) | [../multilingua/PROMPT_CONTINUITA_M.md](../multilingua/PROMPT_CONTINUITA_M.md) | **M1/CK1** e **M2/CK2 CONVALIDATI** (CK2 device 04/09/2026). Stessa BoxManager. M3 a test Play chiuso. |
 
 ---
 
