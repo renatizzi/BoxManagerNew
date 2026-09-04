@@ -43,6 +43,9 @@ class LocationsActivity : BaseActivity() {
 
     private lateinit var outputController: ViewOutputController
 
+    private var reportQuestion =
+        ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -57,6 +60,11 @@ class LocationsActivity : BaseActivity() {
         setupPrintAction()
 
         setupBottomNav()
+
+        reportQuestion =
+            intent.getStringExtra(
+                SearchConfiguration.EXTRA_SEARCH_QUESTION
+            ).orEmpty()
 
         contextCard =
             findViewById(R.id.contextCard)
@@ -122,6 +130,8 @@ class LocationsActivity : BaseActivity() {
             showAddDialog()
         }
 
+        applyIncomingSearch()
+
         viewModel.locations.observe(this) {
             adapter.updateData(it)
             counter.text =
@@ -130,6 +140,22 @@ class LocationsActivity : BaseActivity() {
 
         hideWarning()
         refreshAppShell()
+    }
+
+    private fun applyIncomingSearch() {
+
+        intent.getStringExtra(
+            "dashboardFilter"
+        )?.let { filter ->
+
+            if (
+                filter ==
+                LocationViewModel.FILTER_USED
+            ) {
+
+                viewModel.filter(filter)
+            }
+        }
     }
 
     private fun setupPrintAction() {
@@ -177,7 +203,10 @@ class LocationsActivity : BaseActivity() {
             snapshot,
             ViewPrintHeader(
                 title = ViewOutputConfiguration.pageTitleLocations(this),
-                filterLine = ViewOutputConfiguration.filterLine(this, ""),
+                filterLine = ViewOutputConfiguration.filterLine(
+                    this,
+                    reportQuestion
+                ),
                 countLine = ViewOutputConfiguration.countLocations(
                     this,
                     snapshot.boxes.size

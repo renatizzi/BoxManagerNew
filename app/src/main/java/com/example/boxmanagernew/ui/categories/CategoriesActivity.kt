@@ -45,6 +45,9 @@ class CategoriesActivity : BaseActivity() {
 
     private lateinit var outputController: ViewOutputController
 
+    private var reportQuestion =
+        ""
+
     private val voiceSearch =
         VoiceSearchController(this)
 
@@ -198,7 +201,9 @@ class CategoriesActivity : BaseActivity() {
                 title = ViewOutputConfiguration.pageTitleCategories(this),
                 filterLine = ViewOutputConfiguration.filterLine(
                     this,
-                    editSearch.text.toString().trim()
+                    reportQuestion.ifBlank {
+                        editSearch.text.toString().trim()
+                    }
                 ),
                 countLine = ViewOutputConfiguration.countCategories(
                     this,
@@ -362,6 +367,11 @@ class CategoriesActivity : BaseActivity() {
     }
 
     private fun applyIncomingSearch() {
+
+        reportQuestion =
+            intent.getStringExtra(
+                SearchConfiguration.EXTRA_SEARCH_QUESTION
+            ).orEmpty()
 
         intent.getStringExtra(
             "dashboardFilter"

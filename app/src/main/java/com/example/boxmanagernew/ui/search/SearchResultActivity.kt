@@ -43,6 +43,9 @@ class SearchResultActivity : BaseActivity() {
     private var searchQuery =
         ""
 
+    private var reportQuestion =
+        ""
+
     private val exportFolderPicker =
         registerForActivityResult(
             ActivityResultContracts.OpenDocumentTree()
@@ -74,6 +77,14 @@ class SearchResultActivity : BaseActivity() {
             intent.getStringExtra(
                 "dashboardSearchQuery"
             ) ?: ""
+
+        reportQuestion =
+            intent.getStringExtra(
+                SearchConfiguration.EXTRA_SEARCH_QUESTION
+            ).orEmpty()
+                .ifBlank {
+                    searchQuery
+                }
 
         val container =
             findViewById<LinearLayout>(
@@ -206,7 +217,7 @@ class SearchResultActivity : BaseActivity() {
                 title = ViewOutputConfiguration.pageTitleFoundObjects(this),
                 filterLine = ViewOutputConfiguration.filterLine(
                     this,
-                    searchQuery
+                    reportQuestion
                 ),
                 countLine = ViewOutputConfiguration.countObjects(
                     this,

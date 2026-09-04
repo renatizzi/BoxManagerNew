@@ -120,4 +120,9 @@ class LocationRepositoryImpl(
 
         return true
     }
+
+    suspend fun isLocationUsed(
+        name: String
+    ): Boolean =
+        boxDao.countBoxesByPosition(name) > 0
 }

@@ -520,6 +520,11 @@ class GlobalSearchActivity : BaseActivity() {
                         com.example.boxmanagernew.ui.categories.CategoriesActivity::class.java
                     ).apply {
 
+                        putExtra(
+                            SearchConfiguration.EXTRA_SEARCH_QUESTION,
+                            question
+                        )
+
                         if (
                             response.locationTerms.isNotBlank()
                         ) {
@@ -528,11 +533,6 @@ class GlobalSearchActivity : BaseActivity() {
                             putExtra(
                                 SearchConfiguration.EXTRA_LOCATION_TERMS,
                                 response.locationTerms
-                            )
-
-                            putExtra(
-                                SearchConfiguration.EXTRA_SEARCH_QUESTION,
-                                question
                             )
                         } else {
 
@@ -555,7 +555,18 @@ class GlobalSearchActivity : BaseActivity() {
                     Intent(
                         this,
                         com.example.boxmanagernew.ui.settings.LocationsActivity::class.java
-                    )
+                    ).apply {
+
+                        putExtra(
+                            SearchConfiguration.EXTRA_SEARCH_QUESTION,
+                            question
+                        )
+
+                        putExtra(
+                            "dashboardFilter",
+                            com.example.boxmanagernew.ui.settings.LocationViewModel.FILTER_USED
+                        )
+                    }
                 )
 
                 return
@@ -572,6 +583,11 @@ class GlobalSearchActivity : BaseActivity() {
                         putExtra(
                             "dashboardSearchQuery",
                             ""
+                        )
+
+                        putExtra(
+                            SearchConfiguration.EXTRA_SEARCH_QUESTION,
+                            question
                         )
                     }
                 )
