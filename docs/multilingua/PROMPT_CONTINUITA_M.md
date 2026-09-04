@@ -46,8 +46,8 @@ Fonte viva: [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md). Rest
 | **M2b** | **Fatto** — motore locale-aware EN (S1–S3 SI 03/09/2026). [SEMANTICA_EN_EQUIVOCI.md](SEMANTICA_EN_EQUIVOCI.md) |
 | **M2c** | **Fatto** — messaggi 2.6 e card ricerca seguono il locale Impostazioni (PR **#21**) |
 | **Prossimo pacchetto** | **CK2** device Renato (campione domande EN). Poi **M3** solo a test Play chiuso |
-| **Branch lavoro** | `cursor/multilingua-m2c-d69a` |
-| **Branch base** | `cursor/multilingua-m2b-5409` |
+| **Branch lavoro** | `cursor/ck2-en-locale-d69a` |
+| **Branch base** | `cursor/multilingua-m2c-d69a` |
 | **Play** | BoxManager **1.2** su `main`, identica per tutto il test. Lo **stesso** BoxManager di sviluppo (archivio condiviso + inglese) a test chiuso **sostituisce** la 1.2. Si tocca 1.2 **solo** per bug bloccanti. |
 | **Build sviluppo** | Topbar **1.3-famigliaB5.7** (etichetta di build, non un altro nome di app). P1 CONVALIDATO. |
 | **Ricerca avanzata EN** | Pipeline 0–10 invariata; **niente** traduttore EN→IT; **niente** interprete semantico (Nota 3.3.9) |
@@ -90,10 +90,12 @@ Apri il progetto `BoxManagerNew`. In basso: **Terminal**. Incolla **tutto il blo
 
 ```
 git fetch origin
-git checkout -B cursor/multilingua-m2c-d69a origin/cursor/multilingua-m2c-d69a
+git checkout -B cursor/ck2-en-locale-d69a origin/cursor/ck2-en-locale-d69a
 ```
 
 Poi: Sync Gradle se lo chiede; variante **famigliaDebug** (non `play`); **Run** sul telefono. Topbar attesa: **1.3-famigliaB5.7**.
+
+**Ritest CK2 (04/09/2026):** i KO «tutti e 5 i contenitori» / F7 vuoto erano la ricerca ancora in **italiano** mentre le domande erano in inglese. Fix: la Ricerca avanzata usa la stessa lingua delle schermate (Impostazioni / AppCompat). Stesso archivio lab; stesso elenco domande. **Prima di ritestare:** Impostazioni → **English** (verifica che resti selezionato).
 
 ### 2. Archivio da inserire (se è vuoto)
 
@@ -237,7 +239,7 @@ git checkout -b cursor/multilingua-m1a-5409
 ```
 Continua filone M — inglese in BoxManager da docs/multilingua/PROMPT_CONTINUITA_M.md
 Pacchetto: CK2 (SI device Renato) oppure attesa; M3 solo a test Play chiuso
-Branch: cursor/multilingua-m2c-d69a
+Branch: cursor/ck2-en-locale-d69a
 Vincoli: non toccare main/1.2; non implementare B-NOME-AUTO-SAVE né B-DEFAULT-IT-EN né B-SEL-CARTELLA né B-RICERCA-SENZA-SPECIFICHE.
 ```
 
