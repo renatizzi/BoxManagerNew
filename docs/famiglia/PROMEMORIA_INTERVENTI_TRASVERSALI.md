@@ -15,7 +15,7 @@ Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino
 
 ---
 
-## Fix ritest B5.8 → B5.13 (`cursor/promemoria-fix-d69a`)
+## Fix ritest B5.8 → B5.14 (`cursor/promemoria-fix-d69a`)
 
 Regressione introdotta da **B-F7-FORMATO-LISTA**: l’apertura lista Contenitori
 per layout F7 aveva dirottato anche inventari/report degli altri Core.
@@ -29,7 +29,11 @@ per layout F7 aveva dirottato anche inventari/report degli altri Core.
 | F7 (domande 4/7 CK2) | Lista contenitori con layout card (unico caso Motore B → lista) |
 | Altro Motore B | Messaggio + stampa ad hoc |
 
-**B5.13:** audit completo 20 domande (4 Renato + inventario + CK2 EN); fix KO «oggetti in cantina».
+**B5.13:** audit 20 domande; fix KO «oggetti in cantina» (router).
+
+**B5.14 (device):** sole «luoghi in uso» OK sul telefono — due bug UI:
+1. Categorie: `FILTER_USED` poi sovrascritto dalla domanda come needle → lista vuota
+2. Oggetti: `EXTRA_SEARCH_QUESTION` condivideva la chiave `dashboardSearchQuery` → la domanda sovrascriveva il filtro vuoto → lista vuota
 
 ---
 
