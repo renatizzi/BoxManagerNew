@@ -11,6 +11,8 @@ Fonte viva: [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md). Rest
 
 | ID | Indicazione |
 |----|-------------|
+| **B-NOME-APP-BAT** | Nome app e installa/crea.bat: ancora «boxmanager famiglia» (nome errato) |
+| **B-VOCE-OGGETTO** | Inserimento vocale per nome e descrizione oggetto (da valutare) |
 | **B-NOME-AUTO-SAVE** | Impostazioni: memorizzare il nome utente appena inserito (restando modificabile), senza tasto Salva |
 | **B-DEFAULT-IT-EN** | Tradurre i default (3 location + 16 category) al primo switch italiano → inglese |
 | **B-SEL-CARTELLA** | Selettore cartella anche su drive non visti da Android (NAS / disco di rete) |
@@ -240,7 +242,7 @@ git checkout -b cursor/multilingua-m1a-5409
 Continua filone M — inglese in BoxManager da docs/multilingua/PROMPT_CONTINUITA_M.md
 Pacchetto: CK2 (SI device Renato) oppure attesa; M3 solo a test Play chiuso
 Branch: cursor/ck2-en-locale-d69a
-Vincoli: non toccare main/1.2; non implementare B-NOME-AUTO-SAVE né B-DEFAULT-IT-EN né B-SEL-CARTELLA né B-RICERCA-SENZA-SPECIFICHE.
+Vincoli: non toccare main/1.2; non implementare B-NOME-APP-BAT né B-VOCE-OGGETTO né B-NOME-AUTO-SAVE né B-DEFAULT-IT-EN né B-SEL-CARTELLA né B-RICERCA-SENZA-SPECIFICHE.
 ```
 
 ---
@@ -260,6 +262,8 @@ Vincoli: non toccare main/1.2; non implementare B-NOME-AUTO-SAVE né B-DEFAULT-I
 
 | ID | Richiesta Renato | Note |
 |----|------------------|------|
+| **B-NOME-APP-BAT** | Nome dell'app e installa/crea.bat fanno ancora riferimento al nome dell'app errato (boxmanager famiglia) | **Aperto** |
+| **B-VOCE-OGGETTO** | Per nome e descrizione dell'oggetto potrebbe essere comodo l'inserimento vocale (da valutare) | **Aperto** |
 | **B-NOME-AUTO-SAVE** | In Impostazioni il Salva serve solo al nome utente; memorizzarlo appena inserito, senza tasto Salva, lasciando la possibilità di modificarlo | **Aperto** |
 | **B-DEFAULT-IT-EN** | Tradurre i valori di default (3 location + 16 category) da usare al **primo switch** italiano → inglese | **Aperto** |
 | **B-SEL-CARTELLA** | Selettore cartella anche su drive non visti da Android (NAS / disco di rete) | **Aperto** |
