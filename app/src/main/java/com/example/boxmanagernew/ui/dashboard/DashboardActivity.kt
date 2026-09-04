@@ -116,8 +116,7 @@ class DashboardActivity : BaseActivity() {
 
         if (
             query.isBlank() &&
-            selected != 1 &&
-            selected != 4
+            selected == 0
         ) {
 
             return

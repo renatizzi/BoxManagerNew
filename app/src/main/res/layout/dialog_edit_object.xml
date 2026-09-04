@@ -31,7 +31,8 @@
         android:maxLines="1"
         android:minHeight="44dp"
         android:paddingTop="6dp"
-        android:paddingBottom="6dp" />
+        android:paddingBottom="6dp"
+        android:drawableEnd="@android:drawable/ic_btn_speak_now" />
 
     <EditText
         android:id="@+id/editObjectDescription"
@@ -44,7 +45,8 @@
         android:maxLines="2"
         android:minHeight="44dp"
         android:paddingTop="6dp"
-        android:paddingBottom="6dp" />
+        android:paddingBottom="6dp"
+        android:drawableEnd="@android:drawable/ic_btn_speak_now" />
 
     <EditText
         android:id="@+id/editObjectQuantity"

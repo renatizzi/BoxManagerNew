@@ -19,7 +19,7 @@ interface CategoryDao {
     @Query("""
         SELECT * FROM categories
         ORDER BY 
-            CASE WHEN name = 'Miscellanea' THEN 1 ELSE 0 END,
+            CASE WHEN name = 'Miscellanea' OR name = 'Miscellaneous' THEN 1 ELSE 0 END,
             name ASC
     """)
     fun getAllCategories(): LiveData<List<CategoryEntity>>
@@ -27,7 +27,7 @@ interface CategoryDao {
     @Query("""
         SELECT * FROM categories
         ORDER BY
-            CASE WHEN name = 'Miscellanea' THEN 1 ELSE 0 END,
+            CASE WHEN name = 'Miscellanea' OR name = 'Miscellaneous' THEN 1 ELSE 0 END,
             name ASC
     """)
     suspend fun getAllSync(): List<CategoryEntity>

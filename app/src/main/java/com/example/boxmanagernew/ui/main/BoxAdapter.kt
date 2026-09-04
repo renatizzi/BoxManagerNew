@@ -17,6 +17,7 @@ import com.example.boxmanagernew.R
 import com.example.boxmanagernew.data.local.entity.CategoryEntity
 import com.example.boxmanagernew.domain.model.Box
 import com.example.boxmanagernew.ui.categories.IconMapper
+import com.example.boxmanagernew.ui.common.UiUtils
 import com.example.boxmanagernew.util.CanonicalNormalizer
 import com.example.boxmanagernew.util.SimpleSearch
 
@@ -65,9 +66,17 @@ class BoxAdapter(
         val categoryName = category?.name
             ?: holder.itemView.context.getString(R.string.category_unknown)
         val positionText = box.position
+        val modified =
+            UiUtils.formatDate(
+                box.lastModified
+            )
 
         holder.textSubtitle.text =
-            buildSubtitle(categoryName, positionText)
+            buildSubtitle(
+                categoryName,
+                positionText,
+                modified
+            )
 
         if (category != null) {
 
@@ -247,15 +256,23 @@ class BoxAdapter(
 
     private fun buildSubtitle(
         category: String,
-        position: String
+        position: String,
+        modified: String
     ): SpannableString {
 
-        val fullText =
-            if (position.isBlank()) {
-                category
-            } else {
-                "$category • $position"
+        val parts =
+            listOf(
+                category,
+                position,
+                modified
+            ).filter { part ->
+                part.isNotBlank()
             }
+
+        val fullText =
+            parts.joinToString(
+                " • "
+            )
 
         return highlightRanges(fullText)
     }

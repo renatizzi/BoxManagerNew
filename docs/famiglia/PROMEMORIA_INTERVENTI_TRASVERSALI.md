@@ -11,13 +11,21 @@ Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino
 
 | ID | Data | Indicazione | Stato |
 |----|------|-------------|-------|
-| **B-F7-FORMATO-LISTA** | 04/09/2026 | Per i casi 4 e 7 (sia in italiano che in inglese) occorre allineare la risposta a casi simili dove è indicato l'oggetto comune (per tutti, meglio se l'oggetto viene messo tra parentesi ed i contenitori sono visualizzati con il formato delle liste. Esempio: Elenco dei contenitori che hanno oggetti uguali (Vite): [Nome Contenitore], sotto: [icona+categoria], sotto: [posizione], sotto: [data ultima modifica] | **Aperto** |
-| **B-NOME-APP-BAT** | 04/09/2026 | Nome dell'app e installa/crea.bat fanno ancora riferimento al nome dell'app errato (boxmanager famiglia) | **Aperto** |
-| **B-VOCE-OGGETTO** | 04/09/2026 | Per nome e descrizione dell'oggetto potrebbe essere comodo l'inserimento vocale (da valutare) | **Aperto** |
-| **B-NOME-AUTO-SAVE** | 03/09/2026 | In Impostazioni il Salva serve solo al nome utente (da quello che ho capito, non serve ad altro). Proverei a memorizzarlo non appena viene inserito, senza bisogno di salvare con il tasto. Ovviamente lasciando la possibilità di modificarlo | **Aperto** |
-| **B-DEFAULT-IT-EN** | 03/09/2026 | Tradurre i valori di default (3 location + 16 category) da usare al **primo switch** italiano → inglese | **Aperto** |
-| **B-SEL-CARTELLA** | M1 / CK1 | Selettore cartella (Backup, Esporta, Condivisione tabelle, …): estendere la scelta anche ai drive **non riconosciuti direttamente da Android** (es. disco di rete locale / NAS SMB) | **Aperto** |
-| **B-RICERCA-SENZA-SPECIFICHE** | 03/09/2026 | I motori di ricerca (filtri) non consentono di cercare **senza stringa**: si vuole poter **stampare tutto** (es. tutti i contenitori in archivio) senza digitare nulla | **Aperto** |
+| **B-SEL-CARTELLA** | M1 / CK1 | Selettore cartella (Backup, Esporta, Condivisione tabelle, …): estendere la scelta anche ai drive **non riconosciuti direttamente da Android** (es. disco di rete locale / NAS SMB). **Valutazione 04/09:** SAF non elenca SMB da solo; il NAS compare solo se montato/esposto in Files. Documentato in [INSTALLA_SENZA_RUN.md](INSTALLA_SENZA_RUN.md). Serve scelta prodotto (provider terzi / istruzioni utente) prima di altro codice | **Aperto** |
+
+---
+
+## Presa in carico 04/09/2026 (`cursor/promemoria-backlog-d69a`)
+
+| ID | Esito |
+|----|-------|
+| **B-NOME-APP-BAT** | **Fatto** — launcher e bat → BoxManager (flavor Gradle `famiglia` = solo build) |
+| **B-NOME-AUTO-SAVE** | **Fatto** — nome utente salvato mentre digiti / al blur; tasto Salva nascosto; modificabile |
+| **B-DEFAULT-IT-EN** | **Fatto** — primo switch IT→EN: seed 16 categorie + 3 posizioni (e `box.position` se ancora seed) → EN; rinominati intatti |
+| **B-F7-FORMATO-LISTA** | **Fatto** — F7 apre lista contenitori; titolo con `(oggetto)`; card categoria • posizione • data |
+| **B-RICERCA-SENZA-SPECIFICHE** | **Fatto** — stringa vuota su Contenitori/Posizione/Oggetti/Categorie in dashboard; oggetti filtro vuoto = tutti |
+| **B-VOCE-OGGETTO** | **Fatto** — microfono su nome e descrizione in Aggiungi/Modifica oggetto |
+| **M0** | **Fatto** — [store-listing-en.md](../play/store-listing-en.md) |
 
 ---
 

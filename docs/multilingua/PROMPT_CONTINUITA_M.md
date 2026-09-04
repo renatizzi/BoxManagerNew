@@ -11,13 +11,7 @@ Fonte viva: [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md). Rest
 
 | ID | Indicazione |
 |----|-------------|
-| **B-F7-FORMATO-LISTA** | F7 casi 4/7 IT+EN: oggetto comune tra parentesi + contenitori in formato lista |
-| **B-NOME-APP-BAT** | Nome app e installa/crea.bat: ancora «boxmanager famiglia» (nome errato) |
-| **B-VOCE-OGGETTO** | Inserimento vocale per nome e descrizione oggetto (da valutare) |
-| **B-NOME-AUTO-SAVE** | Impostazioni: memorizzare il nome utente appena inserito (restando modificabile), senza tasto Salva |
-| **B-DEFAULT-IT-EN** | Tradurre i default (3 location + 16 category) al primo switch italiano → inglese |
-| **B-SEL-CARTELLA** | Selettore cartella anche su drive non visti da Android (NAS / disco di rete) |
-| **B-RICERCA-SENZA-SPECIFICHE** | Stampare tutto senza stringa (es. tutti i contenitori), oggi i filtri ricerca lo impediscono |
+| **B-SEL-CARTELLA** | Selettore cartella anche su drive non visti da Android (NAS); SAF non basta da solo — valutazione aperta |
 
 ---
 
@@ -49,11 +43,11 @@ Fonte viva: [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md). Rest
 | **M2b** | **Fatto** — motore locale-aware EN (S1–S3 SI 03/09/2026). [SEMANTICA_EN_EQUIVOCI.md](SEMANTICA_EN_EQUIVOCI.md) |
 | **M2c** | **Fatto** — messaggi 2.6 e card ricerca; locale UI allineato (PR **#21**, fix PR **#22**) |
 | **CK2** | **CONVALIDATO SI Renato device 04/09/2026** — 10/10 domande EN OK (dopo fix locale) |
-| **Prossimo pacchetto** | **M3** solo a test Play chiuso. Backlog aperto (es. **B-F7-FORMATO-LISTA**) non blocca CK2 |
-| **Branch lavoro** | `cursor/ck2-en-locale-d69a` |
-| **Branch base** | `cursor/multilingua-m2c-d69a` |
+| **Prossimo pacchetto** | **M3** solo a test Play chiuso. Promemoria: resta **B-SEL-CARTELLA** |
+| **Branch lavoro** | `cursor/promemoria-backlog-d69a` |
+| **Branch base** | `cursor/ck2-en-locale-d69a` |
 | **Play** | BoxManager **1.2** su `main`, identica per tutto il test. Lo **stesso** BoxManager di sviluppo (archivio condiviso + inglese) a test chiuso **sostituisce** la 1.2. Si tocca 1.2 **solo** per bug bloccanti. |
-| **Build sviluppo** | Topbar **1.3-famigliaB5.7** (etichetta di build, non un altro nome di app). P1 CONVALIDATO. |
+| **Build sviluppo** | Topbar **1.3-famigliaB5.8** (etichetta di build, non un altro nome di app). |
 | **Ricerca avanzata EN** | Pipeline 0–10 invariata; **niente** traduttore EN→IT; **niente** interprete semantico (Nota 3.3.9) |
 | **Checkpoint** | **CK0** ✅; **S1–S3 SI**; **CK1** ✅; **CK2** ✅ |
 
@@ -94,12 +88,12 @@ Apri il progetto `BoxManagerNew`. In basso: **Terminal**. Incolla **tutto il blo
 
 ```
 git fetch origin
-git checkout -B cursor/ck2-en-locale-d69a origin/cursor/ck2-en-locale-d69a
+git checkout -B cursor/promemoria-backlog-d69a origin/cursor/promemoria-backlog-d69a
 ```
 
-Poi: Sync Gradle se lo chiede; variante **famigliaDebug** (non `play`); **Run** sul telefono. Topbar attesa: **1.3-famigliaB5.7**.
+Poi: Sync Gradle se lo chiede; variante **famigliaDebug** (non `play`); **Run** sul telefono. Topbar attesa: **1.3-famigliaB5.8**.
 
-**Ritest CK2 (04/09/2026):** i KO «tutti e 5 i contenitori» / F7 vuoto erano la ricerca ancora in **italiano** mentre le domande erano in inglese. Fix: la Ricerca avanzata usa la stessa lingua delle schermate (Impostazioni / AppCompat). Stesso archivio lab; stesso elenco domande. **Prima di ritestare:** Impostazioni → **English** (verifica che resti selezionato).
+**CK2 già CONVALIDATO** su B5.7 — non ripetere i 10 test EN. Su B5.8 verificare in particolare: nome launcher **BoxManager**, auto-save nome utente, default IT→EN, F7 + formato lista, ricerca senza stringa, mic in oggetto.
 
 ### 2. Archivio da inserire (se è vuoto)
 
@@ -151,9 +145,9 @@ Italiano: Impostazioni → Italiano; *Trova box* e *Nessun risultato trovato.* c
 
 ### Cosa **non** è questo test
 
-- Cartella NAS / disco di rete (**B-SEL-CARTELLA**)
-- Stampare tutti i contenitori senza digitare (**B-RICERCA-SENZA-SPECIFICHE**)
+- Cartella NAS / disco di rete (**B-SEL-CARTELLA** — ancora aperto)
 - Pubblicare su Play (**M3**)
+- Ritestare i 10 punti CK2 (già CONVALIDATO)
 
 ## Istruzioni CK0 per Renato (nessun device)
 
@@ -242,9 +236,9 @@ git checkout -b cursor/multilingua-m1a-5409
 
 ```
 Continua filone M — inglese in BoxManager da docs/multilingua/PROMPT_CONTINUITA_M.md
-Pacchetto: CK2 CONVALIDATO; attesa M3 a test Play chiuso (o backlog se SI presa in carico)
-Branch: cursor/ck2-en-locale-d69a
-Vincoli: non toccare main/1.2; non implementare B-F7-FORMATO-LISTA né B-NOME-APP-BAT né B-VOCE-OGGETTO né B-NOME-AUTO-SAVE né B-DEFAULT-IT-EN né B-SEL-CARTELLA né B-RICERCA-SENZA-SPECIFICHE.
+Pacchetto: CK2 CONVALIDATO; backlog promemoria su B5.8; attesa M3 a test Play chiuso
+Branch: cursor/promemoria-backlog-d69a
+Vincoli: non toccare main/1.2; B-SEL-CARTELLA solo con SI prodotto; niente Motore B.
 ```
 
 ---
@@ -264,18 +258,13 @@ Vincoli: non toccare main/1.2; non implementare B-F7-FORMATO-LISTA né B-NOME-AP
 
 | ID | Richiesta Renato | Note |
 |----|------------------|------|
-| **B-F7-FORMATO-LISTA** | Casi 4 e 7 F7 IT+EN: allineare a casi con oggetto comune tra parentesi; contenitori in formato lista (nome, icona+categoria, posizione, data) | **Aperto** |
-| **B-NOME-APP-BAT** | Nome dell'app e installa/crea.bat fanno ancora riferimento al nome dell'app errato (boxmanager famiglia) | **Aperto** |
-| **B-VOCE-OGGETTO** | Per nome e descrizione dell'oggetto potrebbe essere comodo l'inserimento vocale (da valutare) | **Aperto** |
-| **B-NOME-AUTO-SAVE** | In Impostazioni il Salva serve solo al nome utente; memorizzarlo appena inserito, senza tasto Salva, lasciando la possibilità di modificarlo | **Aperto** |
-| **B-DEFAULT-IT-EN** | Tradurre i valori di default (3 location + 16 category) da usare al **primo switch** italiano → inglese | **Aperto** |
-| **B-SEL-CARTELLA** | Selettore cartella anche su drive non visti da Android (NAS / disco di rete) | **Aperto** |
-| **B-RICERCA-SENZA-SPECIFICHE** | Stampare tutto senza stringa (es. tutti i contenitori); oggi i filtri ricerca lo impediscono | **Aperto** |
+| **B-SEL-CARTELLA** | Selettore cartella anche su drive non visti da Android (NAS / disco di rete) | **Aperto** — SAF non elenca SMB da solo |
 
 Storico (chiusi / note agente):
 
 | ID | Richiesta | Note |
 |----|-----------|------|
+| **B-NOME-APP-BAT** / **B-NOME-AUTO-SAVE** / **B-DEFAULT-IT-EN** / **B-F7-FORMATO-LISTA** / **B-RICERCA-SENZA-SPECIFICHE** / **B-VOCE-OGGETTO** / **M0** | Presa in carico 04/09 | **Fatto** su `cursor/promemoria-backlog-d69a` |
 | **B-PALETTE-ACCENT** | Colori card funzione = palette Impostazioni, indipendentemente dalla lingua | Risolto (`ThemeAccentTextViews`) |
 | **B-FAMILY-DOMAIN-ERR** | Errori dominio merge archivio condiviso ancora IT in path rari | Opzionale; non bloccano CK1 |
 

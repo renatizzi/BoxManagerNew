@@ -67,10 +67,13 @@ class VoiceSearchController(
 
             when (event.action) {
 
-                MotionEvent.ACTION_DOWN ->
+                MotionEvent.ACTION_DOWN -> {
+                    field = edit
                     true
+                }
 
                 MotionEvent.ACTION_UP -> {
+                    field = edit
                     launch()
                     true
                 }

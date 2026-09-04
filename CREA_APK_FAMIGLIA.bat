@@ -3,7 +3,7 @@ chcp 65001 >nul
 setlocal
 cd /d "%~dp0"
 
-echo === BoxManager Famiglia - crea APK (senza Run di Android Studio) ===
+echo === BoxManager - crea APK sviluppo (senza Run di Android Studio) ===
 echo.
 
 if not exist "gradlew.bat" (

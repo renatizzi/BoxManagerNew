@@ -1033,6 +1033,10 @@ class BoxDetailActivity : BaseActivity() {
                     item.obj.quantity
             )
 
+        attachObjectDialogVoice(
+            dialogViews
+        )
+
         val dialog =
             AlertDialog.Builder(this)
                 .setTitle(
@@ -1050,6 +1054,10 @@ class BoxDetailActivity : BaseActivity() {
                     null
                 )
                 .create()
+
+        dialog.setOnDismissListener {
+            voiceSearch.attach(editSearch)
+        }
 
         dialog.setOnShowListener {
 
@@ -1120,6 +1128,18 @@ class BoxDetailActivity : BaseActivity() {
 
         dialog.show()
     }
+    private fun attachObjectDialogVoice(
+        dialogViews: DialogUtils.ObjectDialogViews
+    ) {
+
+        voiceSearch.attach(
+            dialogViews.name
+        )
+        voiceSearch.attach(
+            dialogViews.description
+        )
+    }
+
     private fun showAddObjectDialog(
         boxId: Int
     ) {
@@ -1129,6 +1149,10 @@ class BoxDetailActivity : BaseActivity() {
                 context = this,
                 layout = R.layout.dialog_add_object
             )
+
+        attachObjectDialogVoice(
+            dialogViews
+        )
 
         val dialog =
             AlertDialog.Builder(this)
@@ -1143,6 +1167,10 @@ class BoxDetailActivity : BaseActivity() {
                     null
                 )
                 .create()
+
+        dialog.setOnDismissListener {
+            voiceSearch.attach(editSearch)
+        }
 
         dialog.setOnShowListener {
 

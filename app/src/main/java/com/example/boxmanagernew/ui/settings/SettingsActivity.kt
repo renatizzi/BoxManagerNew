@@ -14,8 +14,10 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.boxmanagernew.BuildConfig
 import com.example.boxmanagernew.R
+import com.example.boxmanagernew.data.local.DefaultArchiveLocaleSync
 import com.example.boxmanagernew.domain.locale.LocalePreference
 import com.example.boxmanagernew.domain.premium.ArchivioCompletoAccess
 import com.example.boxmanagernew.domain.premium.ArchivioCompletoPolicy
@@ -24,6 +26,8 @@ import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.LocaleManager
 import com.example.boxmanagernew.ui.common.ThemeManager
 import com.google.android.material.switchmaterial.SwitchMaterial
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class SettingsActivity : BaseActivity() {
 
@@ -68,6 +72,7 @@ class SettingsActivity : BaseActivity() {
         setupViews()
         loadPreferences()
         setupListeners()
+        hideLegacyUsernameSaveButton()
         setupPaletteSelector()
         setupLanguageSelector()
         updateThemeLabel()
@@ -153,15 +158,54 @@ class SettingsActivity : BaseActivity() {
                 EditorInfo.IME_ACTION_DONE
             ) {
 
-                hideKeyboardAndClearFocus()
+                saveUsername(
+                    showFeedback = true
+                )
                 true
 
             } else false
         }
 
-        buttonSave.setOnClickListener {
-            saveUsername()
+        editUserName.setOnFocusChangeListener {
+                _,
+                hasFocus ->
+
+            if (!hasFocus) {
+                saveUsername(
+                    showFeedback = false
+                )
+            }
         }
+
+        editUserName.addTextChangedListener(
+            object : android.text.TextWatcher {
+
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                }
+
+                override fun onTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    before: Int,
+                    count: Int
+                ) {
+                }
+
+                override fun afterTextChanged(
+                    s: android.text.Editable?
+                ) {
+
+                    saveUsername(
+                        showFeedback = false
+                    )
+                }
+            }
+        )
 
         cardLocations.setOnClickListener {
 
@@ -246,7 +290,24 @@ class SettingsActivity : BaseActivity() {
             return
         }
 
+        val switchingToEnglish =
+            LocalePreference.isEnglish(
+                languageTag
+            )
+
         LocaleManager.setLanguage(this, languageTag)
+
+        if (switchingToEnglish) {
+
+            lifecycleScope.launch(
+                Dispatchers.IO
+            ) {
+                DefaultArchiveLocaleSync
+                    .applyEnglishDefaultsIfNeeded(
+                        applicationContext
+                    )
+            }
+        }
     }
 
     private fun updateLanguageSelection() {
@@ -398,17 +459,48 @@ class SettingsActivity : BaseActivity() {
             }
     }
 
-    private fun saveUsername() {
+    private fun hideLegacyUsernameSaveButton() {
+
+        buttonSave.visibility =
+            View.GONE
+
+        textSaveMessage.visibility =
+            View.GONE
+    }
+
+    private fun saveUsername(
+        showFeedback: Boolean = false
+    ) {
 
         val value =
             editUserName.text
                 .toString()
                 .trim()
 
-        getSharedPreferences(
-            PREFS,
-            Context.MODE_PRIVATE
-        ).edit()
+        val prefs =
+            getSharedPreferences(
+                PREFS,
+                Context.MODE_PRIVATE
+            )
+
+        val previous =
+            prefs.getString(
+                KEY_USERNAME,
+                null
+            )
+                .orEmpty()
+                .trim()
+
+        if (previous == value) {
+
+            if (showFeedback) {
+                hideKeyboardAndClearFocus()
+            }
+
+            return
+        }
+
+        prefs.edit()
             .putString(
                 KEY_USERNAME,
                 value
@@ -416,10 +508,10 @@ class SettingsActivity : BaseActivity() {
             .apply()
 
         refreshTopBar()
-        hideKeyboardAndClearFocus()
 
-        textSaveMessage.visibility =
-            View.VISIBLE
+        if (showFeedback) {
+            hideKeyboardAndClearFocus()
+        }
 
         setupAdminParams()
         setupUnlockCode()
