@@ -175,12 +175,19 @@ object SearchLanguageTablesEn {
     val functionWords =
         setOf(
             "a", "an", "the", "of", "to", "for", "from", "at", "by",
-            "on", "with", "without", "and", "or", "but", "if", "as",
+            "on", "in", "with", "without", "and", "or", "but", "if", "as",
             "that", "this", "these", "those", "it", "its", "my", "me",
             "i", "you", "we", "they", "is", "are", "am", "was", "were",
             "be", "been", "being", "do", "does", "did", "have", "has",
             "had", "not", "no", "so", "too", "very", "just", "than",
             "then", "there", "here", "into", "onto",
+            // Specchio IT (quale/quali/dove/elenco/lista/tutto): senza queste
+            // restano in contentTokens e matchingNames richiede «what»/«in»
+            // dentro il nome luogo → Cellar/Garage non riconosciuti in EN.
+            "what", "which", "where", "who", "whom", "whose",
+            "how", "when", "why",
+            "all", "every", "everything", "list",
+            "used", "use",
             "find", "search", "show", "tell", "give", "see", "looking",
             "look", "contain", "contains", "containing", "contained",
             "name", "names"

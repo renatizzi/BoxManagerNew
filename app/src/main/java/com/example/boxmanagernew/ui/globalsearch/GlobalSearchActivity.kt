@@ -504,11 +504,23 @@ class GlobalSearchActivity : BaseActivity() {
         question: String
     ) {
 
-        val inventoryTarget =
-            InventoryListRouter.target(
-                response,
-                question
+        // Stesso locale della Pipeline: senza contesto EN gli alias IT
+        // non riconoscono «objects» → inventario oggetti apre Contenitori
+        // (lista predefinita + report «No. containers»).
+        val locale =
+            LocaleManager.searchLocale(
+                this
             )
+
+        val inventoryTarget =
+            SearchLocaleContext.run(
+                locale
+            ) {
+                InventoryListRouter.target(
+                    response,
+                    question
+                )
+            }
 
         when (inventoryTarget) {
 
