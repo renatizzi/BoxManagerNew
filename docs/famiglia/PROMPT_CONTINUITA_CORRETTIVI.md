@@ -12,6 +12,9 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md). Restano visibili
 
 | ID | Indicazione |
 |----|-------------|
+| **B-F7-FORMATO-LISTA** | F7 casi 4/7 IT+EN: oggetto comune tra parentesi + contenitori in formato lista |
+| **B-NOME-APP-BAT** | Nome app e installa/crea.bat: ancora «boxmanager famiglia» (nome errato) |
+| **B-VOCE-OGGETTO** | Inserimento vocale per nome e descrizione oggetto (da valutare) |
 | **B-NOME-AUTO-SAVE** | Impostazioni: memorizzare il nome utente appena inserito (restando modificabile), senza tasto Salva |
 | **B-DEFAULT-IT-EN** | Tradurre i default (3 location + 16 category) al primo switch italiano → inglese |
 | **B-SEL-CARTELLA** | Selettore cartella anche su drive non visti da Android (NAS / disco di rete) |
@@ -30,7 +33,7 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md). Restano visibili
 | **Dopo il test** | La BoxManager di sviluppo **sostituisce** la 1.2 come ufficiale. Non è un optional. [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md) |
 | **Archivio condiviso B0–B5** | **CONVALIDATO** — Nota Integrata **9.2** Allegato **4.20** |
 | **Filone correttivi** | P0 chiuso; **P1 CONVALIDATO** B5.7; P2 continuo |
-| **Backlog aperto** | **B-NOME-AUTO-SAVE**, **B-DEFAULT-IT-EN**, **B-SEL-CARTELLA**, **B-RICERCA-SENZA-SPECIFICHE** — in evidenza nel Promemoria; non in carico finché Renato non decide |
+| **Backlog aperto** | **B-F7-FORMATO-LISTA**, **B-NOME-APP-BAT**, **B-VOCE-OGGETTO**, **B-NOME-AUTO-SAVE**, **B-DEFAULT-IT-EN**, **B-SEL-CARTELLA**, **B-RICERCA-SENZA-SPECIFICHE** — in evidenza nel Promemoria; non in carico finché Renato non decide |
 
 ### Documenti vincolanti (leggere prima di codice)
 

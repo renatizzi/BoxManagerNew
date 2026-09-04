@@ -240,7 +240,7 @@ class SettingsActivity : BaseActivity() {
     private fun selectLanguage(languageTag: String) {
 
         if (
-            LocaleManager.storedTag(this) ==
+            LocaleManager.effectiveTag(this) ==
             LocalePreference.resolve(languageTag)
         ) {
             return
@@ -257,7 +257,7 @@ class SettingsActivity : BaseActivity() {
         val selected =
             if (
                 LocalePreference.isEnglish(
-                    LocaleManager.storedTag(this)
+                    LocaleManager.effectiveTag(this)
                 )
             ) {
                 optionEnglish
