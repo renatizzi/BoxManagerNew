@@ -11,7 +11,7 @@ Fonte viva: [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md). Rest
 
 | ID | Indicazione |
 |----|-------------|
-| **B-SEL-CARTELLA** | NAS via guida CIFS Documents Provider — B5.16 in ritest |
+| **B-SEL-CARTELLA** | Disco di rete (Impostazioni + guida semplice) — B5.18 in ritest |
 
 ---
 
@@ -47,7 +47,7 @@ Fonte viva: [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md). Rest
 | **Branch lavoro** | `cursor/promemoria-fix-d69a` |
 | **Branch base** | `cursor/promemoria-backlog-d69a` |
 | **Play** | BoxManager **1.2** su `main`, identica per tutto il test. Lo **stesso** BoxManager di sviluppo (archivio condiviso + inglese) a test chiuso **sostituisce** la 1.2. Si tocca 1.2 **solo** per bug bloccanti. |
-| **Build sviluppo** | Topbar **1.3-famigliaB5.17** (etichetta di build, non un altro nome di app). |
+| **Build sviluppo** | Topbar **1.3-famigliaB5.18** (etichetta di build, non un altro nome di app). |
 | **Ricerca avanzata EN** | Pipeline 0–10 invariata; **niente** traduttore EN→IT; **niente** interprete semantico (Nota 3.3.9) |
 | **Checkpoint** | **CK0** ✅; **S1–S3 SI**; **CK1** ✅; **CK2** ✅ |
 
@@ -91,9 +91,9 @@ git fetch origin
 git checkout -B cursor/promemoria-fix-d69a origin/cursor/promemoria-fix-d69a
 ```
 
-Poi: Sync Gradle se lo chiede; variante **famigliaDebug** (non `play`); **Run** sul telefono. Topbar attesa: **1.3-famigliaB5.17**.
+Poi: Sync Gradle se lo chiede; variante **famigliaDebug** (non `play`); **Run** sul telefono. Topbar attesa: **1.3-famigliaB5.18**.
 
-**Ritest B5.17:** Guida → Utility menziona CIFS; Backup → Sfoglia dopo aver registrato il NAS in CIFS Documents Provider. Procedura: [GUIDA_CARTELLA_RETE_CIFS.md](../famiglia/GUIDA_CARTELLA_RETE_CIFS.md).
+**Ritest B5.18:** Impostazioni → Disco di rete → Installa/Apri app → Backup → Sfoglia. Linguaggio senza «NAS». Guida: [GUIDA_DISCO_RETE.md](../famiglia/GUIDA_DISCO_RETE.md).
 
 ### 2. Archivio da inserire (se è vuoto)
 
@@ -258,7 +258,7 @@ Vincoli: non toccare main/1.2; B-SEL-CARTELLA solo con SI prodotto; niente Motor
 
 | ID | Richiesta Renato | Note |
 |----|------------------|------|
-| **B-SEL-CARTELLA** | NAS via CIFS Documents Provider (guida operativa) | **B5.16 in ritest** — [GUIDA_CARTELLA_RETE_CIFS.md](../famiglia/GUIDA_CARTELLA_RETE_CIFS.md) |
+| **B-SEL-CARTELLA** | Disco di rete (card Impostazioni + guida semplice) | **B5.18 in ritest** — [GUIDA_DISCO_RETE.md](../famiglia/GUIDA_DISCO_RETE.md) |
 
 Storico (chiusi / note agente):
 

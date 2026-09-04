@@ -11,7 +11,7 @@ Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino
 
 | ID | Data | Indicazione | Stato |
 |----|------|-------------|-------|
-| **B-SEL-CARTELLA** | M1 / CK1 | Selettore cartella + NAS via **CIFS Documents Provider** (gratuita). Guida operativa: [GUIDA_CARTELLA_RETE_CIFS.md](GUIDA_CARTELLA_RETE_CIFS.md). B5.16 codice; Nota ufficiale a fine ciclo | **In ritest** |
+| **B-SEL-CARTELLA** | M1 / CK1 | **Disco di rete:** card Impostazioni + guida semplice [GUIDA_DISCO_RETE.md](GUIDA_DISCO_RETE.md); app consigliata CIFS Documents Provider. Linguaggio utente senza gergo (no NAS). Nota ufficiale a fine ciclo | **In ritest** |
 
 ---
 

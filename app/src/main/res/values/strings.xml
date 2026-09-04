@@ -114,6 +114,15 @@
     <string name="settings_palette_blue">Blu</string>
     <string name="settings_palette_green">Verde</string>
     <string name="settings_locations_card">Luoghi abituali di custodia</string>
+    <string name="settings_network_drive_card">Disco di rete</string>
+    <string name="settings_network_drive_status_ready">Pronto: puoi scegliere il disco quando fai Backup o salvi un file.</string>
+    <string name="settings_network_drive_status_missing">Serve un\'app gratuita per collegare il telefono al disco. Tocca qui per iniziare.</string>
+    <string name="network_drive_dialog_title">Salvare sul disco di rete</string>
+    <string name="network_drive_dialog_need_app">Per usare un disco in casa o sul computer (condiviso in rete Wi‑Fi):\n\n1. Installa l\'app gratuita consigliata (si apre lo store).\n2. Nell\'app, aggiungi il disco una volta (indirizzo, cartella, eventuale password).\n3. Torna in BoxManager → Utility → Backup → Sfoglia e scegli quella cartella.\n\nL\'app Files di Google non è sufficiente per questo uso.</string>
+    <string name="network_drive_dialog_ready">L\'app di collegamento è già installata.\n\n1. Aprila e, se non l\'hai già fatto, aggiungi il disco di rete.\n2. Torna in BoxManager → Utility → Backup → Sfoglia e scegli quella cartella.\n\nDalla volta successiva BoxManager può riusare la stessa cartella.</string>
+    <string name="network_drive_install_helper">Installa l\'app</string>
+    <string name="network_drive_open_helper">Apri l\'app</string>
+    <string name="network_drive_open_store">Apri nello store</string>
     <string name="settings_save">SALVA</string>
     <string name="settings_saved">Salvato</string>
     <string name="settings_language_title">Scelta lingua</string>
@@ -330,7 +339,7 @@
     <string name="guide_section_dashboard_b3">Ricerca avanzata (linguaggio naturale): da Archivio completo.</string>
     <string name="guide_section_utility_title">Utility</string>
     <string name="guide_utility_backup">Backup e Ripristino per salvare l\'archivio (usa cartella diversa da app).</string>
-    <string name="guide_utility_network_folder">Per salvare su NAS/rete: installa l\'app gratuita CIFS Documents Provider, registra lì la cartella, poi in Backup premi Sfoglia e sceglila (Files di Google non basta).</string>
+    <string name="guide_utility_network_folder">Per salvare su un disco di rete (computer o hard disk in casa): in Impostazioni apri Disco di rete e segui i passi; poi in Backup premi Sfoglia.</string>
     <string name="guide_utility_import">Importa dati da file CSV per interagire con file esterni (*).</string>
     <string name="guide_utility_qr">Codice QR per vedere il contenuto di un box usando la fotocamera.</string>
     <string name="guide_utility_family_share">Condividi Archivio per aggiornare e condividere con i tuoi familiari i dati del tuo archivio.</string>
@@ -415,7 +424,7 @@
     <string name="folder_selected_label">Cartella selezionata</string>
     <string name="storage_folder_pick_title">Scegli dove salvare</string>
     <string name="storage_folder_browse_all">Tutte le cartelle…</string>
-    <string name="storage_folder_network_or_cloud">Rete o cloud già registrati</string>
+    <string name="storage_folder_network_or_cloud">Disco di rete o cloud già collegato</string>
     <string name="storage_folder_volume_primary">Memoria del dispositivo</string>
     <string name="storage_folder_volume_removable">Memoria rimovibile</string>
     <string name="storage_folder_volume_shared">Area condivisa / montata</string>

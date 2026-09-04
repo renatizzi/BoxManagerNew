@@ -109,18 +109,22 @@ class QuickStartGuideCopyTest {
     }
 
     @Test
-    fun utility_mentionsCifsForNetworkFolder() {
+    fun utility_mentionsNetworkDriveViaSettings() {
         assertTrue(
             stringIt("guide_utility_network_folder")
-                .contains("CIFS Documents Provider")
+                .contains("Disco di rete")
         )
         assertTrue(
             stringEn("guide_utility_network_folder")
-                .contains("CIFS Documents Provider")
+                .contains("Network drive")
         )
         assertTrue(
             stringIt("guide_utility_network_folder")
-                .contains("Files di Google")
+                .contains("Impostazioni")
+        )
+        assertFalse(
+            stringIt("guide_utility_network_folder")
+                .contains("NAS")
         )
     }
 

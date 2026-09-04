@@ -12,7 +12,7 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md). Restano visibili
 
 | ID | Indicazione |
 |----|-------------|
-| **B-SEL-CARTELLA** | NAS via guida CIFS Documents Provider — [GUIDA_CARTELLA_RETE_CIFS.md](GUIDA_CARTELLA_RETE_CIFS.md); B5.16 in ritest |
+| **B-SEL-CARTELLA** | Disco di rete (Impostazioni + guida semplice) — B5.18 in ritest |
 
 ---
 
@@ -21,13 +21,13 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md). Restano visibili
 | Voce | Valore |
 |------|--------|
 | **Branch sviluppo** | `cursor/family-unione-unificata-e5b5` (integrazione) |
-| **Build sviluppo** | **1.3-famigliaB5.17** (versionCode **1336**) — etichetta di build, non nome app |
+| **Build sviluppo** | **1.3-famigliaB5.18** (versionCode **1337**) — etichetta di build, non nome app |
 | **Play** | BoxManager **1.2** su `main` (vc 3) — test chiuso; **identica** salvo bug bloccanti |
 | **Freeze Play 1.2** | `cursor/versione-test-5409` (snapshot `main`; PR #14) |
 | **Dopo il test** | La BoxManager di sviluppo **sostituisce** la 1.2 come ufficiale. Non è un optional. [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md) |
 | **Archivio condiviso B0–B5** | **CONVALIDATO** — Nota Integrata **9.2** Allegato **4.20** |
 | **Filone correttivi** | P0 chiuso; **P1 CONVALIDATO** B5.7; P2 continuo |
-| **Backlog aperto** | **B-SEL-CARTELLA** — guida CIFS + B5.16 in ritest; Nota ufficiale a fine ciclo |
+| **Backlog aperto** | **B-SEL-CARTELLA** — Disco di rete in Impostazioni; guida semplice; Nota a fine ciclo |
 
 ### Documenti vincolanti (leggere prima di codice)
 

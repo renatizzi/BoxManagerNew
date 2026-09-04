@@ -13,7 +13,7 @@ Una sola app: **BoxManager**. Questi file coprono l’**archivio condiviso** e i
 | [BETA_SYNC_POLICY.md](BETA_SYNC_POLICY.md) | Allineare un fix 1.2 sulla copia di sviluppo |
 | [DUE_APP_CINQUE_TELEFONI.md](DUE_APP_CINQUE_TELEFONI.md) | Due *installazioni* durante il test (1.2 Store + sviluppo) |
 | [INSTALLA_SENZA_RUN.md](INSTALLA_SENZA_RUN.md) | Se Run / Terminale non funzionano (script `.bat`) |
-| [GUIDA_CARTELLA_RETE_CIFS.md](GUIDA_CARTELLA_RETE_CIFS.md) | NAS / cartella di rete con CIFS Documents Provider + BoxManager |
+| [GUIDA_DISCO_RETE.md](GUIDA_DISCO_RETE.md) | Disco di rete: Impostazioni + app consigliata + Backup |
 
 **Archivio condiviso B5:** **CONVALIDATO** (SI Renato, 31/08/2026). **T2 CONVALIDATO** B5.3. **P1 CONVALIDATO** B5.7 (01/09/2026). Play 1.2 su `main` **identica** per il test — si tocca solo per bug bloccanti. A test chiuso lo sviluppo **sostituisce** la 1.2.
 

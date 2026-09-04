@@ -22,10 +22,9 @@ Se Android Studio non mostra Run o il Terminale dà `JAVA_HOME is not set`, usa 
 
 Versione attesa in topbar: **1.3-famigliaB5.8**
 
-### Cartelle di rete / NAS (B-SEL-CARTELLA)
+### Disco di rete (B-SEL-CARTELLA)
 
-**Guida operativa (CIFS):** [GUIDA_CARTELLA_RETE_CIFS.md](GUIDA_CARTELLA_RETE_CIFS.md).
+**Guida per l’utente:** [GUIDA_DISCO_RETE.md](GUIDA_DISCO_RETE.md).
 
-**Files di Google non basta** per il NAS. Serve l’app gratuita **CIFS Documents Provider** (Play / F-Droid): si registra lì la cartella di rete, poi in BoxManager → Sfoglia la si sceglie come le altre.
-
-Da **B5.16**, Sfoglia elenca anche le radici già registrate sul telefono e apre il selettore di sistema. BoxManager non monta SMB da solo.
+In app: **Impostazioni → Disco di rete** (accompagna all’app gratuita consigliata, poi Backup → Sfoglia).  
+**Files di Google non basta.** BoxManager non collega il disco da solo.
