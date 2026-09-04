@@ -20,6 +20,7 @@ import com.example.boxmanagernew.ui.globalsearch.GlobalSearchActivity
 import com.example.boxmanagernew.ui.importdata.ImportActivity
 import com.example.boxmanagernew.ui.main.BoxViewModel
 import com.example.boxmanagernew.domain.premium.PremiumFeature
+import com.example.boxmanagernew.domain.search.SearchConfiguration
 import com.example.boxmanagernew.ui.premium.ArchivioCompletoNav
 import com.example.boxmanagernew.ui.qr.QRActivity
 import com.example.boxmanagernew.ui.restore.RestoreActivity
@@ -143,7 +144,7 @@ class DashboardActivity : BaseActivity() {
                     ).apply {
 
                         putExtra(
-                            "dashboardSearchQuery",
+                            SearchConfiguration.EXTRA_DASHBOARD_SEARCH_QUERY,
                             query
                         )
                     }
@@ -159,7 +160,7 @@ class DashboardActivity : BaseActivity() {
                     ).apply {
 
                         putExtra(
-                            "dashboardSearchQuery",
+                            SearchConfiguration.EXTRA_DASHBOARD_SEARCH_QUERY,
                             query
                         )
                     }
@@ -175,7 +176,7 @@ class DashboardActivity : BaseActivity() {
                     ).apply {
 
                         putExtra(
-                            "dashboardSearchQuery",
+                            SearchConfiguration.EXTRA_DASHBOARD_SEARCH_QUERY,
                             query
                         )
                     }
@@ -191,7 +192,7 @@ class DashboardActivity : BaseActivity() {
                     ).apply {
 
                         putExtra(
-                            "dashboardSearchQuery",
+                            SearchConfiguration.EXTRA_DASHBOARD_SEARCH_QUERY,
                             query
                         )
                     }

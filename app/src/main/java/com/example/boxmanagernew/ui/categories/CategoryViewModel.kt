@@ -67,9 +67,6 @@ class CategoryViewModel(
 
             lastSource = it
 
-            _allCategoriesCount.value =
-                it.size
-
             applyFilterAndSort()
         }
 
@@ -202,6 +199,9 @@ class CategoryViewModel(
                     it.name
                 }
             }
+
+        _allCategoriesCount.value =
+            result.size
 
         _categories.value =
             result

@@ -15,6 +15,30 @@ Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino
 
 ---
 
+## Fix ritest B5.8 → B5.15 (`cursor/promemoria-fix-d69a`)
+
+Regressione introdotta da **B-F7-FORMATO-LISTA**: l’apertura lista Contenitori
+per layout F7 aveva dirottato anche inventari/report degli altri Core.
+
+| Domanda | Output atteso (ripristinato) |
+|---------|------------------------------|
+| Categorie usate / elenco categorie | Lista Categorie con **solo usate** (`FILTER_USED`); contatore = trovate; report con domanda |
+| Tutti gli oggetti in archivio | Report oggetti con domanda utente |
+| **Quali oggetti ho in cantina?** | Report oggetti filtrati per luogo (non lista Contenitori) |
+| Elenco posizioni / luoghi in uso | Lista Posizioni **usate** (`FILTER_USED`); report con domanda |
+| F7 (domande 4/7 CK2) | Lista contenitori con layout card (unico caso Motore B → lista) |
+| Altro Motore B | Messaggio + stampa ad hoc |
+
+**B5.13:** audit 20 domande; fix KO «oggetti in cantina» (router).
+
+**B5.14 (device IT):** sole «luoghi in uso» OK — due bug UI Intent/filtro.
+
+**B5.15 (device EN):** IT OK, EN apriva liste Contenitori / report «No. containers»:
+1. `InventoryListRouter` chiamato senza `SearchLocaleContext` EN → «objects» non riconosciuto
+2. function words EN senza `in`/`what`/`which`/`where`/… → luoghi nominati (Cellar) non matchavano
+
+---
+
 ## Presa in carico 04/09/2026 (`cursor/promemoria-backlog-d69a`)
 
 | ID | Esito |

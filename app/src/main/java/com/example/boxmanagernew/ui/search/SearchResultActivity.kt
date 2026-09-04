@@ -22,6 +22,7 @@ import com.example.boxmanagernew.domain.search.SearchConfiguration
 import com.example.boxmanagernew.ui.categories.IconMapper
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.SimpleSearchHighlight
+import com.example.boxmanagernew.util.CanonicalNormalizer
 import com.example.boxmanagernew.viewoutput.config.ViewOutputConfiguration
 import com.example.boxmanagernew.viewoutput.model.ContainerViewSnapshot
 import com.example.boxmanagernew.viewoutput.model.ContainerViewSnapshotFactory
@@ -41,6 +42,9 @@ class SearchResultActivity : BaseActivity() {
         null
 
     private var searchQuery =
+        ""
+
+    private var reportQuestion =
         ""
 
     private val exportFolderPicker =
@@ -72,8 +76,21 @@ class SearchResultActivity : BaseActivity() {
 
         searchQuery =
             intent.getStringExtra(
-                "dashboardSearchQuery"
+                SearchConfiguration.EXTRA_DASHBOARD_SEARCH_QUERY
             ) ?: ""
+
+        reportQuestion =
+            intent.getStringExtra(
+                SearchConfiguration.EXTRA_SEARCH_QUESTION
+            ).orEmpty()
+                .ifBlank {
+                    searchQuery
+                }
+
+        val locationTerms =
+            intent.getStringExtra(
+                SearchConfiguration.EXTRA_LOCATION_TERMS
+            ).orEmpty()
 
         val container =
             findViewById<LinearLayout>(
@@ -94,7 +111,10 @@ class SearchResultActivity : BaseActivity() {
                 )
 
             val results =
-                repo.searchObjectsInline(searchQuery)
+                filterByLocation(
+                    repo.searchObjectsInline(searchQuery),
+                    locationTerms
+                )
 
             val grouped =
                 results
@@ -162,6 +182,29 @@ class SearchResultActivity : BaseActivity() {
         }
     }
 
+    private fun filterByLocation(
+        rows: List<SearchResult>,
+        locationTerms: String
+    ): List<SearchResult> {
+
+        if (locationTerms.isBlank()) {
+            return rows
+        }
+
+        return rows.filter { row ->
+
+            SearchConfiguration.splitLocationTerms(
+                locationTerms
+            ).any { name ->
+
+                CanonicalNormalizer.allTokensMatchWords(
+                    name,
+                    row.boxPosition
+                )
+            }
+        }
+    }
+
     private fun setupViewOutputActions() {
 
         val container =
@@ -206,7 +249,7 @@ class SearchResultActivity : BaseActivity() {
                 title = ViewOutputConfiguration.pageTitleFoundObjects(this),
                 filterLine = ViewOutputConfiguration.filterLine(
                     this,
-                    searchQuery
+                    reportQuestion
                 ),
                 countLine = ViewOutputConfiguration.countObjects(
                     this,

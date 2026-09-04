@@ -27,12 +27,15 @@ import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
 import com.example.boxmanagernew.domain.model.Box
 import com.example.boxmanagernew.domain.search.GlobalSearchDispatcher
 import com.example.boxmanagernew.domain.search.SearchConfiguration
+import com.example.boxmanagernew.domain.search.SearchF7Pattern
 import com.example.boxmanagernew.domain.search.SearchLocaleContext
 import com.example.boxmanagernew.ui.common.LocaleManager
+import com.example.boxmanagernew.domain.search.InventoryListRouter
+import com.example.boxmanagernew.domain.search.InventoryListTarget
+import com.example.boxmanagernew.ui.main.BoxViewModel
 import com.example.boxmanagernew.domain.search.model.SearchArchiveBoxRecord
 import com.example.boxmanagernew.domain.search.model.SearchArchiveIndex
 import com.example.boxmanagernew.domain.search.model.SearchArchiveObjectRecord
-import com.example.boxmanagernew.domain.search.model.SearchArchiveTransformation
 import com.example.boxmanagernew.domain.search.model.SearchMessage
 import com.example.boxmanagernew.domain.search.model.SearchRequestType
 import com.example.boxmanagernew.domain.search.model.SearchResponse
@@ -147,7 +150,7 @@ class GlobalSearchActivity : BaseActivity() {
 
         val initialQuery =
             intent.getStringExtra(
-                "dashboardSearchQuery"
+                SearchConfiguration.EXTRA_DASHBOARD_SEARCH_QUERY
             ) ?: ""
 
         viewModel =
@@ -317,6 +320,8 @@ class GlobalSearchActivity : BaseActivity() {
                 return@launch
             }
 
+            // Motore B: output ad hoc (messaggio + stampa), salvo F7
+            // che apre la lista contenitori (B-F7-FORMATO-LISTA).
             if (
                 response.success &&
                 response.requestType ==
@@ -324,52 +329,75 @@ class GlobalSearchActivity : BaseActivity() {
                 response.resultBoxNames.isNotEmpty()
             ) {
 
-                val heading =
-                    response.message
-                        .lineSequence()
-                        .firstOrNull()
-                        .orEmpty()
-                        .trim()
+                if (
+                    response.matchedPatternId ==
+                    SearchF7Pattern.ID
+                ) {
 
-                val listQuestion =
-                    if (
-                        response.resultObjectNames
-                            .isNotEmpty()
-                    ) {
+                    val heading =
+                        response.message
+                            .lineSequence()
+                            .firstOrNull()
+                            .orEmpty()
+                            .trim()
 
-                        val objects =
-                            response.resultObjectNames
-                                .joinToString(
-                                    ", "
-                                )
-
+                    val listQuestion =
                         if (
-                            heading.contains(
-                                "("
-                            )
+                            response.resultObjectNames
+                                .isNotEmpty()
                         ) {
-                            heading
-                        } else {
-                            "$heading ($objects)"
-                        }
-                    } else {
-                        heading.ifBlank {
-                            question
-                        }
-                    }
 
-                openPipelineList(
-                    response.copy(
-                        boxTerms =
-                            SearchConfiguration.packLocationTerms(
-                                response.resultBoxNames
-                            ),
-                        objectTerms = "",
-                        locationTerms = "",
-                        categoryTerms = ""
-                    ),
-                    listQuestion
+                            val objects =
+                                response.resultObjectNames
+                                    .joinToString(
+                                        ", "
+                                    )
+
+                            if (
+                                heading.contains(
+                                    "("
+                                )
+                            ) {
+                                heading
+                            } else {
+                                "$heading ($objects)"
+                            }
+                        } else {
+                            heading.ifBlank {
+                                question
+                            }
+                        }
+
+                    openPipelineList(
+                        response.copy(
+                            boxTerms =
+                                SearchConfiguration.packLocationTerms(
+                                    response.resultBoxNames
+                                ),
+                            objectTerms = "",
+                            locationTerms = "",
+                            categoryTerms = ""
+                        ),
+                        listQuestion
+                    )
+
+                    return@launch
+                }
+
+                showReply(
+                    response.message
                 )
+
+                printableQuestion =
+                    question
+
+                printableBoxNames =
+                    response.resultBoxNames
+
+                printableObjectNames =
+                    response.resultObjectNames
+
+                showPrintActions()
 
                 return@launch
             }
@@ -476,6 +504,171 @@ class GlobalSearchActivity : BaseActivity() {
         question: String
     ) {
 
+        // Stesso locale della Pipeline: senza contesto EN gli alias IT
+        // non riconoscono «objects» → inventario oggetti apre Contenitori
+        // (lista predefinita + report «No. containers»).
+        val locale =
+            LocaleManager.searchLocale(
+                this
+            )
+
+        val inventoryTarget =
+            SearchLocaleContext.run(
+                locale
+            ) {
+                InventoryListRouter.target(
+                    response,
+                    question
+                )
+            }
+
+        when (inventoryTarget) {
+
+            InventoryListTarget.CATEGORIES -> {
+
+                startActivity(
+                    Intent(
+                        this,
+                        com.example.boxmanagernew.ui.categories.CategoriesActivity::class.java
+                    ).apply {
+
+                        putExtra(
+                            SearchConfiguration.EXTRA_SEARCH_QUESTION,
+                            question
+                        )
+
+                        if (
+                            response.locationTerms.isNotBlank()
+                        ) {
+
+                            // Categorie usate in una posizione nominata.
+                            putExtra(
+                                SearchConfiguration.EXTRA_LOCATION_TERMS,
+                                response.locationTerms
+                            )
+                        } else {
+
+                            // Solo categorie presenti nei contenitori
+                            // (stesso layout Categorie, contenuto ad hoc).
+                            putExtra(
+                                "dashboardFilter",
+                                com.example.boxmanagernew.ui.categories.CategoryViewModel.FILTER_USED
+                            )
+                        }
+                    }
+                )
+
+                return
+            }
+
+            InventoryListTarget.LOCATIONS -> {
+
+                startActivity(
+                    Intent(
+                        this,
+                        com.example.boxmanagernew.ui.settings.LocationsActivity::class.java
+                    ).apply {
+
+                        putExtra(
+                            SearchConfiguration.EXTRA_SEARCH_QUESTION,
+                            question
+                        )
+
+                        putExtra(
+                            "dashboardFilter",
+                            com.example.boxmanagernew.ui.settings.LocationViewModel.FILTER_USED
+                        )
+                    }
+                )
+
+                return
+            }
+
+            InventoryListTarget.OBJECTS -> {
+
+                startActivity(
+                    Intent(
+                        this,
+                        com.example.boxmanagernew.ui.search.SearchResultActivity::class.java
+                    ).apply {
+
+                        // Needle vuoto = tutti gli oggetti; la domanda
+                        // va su EXTRA_SEARCH_QUESTION (chiave distinta).
+                        putExtra(
+                            SearchConfiguration.EXTRA_DASHBOARD_SEARCH_QUERY,
+                            ""
+                        )
+
+                        putExtra(
+                            SearchConfiguration.EXTRA_SEARCH_QUESTION,
+                            question
+                        )
+
+                        if (
+                            response.locationTerms.isNotBlank()
+                        ) {
+
+                            putExtra(
+                                SearchConfiguration.EXTRA_LOCATION_TERMS,
+                                response.locationTerms
+                            )
+                        }
+                    }
+                )
+
+                return
+            }
+
+            InventoryListTarget.EMPTY_BOXES -> {
+
+                startActivity(
+                    Intent(
+                        this,
+                        MainActivity::class.java
+                    ).apply {
+
+                        putExtra(
+                            "dashboardFilter",
+                            BoxViewModel.FILTER_EMPTY_BOXES
+                        )
+
+                        putExtra(
+                            SearchConfiguration.EXTRA_SEARCH_QUESTION,
+                            question
+                        )
+                    }
+                )
+
+                return
+            }
+
+            InventoryListTarget.BOXES -> {
+
+                startActivity(
+                    Intent(
+                        this,
+                        MainActivity::class.java
+                    ).apply {
+
+                        putExtra(
+                            SearchConfiguration.EXTRA_SEARCH_QUESTION,
+                            question
+                        )
+
+                        putExtra(
+                            SearchConfiguration.EXTRA_INVENTORY_LIST,
+                            SearchConfiguration.INVENTORY_BOX
+                        )
+                    }
+                )
+
+                return
+            }
+
+            null ->
+                Unit
+        }
+
         startActivity(
             Intent(
                 this,
@@ -536,34 +729,6 @@ class GlobalSearchActivity : BaseActivity() {
                     SearchConfiguration.EXTRA_SEARCH_QUESTION,
                     question
                 )
-
-                if (
-                    response.objectTerms.isBlank() &&
-                    response.locationTerms.isBlank() &&
-                    response.categoryTerms.isBlank() &&
-                    response.boxTerms.isBlank()
-                ) {
-
-                    val inventoryDrive =
-                        when (
-                            response.archiveTransformation
-                        ) {
-
-                            SearchArchiveTransformation.CATEGORY_TO_BOX ->
-                                SearchConfiguration.INVENTORY_CATEGORY
-
-                            SearchArchiveTransformation.LOCATION_TO_BOX ->
-                                SearchConfiguration.INVENTORY_LOCATION
-
-                            else ->
-                                SearchConfiguration.INVENTORY_BOX
-                        }
-
-                    putExtra(
-                        SearchConfiguration.EXTRA_INVENTORY_LIST,
-                        inventoryDrive
-                    )
-                }
             }
         )
     }

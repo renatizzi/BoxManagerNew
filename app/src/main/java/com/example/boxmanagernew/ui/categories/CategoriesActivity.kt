@@ -45,6 +45,9 @@ class CategoriesActivity : BaseActivity() {
 
     private lateinit var outputController: ViewOutputController
 
+    private var reportQuestion =
+        ""
+
     private val voiceSearch =
         VoiceSearchController(this)
 
@@ -198,7 +201,9 @@ class CategoriesActivity : BaseActivity() {
                 title = ViewOutputConfiguration.pageTitleCategories(this),
                 filterLine = ViewOutputConfiguration.filterLine(
                     this,
-                    editSearch.text.toString().trim()
+                    reportQuestion.ifBlank {
+                        editSearch.text.toString().trim()
+                    }
                 ),
                 countLine = ViewOutputConfiguration.countCategories(
                     this,
@@ -363,17 +368,29 @@ class CategoriesActivity : BaseActivity() {
 
     private fun applyIncomingSearch() {
 
-        intent.getStringExtra(
-            "dashboardFilter"
-        )?.let { filter ->
+        reportQuestion =
+            intent.getStringExtra(
+                SearchConfiguration.EXTRA_SEARCH_QUESTION
+            ).orEmpty()
 
-            if (
-                filter ==
+        // Parità LocationsActivity: FILTER_USED è il filtro inventario.
+        // La domanda resta solo per il report — non come needle SimpleSearch
+        // (altrimenti «Quali sono le categorie in uso?» svuota la lista).
+        val dashboardFilter =
+            intent.getStringExtra(
+                "dashboardFilter"
+            )
+
+        if (
+            dashboardFilter ==
+            CategoryViewModel.FILTER_USED
+        ) {
+
+            viewModel.filter(
                 CategoryViewModel.FILTER_USED
-            ) {
+            )
 
-                viewModel.filter(filter)
-            }
+            return
         }
 
         val locationTerms =

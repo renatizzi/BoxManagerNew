@@ -2,13 +2,10 @@ package com.example.boxmanagernew.domain.locale
 
 /**
  * Nomi ufficiali di seed (AppDatabase) IT → EN.
- * Riscrivono solo le righe ancora uguali al default IT
- * al primo switch italiano → inglese (B-DEFAULT-IT-EN).
+ * Riscrivono solo le righe ancora uguali al default IT/EN
+ * al cambio lingua (B-DEFAULT-IT-EN).
  */
 object DefaultArchiveLabels {
-
-    const val PREFS_FLAG =
-        "defaults_en_applied"
 
     /** 16 categorie di seed + 3 posizioni. */
     val categoryItToEn =

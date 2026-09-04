@@ -601,7 +601,7 @@ class MainActivity : BaseActivity() {
 
         if (
             !intent.hasExtra(
-                SearchConfiguration.EXTRA_SEARCH_QUESTION
+                SearchConfiguration.EXTRA_DASHBOARD_SEARCH_QUERY
             )
         ) {
             return
@@ -609,7 +609,7 @@ class MainActivity : BaseActivity() {
 
         val query =
             intent.getStringExtra(
-                SearchConfiguration.EXTRA_SEARCH_QUESTION
+                SearchConfiguration.EXTRA_DASHBOARD_SEARCH_QUERY
             ) ?: ""
 
         ignoreSearchChanges =
