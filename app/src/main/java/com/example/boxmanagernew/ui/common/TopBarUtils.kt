@@ -55,7 +55,7 @@ object TopBarUtils {
     ) {
 
         // Come 1.2: titolo in-app sempre "BoxManager".
-        // app_name è il launcher (sul flavor famiglia: "BoxManager Famiglia").
+        // app_name è il launcher; stesso prodotto BoxManager (anche flavor sviluppo).
         titleView.text =
             context.getString(R.string.topbar_app_title)
 

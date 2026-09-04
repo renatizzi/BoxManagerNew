@@ -12,13 +12,7 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md). Restano visibili
 
 | ID | Indicazione |
 |----|-------------|
-| **B-F7-FORMATO-LISTA** | F7 casi 4/7 IT+EN: oggetto comune tra parentesi + contenitori in formato lista |
-| **B-NOME-APP-BAT** | Nome app e installa/crea.bat: ancora «boxmanager famiglia» (nome errato) |
-| **B-VOCE-OGGETTO** | Inserimento vocale per nome e descrizione oggetto (da valutare) |
-| **B-NOME-AUTO-SAVE** | Impostazioni: memorizzare il nome utente appena inserito (restando modificabile), senza tasto Salva |
-| **B-DEFAULT-IT-EN** | Tradurre i default (3 location + 16 category) al primo switch italiano → inglese |
-| **B-SEL-CARTELLA** | Selettore cartella anche su drive non visti da Android (NAS / disco di rete) |
-| **B-RICERCA-SENZA-SPECIFICHE** | Stampare tutto senza stringa (es. tutti i contenitori), oggi i filtri ricerca lo impediscono |
+| **B-SEL-CARTELLA** | Selettore cartella anche su drive non visti da Android (NAS); SAF non basta da solo — valutazione aperta |
 
 ---
 
@@ -27,13 +21,13 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md). Restano visibili
 | Voce | Valore |
 |------|--------|
 | **Branch sviluppo** | `cursor/family-unione-unificata-e5b5` (integrazione) |
-| **Build sviluppo** | **1.3-famigliaB5.7** (versionCode **1326**) — etichetta di build, non nome app |
+| **Build sviluppo** | **1.3-famigliaB5.8** (versionCode **1327**) — etichetta di build, non nome app |
 | **Play** | BoxManager **1.2** su `main` (vc 3) — test chiuso; **identica** salvo bug bloccanti |
 | **Freeze Play 1.2** | `cursor/versione-test-5409` (snapshot `main`; PR #14) |
 | **Dopo il test** | La BoxManager di sviluppo **sostituisce** la 1.2 come ufficiale. Non è un optional. [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md) |
 | **Archivio condiviso B0–B5** | **CONVALIDATO** — Nota Integrata **9.2** Allegato **4.20** |
 | **Filone correttivi** | P0 chiuso; **P1 CONVALIDATO** B5.7; P2 continuo |
-| **Backlog aperto** | **B-F7-FORMATO-LISTA**, **B-NOME-APP-BAT**, **B-VOCE-OGGETTO**, **B-NOME-AUTO-SAVE**, **B-DEFAULT-IT-EN**, **B-SEL-CARTELLA**, **B-RICERCA-SENZA-SPECIFICHE** — in evidenza nel Promemoria; non in carico finché Renato non decide |
+| **Backlog aperto** | **B-SEL-CARTELLA** — NAS/SAF; valutazione aperta. Altre voci Promemoria chiuse 04/09 |
 
 ### Documenti vincolanti (leggere prima di codice)
 
@@ -67,7 +61,7 @@ CONVALIDATO 01/09/2026. File: `BoxDetailActivity.refreshHeader()`, `SearchResult
 
 1. `git checkout cursor/family-unione-unificata-e5b5 && git pull`
 2. Leggere tabella P0 in [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) e [ASSESSMENT](ASSESSMENT_CORRETTIVI.md).
-3. Verificare topbar attesa **1.3-famigliaB5.7** in `app/build.gradle.kts` (flavor Gradle `famiglia` = build di sviluppo).
+3. Verificare topbar attesa **1.3-famigliaB5.8** in `app/build.gradle.kts` (flavor Gradle `famiglia` = build di sviluppo).
 
 ### Fase 2 — P0 residuo
 
@@ -127,7 +121,7 @@ git merge origin/main
 ./gradlew :app:testFamigliaDebugUnitTest --tests "com.example.boxmanagernew.viewoutput.ContainerViewSnapshotFactoryTest"
 ```
 
-**Windows:** `INSTALLA_FAMIGLIA.bat` — topbar attesa **1.3-famigliaB5.7**.
+**Windows:** `INSTALLA_FAMIGLIA.bat` — topbar attesa **1.3-famigliaB5.8**.
 
 **Play locale (regressione):** `./gradlew :app:assemblePlayDebug`
 
@@ -157,14 +151,15 @@ Aggiornare sempre: `app/build.gradle.kts`, `INSTALLA_FAMIGLIA.bat`, `docs/famigl
 ```
 Continua filone CORRETTIVI post-B5 da docs/famiglia/PROMPT_CONTINUITA_CORRETTIVI.md.
 
-Branch: cursor/family-unione-unificata-e5b5
-Build: 1.3-famigliaB5.7
+Branch: cursor/promemoria-backlog-d69a
+Build: 1.3-famigliaB5.8
 
 Priorità:
 1) P2: se bug **bloccante** Play, fix 1.2 su main poi riportarlo sullo sviluppo
 2) Durante il test non mettere lo sviluppo su main
 3) Non riaprire P0/P1 senza evidenza nuova
-4) Una sola app: BoxManager — niente «app famiglia»
+4) B-SEL-CARTELLA solo con SI prodotto
+5) Una sola app: BoxManager — niente «app famiglia»
 
 Leggi ASSESSMENT + STRATEGIA + PROMEMORIA prima del codice.
 ```

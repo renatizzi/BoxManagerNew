@@ -317,10 +317,6 @@ class GlobalSearchActivity : BaseActivity() {
                 return@launch
             }
 
-            showReply(
-                response.message
-            )
-
             if (
                 response.success &&
                 response.requestType ==
@@ -328,17 +324,59 @@ class GlobalSearchActivity : BaseActivity() {
                 response.resultBoxNames.isNotEmpty()
             ) {
 
-                printableQuestion =
-                    question
+                val heading =
+                    response.message
+                        .lineSequence()
+                        .firstOrNull()
+                        .orEmpty()
+                        .trim()
 
-                printableBoxNames =
-                    response.resultBoxNames
+                val listQuestion =
+                    if (
+                        response.resultObjectNames
+                            .isNotEmpty()
+                    ) {
 
-                printableObjectNames =
-                    response.resultObjectNames
+                        val objects =
+                            response.resultObjectNames
+                                .joinToString(
+                                    ", "
+                                )
 
-                showPrintActions()
+                        if (
+                            heading.contains(
+                                "("
+                            )
+                        ) {
+                            heading
+                        } else {
+                            "$heading ($objects)"
+                        }
+                    } else {
+                        heading.ifBlank {
+                            question
+                        }
+                    }
+
+                openPipelineList(
+                    response.copy(
+                        boxTerms =
+                            SearchConfiguration.packLocationTerms(
+                                response.resultBoxNames
+                            ),
+                        objectTerms = "",
+                        locationTerms = "",
+                        categoryTerms = ""
+                    ),
+                    listQuestion
+                )
+
+                return@launch
             }
+
+            showReply(
+                response.message
+            )
         }
     }
 

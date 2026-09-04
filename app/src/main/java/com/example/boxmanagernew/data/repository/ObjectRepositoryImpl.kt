@@ -86,7 +86,8 @@ class ObjectRepositoryImpl(
         if (
             query.isBlank()
         ) {
-            return emptyList()
+            // Empty = all objects (B-RICERCA-SENZA-SPECIFICHE).
+            return dao.searchObjects()
         }
 
         val results =
@@ -115,7 +116,8 @@ class ObjectRepositoryImpl(
         if (
             SimpleSearch.needle(query).isEmpty()
         ) {
-            return emptyList()
+            // Empty filter = all objects (B-RICERCA-SENZA-SPECIFICHE).
+            return dao.searchObjects()
         }
 
         return dao.searchObjects()

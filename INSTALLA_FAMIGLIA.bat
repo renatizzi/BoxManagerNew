@@ -3,7 +3,7 @@ chcp 65001 >nul
 setlocal
 cd /d "%~dp0"
 
-echo === BoxManager Famiglia - installazione sul telefono ===
+echo === BoxManager - installazione sviluppo sul telefono ===
 echo.
 
 if not exist "gradlew.bat" (
@@ -44,6 +44,6 @@ if errorlevel 1 (
 )
 
 echo.
-echo FATTO. Apri "BoxManager Famiglia" sul telefono.
-echo Versione attesa in topbar: 1.3-famigliaB5.7
+echo FATTO. Apri "BoxManager" sul telefono.
+echo Versione attesa in topbar: 1.3-famigliaB5.8
 pause

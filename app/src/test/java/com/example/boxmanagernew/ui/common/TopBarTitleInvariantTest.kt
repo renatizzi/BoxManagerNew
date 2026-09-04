@@ -8,7 +8,8 @@ import java.io.File
 
 /**
  * Titolo topbar in-app = sempre "BoxManager" (1.2).
- * "BoxManager Famiglia" è solo il nome launcher del flavor famiglia.
+ * Launcher flavor sviluppo: stesso nome prodotto BoxManager
+ * (flavor Gradle `famiglia` resta solo variante di build).
  */
 class TopBarTitleInvariantTest {
 
@@ -32,10 +33,14 @@ class TopBarTitleInvariantTest {
     }
 
     @Test
-    fun famigliaLauncherName_staysBoxManagerFamiglia() {
+    fun famigliaLauncherName_isBoxManager() {
         assertEquals(
-            "BoxManager Famiglia",
+            "BoxManager",
             stringValue("famiglia/res/values/strings.xml", "app_name")
+        )
+        assertEquals(
+            "BoxManager",
+            stringValue("famiglia/res/values-en/strings.xml", "app_name")
         )
     }
 
