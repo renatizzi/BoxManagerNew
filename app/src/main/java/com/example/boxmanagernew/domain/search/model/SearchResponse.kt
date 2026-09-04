@@ -34,5 +34,8 @@ data class SearchResponse(
 
     val resultBoxNames: List<String> = emptyList(),
 
-    val resultObjectNames: List<String> = emptyList()
+    val resultObjectNames: List<String> = emptyList(),
+
+    /** Pattern Motore B (es. PATTERN_007 / F7); null se non applicabile. */
+    val matchedPatternId: String? = null
 )

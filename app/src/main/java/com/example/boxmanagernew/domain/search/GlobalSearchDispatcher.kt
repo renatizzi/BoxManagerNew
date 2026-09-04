@@ -255,6 +255,8 @@ class GlobalSearchDispatcher(
                         archiveTransformation,
                     requestType =
                         SearchRequestType.ARCHIVE_QUERY,
+                    matchedPatternId =
+                        SearchF7Pattern.ID,
                     debugMarker = debugMarker
                 )
             }

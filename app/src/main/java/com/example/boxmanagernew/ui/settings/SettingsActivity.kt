@@ -28,6 +28,7 @@ import com.example.boxmanagernew.ui.common.ThemeManager
 import com.google.android.material.switchmaterial.SwitchMaterial
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SettingsActivity : BaseActivity() {
 
@@ -84,6 +85,32 @@ class SettingsActivity : BaseActivity() {
 
         refreshAppShell()
         updateLanguageSelection()
+
+        // Ripara seed IT ancora presenti se la UI è già EN
+        // (sync interrotto dalla ricreazione Activity su B5.8).
+        repairSeedLabelsIfNeeded()
+    }
+
+    private fun repairSeedLabelsIfNeeded() {
+
+        lifecycleScope.launch(
+            Dispatchers.IO
+        ) {
+
+            if (
+                LocalePreference.isEnglish(
+                    LocaleManager.effectiveTag(
+                        this@SettingsActivity
+                    )
+                )
+            ) {
+
+                DefaultArchiveLocaleSync
+                    .applyEnglishDefaultsIfNeeded(
+                        applicationContext
+                    )
+            }
+        }
     }
 
     private fun setupViews() {
@@ -295,18 +322,33 @@ class SettingsActivity : BaseActivity() {
                 languageTag
             )
 
-        LocaleManager.setLanguage(this, languageTag)
+        // Sync seed PRIMA di setLanguage: altrimenti la ricreazione
+        // Activity interrompe il coroutine a metà elenco categorie.
+        lifecycleScope.launch {
 
-        if (switchingToEnglish) {
-
-            lifecycleScope.launch(
+            withContext(
                 Dispatchers.IO
             ) {
-                DefaultArchiveLocaleSync
-                    .applyEnglishDefaultsIfNeeded(
-                        applicationContext
-                    )
+
+                if (switchingToEnglish) {
+
+                    DefaultArchiveLocaleSync
+                        .applyEnglishDefaultsIfNeeded(
+                            applicationContext
+                        )
+                } else {
+
+                    DefaultArchiveLocaleSync
+                        .applyItalianDefaultsIfNeeded(
+                            applicationContext
+                        )
+                }
             }
+
+            LocaleManager.setLanguage(
+                this@SettingsActivity,
+                languageTag
+            )
         }
     }
 

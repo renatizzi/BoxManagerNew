@@ -21,7 +21,7 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md). Restano visibili
 | Voce | Valore |
 |------|--------|
 | **Branch sviluppo** | `cursor/family-unione-unificata-e5b5` (integrazione) |
-| **Build sviluppo** | **1.3-famigliaB5.8** (versionCode **1327**) — etichetta di build, non nome app |
+| **Build sviluppo** | **1.3-famigliaB5.9** (versionCode **1328**) — etichetta di build, non nome app |
 | **Play** | BoxManager **1.2** su `main` (vc 3) — test chiuso; **identica** salvo bug bloccanti |
 | **Freeze Play 1.2** | `cursor/versione-test-5409` (snapshot `main`; PR #14) |
 | **Dopo il test** | La BoxManager di sviluppo **sostituisce** la 1.2 come ufficiale. Non è un optional. [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md) |
@@ -61,7 +61,7 @@ CONVALIDATO 01/09/2026. File: `BoxDetailActivity.refreshHeader()`, `SearchResult
 
 1. `git checkout cursor/family-unione-unificata-e5b5 && git pull`
 2. Leggere tabella P0 in [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) e [ASSESSMENT](ASSESSMENT_CORRETTIVI.md).
-3. Verificare topbar attesa **1.3-famigliaB5.8** in `app/build.gradle.kts` (flavor Gradle `famiglia` = build di sviluppo).
+3. Verificare topbar attesa **1.3-famigliaB5.9** in `app/build.gradle.kts` (flavor Gradle `famiglia` = build di sviluppo).
 
 ### Fase 2 — P0 residuo
 
@@ -121,7 +121,7 @@ git merge origin/main
 ./gradlew :app:testFamigliaDebugUnitTest --tests "com.example.boxmanagernew.viewoutput.ContainerViewSnapshotFactoryTest"
 ```
 
-**Windows:** `INSTALLA_FAMIGLIA.bat` — topbar attesa **1.3-famigliaB5.8**.
+**Windows:** `INSTALLA_FAMIGLIA.bat` — topbar attesa **1.3-famigliaB5.9**.
 
 **Play locale (regressione):** `./gradlew :app:assemblePlayDebug`
 
@@ -151,8 +151,8 @@ Aggiornare sempre: `app/build.gradle.kts`, `INSTALLA_FAMIGLIA.bat`, `docs/famigl
 ```
 Continua filone CORRETTIVI post-B5 da docs/famiglia/PROMPT_CONTINUITA_CORRETTIVI.md.
 
-Branch: cursor/promemoria-backlog-d69a
-Build: 1.3-famigliaB5.8
+Branch: cursor/promemoria-fix-d69a
+Build: 1.3-famigliaB5.9
 
 Priorità:
 1) P2: se bug **bloccante** Play, fix 1.2 su main poi riportarlo sullo sviluppo

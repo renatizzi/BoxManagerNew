@@ -27,8 +27,11 @@ import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
 import com.example.boxmanagernew.domain.model.Box
 import com.example.boxmanagernew.domain.search.GlobalSearchDispatcher
 import com.example.boxmanagernew.domain.search.SearchConfiguration
+import com.example.boxmanagernew.domain.search.SearchF7Pattern
 import com.example.boxmanagernew.domain.search.SearchLocaleContext
 import com.example.boxmanagernew.ui.common.LocaleManager
+import com.example.boxmanagernew.domain.search.EmptyBoxesInventoryCue
+import com.example.boxmanagernew.ui.main.BoxViewModel
 import com.example.boxmanagernew.domain.search.model.SearchArchiveBoxRecord
 import com.example.boxmanagernew.domain.search.model.SearchArchiveIndex
 import com.example.boxmanagernew.domain.search.model.SearchArchiveObjectRecord
@@ -317,6 +320,8 @@ class GlobalSearchActivity : BaseActivity() {
                 return@launch
             }
 
+            // Motore B: output ad hoc (messaggio + stampa), salvo F7
+            // che apre la lista contenitori (B-F7-FORMATO-LISTA).
             if (
                 response.success &&
                 response.requestType ==
@@ -324,52 +329,75 @@ class GlobalSearchActivity : BaseActivity() {
                 response.resultBoxNames.isNotEmpty()
             ) {
 
-                val heading =
-                    response.message
-                        .lineSequence()
-                        .firstOrNull()
-                        .orEmpty()
-                        .trim()
+                if (
+                    response.matchedPatternId ==
+                    SearchF7Pattern.ID
+                ) {
 
-                val listQuestion =
-                    if (
-                        response.resultObjectNames
-                            .isNotEmpty()
-                    ) {
+                    val heading =
+                        response.message
+                            .lineSequence()
+                            .firstOrNull()
+                            .orEmpty()
+                            .trim()
 
-                        val objects =
-                            response.resultObjectNames
-                                .joinToString(
-                                    ", "
-                                )
-
+                    val listQuestion =
                         if (
-                            heading.contains(
-                                "("
-                            )
+                            response.resultObjectNames
+                                .isNotEmpty()
                         ) {
-                            heading
-                        } else {
-                            "$heading ($objects)"
-                        }
-                    } else {
-                        heading.ifBlank {
-                            question
-                        }
-                    }
 
-                openPipelineList(
-                    response.copy(
-                        boxTerms =
-                            SearchConfiguration.packLocationTerms(
-                                response.resultBoxNames
-                            ),
-                        objectTerms = "",
-                        locationTerms = "",
-                        categoryTerms = ""
-                    ),
-                    listQuestion
+                            val objects =
+                                response.resultObjectNames
+                                    .joinToString(
+                                        ", "
+                                    )
+
+                            if (
+                                heading.contains(
+                                    "("
+                                )
+                            ) {
+                                heading
+                            } else {
+                                "$heading ($objects)"
+                            }
+                        } else {
+                            heading.ifBlank {
+                                question
+                            }
+                        }
+
+                    openPipelineList(
+                        response.copy(
+                            boxTerms =
+                                SearchConfiguration.packLocationTerms(
+                                    response.resultBoxNames
+                                ),
+                            objectTerms = "",
+                            locationTerms = "",
+                            categoryTerms = ""
+                        ),
+                        listQuestion
+                    )
+
+                    return@launch
+                }
+
+                showReply(
+                    response.message
                 )
+
+                printableQuestion =
+                    question
+
+                printableBoxNames =
+                    response.resultBoxNames
+
+                printableObjectNames =
+                    response.resultObjectNames
+
+                showPrintActions()
 
                 return@launch
             }
@@ -544,25 +572,38 @@ class GlobalSearchActivity : BaseActivity() {
                     response.boxTerms.isBlank()
                 ) {
 
-                    val inventoryDrive =
-                        when (
-                            response.archiveTransformation
-                        ) {
+                    if (
+                        EmptyBoxesInventoryCue.matches(
+                            question
+                        )
+                    ) {
 
-                            SearchArchiveTransformation.CATEGORY_TO_BOX ->
-                                SearchConfiguration.INVENTORY_CATEGORY
+                        putExtra(
+                            "dashboardFilter",
+                            BoxViewModel.FILTER_EMPTY_BOXES
+                        )
+                    } else {
 
-                            SearchArchiveTransformation.LOCATION_TO_BOX ->
-                                SearchConfiguration.INVENTORY_LOCATION
+                        val inventoryDrive =
+                            when (
+                                response.archiveTransformation
+                            ) {
 
-                            else ->
-                                SearchConfiguration.INVENTORY_BOX
-                        }
+                                SearchArchiveTransformation.CATEGORY_TO_BOX ->
+                                    SearchConfiguration.INVENTORY_CATEGORY
 
-                    putExtra(
-                        SearchConfiguration.EXTRA_INVENTORY_LIST,
-                        inventoryDrive
-                    )
+                                SearchArchiveTransformation.LOCATION_TO_BOX ->
+                                    SearchConfiguration.INVENTORY_LOCATION
+
+                                else ->
+                                    SearchConfiguration.INVENTORY_BOX
+                            }
+
+                        putExtra(
+                            SearchConfiguration.EXTRA_INVENTORY_LIST,
+                            inventoryDrive
+                        )
+                    }
                 }
             }
         )

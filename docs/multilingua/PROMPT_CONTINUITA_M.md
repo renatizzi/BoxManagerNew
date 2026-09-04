@@ -44,10 +44,10 @@ Fonte viva: [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md). Rest
 | **M2c** | **Fatto** — messaggi 2.6 e card ricerca; locale UI allineato (PR **#21**, fix PR **#22**) |
 | **CK2** | **CONVALIDATO SI Renato device 04/09/2026** — 10/10 domande EN OK (dopo fix locale) |
 | **Prossimo pacchetto** | **M3** solo a test Play chiuso. Promemoria: resta **B-SEL-CARTELLA** |
-| **Branch lavoro** | `cursor/promemoria-backlog-d69a` |
-| **Branch base** | `cursor/ck2-en-locale-d69a` |
+| **Branch lavoro** | `cursor/promemoria-fix-d69a` |
+| **Branch base** | `cursor/promemoria-backlog-d69a` |
 | **Play** | BoxManager **1.2** su `main`, identica per tutto il test. Lo **stesso** BoxManager di sviluppo (archivio condiviso + inglese) a test chiuso **sostituisce** la 1.2. Si tocca 1.2 **solo** per bug bloccanti. |
-| **Build sviluppo** | Topbar **1.3-famigliaB5.8** (etichetta di build, non un altro nome di app). |
+| **Build sviluppo** | Topbar **1.3-famigliaB5.9** (etichetta di build, non un altro nome di app). |
 | **Ricerca avanzata EN** | Pipeline 0–10 invariata; **niente** traduttore EN→IT; **niente** interprete semantico (Nota 3.3.9) |
 | **Checkpoint** | **CK0** ✅; **S1–S3 SI**; **CK1** ✅; **CK2** ✅ |
 
@@ -88,12 +88,12 @@ Apri il progetto `BoxManagerNew`. In basso: **Terminal**. Incolla **tutto il blo
 
 ```
 git fetch origin
-git checkout -B cursor/promemoria-backlog-d69a origin/cursor/promemoria-backlog-d69a
+git checkout -B cursor/promemoria-fix-d69a origin/cursor/promemoria-fix-d69a
 ```
 
-Poi: Sync Gradle se lo chiede; variante **famigliaDebug** (non `play`); **Run** sul telefono. Topbar attesa: **1.3-famigliaB5.8**.
+Poi: Sync Gradle se lo chiede; variante **famigliaDebug** (non `play`); **Run** sul telefono. Topbar attesa: **1.3-famigliaB5.9**.
 
-**CK2 già CONVALIDATO** su B5.7 — non ripetere i 10 test EN. Su B5.8 verificare in particolare: nome launcher **BoxManager**, auto-save nome utente, default IT→EN, F7 + formato lista, ricerca senza stringa, mic in oggetto.
+**Ritest B5.9 (dopo KO B5.8):** Motore B di nuovo a messaggio+stampa (F7 resta lista); contenitori vuoti; categorie seed EN/IT; swipe Utility→Impostazioni; card contenitore in IT. Non ripetere i 10 test CK2.
 
 ### 2. Archivio da inserire (se è vuoto)
 
@@ -236,9 +236,9 @@ git checkout -b cursor/multilingua-m1a-5409
 
 ```
 Continua filone M — inglese in BoxManager da docs/multilingua/PROMPT_CONTINUITA_M.md
-Pacchetto: CK2 CONVALIDATO; backlog promemoria su B5.8; attesa M3 a test Play chiuso
-Branch: cursor/promemoria-backlog-d69a
-Vincoli: non toccare main/1.2; B-SEL-CARTELLA solo con SI prodotto; niente Motore B.
+Pacchetto: fix ritest promemoria B5.9; CK2 CONVALIDATO; attesa M3 a test Play chiuso
+Branch: cursor/promemoria-fix-d69a
+Vincoli: non toccare main/1.2; B-SEL-CARTELLA solo con SI prodotto; niente Motore B nuovo.
 ```
 
 ---

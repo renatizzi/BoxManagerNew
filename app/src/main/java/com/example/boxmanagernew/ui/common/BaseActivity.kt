@@ -145,6 +145,9 @@ abstract class BaseActivity : AppCompatActivity() {
             is CategoriesActivity ->
                 openSwipe(UtilityActivity::class.java)
 
+            is UtilityActivity ->
+                openSwipe(SettingsActivity::class.java)
+
             is SettingsActivity ->
                 return
         }

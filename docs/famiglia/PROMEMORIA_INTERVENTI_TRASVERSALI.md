@@ -15,6 +15,20 @@ Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino
 
 ---
 
+## Fix ritest B5.8 → B5.9 (`cursor/promemoria-fix-d69a`)
+
+Esito device Renato 04/09 su B5.8:
+
+| KO | Causa / fix |
+|----|-------------|
+| **Motore B ad hoc** (punto più grave) | B-F7 apriva la lista per *tutte* le ARCHIVE_QUERY; ripristinato messaggio+stampa; lista solo per F7 (`matchedPatternId`) |
+| **Contenitori vuoti → tutti** | Inventario Motore A senza filtro; ora `FILTER_EMPTY_BOXES` se domanda con cue vuoto+box |
+| **Categorie seed ancora IT** | Sync EN partiva *dopo* `setLanguage` e veniva tagliato; ora sync completo *prima*, + riparazione all’apertura Impostazioni, + reverse EN→IT |
+| **Swipe Utility→Impostazioni** | Mancava `UtilityActivity` in `navigateNext` |
+| **Card contenitore EN in IT** | Nomi seed restavano EN; reverse seed al ritorno in IT |
+
+---
+
 ## Presa in carico 04/09/2026 (`cursor/promemoria-backlog-d69a`)
 
 | ID | Esito |

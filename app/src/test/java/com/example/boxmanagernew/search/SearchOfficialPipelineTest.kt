@@ -1684,6 +1684,11 @@ class SearchOfficialPipelineTest {
                 question,
                 response.success
             )
+            assertEquals(
+                question,
+                SearchF7Pattern.ID,
+                response.matchedPatternId
+            )
             assertTrue(
                 question,
                 response.message.startsWith(
