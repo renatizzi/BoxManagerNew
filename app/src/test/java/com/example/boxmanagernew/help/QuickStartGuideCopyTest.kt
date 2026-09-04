@@ -108,6 +108,57 @@ class QuickStartGuideCopyTest {
         assertTrue(source.contains("if (includeFamilyBeta)"))
     }
 
+    @Test
+    fun utility_mentionsNetworkDriveViaSettings() {
+        assertTrue(
+            stringIt("guide_utility_network_folder")
+                .contains("Disco di rete")
+        )
+        assertTrue(
+            stringEn("guide_utility_network_folder")
+                .contains("Network drive")
+        )
+        assertTrue(
+            stringIt("guide_utility_network_folder")
+                .contains("Impostazioni")
+        )
+        val jargon = listOf(
+            "NAS",
+            "CIFS",
+            "SMB",
+            "SAF",
+            "Documents Provider",
+            "helper"
+        )
+        val userFacing = listOf(
+            "guide_utility_network_folder",
+            "settings_network_drive_card",
+            "settings_network_drive_status_ready",
+            "settings_network_drive_status_missing",
+            "network_drive_dialog_title",
+            "network_drive_dialog_need_app",
+            "network_drive_dialog_ready",
+            "network_drive_install_helper",
+            "network_drive_open_helper",
+            "network_drive_open_store",
+            "storage_folder_network_or_cloud"
+        )
+        for (name in userFacing) {
+            val it = stringIt(name)
+            val en = stringEn(name)
+            for (term in jargon) {
+                assertFalse(
+                    "$name IT contains $term",
+                    it.contains(term, ignoreCase = true)
+                )
+                assertFalse(
+                    "$name EN contains $term",
+                    en.contains(term, ignoreCase = true)
+                )
+            }
+        }
+    }
+
     private fun kotlinSource(relativeUnderJava: String): String {
         val path = "com/example/boxmanagernew/$relativeUnderJava"
         return File("app/src/main/java/$path")

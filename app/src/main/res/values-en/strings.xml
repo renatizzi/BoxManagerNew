@@ -115,6 +115,15 @@
     <string name="settings_palette_blue">Blue</string>
     <string name="settings_palette_green">Green</string>
     <string name="settings_locations_card">Usual storage locations</string>
+    <string name="settings_network_drive_card">Network drive</string>
+    <string name="settings_network_drive_status_ready">Ready: when you run Backup or save a file, you can pick the drive.</string>
+    <string name="settings_network_drive_status_missing">A free app is needed (once only). Tap here to start.</string>
+    <string name="network_drive_dialog_title">Save to a network drive</string>
+    <string name="network_drive_dialog_need_app">To save files on a drive at home (hard disk or computer, on the same Wi‑Fi as the phone):\n\n1. Tap Install the app: the store opens. Install the free app shown.\n2. In that app, add the drive once (it asks where it is and, if needed, the password).\n3. Return to BoxManager → Utility → Backup → Browse and choose that folder.\n\nThe Files by Google app is not enough for this.</string>
+    <string name="network_drive_dialog_ready">The free app is already installed.\n\n1. Tap Open the app and, if you have not yet, add the drive.\n2. Return to BoxManager → Utility → Backup → Browse and choose that folder.\n\nNext time BoxManager can reuse the same folder.</string>
+    <string name="network_drive_install_helper">Install the app</string>
+    <string name="network_drive_open_helper">Open the app</string>
+    <string name="network_drive_open_store">Open in the store</string>
     <string name="settings_save">SAVE</string>
     <string name="settings_saved">Saved</string>
     <string name="settings_language_title">Language</string>
@@ -331,6 +340,7 @@
     <string name="guide_section_dashboard_b3">Advanced search (natural language): from Full archive.</string>
     <string name="guide_section_utility_title">Utility</string>
     <string name="guide_utility_backup">Backup and Restore to save the archive (use a folder outside the app).</string>
+    <string name="guide_utility_network_folder">To save to a network drive: in Settings open Network drive and follow the steps; then in Backup tap Browse.</string>
     <string name="guide_utility_import">Import data from a CSV file to work with external files (*).</string>
     <string name="guide_utility_qr">QR code to see a box\'s contents using the camera.</string>
     <string name="guide_utility_family_share">Share Archive to update and share your archive data with your family.</string>
@@ -413,6 +423,13 @@
     <string name="object_quantity_label">Quantity: %1$s</string>
     <string name="qr_label_pdf_name">Label.pdf</string>
     <string name="folder_selected_label">Selected folder</string>
+    <string name="storage_folder_pick_title">Choose where to save</string>
+    <string name="storage_folder_browse_all">All folders…</string>
+    <string name="storage_folder_network_or_cloud">Network drive or online space already linked</string>
+    <string name="storage_folder_volume_primary">Device storage</string>
+    <string name="storage_folder_volume_removable">Removable storage</string>
+    <string name="storage_folder_volume_shared">Shared / mounted area</string>
+    <string name="storage_folder_volume_fallback">Storage</string>
     <string name="common_print">Print</string>
 
 </resources>

@@ -53,6 +53,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import com.example.boxmanagernew.storage.OpenStorageTreeContract
+import com.example.boxmanagernew.storage.StorageFolderPicker
 
 class MainActivity : BaseActivity() {
 
@@ -86,7 +88,7 @@ class MainActivity : BaseActivity() {
 
     private val exportFolderPicker =
         registerForActivityResult(
-            ActivityResultContracts.OpenDocumentTree()
+            OpenStorageTreeContract()
         ) { uri ->
 
             if (uri != null) {
@@ -762,7 +764,7 @@ class MainActivity : BaseActivity() {
             ) {
                 onExportFolderChosen(saved)
             } else {
-                exportFolderPicker.launch(null)
+                StorageFolderPicker.choose(this@MainActivity, exportFolderPicker)
             }
         }
     }
@@ -811,7 +813,7 @@ class MainActivity : BaseActivity() {
                 )
             },
             onBrowseFolder = {
-                exportFolderPicker.launch(null)
+                StorageFolderPicker.choose(this, exportFolderPicker)
             },
             folderName = exportPersister.folderDisplayName(uri)
         )

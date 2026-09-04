@@ -11,7 +11,7 @@ Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino
 
 | ID | Data | Indicazione | Stato |
 |----|------|-------------|-------|
-| **B-SEL-CARTELLA** | M1 / CK1 | Selettore cartella (Backup, Esporta, Condivisione tabelle, …): estendere la scelta anche ai drive **non riconosciuti direttamente da Android** (es. disco di rete locale / NAS SMB). **Valutazione 04/09:** SAF non elenca SMB da solo; il NAS compare solo se montato/esposto in Files. Documentato in [INSTALLA_SENZA_RUN.md](INSTALLA_SENZA_RUN.md). Serve scelta prodotto (provider terzi / istruzioni utente) prima di altro codice | **Aperto** |
+| **B-SEL-CARTELLA** | M1 / CK1 | **Disco di rete:** card Impostazioni + guida semplice [GUIDA_DISCO_RETE.md](GUIDA_DISCO_RETE.md). Linguaggio utente basso profilo (no NAS/CIFS/SMB in UI e guida). Nota ufficiale a fine ciclo | **In ritest** |
 
 ---
 

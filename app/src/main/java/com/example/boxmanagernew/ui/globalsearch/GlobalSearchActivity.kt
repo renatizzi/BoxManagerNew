@@ -51,6 +51,8 @@ import com.example.boxmanagernew.viewoutput.ui.ViewOutputController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import com.example.boxmanagernew.storage.OpenStorageTreeContract
+import com.example.boxmanagernew.storage.StorageFolderPicker
 
 class GlobalSearchActivity : BaseActivity() {
 
@@ -76,7 +78,7 @@ class GlobalSearchActivity : BaseActivity() {
 
     private val exportFolderPicker =
         registerForActivityResult(
-            ActivityResultContracts.OpenDocumentTree()
+            OpenStorageTreeContract()
         ) { uri ->
 
             if (
@@ -789,9 +791,7 @@ class GlobalSearchActivity : BaseActivity() {
                     )
                 },
                 launchFolderPicker = {
-                    exportFolderPicker.launch(
-                        null
-                    )
+                    StorageFolderPicker.choose(this, exportFolderPicker)
                 }
             )
 
