@@ -49,6 +49,37 @@ class InventoryListRouterTest {
     }
 
     @Test
+    fun objectsInNamedLocation_opensObjectsReport() {
+        SearchLocaleContext.run(SearchLocale.IT) {
+            assertEquals(
+                InventoryListTarget.OBJECTS,
+                InventoryListRouter.target(
+                    nav(
+                        SearchArchiveTransformation.LOCATION_TO_BOX,
+                        locationTerms = "Cantina"
+                    ),
+                    "Quali oggetti ho in cantina?"
+                )
+            )
+        }
+    }
+
+    @Test
+    fun containersInNamedLocation_staysOnContainers() {
+        SearchLocaleContext.run(SearchLocale.IT) {
+            assertNull(
+                InventoryListRouter.target(
+                    nav(
+                        SearchArchiveTransformation.LOCATION_TO_BOX,
+                        locationTerms = "Cantina"
+                    ),
+                    "Elenco dei contenitori che sono in cantina"
+                )
+            )
+        }
+    }
+
+    @Test
     fun boxInventory_opensBoxes() {
         SearchLocaleContext.run(SearchLocale.IT) {
             assertEquals(

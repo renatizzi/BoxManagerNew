@@ -589,6 +589,16 @@ class GlobalSearchActivity : BaseActivity() {
                             SearchConfiguration.EXTRA_SEARCH_QUESTION,
                             question
                         )
+
+                        if (
+                            response.locationTerms.isNotBlank()
+                        ) {
+
+                            putExtra(
+                                SearchConfiguration.EXTRA_LOCATION_TERMS,
+                                response.locationTerms
+                            )
+                        }
                     }
                 )
 

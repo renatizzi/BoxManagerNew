@@ -10,7 +10,8 @@ import com.example.boxmanagernew.util.CanonicalNormalizer
  *
  * - CATEGORY → Categorie **usate** (nei contenitori), non l'anagrafica intera
  * - OBJECT → report oggetti (SearchResult), non lista contenitori
- * - LOCATION → Posizioni
+ * - LOCATION type-only → Posizioni usate
+ * - LOCATION nominata + alias OBJECT → report oggetti filtrati per luogo
  * - BOX / vuoti → Contenitori
  *
  * Navigazione nominata (termini object/box/category) → null (lista Contenitori).
@@ -54,12 +55,16 @@ object InventoryListRouter {
                 InventoryListTarget.CATEGORIES
 
             SearchArchiveTransformation.LOCATION_TO_BOX ->
-                if (
-                    response.locationTerms.isBlank()
-                ) {
-                    InventoryListTarget.LOCATIONS
-                } else {
-                    null
+                when {
+                    response.locationTerms.isBlank() ->
+                        InventoryListTarget.LOCATIONS
+
+                    // «Quali oggetti ho in cantina?» → report oggetti, non lista Contenitori.
+                    objectOnlyCue(question) ->
+                        InventoryListTarget.OBJECTS
+
+                    else ->
+                        null
                 }
 
             SearchArchiveTransformation.NONE ->
@@ -75,6 +80,20 @@ object InventoryListRouter {
     private fun objectOrBoxInventory(
         question: String
     ): InventoryListTarget {
+
+        return when {
+
+            objectOnlyCue(question) ->
+                InventoryListTarget.OBJECTS
+
+            else ->
+                InventoryListTarget.BOXES
+        }
+    }
+
+    private fun objectOnlyCue(
+        question: String
+    ): Boolean {
 
         val normalized =
             SearchNormalizer()
@@ -100,13 +119,6 @@ object InventoryListRouter {
                 )
             }
 
-        return when {
-
-            objectCue && !boxCue ->
-                InventoryListTarget.OBJECTS
-
-            else ->
-                InventoryListTarget.BOXES
-        }
+        return objectCue && !boxCue
     }
 }

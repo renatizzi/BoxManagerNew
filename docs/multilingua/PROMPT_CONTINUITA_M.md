@@ -47,7 +47,7 @@ Fonte viva: [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md). Rest
 | **Branch lavoro** | `cursor/promemoria-fix-d69a` |
 | **Branch base** | `cursor/promemoria-backlog-d69a` |
 | **Play** | BoxManager **1.2** su `main`, identica per tutto il test. Lo **stesso** BoxManager di sviluppo (archivio condiviso + inglese) a test chiuso **sostituisce** la 1.2. Si tocca 1.2 **solo** per bug bloccanti. |
-| **Build sviluppo** | Topbar **1.3-famigliaB5.11** (etichetta di build, non un altro nome di app). |
+| **Build sviluppo** | Topbar **1.3-famigliaB5.13** (etichetta di build, non un altro nome di app). |
 | **Ricerca avanzata EN** | Pipeline 0–10 invariata; **niente** traduttore EN→IT; **niente** interprete semantico (Nota 3.3.9) |
 | **Checkpoint** | **CK0** ✅; **S1–S3 SI**; **CK1** ✅; **CK2** ✅ |
 
@@ -91,9 +91,9 @@ git fetch origin
 git checkout -B cursor/promemoria-fix-d69a origin/cursor/promemoria-fix-d69a
 ```
 
-Poi: Sync Gradle se lo chiede; variante **famigliaDebug** (non `play`); **Run** sul telefono. Topbar attesa: **1.3-famigliaB5.11**.
+Poi: Sync Gradle se lo chiede; variante **famigliaDebug** (non `play`); **Run** sul telefono. Topbar attesa: **1.3-famigliaB5.13**.
 
-**Ritest B5.11:** «categorie usate» → solo usate; «tutti gli oggetti» → report oggetti; F7 = lista contenitori; altro Motore B = messaggio+stampa.
+**Ritest B5.13:** audit 20 domande OK; «Quali oggetti ho in cantina?» → report oggetti filtrati; oggetti in archivio → SearchResult; categorie/luoghi in uso → FILTER_USED; F7 lista; altro Motore B messaggio+stampa.
 
 ### 2. Archivio da inserire (se è vuoto)
 
@@ -236,7 +236,7 @@ git checkout -b cursor/multilingua-m1a-5409
 
 ```
 Continua filone M — inglese in BoxManager da docs/multilingua/PROMPT_CONTINUITA_M.md
-Pacchetto: fix ritest promemoria B5.11; CK2 CONVALIDATO; attesa M3 a test Play chiuso
+Pacchetto: fix ritest promemoria B5.13; CK2 CONVALIDATO; attesa M3 a test Play chiuso
 Branch: cursor/promemoria-fix-d69a
 Vincoli: non toccare main/1.2; B-SEL-CARTELLA solo con SI prodotto; niente Motore B nuovo.
 ```

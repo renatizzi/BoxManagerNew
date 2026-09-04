@@ -15,18 +15,21 @@ Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino
 
 ---
 
-## Fix ritest B5.8 → B5.11 (`cursor/promemoria-fix-d69a`)
+## Fix ritest B5.8 → B5.13 (`cursor/promemoria-fix-d69a`)
 
 Regressione introdotta da **B-F7-FORMATO-LISTA**: l’apertura lista Contenitori
 per layout F7 aveva dirottato anche inventari/report degli altri Core.
 
 | Domanda | Output atteso (ripristinato) |
 |---------|------------------------------|
-| Categorie usate / elenco categorie | Lista Categorie con **solo usate** (`FILTER_USED`), non anagrafica intera |
-| Tutti gli oggetti in archivio | Report oggetti (`SearchResultActivity`), non contenitori |
-| Elenco posizioni | Lista Posizioni |
+| Categorie usate / elenco categorie | Lista Categorie con **solo usate** (`FILTER_USED`); contatore = trovate; report con domanda |
+| Tutti gli oggetti in archivio | Report oggetti con domanda utente |
+| **Quali oggetti ho in cantina?** | Report oggetti filtrati per luogo (non lista Contenitori) |
+| Elenco posizioni / luoghi in uso | Lista Posizioni **usate** (`FILTER_USED`); report con domanda |
 | F7 (domande 4/7 CK2) | Lista contenitori con layout card (unico caso Motore B → lista) |
 | Altro Motore B | Messaggio + stampa ad hoc |
+
+**B5.13:** audit completo 20 domande (4 Renato + inventario + CK2 EN); fix KO «oggetti in cantina».
 
 ---
 
