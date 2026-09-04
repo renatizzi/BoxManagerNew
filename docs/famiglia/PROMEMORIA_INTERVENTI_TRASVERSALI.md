@@ -15,17 +15,18 @@ Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino
 
 ---
 
-## Fix ritest B5.8 → B5.9 (`cursor/promemoria-fix-d69a`)
+## Fix ritest B5.8 → B5.10 (`cursor/promemoria-fix-d69a`)
 
-Esito device Renato 04/09 su B5.8:
+Esito device Renato 04/09 su B5.8/B5.9:
 
 | KO | Causa / fix |
 |----|-------------|
-| **Motore B ad hoc** (punto più grave) | B-F7 apriva la lista per *tutte* le ARCHIVE_QUERY; ripristinato messaggio+stampa; lista solo per F7 (`matchedPatternId`) |
-| **Contenitori vuoti → tutti** | Inventario Motore A senza filtro; ora `FILTER_EMPTY_BOXES` se domanda con cue vuoto+box |
-| **Categorie seed ancora IT** | Sync EN partiva *dopo* `setLanguage` e veniva tagliato; ora sync completo *prima*, + riparazione all’apertura Impostazioni, + reverse EN→IT |
-| **Swipe Utility→Impostazioni** | Mancava `UtilityActivity` in `navigateNext` |
-| **Card contenitore EN in IT** | Nomi seed restavano EN; reverse seed al ritorno in IT |
+| **Motore B ad hoc** | B-F7 apriva lista per *tutte* le ARCHIVE_QUERY; messaggio+stampa ripristinati; lista solo F7 |
+| **Inventario altri Core → solo contenitori** | Inventario Motore A apriva sempre MainActivity; ora Categorie / Oggetti / Posizioni sulle Activity anagrafiche |
+| **Contenitori vuoti → tutti** | `FILTER_EMPTY_BOXES` se domanda con cue vuoto+box |
+| **Categorie seed ancora IT** | Sync EN *prima* del cambio lingua + riparazione Impostazioni + reverse EN→IT |
+| **Swipe Utility→Impostazioni** | Aggiunto in `navigateNext` |
+| **Card contenitore EN in IT** | Reverse seed al ritorno in IT |
 
 ---
 

@@ -30,12 +30,12 @@ import com.example.boxmanagernew.domain.search.SearchConfiguration
 import com.example.boxmanagernew.domain.search.SearchF7Pattern
 import com.example.boxmanagernew.domain.search.SearchLocaleContext
 import com.example.boxmanagernew.ui.common.LocaleManager
-import com.example.boxmanagernew.domain.search.EmptyBoxesInventoryCue
+import com.example.boxmanagernew.domain.search.InventoryListRouter
+import com.example.boxmanagernew.domain.search.InventoryListTarget
 import com.example.boxmanagernew.ui.main.BoxViewModel
 import com.example.boxmanagernew.domain.search.model.SearchArchiveBoxRecord
 import com.example.boxmanagernew.domain.search.model.SearchArchiveIndex
 import com.example.boxmanagernew.domain.search.model.SearchArchiveObjectRecord
-import com.example.boxmanagernew.domain.search.model.SearchArchiveTransformation
 import com.example.boxmanagernew.domain.search.model.SearchMessage
 import com.example.boxmanagernew.domain.search.model.SearchRequestType
 import com.example.boxmanagernew.domain.search.model.SearchResponse
@@ -504,6 +504,122 @@ class GlobalSearchActivity : BaseActivity() {
         question: String
     ) {
 
+        val inventoryTarget =
+            InventoryListRouter.target(
+                response,
+                question
+            )
+
+        when (inventoryTarget) {
+
+            InventoryListTarget.CATEGORIES -> {
+
+                startActivity(
+                    Intent(
+                        this,
+                        com.example.boxmanagernew.ui.categories.CategoriesActivity::class.java
+                    ).apply {
+
+                        if (
+                            response.locationTerms.isNotBlank()
+                        ) {
+
+                            putExtra(
+                                SearchConfiguration.EXTRA_LOCATION_TERMS,
+                                response.locationTerms
+                            )
+
+                            putExtra(
+                                SearchConfiguration.EXTRA_SEARCH_QUESTION,
+                                question
+                            )
+                        }
+                    }
+                )
+
+                return
+            }
+
+            InventoryListTarget.LOCATIONS -> {
+
+                startActivity(
+                    Intent(
+                        this,
+                        com.example.boxmanagernew.ui.settings.LocationsActivity::class.java
+                    )
+                )
+
+                return
+            }
+
+            InventoryListTarget.OBJECTS -> {
+
+                startActivity(
+                    Intent(
+                        this,
+                        com.example.boxmanagernew.ui.search.SearchResultActivity::class.java
+                    ).apply {
+
+                        putExtra(
+                            "dashboardSearchQuery",
+                            ""
+                        )
+                    }
+                )
+
+                return
+            }
+
+            InventoryListTarget.EMPTY_BOXES -> {
+
+                startActivity(
+                    Intent(
+                        this,
+                        MainActivity::class.java
+                    ).apply {
+
+                        putExtra(
+                            "dashboardFilter",
+                            BoxViewModel.FILTER_EMPTY_BOXES
+                        )
+
+                        putExtra(
+                            SearchConfiguration.EXTRA_SEARCH_QUESTION,
+                            question
+                        )
+                    }
+                )
+
+                return
+            }
+
+            InventoryListTarget.BOXES -> {
+
+                startActivity(
+                    Intent(
+                        this,
+                        MainActivity::class.java
+                    ).apply {
+
+                        putExtra(
+                            SearchConfiguration.EXTRA_SEARCH_QUESTION,
+                            question
+                        )
+
+                        putExtra(
+                            SearchConfiguration.EXTRA_INVENTORY_LIST,
+                            SearchConfiguration.INVENTORY_BOX
+                        )
+                    }
+                )
+
+                return
+            }
+
+            null ->
+                Unit
+        }
+
         startActivity(
             Intent(
                 this,
@@ -564,47 +680,6 @@ class GlobalSearchActivity : BaseActivity() {
                     SearchConfiguration.EXTRA_SEARCH_QUESTION,
                     question
                 )
-
-                if (
-                    response.objectTerms.isBlank() &&
-                    response.locationTerms.isBlank() &&
-                    response.categoryTerms.isBlank() &&
-                    response.boxTerms.isBlank()
-                ) {
-
-                    if (
-                        EmptyBoxesInventoryCue.matches(
-                            question
-                        )
-                    ) {
-
-                        putExtra(
-                            "dashboardFilter",
-                            BoxViewModel.FILTER_EMPTY_BOXES
-                        )
-                    } else {
-
-                        val inventoryDrive =
-                            when (
-                                response.archiveTransformation
-                            ) {
-
-                                SearchArchiveTransformation.CATEGORY_TO_BOX ->
-                                    SearchConfiguration.INVENTORY_CATEGORY
-
-                                SearchArchiveTransformation.LOCATION_TO_BOX ->
-                                    SearchConfiguration.INVENTORY_LOCATION
-
-                                else ->
-                                    SearchConfiguration.INVENTORY_BOX
-                            }
-
-                        putExtra(
-                            SearchConfiguration.EXTRA_INVENTORY_LIST,
-                            inventoryDrive
-                        )
-                    }
-                }
             }
         )
     }
