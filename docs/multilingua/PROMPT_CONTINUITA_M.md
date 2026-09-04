@@ -47,7 +47,7 @@ Fonte viva: [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md). Rest
 | **Branch lavoro** | `cursor/promemoria-fix-d69a` |
 | **Branch base** | `cursor/promemoria-backlog-d69a` |
 | **Play** | BoxManager **1.2** su `main`, identica per tutto il test. Lo **stesso** BoxManager di sviluppo (archivio condiviso + inglese) a test chiuso **sostituisce** la 1.2. Si tocca 1.2 **solo** per bug bloccanti. |
-| **Build sviluppo** | Topbar **1.3-famigliaB5.16** (etichetta di build, non un altro nome di app). |
+| **Build sviluppo** | Topbar **1.3-famigliaB5.17** (etichetta di build, non un altro nome di app). |
 | **Ricerca avanzata EN** | Pipeline 0–10 invariata; **niente** traduttore EN→IT; **niente** interprete semantico (Nota 3.3.9) |
 | **Checkpoint** | **CK0** ✅; **S1–S3 SI**; **CK1** ✅; **CK2** ✅ |
 
@@ -91,9 +91,9 @@ git fetch origin
 git checkout -B cursor/promemoria-fix-d69a origin/cursor/promemoria-fix-d69a
 ```
 
-Poi: Sync Gradle se lo chiede; variante **famigliaDebug** (non `play`); **Run** sul telefono. Topbar attesa: **1.3-famigliaB5.16**.
+Poi: Sync Gradle se lo chiede; variante **famigliaDebug** (non `play`); **Run** sul telefono. Topbar attesa: **1.3-famigliaB5.17**.
 
-**Ritest B5.16:** Sfoglia Backup (e Esporta / Condivisione) → elenco con memorie e eventuali reti/cloud già in File; «Tutte le cartelle…» per il selettore completo. NAS solo se già aggiunto in Archiviazione di rete / File.
+**Ritest B5.17:** Guida → Utility menziona CIFS; Backup → Sfoglia dopo aver registrato il NAS in CIFS Documents Provider. Procedura: [GUIDA_CARTELLA_RETE_CIFS.md](../famiglia/GUIDA_CARTELLA_RETE_CIFS.md).
 
 ### 2. Archivio da inserire (se è vuoto)
 

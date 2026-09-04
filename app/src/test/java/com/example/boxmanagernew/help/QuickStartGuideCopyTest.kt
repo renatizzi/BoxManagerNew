@@ -108,6 +108,22 @@ class QuickStartGuideCopyTest {
         assertTrue(source.contains("if (includeFamilyBeta)"))
     }
 
+    @Test
+    fun utility_mentionsCifsForNetworkFolder() {
+        assertTrue(
+            stringIt("guide_utility_network_folder")
+                .contains("CIFS Documents Provider")
+        )
+        assertTrue(
+            stringEn("guide_utility_network_folder")
+                .contains("CIFS Documents Provider")
+        )
+        assertTrue(
+            stringIt("guide_utility_network_folder")
+                .contains("Files di Google")
+        )
+    }
+
     private fun kotlinSource(relativeUnderJava: String): String {
         val path = "com/example/boxmanagernew/$relativeUnderJava"
         return File("app/src/main/java/$path")
