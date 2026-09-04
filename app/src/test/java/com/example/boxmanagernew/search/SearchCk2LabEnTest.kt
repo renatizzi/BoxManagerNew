@@ -365,4 +365,124 @@ class SearchCk2LabEnTest {
             response.archiveTransformation
         )
     }
+
+    /**
+     * Characterization: EN questions under IT locale reproduce CK2 device KOs
+     * (empty boxTerms → UI INVENTORY_BOX = all 5; F7 where → no results).
+     * Lab + SearchLocale.EN passes ck2_01..10; this isolates the locale mismatch.
+     */
+    @Test
+    fun ck2_repro_enQuestionsUnderItLocale_matchDeviceKos() {
+        val findContainer =
+            dispatcher.dispatch(
+                "Find container box",
+                labIndex,
+                SearchLocale.IT
+            )
+        println(
+            "CK2|REPRO_IT|Find container box|" +
+                "success=${findContainer.success}|" +
+                "boxTermsBlank=${findContainer.boxTerms.isBlank()}|" +
+                "type=${findContainer.requestType}|" +
+                "clarify=${findContainer.requiresClarification}\n" +
+                findContainer.debugMarker
+        )
+        assertTrue(findContainer.success)
+        assertEquals(
+            SearchRequestType.ARCHIVE_NAVIGATION,
+            findContainer.requestType
+        )
+        assertTrue(
+            "device: empty boxTerms → all 5 inventory",
+            findContainer.boxTerms.isBlank()
+        )
+
+        val f7Dup =
+            dispatcher.dispatch(
+                "Search all the containers that contain duplicates",
+                labIndex,
+                SearchLocale.IT
+            )
+        println(
+            "CK2|REPRO_IT|F7 duplicates|type=${f7Dup.requestType}|" +
+                "boxTermsBlank=${f7Dup.boxTerms.isBlank()}|" +
+                "pattern line=${f7Dup.debugMarker?.lineSequence()?.firstOrNull { it.startsWith("[PATTERN]") }}\n" +
+                f7Dup.debugMarker
+        )
+        assertEquals(
+            SearchRequestType.ARCHIVE_NAVIGATION,
+            f7Dup.requestType
+        )
+        assertTrue(f7Dup.boxTerms.isBlank())
+
+        val f7Where =
+            dispatcher.dispatch(
+                "Where do I find the same type of objects",
+                labIndex,
+                SearchLocale.IT
+            )
+        println(
+            "CK2|REPRO_IT|F7 where|success=${f7Where.success}|" +
+                "type=${f7Where.requestType}|msg=${f7Where.message}\n" +
+                f7Where.debugMarker
+        )
+        assertFalse(f7Where.success)
+        assertTrue(
+            f7Where.message.contains(
+                "Nessun risultato",
+                ignoreCase = true
+            ) ||
+                f7Where.message.contains(
+                    "No results",
+                    ignoreCase = true
+                )
+        )
+
+        val f8 =
+            dispatcher.dispatch(
+                "Search the containers with a different category that contain the same type of object",
+                labIndex,
+                SearchLocale.IT
+            )
+        println(
+            "CK2|REPRO_IT|F8|type=${f8.requestType}|" +
+                "boxTermsBlank=${f8.boxTerms.isBlank()}\n" +
+                f8.debugMarker
+        )
+        assertEquals(
+            SearchRequestType.ARCHIVE_NAVIGATION,
+            f8.requestType
+        )
+        assertTrue(f8.boxTerms.isBlank())
+
+        // Find box without object Box + IT → inventory (no R19), matches device #1
+        val noObjectBox =
+            labIndex.copy(
+                objects = listOf(
+                    "Trapano elettrico",
+                    "Vite"
+                ),
+                objectRecords =
+                    labIndex.objectRecords.filterNot {
+                        it.name.equals("Box", ignoreCase = true)
+                    }
+            )
+        val findBoxIt =
+            dispatcher.dispatch(
+                "Find box",
+                noObjectBox,
+                SearchLocale.IT
+            )
+        println(
+            "CK2|REPRO_IT|Find box noObjBox|" +
+                "clarify=${findBoxIt.requiresClarification}|" +
+                "boxTermsBlank=${findBoxIt.boxTerms.isBlank()}|" +
+                "success=${findBoxIt.success}\n" +
+                findBoxIt.debugMarker
+        )
+        assertFalse(findBoxIt.requiresClarification)
+        assertTrue(findBoxIt.success)
+        assertTrue(findBoxIt.boxTerms.isBlank())
+    }
 }
+
