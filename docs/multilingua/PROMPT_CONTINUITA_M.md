@@ -238,11 +238,11 @@ git checkout -b cursor/multilingua-m1a-5409
 
 ## Messaggio tipo per **nuova sessione** (copia-incolla)
 
-**Ora:** codice M chiuso. Attesa **CK2** device. Non aprire M3 finché il test Play 1.2 è aperto.
+**Ora:** filone M codice + **CK2 CONVALIDATO** 04/09/2026. M3 solo a test Play chiuso.
 
 ```
 Continua filone M — inglese in BoxManager da docs/multilingua/PROMPT_CONTINUITA_M.md
-Pacchetto: CK2 (SI device Renato) oppure attesa; M3 solo a test Play chiuso
+Pacchetto: CK2 CONVALIDATO; attesa M3 a test Play chiuso (o backlog se SI presa in carico)
 Branch: cursor/ck2-en-locale-d69a
 Vincoli: non toccare main/1.2; non implementare B-F7-FORMATO-LISTA né B-NOME-APP-BAT né B-VOCE-OGGETTO né B-NOME-AUTO-SAVE né B-DEFAULT-IT-EN né B-SEL-CARTELLA né B-RICERCA-SENZA-SPECIFICHE.
 ```
