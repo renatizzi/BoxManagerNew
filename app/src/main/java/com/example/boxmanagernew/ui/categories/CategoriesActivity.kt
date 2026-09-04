@@ -373,17 +373,24 @@ class CategoriesActivity : BaseActivity() {
                 SearchConfiguration.EXTRA_SEARCH_QUESTION
             ).orEmpty()
 
-        intent.getStringExtra(
-            "dashboardFilter"
-        )?.let { filter ->
+        // Parità LocationsActivity: FILTER_USED è il filtro inventario.
+        // La domanda resta solo per il report — non come needle SimpleSearch
+        // (altrimenti «Quali sono le categorie in uso?» svuota la lista).
+        val dashboardFilter =
+            intent.getStringExtra(
+                "dashboardFilter"
+            )
 
-            if (
-                filter ==
+        if (
+            dashboardFilter ==
+            CategoryViewModel.FILTER_USED
+        ) {
+
+            viewModel.filter(
                 CategoryViewModel.FILTER_USED
-            ) {
+            )
 
-                viewModel.filter(filter)
-            }
+            return
         }
 
         val locationTerms =

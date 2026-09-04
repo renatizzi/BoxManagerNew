@@ -150,7 +150,7 @@ class GlobalSearchActivity : BaseActivity() {
 
         val initialQuery =
             intent.getStringExtra(
-                "dashboardSearchQuery"
+                SearchConfiguration.EXTRA_DASHBOARD_SEARCH_QUERY
             ) ?: ""
 
         viewModel =
@@ -580,8 +580,10 @@ class GlobalSearchActivity : BaseActivity() {
                         com.example.boxmanagernew.ui.search.SearchResultActivity::class.java
                     ).apply {
 
+                        // Needle vuoto = tutti gli oggetti; la domanda
+                        // va su EXTRA_SEARCH_QUESTION (chiave distinta).
                         putExtra(
-                            "dashboardSearchQuery",
+                            SearchConfiguration.EXTRA_DASHBOARD_SEARCH_QUERY,
                             ""
                         )
 

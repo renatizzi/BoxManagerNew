@@ -76,7 +76,7 @@ class SearchResultActivity : BaseActivity() {
 
         searchQuery =
             intent.getStringExtra(
-                "dashboardSearchQuery"
+                SearchConfiguration.EXTRA_DASHBOARD_SEARCH_QUERY
             ) ?: ""
 
         reportQuestion =

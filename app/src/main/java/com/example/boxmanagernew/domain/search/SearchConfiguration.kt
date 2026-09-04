@@ -135,7 +135,17 @@ object SearchConfiguration {
         return "$prefix $joined."
     }
 
+    /**
+     * Domanda utente per report/stampa (testo libero).
+     * Deve restare distinta da [EXTRA_DASHBOARD_SEARCH_QUERY]:
+     * se condividono la chiave, un put della domanda sovrascrive
+     * il filtro vuoto del report oggetti (lista vuota on-device).
+     */
     const val EXTRA_SEARCH_QUESTION =
+        "advancedSearchQuestion"
+
+    /** Filtro testo liste / report oggetti (needle SimpleSearch). */
+    const val EXTRA_DASHBOARD_SEARCH_QUERY =
         "dashboardSearchQuery"
 
     const val EXTRA_OBJECT_TERMS =
