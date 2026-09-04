@@ -1,5 +1,6 @@
 package com.example.boxmanagernew.locale
 
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.io.File
@@ -46,8 +47,27 @@ class SettingsLanguageLayoutTest {
         )
         assertTrue(source.contains("setupLanguageSelector()"))
         assertTrue(source.contains("LocaleManager.setLanguage"))
+        assertTrue(source.contains("LocaleManager.effectiveTag"))
         assertTrue(source.contains("LocalePreference.EN"))
         assertTrue(source.contains("LocalePreference.IT"))
+    }
+
+    @Test
+    fun globalSearch_usesSearchLocaleNotPrefsAlone() {
+        val source = resource(
+            "app/src/main/java/com/example/boxmanagernew/ui/globalsearch/GlobalSearchActivity.kt"
+        )
+        assertTrue(source.contains("LocaleManager.searchLocale"))
+        assertFalse(
+            "dispatch must not use storedTag alone",
+            source.contains("LocaleManager.storedTag")
+        )
+        val manager = resource(
+            "app/src/main/java/com/example/boxmanagernew/ui/common/LocaleManager.kt"
+        )
+        assertTrue(manager.contains("fun effectiveTag"))
+        assertTrue(manager.contains("fun searchLocale"))
+        assertTrue(manager.contains("resolveUiTag"))
     }
 
     private fun layoutSource(): String {

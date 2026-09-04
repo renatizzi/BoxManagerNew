@@ -367,9 +367,10 @@ class SearchCk2LabEnTest {
     }
 
     /**
-     * Characterization: EN questions under IT locale reproduce CK2 device KOs
-     * (empty boxTerms → UI INVENTORY_BOX = all 5; F7 where → no results).
-     * Lab + SearchLocale.EN passes ck2_01..10; this isolates the locale mismatch.
+     * Characterization (keep): EN questions under IT locale reproduce CK2
+     * device KOs (empty boxTerms → inventory all 5; F7 where → no results).
+     * Proves why SearchLocale must follow UI/AppCompat, not prefs alone.
+     * Lab + SearchLocale.EN remains the permanent green regression (ck2_01..10).
      */
     @Test
     fun ck2_repro_enQuestionsUnderItLocale_matchDeviceKos() {

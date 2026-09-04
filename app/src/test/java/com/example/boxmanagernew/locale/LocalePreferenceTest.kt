@@ -31,4 +31,54 @@ class LocalePreferenceTest {
         assertFalse(LocalePreference.isEnglish("it"))
         assertFalse(LocalePreference.isEnglish(null))
     }
+
+    @Test
+    fun resolveUiTag_prefersAppCompatOverStored() {
+        assertEquals(
+            LocalePreference.EN,
+            LocalePreference.resolveUiTag(
+                "en",
+                "it"
+            )
+        )
+        assertEquals(
+            LocalePreference.EN,
+            LocalePreference.resolveUiTag(
+                "en-US,it",
+                "it"
+            )
+        )
+        assertEquals(
+            LocalePreference.IT,
+            LocalePreference.resolveUiTag(
+                "it",
+                "en"
+            )
+        )
+    }
+
+    @Test
+    fun resolveUiTag_fallsBackToStoredWhenAppCompatEmpty() {
+        assertEquals(
+            LocalePreference.EN,
+            LocalePreference.resolveUiTag(
+                "",
+                "en"
+            )
+        )
+        assertEquals(
+            LocalePreference.EN,
+            LocalePreference.resolveUiTag(
+                null,
+                "en-GB"
+            )
+        )
+        assertEquals(
+            LocalePreference.IT,
+            LocalePreference.resolveUiTag(
+                "   ",
+                null
+            )
+        )
+    }
 }

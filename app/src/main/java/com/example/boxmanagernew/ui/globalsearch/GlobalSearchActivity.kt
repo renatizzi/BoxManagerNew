@@ -27,7 +27,6 @@ import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
 import com.example.boxmanagernew.domain.model.Box
 import com.example.boxmanagernew.domain.search.GlobalSearchDispatcher
 import com.example.boxmanagernew.domain.search.SearchConfiguration
-import com.example.boxmanagernew.domain.search.SearchLocale
 import com.example.boxmanagernew.domain.search.SearchLocaleContext
 import com.example.boxmanagernew.ui.common.LocaleManager
 import com.example.boxmanagernew.domain.search.model.SearchArchiveBoxRecord
@@ -260,10 +259,8 @@ class GlobalSearchActivity : BaseActivity() {
                 loadArchiveIndex()
 
             val locale =
-                SearchLocale.fromTag(
-                    LocaleManager.storedTag(
-                        this@GlobalSearchActivity
-                    )
+                LocaleManager.searchLocale(
+                    this@GlobalSearchActivity
                 )
 
             val response =
@@ -538,9 +535,7 @@ class GlobalSearchActivity : BaseActivity() {
     ) {
 
         val locale =
-            SearchLocale.fromTag(
-                LocaleManager.storedTag(this)
-            )
+            LocaleManager.searchLocale(this)
 
         val visible =
             SearchLocaleContext.run(locale) {
@@ -823,9 +818,7 @@ class GlobalSearchActivity : BaseActivity() {
     private fun noResultsMessage(): String {
 
         val locale =
-            SearchLocale.fromTag(
-                LocaleManager.storedTag(this)
-            )
+            LocaleManager.searchLocale(this)
 
         return SearchLocaleContext.run(locale) {
             SearchConfiguration.MSG_NO_RESULTS

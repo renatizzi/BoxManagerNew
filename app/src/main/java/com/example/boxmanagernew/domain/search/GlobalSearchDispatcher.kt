@@ -9,7 +9,6 @@ import com.example.boxmanagernew.domain.search.model.SearchRequestType
 import com.example.boxmanagernew.domain.search.model.SearchResponse
 import com.example.boxmanagernew.domain.search.model.SearchSatisfiabilityResult
 import com.example.boxmanagernew.util.CanonicalNormalizer
-import java.io.File
 
 /**
  * Unico avvio vivo: Pipeline 3.3.6 fasi 1–10, senza piano-nomi prima.
@@ -86,30 +85,6 @@ class GlobalSearchDispatcher(
                         .normalizedQuestion
                 )
 
-        // #region agent log
-        agentDebugLog(
-            "H3",
-            "GlobalSearchDispatcher.kt:normalize",
-            "normalized+locale+indicators",
-            mapOf(
-                "q" to question,
-                "norm" to normalizedQuestion.normalizedQuestion,
-                "locale" to SearchLocaleContext.locale().name,
-                "en" to SearchLocaleContext.isEnglish(),
-                "f7Exact" to SearchF7Pattern.matches(
-                    normalizedQuestion.normalizedQuestion
-                ),
-                "f8Exact" to SearchF8Pattern.matches(
-                    normalizedQuestion.normalizedQuestion
-                ),
-                "f8Family" to SearchF8Pattern.isOfficialFamily(
-                    normalizedQuestion.normalizedQuestion
-                ),
-                "ind" to lexicalIndicatorGroups.toString()
-            )
-        )
-        // #endregion
-
         val lookupResult =
             archiveLookup.lookup(
                 searchText =
@@ -156,32 +131,6 @@ class GlobalSearchDispatcher(
                 extras
             )
 
-        // #region agent log
-        agentDebugLog(
-            "H2",
-            "GlobalSearchDispatcher.kt:hits",
-            "hits+extras+transform",
-            mapOf(
-                "q" to question,
-                "boxes" to lookupResult.hits.boxes.toString(),
-                "objects" to lookupResult.hits.objects.toString(),
-                "cats" to lookupResult.hits.categories.toString(),
-                "locs" to lookupResult.hits.locations.toString(),
-                "entities" to
-                    recognizedEntitiesResult.recognizedEntities.toString(),
-                "fulcrum" to fulcrumResult.fulcrum.toString(),
-                "path" to archivePath.steps.toString(),
-                "transform" to archiveTransformation.toString(),
-                "boxTerms" to extras.boxTerms,
-                "objTerms" to extras.objectTerms,
-                "navOk" to navigationSatisfiable,
-                "objRecN" to (archiveIndex?.objectRecords?.size ?: -1),
-                "boxRecN" to (archiveIndex?.boxRecords?.size ?: -1),
-                "boxesN" to (archiveIndex?.boxes?.size ?: -1)
-            )
-        )
-        // #endregion
-
         val satisfiability =
             satisfiabilityEvaluator.evaluate(
                 normalizedQuestion.normalizedQuestion,
@@ -220,46 +169,9 @@ class GlobalSearchDispatcher(
                 emptySet()
             }
 
-        // #region agent log
-        agentDebugLog(
-            "H1",
-            "GlobalSearchDispatcher.kt:satisfiability",
-            "homonym+satisfiability+type",
-            mapOf(
-                "q" to question,
-                "homonym" to homonymCores.joinToString(",") { it.name },
-                "engA" to satisfiability.satisfiableByEngineA,
-                "engB" to satisfiability.satisfiableByEngineB,
-                "pattern" to (satisfiability.matchedPatternId ?: ""),
-                "type" to (requestType?.name ?: "null"),
-                "boxTermsBlank" to extras.boxTerms.isBlank(),
-                "wouldInventory" to (
-                    requestType == SearchRequestType.ARCHIVE_NAVIGATION &&
-                        satisfiability.satisfiableByEngineA &&
-                        extras.boxTerms.isBlank() &&
-                        extras.objectTerms.isBlank() &&
-                        extras.locationTerms.isBlank() &&
-                        extras.categoryTerms.isBlank()
-                    )
-            )
-        )
-        // #endregion
-
         if (
             homonymCores.size >= 2
         ) {
-
-            // #region agent log
-            agentDebugLog(
-                "H1",
-                "GlobalSearchDispatcher.kt:r19",
-                "R19 clarification taken",
-                mapOf(
-                    "q" to question,
-                    "cores" to homonymCores.joinToString(",") { it.name }
-                )
-            )
-            // #endregion
 
             return SearchResponse(
                 success = false,
@@ -284,25 +196,6 @@ class GlobalSearchDispatcher(
             SearchRequestType.ARCHIVE_NAVIGATION &&
             satisfiability.satisfiableByEngineA
         ) {
-
-            // #region agent log
-            agentDebugLog(
-                "H2",
-                "GlobalSearchDispatcher.kt:engineA",
-                "Engine A navigation return",
-                mapOf(
-                    "q" to question,
-                    "boxTerms" to extras.boxTerms,
-                    "objTerms" to extras.objectTerms,
-                    "inventoryAllBoxes" to (
-                        extras.boxTerms.isBlank() &&
-                            extras.objectTerms.isBlank() &&
-                            extras.locationTerms.isBlank() &&
-                            extras.categoryTerms.isBlank()
-                        )
-                )
-            )
-            // #endregion
 
             return SearchResponse(
                 success = true,
@@ -355,21 +248,6 @@ class GlobalSearchDispatcher(
                         archiveIndex
                     )
 
-                // #region agent log
-                agentDebugLog(
-                    "H5",
-                    "GlobalSearchDispatcher.kt:f7",
-                    "Engine B F7 result",
-                    mapOf(
-                        "q" to question,
-                        "success" to engineResponse.success,
-                        "msg" to engineResponse.message.take(120),
-                        "boxes" to engineResponse.resultBoxNames.toString(),
-                        "objRecN" to archiveIndex.objectRecords.size
-                    )
-                )
-                // #endregion
-
                 return engineResponse.copy(
                     dominantFulcrum =
                         fulcrumResult.fulcrum,
@@ -415,20 +293,6 @@ class GlobalSearchDispatcher(
                         SearchEngineB.f8Query(),
                         archiveIndex
                     )
-
-                // #region agent log
-                agentDebugLog(
-                    "H4",
-                    "GlobalSearchDispatcher.kt:f8",
-                    "Engine B F8 via OBJECT_TO_CATEGORY",
-                    mapOf(
-                        "q" to question,
-                        "success" to engineResponse.success,
-                        "msg" to engineResponse.message.take(120),
-                        "boxes" to engineResponse.resultBoxNames.toString()
-                    )
-                )
-                // #endregion
 
                 return engineResponse.copy(
                     dominantFulcrum =
@@ -658,38 +522,4 @@ class GlobalSearchDispatcher(
 
         val objectTerms: String = ""
     )
-
-    // #region agent log
-    private fun agentDebugLog(
-        hypothesisId: String,
-        location: String,
-        message: String,
-        data: Map<String, Any?>
-    ) {
-        try {
-            fun esc(value: Any?): String {
-                val raw = value?.toString() ?: "null"
-                return "\"" + raw
-                    .replace("\\", "\\\\")
-                    .replace("\"", "\\\"")
-                    .replace("\n", "\\n") + "\""
-            }
-            val dataJson = data.entries.joinToString(",") { (k, v) ->
-                val encoded = when (v) {
-                    is Boolean, is Number -> v.toString()
-                    else -> esc(v)
-                }
-                "\"$k\":$encoded"
-            }
-            val line =
-                "{\"hypothesisId\":${esc(hypothesisId)}," +
-                    "\"location\":${esc(location)}," +
-                    "\"message\":${esc(message)}," +
-                    "\"data\":{$dataJson}," +
-                    "\"timestamp\":${System.currentTimeMillis()}}\n"
-            File("/opt/cursor/logs/debug.log").appendText(line)
-        } catch (_: Exception) {
-        }
-    }
-    // #endregion
 }
