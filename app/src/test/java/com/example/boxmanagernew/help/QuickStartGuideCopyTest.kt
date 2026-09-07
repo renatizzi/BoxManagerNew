@@ -122,41 +122,39 @@ class QuickStartGuideCopyTest {
             stringIt("guide_utility_network_folder")
                 .contains("Impostazioni")
         )
-        val jargon = listOf(
-            "NAS",
-            "CIFS",
-            "SMB",
-            "SAF",
-            "Documents Provider",
-            "helper"
+        // Messaggi minimalisti B5.20 (proposta Renato): CIFS esplicito + campi essenziali.
+        assertTrue(
+            stringIt("network_drive_dialog_need_app")
+                .contains("CIFS Documents Provider")
         )
-        val userFacing = listOf(
-            "guide_utility_network_folder",
-            "settings_network_drive_card",
-            "settings_network_drive_status_ready",
-            "settings_network_drive_status_missing",
-            "network_drive_dialog_title",
-            "network_drive_dialog_need_app",
-            "network_drive_dialog_ready",
-            "network_drive_install_helper",
-            "network_drive_open_helper",
-            "network_drive_open_store",
-            "storage_folder_network_or_cloud"
+        assertTrue(
+            stringIt("network_drive_dialog_need_app")
+                .contains("Installa l'app")
         )
-        for (name in userFacing) {
-            val it = stringIt(name)
-            val en = stringEn(name)
-            for (term in jargon) {
-                assertFalse(
-                    "$name IT contains $term",
-                    it.contains(term, ignoreCase = true)
-                )
-                assertFalse(
-                    "$name EN contains $term",
-                    en.contains(term, ignoreCase = true)
-                )
-            }
-        }
+        assertTrue(
+            stringIt("network_drive_dialog_need_app")
+                .contains("Host")
+        )
+        assertTrue(
+            stringIt("network_drive_dialog_need_app")
+                .contains("Folder")
+        )
+        assertTrue(
+            stringIt("network_drive_dialog_ready")
+                .contains("già installata")
+        )
+        assertTrue(
+            stringIt("network_drive_dialog_ready")
+                .contains("Apri l'app")
+        )
+        assertFalse(
+            stringIt("guide_utility_network_folder")
+                .contains("NAS")
+        )
+        assertFalse(
+            stringIt("network_drive_dialog_need_app")
+                .contains("NAS")
+        )
     }
 
     private fun kotlinSource(relativeUnderJava: String): String {

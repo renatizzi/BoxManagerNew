@@ -1,58 +1,41 @@
 # Disco di rete con BoxManager
 
-**A cosa serve:** salvare Backup e altri file di BoxManager su un **disco di rete** — un hard disk o una cartella sul computer, raggiungibile dal telefono con la Wi‑Fi di casa.
-
-**Nota:** l’app File di Google non basta per questo (va bene per il telefono e per Drive, non per il disco in casa).
-
-**Come funziona:** una piccola app gratuita collega il telefono al disco. BoxManager apre lo store sull’app giusta: basta installarla. Poi scegli quella cartella come per le altre.
+Messaggi in-app (Impostazioni → **Disco di rete**): approccio **minimalista** — solo l’essenziale da sapere. Testi ufficiali in `strings.xml` (`network_drive_dialog_need_app` / `network_drive_dialog_ready`).
 
 ---
 
-## Passo 1 — Da BoxManager (Impostazioni)
+## Se CIFS non è ancora installata
 
-1. Apri **BoxManager** → **Impostazioni**.
-2. Tocca **Disco di rete**.
-3. Se l’app non c’è ancora → **Installa l’app** (si apre lo store) → installa.
-4. Torna in BoxManager → **Disco di rete** → **Apri l’app**.
+Per salvare i dati dell’archivio su un disco o pc (server) della tua rete WiFi hai bisogno di una apposita app (es. **CIFS Documents Provider**) grazie alla quale puoi vedere e gestire unità di memoria come se fossero dischi locali. Ciò ti risulterà utile nel caso di uso in condivisione di BoxManager.
 
----
+Istruzioni:
 
-## Passo 2 — Nell’app gratuita (una volta sola)
+1. Per installare l’app gratuita proposta utilizza il link a Play Store del tasto **Installa l’app**.
+2. Per configurarla correttamente hai bisogno innanzitutto di conoscere:
+   - **a.** Nome dell’unità (es. Disco di Rete)
+   - **b.** Storage (es. SMB2,3 (jCIFS NG))
+   - **c.** Host (es. 192.168.1.1)
+   - **d.** Port (es. 445)
+   - **e.** User e Password (credenziali di accesso all’unità)
+   - **f.** Folder (es. BoxManager(sda1)/)
+3. Torna in BoxManager e, salvo errori, da ora potrai vedere — insieme ai dischi locali e cloud — anche l’unità di rete/cartelle dove salvare i file dell’archivio (backup, esporta, invia tabelle, invia archivio).
 
-1. Tocca **Aggiungi** (＋).
-2. Inserisci dove si trova il disco (te lo dà chi ha messo in rete la cartella, oppure lo trovi nelle impostazioni del disco) e, se chiesto, nome utente e password.
-3. Controlla la connessione se c’è il pulsante, poi **Salva**.
-
-Telefono e disco devono essere sulla **stessa Wi‑Fi di casa**.
-
----
-
-## Passo 3 — Di nuovo in BoxManager
-
-1. **Utility** → **Backup Archivio** (stesso schema per salvare altri file).
-2. Tocca **Sfoglia**.
-3. Scegli la cartella del disco di rete (compare dopo il passo 2) oppure **Tutte le cartelle…** e poi l’app appena installata.
-4. Conferma la cartella e fai il Backup.
-
-Dalla volta dopo BoxManager può **riusare** la stessa cartella.
+In Sfoglia, se non compare subito: **Tutte le cartelle…** → menu ☰ → app CIFS / nome unità.
 
 ---
 
-## Frase corta
+## Se CIFS è già installata
 
-> Per salvare sul disco di rete: Impostazioni → Disco di rete → installa l’app gratuita → aggiungi il disco → in Backup premi Sfoglia e scegli quella cartella.
+L’app CIFS Documents Provider risulta già installata su questo dispositivo.
 
----
+1. Se vuoi apportare modifiche, tocca **Apri l’app**.
+2. Se vuoi usare il disco di rete, torna in BoxManager e scegli la cartella di CIFS dove salvare i file dell’archivio (backup, esporta, invia tabelle, invia archivio).
 
-## Limiti (semplici)
-
-- Serve la Wi‑Fi di casa verso il disco.
-- L’app gratuita è di terzi. BoxManager non chiede la password del disco: la chiede solo quella app.
-- Collegare il disco “dentro” BoxManager senza app esterne = sviluppo futuro.
+Pulsanti tipici del dialogo: **Apri l’app** / **Apri nello store** / **Annulla**.
 
 ---
 
-## Riferimento (solo sviluppo — non in guida utente)
+## Riferimento (solo sviluppo)
 
-Build da **1.3-famigliaB5.19**. Codice: `NetworkDriveAssistant`, card Impostazioni.  
-App consigliata (nome store / package): CIFS Documents Provider — `com.wa2c.android.cifsdocumentsprovider`.
+Build da **1.3-famigliaB5.20**. Codice: `NetworkDriveAssistant`, card Impostazioni.  
+Package: `com.wa2c.android.cifsdocumentsprovider`.
