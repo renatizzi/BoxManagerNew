@@ -43,7 +43,7 @@ Fonte viva: [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md). Rest
 | **M2b** | **Fatto** — motore locale-aware EN (S1–S3 SI 03/09/2026). [SEMANTICA_EN_EQUIVOCI.md](SEMANTICA_EN_EQUIVOCI.md) |
 | **M2c** | **Fatto** — messaggi 2.6 e card ricerca; locale UI allineato (PR **#21**, fix PR **#22**) |
 | **CK2** | **CONVALIDATO SI Renato device 04/09/2026** — 10/10 domande EN OK (dopo fix locale) |
-| **Prossimo pacchetto** | **M3** solo a test Play chiuso. Promemoria: resta **B-SEL-CARTELLA** |
+| **Prossimo pacchetto** | **M3** solo a test Play chiuso. B-SEL-CARTELLA **CONVALIDATO** (residuo Nota/Guida a fine ciclo) |
 | **Branch lavoro** | `cursor/promemoria-fix-d69a` |
 | **Branch base** | `cursor/promemoria-backlog-d69a` |
 | **Play** | BoxManager **1.2** su `main`, identica per tutto il test. Lo **stesso** BoxManager di sviluppo (archivio condiviso + inglese) a test chiuso **sostituisce** la 1.2. Si tocca 1.2 **solo** per bug bloccanti. |

@@ -37,5 +37,5 @@ Pulsanti tipici del dialogo: **Apri l’app** / **Apri nello store** / **Annulla
 
 ## Riferimento (solo sviluppo)
 
-Build da **1.3-famigliaB5.20**. Codice: `NetworkDriveAssistant`, card Impostazioni.  
+Build da **1.3-famigliaB5.22**. Codice: `NetworkDriveAssistant`, card Impostazioni.  
 Package: `com.wa2c.android.cifsdocumentsprovider`.
