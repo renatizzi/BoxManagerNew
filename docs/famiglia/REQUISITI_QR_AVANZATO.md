@@ -1,7 +1,8 @@
 # Requisiti — QR avanzato (batch / stampa multipla / condivisione)
 
-**Stato:** documento scritto 07/09/2026 — in attesa **CONVALIDA aggiornamento documento** (passo 4).  
+**Stato:** CONGELATO 07/09/2026 (SI Renato).  
 **CONVALIDA analisi/requisiti (passo 3):** SI Renato 07/09/2026 (Q1–Q9; Q7 nome file `QR_…`; Q2 = **Q2-Y** L0+L1).  
+**CONVALIDA aggiornamento documento (passo 4):** SI Renato 07/09/2026.  
 **Uso:** riferimento funzionale e tecnico-architetturale fino all’implementazione Progetto 2 / A1.  
 **Destinazione:** confluire nella Nota Integrata ufficiale (rinvio da §4.1.6 QR AVANZATO) senza riaprire il merito.  
 **Assessment di lavoro:** [ASSESSMENT_QR_AVANZATO.md](ASSESSMENT_QR_AVANZATO.md) (storico analisi; prevale **questo** file su conflitti).  
@@ -121,4 +122,4 @@ Non riaprire R1–R10 / T1–T4 in chat di implementazione salvo SI esplicito di
 1. ANALISI — [ASSESSMENT_QR_AVANZATO.md](ASSESSMENT_QR_AVANZATO.md)  
 2. FEEDBACK — SI Q1/Q3/Q4; approfondimento Q2; Q7 nome `QR_…`  
 3. CONVALIDA analisi/requisiti — **SI Renato 07/09/2026** (fino a Q9; Q2-Y)  
-4. AGGIORNAMENTO DOCUMENTO — **questo file**; chiusura con **CONVALIDA aggiornamento documento** (in attesa)
+4. AGGIORNAMENTO DOCUMENTO — **questo file**; **CONVALIDA aggiornamento documento SI Renato 07/09/2026**

@@ -28,8 +28,8 @@ Sequenza concordata: **A1 QR avanzato → A2 Cestino → A3 Foto** → poi B/C/D
 
 | Voce | Documento | Stato |
 |------|-----------|--------|
-| **A1 QR avanzato** | [REQUISITI_QR_AVANZATO.md](REQUISITI_QR_AVANZATO.md) (passo 4 — in attesa CONVALIDA documento) · [ASSESSMENT_QR_AVANZATO.md](ASSESSMENT_QR_AVANZATO.md) (storico) | **CONVALIDA merito** SI 07/09 (Q1–Q9; Q2-Y; file `QR_…`). Zero codice |
-| **A2 Cestino** | — | Non aperto; dopo FEEDBACK/chiusura documento A1 (o SI di aprire in parallelo) |
+| **A1 QR avanzato** | [REQUISITI_QR_AVANZATO.md](REQUISITI_QR_AVANZATO.md) (**congelato** + CONVALIDA documento 07/09) · [ASSESSMENT_QR_AVANZATO.md](ASSESSMENT_QR_AVANZATO.md) (storico) | Requisiti chiusi; zero codice finché SI apertura fetta |
+| **A2 Cestino** | [ASSESSMENT_CESTINO.md](ASSESSMENT_CESTINO.md) | **ANALISI** bozza 07/09 — in attesa FEEDBACK (C-Q1–C-Q9). Zero codice |
 | **A3 Foto oggetto** | [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) (**congelato** + **CONVALIDA documento** 07/09) · [ASSESSMENT_FOTO_MINIATURA.md](ASSESSMENT_FOTO_MINIATURA.md) (storico) | Requisiti + tecnica chiusi; confluire in Nota a implementazione. Codice dopo QR avanzato + Cestino |
 
 ---

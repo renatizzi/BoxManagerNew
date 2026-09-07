@@ -1,7 +1,7 @@
 # Assessment — QR avanzato (Progetto 2 / A1)
 
-**Stato:** CONVALIDA analisi/requisiti (passo 3) **SI Renato 07/09/2026**. Documento ufficiale: [REQUISITI_QR_AVANZATO.md](REQUISITI_QR_AVANZATO.md) — in attesa CONVALIDA aggiornamento documento (passo 4). Zero codice.  
-**Processo:** passo **4** in corso (ANALISI → FEEDBACK → CONVALIDA merito ✓ → **AGGIORNAMENTO DOCUMENTO**).  
+**Stato:** storico ANALISI/FEEDBACK; **prevale** [REQUISITI_QR_AVANZATO.md](REQUISITI_QR_AVANZATO.md) (**CONGELATO** + CONVALIDA documento SI Renato 07/09/2026). Zero codice.  
+**Processo:** **chiuso** (4/4).  
 **Posizione nella sequenza concordata:** **A1** → A2 Cestino → A3 Foto oggetto.  
 **Fonte Roadmap:** Nota Integrata **9.2** §**4.1.6** — voce **QR AVANZATO** (Priorità: medio-alta).  
 **Baseline V1 (non riaprire):** §**3.4.4** Codice QR + Allegato **4.8** (B4 CONVALIDATO 21/08/2026); ingresso etichetta da card Contenitore (B7).  
@@ -238,10 +238,10 @@ A1 QR avanzato  →  A2 Cestino  →  A3 Foto (REQUISITI già congelati)
 
 ---
 
-## 9. Esito — CONVALIDA merito; documento requisiti scritto
+## 9. Esito — A1 chiuso (documento congelato)
 
-**Prodotto congelato (merito):** batch da lista Contenitori + L0/L1 + share PDF; nome file `QR_ddMMyy_HHmm.pdf`; payload invariato.
+**Prodotto congelato:** batch da lista Contenitori + L0/L1 + share PDF; nome file `QR_ddMMyy_HHmm.pdf`; payload invariato.
 
-**Documento:** [REQUISITI_QR_AVANZATO.md](REQUISITI_QR_AVANZATO.md) — **in attesa CONVALIDA aggiornamento documento** (passo 4).
+**Documento:** [REQUISITI_QR_AVANZATO.md](REQUISITI_QR_AVANZATO.md) — **CONGELATO** (CONVALIDA aggiornamento documento SI Renato 07/09/2026).
 
-**Zero codice** finché non c’è SI di apertura fetta implementativa (dopo Play verde / SI esplicito).
+**Prossimo:** ANALISI **A2 Cestino**. **Zero codice** A1 finché non c’è SI di apertura fetta implementativa.

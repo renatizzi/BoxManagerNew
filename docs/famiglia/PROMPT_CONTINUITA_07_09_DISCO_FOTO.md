@@ -23,7 +23,8 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) — **Checklist V
 | **Build sviluppo** | Topbar **1.3-famigliaB5.24** (versionCode **1343**) — etichetta di build, non nome app |
 | **Play** | BoxManager **1.2** su `main` — test chiuso aperto; **identica** salvo bug bloccanti |
 | **B-SEL-CARTELLA Disco di rete** | **CONVALIDATO** — Nota Integrata **9.2** Allegato **4.22** + Roadmap 07/09/2026 + [GUIDA_DISCO_RETE.md](GUIDA_DISCO_RETE.md) |
-| **A1 QR avanzato** | **CONVALIDA merito** SI 07/09 — [REQUISITI_QR_AVANZATO.md](REQUISITI_QR_AVANZATO.md) in attesa **CONVALIDA aggiornamento documento**; Q2-Y; file `QR_ddMMyy_HHmm.pdf`. Zero codice |
+| **A1 QR avanzato** | **CONGELATO** — [REQUISITI_QR_AVANZATO.md](REQUISITI_QR_AVANZATO.md) (CONVALIDA documento SI 07/09). Zero codice |
+| **A2 Cestino** | **ANALISI** bozza — [ASSESSMENT_CESTINO.md](ASSESSMENT_CESTINO.md); in attesa FEEDBACK C-Q1–C-Q9. Zero codice |
 | **Foto oggetto** | Requisiti **congelati** + **CONVALIDA aggiornamento documento** 07/09/2026 — [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md); **zero codice** finché non si apre la fetta (dopo QR avanzato + Cestino) |
 | **Processo analisi** | **4 fasi** + due CONVALIDA — regola `.cursor/rules/processo-analisi.mdc` — **CONVALIDATO** in documento 07/09/2026 |
 
@@ -78,7 +79,7 @@ Due CONVALIDA distinte: (3) merito analisi/requisiti · (4 chiusura) testo del d
 
 | Priorità | Azione | Note |
 |----------|--------|------|
-| **A** | **FEEDBACK** A1 — chiudere **Q2** (X/Y/Z) + conferma Q5–Q9 | Poi CONVALIDA merito → documento requisiti |
+| **A** | **CONVALIDA aggiornamento documento** A1 | Rileggere [REQUISITI_QR_AVANZATO.md](REQUISITI_QR_AVANZATO.md); SI chiusura passo 4. Poi ANALISI A2 Cestino |
 | **A2** | ANALISI Cestino | Dopo chiusura documento A1 (o SI parallelo). Stesso processo a 4 fasi |
 | **B** | Checklist V1 | P2 sync bug Play → sviluppo; bug bloccanti solo su `main` |
 | **C** | Foto codice | **STOP** finché non arrivano QR avanzato + Cestino e SI di apertura fetta |
@@ -98,7 +99,8 @@ Due CONVALIDA distinte: (3) merito analisi/requisiti · (4 chiusura) testo del d
 | File | Ruolo |
 |------|--------|
 | [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) | Freeze Foto — fonte fino all’implementazione |
-| [ASSESSMENT_QR_AVANZATO.md](ASSESSMENT_QR_AVANZATO.md) | ANALISI A1 QR avanzato — bozza in FEEDBACK |
+| [REQUISITI_QR_AVANZATO.md](REQUISITI_QR_AVANZATO.md) | Requisiti A1 — in attesa CONVALIDA aggiornamento documento |
+| [ASSESSMENT_QR_AVANZATO.md](ASSESSMENT_QR_AVANZATO.md) | Storico ANALISI/FEEDBACK A1 |
 | [GUIDA_DISCO_RETE.md](GUIDA_DISCO_RETE.md) | Guida utente/dev Disco di rete |
 | Nota Integrata **9.2** Allegato **4.22** | Fonte ufficiale Disco di rete |
 | [PROMEMORIA_INTERVENTI_TRASVERSALI.md](PROMEMORIA_INTERVENTI_TRASVERSALI.md) | Checklist V1 + processo + backlog |
