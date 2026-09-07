@@ -18,11 +18,12 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) — **Checklist V
 
 | Voce | Valore |
 |------|--------|
-| **Branch lavoro** | `cursor/sel-cartella-nas-d69a` (PR **#25**) |
+| **Branch lavoro** | `cursor/qr-avanzato-analisi-8374` (analisi A1; base `cursor/sel-cartella-nas-d69a` / PR **#25**) |
 | **Base tipica** | `cursor/promemoria-fix-d69a` (catena sviluppo; **non** `main`) |
 | **Build sviluppo** | Topbar **1.3-famigliaB5.24** (versionCode **1343**) — etichetta di build, non nome app |
 | **Play** | BoxManager **1.2** su `main` — test chiuso aperto; **identica** salvo bug bloccanti |
 | **B-SEL-CARTELLA Disco di rete** | **CONVALIDATO** — Nota Integrata **9.2** Allegato **4.22** + Roadmap 07/09/2026 + [GUIDA_DISCO_RETE.md](GUIDA_DISCO_RETE.md) |
+| **A1 QR avanzato** | **ANALISI** bozza — [ASSESSMENT_QR_AVANZATO.md](ASSESSMENT_QR_AVANZATO.md); in attesa FEEDBACK (Q1–Q9). Zero codice |
 | **Foto oggetto** | Requisiti **congelati** + **CONVALIDA aggiornamento documento** 07/09/2026 — [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md); **zero codice** finché non si apre la fetta (dopo QR avanzato + Cestino) |
 | **Processo analisi** | **4 fasi** + due CONVALIDA — regola `.cursor/rules/processo-analisi.mdc` — **CONVALIDATO** in documento 07/09/2026 |
 
@@ -77,16 +78,17 @@ Due CONVALIDA distinte: (3) merito analisi/requisiti · (4 chiusura) testo del d
 
 | Priorità | Azione | Note |
 |----------|--------|------|
-| **A** | Nuova voce Progetto 2 in analisi | **QR avanzato** o **Cestino** (prima della Foto in codice). Stesso processo a 4 fasi. |
+| **A** | **FEEDBACK** su A1 QR avanzato | Risposte Renato a Q1–Q9 in [ASSESSMENT_QR_AVANZATO.md](ASSESSMENT_QR_AVANZATO.md); poi CONVALIDA merito → documento requisiti |
+| **A2** | ANALISI Cestino | Dopo chiusura documento A1 (o SI parallelo). Stesso processo a 4 fasi |
 | **B** | Checklist V1 | P2 sync bug Play → sviluppo; bug bloccanti solo su `main` |
 | **C** | Foto codice | **STOP** finché non arrivano QR avanzato + Cestino e SI di apertura fetta |
 | **D** | M3 / merge `main` | Solo a test Play **chiuso** |
 
 ### Sequenza agente (allineamento)
 
-1. `git fetch origin` e checkout del branch di lavoro corrente (o nuovo `cursor/…-d69a` dalla base di sviluppo).
-2. Leggere questo prompt + [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) + regola `processo-analisi.mdc`.
-3. Se nuova voce Progetto 2: partire da **ANALISI** (bozza), **non** da codice.
+1. `git fetch origin` e checkout `cursor/qr-avanzato-analisi-8374` (o successore).
+2. Leggere questo prompt + [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) + [ASSESSMENT_QR_AVANZATO.md](ASSESSMENT_QR_AVANZATO.md) + regola `processo-analisi.mdc`.
+3. In FEEDBACK: annotare SI sulle Q; **non** codice; **non** aggiornare Nota ufficiale prima della CONVALIDA merito.
 4. Non toccare Foto in codice; non riaprire Disco di rete senza nuova evidenza.
 
 ---
@@ -96,6 +98,7 @@ Due CONVALIDA distinte: (3) merito analisi/requisiti · (4 chiusura) testo del d
 | File | Ruolo |
 |------|--------|
 | [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) | Freeze Foto — fonte fino all’implementazione |
+| [ASSESSMENT_QR_AVANZATO.md](ASSESSMENT_QR_AVANZATO.md) | ANALISI A1 QR avanzato — bozza in FEEDBACK |
 | [GUIDA_DISCO_RETE.md](GUIDA_DISCO_RETE.md) | Guida utente/dev Disco di rete |
 | Nota Integrata **9.2** Allegato **4.22** | Fonte ufficiale Disco di rete |
 | [PROMEMORIA_INTERVENTI_TRASVERSALI.md](PROMEMORIA_INTERVENTI_TRASVERSALI.md) | Checklist V1 + processo + backlog |
@@ -127,8 +130,8 @@ Altri ingressi (filoni diversi):
 ```bash
 cd BoxManagerNew
 git fetch origin
-git checkout cursor/sel-cartella-nas-d69a
-git pull origin cursor/sel-cartella-nas-d69a
+git checkout cursor/qr-avanzato-analisi-8374
+git pull origin cursor/qr-avanzato-analisi-8374
 
 ./gradlew :app:assembleFamigliaDebug
 ./gradlew :app:installFamigliaDebug
@@ -136,4 +139,4 @@ git pull origin cursor/sel-cartella-nas-d69a
 
 ---
 
-*Aggiornato 07/09/2026 — Disco di rete CONVALIDATO; Foto + processo: CONVALIDA aggiornamento documento SI Renato.*
+*Aggiornato 07/09/2026 (ripresa) — A1 QR avanzato in ANALISI; Disco CONVALIDATO; Foto + processo: CONVALIDA documento SI Renato.*

@@ -24,10 +24,12 @@ Ingresso sessione 07/09: [PROMPT_CONTINUITA_07_09_DISCO_FOTO.md](PROMPT_CONTINUI
 
 ### Analisi anticipate (zero codice) — Progetto 2
 
-Sequenza concordata A→D. Assessment aperti:
+Sequenza concordata: **A1 QR avanzato → A2 Cestino → A3 Foto** → poi B/C/D. Assessment:
 
 | Voce | Documento | Stato |
 |------|-----------|--------|
+| **A1 QR avanzato** | [ASSESSMENT_QR_AVANZATO.md](ASSESSMENT_QR_AVANZATO.md) | **ANALISI** bozza 07/09/2026 — in attesa FEEDBACK (Q1–Q9). Zero codice |
+| **A2 Cestino** | — | Non aperto; dopo FEEDBACK/chiusura documento A1 (o SI di aprire in parallelo) |
 | **A3 Foto oggetto** | [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) (**congelato** + **CONVALIDA documento** 07/09) · [ASSESSMENT_FOTO_MINIATURA.md](ASSESSMENT_FOTO_MINIATURA.md) (storico) | Requisiti + tecnica chiusi; confluire in Nota a implementazione. Codice dopo QR avanzato + Cestino |
 
 ---
