@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import androidx.documentfile.provider.DocumentFile
 import com.example.boxmanagernew.family.config.FamilyCatalogConfiguration
+import com.example.boxmanagernew.storage.CsvFileNames
 import com.example.boxmanagernew.ui.common.SafFolderLabel
 import java.io.File
 
@@ -31,6 +32,11 @@ class FamilyCatalogPersister(
         var temp: File? = null
         var created: DocumentFile? = null
 
+        val csvName = CsvFileNames.force(
+            fileName,
+            FamilyCatalogConfiguration.proposedFileName()
+        )
+
         try {
             temp = File.createTempFile(
                 "family_catalog_",
@@ -40,15 +46,16 @@ class FamilyCatalogPersister(
             temp.writeBytes(bytes)
 
             val existing = tree.listFiles().firstOrNull { child ->
-                child.name.equals(fileName, ignoreCase = true)
+                child.name.equals(csvName, ignoreCase = true)
             }
             if (existing != null && !existing.delete()) {
                 return Result(success = false)
             }
 
+            // Nome con .csv: su disco di rete il MIME da solo non basta.
             created = tree.createFile(
                 FamilyCatalogConfiguration.CSV_MIME_TYPE,
-                fileName
+                csvName
             ) ?: return Result(success = false)
 
             context.contentResolver.openOutputStream(created.uri)?.use { output ->
@@ -57,7 +64,7 @@ class FamilyCatalogPersister(
 
             return Result(
                 success = true,
-                fileName = fileName,
+                fileName = created.name ?: csvName,
                 folderName = SafFolderLabel.of(context, treeUri, tree)
             )
         } catch (_: Exception) {

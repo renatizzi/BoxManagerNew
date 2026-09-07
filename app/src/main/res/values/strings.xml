@@ -114,6 +114,15 @@
     <string name="settings_palette_blue">Blu</string>
     <string name="settings_palette_green">Verde</string>
     <string name="settings_locations_card">Luoghi abituali di custodia</string>
+    <string name="settings_network_drive_card">Disco di rete</string>
+    <string name="settings_network_drive_status_ready">Pronto: quando fai Backup o salvi un file, puoi scegliere il disco.</string>
+    <string name="settings_network_drive_status_missing">Serve un\'app gratuita (una sola volta). Tocca qui per iniziare.</string>
+    <string name="network_drive_dialog_title">Salvare sul disco di rete</string>
+    <string name="network_drive_dialog_need_app">Per salvare i dati dell\'archivio su un disco o pc (server) della tua rete WiFi hai bisogno di una apposita app (es. CIFS Documents Provider) grazie alla quale puoi vedere e gestire unità di memoria come se fossero dischi locali. Ciò ti risulterà utile nel caso di uso in condivisione di BoxManager.\nDi seguito sono riportate alcune semplici istruzioni per scaricare e utilizzare CIFS:\n1. Per installare l\'app gratuita proposta utilizza il link a Play Store del tasto \"Installa l\'app\"\n2. Per configurarla correttamente hai bisogno innanzitutto di conoscere:\na. Nome dell\'unità (es. Disco di Rete)\nb. Storage (es. SMB2,3 (jCIFS NG))\nc. Host (es. 192.168.1.1)\nd. Port (es. 445)\ne. User e Password (credenziali di accesso all\'unità)\nf. Folder (es. BoxManager(sda1)/)\n3. Torna in BoxManager e, salvo errori, da ora potrai vedere — insieme ai dischi locali e cloud — anche l\'unità di rete/cartelle dove salvare i file dell\'archivio (backup, esporta, invia tabelle, invia archivio).</string>
+    <string name="network_drive_dialog_ready">L\'app CIFS Documents Provider risulta già installata su questo dispositivo.\n1. Se vuoi apportare modifiche, tocca \"Apri l\'app\"\n2. Se vuoi usare il disco di rete, torna in BoxManager e scegli la cartella di CIFS dove salvare i file dell\'archivio (backup, esporta, invia tabelle, invia archivio).</string>
+    <string name="network_drive_install_helper">Installa l\'app</string>
+    <string name="network_drive_open_helper">Apri l\'app</string>
+    <string name="network_drive_open_store">Apri nello store</string>
     <string name="settings_save">SALVA</string>
     <string name="settings_saved">Salvato</string>
     <string name="settings_language_title">Scelta lingua</string>
@@ -330,6 +339,7 @@
     <string name="guide_section_dashboard_b3">Ricerca avanzata (linguaggio naturale): da Archivio completo.</string>
     <string name="guide_section_utility_title">Utility</string>
     <string name="guide_utility_backup">Backup e Ripristino per salvare l\'archivio (usa cartella diversa da app).</string>
+    <string name="guide_utility_network_folder">Per salvare su un disco di rete: Impostazioni → Disco di rete (app CIFS se serve) → poi in Backup/Esporta/Invia premi Sfoglia.</string>
     <string name="guide_utility_import">Importa dati da file CSV per interagire con file esterni (*).</string>
     <string name="guide_utility_qr">Codice QR per vedere il contenuto di un box usando la fotocamera.</string>
     <string name="guide_utility_family_share">Condividi Archivio per aggiornare e condividere con i tuoi familiari i dati del tuo archivio.</string>
@@ -384,6 +394,10 @@
     <string name="family_msg_no_changes">Nessuna modifica da applicare.</string>
     <string name="family_msg_nothing_to_merge">Nessuna novità da unire.</string>
     <string name="family_msg_tables_aligned">Le tabelle locali sono già allineate alle tabelle condivise.</string>
+    <string name="family_msg_import_blocked">%1$s</string>
+    <string name="family_dialog_import_failed">Importazione non riuscita</string>
+    <string name="family_msg_category_in_use_block">Categoria «%1$s» usata da %2$d contenitori: non può essere rimossa.</string>
+    <string name="family_msg_location_in_use_block">Posizione «%1$s» usata da %2$d contenitori: non può essere rimossa.</string>
     <string name="family_preview_shared_title">Anteprima tabelle condivise:</string>
     <string name="family_preview_shared_categories">Categorie: %1$d da aggiungere, %2$d da aggiornare, %3$d da rimuovere.</string>
     <string name="family_preview_shared_locations">Posizioni: %1$d da aggiungere, %2$d da rimuovere.</string>
@@ -412,6 +426,13 @@
     <string name="object_quantity_label">Quantità: %1$s</string>
     <string name="qr_label_pdf_name">Etichetta.pdf</string>
     <string name="folder_selected_label">Cartella selezionata</string>
+    <string name="storage_folder_pick_title">Scegli dove salvare</string>
+    <string name="storage_folder_browse_all">Tutte le cartelle…</string>
+    <string name="storage_folder_network_or_cloud">Disco di rete o spazio online già collegato</string>
+    <string name="storage_folder_volume_primary">Memoria del dispositivo</string>
+    <string name="storage_folder_volume_removable">Memoria rimovibile</string>
+    <string name="storage_folder_volume_shared">Area condivisa / montata</string>
+    <string name="storage_folder_volume_fallback">Memoria</string>
     <string name="common_print">Stampa</string>
 
 </resources>

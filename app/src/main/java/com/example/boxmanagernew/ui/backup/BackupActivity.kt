@@ -17,6 +17,8 @@ import com.example.boxmanagernew.backup.config.BackupConfiguration
 import com.example.boxmanagernew.backup.facade.BackupFacade
 import com.example.boxmanagernew.data.local.DatabaseProvider
 import com.example.boxmanagernew.data.repository.*
+import com.example.boxmanagernew.storage.OpenStorageTreeContract
+import com.example.boxmanagernew.storage.StorageFolderPicker
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.DialogUtils
 import com.example.boxmanagernew.ui.common.FeedbackUtils
@@ -36,7 +38,7 @@ class BackupActivity : BaseActivity() {
 
     private val folderPicker =
         registerForActivityResult(
-            ActivityResultContracts.OpenDocumentTree()
+            OpenStorageTreeContract()
         ) { uri ->
 
             if (uri != null) {
@@ -117,7 +119,10 @@ class BackupActivity : BaseActivity() {
         })
 
         btnBrowse.setOnClickListener {
-            folderPicker.launch(null)
+            StorageFolderPicker.choose(
+                this,
+                folderPicker
+            )
         }
 
         btnCreateBackup.setOnClickListener {

@@ -2,6 +2,7 @@ package com.example.boxmanagernew.importdata.config
 
 import android.content.Context
 import com.example.boxmanagernew.R
+import com.example.boxmanagernew.storage.CsvFileNames
 import com.example.boxmanagernew.storage.StorageFolderConfiguration
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -21,7 +22,7 @@ object ImportConfiguration {
 
     const val FILE_NAME = "Modello_Importazione.csv"
 
-    const val FILE_EXTENSION = ".csv"
+    const val FILE_EXTENSION = CsvFileNames.EXTENSION
 
     /**
      * Genera Modello riusa la cartella Backup (Nota B7 / salvataggio-file),
@@ -177,19 +178,10 @@ object ImportConfiguration {
     }
 
     fun templateFileName(fileName: String): String {
-        val trimmed = fileName.trim().ifBlank { FILE_NAME }
-        return if (trimmed.endsWith(FILE_EXTENSION, ignoreCase = true)) {
-            trimmed
-        } else {
-            trimmed + FILE_EXTENSION
-        }
+        return CsvFileNames.force(fileName, FILE_NAME)
     }
 
     fun templateStem(fileName: String): String {
-        val csvName = templateFileName(fileName)
-        return csvName.substring(
-            0,
-            csvName.length - FILE_EXTENSION.length
-        )
+        return CsvFileNames.stem(fileName, FILE_NAME)
     }
 }

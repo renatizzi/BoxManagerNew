@@ -201,15 +201,10 @@ class ViewExportPersister(
                 }
             }
 
-            val baseName =
-                csvName.substringBeforeLast(
-                    '.',
-                    csvName
-                )
-
+            // Nome con estensione: su disco di rete il MIME da solo non basta.
             created = tree.createFile(
                 ImportConfiguration.CSV_MIME_TYPE,
-                baseName
+                csvName
             ) ?: return writeFailed()
 
             copyToDocument(temp, created.uri)

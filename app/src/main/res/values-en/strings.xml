@@ -115,6 +115,15 @@
     <string name="settings_palette_blue">Blue</string>
     <string name="settings_palette_green">Green</string>
     <string name="settings_locations_card">Usual storage locations</string>
+    <string name="settings_network_drive_card">Network drive</string>
+    <string name="settings_network_drive_status_ready">Ready: when you run Backup or save a file, you can pick the drive.</string>
+    <string name="settings_network_drive_status_missing">A free app is needed (once only). Tap here to start.</string>
+    <string name="network_drive_dialog_title">Save to a network drive</string>
+    <string name="network_drive_dialog_need_app">To save archive data on a drive or PC (server) on your Wi‑Fi network you need a dedicated app (e.g. CIFS Documents Provider) that lets you see and manage storage units as if they were local disks. This is useful when sharing BoxManager.\nBelow are a few simple steps to download and use CIFS:\n1. To install the recommended free app, use the Play Store link from the \"Install the app\" button\n2. To set it up correctly you first need to know:\na. Unit name (e.g. Network drive)\nb. Storage (e.g. SMB2,3 (jCIFS NG))\nc. Host (e.g. 192.168.1.1)\nd. Port (e.g. 445)\ne. User and Password (credentials for the unit)\nf. Folder (e.g. BoxManager(sda1)/)\n3. Return to BoxManager and, barring errors, you will now also see — together with local disks and cloud — the network unit/folders where you can save archive files (backup, export, send tables, send archive).</string>
+    <string name="network_drive_dialog_ready">The CIFS Documents Provider app is already installed on this device.\n1. To make changes, tap \"Open the app\"\n2. To use the network drive, return to BoxManager and choose the CIFS folder where you want to save archive files (backup, export, send tables, send archive).</string>
+    <string name="network_drive_install_helper">Install the app</string>
+    <string name="network_drive_open_helper">Open the app</string>
+    <string name="network_drive_open_store">Open in the store</string>
     <string name="settings_save">SAVE</string>
     <string name="settings_saved">Saved</string>
     <string name="settings_language_title">Language</string>
@@ -331,6 +340,7 @@
     <string name="guide_section_dashboard_b3">Advanced search (natural language): from Full archive.</string>
     <string name="guide_section_utility_title">Utility</string>
     <string name="guide_utility_backup">Backup and Restore to save the archive (use a folder outside the app).</string>
+    <string name="guide_utility_network_folder">To save to a network drive: Settings → Network drive (CIFS app if needed) → then in Backup/Export/Send tap Browse.</string>
     <string name="guide_utility_import">Import data from a CSV file to work with external files (*).</string>
     <string name="guide_utility_qr">QR code to see a box\'s contents using the camera.</string>
     <string name="guide_utility_family_share">Share Archive to update and share your archive data with your family.</string>
@@ -385,6 +395,10 @@
     <string name="family_msg_no_changes">No changes to apply.</string>
     <string name="family_msg_nothing_to_merge">Nothing new to merge.</string>
     <string name="family_msg_tables_aligned">Local tables are already aligned with the shared tables.</string>
+    <string name="family_msg_import_blocked">%1$s</string>
+    <string name="family_dialog_import_failed">Import failed</string>
+    <string name="family_msg_category_in_use_block">Category \"%1$s\" is used by %2$d containers: it cannot be removed.</string>
+    <string name="family_msg_location_in_use_block">Location \"%1$s\" is used by %2$d containers: it cannot be removed.</string>
     <string name="family_preview_shared_title">Shared tables preview:</string>
     <string name="family_preview_shared_categories">Categories: %1$d to add, %2$d to update, %3$d to remove.</string>
     <string name="family_preview_shared_locations">Locations: %1$d to add, %2$d to remove.</string>
@@ -413,6 +427,13 @@
     <string name="object_quantity_label">Quantity: %1$s</string>
     <string name="qr_label_pdf_name">Label.pdf</string>
     <string name="folder_selected_label">Selected folder</string>
+    <string name="storage_folder_pick_title">Choose where to save</string>
+    <string name="storage_folder_browse_all">All folders…</string>
+    <string name="storage_folder_network_or_cloud">Network drive or online space already linked</string>
+    <string name="storage_folder_volume_primary">Device storage</string>
+    <string name="storage_folder_volume_removable">Removable storage</string>
+    <string name="storage_folder_volume_shared">Shared / mounted area</string>
+    <string name="storage_folder_volume_fallback">Storage</string>
     <string name="common_print">Print</string>
 
 </resources>

@@ -3,6 +3,7 @@ package com.example.boxmanagernew.viewoutput.config
 import android.content.Context
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.backup.config.BackupConfiguration
+import com.example.boxmanagernew.storage.CsvFileNames
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -132,19 +133,10 @@ object ViewOutputConfiguration {
         fileName: String,
         now: Date = Date()
     ): String {
-
-        val trimmed = fileName.trim().ifBlank {
+        return CsvFileNames.force(
+            fileName,
             EXPORT_FILE_PREFIX + stamp(now)
-        }
-        val extension = ".csv"
-
-        return if (
-            trimmed.endsWith(extension, ignoreCase = true)
-        ) {
-            trimmed
-        } else {
-            trimmed + extension
-        }
+        )
     }
 
     fun csvNamesMatch(
@@ -160,20 +152,10 @@ object ViewOutputConfiguration {
     }
 
     fun csvStem(fileName: String): String {
-
-        var stem = fileName.trim()
-        val extension = ".csv"
-
-        while (
-            stem.endsWith(extension, ignoreCase = true)
-        ) {
-            stem = stem.substring(
-                0,
-                stem.length - extension.length
-            ).trimEnd()
-        }
-
-        return stem
+        return CsvFileNames.stem(
+            fileName,
+            EXPORT_FILE_PREFIX + stamp(Date())
+        )
     }
 
     private fun stamp(now: Date): String {

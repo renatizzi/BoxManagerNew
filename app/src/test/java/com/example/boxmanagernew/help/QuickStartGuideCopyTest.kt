@@ -108,6 +108,55 @@ class QuickStartGuideCopyTest {
         assertTrue(source.contains("if (includeFamilyBeta)"))
     }
 
+    @Test
+    fun utility_mentionsNetworkDriveViaSettings() {
+        assertTrue(
+            stringIt("guide_utility_network_folder")
+                .contains("Disco di rete")
+        )
+        assertTrue(
+            stringEn("guide_utility_network_folder")
+                .contains("Network drive")
+        )
+        assertTrue(
+            stringIt("guide_utility_network_folder")
+                .contains("Impostazioni")
+        )
+        // Messaggi minimalisti B5.20 (proposta Renato): CIFS esplicito + campi essenziali.
+        assertTrue(
+            stringIt("network_drive_dialog_need_app")
+                .contains("CIFS Documents Provider")
+        )
+        assertTrue(
+            stringIt("network_drive_dialog_need_app")
+                .contains("Installa l'app")
+        )
+        assertTrue(
+            stringIt("network_drive_dialog_need_app")
+                .contains("Host")
+        )
+        assertTrue(
+            stringIt("network_drive_dialog_need_app")
+                .contains("Folder")
+        )
+        assertTrue(
+            stringIt("network_drive_dialog_ready")
+                .contains("già installata")
+        )
+        assertTrue(
+            stringIt("network_drive_dialog_ready")
+                .contains("Apri l'app")
+        )
+        assertFalse(
+            stringIt("guide_utility_network_folder")
+                .contains("NAS")
+        )
+        assertFalse(
+            stringIt("network_drive_dialog_need_app")
+                .contains("NAS")
+        )
+    }
+
     private fun kotlinSource(relativeUnderJava: String): String {
         val path = "com/example/boxmanagernew/$relativeUnderJava"
         return File("app/src/main/java/$path")

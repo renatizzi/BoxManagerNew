@@ -1,17 +1,88 @@
 # Promemoria — interventi trasversali (BoxManager)
 
-**Aggiornato:** 04/09/2026. Ingresso sessione → [PROMPT_CONTINUITA_CORRETTIVI.md](PROMPT_CONTINUITA_CORRETTIVI.md).  
-Regola: `.cursor/rules/annotazioni-renato.mdc`.
+**Aggiornato:** 07/09/2026.  
+Ingresso sessione 07/09 → [PROMPT_CONTINUITA_07_09_DISCO_FOTO.md](PROMPT_CONTINUITA_07_09_DISCO_FOTO.md).  
+Correttivi → [PROMPT_CONTINUITA_CORRETTIVI.md](PROMPT_CONTINUITA_CORRETTIVI.md).  
+Regola: `.cursor/rules/annotazioni-renato.mdc`.  
+Processo analisi: `.cursor/rules/processo-analisi.mdc`.
+
+---
+
+### Processo analisi (obbligatorio per nuove voci)
+
+Per requisiti / Progetto 2 / documenti destinati alla Nota — **4 fasi**:
+
+1. **ANALISI** — bozza scritta (assessment), **senza codice** salvo SI esplicito  
+2. **FEEDBACK** — chiarimenti e SI Renato in chat  
+3. **CONVALIDA** — dell’**analisi** e dei **requisiti condivisi** (merito); nessun aggiornamento ufficiale prima  
+4. **AGGIORNAMENTO DOCUMENTO** — scrittura/congelamento; chiusura con **CONVALIDA dell’aggiornamento del documento**  
+
+Esempio già seguito: [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md).  
+Ingresso sessione 07/09: [PROMPT_CONTINUITA_07_09_DISCO_FOTO.md](PROMPT_CONTINUITA_07_09_DISCO_FOTO.md).
+
+---
+
+### Analisi anticipate (zero codice) — Progetto 2
+
+Sequenza concordata A→D. Assessment aperti:
+
+| Voce | Documento | Stato |
+|------|-----------|--------|
+| **A3 Foto oggetto** | [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) (**congelato** + **CONVALIDA documento** 07/09) · [ASSESSMENT_FOTO_MINIATURA.md](ASSESSMENT_FOTO_MINIATURA.md) (storico) | Requisiti + tecnica chiusi; confluire in Nota a implementazione. Codice dopo QR avanzato + Cestino |
+
+---
+
+## Checklist V1 in attesa fine test Google Play
+
+Lavoro ammesso **in parallelo** al test chiuso 1.2 (su branch di sviluppo, **non** su `main`).  
+A test chiuso: M3 — questa BoxManager **sostituisce** la 1.2.
+
+### Fatto (durante l’attesa)
+
+| Voce | Stato |
+|------|--------|
+| Archivio condiviso B0–B5 | **CONVALIDATO** — Nota 9.2 Allegato **4.20** |
+| P0 / P1 correttivi (T1–T2, igiene file) | **CONVALIDATO** |
+| Filone M — Scelta lingua + ricerca EN (M1–M2, CK1–CK2) | **CONVALIDATO** |
+| Promemoria batch 04/09 (nome app, auto-save nome, default IT→EN, F7 lista, ricerca vuota, voce oggetto, M0) | **Fatto** |
+| Fix ricerca B5.13–B5.15 (inventari / EN) | **Fatto** |
+| **B-SEL-CARTELLA** Disco di rete | **CONVALIDATO** — Nota 9.2 Allegato **4.22** + Roadmap 07/09/2026 |
+| **B5.24** CSV estensione forzata | **Fatto** — `CsvFileNames` (come `.zip` Backup) |
+
+### Aperto / continuo (ancora in V1, non V2)
+
+| Voce | Note |
+|------|------|
+| **P2** sync bugfix Play 1.2 → sviluppo | Processo continuo — [BETA_SYNC_POLICY.md](BETA_SYNC_POLICY.md) |
+| Bug **bloccanti** segnalati dai tester Play | Solo su `main` / 1.2; non mescolare con sviluppo |
+| **B-FAMILY-DOMAIN-ERR** | Opzionale: messaggi dominio merge ancora IT in path rari |
+| Idee non pianificate (es. suggerimento Host = gateway Wi‑Fi) | Solo con SI esplicito |
+
+### Solo a test Play **chiuso** (non prima)
+
+| Voce | Note |
+|------|------|
+| **M3** | Sviluppo → ufficiale al posto della 1.2; screenshot; versionCode; Console |
+| SMB nativo in BoxManager | **Fuori V1** (resta CIFS esterno) |
+| Voci Roadmap **4.1.6** / Progetto 2 | Dopo Play verde |
+
+### Fuori scope finché il test è aperto
+
+- Merge dello sviluppo su `main`
+- Pubblicare flavor `famiglia` sulla Console
+- Anticipare blocchi V2 (4.1.6) prima della convalida
 
 ---
 
 ## Backlog aperto (in evidenza)
 
-Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino alla presa in carico**. Non implementare prima del SI. Scrivere nella stessa sessione, committare, confermare l’ID.
+Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino alla presa in carico**. Non implementare prima del SI.
 
 | ID | Data | Indicazione | Stato |
 |----|------|-------------|-------|
-| **B-SEL-CARTELLA** | M1 / CK1 | Selettore cartella (Backup, Esporta, Condivisione tabelle, …): estendere la scelta anche ai drive **non riconosciuti direttamente da Android** (es. disco di rete locale / NAS SMB). **Valutazione 04/09:** SAF non elenca SMB da solo; il NAS compare solo se montato/esposto in Files. Documentato in [INSTALLA_SENZA_RUN.md](INSTALLA_SENZA_RUN.md). Serve scelta prodotto (provider terzi / istruzioni utente) prima di altro codice | **Aperto** |
+| *(nessuna voce aperta)* | — | — | — |
+
+**Chiuso di recente:** **B-SEL-CARTELLA** — CONVALIDATO (Nota 9.2 Allegato **4.22**). **Foto oggetto** — CONVALIDA aggiornamento documento 07/09/2026 ([REQUISITI](REQUISITI_FOTO_OGGETTO.md)).
 
 ---
 
@@ -60,7 +131,8 @@ Dopo il rilascio Play **1.2**, due filoni in **parallelo al test** (decisione Re
 | Filone | Documento | Stato |
 |--------|-----------|-------|
 | **Archivio condiviso** | [NOTA_B0_MERGE_FAMIGLIA.md](NOTA_B0_MERGE_FAMIGLIA.md) B0–B5 | **CONVALIDATO** — funzione di BoxManager, non un’altra app |
-| **Inglese** (scelta lingua + ricerca EN) | [../multilingua/PROMPT_CONTINUITA_M.md](../multilingua/PROMPT_CONTINUITA_M.md) | **M1/CK1** e **M2/CK2 CONVALIDATI** (CK2 device 04/09/2026). Stessa BoxManager. M3 a test Play chiuso. |
+| **Inglese** (scelta lingua + ricerca EN) | [../multilingua/PROMPT_CONTINUITA_M.md](../multilingua/PROMPT_CONTINUITA_M.md) | **M1/CK1** e **M2/CK2 CONVALIDATI**. M3 a test Play chiuso. |
+| **Disco di rete** | Nota 9.2 Allegato **4.22** + [GUIDA_DISCO_RETE.md](GUIDA_DISCO_RETE.md) | **CONVALIDATO** |
 
 ---
 
@@ -101,7 +173,9 @@ Verificare **ogni** punto che scrive un file e allineare dove ha senso al criter
 
 ## Come usare questo file
 
-- Aprire una **nuova sessione** correttivi: leggere [ASSESSMENT_CORRETTIVI.md](ASSESSMENT_CORRETTIVI.md) + tabella P0 + **Backlog aperto**.
+- Aprire una **nuova sessione** correttivi: leggere [ASSESSMENT_CORRETTIVI.md](ASSESSMENT_CORRETTIVI.md) + tabella P0 + **Backlog aperto** + **Checklist V1**.
+- Nuove funzionalità / requisiti: **ANALISI → FEEDBACK → CONVALIDA (analisi/requisiti) → AGGIORNAMENTO DOCUMENTO (+ CONVALIDA aggiornamento)** (regola `processo-analisi.mdc`).
+- Sessione 07/09 (Disco + Foto + processo): [PROMPT_CONTINUITA_07_09_DISCO_FOTO.md](PROMPT_CONTINUITA_07_09_DISCO_FOTO.md).
 - Chiudere una voce solo dopo **SI Renato** (o criterio equivalente CONVALIDATO).
 - Non duplicare qui il dettaglio prodotto delle fette B0–B5 → [NOTA_B0_MERGE_FAMIGLIA.md](NOTA_B0_MERGE_FAMIGLIA.md).
 - Indicazione fuori contesto in un altro filone: stessa tabella Backlog aperto, stessa sessione, commit. Regola `.cursor/rules/annotazioni-renato.mdc`.

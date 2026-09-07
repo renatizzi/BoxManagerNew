@@ -43,6 +43,10 @@ class ImportPreBackupNameTest {
             ImportConfiguration.templateFileName("Copia_modello")
         )
         assertEquals(
+            "Copia_modello.csv",
+            ImportConfiguration.templateFileName("Copia_modello.txt")
+        )
+        assertEquals(
             "Modello_Importazione",
             ImportConfiguration.templateStem(ImportConfiguration.FILE_NAME)
         )

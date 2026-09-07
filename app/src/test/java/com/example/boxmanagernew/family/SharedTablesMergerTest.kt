@@ -64,8 +64,10 @@ class SharedTablesMergerTest {
         )
 
         assertFalse(plan.canApply)
-        assertEquals(1, plan.blockingErrors.size)
-        assertTrue(plan.blockingErrors[0].contains("Hobby"))
+        assertEquals(1, plan.blockedCategoryRemovals.size)
+        assertEquals("Hobby", plan.blockedCategoryRemovals[0].entity.name)
+        assertEquals(2, plan.blockedCategoryRemovals[0].boxCount)
+        assertTrue(plan.hasBlockingErrors)
     }
 
     @Test

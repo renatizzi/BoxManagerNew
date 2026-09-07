@@ -22,6 +22,9 @@ Se Android Studio non mostra Run o il Terminale dà `JAVA_HOME is not set`, usa 
 
 Versione attesa in topbar: **1.3-famigliaB5.8**
 
-### Cartelle di rete / NAS (B-SEL-CARTELLA)
+### Disco di rete (B-SEL-CARTELLA)
 
-Android apre solo le fonti del selettore di sistema (Files / SAF). Un NAS compare se è già montato o esposto da un’app Documenti; BoxManager non può elencare da solo gli SMB non visti dal sistema.
+**Guida per l’utente:** [GUIDA_DISCO_RETE.md](GUIDA_DISCO_RETE.md).
+
+In app: **Impostazioni → Disco di rete** (accompagna all’app gratuita consigliata, poi Backup → Sfoglia).  
+**Files di Google non basta.** BoxManager non collega il disco da solo.

@@ -28,6 +28,8 @@ import com.example.boxmanagernew.ui.backup.BackupZipPersister
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.DialogUtils
 import com.example.boxmanagernew.ui.common.FeedbackUtils
+import com.example.boxmanagernew.storage.OpenStorageTreeContract
+import com.example.boxmanagernew.storage.StorageFolderPicker
 
 class RestoreActivity : BaseActivity() {
 
@@ -54,7 +56,7 @@ class RestoreActivity : BaseActivity() {
 
     private val folderPicker =
         registerForActivityResult(
-            ActivityResultContracts.OpenDocumentTree()
+            OpenStorageTreeContract()
         ) { uri ->
 
             if (uri != null) {
@@ -185,7 +187,7 @@ class RestoreActivity : BaseActivity() {
         }
 
         btnBrowseFile.setOnLongClickListener {
-            folderPicker.launch(null)
+            StorageFolderPicker.choose(this, folderPicker)
             true
         }
 
@@ -240,7 +242,7 @@ class RestoreActivity : BaseActivity() {
         }
 
         pendingPickFileAfterFolder = true
-        folderPicker.launch(null)
+        StorageFolderPicker.choose(this, folderPicker)
     }
 
     private fun launchZipFilePicker() {
@@ -284,14 +286,14 @@ class RestoreActivity : BaseActivity() {
 
         if (folderUri == null) {
             pendingRestoreAfterFolder = true
-            folderPicker.launch(null)
+            StorageFolderPicker.choose(this, folderPicker)
             return
         }
 
         if (persister.resolvedFolderDisplayName(folderUri!!) == null) {
             showBlocking(BackupConfiguration.folderInaccessible(this))
             pendingRestoreAfterFolder = true
-            folderPicker.launch(null)
+            StorageFolderPicker.choose(this, folderPicker)
             return
         }
 

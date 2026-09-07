@@ -134,6 +134,7 @@ object QuickStartGuideCopy {
     ): List<String> {
         return buildList {
             add(context.getString(R.string.guide_utility_backup))
+            add(context.getString(R.string.guide_utility_network_folder))
             add(context.getString(R.string.guide_utility_import))
             add(context.getString(R.string.guide_utility_qr))
             if (includeFamilyBeta) {

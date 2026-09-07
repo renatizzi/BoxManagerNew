@@ -44,6 +44,8 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import com.example.boxmanagernew.storage.OpenStorageTreeContract
+import com.example.boxmanagernew.storage.StorageFolderPicker
 
 class BoxDetailActivity : BaseActivity() {
 
@@ -82,7 +84,7 @@ class BoxDetailActivity : BaseActivity() {
 
     private val exportFolderPicker =
         registerForActivityResult(
-            ActivityResultContracts.OpenDocumentTree()
+            OpenStorageTreeContract()
         ) { uri ->
 
             if (uri != null && ::outputController.isInitialized) {
@@ -698,7 +700,7 @@ class BoxDetailActivity : BaseActivity() {
                     )
                 },
                 launchFolderPicker = {
-                    exportFolderPicker.launch(null)
+                    StorageFolderPicker.choose(this, exportFolderPicker)
                 }
             )
 

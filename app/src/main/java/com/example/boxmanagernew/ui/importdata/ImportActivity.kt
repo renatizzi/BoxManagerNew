@@ -28,6 +28,8 @@ import com.example.boxmanagernew.ui.premium.ArchivioCompletoNav
 import com.example.boxmanagernew.ui.common.DialogUtils
 import com.example.boxmanagernew.ui.common.FeedbackUtils
 import com.google.android.material.card.MaterialCardView
+import com.example.boxmanagernew.storage.OpenStorageTreeContract
+import com.example.boxmanagernew.storage.StorageFolderPicker
 
 class ImportActivity : BaseActivity() {
 
@@ -44,7 +46,7 @@ class ImportActivity : BaseActivity() {
 
     private val backupFolderPicker =
         registerForActivityResult(
-            ActivityResultContracts.OpenDocumentTree()
+            OpenStorageTreeContract()
         ) { uri ->
 
             if (uri != null && persistBackupFolder(uri)) {
@@ -177,7 +179,7 @@ class ImportActivity : BaseActivity() {
 
         if (uri == null || backupPersister.folderDisplayName(uri) == null) {
             showBlocking(BackupConfiguration.folderInaccessible(this))
-            backupFolderPicker.launch(null)
+            StorageFolderPicker.choose(this, backupFolderPicker)
             return
         }
 
@@ -270,7 +272,7 @@ class ImportActivity : BaseActivity() {
         }
 
         pendingTemplateAfterFolder = true
-        backupFolderPicker.launch(null)
+        StorageFolderPicker.choose(this, backupFolderPicker)
     }
 
     private fun launchImportFilePicker() {
@@ -326,7 +328,7 @@ class ImportActivity : BaseActivity() {
             },
             onBrowseFolder = {
                 pendingTemplateAfterFolder = true
-                backupFolderPicker.launch(null)
+                StorageFolderPicker.choose(this, backupFolderPicker)
             },
             normalizeName = { raw ->
                 ImportConfiguration.templateFileName(raw)

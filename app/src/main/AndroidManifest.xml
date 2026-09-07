@@ -11,6 +11,11 @@
         android:name="android.hardware.camera.any"
         android:required="false" />
 
+    <!-- Visibilità pacchetto (Android 11+): rilevare CIFS installata senza usarla prima. -->
+    <queries>
+        <package android:name="com.wa2c.android.cifsdocumentsprovider" />
+    </queries>
+
     <application
         android:name=".BoxManagerApplication"
         android:allowBackup="false"

@@ -7,11 +7,11 @@
 
 ### Backlog aperto (in evidenza — non è questa fetta)
 
-Fonte viva: [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md). Restano visibili fino alla presa in carico.
+Fonte viva: [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md) — **Checklist V1 in attesa fine test Google Play**.
 
 | ID | Indicazione |
 |----|-------------|
-| **B-SEL-CARTELLA** | Selettore cartella anche su drive non visti da Android (NAS); SAF non basta da solo — valutazione aperta |
+| *(nessuna voce aperta)* | M3 solo a test chiuso; P2 sync continuo; B-FAMILY-DOMAIN-ERR opzionale |
 
 ---
 
@@ -43,11 +43,11 @@ Fonte viva: [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md). Rest
 | **M2b** | **Fatto** — motore locale-aware EN (S1–S3 SI 03/09/2026). [SEMANTICA_EN_EQUIVOCI.md](SEMANTICA_EN_EQUIVOCI.md) |
 | **M2c** | **Fatto** — messaggi 2.6 e card ricerca; locale UI allineato (PR **#21**, fix PR **#22**) |
 | **CK2** | **CONVALIDATO SI Renato device 04/09/2026** — 10/10 domande EN OK (dopo fix locale) |
-| **Prossimo pacchetto** | **M3** solo a test Play chiuso. Promemoria: resta **B-SEL-CARTELLA** |
+| **Prossimo pacchetto** | **M3** solo a test Play chiuso. Checklist V1: [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md) |
 | **Branch lavoro** | `cursor/promemoria-fix-d69a` |
 | **Branch base** | `cursor/promemoria-backlog-d69a` |
 | **Play** | BoxManager **1.2** su `main`, identica per tutto il test. Lo **stesso** BoxManager di sviluppo (archivio condiviso + inglese) a test chiuso **sostituisce** la 1.2. Si tocca 1.2 **solo** per bug bloccanti. |
-| **Build sviluppo** | Topbar **1.3-famigliaB5.15** (etichetta di build, non un altro nome di app). |
+| **Build sviluppo** | Topbar **1.3-famigliaB5.22** (etichetta di build, non un altro nome di app). |
 | **Ricerca avanzata EN** | Pipeline 0–10 invariata; **niente** traduttore EN→IT; **niente** interprete semantico (Nota 3.3.9) |
 | **Checkpoint** | **CK0** ✅; **S1–S3 SI**; **CK1** ✅; **CK2** ✅ |
 
@@ -91,9 +91,9 @@ git fetch origin
 git checkout -B cursor/promemoria-fix-d69a origin/cursor/promemoria-fix-d69a
 ```
 
-Poi: Sync Gradle se lo chiede; variante **famigliaDebug** (non `play`); **Run** sul telefono. Topbar attesa: **1.3-famigliaB5.15**.
+Poi: Sync Gradle se lo chiede; variante **famigliaDebug** (non `play`); **Run** sul telefono. Topbar attesa: **1.3-famigliaB5.22**.
 
-**Ritest B5.15 (EN):** List of all the objects → report oggetti (No. objects); What objects in the cellar → oggetti filtrati; categories/places in use → usate. Non B5.14 (router EN / function words ancora KO).
+**Stato B-SEL / B5.22:** CONVALIDATO e recepito in Nota Integrata **9.2** Allegato **4.22** + Roadmap 07/09/2026. Guida: [GUIDA_DISCO_RETE.md](../famiglia/GUIDA_DISCO_RETE.md).
 
 ### 2. Archivio da inserire (se è vuoto)
 
@@ -145,7 +145,7 @@ Italiano: Impostazioni → Italiano; *Trova box* e *Nessun risultato trovato.* c
 
 ### Cosa **non** è questo test
 
-- Cartella NAS / disco di rete (**B-SEL-CARTELLA** — ancora aperto)
+- Disco di rete (**B-SEL-CARTELLA** — **CONVALIDATO**; Nota 9.2 Allegato **4.22**)
 - Pubblicare su Play (**M3**)
 - Ritestare i 10 punti CK2 (già CONVALIDATO)
 
@@ -238,7 +238,7 @@ git checkout -b cursor/multilingua-m1a-5409
 Continua filone M — inglese in BoxManager da docs/multilingua/PROMPT_CONTINUITA_M.md
 Pacchetto: fix ritest promemoria B5.15; CK2 CONVALIDATO; attesa M3 a test Play chiuso
 Branch: cursor/promemoria-fix-d69a
-Vincoli: non toccare main/1.2; B-SEL-CARTELLA solo con SI prodotto; niente Motore B nuovo.
+Vincoli: non toccare main/1.2; Checklist V1 nel Promemoria; niente Motore B nuovo.
 ```
 
 ---
@@ -254,16 +254,17 @@ Vincoli: non toccare main/1.2; B-SEL-CARTELLA solo con SI prodotto; niente Motor
 
 ## Backlog annotato (non perdere)
 
-**Aperti — fonte viva in cima al [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md):**
+**Aperti — fonte viva in cima al [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md) (Checklist V1):**
 
 | ID | Richiesta Renato | Note |
 |----|------------------|------|
-| **B-SEL-CARTELLA** | Selettore cartella anche su drive non visti da Android (NAS / disco di rete) | **Aperto** — SAF non elenca SMB da solo |
+| *(nessuna B- aperta)* | — | P2 sync; M3 a test chiuso; B-FAMILY-DOMAIN-ERR opzionale |
 
 Storico (chiusi / note agente):
 
 | ID | Richiesta | Note |
 |----|-----------|------|
+| **B-SEL-CARTELLA** | Disco di rete | **CONVALIDATO** — Nota 9.2 Allegato **4.22** |
 | **B-NOME-APP-BAT** / **B-NOME-AUTO-SAVE** / **B-DEFAULT-IT-EN** / **B-F7-FORMATO-LISTA** / **B-RICERCA-SENZA-SPECIFICHE** / **B-VOCE-OGGETTO** / **M0** | Presa in carico 04/09 | **Fatto** su `cursor/promemoria-backlog-d69a` |
 | **B-PALETTE-ACCENT** | Colori card funzione = palette Impostazioni, indipendentemente dalla lingua | Risolto (`ThemeAccentTextViews`) |
 | **B-FAMILY-DOMAIN-ERR** | Errori dominio merge archivio condiviso ancora IT in path rari | Opzionale; non bloccano CK1 |

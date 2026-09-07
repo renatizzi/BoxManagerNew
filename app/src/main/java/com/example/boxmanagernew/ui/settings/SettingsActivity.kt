@@ -22,6 +22,7 @@ import com.example.boxmanagernew.domain.locale.LocalePreference
 import com.example.boxmanagernew.domain.premium.ArchivioCompletoAccess
 import com.example.boxmanagernew.domain.premium.ArchivioCompletoPolicy
 import com.example.boxmanagernew.domain.privacy.PrivacyPolicy
+import com.example.boxmanagernew.storage.NetworkDriveAssistant
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.LocaleManager
 import com.example.boxmanagernew.ui.common.ThemeManager
@@ -51,6 +52,8 @@ class SettingsActivity : BaseActivity() {
 
     private lateinit var textCurrentTheme: TextView
     private lateinit var cardLocations: View
+    private lateinit var cardNetworkDrive: View
+    private lateinit var textNetworkDriveStatus: TextView
     private lateinit var cardPrivacy: View
 
     private lateinit var optionItalian: LinearLayout
@@ -80,6 +83,7 @@ class SettingsActivity : BaseActivity() {
         setupDebugUnlock()
         setupUnlockCode()
         setupAdminParams()
+        refreshNetworkDriveStatus()
 
         setupBottomNav()
 
@@ -143,6 +147,12 @@ class SettingsActivity : BaseActivity() {
 
         cardLocations =
             findViewById(R.id.cardLocations)
+
+        cardNetworkDrive =
+            findViewById(R.id.cardNetworkDrive)
+
+        textNetworkDriveStatus =
+            findViewById(R.id.textNetworkDriveStatus)
 
         cardPrivacy =
             findViewById(R.id.cardPrivacy)
@@ -244,9 +254,48 @@ class SettingsActivity : BaseActivity() {
             )
         }
 
+        cardNetworkDrive.setOnClickListener {
+            NetworkDriveAssistant.showSetupDialog(
+                this
+            )
+        }
+
         cardPrivacy.setOnClickListener {
             openPrivacyPolicy()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (
+            ::textNetworkDriveStatus.isInitialized
+        ) {
+            refreshNetworkDriveStatus()
+        }
+    }
+
+    private fun refreshNetworkDriveStatus() {
+
+        if (
+            !::textNetworkDriveStatus.isInitialized
+        ) {
+            return
+        }
+
+        textNetworkDriveStatus.text =
+            if (
+                NetworkDriveAssistant.isHelperInstalled(
+                    this
+                )
+            ) {
+                getString(
+                    R.string.settings_network_drive_status_ready
+                )
+            } else {
+                getString(
+                    R.string.settings_network_drive_status_missing
+                )
+            }
     }
 
     private fun openPrivacyPolicy() {

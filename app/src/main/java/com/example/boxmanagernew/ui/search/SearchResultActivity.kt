@@ -30,6 +30,8 @@ import com.example.boxmanagernew.viewoutput.model.ViewPrintHeader
 import com.example.boxmanagernew.viewoutput.persist.ViewExportPersister
 import com.example.boxmanagernew.viewoutput.ui.ViewOutputController
 import kotlinx.coroutines.launch
+import com.example.boxmanagernew.storage.OpenStorageTreeContract
+import com.example.boxmanagernew.storage.StorageFolderPicker
 
 class SearchResultActivity : BaseActivity() {
 
@@ -49,7 +51,7 @@ class SearchResultActivity : BaseActivity() {
 
     private val exportFolderPicker =
         registerForActivityResult(
-            ActivityResultContracts.OpenDocumentTree()
+            OpenStorageTreeContract()
         ) { uri ->
 
             if (uri != null && ::outputController.isInitialized) {
@@ -222,7 +224,7 @@ class SearchResultActivity : BaseActivity() {
                     )
                 },
                 launchFolderPicker = {
-                    exportFolderPicker.launch(null)
+                    StorageFolderPicker.choose(this, exportFolderPicker)
                 }
             )
 
