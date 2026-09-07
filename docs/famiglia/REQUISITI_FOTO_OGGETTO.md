@@ -2,6 +2,7 @@
 
 **Stato:** CONGELATO 07/09/2026 (SI Renato).  
 **CONVALIDA aggiornamento documento:** SI Renato 07/09/2026 (T1 allineamento DB, T3–T5/T8 tracciati file, processo 4 fasi).  
+**Integrazione 07/09/2026:** **R6 Premium** (Progetto 2) — SI Renato in sessione Cestino; non riapre il resto del merito foto.  
 **Uso:** riferimento funzionale e tecnico-architetturale fino all’implementazione Progetto 2.  
 **Destinazione:** confluire nella Nota Integrata ufficiale (Allegato dedicato) senza riaprire il merito.  
 **Assessment di lavoro:** [ASSESSMENT_FOTO_MINIATURA.md](ASSESSMENT_FOTO_MINIATURA.md) (storico analisi; prevale **questo** file su conflitti).  
@@ -49,6 +50,9 @@ Niente riconoscimento automatico / vision / ML / cerca-per-immagine.
 - Finalità: immagini di **oggetti di inventario**, non trattamento di dati personali (volti/documenti come scopo).
 - Conservazione: dispositivo + Backup / pacchetti che l’utente genera; non invio a servizi di analisi immagini.
 - Aggiornare privacy policy / Data safety in fase di implementazione (testo sobrio).
+
+### R6 — Premium (Progetto 2)
+- **SI Renato 07/09/2026:** Foto oggetto è funzionalità **Archivio completo / premium**, come A1 QR avanzato e A2 Cestino. Gate alle azioni foto (aggiungi/scatta/anteprima dedicata se gate UI) secondo le condizioni vigenti; dettaglio enum/pitch in implementazione.
 
 ---
 
