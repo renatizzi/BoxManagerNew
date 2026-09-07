@@ -31,11 +31,14 @@ L’app CIFS Documents Provider risulta già installata su questo dispositivo.
 1. Se vuoi apportare modifiche, tocca **Apri l’app**.
 2. Se vuoi usare il disco di rete, torna in BoxManager e scegli la cartella di CIFS dove salvare i file dell’archivio (backup, esporta, invia tabelle, invia archivio).
 
-Pulsanti tipici del dialogo: **Apri l’app** / **Apri nello store** / **Annulla**.
+Pulsanti tipici del dialogo: **Apri l’app** / **Annulla** (se non installata: **Installa l’app** / **Annulla**).
 
 ---
 
-## Riferimento (solo sviluppo)
+## Riferimento (ufficiale)
+
+Fonte: Nota Integrata **9.2** Allegato **4.22** + Roadmap quadro 07/09/2026.  
+Messaggi in-app: Impostazioni → **Disco di rete** (`network_drive_dialog_need_app` / `network_drive_dialog_ready`).
 
 Build da **1.3-famigliaB5.22**. Codice: `NetworkDriveAssistant`, card Impostazioni.  
 Package: `com.wa2c.android.cifsdocumentsprovider`.

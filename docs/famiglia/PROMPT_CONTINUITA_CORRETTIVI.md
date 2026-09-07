@@ -8,11 +8,11 @@ Usare questo file come **unico ingresso** per la sessione agente sui **correttiv
 
 ### Backlog aperto (in evidenza — non è questa fetta)
 
-Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md). Restano visibili fino alla presa in carico.
+Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) — sezione **Checklist V1 in attesa fine test Google Play**.
 
 | ID | Indicazione |
 |----|-------------|
-| **B-SEL-CARTELLA** | Disco di rete — **CONVALIDATO** (B5.22); Nota ufficiale a fine ciclo |
+| *(nessuna voce aperta)* | Checklist V1: P2 sync continuo; M3 solo a test chiuso; B-FAMILY-DOMAIN-ERR opzionale |
 
 ---
 
@@ -26,8 +26,9 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md). Restano visibili
 | **Freeze Play 1.2** | `cursor/versione-test-5409` (snapshot `main`; PR #14) |
 | **Dopo il test** | La BoxManager di sviluppo **sostituisce** la 1.2 come ufficiale. Non è un optional. [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md) |
 | **Archivio condiviso B0–B5** | **CONVALIDATO** — Nota Integrata **9.2** Allegato **4.20** |
+| **Disco di rete** | **CONVALIDATO** — Nota Integrata **9.2** Allegato **4.22** + Roadmap 07/09/2026 |
 | **Filone correttivi** | P0 chiuso; **P1 CONVALIDATO** B5.7; P2 continuo |
-| **Backlog aperto** | Recepire Disco di rete in Nota/Guida ufficiale a fine ciclo (funzione già CONVALIDATA) |
+| **Backlog aperto** | Nessuna voce B-*; vedi Checklist V1 nel Promemoria (P2 / M3 / opzionali) |
 
 ### Documenti vincolanti (leggere prima di codice)
 
@@ -158,7 +159,7 @@ Priorità:
 1) P2: se bug **bloccante** Play, fix 1.2 su main poi riportarlo sullo sviluppo
 2) Durante il test non mettere lo sviluppo su main
 3) Non riaprire P0/P1 senza evidenza nuova
-4) B-SEL-CARTELLA solo con SI prodotto
+4) Checklist V1: P2 sync; M3 solo a test chiuso; niente V2 anticipata
 5) Una sola app: BoxManager — niente «app famiglia»
 
 Leggi ASSESSMENT + STRATEGIA + PROMEMORIA prima del codice.

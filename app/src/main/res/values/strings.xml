@@ -339,7 +339,7 @@
     <string name="guide_section_dashboard_b3">Ricerca avanzata (linguaggio naturale): da Archivio completo.</string>
     <string name="guide_section_utility_title">Utility</string>
     <string name="guide_utility_backup">Backup e Ripristino per salvare l\'archivio (usa cartella diversa da app).</string>
-    <string name="guide_utility_network_folder">Per salvare su un disco di rete: in Impostazioni apri Disco di rete e segui i passi; poi in Backup premi Sfoglia.</string>
+    <string name="guide_utility_network_folder">Per salvare su un disco di rete: Impostazioni → Disco di rete (app CIFS se serve) → poi in Backup/Esporta/Invia premi Sfoglia.</string>
     <string name="guide_utility_import">Importa dati da file CSV per interagire con file esterni (*).</string>
     <string name="guide_utility_qr">Codice QR per vedere il contenuto di un box usando la fotocamera.</string>
     <string name="guide_utility_family_share">Condividi Archivio per aggiornare e condividere con i tuoi familiari i dati del tuo archivio.</string>
