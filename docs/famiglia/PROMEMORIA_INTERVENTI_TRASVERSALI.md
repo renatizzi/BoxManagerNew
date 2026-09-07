@@ -11,7 +11,7 @@ Sequenza concordata A→D. Assessment aperti:
 
 | Voce | Documento | Stato |
 |------|-----------|--------|
-| **A3 Foto miniatura** | [ASSESSMENT_FOTO_MINIATURA.md](ASSESSMENT_FOTO_MINIATURA.md) | Analisi usability + architettura; **attende SI** su 5 decisioni |
+| **A3 Foto miniatura** | [ASSESSMENT_FOTO_MINIATURA.md](ASSESSMENT_FOTO_MINIATURA.md) | SI ambito 07/09 (solo oggetti; galleria+scatto; Backup+Invia; no vision). **Aperti:** policy peso (1024/1280, thumb, ZIP Invia) |
 
 ---
 
