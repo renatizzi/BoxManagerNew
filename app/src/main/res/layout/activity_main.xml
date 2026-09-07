@@ -154,6 +154,14 @@
 
         </LinearLayout>
 
+        <Button
+            android:id="@+id/btnQrSelected"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:minHeight="44dp"
+            android:text="@string/menu_qr_batch_labels" />
+
     </LinearLayout>
 
     <!-- LISTA -->

@@ -30,7 +30,7 @@ Sequenza concordata: **A1 QR avanzato → A2 Cestino → A3 Foto** → poi B/C/D
 
 | Voce | Documento | Stato |
 |------|-----------|--------|
-| **A1 QR avanzato** | [REQUISITI_QR_AVANZATO.md](REQUISITI_QR_AVANZATO.md) (**congelato** + CONVALIDA documento 07/09; R10 premium Progetto 2) · [ASSESSMENT_QR_AVANZATO.md](ASSESSMENT_QR_AVANZATO.md) (storico) | Requisiti chiusi; zero codice finché SI apertura fetta |
+| **A1 QR avanzato** | [REQUISITI_QR_AVANZATO.md](REQUISITI_QR_AVANZATO.md) (**congelato** + CONVALIDA documento 07/09; **SI apertura fetta** 07/09 → codice B5.25) · [ASSESSMENT_QR_AVANZATO.md](ASSESSMENT_QR_AVANZATO.md) (storico) | Batch: selectionMode → PDF L0/L1 + share; gate QR_LABEL |
 | **A2 Cestino** | [REQUISITI_CESTINO.md](REQUISITI_CESTINO.md) (**congelato** + CONVALIDA documento 07/09) · [ASSESSMENT_CESTINO.md](ASSESSMENT_CESTINO.md) (storico) | Requisiti chiusi; zero codice finché SI apertura fetta |
 | **A3 Foto oggetto** | [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) (**congelato** + CONVALIDA documento 07/09; **R6 + T6bis Premium**) · [ASSESSMENT_FOTO_MINIATURA.md](ASSESSMENT_FOTO_MINIATURA.md) (storico) | Requisiti + tecnica chiusi; codice dopo QR + Cestino |
 

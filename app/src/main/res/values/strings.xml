@@ -142,6 +142,16 @@
     <!-- QR label -->
     <string name="qr_print_label">Stampa etichetta</string>
     <string name="qr_export_pdf">Esporta PDF</string>
+    <string name="page_qr_batch_title">Etichette QR</string>
+    <string name="menu_qr_batch_labels">Etichette QR</string>
+    <string name="qr_batch_summary">Etichette: %1$d</string>
+    <string name="qr_batch_excluded">Esclusi (senza codice): %1$d</string>
+    <string name="qr_batch_format_label">Formato foglio</string>
+    <string name="qr_batch_format_one">1 etichetta / pagina</string>
+    <string name="qr_batch_format_a4_2x2">A4 — 4 etichette (2×2)</string>
+    <string name="qr_batch_format_a4_2x3">A4 — 6 etichette (2×3)</string>
+    <string name="qr_batch_share">Condividi etichette PDF</string>
+    <string name="qr_batch_share_subject">Etichette QR BoxManager</string>
 
     <!-- List item placeholders -->
     <string name="item_object_icon">🧱</string>

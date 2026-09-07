@@ -20,11 +20,11 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) — **Checklist V
 |------|--------|
 | **Branch lavoro** | `cursor/qr-avanzato-analisi-8374` (analisi A1; base `cursor/sel-cartella-nas-d69a` / PR **#25**) |
 | **Base tipica** | `cursor/promemoria-fix-d69a` (catena sviluppo; **non** `main`) |
-| **Build sviluppo** | Topbar **1.3-famigliaB5.24** (versionCode **1343**) — etichetta di build, non nome app |
+| **Build sviluppo** | Topbar **1.3-famigliaB5.25** (versionCode **1344**) — etichetta di build, non nome app |
 | **Play** | BoxManager **1.2** su `main` — test chiuso aperto; **identica** salvo bug bloccanti |
 | **B-SEL-CARTELLA Disco di rete** | **CONVALIDATO** — Nota Integrata **9.2** Allegato **4.22** + Roadmap 07/09/2026 + [GUIDA_DISCO_RETE.md](GUIDA_DISCO_RETE.md) |
-| **A1 QR avanzato** | **CONGELATO** — [REQUISITI_QR_AVANZATO.md](REQUISITI_QR_AVANZATO.md). Premium Progetto 2. Zero codice |
-| **A2 Cestino** | **CONGELATO** — [REQUISITI_CESTINO.md](REQUISITI_CESTINO.md) (CONVALIDA documento SI 07/09). Zero codice |
+| **A1 QR avanzato** | **CONGELATO** + **SI apertura fetta** 07/09 — codice batch (B5.25); [REQUISITI_QR_AVANZATO.md](REQUISITI_QR_AVANZATO.md) |
+| **A2 Cestino** | **CONGELATO** — [REQUISITI_CESTINO.md](REQUISITI_CESTINO.md). Zero codice finché SI apertura A2 |
 | **Premium Progetto 2** | SI Renato 07/09: **A1** (R10) / **A2** (§0) / **A3 Foto** (R6+T6bis) = **Archivio completo** — verificato |
 | **Foto oggetto** | Requisiti **congelati** + **CONVALIDA aggiornamento documento** 07/09/2026 — [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md); **zero codice** finché non si apre la fetta (dopo QR avanzato + Cestino) |
 | **Processo analisi** | **4 fasi** + due CONVALIDA — regola `.cursor/rules/processo-analisi.mdc` — **CONVALIDATO** in documento 07/09/2026 |
