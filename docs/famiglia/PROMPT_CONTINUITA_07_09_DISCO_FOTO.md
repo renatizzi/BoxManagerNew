@@ -80,8 +80,8 @@ Due CONVALIDA distinte: (3) merito analisi/requisiti · (4 chiusura) testo del d
 
 | Priorità | Azione | Note |
 |----------|--------|------|
-| **A** | **FEEDBACK** A2 Cestino | Risposte C-Q1–C-Q9 in [ASSESSMENT_CESTINO.md](ASSESSMENT_CESTINO.md) |
-| **A2** | (chiuso come priorità doc) A1 | [REQUISITI_QR_AVANZATO.md](REQUISITI_QR_AVANZATO.md) congelato |
+| **A** | **CONVALIDA aggiornamento documento** A2 | Rileggere [REQUISITI_CESTINO.md](REQUISITI_CESTINO.md); SI chiusura passo 4 |
+| **A2** | (doc) A1 QR | Congelato |
 | **B** | Checklist V1 | P2 sync bug Play → sviluppo; bug bloccanti solo su `main` |
 | **C** | Foto codice | **STOP** finché non arrivano QR avanzato + Cestino e SI di apertura fetta |
 | **D** | M3 / merge `main` | Solo a test Play **chiuso** |
@@ -100,9 +100,9 @@ Due CONVALIDA distinte: (3) merito analisi/requisiti · (4 chiusura) testo del d
 | File | Ruolo |
 |------|--------|
 | [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) | Freeze Foto — fonte fino all’implementazione |
+| [REQUISITI_CESTINO.md](REQUISITI_CESTINO.md) | Requisiti A2 — in attesa CONVALIDA aggiornamento documento |
+| [ASSESSMENT_CESTINO.md](ASSESSMENT_CESTINO.md) | Storico ANALISI/FEEDBACK A2 |
 | [REQUISITI_QR_AVANZATO.md](REQUISITI_QR_AVANZATO.md) | Freeze A1 QR avanzato |
-| [ASSESSMENT_CESTINO.md](ASSESSMENT_CESTINO.md) | ANALISI A2 Cestino — bozza in FEEDBACK |
-| [ASSESSMENT_QR_AVANZATO.md](ASSESSMENT_QR_AVANZATO.md) | Storico ANALISI/FEEDBACK A1 |
 | [GUIDA_DISCO_RETE.md](GUIDA_DISCO_RETE.md) | Guida utente/dev Disco di rete |
 | Nota Integrata **9.2** Allegato **4.22** | Fonte ufficiale Disco di rete |
 | [PROMEMORIA_INTERVENTI_TRASVERSALI.md](PROMEMORIA_INTERVENTI_TRASVERSALI.md) | Checklist V1 + processo + backlog |
