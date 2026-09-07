@@ -135,4 +135,14 @@ Al salvataggio (galleria o scatto), pipeline obbligatoria:
 ## 5. Nota per il recepimento ufficiale
 
 In Nota Integrata: Allegato “Foto oggetto — supporto visivo” (o numerazione vigente), con rinvio da Roadmap 4.1.6 / Progetto 2.  
-Questo file è la **fonte congelata**; non riaprire R1–R5 / T1–T7 in chat di implementazione salvo SI esplicito di revisione.
+Questo file è la **fonte congelata**; non riaprire R1–R5 / T1–T8 in chat di implementazione salvo SI esplicito di revisione.
+
+### Processo analisi (da usare in futuro)
+
+Per nuove funzionalità / requisiti (come questa voce):
+
+1. **ANALISI** — bozza (assessment o sezione dedicata)  
+2. **FEEDBACK** — chiarimenti e SI Renato in chat  
+3. **CONVALIDA AGGIORNAMENTO DOCUMENTO** — solo dopo SI si aggiorna/congela il documento destinato alla Nota; non si riapre il merito in implementazione  
+
+Vedi anche [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) § Processo analisi.
