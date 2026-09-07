@@ -11,7 +11,7 @@ Sequenza concordata A→D. Assessment aperti:
 
 | Voce | Documento | Stato |
 |------|-----------|--------|
-| **A3 Foto miniatura** | [ASSESSMENT_FOTO_MINIATURA.md](ASSESSMENT_FOTO_MINIATURA.md) | **Assessment chiuso** (SI + policy: display 800 + thumb 160; Invia=ZIP). Codice solo dopo QR avanzato + Cestino |
+| **A3 Foto oggetto** | [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) (**congelato** 07/09) · [ASSESSMENT_FOTO_MINIATURA.md](ASSESSMENT_FOTO_MINIATURA.md) (storico) | Requisiti + tecnica chiusi; confluire in Nota a implementazione. Codice dopo QR avanzato + Cestino |
 
 ---
 

@@ -1,6 +1,6 @@
 # Assessment — Foto miniatura (riconoscimento fisico)
 
-**Stato:** analisi aggiornata con **SI Renato 07/09/2026** (STOP implementazione).  
+**Stato:** storico analisi; **prevale** [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) (congelato 07/09/2026).  
 **Posizione nella sequenza concordata:** A3 (dopo QR avanzato e Cestino).  
 **Fonte Roadmap:** Nota 9.2 §4.1.6 / Progetto 2 (dopo Play verde).  
 **AS-IS:** nessuna foto su `ObjectEntity`; in lista oggetti `iconArea` mostra icona **fissa** (`item_object_icon`); fotocamera oggi solo QR (immagini non salvate). Backup già **modulare** (Nota 3.4.1: future estensioni es. fotografie).
@@ -210,8 +210,7 @@ In **Invia Archivio**: riepilogo “Foto: N oggetti, circa X MB” prima del sal
 | 2 | Thumb a sinistra in lista oggetti; **click → ingrandisci** | **Sì** |
 | 3a | **Ripristina** recupera le foto | **Sì** (ZIP Backup) |
 | 3b | **Ricevi Archivio** recupera le foto | **Sì** (ZIP + `photos/objects/`) |
-| 3c | **Importa Dati** recupera le foto | **No** — CSV senza canale foto (§4.2bis) |
+| 3c | **Importa Dati** recupera le foto | **Non col CSV V1 attuale** — possibile estendendo Esporta/Importa a ZIP (+ id stabili). §4.2bis. Non è un no di prodotto |
 | 4 | Foto **facoltativa** | **Sì** |
 
-Se il punto 3 intendeva solo Ripristina + Ricevi Archivio → requisiti **tutti OK**.  
-Se Importa Dati deve portare foto → va un SI dedicato (cambio formato CSV / altro): **non** in questa voce così com’è.
+Se il punto 3 include anche Importa/Esporta verso DB esterni **con** foto: fattibile; va SI sul **formato pacchetto** (ZIP, non solo CSV). Non blocca la voce foto oggetti; può essere stessa fetta o subito dopo.
