@@ -18,6 +18,9 @@
 | 5 | UI lista | Miniatura **al posto** dell’icona fissa attuale (`iconArea`) |
 | — | Privacy | Foto di **oggetti** (inventario); **nessun dato personale** trattato (volto/documento). Da riflettere in privacy/Data safety in modo sobrio |
 | — | Preoccupazione | **Peso memoria** Backup + storage (non tanto il DB: le immagini non vanno in blob Room) |
+| 6 | Lato max | **Sotto 1024** (esclusi 1280+). Policy tecnica sotto |
+| 7 | Thumb lista | **Decisione tecnica:** sì, thumb dedicata (vedi §5) |
+| 8 | Invia Archivio | **ZIP** = CSV merge + `photos/objects/` (SI) |
 
 ---
 
@@ -111,37 +114,46 @@ Dopo **QR avanzato** e **Cestino** (delete oggetto + file foto + eventuale ripri
 | Cosa | Peso tipico |
 |------|-------------|
 | Foto telefono “grezza” | 2–8 **MB** |
-| Stessa foto ridimensionata lato lungo **1280 px**, JPEG qualità ~75 | ≈ **150–400 KB** |
-| Miniatura lista **256 px**, JPEG ~70 | ≈ **15–40 KB** |
+| Display lato **800 px**, JPEG ~75 | ≈ **100–200 KB** |
+| Thumb lista **160 px**, JPEG ~70 | ≈ **10–25 KB** |
 | Solo path in Room | ≈ **decine di byte** |
 
-Esempio archivio “pesante”: **500 oggetti con foto**.
-
-| Strategia | Solo full ridotta | Full + mini lista | Grezze 4 MB |
-|-----------|-------------------|-------------------|-------------|
-| Storage / Backup | 500 × 250 KB ≈ **125 MB** | + 500 × 25 KB ≈ **+12 MB** | 500 × 4 MB = **2 GB** |
+Esempio archivio “pesante”: **500 oggetti con foto** — vedi numeri aggiornati in §5.2.
 
 Senza compressione al salvataggio il Backup/Invia diventa **impraticabile** su disco di rete e Wi‑Fi famiglia.
 
-### 5.2 Policy tecnica consigliata (da congelare in Nota prima del codice)
+### 5.2 Policy tecnica **congelata** (SI Renato 07/09 + scelta tecnica)
 
-1. **Al salvataggio** (galleria o scatto): una sola elaborazione  
-   - ridimensiona (lato lungo max es. **1280** o **1024**)  
-   - JPEG qualità fissa (es. **70–80**)  
-   - un file per oggetto (sovrascrive la precedente)
-2. **Opzionale:** seconda copia **thumb** 256 px solo per liste (più I/O, liste più fluide). In alternativa: una sola immagine 1280 e downsample in memoria in lista (meno disco, più CPU).
-3. **Cap opzionale:** avviso se la foto compressa > 500 KB (“Foto grande: vuoi riprovare?”) — non bloccante.
-4. **Mai** salvare BLOB in SQLite.
-5. In **Invia Archivio**: riepilogo “Foto: N file, circa X MB” prima del salvataggio.
-6. **Non** esportare foto in Esporta vista CSV / stampa A4 in prima fetta (o solo se SI esplicito).
+**Perché sotto 1024 vale la pena:** in lista l’area è già `32dp` (~128 px su schermi densi); in dettaglio oggetto basta riconoscere l’oggetto a schermo, non una stampa ad alta risoluzione. 1280+ gonfia Backup/Invia senza guadagno per questa finalità.
+
+| Livello | Specifica | Ruolo |
+|---------|-----------|--------|
+| **Display** | lato lungo max **800 px**, JPEG qualità **75** | Dettaglio / modifica |
+| **Thumb lista** | lato lungo max **160 px**, JPEG **70** | Solo `iconArea` (32dp): scroll fluido |
+| **DB** | solo path / permanentId | Nessun BLOB |
+| **Invia Archivio** | **ZIP** unico: CSV FamilyMerge + `photos/objects/` (display + thumb) | SI |
+
+**Perché due file (display + thumb):** un solo 800 px obbligerebbe a ridimensionare in memoria a ogni riga di lista → rischio jank. Thumb 160 ≈ **10–25 KB**/oggetto; su 500 oggetti ≈ **5–12 MB** in più, liste più fluide. Vale la pena.
+
+**Ordine di grandezza (500 oggetti con foto):**
+
+| | Solo display 800 | Display 800 + thumb 160 | Grezze ~4 MB |
+|--|------------------|-------------------------|--------------|
+| Storage / Backup / ZIP Invia | ≈ **60–100 MB** | ≈ **70–110 MB** | ≈ **2 GB** |
+
+Al salvataggio (galleria o scatto): pipeline unica → scrive/aggiorna **entrambi** i file. Una foto per oggetto.
+
+In **Invia Archivio**: riepilogo “Foto: N oggetti, circa X MB” prima del salvataggio.
+
+**Non** in prima fetta: foto in Esporta vista CSV / stampa A4 (salvo SI successivo).
 
 ### 5.3 Cosa non preoccupa
 - **Room / DB:** resta leggero (solo metadati).
-- **Privacy “dati personali”:** finalità = inventario oggetti; non profilazione. Resta obbligatorio dichiarare “foto / immagini” in Data safety se richieste dalla Console, con finalità app functionality / on-device.
+- **Privacy “dati personali”:** finalità = inventario oggetti; non profilazione. Dichiarare “foto / immagini” in Data safety se richiesto dalla Console (app functionality / on-device).
 
 ### 5.4 Cosa resta impegnativo (onesto)
-- Con SI “anche Invia Archivio”, il pacchetto famiglia **non è più solo CSV** → ZIP (o equivalente) e UI di avanzamento copia.
-- Su **disco di rete** un Backup da 100+ MB è lento ma accettabile se le foto sono già compresse; grezze no.
+- Invia Archivio non è più solo CSV → **ZIP** + UI di progresso copia.
+- Su disco di rete un Backup ~100 MB è lento ma accettabile se le foto sono già compresse; grezze no.
 
 ---
 
@@ -158,14 +170,11 @@ Senza compressione al salvataggio il Backup/Invia diventa **impraticabile** su d
 
 ---
 
-## 7. Esito (da SI su policy peso)
+## 7. Esito — assessment **chiuso** lato prodotto/tecnica
 
-**Prodotto (SI già presi):** foto opzionale **solo oggetti**; galleria + scatto; Backup + Invia Archivio; no vision; UI al posto dell’icona fissa.
+**Congelato:**
+- Solo **oggetti**; galleria + scatto; no vision; UI al posto icona fissa
+- Display **800** + thumb lista **160**; nessun BLOB in Room
+- Backup ZIP + **Invia Archivio = ZIP** (CSV + foto)
 
-**Ancora da SI esplicito (policy peso, prima del codice):**
-
-1. Lato lungo max **1024** o **1280**?  
-2. Una sola immagine (downsample in lista) o **anche** thumb 256 dedicata?  
-3. Confermi pacchetto Invia Archivio = **ZIP** (CSV + `photos/objects/`)?
-
-Implementazione: solo dopo QR avanzato + Cestino + SI su questi tre punti peso.
+**Implementazione:** solo dopo QR avanzato + Cestino. Nessun codice finché non si apre quella fetta Progetto 2.
