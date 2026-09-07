@@ -75,10 +75,15 @@ I byte dell’immagine stanno in **file** sotto storage app, es.
 ### 4.2 Backup / Ripristino
 Modulo ZIP già previsto dalla Nota:
 
-- Cartella `photos/objects/{objectPermanentId}.jpg`
+- Cartella `photos/objects/{objectPermanentId}.jpg` (+ thumb)
 - `manifest.json` elenca le foto (conteggio + checksum opzionale)
 - Bump versione formato Backup; ZIP senza foto restano validi
-- Ripristino REPLACE ripristina anche i file
+- **Ripristina (REPLACE):** ripristina anche i file foto → le foto si recuperano
+
+### 4.2bis Importa Dati (CSV MERGE) — **non** recupera le foto
+Utility → **Importa dati** usa il CSV ufficiale: crea/aggiorna per chiavi testo e assegna **nuovi** `permanentId` agli oggetti nuovi. Nel `Modello_Importazione.csv` **non** c’è canale foto.  
+Quindi Importa Dati **non** riattacca foto agli oggetti importati (servirebbe un altro formato).  
+Recupero foto = **Ripristina** (Backup ZIP) e **Ricevi Archivio** (ZIP famiglia), non Importa Dati.
 
 ### 4.3 Invia / Ricevi Archivio (SI: entrambi)
 Il CSV attuale **non** basta. Opzioni:
@@ -178,4 +183,13 @@ In **Invia Archivio**: riepilogo “Foto: N oggetti, circa X MB” prima del sal
 - Display **800** + thumb lista **160**; nessun BLOB in Room
 - Backup ZIP + **Invia Archivio = ZIP** (CSV + foto)
 
-**Implementazione:** solo dopo QR avanzato + Cestino. Nessun codice finché non si apre quella fetta Progetto 2.
+## 8. Checklist requisiti utente (verifica pre–step successivo)
+
+| # | Requisito | Copertura assessment |
+|---|-----------|----------------------|
+| 1 | Inserimento/modifica/**elimina** foto in inserimento/modifica oggetto (scatta, **riscatta**, galleria) | **Sì** |
+| 2 | Thumb a sinistra in lista oggetti; **click → ingrandisci** | **Sì** (ingrandisci esplicitato 07/09) |
+| 3a | **Ripristina** recupera le foto | **Sì** (modulo ZIP Backup) |
+| 3b | **Ricevi Archivio** recupera le foto | **Sì** (ZIP CSV + `photos/objects/`) |
+| 3c | **Importa Dati** recupera le foto | **No** — CSV MERGE senza canale foto / nuovi permanentId. Vedi §4.2bis |
+| 4 | Foto **facoltativa** | **Sì** |
