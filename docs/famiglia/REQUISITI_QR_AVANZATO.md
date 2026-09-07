@@ -7,8 +7,7 @@
 **Destinazione:** confluire nella Nota Integrata ufficiale (rinvio da §4.1.6 QR AVANZATO) senza riaprire il merito.  
 **Assessment di lavoro:** [ASSESSMENT_QR_AVANZATO.md](ASSESSMENT_QR_AVANZATO.md) (storico analisi; prevale **questo** file su conflitti).  
 **Baseline V1 (non riaprire):** Nota §3.4.4 + Allegato 4.8; layout etichetta singola invariato.  
-**Sequenza:** A1 (questa voce) → A2 Cestino → A3 Foto.  
-**SI apertura fetta implementativa:** SI Renato 07/09/2026 (sessione continuità).
+**Sequenza:** A1 (questa voce) → A2 Cestino → A3 Foto. **STOP codice** finché non c’è SI di apertura fetta (Progetto 2 dopo Play verde, salvo diverso SI).
 
 ---
 

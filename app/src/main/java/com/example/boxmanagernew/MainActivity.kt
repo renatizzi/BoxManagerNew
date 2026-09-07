@@ -39,7 +39,6 @@ import com.example.boxmanagernew.ui.main.BoxAdapter
 import com.example.boxmanagernew.ui.main.BoxViewModel
 import com.example.boxmanagernew.domain.premium.PremiumFeature
 import com.example.boxmanagernew.ui.premium.ArchivioCompletoNav
-import com.example.boxmanagernew.ui.qr.QrBatchActivity
 import com.example.boxmanagernew.ui.qr.QrLabelActivity
 import com.example.boxmanagernew.viewoutput.config.ViewOutputConfiguration
 import com.example.boxmanagernew.viewoutput.csv.ViewExportCsvBuilder
@@ -64,7 +63,6 @@ class MainActivity : BaseActivity() {
 
     private lateinit var buttonDeleteSelected: Button
     private lateinit var buttonMoveSelected: Button
-    private lateinit var buttonQrSelected: Button
     private lateinit var textSelectionCount: TextView
     private lateinit var selectionBar: View
 
@@ -188,9 +186,6 @@ class MainActivity : BaseActivity() {
 
         buttonMoveSelected =
             findViewById(R.id.btnMoveSelected)
-
-        buttonQrSelected =
-            findViewById(R.id.btnQrSelected)
 
         textSelectionCount =
             findViewById(R.id.textSelectionCount)
@@ -392,11 +387,6 @@ class MainActivity : BaseActivity() {
         buttonMoveSelected.setOnClickListener {
 
             handleMoveSelected()
-        }
-
-        buttonQrSelected.setOnClickListener {
-
-            handleQrSelected()
         }
 
         UiUtils.setupSearchAndSort(
@@ -1162,23 +1152,6 @@ class MainActivity : BaseActivity() {
             } else {
                 getString(R.string.view_count_boxes, totalBoxes)
             }
-    }
-
-    private fun handleQrSelected() {
-        val ids =
-            viewModel.selectedItems.value?.toList()
-                ?: return
-        if (ids.isEmpty()) {
-            return
-        }
-        ArchivioCompletoNav.start(
-            this,
-            PremiumFeature.QR_LABEL,
-            QrBatchActivity.intent(
-                this,
-                ids.toIntArray()
-            )
-        )
     }
 
     private fun handleDeleteSelected() {

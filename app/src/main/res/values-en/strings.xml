@@ -143,16 +143,6 @@
     <!-- QR label -->
     <string name="qr_print_label">Print label</string>
     <string name="qr_export_pdf">Export PDF</string>
-    <string name="page_qr_batch_title">QR labels</string>
-    <string name="menu_qr_batch_labels">QR labels</string>
-    <string name="qr_batch_summary">Labels: %1$d</string>
-    <string name="qr_batch_excluded">Excluded (no code): %1$d</string>
-    <string name="qr_batch_format_label">Sheet format</string>
-    <string name="qr_batch_format_one">1 label / page</string>
-    <string name="qr_batch_format_a4_2x2">A4 — 4 labels (2×2)</string>
-    <string name="qr_batch_format_a4_2x3">A4 — 6 labels (2×3)</string>
-    <string name="qr_batch_share">Share labels PDF</string>
-    <string name="qr_batch_share_subject">BoxManager QR labels</string>
 
     <!-- List item placeholders -->
     <string name="item_object_icon">🧱</string>
