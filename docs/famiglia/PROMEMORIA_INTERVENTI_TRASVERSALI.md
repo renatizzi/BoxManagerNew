@@ -8,11 +8,12 @@ Processo analisi: `.cursor/rules/processo-analisi.mdc`.
 
 ### Processo analisi (obbligatorio per nuove voci)
 
-Per requisiti / Progetto 2 / documenti destinati alla Nota:
+Per requisiti / Progetto 2 / documenti destinati alla Nota — **4 fasi**:
 
 1. **ANALISI** — bozza scritta (assessment), **senza codice** salvo SI esplicito  
 2. **FEEDBACK** — chiarimenti e SI Renato in chat  
-3. **CONVALIDA AGGIORNAMENTO DOCUMENTO** — solo dopo SI si aggiorna/congela il documento ufficiale di lavoro; il merito non si riapre in implementazione  
+3. **CONVALIDA** — conferma esplicita del merito; nessun aggiornamento ufficiale prima  
+4. **AGGIORNAMENTO DOCUMENTO** — solo dopo CONVALIDA si aggiorna/congela il documento; il merito non si riapre in implementazione  
 
 Esempio già seguito: [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md).
 
@@ -169,7 +170,7 @@ Verificare **ogni** punto che scrive un file e allineare dove ha senso al criter
 ## Come usare questo file
 
 - Aprire una **nuova sessione** correttivi: leggere [ASSESSMENT_CORRETTIVI.md](ASSESSMENT_CORRETTIVI.md) + tabella P0 + **Backlog aperto** + **Checklist V1**.
-- Nuove funzionalità / requisiti: **ANALISI → FEEDBACK → CONVALIDA AGGIORNAMENTO DOCUMENTO** (regola `processo-analisi.mdc`).
+- Nuove funzionalità / requisiti: **ANALISI → FEEDBACK → CONVALIDA → AGGIORNAMENTO DOCUMENTO** (regola `processo-analisi.mdc`).
 - Chiudere una voce solo dopo **SI Renato** (o criterio equivalente CONVALIDATO).
 - Non duplicare qui il dettaglio prodotto delle fette B0–B5 → [NOTA_B0_MERGE_FAMIGLIA.md](NOTA_B0_MERGE_FAMIGLIA.md).
 - Indicazione fuori contesto in un altro filone: stessa tabella Backlog aperto, stessa sessione, commit. Regola `.cursor/rules/annotazioni-renato.mdc`.

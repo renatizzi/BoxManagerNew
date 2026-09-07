@@ -139,10 +139,11 @@ Questo file è la **fonte congelata**; non riaprire R1–R5 / T1–T8 in chat di
 
 ### Processo analisi (da usare in futuro)
 
-Per nuove funzionalità / requisiti (come questa voce):
+Per nuove funzionalità / requisiti (come questa voce) — **4 fasi**:
 
 1. **ANALISI** — bozza (assessment o sezione dedicata)  
 2. **FEEDBACK** — chiarimenti e SI Renato in chat  
-3. **CONVALIDA AGGIORNAMENTO DOCUMENTO** — solo dopo SI si aggiorna/congela il documento destinato alla Nota; non si riapre il merito in implementazione  
+3. **CONVALIDA** — conferma esplicita del merito; nessun aggiornamento ufficiale prima  
+4. **AGGIORNAMENTO DOCUMENTO** — solo dopo CONVALIDA si aggiorna/congela il documento destinato alla Nota; non si riapre il merito in implementazione  
 
 Vedi anche [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) § Processo analisi.
