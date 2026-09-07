@@ -28,7 +28,7 @@ Sequenza concordata A→D. Assessment aperti:
 
 | Voce | Documento | Stato |
 |------|-----------|--------|
-| **A3 Foto oggetto** | [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) (**congelato** 07/09) · [ASSESSMENT_FOTO_MINIATURA.md](ASSESSMENT_FOTO_MINIATURA.md) (storico) | Requisiti + tecnica chiusi; confluire in Nota a implementazione. Codice dopo QR avanzato + Cestino |
+| **A3 Foto oggetto** | [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) (**congelato** + **CONVALIDA documento** 07/09) · [ASSESSMENT_FOTO_MINIATURA.md](ASSESSMENT_FOTO_MINIATURA.md) (storico) | Requisiti + tecnica chiusi; confluire in Nota a implementazione. Codice dopo QR avanzato + Cestino |
 
 ---
 
@@ -81,7 +81,7 @@ Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino
 |----|------|-------------|-------|
 | *(nessuna voce aperta)* | — | — | — |
 
-**Chiuso di recente:** **B-SEL-CARTELLA** — CONVALIDATO; recepito in Nota Integrata **9.2** Allegato **4.22** e Roadmap 07/09/2026.
+**Chiuso di recente:** **B-SEL-CARTELLA** — CONVALIDATO (Nota 9.2 Allegato **4.22**). **Foto oggetto** — CONVALIDA aggiornamento documento 07/09/2026 ([REQUISITI](REQUISITI_FOTO_OGGETTO.md)).
 
 ---
 

@@ -23,8 +23,8 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) — **Checklist V
 | **Build sviluppo** | Topbar **1.3-famigliaB5.23** (versionCode **1342**) — etichetta di build, non nome app |
 | **Play** | BoxManager **1.2** su `main` — test chiuso aperto; **identica** salvo bug bloccanti |
 | **B-SEL-CARTELLA Disco di rete** | **CONVALIDATO** — Nota Integrata **9.2** Allegato **4.22** + Roadmap 07/09/2026 + [GUIDA_DISCO_RETE.md](GUIDA_DISCO_RETE.md) |
-| **Foto oggetto** | Requisiti **congelati** in [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) — **zero codice** finché non si apre la fetta (dopo QR avanzato + Cestino) |
-| **Processo analisi** | **4 fasi** — regola `.cursor/rules/processo-analisi.mdc` |
+| **Foto oggetto** | Requisiti **congelati** + **CONVALIDA aggiornamento documento** 07/09/2026 — [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md); **zero codice** finché non si apre la fetta (dopo QR avanzato + Cestino) |
+| **Processo analisi** | **4 fasi** + due CONVALIDA — regola `.cursor/rules/processo-analisi.mdc` — **CONVALIDATO** in documento 07/09/2026 |
 
 ---
 
@@ -40,10 +40,11 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) — **Checklist V
 - Device: File Explorer Plus **non** espone SMB a BoxManager; CIFS sì; spesso serve **Tutte le cartelle…**.
 - Idea prodotto (non implementata): suggerire Host = gateway Wi‑Fi — solo con SI esplicito.
 
-### 2. Foto oggetto — ANALISI + FEEDBACK + CONVALIDA requisiti (documento aggiornato)
+### 2. Foto oggetto — ANALISI + FEEDBACK + CONVALIDA requisiti + **CONVALIDA aggiornamento documento**
 
 Fonte congelata: [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md).  
-Assessment storico: [ASSESSMENT_FOTO_MINIATURA.md](ASSESSMENT_FOTO_MINIATURA.md) (prevale il file requisiti su conflitti).
+Assessment storico: [ASSESSMENT_FOTO_MINIATURA.md](ASSESSMENT_FOTO_MINIATURA.md) (prevale il file requisiti su conflitti).  
+**Passo 4 chiuso:** CONVALIDA aggiornamento documento SI Renato **07/09/2026** (incluso T1, T3–T5/T8, processo 4 fasi).
 
 **Merito congelato (non riaprire senza SI):**
 
@@ -134,4 +135,4 @@ git pull origin cursor/sel-cartella-nas-d69a
 
 ---
 
-*Aggiornato 07/09/2026 — chiusura sessione Disco di rete + freeze Foto + processo 4 fasi.*
+*Aggiornato 07/09/2026 — Disco di rete CONVALIDATO; Foto + processo: CONVALIDA aggiornamento documento SI Renato.*
