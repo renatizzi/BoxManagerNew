@@ -1,0 +1,15 @@
+---
+description: Processo obbligatorio per analisi requisiti (ANALISI → FEEDBACK → CONVALIDA documento) prima di codice o Nota.
+alwaysApply: true
+---
+
+# Processo analisi requisiti
+
+Per **nuove funzionalità**, priorità Progetto 2, o requisiti da recepire in Nota Integrata:
+
+1. **ANALISI** — produrre bozza scritta (assessment / sezione documenti), **senza codice** salvo SI esplicito.
+2. **FEEDBACK** — Renato risponde in chat; chiarire e annotare SI; non “chiudere” da soli.
+3. **CONVALIDA AGGIORNAMENTO DOCUMENTO** — solo dopo SI aggiornare il documento destinato al congelamento (es. `docs/famiglia/REQUISITI_*.md`) o la Nota; il merito funzionale/tecnico non si riapre in implementazione salvo SI di revisione.
+
+Non implementare e non patchare la Nota ufficiale saltando i passi 2–3.  
+Esempio già seguito: Foto oggetto → [REQUISITI_FOTO_OGGETTO.md](../../docs/famiglia/REQUISITI_FOTO_OGGETTO.md).

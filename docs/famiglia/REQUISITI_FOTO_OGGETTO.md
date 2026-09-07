@@ -53,11 +53,17 @@ Niente riconoscimento automatico / vision / ML / cerca-per-immagine.
 
 ## 3. Requisiti tecnico-architetturali (congelati)
 
-### T1 — Storage
-- **Nessun BLOB** immagine in Room.
-- File sotto storage app, legati a `objectPermanentId` (non id Room), es.  
-  `files/object_photos/…`
-- DB: solo riferimento leggero (path / nome file / metadati minimi).
+### T1 — Storage e allineamento database
+- **Nessun BLOB** immagine in Room (né in colonne testo “base64”).
+- File sotto storage app, **sempre** nominati / cartelle per `objectPermanentId` (**mai** per id Room autoincrement).
+- DB: solo metadati leggeri, es. tabella `object_photos` (`objectPermanentId`, nomi file display/thumb, `updatedAt`, `byteSize` opz.) **oppure** colonne equivalenti su `objects`.
+- **Migrazione Room** non distruttiva (no wipe; `allowBackup=false` resta). Flavor play + famiglia.
+- **Allineamento agli oggetti:**
+  - create/update oggetto con foto → scrive file + aggiorna riga metadati per lo stesso `objectPermanentId`;
+  - elimina foto in modifica → cancella file display+thumb + metadati;
+  - elimina / cestino oggetto → cancella anche file e metadati foto (dopo Cestino);
+  - Ripristina / Ricevi: dopo (o insieme a) restore/merge oggetti, **ricongiungere** foto per `objectPermanentId` (file presenti senza oggetto → ignorare o scartare; oggetto senza file → UI senza foto).
+- Import CSV V1 (solo testo): oggetti nuovi con **nuovi** permanentId → **nessun** riaggancio foto automatico finché non c’è pacchetto ZIP (§T5 / §T8).
 
 ### T2 — Dimensioni e peso (policy compressione)
 Al salvataggio (galleria o scatto), pipeline obbligatoria:
@@ -71,29 +77,45 @@ Al salvataggio (galleria o scatto), pipeline obbligatoria:
 - Una foto oggetto → scrive/aggiorna **entrambi** i file.
 - Ordine di grandezza di riferimento: ~500 oggetti con foto ≈ **70–110 MB** totali (non grezze multi-MB).
 
-### T3 — Backup / Ripristina
-- Modulo nel ZIP Backup: es. `photos/objects/` (+ thumb) e voce in `manifest.json`.
-- Bump versione formato Backup; ZIP senza foto restano validi.
-- Ripristina REPLACE ripristina anche i file foto.
+### T3 — Backup / Ripristina (tracciato file)
+- Formato: ZIP Backup esistente + **modulo foto** (bump versione formato; ZIP senza foto restano validi).
+- Layout indicativo nel ZIP:
+  - `photos/objects/{objectPermanentId}.jpg` — display
+  - `photos/objects/{objectPermanentId}_thumb.jpg` — thumb  
+    (o sottocartelle `display/` / `thumb/` equivalenti, documentate in manifest)
+- `manifest.json` (o equivalente): elenco permanentId con foto + conteggio; checksum opzionale.
+- **Ripristina REPLACE:** ripristina DB **e** file foto; poi allineamento §T1 (foto orfane scartate).
 
-### T4 — Invia / Ricevi Archivio
-- Pacchetto = **ZIP unico**: CSV FamilyMerge + `photos/objects/` (display + thumb).
+### T4 — Invia / Ricevi Archivio (tracciato file)
+- Pacchetto = **ZIP unico** (non CSV isolato):
+  - CSV FamilyMerge (come oggi) **più**
+  - `photos/objects/` (display + thumb, stessi nomi di §T3)
 - Tabelle condivise (solo categorie/posizioni): **senza** foto.
-- Semantica: foto segue `objectPermanentId` come l’inventario (insert/update; in conflitto allineata alla regola dell’oggetto vincente).
+- Semantica merge: foto segue `objectPermanentId` come l’inventario (insert/update; in conflitto allineata alla regola dell’oggetto vincente).
 - Prima di Invia: riepilogo “Foto: N oggetti, circa X MB”.
 
-### T5 — Esporta / Importa Dati (estensione prevista, non CSV-only)
-- **Oggi (CSV V1):** nessun canale foto; Import assegna nuovi permanentId agli oggetti nuovi.
-- **Quando si estende** (stessa fetta o subito dopo, SI formato):
-  - Esporta produce **ZIP** (CSV con id stabili ove necessario + cartella foto);
-  - Importa consuma quel ZIP e riattacca le foto per **permanentId** (preferibile) o regola di match documentata.
-- Non reinventare BLOB dentro celle CSV.
+### T5 — Esporta / Importa Dati (tracciato esterno)
+- **Oggi (CSV V1):** tracciato ufficiale solo testo (`Modello_Importazione` / `ESPORTA_…`); Import assegna nuovi permanentId agli oggetti nuovi → **nessun** recupero foto.
+- **Estensione prevista** (stessa fetta o subito dopo, senza reinventare il merito):
+  - Esporta → **ZIP**: CSV (con **objectPermanentId** / id stabili dove serve al match) + `photos/objects/` come §T3;
+  - Importa → consuma quel ZIP; dopo il MERGE oggetti, **riaggancia** le foto per `objectPermanentId`.
+- Vietato: BLOB/base64 dentro celle CSV.
+
+### T8 — Sintesi tracciati (congelata)
+
+| Canale | Tracciato | Chiave aggancio foto |
+|--------|-----------|----------------------|
+| Backup / Ripristina | ZIP Backup + `photos/objects/` | `objectPermanentId` |
+| Invia / Ricevi Archivio | ZIP (CSV merge + `photos/objects/`) | `objectPermanentId` |
+| Esporta / Importa (esteso) | ZIP (CSV + `photos/objects/`) | `objectPermanentId` |
+| Esporta / Importa CSV V1 | solo CSV | — (niente foto) |
 
 ### T6 — Fuori scope di questa voce
 - Foto sui **contenitori**
 - Vision / ML / cerca per immagine
 - Foto in Esporta vista / stampa A4 (salvo SI successivo)
 - Obbligatorietà foto in censimento
+- BLOB immagini in SQLite / CSV
 
 ### T7 — Dipendenze di sequenza
 - Implementare **dopo** QR avanzato e **Cestino** (delete/ripristino oggetto deve gestire i file foto).
