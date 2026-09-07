@@ -80,7 +80,7 @@ Due CONVALIDA distinte: (3) merito analisi/requisiti · (4 chiusura) testo del d
 
 | Priorità | Azione | Note |
 |----------|--------|------|
-| **STOP codice P2** | Niente implementazione A1/A2/A3 finché **test Play chiuso** (≈ ancora una settimana) **oppure** SI esplicito «apri fetta codice» | Il «Sì» del 07/09 sera era **solo conferma documenti/premium**, non apertura sviluppo. Un commit codice A1 è stato **revertato**. |
+| **STOP codice P2** | Niente implementazione A1/A2/A3 finché **test Play chiuso** (≈ ancora una settimana) **oppure** SI esplicito «apri fetta codice» | Il «Sì» del 07/09 sera era **solo conferma documenti/premium**, non apertura sviluppo. Commit A1 **revertato** sul branch lavoro; WIP su `cursor/qr-avanzato-wip-parked-8374`. |
 | **A** | Analisi / documenti P2 | A1+A2+A3 **requisiti congelati** — ok così; eventuale altra voce solo ANALISI |
 | **B** | Checklist V1 | P2 sync bug Play → sviluppo; bug bloccanti solo su `main` |
 | **C** | Foto / QR / Cestino codice | **STOP** fino a fine test Play (salvo SI esplicito) |
@@ -143,4 +143,4 @@ git pull origin cursor/qr-avanzato-analisi-8374
 
 ---
 
-*Aggiornato 07/09/2026 (ripresa) — A1 QR + A2 Cestino congelati; A3 Foto + premium P2 verificato; Disco CONVALIDATO.*
+*Aggiornato 07/09/2026 (sera) — A1/A2/A3 requisiti congelati; codice P2 in STOP fino a fine test Play; fraintendimento «Sì»→codice corretto (revert).*
