@@ -81,9 +81,9 @@ Due CONVALIDA distinte: (3) merito analisi/requisiti · (4 chiusura) testo del d
 | Priorità | Azione | Note |
 |----------|--------|------|
 | **STOP codice P2** | Niente implementazione A1/A2/A3 finché **test Play chiuso** (≈ ancora una settimana) **oppure** SI esplicito «apri fetta codice» | Il «Sì» del 07/09 sera era **solo conferma documenti/premium**, non apertura sviluppo. Commit A1 **revertato** sul branch lavoro; WIP su `cursor/qr-avanzato-wip-parked-8374`. |
-| **A** | Analisi / documenti P2 | A1+A2+A3 **requisiti congelati** — ok così; eventuale altra voce solo ANALISI |
+| **A** | Analisi / documenti P2 | A1+A2+A3 congelati; **B–C** in FEEDBACK — [ASSESSMENT_EXPORT_IMPORT_AVANZATO.md](ASSESSMENT_EXPORT_IMPORT_AVANZATO.md); poi D |
 | **B** | Checklist V1 | P2 sync bug Play → sviluppo; bug bloccanti solo su `main` |
-| **C** | Foto / QR / Cestino codice | **STOP** fino a fine test Play (salvo SI esplicito) |
+| **C** | Codice A1/A2/A3 | **STOP** fino a fine test Play (salvo SI esplicito); WIP QR su `cursor/qr-avanzato-wip-parked-8374` |
 | **D** | M3 / merge `main` | Solo a test Play **chiuso** |
 
 ### Sequenza agente (allineamento)
@@ -100,6 +100,7 @@ Due CONVALIDA distinte: (3) merito analisi/requisiti · (4 chiusura) testo del d
 | File | Ruolo |
 |------|--------|
 | [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) | Freeze Foto — fonte fino all’implementazione |
+| [ASSESSMENT_EXPORT_IMPORT_AVANZATO.md](ASSESSMENT_EXPORT_IMPORT_AVANZATO.md) | ANALISI B–C Export/Import — bozza FEEDBACK |
 | [REQUISITI_CESTINO.md](REQUISITI_CESTINO.md) | Freeze A2 Cestino |
 | [ASSESSMENT_CESTINO.md](ASSESSMENT_CESTINO.md) | Storico ANALISI/FEEDBACK A2 |
 | [REQUISITI_QR_AVANZATO.md](REQUISITI_QR_AVANZATO.md) | Freeze A1 QR avanzato |
