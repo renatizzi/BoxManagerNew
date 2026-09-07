@@ -14,6 +14,7 @@ Una sola app: **BoxManager**. Questi file coprono l’**archivio condiviso** e i
 | [DUE_APP_CINQUE_TELEFONI.md](DUE_APP_CINQUE_TELEFONI.md) | Due *installazioni* durante il test (1.2 Store + sviluppo) |
 | [INSTALLA_SENZA_RUN.md](INSTALLA_SENZA_RUN.md) | Se Run / Terminale non funzionano (script `.bat`) |
 | [GUIDA_DISCO_RETE.md](GUIDA_DISCO_RETE.md) | Disco di rete: Impostazioni + app consigliata + Backup |
+| [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) | **Congelato:** foto oggetto (Progetto 2 / A3) — da recepire in Nota |
 
 **Archivio condiviso B5:** **CONVALIDATO** (SI Renato, 31/08/2026). **T2 CONVALIDATO** B5.3. **P1 CONVALIDATO** B5.7 (01/09/2026). Play 1.2 su `main` **identica** per il test — si tocca solo per bug bloccanti. A test chiuso lo sviluppo **sostituisce** la 1.2.
 
