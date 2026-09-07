@@ -143,7 +143,7 @@ Per nuove funzionalità / requisiti (come questa voce) — **4 fasi**:
 
 1. **ANALISI** — bozza (assessment o sezione dedicata)  
 2. **FEEDBACK** — chiarimenti e SI Renato in chat  
-3. **CONVALIDA** — conferma esplicita del merito; nessun aggiornamento ufficiale prima  
-4. **AGGIORNAMENTO DOCUMENTO** — solo dopo CONVALIDA si aggiorna/congela il documento destinato alla Nota; non si riapre il merito in implementazione  
+3. **CONVALIDA** — dell’**analisi** e dei **requisiti condivisi** (merito); nessun aggiornamento ufficiale prima  
+4. **AGGIORNAMENTO DOCUMENTO** — scrittura/congelamento; chiusura con **CONVALIDA dell’aggiornamento del documento**  
 
-Vedi anche [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) § Processo analisi.
+Vedi anche [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) § Processo analisi · [PROMPT continuità 07/09](PROMPT_CONTINUITA_07_09_DISCO_FOTO.md).

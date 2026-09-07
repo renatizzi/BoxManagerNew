@@ -1,5 +1,5 @@
 ---
-description: Processo obbligatorio per analisi requisiti (ANALISI → FEEDBACK → CONVALIDA → AGGIORNAMENTO DOCUMENTO) prima di codice o Nota.
+description: Processo obbligatorio ANALISI → FEEDBACK → CONVALIDA → AGGIORNAMENTO DOCUMENTO (con due tipi di CONVALIDA).
 alwaysApply: true
 ---
 
@@ -9,8 +9,15 @@ Per **nuove funzionalità**, priorità Progetto 2, o requisiti da recepire in No
 
 1. **ANALISI** — produrre bozza scritta (assessment / sezione documenti), **senza codice** salvo SI esplicito.
 2. **FEEDBACK** — Renato risponde in chat; chiarire e annotare SI; non “chiudere” da soli.
-3. **CONVALIDA** — Renato conferma esplicitamente (SI / CONVALIDA) il merito della bozza; **nessun** aggiornamento ufficiale prima di questo passo.
-4. **AGGIORNAMENTO DOCUMENTO** — solo dopo CONVALIDA aggiornare/congelare il documento destinato alla Nota (es. `docs/famiglia/REQUISITI_*.md`) o la Nota stessa; il merito funzionale/tecnico non si riapre in implementazione salvo SI di revisione.
+3. **CONVALIDA** (dell’**analisi** e dei **requisiti condivisi**) — Renato conferma esplicitamente il merito della bozza; **nessun** aggiornamento ufficiale del documento destinato alla Nota prima di questo passo.
+4. **AGGIORNAMENTO DOCUMENTO** — dopo la CONVALIDA del passo 3, aggiornare/congelare il documento (es. `docs/famiglia/REQUISITI_*.md`) o la Nota; poi ottenere la **CONVALIDA dell’aggiornamento del documento** (il testo ufficiale è corretto e chiuso). Il merito funzionale/tecnico non si riapre in implementazione salvo SI di revisione.
+
+Due CONVALIDA distinte (non confonderle):
+
+| Momento | Cosa si convalida |
+|---------|-------------------|
+| Passo **3** | Analisi e requisiti condivisi in chat / bozza |
+| Passo **4** (chiusura) | Il documento aggiornato/congelato |
 
 Non implementare e non patchare la Nota ufficiale saltando i passi 2–4.  
 Esempio già seguito: Foto oggetto → [REQUISITI_FOTO_OGGETTO.md](../../docs/famiglia/REQUISITI_FOTO_OGGETTO.md).

@@ -1,6 +1,8 @@
 # Promemoria — interventi trasversali (BoxManager)
 
-**Aggiornato:** 07/09/2026. Ingresso sessione → [PROMPT_CONTINUITA_CORRETTIVI.md](PROMPT_CONTINUITA_CORRETTIVI.md).  
+**Aggiornato:** 07/09/2026.  
+Ingresso sessione 07/09 → [PROMPT_CONTINUITA_07_09_DISCO_FOTO.md](PROMPT_CONTINUITA_07_09_DISCO_FOTO.md).  
+Correttivi → [PROMPT_CONTINUITA_CORRETTIVI.md](PROMPT_CONTINUITA_CORRETTIVI.md).  
 Regola: `.cursor/rules/annotazioni-renato.mdc`.  
 Processo analisi: `.cursor/rules/processo-analisi.mdc`.
 
@@ -12,10 +14,11 @@ Per requisiti / Progetto 2 / documenti destinati alla Nota — **4 fasi**:
 
 1. **ANALISI** — bozza scritta (assessment), **senza codice** salvo SI esplicito  
 2. **FEEDBACK** — chiarimenti e SI Renato in chat  
-3. **CONVALIDA** — conferma esplicita del merito; nessun aggiornamento ufficiale prima  
-4. **AGGIORNAMENTO DOCUMENTO** — solo dopo CONVALIDA si aggiorna/congela il documento; il merito non si riapre in implementazione  
+3. **CONVALIDA** — dell’**analisi** e dei **requisiti condivisi** (merito); nessun aggiornamento ufficiale prima  
+4. **AGGIORNAMENTO DOCUMENTO** — scrittura/congelamento; chiusura con **CONVALIDA dell’aggiornamento del documento**  
 
-Esempio già seguito: [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md).
+Esempio già seguito: [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md).  
+Ingresso sessione 07/09: [PROMPT_CONTINUITA_07_09_DISCO_FOTO.md](PROMPT_CONTINUITA_07_09_DISCO_FOTO.md).
 
 ---
 
@@ -170,7 +173,8 @@ Verificare **ogni** punto che scrive un file e allineare dove ha senso al criter
 ## Come usare questo file
 
 - Aprire una **nuova sessione** correttivi: leggere [ASSESSMENT_CORRETTIVI.md](ASSESSMENT_CORRETTIVI.md) + tabella P0 + **Backlog aperto** + **Checklist V1**.
-- Nuove funzionalità / requisiti: **ANALISI → FEEDBACK → CONVALIDA → AGGIORNAMENTO DOCUMENTO** (regola `processo-analisi.mdc`).
+- Nuove funzionalità / requisiti: **ANALISI → FEEDBACK → CONVALIDA (analisi/requisiti) → AGGIORNAMENTO DOCUMENTO (+ CONVALIDA aggiornamento)** (regola `processo-analisi.mdc`).
+- Sessione 07/09 (Disco + Foto + processo): [PROMPT_CONTINUITA_07_09_DISCO_FOTO.md](PROMPT_CONTINUITA_07_09_DISCO_FOTO.md).
 - Chiudere una voce solo dopo **SI Renato** (o criterio equivalente CONVALIDATO).
 - Non duplicare qui il dettaglio prodotto delle fette B0–B5 → [NOTA_B0_MERGE_FAMIGLIA.md](NOTA_B0_MERGE_FAMIGLIA.md).
 - Indicazione fuori contesto in un altro filone: stessa tabella Backlog aperto, stessa sessione, commit. Regola `.cursor/rules/annotazioni-renato.mdc`.
