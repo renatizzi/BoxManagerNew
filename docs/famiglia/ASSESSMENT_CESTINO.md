@@ -1,10 +1,11 @@
 # Assessment — Cestino (Progetto 2 / A2)
 
-**Stato:** ANALISI (bozza) — 07/09/2026. **Non CONVALIDATO.** Zero codice.  
-**Processo:** passo 1 di 4 (ANALISI → FEEDBACK → CONVALIDA analisi/requisiti → AGGIORNAMENTO DOCUMENTO).  
+**Stato:** CONVALIDA analisi/requisiti (passo 3) **SI Renato 07/09/2026** (C-Q1–C-Q9 + premium Progetto 2). Documento: [REQUISITI_CESTINO.md](REQUISITI_CESTINO.md) — in attesa CONVALIDA aggiornamento documento (passo 4). Zero codice.  
+**Processo:** passo **4** in corso.  
 **Posizione nella sequenza concordata:** A1 QR avanzato (**congelato**) → **A2** → A3 Foto oggetto.  
 **Dipendenza a valle:** [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) richiede delete/ripristino che gestisca i file foto.  
-**Nota su fonte:** in Nota **9.2 §4.1.6** non c’è oggi un blocco intitolato «CESTINO»; la voce compare nella sequenza Progetto 2 (continuity / Foto) e in un quadro Roadmap storico (patch Play: «cestino; foto miniatura…»). Questa ANALISI **non inventa** un allegato: propone perimetro da FEEDBACK, da recepire poi in Nota.
+**Nota su fonte:** in Nota **9.2 §4.1.6** non c’è oggi un blocco intitolato «CESTINO»; la voce compare nella sequenza Progetto 2 (continuity / Foto) e in un quadro Roadmap storico. Merito congelato in [REQUISITI_CESTINO.md](REQUISITI_CESTINO.md).  
+**Premium:** A1–A3 (e linea Progetto 2 in analisi) = **Archivio completo** — SI Renato 07/09/2026.
 
 ---
 
@@ -123,19 +124,20 @@ Tre letture distinte — **una sola** va scelta in FEEDBACK:
 
 ---
 
-## 6. Checklist FEEDBACK (Q)
+## 6. Checklist FEEDBACK — CONVALIDATA (passo 3, 07/09/2026)
 
-| # | Domanda | Raccomandazione analisi |
-|---|---------|-------------------------|
-| **C-Q1** | Lettura prodotto | **C1** soft-delete + UI Cestino (non solo C2) |
-| **C-Q2** | Entità in cestino | **Oggetti + contenitori**; non categorie/posizioni |
-| **C-Q3** | Retention | **R-B 30 giorni** + svuota manuale |
-| **C-Q4** | Ingresso UI | Utility (vicino Backup) **oppure** Impostazioni — preferenza: **Utility** |
-| **C-Q5** | Undo snackbar immediato | **Sì** (oltre al Cestino) |
-| **C-Q6** | Box eliminato, oggetto in cestino da ripristinare | **Ripristina anche il contenitore** se in cestino; se box hard-deleted → dialog scegli contenitore |
-| **C-Q7** | Family / tombstone | **F1** — tombstone solo a hard delete |
-| **C-Q8** | Backup include cestino | **Sì** (con metadato deletedAt) |
-| **C-Q9** | Nuove frasi 2.6 | Solo se necessarie (es. «Spostato nel cestino», «Cestino svuotato»); elenco da SI prima del codice |
+| # | Domanda | Esito |
+|---|---------|--------|
+| **C-Q1** | Lettura prodotto | **SI — C1** soft-delete + UI Cestino |
+| **C-Q2** | Entità | **SI — oggetti + contenitori** |
+| **C-Q3** | Retention | **SI — R-B 30 giorni** + svuota manuale |
+| **C-Q4** | Ingresso UI | **SI — Utility** |
+| **C-Q5** | Undo snackbar | **SI** |
+| **C-Q6** | Box mancante al ripristino oggetto | **SI** — ripristina box se in cestino; se hard-deleted → scegli contenitore |
+| **C-Q7** | Family / tombstone | **SI — F1** (tombstone solo a hard delete) |
+| **C-Q8** | Backup include cestino | **SI** |
+| **C-Q9** | Nuove frasi 2.6 | **SI** — solo dopo elenco ufficiale pre-codice |
+| **Premium** | Gate Archivio completo | **SI** — A1/A2/A3 (linea Progetto 2 in analisi) |
 
 ---
 
@@ -161,11 +163,10 @@ Tre letture distinte — **una sola** va scelta in FEEDBACK:
 
 ---
 
-## 9. Esito ANALISI (in attesa FEEDBACK)
+## 9. Esito — CONVALIDA merito; documento requisiti scritto
 
-**Proposta:** Cestino utente **C1** su oggetti e contenitori, retention 30 gg, tombstone famiglia solo al hard delete, Backup include cestino.
+**Prodotto:** C1 su oggetti+contenitori; 30 gg; Utility; undo; F1 tombstone; Backup con cestino; **premium** Archivio completo.
 
-**Prossimo:** FEEDBACK Renato su **C-Q1–C-Q9** (almeno C-Q1/Q2/Q3/Q7).  
-Poi CONVALIDA merito → `REQUISITI_CESTINO.md` + CONVALIDA documento.
+**Documento:** [REQUISITI_CESTINO.md](REQUISITI_CESTINO.md) — in attesa **CONVALIDA aggiornamento documento**.
 
 **Zero codice.**

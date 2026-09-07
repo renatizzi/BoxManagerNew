@@ -64,6 +64,7 @@ Policy di imposizione sul foglio (`LabelSheetSpec`), separata dal layout etichet
 
 ### R10 — Premium
 - Stessa gate `PremiumFeature.QR_LABEL` / Archivio completo del flusso etichetta V1.
+- **Vincolo Progetto 2 (SI Renato 07/09/2026):** A1 QR avanzato, A2 Cestino e A3 Foto oggetto sono funzionalità **premium** (Archivio completo), soggette alle condizioni di accesso vigenti.
 
 ---
 
