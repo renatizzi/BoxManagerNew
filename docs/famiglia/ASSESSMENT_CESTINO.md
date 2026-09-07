@@ -1,11 +1,11 @@
 # Assessment — Cestino (Progetto 2 / A2)
 
-**Stato:** CONVALIDA analisi/requisiti (passo 3) **SI Renato 07/09/2026** (C-Q1–C-Q9 + premium Progetto 2). Documento: [REQUISITI_CESTINO.md](REQUISITI_CESTINO.md) — in attesa CONVALIDA aggiornamento documento (passo 4). Zero codice.  
-**Processo:** passo **4** in corso.  
+**Stato:** storico ANALISI/FEEDBACK; **prevale** [REQUISITI_CESTINO.md](REQUISITI_CESTINO.md) (**CONGELATO** + CONVALIDA documento SI Renato 07/09/2026). Zero codice.  
+**Processo:** **chiuso** (4/4).  
 **Posizione nella sequenza concordata:** A1 QR avanzato (**congelato**) → **A2** → A3 Foto oggetto.  
 **Dipendenza a valle:** [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) richiede delete/ripristino che gestisca i file foto.  
-**Nota su fonte:** in Nota **9.2 §4.1.6** non c’è oggi un blocco intitolato «CESTINO»; la voce compare nella sequenza Progetto 2 (continuity / Foto) e in un quadro Roadmap storico. Merito congelato in [REQUISITI_CESTINO.md](REQUISITI_CESTINO.md).  
-**Premium:** A1–A3 (e linea Progetto 2 in analisi) = **Archivio completo** — SI Renato 07/09/2026.
+**Nota su fonte:** in Nota **9.2 §4.1.6** non c’è oggi un blocco intitolato «CESTINO»; merito in [REQUISITI_CESTINO.md](REQUISITI_CESTINO.md).  
+**Premium:** A1–A3 (e linea Progetto 2 in analisi) = **Archivio completo** — SI Renato 07/09/2026 (anche Foto: R6 in REQUISITI_FOTO).
 
 ---
 
@@ -163,10 +163,12 @@ Tre letture distinte — **una sola** va scelta in FEEDBACK:
 
 ---
 
-## 9. Esito — CONVALIDA merito; documento requisiti scritto
+## 9. Esito — A2 chiuso (documento congelato)
 
-**Prodotto:** C1 su oggetti+contenitori; 30 gg; Utility; undo; F1 tombstone; Backup con cestino; **premium** Archivio completo.
+**Prodotto congelato:** C1 · oggetti+contenitori · 30 gg · Utility · undo · F1 · Backup con cestino · **premium**.
 
-**Documento:** [REQUISITI_CESTINO.md](REQUISITI_CESTINO.md) — in attesa **CONVALIDA aggiornamento documento**.
+**Documento:** [REQUISITI_CESTINO.md](REQUISITI_CESTINO.md) — **CONGELATO** (CONVALIDA aggiornamento documento SI Renato 07/09/2026).
 
-**Zero codice.**
+**Premium trasversale verificato:** A1 R10 · A2 §0/T4 · A3 R6 (Foto).
+
+**Zero codice** finché SI apertura fetta.

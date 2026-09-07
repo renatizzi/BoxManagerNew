@@ -24,8 +24,8 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) — **Checklist V
 | **Play** | BoxManager **1.2** su `main` — test chiuso aperto; **identica** salvo bug bloccanti |
 | **B-SEL-CARTELLA Disco di rete** | **CONVALIDATO** — Nota Integrata **9.2** Allegato **4.22** + Roadmap 07/09/2026 + [GUIDA_DISCO_RETE.md](GUIDA_DISCO_RETE.md) |
 | **A1 QR avanzato** | **CONGELATO** — [REQUISITI_QR_AVANZATO.md](REQUISITI_QR_AVANZATO.md). Premium Progetto 2. Zero codice |
-| **A2 Cestino** | **CONVALIDA merito** SI 07/09 — [REQUISITI_CESTINO.md](REQUISITI_CESTINO.md) in attesa **CONVALIDA aggiornamento documento**; C-Q1–C-Q9 + premium. Zero codice |
-| **Premium Progetto 2** | SI Renato 07/09: A1 / A2 / A3 = **Archivio completo** (condizioni vigenti) |
+| **A2 Cestino** | **CONGELATO** — [REQUISITI_CESTINO.md](REQUISITI_CESTINO.md) (CONVALIDA documento SI 07/09). Zero codice |
+| **Premium Progetto 2** | SI Renato 07/09: **A1** (R10) / **A2** (§0) / **A3 Foto** (R6+T6bis) = **Archivio completo** — verificato |
 | **Foto oggetto** | Requisiti **congelati** + **CONVALIDA aggiornamento documento** 07/09/2026 — [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md); **zero codice** finché non si apre la fetta (dopo QR avanzato + Cestino) |
 | **Processo analisi** | **4 fasi** + due CONVALIDA — regola `.cursor/rules/processo-analisi.mdc` — **CONVALIDATO** in documento 07/09/2026 |
 
@@ -80,8 +80,8 @@ Due CONVALIDA distinte: (3) merito analisi/requisiti · (4 chiusura) testo del d
 
 | Priorità | Azione | Note |
 |----------|--------|------|
-| **A** | **CONVALIDA aggiornamento documento** A2 | Rileggere [REQUISITI_CESTINO.md](REQUISITI_CESTINO.md); SI chiusura passo 4 |
-| **A2** | (doc) A1 QR | Congelato |
+| **A** | Prossima voce Progetto 2 / implementazione | A1+A2+A3 requisiti congelati; codice solo con SI apertura fetta (dopo Play verde tipicamente) |
+| **A2** | (doc) A1–A2 | Congelati |
 | **B** | Checklist V1 | P2 sync bug Play → sviluppo; bug bloccanti solo su `main` |
 | **C** | Foto codice | **STOP** finché non arrivano QR avanzato + Cestino e SI di apertura fetta |
 | **D** | M3 / merge `main` | Solo a test Play **chiuso** |

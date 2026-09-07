@@ -31,8 +31,8 @@ Sequenza concordata: **A1 QR avanzato → A2 Cestino → A3 Foto** → poi B/C/D
 | Voce | Documento | Stato |
 |------|-----------|--------|
 | **A1 QR avanzato** | [REQUISITI_QR_AVANZATO.md](REQUISITI_QR_AVANZATO.md) (**congelato** + CONVALIDA documento 07/09; R10 premium Progetto 2) · [ASSESSMENT_QR_AVANZATO.md](ASSESSMENT_QR_AVANZATO.md) (storico) | Requisiti chiusi; zero codice finché SI apertura fetta |
-| **A2 Cestino** | [REQUISITI_CESTINO.md](REQUISITI_CESTINO.md) (passo 4 — in attesa CONVALIDA documento) · [ASSESSMENT_CESTINO.md](ASSESSMENT_CESTINO.md) (storico) | **CONVALIDA merito** SI 07/09 (C-Q1–C-Q9 + premium). Zero codice |
-| **A3 Foto oggetto** | [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) (**congelato** + CONVALIDA documento 07/09; **R6 Premium** aggiunto 07/09) · [ASSESSMENT_FOTO_MINIATURA.md](ASSESSMENT_FOTO_MINIATURA.md) (storico) | Requisiti + tecnica chiusi; codice dopo QR + Cestino |
+| **A2 Cestino** | [REQUISITI_CESTINO.md](REQUISITI_CESTINO.md) (**congelato** + CONVALIDA documento 07/09) · [ASSESSMENT_CESTINO.md](ASSESSMENT_CESTINO.md) (storico) | Requisiti chiusi; zero codice finché SI apertura fetta |
+| **A3 Foto oggetto** | [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) (**congelato** + CONVALIDA documento 07/09; **R6 + T6bis Premium**) · [ASSESSMENT_FOTO_MINIATURA.md](ASSESSMENT_FOTO_MINIATURA.md) (storico) | Requisiti + tecnica chiusi; codice dopo QR + Cestino |
 
 ---
 

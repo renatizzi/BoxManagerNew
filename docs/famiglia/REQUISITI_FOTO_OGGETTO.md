@@ -122,6 +122,9 @@ Al salvataggio (galleria o scatto), pipeline obbligatoria:
 - Obbligatorietà foto in censimento
 - BLOB immagini in SQLite / CSV
 
+### T6bis — Premium (allineamento Progetto 2)
+- Gate **Archivio completo** sulle azioni foto (R6). Stesso vincolo trasversale di A1 QR e A2 Cestino (SI Renato 07/09/2026).
+
 ### T7 — Dipendenze di sequenza
 - Implementare **dopo** QR avanzato e **Cestino** (delete/ripristino oggetto deve gestire i file foto).
 
@@ -133,7 +136,8 @@ Al salvataggio (galleria o scatto), pipeline obbligatoria:
 2. In lista oggetti: thumb a sinistra; tap → ingrandimento; senza foto → icona fissa.  
 3. Backup → Ripristina: foto presenti.  
 4. Invia Archivio → Ricevi Archivio: foto presenti sugli oggetti corrispondenti per id.  
-5. (Se SI estensione Import/Export ZIP) ciclo Esporta ZIP → Importa ZIP ripristina foto; il solo CSV legacy resta senza foto.
+5. (Se SI estensione Import/Export ZIP) ciclo Esporta ZIP → Importa ZIP ripristina foto; il solo CSV legacy resta senza foto.  
+6. Senza Archivio completo: gate premium sulle azioni foto (R6); nessun bypass.
 
 ---
 

@@ -11,7 +11,7 @@ Una sola app: **BoxManager**. Questi file coprono l’**archivio condiviso** e i
 | [PROMPT_CONTINUITA_B5.md](PROMPT_CONTINUITA_B5.md) | Storico B5 (chiuso) |
 | [ASSESSMENT_QR_AVANZATO.md](ASSESSMENT_QR_AVANZATO.md) | Storico ANALISI/FEEDBACK A1 QR avanzato |
 | [REQUISITI_QR_AVANZATO.md](REQUISITI_QR_AVANZATO.md) | **Congelato:** QR avanzato A1 (batch / A4 preset / share; premium) |
-| [REQUISITI_CESTINO.md](REQUISITI_CESTINO.md) | Requisiti A2 Cestino — in attesa CONVALIDA aggiornamento documento |
+| [REQUISITI_CESTINO.md](REQUISITI_CESTINO.md) | **Congelato:** Cestino A2 (soft-delete / premium) |
 | [ASSESSMENT_CESTINO.md](ASSESSMENT_CESTINO.md) | Storico ANALISI/FEEDBACK A2 Cestino |
 | [ASSESSMENT_CORRETTIVI.md](ASSESSMENT_CORRETTIVI.md) | Assessment interventi correttivi (P0–P2) |
 | [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md) | **Congelato:** una BoxManager; 1.2 identica in test; sviluppo = ufficiale a fine test |

@@ -1,7 +1,8 @@
 # Requisiti — Cestino (soft-delete / ripristino)
 
-**Stato:** documento scritto 07/09/2026 — in attesa **CONVALIDA aggiornamento documento** (passo 4).  
+**Stato:** CONGELATO 07/09/2026 (SI Renato).  
 **CONVALIDA analisi/requisiti (passo 3):** SI Renato 07/09/2026 (C-Q1–C-Q9 + vincolo **premium** Progetto 2).  
+**CONVALIDA aggiornamento documento (passo 4):** SI Renato 07/09/2026.  
 **Uso:** riferimento funzionale e tecnico-architetturale fino all’implementazione Progetto 2 / A2.  
 **Destinazione:** confluire nella Nota Integrata ufficiale (Allegato / rinvio Roadmap) senza riaprire il merito.  
 **Assessment di lavoro:** [ASSESSMENT_CESTINO.md](ASSESSMENT_CESTINO.md) (storico; prevale **questo** file su conflitti).  
@@ -133,4 +134,4 @@ Questo file è la **fonte** fino all’implementazione.
 1. ANALISI — [ASSESSMENT_CESTINO.md](ASSESSMENT_CESTINO.md)  
 2. FEEDBACK — C-Q1–C-Q9 + premium Progetto 2  
 3. CONVALIDA analisi/requisiti — **SI Renato 07/09/2026**  
-4. AGGIORNAMENTO DOCUMENTO — **questo file**; in attesa **CONVALIDA aggiornamento documento**
+4. AGGIORNAMENTO DOCUMENTO — **questo file**; **CONVALIDA aggiornamento documento SI Renato 07/09/2026**
