@@ -34,10 +34,22 @@ class SharedTablesMerger {
         val categoriesToRemove: List<CategoryRemoval>,
         val locationsToInsert: List<FamilyCatalogLocation>,
         val locationsToRemove: List<LocationRemoval>,
-        val blockingErrors: List<String>
+        val blockedCategoryRemovals: List<CategoryRemoval>,
+        val blockedLocationRemovals: List<LocationRemoval>
     ) {
+        val blockingErrors: List<String>
+            get() = blockedCategoryRemovals.map {
+                "category:${it.entity.name}:${it.boxCount}"
+            } + blockedLocationRemovals.map {
+                "location:${it.entity.name}:${it.boxCount}"
+            }
+
+        val hasBlockingErrors: Boolean
+            get() = blockedCategoryRemovals.isNotEmpty() ||
+                blockedLocationRemovals.isNotEmpty()
+
         val canApply: Boolean
-            get() = blockingErrors.isEmpty() &&
+            get() = !hasBlockingErrors &&
                 (
                     categoriesToInsert.isNotEmpty() ||
                         categoriesToUpdate.isNotEmpty() ||
@@ -64,7 +76,8 @@ class SharedTablesMerger {
         val categoriesToRemove = mutableListOf<CategoryRemoval>()
         val locationsToInsert = mutableListOf<FamilyCatalogLocation>()
         val locationsToRemove = mutableListOf<LocationRemoval>()
-        val blockingErrors = mutableListOf<String>()
+        val blockedCategoryRemovals = mutableListOf<CategoryRemoval>()
+        val blockedLocationRemovals = mutableListOf<LocationRemoval>()
 
         for (category in incoming.categories) {
             val local = localCategories.firstOrNull {
@@ -80,12 +93,11 @@ class SharedTablesMerger {
         for (local in localCategories) {
             if (!incomingCategoryKeys.containsKey(key(local.name))) {
                 val count = categoryBoxCounts[local.id] ?: 0
+                val removal = CategoryRemoval(local, count)
                 if (count > 0) {
-                    blockingErrors +=
-                        "Categoria «${local.name}» usata da $count contenitori: " +
-                            "non può essere rimossa."
+                    blockedCategoryRemovals += removal
                 } else {
-                    categoriesToRemove += CategoryRemoval(local, count)
+                    categoriesToRemove += removal
                 }
             }
         }
@@ -101,12 +113,11 @@ class SharedTablesMerger {
         for (local in localLocations) {
             if (!incomingLocationKeys.containsKey(key(local.name))) {
                 val count = locationBoxCounts[local.id] ?: 0
+                val removal = LocationRemoval(local, count)
                 if (count > 0) {
-                    blockingErrors +=
-                        "Posizione «${local.name}» usata da $count contenitori: " +
-                            "non può essere rimossa."
+                    blockedLocationRemovals += removal
                 } else {
-                    locationsToRemove += LocationRemoval(local, count)
+                    locationsToRemove += removal
                 }
             }
         }
@@ -117,7 +128,8 @@ class SharedTablesMerger {
             categoriesToRemove = categoriesToRemove,
             locationsToInsert = locationsToInsert,
             locationsToRemove = locationsToRemove,
-            blockingErrors = blockingErrors.distinct()
+            blockedCategoryRemovals = blockedCategoryRemovals,
+            blockedLocationRemovals = blockedLocationRemovals
         )
     }
 

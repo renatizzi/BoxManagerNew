@@ -157,6 +157,14 @@ class FamilyCatalogActivity : BaseActivity() {
             showUserMessage(text, blockingError = false, showDialog = true)
         }
 
+        mergeViewModel.importFailure.observe(this) { text ->
+            if (text.isNullOrBlank()) {
+                return@observe
+            }
+            mergeViewModel.clearImportFailure()
+            showImportFailure(text)
+        }
+
         mergeViewModel.exportBytes.observe(this) { payload ->
             if (payload == null) {
                 return@observe
@@ -271,6 +279,18 @@ class FamilyCatalogActivity : BaseActivity() {
     private fun showExportCompletedDialog() {
         AlertDialog.Builder(this)
             .setMessage(R.string.family_msg_export_completed)
+            .setPositiveButton(R.string.common_ok, null)
+            .show()
+    }
+
+    private fun showImportFailure(text: String) {
+        tvMessages.text = text
+        tvMessages.visibility = View.VISIBLE
+        scrollView.scrollTo(0, 0)
+        FeedbackUtils.alert(this)
+        AlertDialog.Builder(this)
+            .setTitle(R.string.family_dialog_import_failed)
+            .setMessage(text)
             .setPositiveButton(R.string.common_ok, null)
             .show()
     }

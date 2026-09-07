@@ -145,14 +145,11 @@ class BackupZipPersister(
                 }
             }
 
-            val baseName =
-                zipName.removeSuffix(
-                    BackupConfiguration.BACKUP_FILE_EXTENSION
-                )
-
+            // Passare il nome CON .zip: alcuni provider (es. disco di rete)
+            // non aggiungono l'estensione dal solo MIME; Ripristina filtra su *.zip.
             created = tree.createFile(
                 BackupConfiguration.ZIP_MIME_TYPE,
-                baseName
+                zipName
             ) ?: return writeFailed()
 
             copyToDocument(temp, created.uri)
@@ -241,14 +238,30 @@ class BackupZipPersister(
                 return true
             }
             val type = file.type.orEmpty()
-            return type.equals(
-                BackupConfiguration.ZIP_MIME_TYPE,
-                ignoreCase = true
-            ) ||
+            if (
+                type.equals(
+                    BackupConfiguration.ZIP_MIME_TYPE,
+                    ignoreCase = true
+                ) ||
                 type.equals(
                     "application/x-zip-compressed",
                     ignoreCase = true
                 )
+            ) {
+                return true
+            }
+            // Backup creati senza .zip su alcuni provider di rete (pre B5.21).
+            val noExtension = !name.contains('.')
+            val looksLikeBackup =
+                name.startsWith(
+                    BackupConfiguration.BACKUP_FILE_PREFIX,
+                    ignoreCase = true
+                ) ||
+                    name.startsWith(
+                        BackupConfiguration.PRE_RESTORE_PREFIX,
+                        ignoreCase = true
+                    )
+            return noExtension && looksLikeBackup
         }
     }
 }

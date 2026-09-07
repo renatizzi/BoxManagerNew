@@ -129,14 +129,6 @@ object NetworkDriveAssistant {
                     activity
                 )
             }
-
-            builder.setNeutralButton(
-                R.string.network_drive_open_store
-            ) { _, _ ->
-                openHelperStore(
-                    activity
-                )
-            }
         } else {
 
             builder.setPositiveButton(

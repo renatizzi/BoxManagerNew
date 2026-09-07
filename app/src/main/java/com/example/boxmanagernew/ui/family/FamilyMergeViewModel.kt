@@ -62,6 +62,9 @@ class FamilyMergeViewModel(
     private val _message = MutableLiveData<String>()
     val message: LiveData<String> = _message
 
+    private val _importFailure = MutableLiveData<String?>()
+    val importFailure: LiveData<String?> = _importFailure
+
     private val _exportBytes = MutableLiveData<Pair<String, ByteArray>?>()
     val exportBytes: LiveData<Pair<String, ByteArray>?> = _exportBytes
 
@@ -81,6 +84,10 @@ class FamilyMergeViewModel(
 
     fun clearSharedTablesPreview() {
         _sharedTablesPreview.value = null
+    }
+
+    fun clearImportFailure() {
+        _importFailure.value = null
     }
 
     fun requestSharedTablesExport() {
@@ -147,16 +154,25 @@ class FamilyMergeViewModel(
             return
         }
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                sharedTablesApplier.apply(current.plan)
-            }
-            _sharedTablesPreview.value = null
-            _message.value = buildString {
-                appendLine(appContext.getString(R.string.family_msg_receive_completed))
-                append(
-                    current.summary.removePrefix(
-                        appContext.getString(R.string.family_preview_shared_prefix)
+            try {
+                withContext(Dispatchers.IO) {
+                    sharedTablesApplier.apply(current.plan)
+                }
+                _sharedTablesPreview.value = null
+                _message.value = buildString {
+                    appendLine(appContext.getString(R.string.family_msg_receive_completed))
+                    append(
+                        current.summary.removePrefix(
+                            appContext.getString(R.string.family_preview_shared_prefix)
+                        )
                     )
+                }
+            } catch (error: Exception) {
+                _sharedTablesPreview.value = null
+                _importFailure.value = appContext.getString(
+                    R.string.family_msg_import_blocked,
+                    error.message?.takeIf { it.isNotBlank() }
+                        ?: appContext.getString(R.string.family_msg_write_failed)
                 )
             }
         }
@@ -209,8 +225,10 @@ class FamilyMergeViewModel(
             locationBoxCounts = locationBoxCounts
         )
 
-        if (plan.blockingErrors.isNotEmpty()) {
-            _message.postValue(plan.blockingErrors.joinToString("\n"))
+        if (plan.hasBlockingErrors) {
+            _importFailure.postValue(
+                formatSharedTablesBlocking(plan)
+            )
             return null
         }
 
@@ -265,8 +283,11 @@ class FamilyMergeViewModel(
         )
 
         if (plan.inventoryPlan.blockingErrors.isNotEmpty()) {
-            _message.postValue(
-                plan.inventoryPlan.blockingErrors.joinToString("\n")
+            _importFailure.postValue(
+                appContext.getString(
+                    R.string.family_msg_import_blocked,
+                    plan.inventoryPlan.blockingErrors.joinToString("\n")
+                )
             )
             return null
         }
@@ -414,6 +435,35 @@ class FamilyMergeViewModel(
                 objects = inventoryObjects,
                 deletions = deletions
             )
+        )
+    }
+
+    private fun formatSharedTablesBlocking(
+        plan: SharedTablesMerger.Plan
+    ): String {
+        val lines = buildList {
+            for (removal in plan.blockedCategoryRemovals) {
+                add(
+                    appContext.getString(
+                        R.string.family_msg_category_in_use_block,
+                        removal.entity.name,
+                        removal.boxCount
+                    )
+                )
+            }
+            for (removal in plan.blockedLocationRemovals) {
+                add(
+                    appContext.getString(
+                        R.string.family_msg_location_in_use_block,
+                        removal.entity.name,
+                        removal.boxCount
+                    )
+                )
+            }
+        }
+        return appContext.getString(
+            R.string.family_msg_import_blocked,
+            lines.joinToString("\n")
         )
     }
 }
