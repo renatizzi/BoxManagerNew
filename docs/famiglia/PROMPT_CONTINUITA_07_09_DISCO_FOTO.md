@@ -100,7 +100,7 @@ Due CONVALIDA distinte: (3) merito analisi/requisiti · (4 chiusura) testo del d
 | File | Ruolo |
 |------|--------|
 | [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) | Freeze Foto — fonte fino all’implementazione |
-| [REQUISITI_CESTINO.md](REQUISITI_CESTINO.md) | Requisiti A2 — in attesa CONVALIDA aggiornamento documento |
+| [REQUISITI_CESTINO.md](REQUISITI_CESTINO.md) | Freeze A2 Cestino |
 | [ASSESSMENT_CESTINO.md](ASSESSMENT_CESTINO.md) | Storico ANALISI/FEEDBACK A2 |
 | [REQUISITI_QR_AVANZATO.md](REQUISITI_QR_AVANZATO.md) | Freeze A1 QR avanzato |
 | [GUIDA_DISCO_RETE.md](GUIDA_DISCO_RETE.md) | Guida utente/dev Disco di rete |
@@ -143,4 +143,4 @@ git pull origin cursor/qr-avanzato-analisi-8374
 
 ---
 
-*Aggiornato 07/09/2026 (ripresa) — A1 QR congelato; A2 Cestino in ANALISI; Disco CONVALIDATO; Foto + processo: CONVALIDA documento SI Renato.*
+*Aggiornato 07/09/2026 (ripresa) — A1 QR + A2 Cestino congelati; A3 Foto + premium P2 verificato; Disco CONVALIDATO.*
