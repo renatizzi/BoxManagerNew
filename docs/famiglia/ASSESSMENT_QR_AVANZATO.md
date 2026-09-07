@@ -1,10 +1,11 @@
 # Assessment — QR avanzato (Progetto 2 / A1)
 
-**Stato:** FEEDBACK in corso — 07/09/2026. **Non CONVALIDATO.** Zero codice.  
-**Processo:** passo **2** di 4 (ANALISI → **FEEDBACK** → CONVALIDA analisi/requisiti → AGGIORNAMENTO DOCUMENTO).  
+**Stato:** CONVALIDA analisi/requisiti (passo 3) **SI Renato 07/09/2026**. Documento ufficiale: [REQUISITI_QR_AVANZATO.md](REQUISITI_QR_AVANZATO.md) — in attesa CONVALIDA aggiornamento documento (passo 4). Zero codice.  
+**Processo:** passo **4** in corso (ANALISI → FEEDBACK → CONVALIDA merito ✓ → **AGGIORNAMENTO DOCUMENTO**).  
 **Posizione nella sequenza concordata:** **A1** → A2 Cestino → A3 Foto oggetto.  
 **Fonte Roadmap:** Nota Integrata **9.2** §**4.1.6** — voce **QR AVANZATO** (Priorità: medio-alta).  
-**Baseline V1 (non riaprire):** §**3.4.4** Codice QR + Allegato **4.8** (B4 CONVALIDATO 21/08/2026); ingresso etichetta da card Contenitore (B7).
+**Baseline V1 (non riaprire):** §**3.4.4** Codice QR + Allegato **4.8** (B4 CONVALIDATO 21/08/2026); ingresso etichetta da card Contenitore (B7).  
+**Su conflitti prevale** [REQUISITI_QR_AVANZATO.md](REQUISITI_QR_AVANZATO.md).
 
 ---
 
@@ -127,19 +128,19 @@ Preferenza analisi: **salta + riepilogo** «K esclusi». Conferma in CONVALIDA.
 
 ---
 
-## 5. Checklist SI (FEEDBACK 07/09)
+## 5. Checklist SI — CONVALIDATA (passo 3, 07/09/2026)
 
-| # | Decisione | Esito FEEDBACK |
-|---|-----------|----------------|
+| # | Decisione | Esito |
+|---|-----------|--------|
 | **Q1** | Solo i 3 bullet Nota | **SI** |
-| **Q2** | Formato stampa/PDF | **Aperto** — Renato chiede valutazione impatto di un formato **personalizzabile** (più etichette su A4). Vedi §5.1 |
+| **Q2** | Formato stampa/PDF | **Q2-Y** — L0 + L1 (preset A4); L2 fuori. SI implicito in «convalida fino a Q9» sulla raccomandazione §5.1 |
 | **Q3** | Condivisione = share PDF | **SI** (A) |
 | **Q4** | Ingresso = selectionMode lista Contenitori | **SI** (A) |
-| **Q5** | Ordine nome A→Z | Proposta **B** — conferma in CONVALIDA |
-| **Q6** | Premium = stessa gate QR_LABEL | Proposta **Sì** — conferma in CONVALIDA |
-| **Q7** | Nome file `ETICHETTE_ddMMyy_HHmm.pdf` | Proposta **Sì** — conferma in CONVALIDA |
-| **Q8** | Anteprima = lista testuale + genera | Proposta **A** — conferma in CONVALIDA |
-| **Q9** | Testo sotto QR = invariato (`permanentId` come oggi) | Proposta **Invariato** — conferma in CONVALIDA |
+| **Q5** | Ordine nome A→Z | **SI** (B) |
+| **Q6** | Premium = stessa gate QR_LABEL | **SI** |
+| **Q7** | Nome file PDF batch | **SI** — `QR_ddMMyy_HHmm.pdf` (non `ETICHETTE_…`) |
+| **Q8** | Anteprima = lista testuale + genera | **SI** (A) |
+| **Q9** | Testo sotto QR invariato | **SI** |
 
 ### 5.1 Q2 — Impatto formato personalizzabile (più etichette su A4)
 
@@ -190,13 +191,13 @@ Oggi V1 stampa in **A6** una etichetta; su A4 “affiancando” celle tipo A6 en
 
 Così si **prevede** il formato multi-etichetta A4 (impatto controllato = L1) senza pagare subito il costo tipografico di L2.
 
-#### Domanda chiusa su Q2 (serve SI esplicito)
+#### Domanda Q2 — **chiusa: Q2-Y** (CONVALIDA 07/09/2026)
 
-| Opzione | Descrizione |
-|---------|-------------|
-| **Q2-X** | Solo L0 in A1; L1/L2 “un giorno” senza impegno in requisiti |
-| **Q2-Y** | **L0 + L1 in requisiti A1** (preset A4); L2 fuori scope — *raccomandato* |
-| **Q2-Z** | L0 + L1 + **L2** in A1 (personalizzabile pieno) |
+| Opzione | Descrizione | Esito |
+|---------|-------------|-------|
+| **Q2-X** | Solo L0 in A1 | — |
+| **Q2-Y** | **L0 + L1 in requisiti A1** (preset A4); L2 fuori scope | **SI** |
+| **Q2-Z** | L0 + L1 + **L2** in A1 | — |
 
 ---
 
@@ -212,12 +213,12 @@ A1 QR avanzato  →  A2 Cestino  →  A3 Foto (REQUISITI già congelati)
 
 ---
 
-## 7. Fuori scope (salvo SI su Q2-Z)
+## 7. Fuori scope (Q2-Y)
 
 - Cambiare payload QR / versioning breaking.
 - QR su **oggetti**.
 - Branding / layout grafico etichetta diverso da V1 (logo, colori, campi anagrafici stampati oltre al codice già oggi).
-- **L2** personalizzabile pieno (se Q2-Y).
+- **L2** personalizzabile pieno.
 - Stampa Bluetooth vendor-specific.
 - Encoding anagrafica nel QR.
 - Qualsiasi lavoro Motore B / pipeline.
@@ -225,23 +226,22 @@ A1 QR avanzato  →  A2 Cestino  →  A3 Foto (REQUISITI già congelati)
 
 ---
 
-## 8. Criterio di accettazione (bozza, post-implementazione futura)
+## 8. Criterio di accettazione (post-implementazione futura)
 
 1. V1 singola etichetta: Anteprima / Stampa / PDF **invariati**.  
-2. Seleziono N contenitori → un PDF batch; formato secondo Q2 (L0 e, se Q2-Y, preset A4).  
+2. Seleziono N contenitori → PDF batch L0 e L1 (preset A4).  
 3. Stampa batch avvia PrintManager sul documento.  
 4. Condividi apre share sheet con il PDF.  
-5. Box senza permanentId: salta + riepilogo (salvo diverso SI).  
-6. Nessuna migrazione Room; nessun tocco ricerca.
+5. Esporta propone `QR_ddMMyy_HHmm.pdf`.  
+6. Box senza permanentId: salta + riepilogo.  
+7. Nessuna migrazione Room; nessun tocco ricerca.
 
 ---
 
-## 9. Esito — FEEDBACK parziale; manca chiusura Q2
+## 9. Esito — CONVALIDA merito; documento requisiti scritto
 
-**Prodotto (consolidato):** batch da lista Contenitori + stampa/PDF multipla + share PDF; perimetro = 3 bullet Nota; payload QR invariato.
+**Prodotto congelato (merito):** batch da lista Contenitori + L0/L1 + share PDF; nome file `QR_ddMMyy_HHmm.pdf`; payload invariato.
 
-**Aperto:** **Q2** — SI su **Q2-X / Q2-Y / Q2-Z** (§5.1). Raccomandazione: **Q2-Y** (prevedere A4 multi-etichetta via **preset**, non tipografo pieno).
+**Documento:** [REQUISITI_QR_AVANZATO.md](REQUISITI_QR_AVANZATO.md) — **in attesa CONVALIDA aggiornamento documento** (passo 4).
 
-**Poi:** conferma Q5–Q9 → **CONVALIDA** merito → **AGGIORNAMENTO DOCUMENTO** (`REQUISITI_QR_AVANZATO.md`) + CONVALIDA aggiornamento.
-
-**Zero codice** finché non chiudono i passi 2–4 e non c’è SI di apertura fetta implementativa.
+**Zero codice** finché non c’è SI di apertura fetta implementativa (dopo Play verde / SI esplicito).

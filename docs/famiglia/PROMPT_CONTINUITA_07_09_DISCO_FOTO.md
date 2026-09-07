@@ -23,7 +23,7 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) — **Checklist V
 | **Build sviluppo** | Topbar **1.3-famigliaB5.24** (versionCode **1343**) — etichetta di build, non nome app |
 | **Play** | BoxManager **1.2** su `main` — test chiuso aperto; **identica** salvo bug bloccanti |
 | **B-SEL-CARTELLA Disco di rete** | **CONVALIDATO** — Nota Integrata **9.2** Allegato **4.22** + Roadmap 07/09/2026 + [GUIDA_DISCO_RETE.md](GUIDA_DISCO_RETE.md) |
-| **A1 QR avanzato** | **FEEDBACK** — [ASSESSMENT_QR_AVANZATO.md](ASSESSMENT_QR_AVANZATO.md); SI Q1/Q3/Q4; **Q2** da chiudere (Q2-X/Y/Z, raccomandato Y). Zero codice |
+| **A1 QR avanzato** | **CONVALIDA merito** SI 07/09 — [REQUISITI_QR_AVANZATO.md](REQUISITI_QR_AVANZATO.md) in attesa **CONVALIDA aggiornamento documento**; Q2-Y; file `QR_ddMMyy_HHmm.pdf`. Zero codice |
 | **Foto oggetto** | Requisiti **congelati** + **CONVALIDA aggiornamento documento** 07/09/2026 — [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md); **zero codice** finché non si apre la fetta (dopo QR avanzato + Cestino) |
 | **Processo analisi** | **4 fasi** + due CONVALIDA — regola `.cursor/rules/processo-analisi.mdc` — **CONVALIDATO** in documento 07/09/2026 |
 
@@ -78,7 +78,7 @@ Due CONVALIDA distinte: (3) merito analisi/requisiti · (4 chiusura) testo del d
 
 | Priorità | Azione | Note |
 |----------|--------|------|
-| **A** | **FEEDBACK** su A1 QR avanzato | Risposte Renato a Q1–Q9 in [ASSESSMENT_QR_AVANZATO.md](ASSESSMENT_QR_AVANZATO.md); poi CONVALIDA merito → documento requisiti |
+| **A** | **FEEDBACK** A1 — chiudere **Q2** (X/Y/Z) + conferma Q5–Q9 | Poi CONVALIDA merito → documento requisiti |
 | **A2** | ANALISI Cestino | Dopo chiusura documento A1 (o SI parallelo). Stesso processo a 4 fasi |
 | **B** | Checklist V1 | P2 sync bug Play → sviluppo; bug bloccanti solo su `main` |
 | **C** | Foto codice | **STOP** finché non arrivano QR avanzato + Cestino e SI di apertura fetta |

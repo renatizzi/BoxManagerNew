@@ -9,7 +9,8 @@ Una sola app: **BoxManager**. Questi file coprono l’**archivio condiviso** e i
 | [PROMPT_CONTINUITA_CORRETTIVI.md](PROMPT_CONTINUITA_CORRETTIVI.md) | **Ingresso sessione** — correttivi |
 | [PROMPT_CONTINUITA_07_09_DISCO_FOTO.md](PROMPT_CONTINUITA_07_09_DISCO_FOTO.md) | **Ingresso sessione 07/09** — Disco di rete (chiuso) + Foto congelata + processo 4 fasi + A1 QR |
 | [PROMPT_CONTINUITA_B5.md](PROMPT_CONTINUITA_B5.md) | Storico B5 (chiuso) |
-| [ASSESSMENT_QR_AVANZATO.md](ASSESSMENT_QR_AVANZATO.md) | **ANALISI** Progetto 2 / A1 — QR avanzato (batch / stampa multipla / condivisione) |
+| [ASSESSMENT_QR_AVANZATO.md](ASSESSMENT_QR_AVANZATO.md) | Storico ANALISI/FEEDBACK A1 QR avanzato |
+| [REQUISITI_QR_AVANZATO.md](REQUISITI_QR_AVANZATO.md) | Requisiti A1 QR avanzato — in attesa CONVALIDA aggiornamento documento |
 | [ASSESSMENT_CORRETTIVI.md](ASSESSMENT_CORRETTIVI.md) | Assessment interventi correttivi (P0–P2) |
 | [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md) | **Congelato:** una BoxManager; 1.2 identica in test; sviluppo = ufficiale a fine test |
 | [BETA_SYNC_POLICY.md](BETA_SYNC_POLICY.md) | Allineare un fix 1.2 sulla copia di sviluppo |
