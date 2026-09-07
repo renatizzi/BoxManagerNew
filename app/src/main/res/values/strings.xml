@@ -394,7 +394,7 @@
     <string name="family_msg_no_changes">Nessuna modifica da applicare.</string>
     <string name="family_msg_nothing_to_merge">Nessuna novità da unire.</string>
     <string name="family_msg_tables_aligned">Le tabelle locali sono già allineate alle tabelle condivise.</string>
-    <string name="family_msg_import_blocked">Importazione non riuscita.\n\n%1$s</string>
+    <string name="family_msg_import_blocked">%1$s</string>
     <string name="family_dialog_import_failed">Importazione non riuscita</string>
     <string name="family_msg_category_in_use_block">Categoria «%1$s» usata da %2$d contenitori: non può essere rimossa.</string>
     <string name="family_msg_location_in_use_block">Posizione «%1$s» usata da %2$d contenitori: non può essere rimossa.</string>

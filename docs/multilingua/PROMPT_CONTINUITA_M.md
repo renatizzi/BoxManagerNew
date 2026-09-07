@@ -11,7 +11,7 @@ Fonte viva: [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md). Rest
 
 | ID | Indicazione |
 |----|-------------|
-| **B-SEL-CARTELLA** | Disco di rete (Impostazioni + guida semplice) — B5.21 in ritest |
+| **B-SEL-CARTELLA** | Disco di rete — **CONVALIDATO** (B5.22); Nota ufficiale a fine ciclo |
 
 ---
 
@@ -47,7 +47,7 @@ Fonte viva: [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md). Rest
 | **Branch lavoro** | `cursor/promemoria-fix-d69a` |
 | **Branch base** | `cursor/promemoria-backlog-d69a` |
 | **Play** | BoxManager **1.2** su `main`, identica per tutto il test. Lo **stesso** BoxManager di sviluppo (archivio condiviso + inglese) a test chiuso **sostituisce** la 1.2. Si tocca 1.2 **solo** per bug bloccanti. |
-| **Build sviluppo** | Topbar **1.3-famigliaB5.21** (etichetta di build, non un altro nome di app). |
+| **Build sviluppo** | Topbar **1.3-famigliaB5.22** (etichetta di build, non un altro nome di app). |
 | **Ricerca avanzata EN** | Pipeline 0–10 invariata; **niente** traduttore EN→IT; **niente** interprete semantico (Nota 3.3.9) |
 | **Checkpoint** | **CK0** ✅; **S1–S3 SI**; **CK1** ✅; **CK2** ✅ |
 
@@ -145,7 +145,7 @@ Italiano: Impostazioni → Italiano; *Trova box* e *Nessun risultato trovato.* c
 
 ### Cosa **non** è questo test
 
-- Disco di rete (**B-SEL-CARTELLA** — ancora aperto)
+- Disco di rete (**B-SEL-CARTELLA** — **CONVALIDATO**; residuo solo Nota/Guida ufficiale a fine ciclo)
 - Pubblicare su Play (**M3**)
 - Ritestare i 10 punti CK2 (già CONVALIDATO)
 
@@ -258,7 +258,7 @@ Vincoli: non toccare main/1.2; B-SEL-CARTELLA solo con SI prodotto; niente Motor
 
 | ID | Richiesta Renato | Note |
 |----|------------------|------|
-| **B-SEL-CARTELLA** | Disco di rete (card Impostazioni + guida semplice) | **B5.21 in ritest** — [GUIDA_DISCO_RETE.md](../famiglia/GUIDA_DISCO_RETE.md) |
+| **B-SEL-CARTELLA** | Disco di rete (card Impostazioni + guida semplice) | **CONVALIDATO** (B5.22) — residuo Nota/Guida ufficiale a fine ciclo |
 
 Storico (chiusi / note agente):
 

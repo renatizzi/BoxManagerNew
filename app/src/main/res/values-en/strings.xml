@@ -395,7 +395,7 @@
     <string name="family_msg_no_changes">No changes to apply.</string>
     <string name="family_msg_nothing_to_merge">Nothing new to merge.</string>
     <string name="family_msg_tables_aligned">Local tables are already aligned with the shared tables.</string>
-    <string name="family_msg_import_blocked">Import failed.\n\n%1$s</string>
+    <string name="family_msg_import_blocked">%1$s</string>
     <string name="family_dialog_import_failed">Import failed</string>
     <string name="family_msg_category_in_use_block">Category \"%1$s\" is used by %2$d containers: it cannot be removed.</string>
     <string name="family_msg_location_in_use_block">Location \"%1$s\" is used by %2$d containers: it cannot be removed.</string>

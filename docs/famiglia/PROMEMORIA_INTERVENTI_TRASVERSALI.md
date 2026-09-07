@@ -11,7 +11,7 @@ Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino
 
 | ID | Data | Indicazione | Stato |
 |----|------|-------------|-------|
-| **B-SEL-CARTELLA** | M1 / CK1 | **Disco di rete:** card Impostazioni + messaggi minimalisti CIFS (campi essenziali) [GUIDA_DISCO_RETE.md](GUIDA_DISCO_RETE.md). Nota ufficiale a fine ciclo | **In ritest** |
+| **B-SEL-CARTELLA** | M1 / CK1 | **Disco di rete:** card Impostazioni + messaggi minimalisti CIFS [GUIDA_DISCO_RETE.md](GUIDA_DISCO_RETE.md). **CONVALIDATO** SI Renato (B5.21/B5.22). Residuo: recepire in Nota/Guida ufficiale a fine ciclo | **CONVALIDATO** |
 
 ---
 
