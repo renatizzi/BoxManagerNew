@@ -26,6 +26,8 @@ Ingresso sessione 07/09: [PROMPT_CONTINUITA_07_09_DISCO_FOTO.md](PROMPT_CONTINUI
 
 **Premium trasversale (SI Renato 07/09/2026):** A1 QR avanzato, A2 Cestino, A3 Foto (e la linea Progetto 2 in analisi) = funzionalità **Archivio completo**, soggette alle condizioni di accesso vigenti.
 
+**Policy codice Progetto 2 (chiarito 07/09 sera):** durante il test Play 1.2 resta solo **analisi/documenti**. Niente implementazione A1/A2/A3 finché test chiuso **oppure** SI esplicito del tipo «apri fetta codice». Un «Sì» di conferma documenti **non** apre il codice. (Commit prematuro A1 revertato.)
+
 Sequenza concordata: **A1 QR avanzato → A2 Cestino → A3 Foto** → poi B/C/D. Assessment:
 
 | Voce | Documento | Stato |

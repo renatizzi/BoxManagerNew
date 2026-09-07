@@ -80,10 +80,10 @@ Due CONVALIDA distinte: (3) merito analisi/requisiti · (4 chiusura) testo del d
 
 | Priorità | Azione | Note |
 |----------|--------|------|
-| **A** | Prossima voce Progetto 2 / implementazione | A1+A2+A3 requisiti congelati; codice solo con SI apertura fetta (dopo Play verde tipicamente) |
-| **A2** | (doc) A1–A2 | Congelati |
+| **STOP codice P2** | Niente implementazione A1/A2/A3 finché **test Play chiuso** (≈ ancora una settimana) **oppure** SI esplicito «apri fetta codice» | Il «Sì» del 07/09 sera era **solo conferma documenti/premium**, non apertura sviluppo. Un commit codice A1 è stato **revertato**. |
+| **A** | Analisi / documenti P2 | A1+A2+A3 **requisiti congelati** — ok così; eventuale altra voce solo ANALISI |
 | **B** | Checklist V1 | P2 sync bug Play → sviluppo; bug bloccanti solo su `main` |
-| **C** | Foto codice | **STOP** finché non arrivano QR avanzato + Cestino e SI di apertura fetta |
+| **C** | Foto / QR / Cestino codice | **STOP** fino a fine test Play (salvo SI esplicito) |
 | **D** | M3 / merge `main` | Solo a test Play **chiuso** |
 
 ### Sequenza agente (allineamento)
