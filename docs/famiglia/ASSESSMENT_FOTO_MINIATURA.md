@@ -80,10 +80,27 @@ Modulo ZIP già previsto dalla Nota:
 - Bump versione formato Backup; ZIP senza foto restano validi
 - **Ripristina (REPLACE):** ripristina anche i file foto → le foto si recuperano
 
-### 4.2bis Importa Dati (CSV MERGE) — **non** recupera le foto
-Utility → **Importa dati** usa il CSV ufficiale: crea/aggiorna per chiavi testo e assegna **nuovi** `permanentId` agli oggetti nuovi. Nel `Modello_Importazione.csv` **non** c’è canale foto.  
-Quindi Importa Dati **non** riattacca foto agli oggetti importati (servirebbe un altro formato).  
-Recupero foto = **Ripristina** (Backup ZIP) e **Ricevi Archivio** (ZIP famiglia), non Importa Dati.
+### 4.2bis Importa / Esporta Dati e foto — chiarimento
+
+**Non è un divieto di prodotto.** Esporta/Importa servono a dialogare con database/fogli esterni: quando si sviluppano le foto, **nulla osta in linea di principio** a far sì che anche quel canale le recuperino.
+
+Cosa osta **oggi** (contratto V1), non “per sempre”:
+
+| Ostacolo attuale | Perché |
+|------------------|--------|
+| Tracciato = **solo CSV** (`Modello_Importazione` / `ESPORTA_…`) | Le foto non stanno in un foglio Excel/CSV in modo sano (niente BLOB base64 nel tracciato ufficiale) |
+| Import MERGE assegna **nuovi** `permanentId` agli oggetti nuovi | Anche se allegassi una cartella foto “per id”, gli id nuovi non matchano file esportati prima |
+| Chiavi Import = nome/contenitore/testo | Ok per anagrafica esterna; le foto vanno agganciate con una **chiave stabile** (permanentId in export/import) *oppure* convenzione nome-file |
+
+Cosa basterebbe **quando** si estende Esporta/Importa (stessa fetta foto o subito dopo):
+
+1. Esporta (e/o un “pacchetto inventariale esterno”) produce **ZIP**: CSV (+ eventuali colonne `permanentId` / `objectPermanentId`) + `photos/objects/…`  
+2. Importa legge quel ZIP (o CSV + cartella foto con regola di match documentata)  
+3. Match foto ↔ oggetto per **permanentId** (preferibile) o, in alternativa, per chiave testo già usata dal MERGE  
+
+**In sintesi:** Ripristina e Ricevi Archivio sono i canali *naturali* subito (stesso ecosistema BoxManager + id stabili). Importa/Esporta Dati **possono** portare le foto; richiedono di **estendere il contratto** oltre il CSV puro — non un ostacolo architetturale, un passo di formato da SI quando si apre quella fetta.
+
+Finché il tracciato resta CSV-only, la checklist “Importa recupera le foto” resta **No (V1 CSV)**; diventa **Sì** se SI sul pacchetto ZIP (o equivalente) in Esporta/Importa.
 
 ### 4.3 Invia / Ricevi Archivio (SI: entrambi)
 Il CSV attuale **non** basta. Opzioni:
@@ -183,13 +200,18 @@ In **Invia Archivio**: riepilogo “Foto: N oggetti, circa X MB” prima del sal
 - Display **800** + thumb lista **160**; nessun BLOB in Room
 - Backup ZIP + **Invia Archivio = ZIP** (CSV + foto)
 
+**Implementazione:** solo dopo QR avanzato + Cestino.
+
 ## 8. Checklist requisiti utente (verifica pre–step successivo)
 
 | # | Requisito | Copertura assessment |
 |---|-----------|----------------------|
 | 1 | Inserimento/modifica/**elimina** foto in inserimento/modifica oggetto (scatta, **riscatta**, galleria) | **Sì** |
-| 2 | Thumb a sinistra in lista oggetti; **click → ingrandisci** | **Sì** (ingrandisci esplicitato 07/09) |
-| 3a | **Ripristina** recupera le foto | **Sì** (modulo ZIP Backup) |
-| 3b | **Ricevi Archivio** recupera le foto | **Sì** (ZIP CSV + `photos/objects/`) |
-| 3c | **Importa Dati** recupera le foto | **No** — CSV MERGE senza canale foto / nuovi permanentId. Vedi §4.2bis |
+| 2 | Thumb a sinistra in lista oggetti; **click → ingrandisci** | **Sì** |
+| 3a | **Ripristina** recupera le foto | **Sì** (ZIP Backup) |
+| 3b | **Ricevi Archivio** recupera le foto | **Sì** (ZIP + `photos/objects/`) |
+| 3c | **Importa Dati** recupera le foto | **No** — CSV senza canale foto (§4.2bis) |
 | 4 | Foto **facoltativa** | **Sì** |
+
+Se il punto 3 intendeva solo Ripristina + Ricevi Archivio → requisiti **tutti OK**.  
+Se Importa Dati deve portare foto → va un SI dedicato (cambio formato CSV / altro): **non** in questa voce così com’è.
