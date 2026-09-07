@@ -23,7 +23,7 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) — **Checklist V
 | **Build sviluppo** | Topbar **1.3-famigliaB5.24** (versionCode **1343**) — etichetta di build, non nome app |
 | **Play** | BoxManager **1.2** su `main` — test chiuso aperto; **identica** salvo bug bloccanti |
 | **B-SEL-CARTELLA Disco di rete** | **CONVALIDATO** — Nota Integrata **9.2** Allegato **4.22** + Roadmap 07/09/2026 + [GUIDA_DISCO_RETE.md](GUIDA_DISCO_RETE.md) |
-| **A1 QR avanzato** | **ANALISI** bozza — [ASSESSMENT_QR_AVANZATO.md](ASSESSMENT_QR_AVANZATO.md); in attesa FEEDBACK (Q1–Q9). Zero codice |
+| **A1 QR avanzato** | **FEEDBACK** — [ASSESSMENT_QR_AVANZATO.md](ASSESSMENT_QR_AVANZATO.md); SI Q1/Q3/Q4; **Q2** da chiudere (Q2-X/Y/Z, raccomandato Y). Zero codice |
 | **Foto oggetto** | Requisiti **congelati** + **CONVALIDA aggiornamento documento** 07/09/2026 — [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md); **zero codice** finché non si apre la fetta (dopo QR avanzato + Cestino) |
 | **Processo analisi** | **4 fasi** + due CONVALIDA — regola `.cursor/rules/processo-analisi.mdc` — **CONVALIDATO** in documento 07/09/2026 |
 
