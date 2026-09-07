@@ -5,6 +5,16 @@ Regola: `.cursor/rules/annotazioni-renato.mdc`.
 
 ---
 
+### Analisi anticipate (zero codice) — Progetto 2
+
+Sequenza concordata A→D. Assessment aperti:
+
+| Voce | Documento | Stato |
+|------|-----------|--------|
+| **A3 Foto miniatura** | [ASSESSMENT_FOTO_MINIATURA.md](ASSESSMENT_FOTO_MINIATURA.md) | Analisi usability + architettura; **attende SI** su 5 decisioni |
+
+---
+
 ## Checklist V1 in attesa fine test Google Play
 
 Lavoro ammesso **in parallelo** al test chiuso 1.2 (su branch di sviluppo, **non** su `main`).  
