@@ -38,9 +38,10 @@ Una foto per oggetto (opzionale). Senza foto → resta il placeholder attuale (i
 ## 3. Usability
 
 ### Flusso
-- Aggiungi / Modifica oggetto → **Foto** → **Scegli dalla galleria** | **Scatta** | **Rimuovi**.
-- Lista oggetti nel box: `iconArea` = miniatura se presente, altrimenti icona fissa.
-- Non obbligatoria: Salva oggetto senza foto resta valido.
+- Aggiungi / Modifica oggetto → **Foto** → **Galleria** | **Scatta** / **Riscatta** | **Rimuovi**.
+- Lista oggetti nel box: a **sinistra** (`iconArea`) = thumb se presente, altrimenti icona fissa.
+- **Tap sulla thumb (o sull’icona se c’è display):** apre anteprima **ingrandita** (foto display 800), con chiusura semplice (tap fuori / Indietro / X).
+- **Facoltativa:** Salva oggetto senza foto resta valido; Rimuovi toglie display+thumb.
 
 ### Copy / privacy (basso profilo)
 - Messaggio CAMERA distinto dal QR: «BoxManager può usare la fotocamera per una foto dell’oggetto. Resta sul telefono / nel backup che fai tu; non è inviata a servizi Google.»
