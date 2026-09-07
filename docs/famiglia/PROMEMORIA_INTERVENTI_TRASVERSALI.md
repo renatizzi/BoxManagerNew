@@ -47,6 +47,7 @@ A test chiuso: M3 — questa BoxManager **sostituisce** la 1.2.
 | Promemoria batch 04/09 (nome app, auto-save nome, default IT→EN, F7 lista, ricerca vuota, voce oggetto, M0) | **Fatto** |
 | Fix ricerca B5.13–B5.15 (inventari / EN) | **Fatto** |
 | **B-SEL-CARTELLA** Disco di rete | **CONVALIDATO** — Nota 9.2 Allegato **4.22** + Roadmap 07/09/2026 |
+| **B5.24** CSV estensione forzata | **Fatto** — `CsvFileNames` (come `.zip` Backup) |
 
 ### Aperto / continuo (ancora in V1, non V2)
 

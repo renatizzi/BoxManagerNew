@@ -20,7 +20,7 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) — **Checklist V
 |------|--------|
 | **Branch lavoro** | `cursor/sel-cartella-nas-d69a` (PR **#25**) |
 | **Base tipica** | `cursor/promemoria-fix-d69a` (catena sviluppo; **non** `main`) |
-| **Build sviluppo** | Topbar **1.3-famigliaB5.23** (versionCode **1342**) — etichetta di build, non nome app |
+| **Build sviluppo** | Topbar **1.3-famigliaB5.24** (versionCode **1343**) — etichetta di build, non nome app |
 | **Play** | BoxManager **1.2** su `main` — test chiuso aperto; **identica** salvo bug bloccanti |
 | **B-SEL-CARTELLA Disco di rete** | **CONVALIDATO** — Nota Integrata **9.2** Allegato **4.22** + Roadmap 07/09/2026 + [GUIDA_DISCO_RETE.md](GUIDA_DISCO_RETE.md) |
 | **Foto oggetto** | Requisiti **congelati** + **CONVALIDA aggiornamento documento** 07/09/2026 — [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md); **zero codice** finché non si apre la fetta (dopo QR avanzato + Cestino) |
@@ -39,6 +39,7 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) — **Checklist V
 - Ricevi tabelle: errori bloccanti → dialog con titolo; niente doppio titolo «Importazione non riuscita».
 - Device: File Explorer Plus **non** espone SMB a BoxManager; CIFS sì; spesso serve **Tutte le cartelle…**.
 - Idea prodotto (non implementata): suggerire Host = gateway Wi‑Fi — solo con SI esplicito.
+- **B5.24:** nomi CSV in salvataggio — estensione **sempre** `.csv` (omissione o altra estensione digitata → forzata), come `.zip` sul Backup; helper `CsvFileNames`.
 
 ### 2. Foto oggetto — ANALISI + FEEDBACK + CONVALIDA requisiti + **CONVALIDA aggiornamento documento**
 

@@ -94,6 +94,10 @@ class ViewOutputConfigurationTest {
             "Lista.csv",
             ViewOutputConfiguration.csvFileName("Lista.csv")
         )
+        assertEquals(
+            "Lista.csv",
+            ViewOutputConfiguration.csvFileName("Lista.txt")
+        )
     }
 
     @Test
