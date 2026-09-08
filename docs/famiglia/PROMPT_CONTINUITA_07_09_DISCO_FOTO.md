@@ -10,6 +10,7 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) — **Checklist V
 
 | ID | Indicazione |
 |----|-------------|
+| **B-PIANO-RILASCIO-RP** | Piano rilascio / Play / Roadmap / premium / gap Nota — **FEEDBACK** 08/09 ([ASSESSMENT](ASSESSMENT_PIANO_RILASCIO_ROADMAP.md)); prima di nuovo filone |
 | **B-QTY-KPI-SEARCH** | **CONGELATO** — quantità → KPI (K1) + query Ricerca (K2); facoltativa; [REQUISITI](REQUISITI_QTY_KPI_SEARCH.md); zero codice |
 | *(altre)* | P2 sync continuo; M3 solo a test Play chiuso; B-FAMILY-DOMAIN-ERR opzionale |
 
@@ -82,7 +83,7 @@ Due CONVALIDA distinte: (3) merito analisi/requisiti · (4 chiusura) testo del d
 | Priorità | Azione | Note |
 |----------|--------|------|
 | **STOP codice P2** | Niente implementazione A1/A2/A3 finché **test Play chiuso** (≈ ancora una settimana) **oppure** SI esplicito «apri fetta codice» | Il «Sì» del 07/09 sera era **solo conferma documenti/premium**, non apertura sviluppo. Commit A1 **revertato** sul branch lavoro; WIP su `cursor/qr-avanzato-wip-parked-8374`. |
-| **A** | Checklist V1 / prossimo filone | Progetto 2 requisiti congelati (A1–A3, B–C, D, B-QTY); **STOP codice** fino a fine Play |
+| **A** | **FEEDBACK** piano rilascio RP | Risposte RP-Q1–Q8 in [ASSESSMENT_PIANO_RILASCIO_ROADMAP.md](ASSESSMENT_PIANO_RILASCIO_ROADMAP.md) |
 | **A′** | D Dashboard/UI | **CONGELATO** no-code — [REQUISITI_DASHBOARD_UI_AVANZATA.md](REQUISITI_DASHBOARD_UI_AVANZATA.md) |
 | **B** | Checklist V1 | P2 sync bug Play → sviluppo; bug bloccanti solo su `main` |
 | **C** | Codice A1/A2/A3 | **STOP** fino a fine test Play (salvo SI esplicito); WIP QR su `cursor/qr-avanzato-wip-parked-8374` |
@@ -104,6 +105,7 @@ Due CONVALIDA distinte: (3) merito analisi/requisiti · (4 chiusura) testo del d
 | [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) | Freeze Foto — fonte fino all’implementazione |
 | [REQUISITI_EXPORT_IMPORT_AVANZATO.md](REQUISITI_EXPORT_IMPORT_AVANZATO.md) | Freeze B–C Export/Import |
 | [REQUISITI_DASHBOARD_UI_AVANZATA.md](REQUISITI_DASHBOARD_UI_AVANZATA.md) | Freeze D — U0, no codice |
+| [ASSESSMENT_PIANO_RILASCIO_ROADMAP.md](ASSESSMENT_PIANO_RILASCIO_ROADMAP.md) | FEEDBACK piano rilascio / Roadmap / Nota |
 | [REQUISITI_QTY_KPI_SEARCH.md](REQUISITI_QTY_KPI_SEARCH.md) | Freeze B-QTY (K1+K2) |
 | [ASSESSMENT_QTY_KPI_SEARCH.md](ASSESSMENT_QTY_KPI_SEARCH.md) | Storico FEEDBACK quantità → KPI / ricerca |
 | [ASSESSMENT_EXPORT_IMPORT_AVANZATO.md](ASSESSMENT_EXPORT_IMPORT_AVANZATO.md) | Storico B–C Export/Import |

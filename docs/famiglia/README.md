@@ -14,7 +14,8 @@ Una sola app: **BoxManager**. Questi file coprono l’**archivio condiviso** e i
 | [REQUISITI_CESTINO.md](REQUISITI_CESTINO.md) | **Congelato:** Cestino A2 (soft-delete / premium) |
 | [ASSESSMENT_CESTINO.md](ASSESSMENT_CESTINO.md) | Storico ANALISI/FEEDBACK A2 Cestino |
 | [REQUISITI_EXPORT_IMPORT_AVANZATO.md](REQUISITI_EXPORT_IMPORT_AVANZATO.md) | **Congelato:** Export/Import avanzati B–C |
-| [ASSESSMENT_DASHBOARD_UI_AVANZATA.md](ASSESSMENT_DASHBOARD_UI_AVANZATA.md) | **ANALISI** D Dashboard/UI avanzata |
+| [ASSESSMENT_PIANO_RILASCIO_ROADMAP.md](ASSESSMENT_PIANO_RILASCIO_ROADMAP.md) | **FEEDBACK:** piano rilascio / Play Console / Roadmap / premium / verifica Nota |
+| [ASSESSMENT_DASHBOARD_UI_AVANZATA.md](ASSESSMENT_DASHBOARD_UI_AVANZATA.md) | Storico D Dashboard/UI (congelata U0) |
 | [ASSESSMENT_EXPORT_IMPORT_AVANZATO.md](ASSESSMENT_EXPORT_IMPORT_AVANZATO.md) | Storico ANALISI/FEEDBACK B–C |
 | [ASSESSMENT_CORRETTIVI.md](ASSESSMENT_CORRETTIVI.md) | Assessment interventi correttivi (P0–P2) |
 | [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md) | **Congelato:** una BoxManager; 1.2 identica in test; sviluppo = ufficiale a fine test |

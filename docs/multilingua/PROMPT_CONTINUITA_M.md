@@ -11,6 +11,7 @@ Fonte viva: [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md) — *
 
 | ID | Indicazione |
 |----|-------------|
+| **B-PIANO-RILASCIO-RP** | Piano rilascio / Play / Roadmap / premium / gap Nota (08/09) — [ASSESSMENT](../famiglia/ASSESSMENT_PIANO_RILASCIO_ROADMAP.md) |
 | **B-QTY-KPI-SEARCH** | Quantità oggetto come possibile chiave KPI / query Ricerca avanzata (08/09) — vedi Promemoria |
 | *(altre)* | M3 solo a test chiuso; P2 sync continuo; B-FAMILY-DOMAIN-ERR opzionale |
 
