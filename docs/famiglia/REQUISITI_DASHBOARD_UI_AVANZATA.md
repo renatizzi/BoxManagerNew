@@ -5,7 +5,7 @@
 **Uso:** preservare i requisiti Nota §4.1.6 senza aprire fetta applicativa.  
 **Assessment:** [ASSESSMENT_DASHBOARD_UI_AVANZATA.md](ASSESSMENT_DASHBOARD_UI_AVANZATA.md).  
 **STOP codice** su D finché non c’è SI esplicito di apertura (D-Q7).  
-**Correlato aperto:** [ASSESSMENT_QTY_KPI_SEARCH.md](ASSESSMENT_QTY_KPI_SEARCH.md) (B-QTY-KPI-SEARCH).
+**Correlato:** [REQUISITI_QTY_KPI_SEARCH.md](REQUISITI_QTY_KPI_SEARCH.md) (B-QTY-KPI-SEARCH — merito SI; in attesa CONVALIDA documento).
 
 ---
 
