@@ -10,7 +10,8 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) — **Checklist V
 
 | ID | Indicazione |
 |----|-------------|
-| *(nessuna voce B-* aperta)* | P2 sync continuo; M3 solo a test Play chiuso; B-FAMILY-DOMAIN-ERR opzionale |
+| **B-QTY-KPI-SEARCH** | Quantità oggetto (ora facoltativa) come possibile **chiave** per nuovi KPI e nuove query Ricerca avanzata — Aperto 08/09; non in fetta D UI |
+| *(altre)* | P2 sync continuo; M3 solo a test Play chiuso; B-FAMILY-DOMAIN-ERR opzionale |
 
 ---
 
@@ -100,7 +101,8 @@ Due CONVALIDA distinte: (3) merito analisi/requisiti · (4 chiusura) testo del d
 | File | Ruolo |
 |------|--------|
 | [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) | Freeze Foto — fonte fino all’implementazione |
-| [REQUISITI_EXPORT_IMPORT_AVANZATO.md](REQUISITI_EXPORT_IMPORT_AVANZATO.md) | Requisiti B–C — in attesa CONVALIDA documento |
+| [REQUISITI_EXPORT_IMPORT_AVANZATO.md](REQUISITI_EXPORT_IMPORT_AVANZATO.md) | Freeze B–C Export/Import |
+| [ASSESSMENT_DASHBOARD_UI_AVANZATA.md](ASSESSMENT_DASHBOARD_UI_AVANZATA.md) | ANALISI D — bozza FEEDBACK |
 | [ASSESSMENT_EXPORT_IMPORT_AVANZATO.md](ASSESSMENT_EXPORT_IMPORT_AVANZATO.md) | Storico B–C Export/Import |
 | [REQUISITI_CESTINO.md](REQUISITI_CESTINO.md) | Freeze A2 Cestino |
 | [ASSESSMENT_CESTINO.md](ASSESSMENT_CESTINO.md) | Storico ANALISI/FEEDBACK A2 |

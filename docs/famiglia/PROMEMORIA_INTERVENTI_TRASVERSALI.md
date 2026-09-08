@@ -1,6 +1,6 @@
 # Promemoria — interventi trasversali (BoxManager)
 
-**Aggiornato:** 07/09/2026.  
+**Aggiornato:** 08/09/2026.  
 Ingresso sessione 07/09 → [PROMPT_CONTINUITA_07_09_DISCO_FOTO.md](PROMPT_CONTINUITA_07_09_DISCO_FOTO.md).  
 Correttivi → [PROMPT_CONTINUITA_CORRETTIVI.md](PROMPT_CONTINUITA_CORRETTIVI.md).  
 Regola: `.cursor/rules/annotazioni-renato.mdc`.  
@@ -36,7 +36,7 @@ Sequenza concordata: **A1 QR avanzato → A2 Cestino → A3 Foto** → poi B/C/D
 | **A2 Cestino** | [REQUISITI_CESTINO.md](REQUISITI_CESTINO.md) (**congelato** + CONVALIDA documento 07/09) · [ASSESSMENT_CESTINO.md](ASSESSMENT_CESTINO.md) (storico) | Requisiti chiusi; zero codice finché SI apertura fetta |
 | **A3 Foto oggetto** | [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) (**congelato** + CONVALIDA documento 07/09; **R6 + T6bis Premium**) · [ASSESSMENT_FOTO_MINIATURA.md](ASSESSMENT_FOTO_MINIATURA.md) (storico) | Requisiti + tecnica chiusi; codice dopo QR + Cestino |
 | **B–C Export/Import avanzati** | [REQUISITI_EXPORT_IMPORT_AVANZATO.md](REQUISITI_EXPORT_IMPORT_AVANZATO.md) (**congelato** + CONVALIDA documento 08/09) · [ASSESSMENT_EXPORT_IMPORT_AVANZATO.md](ASSESSMENT_EXPORT_IMPORT_AVANZATO.md) | Requisiti chiusi; zero codice finché SI apertura fetta (dopo A1–A3) |
-| **D Dashboard / UI avanzata** | [ASSESSMENT_DASHBOARD_UI_AVANZATA.md](ASSESSMENT_DASHBOARD_UI_AVANZATA.md) | **ANALISI** bozza 08/09 — in attesa FEEDBACK (D-Q1–D-Q7). Zero codice |
+| **D Dashboard / UI avanzata** | [ASSESSMENT_DASHBOARD_UI_AVANZATA.md](ASSESSMENT_DASHBOARD_UI_AVANZATA.md) | **FEEDBACK** parziale 08/09 — D-Q1/2/4/5/6 SI; **D-Q3 e D-Q7 aperti**. Zero codice |
 
 ---
 
@@ -88,7 +88,7 @@ Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino
 
 | ID | Data | Indicazione | Stato |
 |----|------|-------------|-------|
-| *(nessuna voce aperta)* | — | — | — |
+| **B-QTY-KPI-SEARCH** | 08/09/2026 | Filone Dashboard/KPI / ricerca: considerare di convertire la **quantità oggetti** (ora facoltativa) in **«chiave»** per creare **nuovi KPI** e **nuove query** di Ricerca avanzata. Testo Renato: «convertire la quantità degli oggetti (ora facoltativa) in "chiave" per creare nuovi kpi e nuove query per ricerca avanzata». | **Aperto** — non in D UI/statistiche semplici (D-Q6: no Motore B in D); aprire ANALISI dedicata o Motore B / KPI solo con SI |
 
 **Chiuso di recente:** **B-SEL-CARTELLA** — CONVALIDATO (Nota 9.2 Allegato **4.22**). **Foto oggetto** — CONVALIDA aggiornamento documento 07/09/2026 ([REQUISITI](REQUISITI_FOTO_OGGETTO.md)).
 

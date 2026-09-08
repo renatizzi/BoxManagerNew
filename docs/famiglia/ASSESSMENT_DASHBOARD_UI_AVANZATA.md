@@ -1,10 +1,10 @@
 # Assessment — Dashboard / UI avanzata (Progetto 2 / D)
 
-**Stato:** ANALISI (bozza) — 08/09/2026. **Non CONVALIDATO.** Zero codice.  
-**Processo:** passo 1 di 4.  
+**Stato:** FEEDBACK parziale — 08/09/2026. **Non CONVALIDATO** (mancano D-Q3 e D-Q7). Zero codice.  
+**Processo:** passo **2** di 4.  
 **Posizione:** dopo A1–A3 e B–C (requisiti congelati). Codice P2 in STOP fino a fine test Play.  
 **Fonte:** Nota **9.2 §4.1.6** — **DASHBOARD AVANZATA** e **UI AVANZATA** (Priorità: **bassa**).  
-**Premium:** da FEEDBACK (Progetto 2 finora = Archivio completo; queste voci sono priorità bassa / non core — conferma se gate uguale).
+**Annotazione correlata (fuori D):** [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) **B-QTY-KPI-SEARCH** — quantità oggetto come chiave KPI / query ricerca (non Motore B in questa voce: D-Q6).
 
 ---
 
@@ -74,21 +74,27 @@ Elenco file in pagina Backup — **non** in V2.
 
 ---
 
-## 5. Checklist FEEDBACK (D-Q)
+## 5. Checklist FEEDBACK (D-Q) — parziale 08/09
 
-| # | Domanda | Raccomandazione |
-|---|---------|-----------------|
-| **D-Q1** | Perimetro = solo bullet Nota (statistiche, indicatori; header/micro)? | **Sì**; swipe **escluso** (già V1 / fuori V2) |
-| **D-Q2** | Statistiche: S1 / S2 / S3 | **S1** |
-| **D-Q3** | UI: U0 / U1 / U2 | **U0** (o U1 se vuoi un tocco minimo) |
-| **D-Q4** | Premium? | **Sì** se si implementa qualcosa; se U0+nessuna card → n/a |
-| **D-Q5** | Priorità vs B–C / A1–A3 | **Dopo** A1–A3 in codice; B–C non core — D ancora più basso; analisi ora ok |
-| **D-Q6** | Overlap Motore B / KPI ricerca | **Vietato** riusare questa voce per PATTERN_010 / report Motore B |
-| **D-Q7** | Vale la pena una fetta dedicata o solo “preservare in Nota”? | Se S1+U0: **fette minima** o addirittura **solo recepimento Nota senza codice** finché non c’è bisogno utente — da SI |
+| # | Domanda | Esito |
+|---|---------|--------|
+| **D-Q1** | Perimetro Nota; swipe escluso | **SI** |
+| **D-Q2** | Statistiche S1 | **SI — S1** |
+| **D-Q3** | UI U0 / U1 / U2 | **Aperto** — raccomandazione U0 (alt. U1) |
+| **D-Q4** | Premium se si implementa S1 | **SI** |
+| **D-Q5** | Dopo A1–A3; prio più bassa | **SI** |
+| **D-Q6** | No Motore B / PATTERN_010 in D | **SI** |
+| **D-Q7** | Fetta minima S1 vs solo Nota senza codice | **Aperto** |
+| **B-QTY-KPI-SEARCH** | Quantità → chiave KPI / query ricerca | **Annotato** in Promemoria — **fuori** da D (vedi D-Q6); ANALISI dedicata solo con SI |
 
 ---
 
-## 6. Esito ANALISI — in attesa FEEDBACK
+## 6. Esito — FEEDBACK incompleto
 
-Ipotesi: Dashboard = conteggi semplici (S1); UI avanzata = **non** investire (U0) salvo header minimo.  
-**Prossimo:** FEEDBACK **D-Q1–D-Q7**. Zero codice.
+Chiusi: D-Q1, D-Q2 (S1), D-Q4, D-Q5, D-Q6.  
+**Servono ancora:**
+
+- **D-Q3:** **U0** (niente UI avanzata) oppure **U1** (header contestuale minimo)?  
+- **D-Q7:** **(a)** fetta minima con card S1 in Dashboard, oppure **(b)** solo recepire in Nota / preservare requisiti **senza** codice finché non serve?
+
+Poi CONVALIDA merito → documento requisiti. **Zero codice.**
