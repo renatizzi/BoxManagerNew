@@ -1,10 +1,12 @@
 # Requisiti — Piano rilascio / Play Console / Roadmap / Premium / Nota (B-PIANO-RILASCIO-RP)
 
-**Stato:** documento scritto 08/09/2026 — in attesa **CONVALIDA aggiornamento documento** (passo 4).  
+**Stato:** **CONGELATO** 08/09/2026 (SI Renato).  
 **CONVALIDA analisi/requisiti (passo 3):** SI Renato 08/09/2026 — «Convalido RP-Q1–Q8» (tutte come raccomandato).  
+**CONVALIDA aggiornamento documento (passo 4):** SI Renato 08/09/2026 («Convalido documento»).  
 **Uso:** piano operativo fino a fine test Play e ai primi rilasci post-test; guida al recepimento Nota/Roadmap.  
-**Assessment:** [ASSESSMENT_PIANO_RILASCIO_ROADMAP.md](ASSESSMENT_PIANO_RILASCIO_ROADMAP.md) (storico; prevale **questo** file dopo CONVALIDA passo 4).  
-**STOP codice Progetto 2** fino a fine test Play (SI codice già previsto a quella data) / SI esplicito «apri fetta codice».
+**Assessment:** [ASSESSMENT_PIANO_RILASCIO_ROADMAP.md](ASSESSMENT_PIANO_RILASCIO_ROADMAP.md) (storico; prevale **questo** file).  
+**STOP codice Progetto 2** fino a fine test Play (SI codice già previsto a quella data) / SI esplicito «apri fetta codice».  
+**Prossimo lavoro (RP-Q8):** recepimento Nota / Roadmap — solo con SI di esecuzione patch.
 
 ---
 
@@ -128,4 +130,4 @@ Allineato a [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md) Fase C:
 1. ANALISI — [ASSESSMENT_PIANO_RILASCIO_ROADMAP.md](ASSESSMENT_PIANO_RILASCIO_ROADMAP.md)  
 2. FEEDBACK — RP-Q1–Q8  
 3. CONVALIDA merito — **SI 08/09/2026**  
-4. AGGIORNAMENTO DOCUMENTO — **questo file**; in attesa CONVALIDA aggiornamento documento
+4. AGGIORNAMENTO DOCUMENTO — **questo file**; **CONVALIDA aggiornamento documento SI 08/09/2026**

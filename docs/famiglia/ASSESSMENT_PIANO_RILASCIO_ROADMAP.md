@@ -1,10 +1,11 @@
 # Assessment — Piano rilascio / Play Console / Roadmap / Premium / Nota (RP)
 
-**Stato:** CONVALIDA analisi/requisiti (passo 3) **SI Renato 08/09/2026** («Convalido RP-Q1–Q8»). Documento: [REQUISITI_PIANO_RILASCIO_ROADMAP.md](REQUISITI_PIANO_RILASCIO_ROADMAP.md) — in attesa CONVALIDA aggiornamento documento. Zero codice.  
-**Processo:** passo **4** in corso.  
+**Stato:** **CONVALIDATO** (passi 3–4) — SI Renato 08/09/2026. Documento: [REQUISITI_PIANO_RILASCIO_ROADMAP.md](REQUISITI_PIANO_RILASCIO_ROADMAP.md) (**CONGELATO**). Zero codice.  
+**Processo:** chiuso.  
 **ID:** **B-PIANO-RILASCIO-RP**.  
 **Richiesta Renato:** piano su (1) rilascio già implementate, (2) Play Console, (3) Roadmap, (4) priorità/premium, (5) verifica Nota.  
-**Vincolo:** SI codice P2 a fine test Play.
+**Vincolo:** SI codice P2 a fine test Play.  
+**Prossimo:** recepimento Nota/Roadmap solo con SI esecuzione patch.
 
 ---
 
@@ -49,5 +50,5 @@ Dettaglio operativo congelato in [REQUISITI_PIANO_RILASCIO_ROADMAP.md](REQUISITI
 
 ## 7. Esito
 
-**Merito chiuso.** Attendere **CONVALIDA aggiornamento documento** su [REQUISITI_PIANO_RILASCIO_ROADMAP.md](REQUISITI_PIANO_RILASCIO_ROADMAP.md).  
-Poi patch Nota solo con SI. **Zero codice applicativo.**
+**Documento chiuso.** [REQUISITI_PIANO_RILASCIO_ROADMAP.md](REQUISITI_PIANO_RILASCIO_ROADMAP.md) — **CONGELATO**.  
+Prossimo: patch Nota/Roadmap solo con SI. **Zero codice applicativo.**
