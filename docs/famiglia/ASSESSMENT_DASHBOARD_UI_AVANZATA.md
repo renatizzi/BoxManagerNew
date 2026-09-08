@@ -1,10 +1,8 @@
 # Assessment — Dashboard / UI avanzata (Progetto 2 / D)
 
-**Stato:** FEEDBACK parziale — 08/09/2026. **Non CONVALIDATO** (mancano D-Q3 e D-Q7). Zero codice.  
-**Processo:** passo **2** di 4.  
-**Posizione:** dopo A1–A3 e B–C (requisiti congelati). Codice P2 in STOP fino a fine test Play.  
-**Fonte:** Nota **9.2 §4.1.6** — **DASHBOARD AVANZATA** e **UI AVANZATA** (Priorità: **bassa**).  
-**Annotazione correlata (fuori D):** [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) **B-QTY-KPI-SEARCH** — quantità oggetto come chiave KPI / query ricerca (non Motore B in questa voce: D-Q6).
+**Stato:** **CONVALIDATO** (passi 3–4) — SI Renato 08/09/2026. Documento: [REQUISITI_DASHBOARD_UI_AVANZATA.md](REQUISITI_DASHBOARD_UI_AVANZATA.md). Zero codice su D (D-Q7).  
+**Decisioni:** D-Q1/2/4/5/6 come raccomandato; **D-Q3 = U0**; **D-Q7 = NO codice**.  
+**Presa in carico correlata:** **B-QTY-KPI-SEARCH** → [ASSESSMENT_QTY_KPI_SEARCH.md](ASSESSMENT_QTY_KPI_SEARCH.md) (ANALISI / FEEDBACK).
 
 ---
 
@@ -74,27 +72,23 @@ Elenco file in pagina Backup — **non** in V2.
 
 ---
 
-## 5. Checklist FEEDBACK (D-Q) — parziale 08/09
+## 5. Checklist FEEDBACK — CONVALIDATA (passo 3, 08/09/2026)
 
 | # | Domanda | Esito |
 |---|---------|--------|
-| **D-Q1** | Perimetro Nota; swipe escluso | **SI** |
-| **D-Q2** | Statistiche S1 | **SI — S1** |
-| **D-Q3** | UI U0 / U1 / U2 | **Aperto** — raccomandazione U0 (alt. U1) |
-| **D-Q4** | Premium se si implementa S1 | **SI** |
-| **D-Q5** | Dopo A1–A3; prio più bassa | **SI** |
-| **D-Q6** | No Motore B / PATTERN_010 in D | **SI** |
-| **D-Q7** | Fetta minima S1 vs solo Nota senza codice | **Aperto** |
-| **B-QTY-KPI-SEARCH** | Quantità → chiave KPI / query ricerca | **Annotato** in Promemoria — **fuori** da D (vedi D-Q6); ANALISI dedicata solo con SI |
+| **D-Q1** | Perimetro; swipe escluso | **SI** |
+| **D-Q2** | Statistiche S1 (forma se un giorno codice) | **SI — S1** |
+| **D-Q3** | UI | **SI — U0** |
+| **D-Q4** | Premium se S1 futuro | **SI** |
+| **D-Q5** | Priorità bassa / dopo A1–A3 | **SI** |
+| **D-Q6** | No Motore B in D | **SI** |
+| **D-Q7** | Codice ora | **SI — nessun codice**; preservare requisiti |
+| **B-QTY-KPI-SEARCH** | Quantità → KPI / query | **Presa in carico** → assessment dedicato (non D) |
 
 ---
 
-## 6. Esito — FEEDBACK incompleto
+## 6. Esito — D chiuso (documento + no codice); filone quantità in FEEDBACK
 
-Chiusi: D-Q1, D-Q2 (S1), D-Q4, D-Q5, D-Q6.  
-**Servono ancora:**
-
-- **D-Q3:** **U0** (niente UI avanzata) oppure **U1** (header contestuale minimo)?  
-- **D-Q7:** **(a)** fetta minima con card S1 in Dashboard, oppure **(b)** solo recepire in Nota / preservare requisiti **senza** codice finché non serve?
-
-Poi CONVALIDA merito → documento requisiti. **Zero codice.**
+**D:** U0 + no codice; S1 solo come forma futura se SI apertura.  
+**Documento D:** [REQUISITI_DASHBOARD_UI_AVANZATA.md](REQUISITI_DASHBOARD_UI_AVANZATA.md) — **CONGELATO**.  
+**Attivo:** [ASSESSMENT_QTY_KPI_SEARCH.md](ASSESSMENT_QTY_KPI_SEARCH.md) — FEEDBACK QTY-Q1–Q8.

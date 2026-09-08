@@ -161,10 +161,10 @@ Possibili letture (da SI):
 
 ---
 
-## 8. Esito — CONVALIDA merito; documento requisiti scritto
+## 8. Esito — B–C chiuso (documento congelato)
 
-**Prodotto:** E3+F3+V3+G1; Utility Esporta dati; CSV v2; **non core**; priorità **trascodifica** verso Google Sheets / Microsoft Excel.
+**Prodotto congelato:** E3+F3+V3+G1; non core; trascodifica Sheets/Excel (CSV primario).
 
-**Documento:** [REQUISITI_EXPORT_IMPORT_AVANZATO.md](REQUISITI_EXPORT_IMPORT_AVANZATO.md) — in attesa **CONVALIDA aggiornamento documento**.
+**Documento:** [REQUISITI_EXPORT_IMPORT_AVANZATO.md](REQUISITI_EXPORT_IMPORT_AVANZATO.md) — **CONGELATO** (CONVALIDA documento SI Renato 08/09/2026).
 
-**Poi:** ANALISI **D** Dashboard/UI (salvo SI). **Zero codice.**
+**Prossimo:** D congelata; attivo **B-QTY-KPI-SEARCH** — [ASSESSMENT_QTY_KPI_SEARCH.md](ASSESSMENT_QTY_KPI_SEARCH.md). **Zero codice.**
