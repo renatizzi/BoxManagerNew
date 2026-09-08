@@ -10,7 +10,7 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) — **Checklist V
 
 | ID | Indicazione |
 |----|-------------|
-| **B-PIANO-RILASCIO-RP** | Piano rilascio / Play / Roadmap / premium / gap Nota — **FEEDBACK** 08/09 ([ASSESSMENT](ASSESSMENT_PIANO_RILASCIO_ROADMAP.md)); prima di nuovo filone |
+| **B-PIANO-RILASCIO-RP** | Merito SI RP-Q1–Q8 — [REQUISITI](REQUISITI_PIANO_RILASCIO_ROADMAP.md) in attesa CONVALIDA documento; poi recepimento Nota |
 | **B-QTY-KPI-SEARCH** | **CONGELATO** — quantità → KPI (K1) + query Ricerca (K2); facoltativa; [REQUISITI](REQUISITI_QTY_KPI_SEARCH.md); zero codice |
 | *(altre)* | P2 sync continuo; M3 solo a test Play chiuso; B-FAMILY-DOMAIN-ERR opzionale |
 

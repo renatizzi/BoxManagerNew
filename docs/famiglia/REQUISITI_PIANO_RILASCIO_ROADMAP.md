@@ -1,0 +1,131 @@
+# Requisiti — Piano rilascio / Play Console / Roadmap / Premium / Nota (B-PIANO-RILASCIO-RP)
+
+**Stato:** documento scritto 08/09/2026 — in attesa **CONVALIDA aggiornamento documento** (passo 4).  
+**CONVALIDA analisi/requisiti (passo 3):** SI Renato 08/09/2026 — «Convalido RP-Q1–Q8» (tutte come raccomandato).  
+**Uso:** piano operativo fino a fine test Play e ai primi rilasci post-test; guida al recepimento Nota/Roadmap.  
+**Assessment:** [ASSESSMENT_PIANO_RILASCIO_ROADMAP.md](ASSESSMENT_PIANO_RILASCIO_ROADMAP.md) (storico; prevale **questo** file dopo CONVALIDA passo 4).  
+**STOP codice Progetto 2** fino a fine test Play (SI codice già previsto a quella data) / SI esplicito «apri fetta codice».
+
+---
+
+## 0. Decisioni congelate (passo 3)
+
+| Voce | Decisione |
+|------|-----------|
+| Primo rilascio post-test | **R1** — cutover unico **M3**: build di sviluppo (classe I) **sostituisce** Play 1.2 |
+| Rilasci Progetto 2 | **R2** — dopo M3, fette P2 in **più versioni** Play |
+| Console M3 | Sessione dedicata con checklist **C1–C8** |
+| Prima di nuovo filone feature | **Recepimento Nota / Roadmap** (documentazione), non nuova feature |
+| Priorità codice post-Play | **M3** → **A1 → A2 → A3 → B–C**; **D** no-code; **B-QTY** dopo |
+| Premium linea P2 | **Sì** — A1, A2, A3, B–C, D (se codice), B-QTY = **Archivio completo** |
+| Eccezioni premium | **Nessuna** in questa chiusura |
+| Base free (4.19) | Invariata (CRUD, ricerca semplice, Backup, stampa, Disco, …) |
+
+---
+
+## 1. Classi di lavoro (obbligatorio)
+
+| Classe | Contenuto | Rilascio |
+|--------|-----------|----------|
+| **I — Già in codice sviluppo** | Archivio condiviso, EN (M1–M2), Disco di rete, correttivi, B5.24 CSV, Motore B F7–F9, Dark, … | Entra in **M3** (R1) |
+| **II — Solo analisi congelata** | A1 QR, A2 Cestino, A3 Foto, B–C Export/Import, D (U0), B-QTY | **Dopo** SI codice; Play a pezzi (**R2**) |
+| **III — Play attuale** | BoxManager **1.2** su `main` | Freeze fino a M3 (salvo bug bloccanti) |
+
+WIP A1 su `cursor/qr-avanzato-wip-parked-8374` **non** entra in M3 finché non ripristinato e chiuso dopo apertura codice.
+
+---
+
+## 2. R1 — Cutover M3 (post-test)
+
+Allineato a [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md) Fase C:
+
+- Una sola app Play: package `it.renatizzi.boxmanager`.  
+- AAB da flavor **play** (mai `famiglia` / `.famiglia` su Console).  
+- `versionName` ufficiale (es. **1.3**); `versionCode` > ultimo su Play.  
+- SI del momento = via Console (AAB, versionCode, scheda), non «scegliere se le funzioni I entrano».
+
+---
+
+## 3. Play Console — checklist
+
+### 3.1 M3 (C1–C8) — obbligatoria a test chiuso
+
+| # | Incombenza |
+|---|------------|
+| **C1** | Chiudere / promuovere il test chiuso secondo esito Google |
+| **C2** | Generare AAB **release** flavor **play** (keystore locale; `docs/play/README.md`) |
+| **C3** | Alzare `versionCode` / `versionName` ufficiali |
+| **C4** | Creare release sulla traccia concordata (produzione o closed successore) |
+| **C5** | Verificare icona 512, feature graphic, screenshot (`docs/play/`); aggiornare shot se servono EN/Disco/famiglia |
+| **C6** | Aggiornare listing IT/EN (novità 1.3); bozza EN: `docs/play/store-listing-en.md` |
+| **C7** | Comunicazione tester / codice `BOXMANAGER-TESTER` se resta closed; altrimenti trial/CONDIVIDI (Allegato 4.19) |
+| **C8** | Vietato mischiare AAB sviluppo / applicationId `.famiglia` |
+
+### 3.2 Rilasci successivi P2 (C9–C12)
+
+| # | Incombenza |
+|---|------------|
+| **C9** | Nuovo AAB per fetta (o batch) rilasciata |
+| **C10** | Testo «Novità della release» da Roadmap aggiornata |
+| **C11** | Screenshot / privacy / permessi se A3 Foto li richiede — **prima** dell’upload |
+| **C12** | Nessuna traduzione automatica Console al posto di `strings.xml` |
+
+---
+
+## 4. Roadmap e Nota — recepimento (prossimo lavoro documentale)
+
+**Fonte ufficiale:** Nota Integrata **9.2** (o successore) §**4.1** quadro + §**4.1.6**.
+
+### 4.1 Da fare in un aggiornamento Nota (dopo CONVALIDA di questo file)
+
+1. Marcare classe **I** come **fatto / in V1.3 post-Play** nel quadro.  
+2. Inserire in Roadmap (titoli + priorità): **Cestino**, **Foto oggetto**, **B-QTY** (oggi assenti da §4.1.6).  
+3. Per A1 / B–C / D: oltre i titoli già in 4.1.6, **rinvio** ai `REQUISITI_*.md` o allegati numerati.  
+4. Annotare D: **U0 / nessun codice** ora.  
+5. **Sanare gap Allegato 4.21** (EN): presente in 9.1_B7, assente in 9.2.  
+6. Opzionale: rinvio al processo 4 fasi (oggi solo in `.cursor/rules/processo-analisi.mdc`).
+
+**Vietato** patchare la Nota prima della CONVALIDA passo 4 di **questo** documento + SI esplicito di esecuzione patch.
+
+### 4.2 Audit gap (congelato come esito)
+
+| Novità | In Nota 9.2? |
+|--------|----------------|
+| Disco 4.22, Paywall 4.19, Merge 4.20 | Sì |
+| EN / 4.21 | **No** in 9.2 (gap) |
+| Dettaglio A1, A2, A3, B–C, D U0, B-QTY, processo 4 fasi, B5.24 | **No** / solo titoli parziali |
+
+---
+
+## 5. Priorità codice (quando SI a fine test)
+
+1. **M3** (cutover classe I).  
+2. **A1 QR avanzato** → **A2 Cestino** → **A3 Foto** → **B–C** Export/Import.  
+3. **D** Dashboard/UI: resta **no-code** (REQUISITI D).  
+4. **B-QTY**: dopo; ordine interno KPI (K1) → frasi 2.6 SI → pattern Motore B (K2).
+
+---
+
+## 6. Premium
+
+- Linea **Progetto 2** (A1, A2, A3, B–C, D se un giorno codice, B-QTY) = **Archivio completo**, stesse condizioni di accesso vigenti (Allegato 4.19).  
+- **Nessuna eccezione** in questa chiusura.  
+- Base free invariata (4.19): anagrafiche, ricerca semplice, Backup, stampa, Disco di rete, ecc.
+
+---
+
+## 7. Fuori scope
+
+- Codice A1–A3 / P2 durante il test Play.  
+- Caricare flavor `famiglia` su Play.  
+- Nuovo filone feature **prima** del recepimento Nota/Roadmap (RP-Q8).  
+- Numerazione allegati Nota senza SI in sessione patch.
+
+---
+
+## 8. Processo
+
+1. ANALISI — [ASSESSMENT_PIANO_RILASCIO_ROADMAP.md](ASSESSMENT_PIANO_RILASCIO_ROADMAP.md)  
+2. FEEDBACK — RP-Q1–Q8  
+3. CONVALIDA merito — **SI 08/09/2026**  
+4. AGGIORNAMENTO DOCUMENTO — **questo file**; in attesa CONVALIDA aggiornamento documento
