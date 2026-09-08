@@ -10,7 +10,7 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) — **Checklist V
 
 | ID | Indicazione |
 |----|-------------|
-| **B-PIANO-RILASCIO-RP** | **CONGELATO** — [REQUISITI](REQUISITI_PIANO_RILASCIO_ROADMAP.md); prossimo = recepimento Nota con SI |
+| **B-PIANO-RILASCIO-RP** | Patch Nota 9.2 eseguita (4.21+4.23) — **in attesa CONVALIDA Nota**; [REQUISITI](REQUISITI_PIANO_RILASCIO_ROADMAP.md) |
 | **B-QTY-KPI-SEARCH** | **CONGELATO** — quantità → KPI (K1) + query Ricerca (K2); facoltativa; [REQUISITI](REQUISITI_QTY_KPI_SEARCH.md); zero codice |
 | *(altre)* | P2 sync continuo; M3 solo a test Play chiuso; B-FAMILY-DOMAIN-ERR opzionale |
 
