@@ -90,7 +90,7 @@ Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino
 
 | ID | Data | Indicazione | Stato |
 |----|------|-------------|-------|
-| **B-PIANO-RILASCIO-RP** | 08/09/2026 | Piano strutturato: rilascio funzioni già implementate; Play Console; Roadmap ufficiale; priorità/premium; verifica Nota vs analisi. | **CONVALIDA merito** 08/09 (RP-Q1–Q8) — [REQUISITI_PIANO_RILASCIO_ROADMAP.md](REQUISITI_PIANO_RILASCIO_ROADMAP.md) in attesa CONVALIDA documento |
+| **B-PIANO-RILASCIO-RP** | 08/09/2026 | Piano strutturato: rilascio funzioni già implementate; Play Console; Roadmap ufficiale; priorità/premium; verifica Nota vs analisi. | **CONGELATO** — [REQUISITI_PIANO_RILASCIO_ROADMAP.md](REQUISITI_PIANO_RILASCIO_ROADMAP.md); prossimo = patch Nota con SI |
 | **B-QTY-KPI-SEARCH** | 08/09/2026 | Quantità oggetti (facoltativa) come **chiave** per nuovi KPI e nuove query Ricerca avanzata. | **CONGELATO** — [REQUISITI_QTY_KPI_SEARCH.md](REQUISITI_QTY_KPI_SEARCH.md); zero codice finché SI apertura |
 
 **Chiuso di recente:** **B-SEL-CARTELLA** — CONVALIDATO (Nota 9.2 Allegato **4.22**). **Foto oggetto** — CONVALIDA aggiornamento documento 07/09/2026 ([REQUISITI](REQUISITI_FOTO_OGGETTO.md)).
