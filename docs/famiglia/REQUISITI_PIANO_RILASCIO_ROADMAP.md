@@ -6,7 +6,7 @@
 **Uso:** piano operativo fino a fine test Play e ai primi rilasci post-test; guida al recepimento Nota/Roadmap.  
 **Assessment:** [ASSESSMENT_PIANO_RILASCIO_ROADMAP.md](ASSESSMENT_PIANO_RILASCIO_ROADMAP.md) (storico; prevale **questo** file).  
 **STOP codice Progetto 2** fino a fine test Play (SI codice già previsto a quella data) / SI esplicito «apri fetta codice».  
-**Prossimo lavoro (RP-Q8):** recepimento Nota / Roadmap — **eseguito** 08/09/2026 (patch `_patch_nota_9_2_recepimento_rp.py`: quadro 08/09, §4.1.6, Allegati **4.21** + **4.23**). In attesa **CONVALIDA aggiornamento Nota** SI Renato.
+**Prossimo lavoro (RP-Q8):** recepimento Nota / Roadmap — **eseguito** 08/09/2026 (patch `_patch_nota_9_2_recepimento_rp.py`: quadro 08/09, §4.1.6, Allegati **4.21** + **4.23**). **CONVALIDA aggiornamento Nota SI Renato 08/09/2026**.
 
 ---
 
@@ -87,7 +87,7 @@ Patch: `docs/_patch_nota_9_2_recepimento_rp.py` su `docs/Nota_Integrata_9.2.docx
 3. Allegato **4.21** (EN / filone M) riportato da 9.1_B7 e allineato a CK1–CK2.  
 4. Allegato **4.23** (Progetto 2 + piano rilascio RP).  
 
-**In attesa CONVALIDA aggiornamento Nota** (SI Renato sul testo in `Nota_Integrata_9.2.docx`).
+**CONVALIDA aggiornamento Nota SI Renato 08/09/2026** sul testo in `Nota_Integrata_9.2.docx` (quadro 08/09, §4.1.6, Allegati 4.21+4.23).
 
 ### 4.2 Audit gap (storico pre-patch)
 

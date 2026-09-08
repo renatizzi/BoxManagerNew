@@ -51,4 +51,5 @@ Dettaglio operativo congelato in [REQUISITI_PIANO_RILASCIO_ROADMAP.md](REQUISITI
 ## 7. Esito
 
 **Documento chiuso.** [REQUISITI_PIANO_RILASCIO_ROADMAP.md](REQUISITI_PIANO_RILASCIO_ROADMAP.md) — **CONGELATO**.  
-**Prossimo:** CONVALIDA aggiornamento Nota 9.2 (Allegati 4.21+4.23, quadro 08/09). **Zero codice applicativo.**
+**Recepimento Nota chiuso.** CONVALIDA aggiornamento Nota SI Renato 08/09/2026 (quadro 08/09, §4.1.6, Allegati 4.21+4.23).  
+**Zero codice applicativo** fino a fine Play / SI «apri fetta codice».
