@@ -1,11 +1,12 @@
 # Assessment — Export / Import avanzati (Progetto 2 / B–C)
 
-**Stato:** ANALISI (bozza) — 07/09/2026. **Non CONVALIDATO.** Zero codice.  
-**Processo:** passo 1 di 4 (ANALISI → FEEDBACK → CONVALIDA analisi/requisiti → AGGIORNAMENTO DOCUMENTO).  
-**Posizione:** dopo A1 QR · A2 Cestino · A3 Foto (requisiti già congelati; codice in STOP fino a fine test Play).  
+**Stato:** CONVALIDA analisi/requisiti (passo 3) **SI Renato 08/09/2026** (EI-Q1–EI-Q10 + non core + trascodifica fogli/DB esterni). Documento: [REQUISITI_EXPORT_IMPORT_AVANZATO.md](REQUISITI_EXPORT_IMPORT_AVANZATO.md) — in attesa CONVALIDA aggiornamento documento (passo 4). Zero codice.  
+**Processo:** passo **4** in corso.  
+**Posizione:** dopo A1 QR · A2 Cestino · A3 Foto (requisiti congelati; codice in STOP fino a fine test Play).  
 **Fonte Roadmap:** Nota Integrata **9.2 §4.1.6** — voci **EXPORT AVANZATO** e **IMPORT AVANZATO** (Priorità: medio-bassa).  
 **Policy:** solo analisi durante test Play; SI «apri fetta codice» / Play chiuso per implementare.  
-**Premium:** come A1–A3 — **Archivio completo** (SI trasversale 07/09), salvo diverso SI.
+**Premium:** come A1–A3 — **Archivio completo** (SI trasversale 07/09).  
+**Su conflitti prevale** [REQUISITI_EXPORT_IMPORT_AVANZATO.md](REQUISITI_EXPORT_IMPORT_AVANZATO.md).
 
 ---
 
@@ -130,20 +131,22 @@ Possibili letture (da SI):
 
 ---
 
-## 6. Checklist FEEDBACK (EI-Q)
+## 6. Checklist FEEDBACK — CONVALIDATA (passo 3, 08/09/2026)
 
-| # | Domanda | Raccomandazione |
-|---|---------|-----------------|
-| **EI-Q1** | Perimetro = solo i 4 bullet Nota B+C? | **Sì** |
-| **EI-Q2** | Export: E1 / E2 / **E3** | **E3** |
-| **EI-Q3** | File: F1 / F2 / **F3** (ZIP con Foto) | **F3** |
-| **EI-Q4** | Import validazione: V1 / V2 / **V3** | **V3** |
-| **EI-Q5** | Errori: **G1** / G2 / G3 | **G1** (no apply parziale in prima fetta) |
-| **EI-Q6** | Utility card «Esporta dati»? | **Sì** |
-| **EI-Q7** | CSV con id stabili (breaking vs versione 2)? | **Versione formato 2** + Modello aggiornato; CSV v1 ancora importabile |
-| **EI-Q8** | Premium | **Sì** (EXPORT/IMPORT già gated) |
-| **EI-Q9** | Ordine implementativo vs A1–A3 | **Dopo** QR + Cestino + Foto in codice (come sequenza continuity); analisi ora ok |
-| **EI-Q10** | Categorie/posizioni in export selezione? | **Opzionale / fuori prima fetta** (oggi non nel CSV Import) |
+| # | Domanda | Esito |
+|---|---------|--------|
+| **EI-Q1** | Perimetro = solo i 4 bullet Nota B+C? | **SI** |
+| **EI-Q2** | Export selezione | **SI — E3** |
+| **EI-Q3** | File | **SI — F3** (CSV prima; ZIP con Foto) |
+| **EI-Q4** | Import validazione | **SI — V3** |
+| **EI-Q5** | Errori | **SI — G1** (no apply parziale) |
+| **EI-Q6** | Utility «Esporta dati» | **SI** |
+| **EI-Q7** | Id stabili / formato | **SI — v2** + Modello; v1 ancora ok |
+| **EI-Q8** | Premium | **SI** |
+| **EI-Q9** | Ordine vs A1–A3 | **SI — dopo** QR+Cestino+Foto in codice |
+| **EI-Q10** | Cat/pos in selezione export | **SI — fuori prima fetta** |
+| **P1** | Importanti ma **non core** | **SI** Renato 08/09 |
+| **P2** | Preferenza trascodifica Sheets/Excel/DB esterni | **SI** Renato 08/09 (CSV primario) |
 
 ---
 
@@ -158,11 +161,10 @@ Possibili letture (da SI):
 
 ---
 
-## 8. Esito ANALISI — in attesa FEEDBACK
+## 8. Esito — CONVALIDA merito; documento requisiti scritto
 
-**Prossimo:** risposte Renato su **EI-Q1–EI-Q10** (almeno Q2–Q5).  
-Poi CONVALIDA merito → `REQUISITI_EXPORT_IMPORT_AVANZATO.md` (o due file se SI).  
+**Prodotto:** E3+F3+V3+G1; Utility Esporta dati; CSV v2; **non core**; priorità **trascodifica** verso Google Sheets / Microsoft Excel.
 
-**Subito dopo (altra ANALISI):** Dashboard avanzata + UI avanzata (D), salvo SI di priorità diversa.
+**Documento:** [REQUISITI_EXPORT_IMPORT_AVANZATO.md](REQUISITI_EXPORT_IMPORT_AVANZATO.md) — in attesa **CONVALIDA aggiornamento documento**.
 
-**Zero codice.**
+**Poi:** ANALISI **D** Dashboard/UI (salvo SI). **Zero codice.**
