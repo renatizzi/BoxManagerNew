@@ -58,4 +58,4 @@ Questo file congela la decisione **zero codice ora**.
 1. ANALISI — assessment D  
 2. FEEDBACK — D-Q + U0 + no codice  
 3. CONVALIDA merito — **SI 08/09/2026**  
-4. AGGIORNAMENTO DOCUMENTO — **questo file**; in attesa CONVALIDA aggiornamento documento
+4. AGGIORNAMENTO DOCUMENTO — **questo file**; **CONVALIDA aggiornamento documento SI 08/09/2026** (D-Q3=U0; D-Q7=NO codice)
