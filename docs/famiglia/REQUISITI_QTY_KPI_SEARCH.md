@@ -1,9 +1,10 @@
 # Requisiti — Quantità oggetto come chiave KPI / Ricerca avanzata (B-QTY-KPI-SEARCH)
 
-**Stato:** documento scritto 08/09/2026 — in attesa **CONVALIDA aggiornamento documento** (passo 4).  
+**Stato:** **CONGELATO** 08/09/2026 (SI Renato).  
 **CONVALIDA analisi/requisiti (passo 3):** SI Renato 08/09/2026 — «Ok su tutto» = QTY-Q1–Q8 come raccomandato.  
+**CONVALIDA aggiornamento documento (passo 4):** SI Renato 08/09/2026 («Convalido»).  
 **Uso:** riferimento funzionale fino all’implementazione.  
-**Assessment:** [ASSESSMENT_QTY_KPI_SEARCH.md](ASSESSMENT_QTY_KPI_SEARCH.md) (storico; prevale **questo** file dopo CONVALIDA passo 4).  
+**Assessment:** [ASSESSMENT_QTY_KPI_SEARCH.md](ASSESSMENT_QTY_KPI_SEARCH.md) (storico; prevale **questo** file).  
 **STOP codice** fino a fine test Play / SI «apri fetta codice».  
 **Relazione D:** Dashboard/UI resta [REQUISITI_DASHBOARD_UI_AVANZATA.md](REQUISITI_DASHBOARD_UI_AVANZATA.md) (U0, no codice) — **questa voce non apre D**.
 
@@ -82,4 +83,4 @@ Ordine interno suggerito: **K1 (KPI Room)** → elenco frasi 2.6 SI → **K2 (pa
 1. ANALISI — assessment QTY  
 2. FEEDBACK — QTY-Q1–Q8  
 3. CONVALIDA merito — **SI 08/09/2026** («Ok su tutto»)  
-4. AGGIORNAMENTO DOCUMENTO — **questo file**; in attesa CONVALIDA aggiornamento documento
+4. AGGIORNAMENTO DOCUMENTO — **questo file**; **CONVALIDA aggiornamento documento SI 08/09/2026**

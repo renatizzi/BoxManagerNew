@@ -1,7 +1,6 @@
 # Assessment — Quantità oggetto come chiave KPI / Ricerca avanzata (B-QTY-KPI-SEARCH)
 
-**Stato:** CONVALIDA analisi/requisiti (passo 3) **SI Renato 08/09/2026** («Ok su tutto» = QTY-Q1–Q8 come raccomandato). Documento: [REQUISITI_QTY_KPI_SEARCH.md](REQUISITI_QTY_KPI_SEARCH.md) — in attesa CONVALIDA aggiornamento documento. Zero codice.  
-**Processo:** passo **4** in corso.  
+**Stato:** **CONVALIDATO** (passi 3–4) — SI Renato 08/09/2026. Documento: [REQUISITI_QTY_KPI_SEARCH.md](REQUISITI_QTY_KPI_SEARCH.md) (**CONGELATO**). Zero codice.  
 **ID Promemoria:** **B-QTY-KPI-SEARCH**.  
 **Testo Renato (fonte):** convertire la **quantità** oggetti (ora **facoltativa**) in **«chiave»** per **nuovi KPI** e **nuove query** Ricerca avanzata.  
 **Policy codice:** STOP fino a fine test Play / SI «apri fetta codice».
@@ -55,5 +54,5 @@
 
 ## 4. Esito
 
-**Merito chiuso.** Documento: [REQUISITI_QTY_KPI_SEARCH.md](REQUISITI_QTY_KPI_SEARCH.md) — attendere **CONVALIDA aggiornamento documento**.  
+**Documento chiuso.** [REQUISITI_QTY_KPI_SEARCH.md](REQUISITI_QTY_KPI_SEARCH.md) — **CONGELATO**.  
 **Zero codice.**
