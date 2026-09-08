@@ -83,7 +83,7 @@ Due CONVALIDA distinte: (3) merito analisi/requisiti · (4 chiusura) testo del d
 | Priorità | Azione | Note |
 |----------|--------|------|
 | **STOP codice P2** | Niente implementazione A1/A2/A3 finché **test Play chiuso** (≈ ancora una settimana) **oppure** SI esplicito «apri fetta codice» | Il «Sì» del 07/09 sera era **solo conferma documenti/premium**, non apertura sviluppo. Commit A1 **revertato** sul branch lavoro; WIP su `cursor/qr-avanzato-wip-parked-8374`. |
-| **A** | Recepimento Nota/Roadmap | Solo con SI esecuzione patch — [REQUISITI_PIANO_RILASCIO_ROADMAP.md](REQUISITI_PIANO_RILASCIO_ROADMAP.md) §4 |
+| **A** | **CONVALIDA aggiornamento Nota** | Verificare `docs/Nota_Integrata_9.2.docx` (quadro 08/09, §4.1.6, Allegati 4.21+4.23) SI/NO |
 | **A′** | D Dashboard/UI | **CONGELATO** no-code — [REQUISITI_DASHBOARD_UI_AVANZATA.md](REQUISITI_DASHBOARD_UI_AVANZATA.md) |
 | **B** | Checklist V1 | P2 sync bug Play → sviluppo; bug bloccanti solo su `main` |
 | **C** | Codice A1/A2/A3 | **STOP** fino a fine test Play (salvo SI esplicito); WIP QR su `cursor/qr-avanzato-wip-parked-8374` |

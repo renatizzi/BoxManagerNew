@@ -38,7 +38,7 @@ Sequenza concordata: **A1 QR avanzato → A2 Cestino → A3 Foto** → poi B/C/D
 | **B–C Export/Import avanzati** | [REQUISITI_EXPORT_IMPORT_AVANZATO.md](REQUISITI_EXPORT_IMPORT_AVANZATO.md) (**congelato** + CONVALIDA documento 08/09) · [ASSESSMENT_EXPORT_IMPORT_AVANZATO.md](ASSESSMENT_EXPORT_IMPORT_AVANZATO.md) | Requisiti chiusi; zero codice finché SI apertura fetta (dopo A1–A3) |
 | **D Dashboard / UI avanzata** | [REQUISITI_DASHBOARD_UI_AVANZATA.md](REQUISITI_DASHBOARD_UI_AVANZATA.md) (**congelato** + CONVALIDA documento 08/09; U0; **no codice**) · [ASSESSMENT_DASHBOARD_UI_AVANZATA.md](ASSESSMENT_DASHBOARD_UI_AVANZATA.md) | Requisiti chiusi; zero codice finché SI apertura |
 | **B-QTY-KPI-SEARCH** | [REQUISITI_QTY_KPI_SEARCH.md](REQUISITI_QTY_KPI_SEARCH.md) (**congelato** + CONVALIDA documento 08/09) · [ASSESSMENT_QTY_KPI_SEARCH.md](ASSESSMENT_QTY_KPI_SEARCH.md) | Requisiti chiusi (K1+K2); zero codice finché SI apertura |
-| **B-PIANO-RILASCIO-RP** | [REQUISITI_PIANO_RILASCIO_ROADMAP.md](REQUISITI_PIANO_RILASCIO_ROADMAP.md) (**congelato** + CONVALIDA documento 08/09) · [ASSESSMENT_PIANO_RILASCIO_ROADMAP.md](ASSESSMENT_PIANO_RILASCIO_ROADMAP.md) | Piano chiuso; prossimo = recepimento Nota con SI; zero codice P2 fino a fine Play |
+| **B-PIANO-RILASCIO-RP** | [REQUISITI_PIANO_RILASCIO_ROADMAP.md](REQUISITI_PIANO_RILASCIO_ROADMAP.md) (**congelato**) · patch Nota 9.2 eseguita (4.21+4.23) | **In attesa CONVALIDA aggiornamento Nota** |
 
 ---
 
@@ -90,7 +90,7 @@ Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino
 
 | ID | Data | Indicazione | Stato |
 |----|------|-------------|-------|
-| **B-PIANO-RILASCIO-RP** | 08/09/2026 | Piano strutturato: rilascio funzioni già implementate; Play Console; Roadmap ufficiale; priorità/premium; verifica Nota vs analisi. | **CONGELATO** — [REQUISITI_PIANO_RILASCIO_ROADMAP.md](REQUISITI_PIANO_RILASCIO_ROADMAP.md); prossimo = patch Nota con SI |
+| **B-PIANO-RILASCIO-RP** | 08/09/2026 | Piano strutturato: rilascio funzioni già implementate; Play Console; Roadmap ufficiale; priorità/premium; verifica Nota vs analisi. | Patch Nota 9.2 eseguita (quadro 08/09, §4.1.6, Allegati **4.21**+**4.23**) — **in attesa CONVALIDA aggiornamento Nota** |
 | **B-QTY-KPI-SEARCH** | 08/09/2026 | Quantità oggetti (facoltativa) come **chiave** per nuovi KPI e nuove query Ricerca avanzata. | **CONGELATO** — [REQUISITI_QTY_KPI_SEARCH.md](REQUISITI_QTY_KPI_SEARCH.md); zero codice finché SI apertura |
 
 **Chiuso di recente:** **B-SEL-CARTELLA** — CONVALIDATO (Nota 9.2 Allegato **4.22**). **Foto oggetto** — CONVALIDA aggiornamento documento 07/09/2026 ([REQUISITI](REQUISITI_FOTO_OGGETTO.md)).

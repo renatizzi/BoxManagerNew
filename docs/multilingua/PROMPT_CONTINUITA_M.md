@@ -11,7 +11,7 @@ Fonte viva: [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md) — *
 
 | ID | Indicazione |
 |----|-------------|
-| **B-PIANO-RILASCIO-RP** | **CONGELATO** — [REQUISITI](../famiglia/REQUISITI_PIANO_RILASCIO_ROADMAP.md); patch Nota solo con SI |
+| **B-PIANO-RILASCIO-RP** | Patch Nota 9.2 (4.21+4.23) — in attesa CONVALIDA Nota; [REQUISITI](../famiglia/REQUISITI_PIANO_RILASCIO_ROADMAP.md) |
 | **B-QTY-KPI-SEARCH** | Quantità oggetto come possibile chiave KPI / query Ricerca avanzata (08/09) — vedi Promemoria |
 | *(altre)* | M3 solo a test chiuso; P2 sync continuo; B-FAMILY-DOMAIN-ERR opzionale |
 

@@ -51,4 +51,4 @@ Dettaglio operativo congelato in [REQUISITI_PIANO_RILASCIO_ROADMAP.md](REQUISITI
 ## 7. Esito
 
 **Documento chiuso.** [REQUISITI_PIANO_RILASCIO_ROADMAP.md](REQUISITI_PIANO_RILASCIO_ROADMAP.md) — **CONGELATO**.  
-Prossimo: patch Nota/Roadmap solo con SI. **Zero codice applicativo.**
+**Prossimo:** CONVALIDA aggiornamento Nota 9.2 (Allegati 4.21+4.23, quadro 08/09). **Zero codice applicativo.**

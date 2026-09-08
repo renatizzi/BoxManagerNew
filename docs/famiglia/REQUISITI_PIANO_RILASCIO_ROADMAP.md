@@ -6,7 +6,7 @@
 **Uso:** piano operativo fino a fine test Play e ai primi rilasci post-test; guida al recepimento Nota/Roadmap.  
 **Assessment:** [ASSESSMENT_PIANO_RILASCIO_ROADMAP.md](ASSESSMENT_PIANO_RILASCIO_ROADMAP.md) (storico; prevale **questo** file).  
 **STOP codice Progetto 2** fino a fine test Play (SI codice già previsto a quella data) / SI esplicito «apri fetta codice».  
-**Prossimo lavoro (RP-Q8):** recepimento Nota / Roadmap — solo con SI di esecuzione patch.
+**Prossimo lavoro (RP-Q8):** recepimento Nota / Roadmap — **eseguito** 08/09/2026 (patch `_patch_nota_9_2_recepimento_rp.py`: quadro 08/09, §4.1.6, Allegati **4.21** + **4.23**). In attesa **CONVALIDA aggiornamento Nota** SI Renato.
 
 ---
 
@@ -78,24 +78,24 @@ Allineato a [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md) Fase C:
 
 **Fonte ufficiale:** Nota Integrata **9.2** (o successore) §**4.1** quadro + §**4.1.6**.
 
-### 4.1 Da fare in un aggiornamento Nota (dopo CONVALIDA di questo file)
+### 4.1 Recepimento Nota 9.2 — eseguito 08/09/2026 (SI esecuzione)
 
-1. Marcare classe **I** come **fatto / in V1.3 post-Play** nel quadro.  
-2. Inserire in Roadmap (titoli + priorità): **Cestino**, **Foto oggetto**, **B-QTY** (oggi assenti da §4.1.6).  
-3. Per A1 / B–C / D: oltre i titoli già in 4.1.6, **rinvio** ai `REQUISITI_*.md` o allegati numerati.  
-4. Annotare D: **U0 / nessun codice** ora.  
-5. **Sanare gap Allegato 4.21** (EN): presente in 9.1_B7, assente in 9.2.  
-6. Opzionale: rinvio al processo 4 fasi (oggi solo in `.cursor/rules/processo-analisi.mdc`).
+Patch: `docs/_patch_nota_9_2_recepimento_rp.py` su `docs/Nota_Integrata_9.2.docx`.
 
-**Vietato** patchare la Nota prima della CONVALIDA passo 4 di **questo** documento + SI esplicito di esecuzione patch.
+1. Quadro §4.1 → **08/09/2026**; classe I pronta M3; P2 requisiti congelati.  
+2. §4.1.6: stato U0/D; rinvii REQUISITI su QR/Export/Import/UI; voci **CESTINO**, **FOTO OGGETTO**, **QUANTITÀ (B-QTY)**.  
+3. Allegato **4.21** (EN / filone M) riportato da 9.1_B7 e allineato a CK1–CK2.  
+4. Allegato **4.23** (Progetto 2 + piano rilascio RP).  
 
-### 4.2 Audit gap (congelato come esito)
+**In attesa CONVALIDA aggiornamento Nota** (SI Renato sul testo in `Nota_Integrata_9.2.docx`).
 
-| Novità | In Nota 9.2? |
-|--------|----------------|
+### 4.2 Audit gap (storico pre-patch)
+
+| Novità | Prima della patch 08/09 |
+|--------|-------------------------|
 | Disco 4.22, Paywall 4.19, Merge 4.20 | Sì |
-| EN / 4.21 | **No** in 9.2 (gap) |
-| Dettaglio A1, A2, A3, B–C, D U0, B-QTY, processo 4 fasi, B5.24 | **No** / solo titoli parziali |
+| EN / 4.21 | No in 9.2 |
+| Dettaglio A1–A3, B–C, D, B-QTY, piano RP | No / solo titoli parziali |
 
 ---
 
