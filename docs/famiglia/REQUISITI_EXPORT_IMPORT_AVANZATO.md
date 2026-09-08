@@ -1,7 +1,8 @@
 # Requisiti — Export / Import avanzati (Progetto 2 / B–C)
 
-**Stato:** documento scritto 08/09/2026 — in attesa **CONVALIDA aggiornamento documento** (passo 4).  
+**Stato:** CONGELATO 08/09/2026 (SI Renato).  
 **CONVALIDA analisi/requisiti (passo 3):** SI Renato 08/09/2026 (EI-Q1–EI-Q10 come raccomandato + vincolo **non core** + preferenza **trascodifica fogli/DB esterni**).  
+**CONVALIDA aggiornamento documento (passo 4):** SI Renato 08/09/2026.  
 **Uso:** riferimento funzionale e tecnico-architetturale fino all’implementazione.  
 **Destinazione:** Nota Integrata (rinvio §4.1.6 EXPORT/IMPORT AVANZATO).  
 **Assessment:** [ASSESSMENT_EXPORT_IMPORT_AVANZATO.md](ASSESSMENT_EXPORT_IMPORT_AVANZATO.md) (storico; prevale **questo** file).  
@@ -141,4 +142,4 @@ Questo file è la fonte fino all’implementazione.
 1. ANALISI — [ASSESSMENT_EXPORT_IMPORT_AVANZATO.md](ASSESSMENT_EXPORT_IMPORT_AVANZATO.md)  
 2. FEEDBACK — EI-Q1–EI-Q10 + non core + trascodifica esterni  
 3. CONVALIDA analisi/requisiti — **SI Renato 08/09/2026**  
-4. AGGIORNAMENTO DOCUMENTO — **questo file**; in attesa **CONVALIDA aggiornamento documento**
+4. AGGIORNAMENTO DOCUMENTO — **questo file**; **CONVALIDA aggiornamento documento SI Renato 08/09/2026**

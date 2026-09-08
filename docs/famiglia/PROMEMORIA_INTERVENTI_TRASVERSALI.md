@@ -35,8 +35,8 @@ Sequenza concordata: **A1 QR avanzato → A2 Cestino → A3 Foto** → poi B/C/D
 | **A1 QR avanzato** | [REQUISITI_QR_AVANZATO.md](REQUISITI_QR_AVANZATO.md) (**congelato** + CONVALIDA documento 07/09; R10 premium Progetto 2) · [ASSESSMENT_QR_AVANZATO.md](ASSESSMENT_QR_AVANZATO.md) (storico) | Requisiti chiusi; zero codice finché SI apertura fetta |
 | **A2 Cestino** | [REQUISITI_CESTINO.md](REQUISITI_CESTINO.md) (**congelato** + CONVALIDA documento 07/09) · [ASSESSMENT_CESTINO.md](ASSESSMENT_CESTINO.md) (storico) | Requisiti chiusi; zero codice finché SI apertura fetta |
 | **A3 Foto oggetto** | [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) (**congelato** + CONVALIDA documento 07/09; **R6 + T6bis Premium**) · [ASSESSMENT_FOTO_MINIATURA.md](ASSESSMENT_FOTO_MINIATURA.md) (storico) | Requisiti + tecnica chiusi; codice dopo QR + Cestino |
-| **B–C Export/Import avanzati** | [REQUISITI_EXPORT_IMPORT_AVANZATO.md](REQUISITI_EXPORT_IMPORT_AVANZATO.md) (passo 4 — in attesa CONVALIDA documento) · [ASSESSMENT_EXPORT_IMPORT_AVANZATO.md](ASSESSMENT_EXPORT_IMPORT_AVANZATO.md) | **CONVALIDA merito** SI 08/09 (EI-Q1–10; non core; trascodifica fogli). Zero codice |
-| **D Dashboard / UI avanzata** | — | In coda dopo CONVALIDA documento B–C (o SI di anticipare) |
+| **B–C Export/Import avanzati** | [REQUISITI_EXPORT_IMPORT_AVANZATO.md](REQUISITI_EXPORT_IMPORT_AVANZATO.md) (**congelato** + CONVALIDA documento 08/09) · [ASSESSMENT_EXPORT_IMPORT_AVANZATO.md](ASSESSMENT_EXPORT_IMPORT_AVANZATO.md) | Requisiti chiusi; zero codice finché SI apertura fetta (dopo A1–A3) |
+| **D Dashboard / UI avanzata** | [ASSESSMENT_DASHBOARD_UI_AVANZATA.md](ASSESSMENT_DASHBOARD_UI_AVANZATA.md) | **ANALISI** bozza 08/09 — in attesa FEEDBACK (D-Q1–D-Q7). Zero codice |
 
 ---
 

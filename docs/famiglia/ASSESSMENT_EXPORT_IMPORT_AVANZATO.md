@@ -1,11 +1,11 @@
 # Assessment — Export / Import avanzati (Progetto 2 / B–C)
 
-**Stato:** CONVALIDA analisi/requisiti (passo 3) **SI Renato 08/09/2026** (EI-Q1–EI-Q10 + non core + trascodifica fogli/DB esterni). Documento: [REQUISITI_EXPORT_IMPORT_AVANZATO.md](REQUISITI_EXPORT_IMPORT_AVANZATO.md) — in attesa CONVALIDA aggiornamento documento (passo 4). Zero codice.  
-**Processo:** passo **4** in corso.  
+**Stato:** storico ANALISI/FEEDBACK; **prevale** [REQUISITI_EXPORT_IMPORT_AVANZATO.md](REQUISITI_EXPORT_IMPORT_AVANZATO.md) (**CONGELATO** + CONVALIDA documento SI Renato 08/09/2026). Zero codice.  
+**Processo:** **chiuso** (4/4).  
 **Posizione:** dopo A1 QR · A2 Cestino · A3 Foto (requisiti congelati; codice in STOP fino a fine test Play).  
 **Fonte Roadmap:** Nota Integrata **9.2 §4.1.6** — voci **EXPORT AVANZATO** e **IMPORT AVANZATO** (Priorità: medio-bassa).  
 **Policy:** solo analisi durante test Play; SI «apri fetta codice» / Play chiuso per implementare.  
-**Premium:** come A1–A3 — **Archivio completo** (SI trasversale 07/09).  
+**Premium:** come A1–A3 — **Archivio completo**.  
 **Su conflitti prevale** [REQUISITI_EXPORT_IMPORT_AVANZATO.md](REQUISITI_EXPORT_IMPORT_AVANZATO.md).
 
 ---
