@@ -18,11 +18,28 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 | A4 | Check Console: giorni test chiuso | Renato+Google | **IN CORSO** | 12 tester, **11/14** giorni — mancano ~3 |
 | A5 | Bozze listing IT/EN | Agente | **FATTO** | `docs/play/store-listing-*.md` |
 | A6 | Sync fix Play `main` → sviluppo | Agente | **FATTO** | Nessun fix pendente |
-| A7 | Smoke build sviluppo (EN, condiviso, Disco, Backup) | Renato | **ATTESA Renato** | Device; `assembleFamigliaDebug` |
+| A7 | Smoke build sviluppo (EN, condiviso, Disco, Backup) | Renato | **IN CORSO** | Device; checklist sotto § A7 |
 | A8 | Screenshot Store (almeno 1 UI EN / lingua) | Renato | **ATTESA Renato** | Senza dati personali |
 | A9 | Decidere traccia post-M3 | Renato | **ATTESA Renato** | Produzione diretta **oppure** breve closed 1.3 |
 
-**Aggregato semplice consigliato ora:** A7 (smoke) — oppure, se preferisci meno device: A9 (una sola scelta).
+**Prossimo aperto:** **A7** (questa sezione).
+
+### A7 — cosa fare sul telefono (build sviluppo)
+
+Installazione tipica: `INSTALLA_FAMIGLIA.bat` oppure `./gradlew :app:installFamigliaDebug`.  
+Topbar attesa: tipo **1.3-famigliaB5.24** (etichetta di build).
+
+| # | Prova | OK se… |
+|---|--------|--------|
+| 1 | Impostazioni → lingua **English** | UI in inglese (menu/etichette) |
+| 2 | Utility → **Condividi Archivio** | Si apre la pagina Invia/Ricevi (niente crash) |
+| 3 | Impostazioni → **Disco di rete** | Si apre il dialogo (Installa/Apri CIFS) |
+| 4 | Utility → **Backup Archivio** | Parte il flusso / Sfoglia cartella senza crash |
+
+Opzionale breve: torna lingua **Italiano**.
+
+**Esito:** rispondi con `A7 OK` oppure `A7 KO` + quale riga (1–4) e cosa hai visto.  
+Poi aggiorniamo la checklist.
 
 ---
 
