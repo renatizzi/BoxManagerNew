@@ -21,14 +21,14 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 | A5 | Bozze listing IT/EN | Agente | **FATTO** | `docs/play/store-listing-*.md` |
 | A6 | Sync fix Play `main` → sviluppo | Agente | **FATTO** | Nessun fix pendente |
 | A7 | Smoke build sviluppo (EN, condiviso, Disco, Backup) | Renato | **FATTO** | **CONVALIDATO** SI Renato 10/09/2026 |
-| A8 | Screenshot Store (almeno 1 UI EN / lingua) | Renato | **IN A10** | Da fare quando comodo (prima di B8) |
+| A8 | Screenshot Store (Dashboard IT + EN) | Renato | **FATTO** | Consegnati 10/09; in `docs/play/screenshots/04_*.png` `05_*.png` |
 | A9 | Traccia post-M3 | Agente (delega) | **FATTO** | Breve closed 1.3 → produzione |
 | A10 | Aggregato prep restante | Renato | **FATTO** | **OK** SI Renato 10/09/2026 |
 
 ### Aggregato **A10** — CHIUSO (OK Renato 10/09)
 
 1. **Traccia:** breve closed 1.3 → produzione — **OK**  
-2. **Screenshot:** 1 UI EN (+ opz. Utility), senza dati personali — da scattare prima dell’upload scheda  
+2. **Screenshot:** Dashboard IT + EN consegnati 10/09 → `04_dashboard_it.png` / `05_dashboard_en.png` (**A8 FATTO**)  
 3. **A4:** non chiudere il closed 1.2 sotto 12 tester / prima di 14 giorni — **OK**
 
 ### Prossimo aggregato **A11** — runbook giorno M3 (solo docs, un OK)

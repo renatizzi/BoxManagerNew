@@ -65,8 +65,11 @@ Caricare in Console, in quest'ordine:
 1. `01_contenitori.png`
 2. `02_categorie.png`
 3. `03_utility.png`
+4. `04_dashboard_it.png` (Dashboard IT — prep M3)
+5. `05_dashboard_en.png` (Dashboard EN — prep M3; mostra Scelta lingua / UI inglese)
 
 Non usare lo screenshot Impostazioni con nome reale.
+I shot 04/05 oggi mostrano topbar `1.3-famigliaB5.24` (build sviluppo): a M3, se possibile, sostituire con shot dalla AAB **play 1.3** ufficiale.
 
 ## Test chiuso — Archivio completo per i tester (release)
 
