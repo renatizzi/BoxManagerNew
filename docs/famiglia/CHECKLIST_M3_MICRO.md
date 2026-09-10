@@ -26,6 +26,7 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 - Flavor **play**: `FAMILY_BETA=true`, **senza** `applicationIdSuffix` (package Store)  
 - `versionName` play ancora **1.2** finché cutover (poi **1.3**, vc > 3)  
 - Test unitari `premium.*` OK  
+- **Smoke device gate** (Disco/Condividi senza Archivio completo): **RINVIATO** SI Renato 10/09 — farlo **subito prima** di chiudere A4 / avviare il cutover Console (prova scaduta o sblocco debug OFF; utente admin da solo non apre i gate)
 
 ---
 
