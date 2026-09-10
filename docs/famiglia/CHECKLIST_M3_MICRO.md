@@ -47,14 +47,27 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 | # | Micro-step | Stato |
 |---|------------|-------|
 | C1 | Opz. B-ROTATE-FORM-DRAFT | **DOPO** |
-| C2–C3 | A1 → A2 → A3 → B–C → B-QTY | **DOPO** (SI codice) |
+| C2 | **A1 QR avanzato** — recuperare WIP | **DOPO** (SI «apri fetta codice») |
+| C3 | A2 Cestino → A3 Foto (+ idea OCR §6) → B–C → B-QTY | **DOPO** |
 | C4 | D Dashboard | no-code (U0) |
+
+### WIP codice già pronto da recuperare (A1)
+
+| Voce | Dettaglio |
+|------|-----------|
+| Branch | `cursor/qr-avanzato-wip-parked-8374` |
+| Commit | `f523735` — *feat(A1): QR avanzato batch — PDF L0/L1, share, B5.25* (07/09/2026) |
+| Perché | Commit prematuro su branch lavoro **revertato**; WIP **conservato** qui per ripresa |
+| Quando | **Dopo** M3 cutover + SI «apri fetta codice»; **non** entra in M3 |
+| Come | Ripristinare/cherry-pick da quel branch sul filone sviluppo post-M3; allineare a [REQUISITI_QR_AVANZATO.md](REQUISITI_QR_AVANZATO.md) |
+
+Annotato anche in Promemoria / ingresso M3 / RP.
 
 ---
 
 ## Prossimo
 
-**Fatto ora:** B-prep codice.  
+**Fatto ora:** B-prep codice; idea OCR annotata; WIP A1 verificato su remote.  
 **Smoke gate device:** rinviato a **subito prima** di chiudere A4 / cutover.  
-**In attesa:** **A4** → 14/14 giorni Google.  
-**Poi:** B5–B9 (merge/`main`/AAB/closed 1.3) con un solo OK quando i giorni sono completi.
+**In attesa:** **A4** → 14/14 giorni Google (**ci si sente tra ~2 giorni**).  
+**Poi:** B5–B9 (merge/`main`/AAB/closed 1.3) con un solo OK.

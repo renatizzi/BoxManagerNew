@@ -56,6 +56,8 @@
 
 ---
 
-## Dopo A11 OK
+## Dopo A11 OK / ripresa post 14/14
 
-Resta in attesa **A4** (14/14). Al via: aggregato **B** (codice gate + merge su `main` + versioni) con un solo OK.
+1. Smoke gate device (rinviato).  
+2. Aggregato **B5–B9**: merge → `main`, versioni **1.3**, AAB play, closed 1.3, scheda.  
+3. Solo **dopo** M3 + SI «apri fetta codice»: recuperare WIP A1 da `cursor/qr-avanzato-wip-parked-8374` @ `f523735`.
