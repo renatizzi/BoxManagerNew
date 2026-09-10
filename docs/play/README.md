@@ -1,5 +1,19 @@
 # Play — keystore, AAB, icona 512
 
+**Ingresso cutover M3 (post-test):** [PROMPT_CONTINUITA_M3_MERGE_PLAY.md](../famiglia/PROMPT_CONTINUITA_M3_MERGE_PLAY.md) (CONVALIDATO 10/09/2026).  
+Finché il test chiuso **1.2** è aperto: **niente** AAB flavor `famiglia` / `.famiglia` su Console (C8); niente merge feature su `main`.
+
+### Checklist Console M3 (C1–C8) — solo a test chiuso + SI
+
+1. **C1** — Chiudere / promuovere il test 1.2  
+2. **C2** — AAB **release** flavor **play** (keystore locale; sotto)  
+3. **C3** — `versionCode` > ultimo Play; `versionName` ufficiale (es. **1.3**)  
+4. **C4** — Release sulla traccia scelta (produzione o breve closed 1.3)  
+5. **C5** — Icona 512, feature graphic, screenshot (aggiungere shot EN / novità se serve)  
+6. **C6** — Listing IT/EN — bozze: [store-listing-it.md](store-listing-it.md), [store-listing-en.md](store-listing-en.md)  
+7. **C7** — Messaggio tester / `BOXMANAGER-TESTER` se resta closed  
+8. **C8** — Mai `.famiglia`
+
 ## Icona Store (già pronta)
 File: `docs/play/icon_play_512.png` (512×512, RGB, da `boxmanager_launcher`).
 
@@ -80,7 +94,7 @@ Il codice amico `BOXMANAGER-AMICO` resta valido per il rinnovo via condivisione.
 
 ## Test chiuso — checklist (solo sul tuo PC / Console)
 
-**Stato repo (già fatto in remoto):** `main` con G1+G2, `versionCode = 2`, `versionName = 1.1`. Topbar in app: `v. 1.1` automatico da Gradle.
+**Stato Play 1.2 (durante test):** flavor **play** su `main` — `versionCode = 3`, `versionName = 1.2`. Topbar da Gradle. A M3: alzare oltre questo (es. **1.3** / vc > 3) sulla linea ufficiale.
 
 ### Tu — passo 1: aggiorna e genera AAB
 
@@ -90,7 +104,7 @@ git pull origin main
 
 Android Studio → **Sync** → **Build → Generate Signed App Bundle** (release, stesso keystore di prima).
 
-File da caricare: `app\release\app-release.aab` (deve essere **nuovo**, con versione **1.1 (2)**).
+File da caricare: AAB **play release** (package `it.renatizzi.boxmanager`). Per M3: versione ufficiale nuova (es. **1.3**), non la build `famiglia`.
 
 ### Tu — passo 2: Play Console
 

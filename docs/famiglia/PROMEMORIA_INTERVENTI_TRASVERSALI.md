@@ -133,7 +133,8 @@ per layout F7 aveva dirottato anche inventari/report degli altri Core.
 | **B-F7-FORMATO-LISTA** | **Fatto** — F7 apre lista contenitori; titolo con `(oggetto)`; card categoria • posizione • data |
 | **B-RICERCA-SENZA-SPECIFICHE** | **Fatto** — stringa vuota su Contenitori/Posizione/Oggetti/Categorie in dashboard; oggetti filtro vuoto = tutti |
 | **B-VOCE-OGGETTO** | **Fatto** — microfono su nome e descrizione in Aggiungi/Modifica oggetto |
-| **M0** | **Fatto** — [store-listing-en.md](../play/store-listing-en.md) |
+| **M0** | **Fatto** — listing EN base (filone M) |
+| **M0.5** | **Bozze** — listing IT/EN M3: [store-listing-it.md](../play/store-listing-it.md), [store-listing-en.md](../play/store-listing-en.md); checklist C1–C8 in [docs/play/README.md](../play/README.md). Screenshot EN / novità: Renato su device |
 
 ---
 

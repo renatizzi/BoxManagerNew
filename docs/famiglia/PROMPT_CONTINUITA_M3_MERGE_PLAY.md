@@ -46,7 +46,7 @@ Obiettivo: a **test chiuso**, una sola ufficiale Play = contenuto sviluppo (clas
 | M0.2 | Smoke su build sviluppo (`assembleFamigliaDebug`) | Renato device | Archivio condiviso, EN, Disco, Backup/CSV |
 | M0.3 | Sync eventuali fix bloccanti da `main` → branch sviluppo | Agente | Solo se ci sono stati fix Play ([BETA_SYNC](BETA_SYNC_POLICY.md)) |
 | M0.4 | Decidere traccia post-M3 | Renato | Produzione diretta **oppure** closed 1.3 breve |
-| M0.5 | Preparare listing IT/EN + screenshot aggiornati | Renato (+ bozze agent) | `docs/play/`; EN: `store-listing-en.md` |
+| M0.5 | Preparare listing IT/EN + screenshot aggiornati | Renato (+ bozze agent) | Bozze: `docs/play/store-listing-it.md`, `store-listing-en.md`; screenshot EN ancora Renato |
 | M0.6 | **Non** caricare flavor `famiglia` / `.famiglia` su Play | Tutti | C8 |
 
 ### 1.2 Giorno M3 — git / binario (dettaglio operativo)
@@ -214,7 +214,8 @@ Fine test Play
 | [PROMEMORIA_INTERVENTI_TRASVERSALI.md](PROMEMORIA_INTERVENTI_TRASVERSALI.md) | Checklist + backlog |
 | `docs/Nota_Integrata_9.2.docx` | Roadmap ufficiale + 4.19–4.23 |
 | `docs/play/README.md` | AAB e asset |
-| `docs/play/store-listing-en.md` | Bozza listing EN |
+| `docs/play/store-listing-it.md` | Bozza listing IT (M3 / 1.3) |
+| `docs/play/store-listing-en.md` | Bozza listing EN (M3 / 1.3) |
 | [PROMPT_CONTINUITA_07_09_DISCO_FOTO.md](PROMPT_CONTINUITA_07_09_DISCO_FOTO.md) | Storico analisi P2 / Disco |
 | [PROMPT_CONTINUITA_M.md](../multilingua/PROMPT_CONTINUITA_M.md) | Filone EN (chiuso; utile smoke M3) |
 
