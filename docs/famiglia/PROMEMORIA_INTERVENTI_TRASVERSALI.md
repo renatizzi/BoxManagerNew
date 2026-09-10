@@ -90,7 +90,7 @@ Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino
 
 | ID | Data | Indicazione | Stato |
 |----|------|-------------|-------|
-| **B-ROTATE-FORM-DRAFT** | 10/09/2026 | In inserimento dati (qualsiasi elemento) la stringa digitata **sparisce** se, prima della conferma, si ruota lo schermo. | **Aperto** — verificato in codice: `AlertDialog` effimeri + recreate Activity (niente `configChanges` / draft in ViewModel). Colpisce add/edit box, oggetto, categoria, luogo (+ altri dialog testo). Eccezione: username Impostazioni (salva a ogni keystroke). Non implementare senza SI |
+| **B-ROTATE-FORM-DRAFT** | 10/09/2026 | In inserimento dati (qualsiasi elemento) la stringa digitata **sparisce** se, prima della conferma, si ruota lo schermo. | **Da risolvere** — SI Renato 10/09 (necessario fix). **Standby** fino a ripresa attività implementative **dopo fine test Play** (con M3 / apertura codice). Non implementare ora. Verificato: `AlertDialog` effimeri + recreate Activity; colpisce add/edit box, oggetto, categoria, luogo (+ dialog testo affini). Eccezione: username Impostazioni |
 | **B-PIANO-RILASCIO-RP** | 08/09/2026 | Piano strutturato: rilascio funzioni già implementate; Play Console; Roadmap ufficiale; priorità/premium; verifica Nota vs analisi. | **CONVALIDATO** — Nota 9.2 quadro 08/09 + Allegati **4.21**+**4.23** (SI aggiornamento Nota 08/09) |
 | **B-QTY-KPI-SEARCH** | 08/09/2026 | Quantità oggetti (facoltativa) come **chiave** per nuovi KPI e nuove query Ricerca avanzata. | **CONGELATO** — [REQUISITI_QTY_KPI_SEARCH.md](REQUISITI_QTY_KPI_SEARCH.md); zero codice finché SI apertura |
 
