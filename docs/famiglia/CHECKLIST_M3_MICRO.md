@@ -21,21 +21,21 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 | A5 | Bozze listing IT/EN | Agente | **FATTO** | `docs/play/store-listing-*.md` |
 | A6 | Sync fix Play `main` → sviluppo | Agente | **FATTO** | Nessun fix pendente |
 | A7 | Smoke build sviluppo (EN, condiviso, Disco, Backup) | Renato | **FATTO** | **CONVALIDATO** SI Renato 10/09/2026 |
-| A8 | Screenshot Store (almeno 1 UI EN / lingua) | Renato | **IN AGGREGATO A10** | Spec sotto |
-| A9 | Traccia post-M3 | Agente (delega) | **DECISO** | **Breve closed 1.3** → poi produzione (vedi A10) |
+| A8 | Screenshot Store (almeno 1 UI EN / lingua) | Renato | **IN A10** | Da fare quando comodo (prima di B8) |
+| A9 | Traccia post-M3 | Agente (delega) | **FATTO** | Breve closed 1.3 → produzione |
+| A10 | Aggregato prep restante | Renato | **FATTO** | **OK** SI Renato 10/09/2026 |
 
-### Aggregato **A10** — piano prep restante (un solo OK Renato)
+### Aggregato **A10** — CHIUSO (OK Renato 10/09)
 
-Decisione agente (delega 10/09):
+1. **Traccia:** breve closed 1.3 → produzione — **OK**  
+2. **Screenshot:** 1 UI EN (+ opz. Utility), senza dati personali — da scattare prima dell’upload scheda  
+3. **A4:** non chiudere il closed 1.2 sotto 12 tester / prima di 14 giorni — **OK**
 
-1. **Traccia:** dopo cutover, **breve test chiuso sulla 1.3** (stessi tester / pochi giorni), poi promozione in produzione. Motivo: novità ampie (EN, condiviso, Disco); i 14 giorni della 1.2 servono all’accesso produzione, non sostituiscono una prova corta della 1.3.  
-2. **Screenshot da preparare (Renato, quando comodo):**  
-   - uno con UI **inglese** (o Impostazioni → lingua)  
-   - uno Utility / novità se utile (senza dati personali)  
-   - restano validi icona + feature graphic + shot già in `docs/play/`  
-3. **In parallelo:** lasciare correre A4 fino a **14/14** (non chiudere il closed 1.2 sotto i 12 tester).
+### Prossimo aggregato **A11** — runbook giorno M3 (solo docs, un OK)
 
-**Esito atteso da Renato:** `A10 OK` (accetta aggregato) oppure nota solo se un punto non è fattibile.
+Testo operativo: [RUNBOOK_M3_GIORNO.md](RUNBOOK_M3_GIORNO.md).  
+Poi tu: **`A11 OK`**.  
+In parallelo resta solo **A4** (14/14 Google).
 
 ### A7 — CHIUSO (CONVALIDATO 10/09)
 
@@ -77,6 +77,6 @@ Decisione agente (delega 10/09):
 
 ## Prossimo passo proposto
 
-**Chiuso:** A7.  
-**Aperto per un solo OK:** aggregato **A10** (traccia = breve closed 1.3 + cosa serve di screenshot + non toccare i 14 giorni).  
-In parallelo: **A4** Google.
+**Chiuso:** A10 OK.  
+**Aperto:** aggregato **A11** — runbook giorno M3 (docs).  
+**In parallelo:** A4 fino a 14/14.
