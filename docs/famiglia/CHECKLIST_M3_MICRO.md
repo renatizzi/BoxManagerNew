@@ -18,13 +18,13 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 | A4 | Check Console: giorni test chiuso | Renato+Google | **IN CORSO** | 12 tester, **11/14** giorni — mancano ~3 |
 | A5 | Bozze listing IT/EN | Agente | **FATTO** | `docs/play/store-listing-*.md` |
 | A6 | Sync fix Play `main` → sviluppo | Agente | **FATTO** | Nessun fix pendente |
-| A7 | Smoke build sviluppo (EN, condiviso, Disco, Backup) | Renato | **IN CORSO** | Device; checklist sotto § A7 |
+| A7 | Smoke build sviluppo (EN, condiviso, Disco, Backup) | Renato | **FATTO** | **CONVALIDATO** SI Renato 10/09/2026 |
 | A8 | Screenshot Store (almeno 1 UI EN / lingua) | Renato | **ATTESA Renato** | Senza dati personali |
-| A9 | Decidere traccia post-M3 | Renato | **ATTESA Renato** | Produzione diretta **oppure** breve closed 1.3 |
+| A9 | Decidere traccia post-M3 | Renato | **PROSSIMO** | Produzione diretta **oppure** breve closed 1.3 |
 
-**Prossimo aperto:** **A7** (questa sezione).
+**Ultimo chiuso:** A7. **Proposto ora:** **A9** (una sola scelta, senza device). In alternativa A8 se preferisci fare prima gli screenshot.
 
-### A7 — cosa fare sul telefono (build sviluppo)
+### A7 — cosa fare sul telefono (build sviluppo) — CHIUSO
 
 Installazione tipica: `INSTALLA_FAMIGLIA.bat` oppure `./gradlew :app:installFamigliaDebug`.  
 Topbar attesa: tipo **1.3-famigliaB5.24** (etichetta di build).
@@ -36,10 +36,7 @@ Topbar attesa: tipo **1.3-famigliaB5.24** (etichetta di build).
 | 3 | Impostazioni → **Disco di rete** | Si apre il dialogo (Installa/Apri CIFS) |
 | 4 | Utility → **Backup Archivio** | Parte il flusso / Sfoglia cartella senza crash |
 
-Opzionale breve: torna lingua **Italiano**.
-
-**Esito:** rispondi con `A7 OK` oppure `A7 KO` + quale riga (1–4) e cosa hai visto.  
-Poi aggiorniamo la checklist.
+**Esito:** **A7 CONVALIDATO** SI Renato 10/09/2026.
 
 ---
 
@@ -75,7 +72,6 @@ Poi aggiorniamo la checklist.
 
 ## Prossimo passo proposto
 
-**Ora:** chiudi **A7** (smoke) **oppure** **A9** (scelta traccia).  
-**In parallelo:** aspetta **A4** (14 giorni Google) — non si accelera.
-
-Dimmi quale micro-step apriamo per primo (A7 / A9 / A8), e lo marchiamo **PROSSIMO** / **IN CORSO**.
+**Aperto:** **A7** smoke — Renato sul device (tabella § A7).  
+In parallelo resta **A4** (14 giorni Google).  
+Dopo A7: A8 o A9.
