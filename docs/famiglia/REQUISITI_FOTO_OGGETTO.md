@@ -117,7 +117,7 @@ Al salvataggio (galleria o scatto), pipeline obbligatoria:
 
 ### T6 — Fuori scope di questa voce
 - Foto sui **contenitori**
-- Vision / ML / cerca per immagine
+- Vision / ML / cerca per immagine *(nel perimetro congelato 07/09; idea OCR cover → §6, da approfondire)*
 - Foto in Esporta vista / stampa A4 (salvo SI successivo)
 - Obbligatorietà foto in censimento
 - BLOB immagini in SQLite / CSV
@@ -156,3 +156,28 @@ Per nuove funzionalità / requisiti (come questa voce) — **4 fasi**:
 4. **AGGIORNAMENTO DOCUMENTO** — scrittura/congelamento; chiusura con **CONVALIDA dell’aggiornamento del documento**  
 
 Vedi anche [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) § Processo analisi · [PROMPT continuità 07/09](PROMPT_CONTINUITA_07_09_DISCO_FOTO.md).
+
+---
+
+## 6. Idea correlata — OCR locale sulla cover (annotata 10/09/2026, da approfondire)
+
+**Stato:** solo **idea** (SI Renato 10/09: annotare qui; barcode scartato perché offline inutile senza catalogo).  
+**Non** fa parte dei requisiti congelati R1–R6 / T1–T8. **Non** apre codice. Quando si aprirà la fetta Foto (dopo QR avanzato + Cestino), approfondire con processo 4 fasi e SI esplicito (toccherebbe anche il “niente ML” del §1).
+
+### Intento
+In fase di **censimento**, ridurre il lavoro di digitazione: dalla stessa occasione dello scatto foto oggetto, ricavare una **proposta di testo** (nome/descrizione) da confermare.
+
+### Schema concordato in chat (10/09)
+1. Scatto (o frame) **ad alta definizione** solo temporaneo  
+2. **OCR locale on-device** (niente internet obbligatorio) sulla cover/etichetta  
+3. Utente **conferma/corregge** il testo nei campi oggetto  
+4. Si conserva solo la **mini** (policy T2 / thumb-display) per lista e scheda  
+5. L’immagine HD **non** resta in archivio né in Backup  
+
+«Due piccioni con una fava»: un gesto → supporto visivo (mini) + aiuto compilazione testo (OCR).
+
+### Da chiarire al momento dell’analisi
+- Qualità OCR su packaging reali; solo nome vs nome+descrizione  
+- Premium (allineamento R6) sì/no  
+- Galleria vs solo scatto; lingua/mixed text  
+- Revisione esplicita del fuori-scope «niente ML» se si conferma l’OCR
