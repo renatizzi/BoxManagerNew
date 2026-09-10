@@ -2,7 +2,9 @@
 
 **Aggiornato:** 10/09/2026.  
 **Ingresso:** [PROMPT_CONTINUITA_M3_MERGE_PLAY.md](PROMPT_CONTINUITA_M3_MERGE_PLAY.md).  
-**Modo:** un micro-step (o piccolo aggregato) alla volta; stato sempre aggiornato qui.
+**Modo:** micro-step (o aggregato stessa natura); stato sempre aggiornato qui.
+
+**Delega (SI Renato 10/09/2026):** su priorità, impatto, traccia release e scelte “di piano” decide l’agente; Renato dà **un solo OK** sull’aggregato. Non chiedere OK su singole opzioni che richiedono giudizio tecnico/di prodotto che preferisce delegare. Renato resta su: smoke device, screenshot, azioni Console/AAB sul suo PC, SI su merito requisiti/codice quando previsto.
 
 Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · **PROSSIMO** · **BLOCCATO** · **DOPO**
 
@@ -19,24 +21,27 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 | A5 | Bozze listing IT/EN | Agente | **FATTO** | `docs/play/store-listing-*.md` |
 | A6 | Sync fix Play `main` → sviluppo | Agente | **FATTO** | Nessun fix pendente |
 | A7 | Smoke build sviluppo (EN, condiviso, Disco, Backup) | Renato | **FATTO** | **CONVALIDATO** SI Renato 10/09/2026 |
-| A8 | Screenshot Store (almeno 1 UI EN / lingua) | Renato | **ATTESA Renato** | Senza dati personali |
-| A9 | Decidere traccia post-M3 | Renato | **PROSSIMO** | Produzione diretta **oppure** breve closed 1.3 |
+| A8 | Screenshot Store (almeno 1 UI EN / lingua) | Renato | **IN AGGREGATO A10** | Spec sotto |
+| A9 | Traccia post-M3 | Agente (delega) | **DECISO** | **Breve closed 1.3** → poi produzione (vedi A10) |
 
-**Ultimo chiuso:** A7. **Proposto ora:** **A9** (una sola scelta, senza device). In alternativa A8 se preferisci fare prima gli screenshot.
+### Aggregato **A10** — piano prep restante (un solo OK Renato)
 
-### A7 — cosa fare sul telefono (build sviluppo) — CHIUSO
+Decisione agente (delega 10/09):
 
-Installazione tipica: `INSTALLA_FAMIGLIA.bat` oppure `./gradlew :app:installFamigliaDebug`.  
-Topbar attesa: tipo **1.3-famigliaB5.24** (etichetta di build).
+1. **Traccia:** dopo cutover, **breve test chiuso sulla 1.3** (stessi tester / pochi giorni), poi promozione in produzione. Motivo: novità ampie (EN, condiviso, Disco); i 14 giorni della 1.2 servono all’accesso produzione, non sostituiscono una prova corta della 1.3.  
+2. **Screenshot da preparare (Renato, quando comodo):**  
+   - uno con UI **inglese** (o Impostazioni → lingua)  
+   - uno Utility / novità se utile (senza dati personali)  
+   - restano validi icona + feature graphic + shot già in `docs/play/`  
+3. **In parallelo:** lasciare correre A4 fino a **14/14** (non chiudere il closed 1.2 sotto i 12 tester).
 
-| # | Prova | OK se… |
+**Esito atteso da Renato:** `A10 OK` (accetta aggregato) oppure nota solo se un punto non è fattibile.
+
+### A7 — CHIUSO (CONVALIDATO 10/09)
+
+| # | Prova | Esito |
 |---|--------|--------|
-| 1 | Impostazioni → lingua **English** | UI in inglese (menu/etichette) |
-| 2 | Utility → **Condividi Archivio** | Si apre la pagina Invia/Ricevi (niente crash) |
-| 3 | Impostazioni → **Disco di rete** | Si apre il dialogo (Installa/Apri CIFS) |
-| 4 | Utility → **Backup Archivio** | Parte il flusso / Sfoglia cartella senza crash |
-
-**Esito:** **A7 CONVALIDATO** SI Renato 10/09/2026.
+| 1–4 | EN, Condividi Archivio, Disco, Backup | **OK** SI Renato |
 
 ---
 
@@ -72,6 +77,6 @@ Topbar attesa: tipo **1.3-famigliaB5.24** (etichetta di build).
 
 ## Prossimo passo proposto
 
-**Aperto:** **A7** smoke — Renato sul device (tabella § A7).  
-In parallelo resta **A4** (14 giorni Google).  
-Dopo A7: A8 o A9.
+**Chiuso:** A7.  
+**Aperto per un solo OK:** aggregato **A10** (traccia = breve closed 1.3 + cosa serve di screenshot + non toccare i 14 giorni).  
+In parallelo: **A4** Google.

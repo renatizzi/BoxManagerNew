@@ -46,7 +46,7 @@ Obiettivo: a **test chiuso**, una sola ufficiale Play = contenuto sviluppo (clas
 | M0.1 | Congelare elenco **classe I** da portare | Agente + Renato | Vedi §3 roadmap sotto |
 | M0.2 | Smoke su build sviluppo (`assembleFamigliaDebug`) | Renato device | Archivio condiviso, EN, Disco, Backup/CSV |
 | M0.3 | Sync eventuali fix bloccanti da `main` → branch sviluppo | Agente | Solo se ci sono stati fix Play ([BETA_SYNC](BETA_SYNC_POLICY.md)) |
-| M0.4 | Decidere traccia post-M3 | Renato | Produzione diretta **oppure** closed 1.3 breve |
+| M0.4 | Decidere traccia post-M3 | Agente (delega 10/09) | **DECISO:** breve closed 1.3 → poi produzione ([CHECKLIST_M3_MICRO](CHECKLIST_M3_MICRO.md) A9/A10) |
 | M0.5 | Preparare listing IT/EN + screenshot aggiornati | Renato (+ bozze agent) | Bozze: `docs/play/store-listing-it.md`, `store-listing-en.md`; screenshot EN ancora Renato |
 | M0.6 | **Non** caricare flavor `famiglia` / `.famiglia` su Play | Tutti | C8 |
 
@@ -212,7 +212,8 @@ Fine test Play
 2. Se test **ancora aperto**: niente merge feature su `main`; niente AAB sviluppo su Play; ammessi docs / preparazione listing.  
 3. Se test **chiuso** + SI M3: eseguire §1.2; poi aggiornare Promemoria/Nota solo con SI.  
 4. Codice P2 solo con SI «apri fetta codice» e sequenza §3.5.  
-5. Processo analisi 4 fasi resta obbligatorio per nuove voci.
+5. Processo analisi 4 fasi resta obbligatorio per nuove voci.  
+6. **Delega piano (SI 10/09):** priorità/impatto/traccia → decide l’agente; Renato OK unico su aggregati ([CHECKLIST_M3_MICRO](CHECKLIST_M3_MICRO.md)).
 
 ---
 
