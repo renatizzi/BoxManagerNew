@@ -31,11 +31,11 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 2. **Screenshot:** Dashboard IT + EN consegnati 10/09 → `04_dashboard_it.png` / `05_dashboard_en.png` (**A8 FATTO**)  
 3. **A4:** non chiudere il closed 1.2 sotto 12 tester / prima di 14 giorni — **OK**
 
-### Prossimo aggregato **A11** — runbook giorno M3 (solo docs, un OK)
+### Prossimo aggregato **A11** — runbook giorno M3 — **FATTO**
 
-Testo operativo: [RUNBOOK_M3_GIORNO.md](RUNBOOK_M3_GIORNO.md).  
-Poi tu: **`A11 OK`**.  
-In parallelo resta solo **A4** (14/14 Google).
+**A11 OK** SI Renato 10/09/2026. Testo: [RUNBOOK_M3_GIORNO.md](RUNBOOK_M3_GIORNO.md).  
+**Vincolo aggiunto:** nell’ufficiale sparisce **family/famiglia** (topbar, package, testi utente).  
+In parallelo resta **A4** (14/14 Google). Poi aggregato **B**.
 
 ### A7 — CHIUSO (CONVALIDATO 10/09)
 
@@ -77,6 +77,6 @@ In parallelo resta solo **A4** (14/14 Google).
 
 ## Prossimo passo proposto
 
-**Chiuso:** A10 OK.  
-**Aperto:** aggregato **A11** — runbook giorno M3 (docs).  
-**In parallelo:** A4 fino a 14/14.
+**Chiuso:** A11 OK (+ vincolo anti-family in UI ufficiale).  
+**In attesa:** **A4** 14/14 Google.  
+**Poi:** aggregato **B** (codice M3) con un solo OK.

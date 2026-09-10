@@ -58,7 +58,8 @@ Obiettivo: a **test chiuso**, una sola ufficiale Play = contenuto sviluppo (clas
 | M1 | Chiudere / promuovere il test chiuso 1.2 | Console — C1; secondo esito Google e scelta Renato |
 | M2 | Aggiornare branch integrazione sviluppo | Partire dalla catena sviluppo vigente (non da `main` “vuoto”); includere Disco, M, B5.24, correttivi |
 | M3 | Portare su linea **play** / `main` il codice classe I | Merge controllato sviluppo → `main` (o release branch) **solo a test chiuso** + SI Console; flavor **play**, `applicationId` `it.renatizzi.boxmanager`, **senza** `FAMILY_BETA` se non previsto in release ufficiale |
-| M4 | Alzare `versionCode` (> ultimo Play) e `versionName` (es. **1.3**) | C3 — topbar ufficiale, non etichetta `1.3-famigliaB5.x` |
+| M4 | Alzare `versionCode` (> ultimo Play) e `versionName` (es. **1.3**) | C3 — topbar ufficiale **1.3**, **mai** etichetta `1.3-famigliaB5.x` |
+| M4b | Testi utente senza «family/famiglia» | SI 10/09 — copy Condividi Archivio / Guida → archivio condiviso / household; id codice `family_*` ok se non visibili |
 | M5 | Generare AAB **release** flavor **play** | Keystore locale PC; `docs/play/README.md` — C2 |
 | M6 | Upload AAB sulla traccia scelta | C4 |
 | M7 | Aggiornare scheda Store | Icona, feature graphic, screenshot, testi IT/EN — C5/C6 |
