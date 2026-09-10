@@ -86,6 +86,10 @@ object ArchivioCompletoCopy {
                 context.getString(R.string.premium_feature_import)
             PremiumFeature.EXPORT ->
                 context.getString(R.string.premium_feature_export)
+            PremiumFeature.NETWORK_DRIVE ->
+                context.getString(R.string.premium_feature_network_drive)
+            PremiumFeature.ARCHIVE_SHARE ->
+                context.getString(R.string.premium_feature_archive_share)
         }
     }
 
@@ -138,6 +142,26 @@ object ArchivioCompletoCopy {
                     ),
                     example = context.getString(
                         R.string.premium_pitch_export_example
+                    )
+                )
+
+            PremiumFeature.NETWORK_DRIVE ->
+                FeaturePitch(
+                    lead = context.getString(
+                        R.string.premium_pitch_network_drive_lead
+                    ),
+                    example = context.getString(
+                        R.string.premium_pitch_network_drive_example
+                    )
+                )
+
+            PremiumFeature.ARCHIVE_SHARE ->
+                FeaturePitch(
+                    lead = context.getString(
+                        R.string.premium_pitch_archive_share_lead
+                    ),
+                    example = context.getString(
+                        R.string.premium_pitch_archive_share_example
                     )
                 )
         }
