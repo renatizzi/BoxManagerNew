@@ -1,6 +1,7 @@
 # Requisiti — Piano rilascio / Play Console / Roadmap / Premium / Nota (B-PIANO-RILASCIO-RP)
 
 **Stato:** **CONGELATO** 08/09/2026 (SI Renato).  
+**Aggiornamento premium 10/09/2026 (SI Renato):** principio post-1.2 = premium salvo eccezioni free (IT/EN, Dark, fix, Guida); **Disco di rete = premium** (correzione della dicitura «Disco in base free»).  
 **CONVALIDA analisi/requisiti (passo 3):** SI Renato 08/09/2026 — «Convalido RP-Q1–Q8» (tutte come raccomandato).  
 **CONVALIDA aggiornamento documento (passo 4):** SI Renato 08/09/2026 («Convalido documento»).  
 **Uso:** piano operativo fino a fine test Play e ai primi rilasci post-test; guida al recepimento Nota/Roadmap.  
@@ -20,8 +21,10 @@
 | Prima di nuovo filone feature | **Recepimento Nota / Roadmap** (documentazione), non nuova feature |
 | Priorità codice post-Play | **M3** → **A1 → A2 → A3 → B–C**; **D** no-code; **B-QTY** dopo |
 | Premium linea P2 | **Sì** — A1, A2, A3, B–C, D (se codice), B-QTY = **Archivio completo** |
-| Eccezioni premium | **Nessuna** in questa chiusura |
-| Base free (4.19) | Invariata (CRUD, ricerca semplice, Backup, stampa, Disco, …) |
+| Principio post-1.2 | Funzioni nuove dopo la 1.2 = **premium** (Archivio completo), salvo eccezioni sotto |
+| Eccezioni free (SI 10/09/2026) | **Scelta lingua IT/EN**; **Dark**; **fix/correttivi**; **Guida** / usabilità base |
+| Premium anche (classe I) | **Archivio condiviso**; **Disco di rete** (supporto condivisione — SI 10/09: non free); ricerca avanzata / QR / Import / Export = già 4.19 |
+| Base free (4.19) | CRUD/anagrafiche, ricerca semplice, Backup, stampa (+ eccezioni free sopra). **Non** include Disco |
 
 ---
 
@@ -110,9 +113,11 @@ Patch: `docs/_patch_nota_9_2_recepimento_rp.py` su `docs/Nota_Integrata_9.2.docx
 
 ## 6. Premium
 
-- Linea **Progetto 2** (A1, A2, A3, B–C, D se un giorno codice, B-QTY) = **Archivio completo**, stesse condizioni di accesso vigenti (Allegato 4.19).  
-- **Nessuna eccezione** in questa chiusura.  
-- Base free invariata (4.19): anagrafiche, ricerca semplice, Backup, stampa, Disco di rete, ecc.
+- **Principio (SI Renato 10/09/2026):** dopo la 1.2, le funzionalità nuove = **Archivio completo**, salvo eccezioni free esplicite.  
+- Linea **Progetto 2** (A1, A2, A3, B–C, D se un giorno codice, B-QTY) = **Archivio completo** (Allegato 4.19).  
+- **Classe I premium:** archivio condiviso; **Disco di rete** (supporto alla condivisione — correzione 10/09: la dicitura «Disco in base free» in RP/4.23 era errata). Gate codice Disco: allineare ad Archivio completo al cutover M3.  
+- **Eccezioni free (SI 10/09):** scelta lingua IT/EN; Dark; fix/correttivi; Guida / usabilità base.  
+- Base free 4.19 resta: anagrafiche, ricerca semplice, Backup, stampa (+ eccezioni free).
 
 ---
 

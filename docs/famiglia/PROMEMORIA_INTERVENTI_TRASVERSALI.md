@@ -92,6 +92,7 @@ Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino
 | ID | Data | Indicazione | Stato |
 |----|------|-------------|-------|
 | **B-ROTATE-FORM-DRAFT** | 10/09/2026 | In inserimento dati (qualsiasi elemento) la stringa digitata **sparisce** se, prima della conferma, si ruota lo schermo. | **Da risolvere** — SI Renato 10/09 (necessario fix). **Standby** fino a ripresa attività implementative **dopo fine test Play** (con M3 / apertura codice). Non implementare ora. Verificato: `AlertDialog` effimeri + recreate Activity; colpisce add/edit box, oggetto, categoria, luogo (+ dialog testo affini). Eccezione: username Impostazioni |
+| **B-PREMIUM-POST-12** | 10/09/2026 | Principio: post-1.2 = premium salvo eccezioni. **Free:** IT/EN, Dark, fix, Guida. **Premium:** archivio condiviso + **Disco di rete** (correzione: non free). | **SI Renato 10/09** — docs RP/ingresso M3 aggiornati; gate codice Disco a M3; patch Nota 4.23 |
 | **B-PIANO-RILASCIO-RP** | 08/09/2026 | Piano strutturato: rilascio funzioni già implementate; Play Console; Roadmap ufficiale; priorità/premium; verifica Nota vs analisi. | **CONVALIDATO** — Nota 9.2 quadro 08/09 + Allegati **4.21**+**4.23** (SI aggiornamento Nota 08/09) |
 | **B-QTY-KPI-SEARCH** | 08/09/2026 | Quantità oggetti (facoltativa) come **chiave** per nuovi KPI e nuove query Ricerca avanzata. | **CONGELATO** — [REQUISITI_QTY_KPI_SEARCH.md](REQUISITI_QTY_KPI_SEARCH.md); zero codice finché SI apertura |
 

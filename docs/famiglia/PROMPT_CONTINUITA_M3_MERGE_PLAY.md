@@ -164,7 +164,18 @@ Build tipica sviluppo al 10/09: **1.3-famigliaB5.24** / vc **1343** (etichetta, 
 | B-QTY KPI/query | `REQUISITI_QTY_KPI_SEARCH.md` | Dopo B–C |
 | Piano rilascio RP | `REQUISITI_PIANO_RILASCIO_ROADMAP.md` | Guida M3/R2 |
 
-Premium linea P2 = **Archivio completo** (nessuna eccezione in chiusura RP).
+### 3.2bis Premium / free (SI Renato 10/09/2026)
+
+**Principio:** dopo la 1.2 → **premium** (Archivio completo), salvo eccezioni.
+
+| Free | Premium (tra le già fatte / in coda) |
+|------|--------------------------------------|
+| Scelta lingua **IT/EN** | Archivio condiviso |
+| **Dark** | **Disco di rete** (non free — correzione vs RP/4.23) |
+| Fix / correttivi | Ricerca avanzata, QR, Import/Export (già 4.19) |
+| Guida / usabilità base | Progetto 2 intero (A1→…→B-QTY) |
+
+Gate codice Disco → Archivio completo: da allineare al **M3** (oggi UI Impostazioni senza gate).
 
 ### 3.3 Standby correttivo (post-test)
 

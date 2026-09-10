@@ -21,7 +21,7 @@ Simple search filters the current list as you type. Advanced archive search (tri
 
 Choose the app language in Settings (Italian or English). Your object and container names stay exactly as you write them—BoxManager does not auto-translate your data.
 
-Backup and restore your archive, import and export CSV, and print or share a view. Optional archive sharing lets people in the same household keep catalogs and inventories aligned. You can also save Backup and CSV files to a network folder (CIFS / mapped drive) when your device can reach it.
+Backup and restore your archive, import and export CSV, and print or share a view. Optional archive sharing (Full Archive) lets people in the same household keep catalogs and inventories aligned. With Full Archive you can also save Backup and CSV files to a network folder (CIFS / mapped drive) when your device can reach it.
 
 Designed for personal and household use.
 
@@ -32,7 +32,7 @@ What’s new in this release:
 - App language: Italian and English (Settings)
 - Advanced search understands English questions (same archive pipeline as Italian)
 - Shared household archive
-- Network disk (CIFS) for Backup / CSV
+- Network disk (CIFS) for Backup / CSV — with Full Archive
 - Bug fixes and stability improvements
 
 ## Notes for Console
