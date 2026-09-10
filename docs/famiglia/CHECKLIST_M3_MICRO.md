@@ -34,7 +34,7 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 ### Prossimo aggregato **A11** — runbook giorno M3 — **FATTO**
 
 **A11 OK** SI Renato 10/09/2026. Testo: [RUNBOOK_M3_GIORNO.md](RUNBOOK_M3_GIORNO.md).  
-**Vincolo aggiunto:** nell’ufficiale sparisce **family/famiglia** (topbar, package, testi utente).  
+**Identità:** una BoxManager → **1.3** su `main`; «family» = solo tecnico (flavor/branch), **non** censura testi guida/messaggi.  
 In parallelo resta **A4** (14/14 Google). Poi aggregato **B**.
 
 ### A7 — CHIUSO (CONVALIDATO 10/09)
@@ -77,6 +77,6 @@ In parallelo resta **A4** (14/14 Google). Poi aggregato **B**.
 
 ## Prossimo passo proposto
 
-**Chiuso:** A11 OK (+ vincolo anti-family in UI ufficiale).  
+**Chiuso:** A11 OK (identità: una app → 1.3 su `main`; family = tecnico, non censura copy).  
 **In attesa:** **A4** 14/14 Google.  
 **Poi:** aggregato **B** (codice M3) con un solo OK.
