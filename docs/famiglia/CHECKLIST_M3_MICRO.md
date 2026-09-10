@@ -55,5 +55,6 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 ## Prossimo
 
 **Fatto ora:** B-prep codice.  
+**Smoke gate device:** rinviato a **subito prima** di chiudere A4 / cutover.  
 **In attesa:** **A4** → 14/14 giorni Google.  
 **Poi:** B5–B9 (merge/`main`/AAB/closed 1.3) con un solo OK quando i giorni sono completi.
