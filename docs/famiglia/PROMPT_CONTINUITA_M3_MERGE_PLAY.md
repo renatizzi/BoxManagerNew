@@ -226,4 +226,4 @@ Scritto su richiesta Renato 10/09/2026 (prompt continuità M3 / distribuzione / 
 Allineato a decisioni **già CONVALIDATE** (RP + Strategia + Nota 9.2).  
 Se Renato chiede CONVALIDA formale di **questo** testo come ingresso sessione: annotare SI qui sotto.
 
-**CONVALIDA ingresso (passo documento):** _in attesa SI Renato_
+**CONVALIDA ingresso (passo documento):** SI Renato 10/09/2026 («testo convalidato»).
