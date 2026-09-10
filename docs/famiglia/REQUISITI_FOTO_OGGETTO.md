@@ -14,7 +14,7 @@
 
 Fornire un **supporto visivo del contenuto**: una foto **opzionale** per ogni **oggetto**, così da riconoscerlo in lista e in dettaglio.  
 I **contenitori** restano identificati dal **QR** (fuori da questa voce).  
-Niente riconoscimento automatico / vision / ML / cerca-per-immagine.
+Niente riconoscimento automatico / vision / ML / cerca-per-immagine **nel perimetro congelato 07/09** (vedi §6 idea OCR correlata — da approfondire in seguito, non attiva ora).
 
 ---
 
