@@ -2,6 +2,7 @@
 
 **Ingresso unico** per la sessione post-test (o preparazione immediata pre-cutover).  
 **Data bozza:** 10/09/2026.  
+**Avanzamento a micro-step:** [CHECKLIST_M3_MICRO.md](CHECKLIST_M3_MICRO.md) (stato vivo).  
 **Fonti vincolanti (già CONVALIDATE — non rivotare):**
 
 | Fonte | Ruolo |
