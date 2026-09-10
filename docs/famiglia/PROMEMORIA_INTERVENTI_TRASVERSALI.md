@@ -1,7 +1,9 @@
 # Promemoria — interventi trasversali (BoxManager)
 
-**Aggiornato:** 07/09/2026.  
+**Aggiornato:** 10/09/2026.  
 Ingresso sessione 07/09 → [PROMPT_CONTINUITA_07_09_DISCO_FOTO.md](PROMPT_CONTINUITA_07_09_DISCO_FOTO.md).  
+**Ingresso M3 / merge Play / roadmap** → [PROMPT_CONTINUITA_M3_MERGE_PLAY.md](PROMPT_CONTINUITA_M3_MERGE_PLAY.md).  
+**Checklist micro-step M3** → [CHECKLIST_M3_MICRO.md](CHECKLIST_M3_MICRO.md).  
 Correttivi → [PROMPT_CONTINUITA_CORRETTIVI.md](PROMPT_CONTINUITA_CORRETTIVI.md).  
 Regola: `.cursor/rules/annotazioni-renato.mdc`.  
 Processo analisi: `.cursor/rules/processo-analisi.mdc`.
@@ -24,11 +26,21 @@ Ingresso sessione 07/09: [PROMPT_CONTINUITA_07_09_DISCO_FOTO.md](PROMPT_CONTINUI
 
 ### Analisi anticipate (zero codice) — Progetto 2
 
-Sequenza concordata A→D. Assessment aperti:
+**Premium trasversale (SI Renato 07/09/2026):** A1 QR avanzato, A2 Cestino, A3 Foto (e la linea Progetto 2 in analisi) = funzionalità **Archivio completo**, soggette alle condizioni di accesso vigenti.
+
+**Policy codice Progetto 2 (chiarito 07/09 sera):** durante il test Play 1.2 resta solo **analisi/documenti**. Niente implementazione A1/A2/A3 finché test chiuso **oppure** SI esplicito del tipo «apri fetta codice». Un «Sì» di conferma documenti **non** apre il codice. (Commit prematuro A1 revertato sul branch lavoro; **WIP conservato** su `cursor/qr-avanzato-wip-parked-8374` @ `f523735` per ripresa dopo Play.)
+
+Sequenza concordata: **A1 QR avanzato → A2 Cestino → A3 Foto** → poi B/C/D. Assessment:
 
 | Voce | Documento | Stato |
 |------|-----------|--------|
-| **A3 Foto oggetto** | [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) (**congelato** + **CONVALIDA documento** 07/09) · [ASSESSMENT_FOTO_MINIATURA.md](ASSESSMENT_FOTO_MINIATURA.md) (storico) | Requisiti + tecnica chiusi; confluire in Nota a implementazione. Codice dopo QR avanzato + Cestino |
+| **A1 QR avanzato** | [REQUISITI_QR_AVANZATO.md](REQUISITI_QR_AVANZATO.md) (**congelato** + CONVALIDA documento 07/09; R10 premium Progetto 2) · [ASSESSMENT_QR_AVANZATO.md](ASSESSMENT_QR_AVANZATO.md) (storico) | Requisiti chiusi; zero codice finché SI apertura fetta. **WIP da recuperare:** branch `cursor/qr-avanzato-wip-parked-8374` @ `f523735` (batch PDF L0/L1, share, B5.25) — **non** in M3 |
+| **A2 Cestino** | [REQUISITI_CESTINO.md](REQUISITI_CESTINO.md) (**congelato** + CONVALIDA documento 07/09) · [ASSESSMENT_CESTINO.md](ASSESSMENT_CESTINO.md) (storico) | Requisiti chiusi; zero codice finché SI apertura fetta |
+| **A3 Foto oggetto** | [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) (**congelato** + CONVALIDA documento 07/09; **R6 + T6bis Premium**) · [ASSESSMENT_FOTO_MINIATURA.md](ASSESSMENT_FOTO_MINIATURA.md) (storico) | Requisiti + tecnica chiusi; codice dopo QR + Cestino |
+| **B–C Export/Import avanzati** | [REQUISITI_EXPORT_IMPORT_AVANZATO.md](REQUISITI_EXPORT_IMPORT_AVANZATO.md) (**congelato** + CONVALIDA documento 08/09) · [ASSESSMENT_EXPORT_IMPORT_AVANZATO.md](ASSESSMENT_EXPORT_IMPORT_AVANZATO.md) | Requisiti chiusi; zero codice finché SI apertura fetta (dopo A1–A3) |
+| **D Dashboard / UI avanzata** | [REQUISITI_DASHBOARD_UI_AVANZATA.md](REQUISITI_DASHBOARD_UI_AVANZATA.md) (**congelato** + CONVALIDA documento 08/09; U0; **no codice**) · [ASSESSMENT_DASHBOARD_UI_AVANZATA.md](ASSESSMENT_DASHBOARD_UI_AVANZATA.md) | Requisiti chiusi; zero codice finché SI apertura |
+| **B-QTY-KPI-SEARCH** | [REQUISITI_QTY_KPI_SEARCH.md](REQUISITI_QTY_KPI_SEARCH.md) (**congelato** + CONVALIDA documento 08/09) · [ASSESSMENT_QTY_KPI_SEARCH.md](ASSESSMENT_QTY_KPI_SEARCH.md) | Requisiti chiusi (K1+K2); zero codice finché SI apertura |
+| **B-PIANO-RILASCIO-RP** | [REQUISITI_PIANO_RILASCIO_ROADMAP.md](REQUISITI_PIANO_RILASCIO_ROADMAP.md) (**congelato**) · Nota 9.2 Allegati **4.21**+**4.23** | **CONVALIDATO** recepimento Nota 08/09; zero codice P2 fino a fine Play |
 
 ---
 
@@ -62,7 +74,7 @@ A test chiuso: M3 — questa BoxManager **sostituisce** la 1.2.
 
 | Voce | Note |
 |------|------|
-| **M3** | Sviluppo → ufficiale al posto della 1.2; screenshot; versionCode; Console |
+| **M3** | Sviluppo → ufficiale al posto della 1.2; screenshot; versionCode; Console — **ingresso:** [PROMPT_CONTINUITA_M3_MERGE_PLAY.md](PROMPT_CONTINUITA_M3_MERGE_PLAY.md) |
 | SMB nativo in BoxManager | **Fuori V1** (resta CIFS esterno) |
 | Voci Roadmap **4.1.6** / Progetto 2 | Dopo Play verde |
 
@@ -80,7 +92,13 @@ Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino
 
 | ID | Data | Indicazione | Stato |
 |----|------|-------------|-------|
-| *(nessuna voce aperta)* | — | — | — |
+| **B-ROTATE-FORM-DRAFT** | 10/09/2026 | In inserimento dati (qualsiasi elemento) la stringa digitata **sparisce** se, prima della conferma, si ruota lo schermo. | **Da risolvere** — SI Renato 10/09 (necessario fix). **Standby** fino a ripresa attività implementative **dopo fine test Play** (con M3 / apertura codice). Non implementare ora. Verificato: `AlertDialog` effimeri + recreate Activity; colpisce add/edit box, oggetto, categoria, luogo (+ dialog testo affini). Eccezione: username Impostazioni |
+| **B-PREMIUM-POST-12** | 10/09/2026 | Principio: post-1.2 = premium salvo eccezioni. **Free:** IT/EN, Dark, fix, Guida. **Premium:** archivio condiviso + **Disco di rete** (correzione: non free). | **SI Renato 10/09** — docs RP/ingresso M3 aggiornati; gate codice Disco a M3; patch Nota 4.23 |
+| **B-IDEA-OCR-COVER** | 10/09/2026 | Idea: OCR locale su scatto HD temporaneo in fase censimento, poi solo mini foto (barcode scartato). Annotata in [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) §6. | **Idea** — approfondire quando si apre fetta A3 Foto; zero codice ora |
+| **B-DELEGA-PIANO** | 10/09/2026 | Su priorità / impatto / traccia release e scelte di piano: decide l’agente; Renato OK unico su aggregati. | **SI Renato 10/09** — in [CHECKLIST_M3_MICRO.md](CHECKLIST_M3_MICRO.md) |
+| **B-NO-FAMILY-UI** | 10/09/2026 | Chiarito: «family» = nome tecnico provvisorio (flavor/branch), non seconda app. Ufficiale = **BoxManager 1.3** su `main`, package senza `.famiglia`, topbar **1.3**. **Non** obbligatorio rimuovere «famiglia/familiari/family» da guida e messaggi in-app. | **SI Renato 10/09 sera** — correzione malinteso; runbook aggiornato |
+| **B-PIANO-RILASCIO-RP** | 08/09/2026 | Piano strutturato: rilascio funzioni già implementate; Play Console; Roadmap ufficiale; priorità/premium; verifica Nota vs analisi. | **CONVALIDATO** — Nota 9.2 quadro 08/09 + Allegati **4.21**+**4.23** (SI aggiornamento Nota 08/09) |
+| **B-QTY-KPI-SEARCH** | 08/09/2026 | Quantità oggetti (facoltativa) come **chiave** per nuovi KPI e nuove query Ricerca avanzata. | **CONGELATO** — [REQUISITI_QTY_KPI_SEARCH.md](REQUISITI_QTY_KPI_SEARCH.md); zero codice finché SI apertura |
 
 **Chiuso di recente:** **B-SEL-CARTELLA** — CONVALIDATO (Nota 9.2 Allegato **4.22**). **Foto oggetto** — CONVALIDA aggiornamento documento 07/09/2026 ([REQUISITI](REQUISITI_FOTO_OGGETTO.md)).
 
@@ -120,7 +138,8 @@ per layout F7 aveva dirottato anche inventari/report degli altri Core.
 | **B-F7-FORMATO-LISTA** | **Fatto** — F7 apre lista contenitori; titolo con `(oggetto)`; card categoria • posizione • data |
 | **B-RICERCA-SENZA-SPECIFICHE** | **Fatto** — stringa vuota su Contenitori/Posizione/Oggetti/Categorie in dashboard; oggetti filtro vuoto = tutti |
 | **B-VOCE-OGGETTO** | **Fatto** — microfono su nome e descrizione in Aggiungi/Modifica oggetto |
-| **M0** | **Fatto** — [store-listing-en.md](../play/store-listing-en.md) |
+| **M0** | **Fatto** — listing EN base (filone M) |
+| **M0.5** | **Bozze** — listing IT/EN M3: [store-listing-it.md](../play/store-listing-it.md), [store-listing-en.md](../play/store-listing-en.md); checklist C1–C8 in [docs/play/README.md](../play/README.md). Screenshot EN / novità: Renato su device |
 
 ---
 

@@ -367,6 +367,8 @@
     <string name="premium_feature_qr_label">Etichetta QR</string>
     <string name="premium_feature_import">Importa dati</string>
     <string name="premium_feature_export">Esporta dati</string>
+    <string name="premium_feature_network_drive">Disco di rete</string>
+    <string name="premium_feature_archive_share">Condividi Archivio</string>
     <string name="premium_pitch_advanced_search_lead">Questa potentissima funzione ti consente di fare ricerche articolate usando il linguaggio naturale.</string>
     <string name="premium_pitch_advanced_search_example">Cosa ho in garage e in cantina?</string>
     <string name="premium_pitch_qr_scan_lead">Con una sola inquadratura apri il contenitore giusto, anche in cantina o in garage, senza cercare a mano.</string>
@@ -377,6 +379,10 @@
     <string name="premium_pitch_import_example">importa in formato CSV il contenuto di un archivio locale gestito su foglio elettronico</string>
     <string name="premium_pitch_export_lead">Insieme a Importa dati, questa funzione ti consente di gestire facilmente archivi già utilizzati sul tuo dispositivo.</string>
     <string name="premium_pitch_export_example">esporta in formato CSV il contenuto parziale o totale del mio archivio su foglio elettronico</string>
+    <string name="premium_pitch_network_drive_lead">Salva Backup e file di archivio su un disco o PC in rete locale (Wi‑Fi di casa), con l’app CIFS consigliata.</string>
+    <string name="premium_pitch_network_drive_example">Backup → Sfoglia → cartella sul NAS</string>
+    <string name="premium_pitch_archive_share_lead">Aggiorna e condividi tabelle e archivio con le persone di casa tramite Invia e Ricevi, senza sostituire Importa/Esporta.</string>
+    <string name="premium_pitch_archive_share_example">Invia Archivio → l’altro dispositivo usa Ricevi Archivio</string>
     <string name="premium_example_prefix"> (Esempio: </string>
     <string name="premium_example_suffix">).</string>
     <string name="premium_share_hint_one">Il periodo di prova di %1$d giorni è terminato. Condividi BoxManager con un amico: ottieni altri %2$d giorni su ricerca avanzata, QR, import ed export.</string>

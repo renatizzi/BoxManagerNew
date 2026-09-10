@@ -90,7 +90,9 @@ class UtilityActivity : BaseActivity() {
         if (BuildConfig.FAMILY_BETA) {
             familyRow.visibility = View.VISIBLE
             familyButton.setOnClickListener {
-                startActivity(
+                ArchivioCompletoNav.start(
+                    this,
+                    PremiumFeature.ARCHIVE_SHARE,
                     Intent(
                         this,
                         FamilyCatalogActivity::class.java

@@ -7,8 +7,18 @@ Una sola app: **BoxManager**. Questi file coprono l’**archivio condiviso** e i
 | [NOTA_B0_MERGE_FAMIGLIA.md](NOTA_B0_MERGE_FAMIGLIA.md) | Modello prodotto e regole merge archivio |
 | [PROMEMORIA_INTERVENTI_TRASVERSALI.md](PROMEMORIA_INTERVENTI_TRASVERSALI.md) | Fix trasversali (igiene file, sync 1.2) |
 | [PROMPT_CONTINUITA_CORRETTIVI.md](PROMPT_CONTINUITA_CORRETTIVI.md) | **Ingresso sessione** — correttivi |
-| [PROMPT_CONTINUITA_07_09_DISCO_FOTO.md](PROMPT_CONTINUITA_07_09_DISCO_FOTO.md) | **Ingresso sessione 07/09** — Disco di rete (chiuso) + Foto congelata + processo 4 fasi |
+| [PROMPT_CONTINUITA_M3_MERGE_PLAY.md](PROMPT_CONTINUITA_M3_MERGE_PLAY.md) | **Ingresso M3:** merge 1.2↔sviluppo, distribuzione Play, roadmap congelata |
+| [PROMPT_CONTINUITA_07_09_DISCO_FOTO.md](PROMPT_CONTINUITA_07_09_DISCO_FOTO.md) | **Ingresso sessione 07/09** — Disco di rete (chiuso) + Foto congelata + processo 4 fasi + A1 QR |
 | [PROMPT_CONTINUITA_B5.md](PROMPT_CONTINUITA_B5.md) | Storico B5 (chiuso) |
+| [ASSESSMENT_QR_AVANZATO.md](ASSESSMENT_QR_AVANZATO.md) | Storico ANALISI/FEEDBACK A1 QR avanzato |
+| [REQUISITI_QR_AVANZATO.md](REQUISITI_QR_AVANZATO.md) | **Congelato:** QR avanzato A1 (batch / A4 preset / share; premium) |
+| [REQUISITI_CESTINO.md](REQUISITI_CESTINO.md) | **Congelato:** Cestino A2 (soft-delete / premium) |
+| [ASSESSMENT_CESTINO.md](ASSESSMENT_CESTINO.md) | Storico ANALISI/FEEDBACK A2 Cestino |
+| [REQUISITI_EXPORT_IMPORT_AVANZATO.md](REQUISITI_EXPORT_IMPORT_AVANZATO.md) | **Congelato:** Export/Import avanzati B–C |
+| [REQUISITI_PIANO_RILASCIO_ROADMAP.md](REQUISITI_PIANO_RILASCIO_ROADMAP.md) | **Congelato:** piano M3/R2, Play Console, Roadmap, premium, gap Nota |
+| [ASSESSMENT_PIANO_RILASCIO_ROADMAP.md](ASSESSMENT_PIANO_RILASCIO_ROADMAP.md) | Storico ANALISI/FEEDBACK piano rilascio |
+| [ASSESSMENT_DASHBOARD_UI_AVANZATA.md](ASSESSMENT_DASHBOARD_UI_AVANZATA.md) | Storico D Dashboard/UI (congelata U0) |
+| [ASSESSMENT_EXPORT_IMPORT_AVANZATO.md](ASSESSMENT_EXPORT_IMPORT_AVANZATO.md) | Storico ANALISI/FEEDBACK B–C |
 | [ASSESSMENT_CORRETTIVI.md](ASSESSMENT_CORRETTIVI.md) | Assessment interventi correttivi (P0–P2) |
 | [STRATEGIA_UNIFICAZIONE.md](STRATEGIA_UNIFICAZIONE.md) | **Congelato:** una BoxManager; 1.2 identica in test; sviluppo = ufficiale a fine test |
 | [BETA_SYNC_POLICY.md](BETA_SYNC_POLICY.md) | Allineare un fix 1.2 sulla copia di sviluppo |
