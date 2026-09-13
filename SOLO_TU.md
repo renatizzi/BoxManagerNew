@@ -48,10 +48,10 @@ git push -u origin cursor/family-b-beta-75ee
 ### B) Prima di caricare su Play (obbligatorio — SI Renato 13/09)
 Stesso processo Run di sempre, ma variante Store:
 1. `git pull origin main`
-2. Build Variants → **`playRelease`**
+2. Build Variants → **`playDebug`**
 3. **Run** sul telefono
 4. Topbar deve essere tipo **`v. 1.3`** (senza `famiglia`)
-5. Solo dopo: crea il file firmato **playRelease** e caricalo su Play Console
+5. Solo dopo: crea il file firmato **playRelease** (Generate Signed App Bundle) e caricalo su Play Console
 6. Completa l’invio della release (non lasciare in bozza)
 
 ## Stop — non fare
