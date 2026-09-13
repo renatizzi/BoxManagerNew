@@ -2,6 +2,7 @@
 
 **Stato:** CONGELATO 07/09/2026 (SI Renato).  
 **CONVALIDA aggiornamento documento:** SI Renato 07/09/2026 (T1 allineamento DB, T3–T5/T8 tracciati file, processo 4 fasi).  
+**Integrazione 07/09/2026:** **R6 Premium** (Progetto 2) — SI Renato in sessione Cestino; non riapre il resto del merito foto.  
 **Uso:** riferimento funzionale e tecnico-architetturale fino all’implementazione Progetto 2.  
 **Destinazione:** confluire nella Nota Integrata ufficiale (Allegato dedicato) senza riaprire il merito.  
 **Assessment di lavoro:** [ASSESSMENT_FOTO_MINIATURA.md](ASSESSMENT_FOTO_MINIATURA.md) (storico analisi; prevale **questo** file su conflitti).  
@@ -13,7 +14,7 @@
 
 Fornire un **supporto visivo del contenuto**: una foto **opzionale** per ogni **oggetto**, così da riconoscerlo in lista e in dettaglio.  
 I **contenitori** restano identificati dal **QR** (fuori da questa voce).  
-Niente riconoscimento automatico / vision / ML / cerca-per-immagine.
+Niente riconoscimento automatico / vision / ML / cerca-per-immagine **nel perimetro congelato 07/09** (vedi §6 idea OCR correlata — da approfondire in seguito, non attiva ora).
 
 ---
 
@@ -49,6 +50,9 @@ Niente riconoscimento automatico / vision / ML / cerca-per-immagine.
 - Finalità: immagini di **oggetti di inventario**, non trattamento di dati personali (volti/documenti come scopo).
 - Conservazione: dispositivo + Backup / pacchetti che l’utente genera; non invio a servizi di analisi immagini.
 - Aggiornare privacy policy / Data safety in fase di implementazione (testo sobrio).
+
+### R6 — Premium (Progetto 2)
+- **SI Renato 07/09/2026:** Foto oggetto è funzionalità **Archivio completo / premium**, come A1 QR avanzato e A2 Cestino. Gate alle azioni foto (aggiungi/scatta/anteprima dedicata se gate UI) secondo le condizioni vigenti; dettaglio enum/pitch in implementazione.
 
 ---
 
@@ -113,10 +117,13 @@ Al salvataggio (galleria o scatto), pipeline obbligatoria:
 
 ### T6 — Fuori scope di questa voce
 - Foto sui **contenitori**
-- Vision / ML / cerca per immagine
+- Vision / ML / cerca per immagine *(nel perimetro congelato 07/09; idea OCR cover → §6, da approfondire)*
 - Foto in Esporta vista / stampa A4 (salvo SI successivo)
 - Obbligatorietà foto in censimento
 - BLOB immagini in SQLite / CSV
+
+### T6bis — Premium (allineamento Progetto 2)
+- Gate **Archivio completo** sulle azioni foto (R6). Stesso vincolo trasversale di A1 QR e A2 Cestino (SI Renato 07/09/2026).
 
 ### T7 — Dipendenze di sequenza
 - Implementare **dopo** QR avanzato e **Cestino** (delete/ripristino oggetto deve gestire i file foto).
@@ -129,7 +136,8 @@ Al salvataggio (galleria o scatto), pipeline obbligatoria:
 2. In lista oggetti: thumb a sinistra; tap → ingrandimento; senza foto → icona fissa.  
 3. Backup → Ripristina: foto presenti.  
 4. Invia Archivio → Ricevi Archivio: foto presenti sugli oggetti corrispondenti per id.  
-5. (Se SI estensione Import/Export ZIP) ciclo Esporta ZIP → Importa ZIP ripristina foto; il solo CSV legacy resta senza foto.
+5. (Se SI estensione Import/Export ZIP) ciclo Esporta ZIP → Importa ZIP ripristina foto; il solo CSV legacy resta senza foto.  
+6. Senza Archivio completo: gate premium sulle azioni foto (R6); nessun bypass.
 
 ---
 
@@ -148,3 +156,28 @@ Per nuove funzionalità / requisiti (come questa voce) — **4 fasi**:
 4. **AGGIORNAMENTO DOCUMENTO** — scrittura/congelamento; chiusura con **CONVALIDA dell’aggiornamento del documento**  
 
 Vedi anche [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) § Processo analisi · [PROMPT continuità 07/09](PROMPT_CONTINUITA_07_09_DISCO_FOTO.md).
+
+---
+
+## 6. Idea correlata — OCR locale sulla cover (annotata 10/09/2026, da approfondire)
+
+**Stato:** solo **idea** (SI Renato 10/09: annotare qui; barcode scartato perché offline inutile senza catalogo).  
+**Non** fa parte dei requisiti congelati R1–R6 / T1–T8. **Non** apre codice. Quando si aprirà la fetta Foto (dopo QR avanzato + Cestino), approfondire con processo 4 fasi e SI esplicito (toccherebbe anche il “niente ML” del §1).
+
+### Intento
+In fase di **censimento**, ridurre il lavoro di digitazione: dalla stessa occasione dello scatto foto oggetto, ricavare una **proposta di testo** (nome/descrizione) da confermare.
+
+### Schema concordato in chat (10/09)
+1. Scatto (o frame) **ad alta definizione** solo temporaneo  
+2. **OCR locale on-device** (niente internet obbligatorio) sulla cover/etichetta  
+3. Utente **conferma/corregge** il testo nei campi oggetto  
+4. Si conserva solo la **mini** (policy T2 / thumb-display) per lista e scheda  
+5. L’immagine HD **non** resta in archivio né in Backup  
+
+«Due piccioni con una fava»: un gesto → supporto visivo (mini) + aiuto compilazione testo (OCR).
+
+### Da chiarire al momento dell’analisi
+- Qualità OCR su packaging reali; solo nome vs nome+descrizione  
+- Premium (allineamento R6) sì/no  
+- Galleria vs solo scatto; lingua/mixed text  
+- Revisione esplicita del fuori-scope «niente ML» se si conferma l’OCR

@@ -5,7 +5,11 @@ enum class PremiumFeature {
     QR_SCAN,
     QR_LABEL,
     IMPORT,
-    EXPORT
+    EXPORT,
+    /** Disco di rete (CIFS) — SI 10/09: premium. */
+    NETWORK_DRIVE,
+    /** Condividi Archivio (Invia/Ricevi) — SI 10/09: premium. */
+    ARCHIVE_SHARE
 }
 
 enum class ShareActionResult {

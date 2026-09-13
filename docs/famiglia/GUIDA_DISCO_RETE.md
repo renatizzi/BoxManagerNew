@@ -38,6 +38,7 @@ Pulsanti tipici del dialogo: **Apri l’app** / **Annulla** (se non installata: 
 ## Riferimento (ufficiale)
 
 Fonte: Nota Integrata **9.2** Allegato **4.22** + Roadmap quadro 07/09/2026.  
+Premium: **SI Renato 10/09/2026** — Disco di rete = **Archivio completo** (supporto condivisione; non free). Gate codice al cutover M3.  
 Messaggi in-app: Impostazioni → **Disco di rete** (`network_drive_dialog_need_app` / `network_drive_dialog_ready`).
 
 Build da **1.3-famigliaB5.22**. Codice: `NetworkDriveAssistant`, card Impostazioni.  

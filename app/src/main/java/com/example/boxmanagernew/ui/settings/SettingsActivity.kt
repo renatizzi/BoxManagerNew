@@ -21,11 +21,13 @@ import com.example.boxmanagernew.data.local.DefaultArchiveLocaleSync
 import com.example.boxmanagernew.domain.locale.LocalePreference
 import com.example.boxmanagernew.domain.premium.ArchivioCompletoAccess
 import com.example.boxmanagernew.domain.premium.ArchivioCompletoPolicy
+import com.example.boxmanagernew.domain.premium.PremiumFeature
 import com.example.boxmanagernew.domain.privacy.PrivacyPolicy
 import com.example.boxmanagernew.storage.NetworkDriveAssistant
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.LocaleManager
 import com.example.boxmanagernew.ui.common.ThemeManager
+import com.example.boxmanagernew.ui.premium.ArchivioCompletoNav
 import com.google.android.material.switchmaterial.SwitchMaterial
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -255,9 +257,14 @@ class SettingsActivity : BaseActivity() {
         }
 
         cardNetworkDrive.setOnClickListener {
-            NetworkDriveAssistant.showSetupDialog(
-                this
-            )
+            ArchivioCompletoNav.run(
+                this,
+                PremiumFeature.NETWORK_DRIVE
+            ) {
+                NetworkDriveAssistant.showSetupDialog(
+                    this
+                )
+            }
         }
 
         cardPrivacy.setOnClickListener {

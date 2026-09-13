@@ -99,12 +99,16 @@ object ArchivioCompletoNav {
                 BottomNavManager.TAB_DASHBOARD
 
             PremiumFeature.QR_SCAN,
-            PremiumFeature.IMPORT ->
+            PremiumFeature.IMPORT,
+            PremiumFeature.ARCHIVE_SHARE ->
                 BottomNavManager.TAB_UTILITY
 
             PremiumFeature.QR_LABEL,
             PremiumFeature.EXPORT ->
                 BottomNavManager.TAB_BOXES
+
+            PremiumFeature.NETWORK_DRIVE ->
+                BottomNavManager.TAB_SETTINGS
         }
     }
 }

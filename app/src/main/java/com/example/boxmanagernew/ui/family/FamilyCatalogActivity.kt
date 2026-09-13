@@ -18,6 +18,7 @@ import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
 import com.example.boxmanagernew.data.repository.CategoryRepositoryImpl
 import com.example.boxmanagernew.data.repository.LocationRepositoryImpl
 import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
+import com.example.boxmanagernew.domain.premium.PremiumFeature
 import com.example.boxmanagernew.family.config.FamilyCatalogConfiguration
 import com.example.boxmanagernew.family.config.FamilyInventoryConfiguration
 import com.example.boxmanagernew.family.config.FamilyMergeConfiguration
@@ -25,6 +26,7 @@ import com.example.boxmanagernew.family.config.FamilySharedTablesConfiguration
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.FeedbackUtils
 import com.example.boxmanagernew.storage.StorageFolderConfiguration
+import com.example.boxmanagernew.ui.premium.ArchivioCompletoNav
 import com.example.boxmanagernew.viewoutput.persist.ViewExportPersister
 import com.google.android.material.card.MaterialCardView
 import com.example.boxmanagernew.storage.OpenStorageTreeContract
@@ -73,6 +75,15 @@ class FamilyCatalogActivity : BaseActivity() {
 
         if (!BuildConfig.FAMILY_BETA) {
             finish()
+            return
+        }
+
+        if (
+            !ArchivioCompletoNav.allowActivity(
+                this,
+                PremiumFeature.ARCHIVE_SHARE
+            )
+        ) {
             return
         }
 

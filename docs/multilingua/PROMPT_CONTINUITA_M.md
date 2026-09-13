@@ -11,7 +11,10 @@ Fonte viva: [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md) — *
 
 | ID | Indicazione |
 |----|-------------|
-| *(nessuna voce aperta)* | M3 solo a test chiuso; P2 sync continuo; B-FAMILY-DOMAIN-ERR opzionale |
+| **B-ROTATE-FORM-DRAFT** | Rotazione in inserimento: testo sparisce — **da risolvere**, standby fino a codice post-test (SI 10/09) |
+| **B-PIANO-RILASCIO-RP** | **CONVALIDATO** — M3: [PROMPT_CONTINUITA_M3_MERGE_PLAY.md](../famiglia/PROMPT_CONTINUITA_M3_MERGE_PLAY.md) |
+| **B-QTY-KPI-SEARCH** | Quantità oggetto come possibile chiave KPI / query Ricerca avanzata (08/09) — vedi Promemoria |
+| *(altre)* | M3 solo a test chiuso; P2 sync continuo; B-FAMILY-DOMAIN-ERR opzionale |
 
 ---
 

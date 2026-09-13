@@ -368,6 +368,8 @@
     <string name="premium_feature_qr_label">QR label</string>
     <string name="premium_feature_import">Import data</string>
     <string name="premium_feature_export">Export data</string>
+    <string name="premium_feature_network_drive">Network drive</string>
+    <string name="premium_feature_archive_share">Share Archive</string>
     <string name="premium_pitch_advanced_search_lead">This powerful feature lets you run rich searches using natural language.</string>
     <string name="premium_pitch_advanced_search_example">What do I have in the garage and basement?</string>
     <string name="premium_pitch_qr_scan_lead">With one scan you open the right container, even in the basement or garage, without searching by hand.</string>
@@ -378,6 +380,10 @@
     <string name="premium_pitch_import_example">import in CSV format the contents of a local archive managed in a spreadsheet</string>
     <string name="premium_pitch_export_lead">Together with Import data, this feature lets you easily manage archives already used on your device.</string>
     <string name="premium_pitch_export_example">export in CSV format a partial or full archive to a spreadsheet</string>
+    <string name="premium_pitch_network_drive_lead">Save Backup and archive files to a local network disk or PC (home Wi‑Fi), using the recommended CIFS app.</string>
+    <string name="premium_pitch_network_drive_example">Backup → Browse → folder on the NAS</string>
+    <string name="premium_pitch_archive_share_lead">Update and share tables and archive with people at home via Send and Receive, without replacing Import/Export.</string>
+    <string name="premium_pitch_archive_share_example">Send Archive → the other device uses Receive Archive</string>
     <string name="premium_example_prefix"> (Example: </string>
     <string name="premium_example_suffix">).</string>
     <string name="premium_share_hint_one">The %1$d-day trial has ended. Share BoxManager with a friend: get another %2$d days on advanced search, QR, import and export.</string>

@@ -44,9 +44,12 @@ android {
     productFlavors {
         create("play") {
             dimension = "distribution"
+            // Prep M3: stesse funzioni di sviluppo nel binario ufficiale.
+            // versionName resta 1.2 finché non si fa cutover (poi → 1.3, vc > 3).
+            // Package Store senza suffisso: it.renatizzi.boxmanager.
             versionCode = 3
             versionName = "1.2"
-            buildConfigField("boolean", "FAMILY_BETA", "false")
+            buildConfigField("boolean", "FAMILY_BETA", "true")
         }
         create("famiglia") {
             dimension = "distribution"

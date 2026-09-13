@@ -10,7 +10,10 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) — **Checklist V
 
 | ID | Indicazione |
 |----|-------------|
-| *(nessuna voce B-* aperta)* | P2 sync continuo; M3 solo a test Play chiuso; B-FAMILY-DOMAIN-ERR opzionale |
+| **B-ROTATE-FORM-DRAFT** | Rotazione in inserimento: testo sparisce — **da risolvere**, standby fino a ripresa codice post-test (SI 10/09) |
+| **B-PIANO-RILASCIO-RP** | **CONVALIDATO** — [REQUISITI](REQUISITI_PIANO_RILASCIO_ROADMAP.md); esecuzione M3 → [PROMPT_CONTINUITA_M3_MERGE_PLAY.md](PROMPT_CONTINUITA_M3_MERGE_PLAY.md) |
+| **B-QTY-KPI-SEARCH** | **CONGELATO** — quantità → KPI (K1) + query Ricerca (K2); facoltativa; [REQUISITI](REQUISITI_QTY_KPI_SEARCH.md); zero codice |
+| *(altre)* | P2 sync continuo; M3 solo a test Play chiuso; B-FAMILY-DOMAIN-ERR opzionale |
 
 ---
 
@@ -18,11 +21,14 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) — **Checklist V
 
 | Voce | Valore |
 |------|--------|
-| **Branch lavoro** | `cursor/sel-cartella-nas-d69a` (PR **#25**) |
+| **Branch lavoro** | `cursor/qr-avanzato-analisi-8374` (analisi A1; base `cursor/sel-cartella-nas-d69a` / PR **#25**) |
 | **Base tipica** | `cursor/promemoria-fix-d69a` (catena sviluppo; **non** `main`) |
 | **Build sviluppo** | Topbar **1.3-famigliaB5.24** (versionCode **1343**) — etichetta di build, non nome app |
 | **Play** | BoxManager **1.2** su `main` — test chiuso aperto; **identica** salvo bug bloccanti |
 | **B-SEL-CARTELLA Disco di rete** | **CONVALIDATO** — Nota Integrata **9.2** Allegato **4.22** + Roadmap 07/09/2026 + [GUIDA_DISCO_RETE.md](GUIDA_DISCO_RETE.md) |
+| **A1 QR avanzato** | **CONGELATO** — [REQUISITI_QR_AVANZATO.md](REQUISITI_QR_AVANZATO.md). Premium Progetto 2. Zero codice |
+| **A2 Cestino** | **CONGELATO** — [REQUISITI_CESTINO.md](REQUISITI_CESTINO.md) (CONVALIDA documento SI 07/09). Zero codice |
+| **Premium Progetto 2** | SI Renato 07/09: **A1** (R10) / **A2** (§0) / **A3 Foto** (R6+T6bis) = **Archivio completo** — verificato |
 | **Foto oggetto** | Requisiti **congelati** + **CONVALIDA aggiornamento documento** 07/09/2026 — [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md); **zero codice** finché non si apre la fetta (dopo QR avanzato + Cestino) |
 | **Processo analisi** | **4 fasi** + due CONVALIDA — regola `.cursor/rules/processo-analisi.mdc` — **CONVALIDATO** in documento 07/09/2026 |
 
@@ -77,16 +83,18 @@ Due CONVALIDA distinte: (3) merito analisi/requisiti · (4 chiusura) testo del d
 
 | Priorità | Azione | Note |
 |----------|--------|------|
-| **A** | Nuova voce Progetto 2 in analisi | **QR avanzato** o **Cestino** (prima della Foto in codice). Stesso processo a 4 fasi. |
+| **STOP codice P2** | Niente implementazione A1/A2/A3 finché **test Play chiuso** (≈ ancora una settimana) **oppure** SI esplicito «apri fetta codice» | Il «Sì» del 07/09 sera era **solo conferma documenti/premium**, non apertura sviluppo. Commit A1 **revertato** sul branch lavoro; WIP su `cursor/qr-avanzato-wip-parked-8374`. |
+| **A** | Prep / esecuzione **M3** | Ingresso: [PROMPT_CONTINUITA_M3_MERGE_PLAY.md](PROMPT_CONTINUITA_M3_MERGE_PLAY.md) — cutover dopo fine test |
+| **A′** | D Dashboard/UI | **CONGELATO** no-code — [REQUISITI_DASHBOARD_UI_AVANZATA.md](REQUISITI_DASHBOARD_UI_AVANZATA.md) |
 | **B** | Checklist V1 | P2 sync bug Play → sviluppo; bug bloccanti solo su `main` |
-| **C** | Foto codice | **STOP** finché non arrivano QR avanzato + Cestino e SI di apertura fetta |
+| **C** | Codice A1/A2/A3 | **STOP** fino a fine test Play (salvo SI esplicito); WIP QR su `cursor/qr-avanzato-wip-parked-8374` |
 | **D** | M3 / merge `main` | Solo a test Play **chiuso** |
 
 ### Sequenza agente (allineamento)
 
-1. `git fetch origin` e checkout del branch di lavoro corrente (o nuovo `cursor/…-d69a` dalla base di sviluppo).
-2. Leggere questo prompt + [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) + regola `processo-analisi.mdc`.
-3. Se nuova voce Progetto 2: partire da **ANALISI** (bozza), **non** da codice.
+1. `git fetch origin` e checkout `cursor/qr-avanzato-analisi-8374` (o successore).
+2. Leggere questo prompt + [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) + [ASSESSMENT_QR_AVANZATO.md](ASSESSMENT_QR_AVANZATO.md) + regola `processo-analisi.mdc`.
+3. In FEEDBACK: annotare SI sulle Q; **non** codice; **non** aggiornare Nota ufficiale prima della CONVALIDA merito.
 4. Non toccare Foto in codice; non riaprire Disco di rete senza nuova evidenza.
 
 ---
@@ -96,6 +104,16 @@ Due CONVALIDA distinte: (3) merito analisi/requisiti · (4 chiusura) testo del d
 | File | Ruolo |
 |------|--------|
 | [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) | Freeze Foto — fonte fino all’implementazione |
+| [REQUISITI_EXPORT_IMPORT_AVANZATO.md](REQUISITI_EXPORT_IMPORT_AVANZATO.md) | Freeze B–C Export/Import |
+| [REQUISITI_DASHBOARD_UI_AVANZATA.md](REQUISITI_DASHBOARD_UI_AVANZATA.md) | Freeze D — U0, no codice |
+| [REQUISITI_PIANO_RILASCIO_ROADMAP.md](REQUISITI_PIANO_RILASCIO_ROADMAP.md) | Freeze piano M3/R2, Play, Roadmap, premium |
+| [ASSESSMENT_PIANO_RILASCIO_ROADMAP.md](ASSESSMENT_PIANO_RILASCIO_ROADMAP.md) | Storico FEEDBACK RP-Q |
+| [REQUISITI_QTY_KPI_SEARCH.md](REQUISITI_QTY_KPI_SEARCH.md) | Freeze B-QTY (K1+K2) |
+| [ASSESSMENT_QTY_KPI_SEARCH.md](ASSESSMENT_QTY_KPI_SEARCH.md) | Storico FEEDBACK quantità → KPI / ricerca |
+| [ASSESSMENT_EXPORT_IMPORT_AVANZATO.md](ASSESSMENT_EXPORT_IMPORT_AVANZATO.md) | Storico B–C Export/Import |
+| [REQUISITI_CESTINO.md](REQUISITI_CESTINO.md) | Freeze A2 Cestino |
+| [ASSESSMENT_CESTINO.md](ASSESSMENT_CESTINO.md) | Storico ANALISI/FEEDBACK A2 |
+| [REQUISITI_QR_AVANZATO.md](REQUISITI_QR_AVANZATO.md) | Freeze A1 QR avanzato |
 | [GUIDA_DISCO_RETE.md](GUIDA_DISCO_RETE.md) | Guida utente/dev Disco di rete |
 | Nota Integrata **9.2** Allegato **4.22** | Fonte ufficiale Disco di rete |
 | [PROMEMORIA_INTERVENTI_TRASVERSALI.md](PROMEMORIA_INTERVENTI_TRASVERSALI.md) | Checklist V1 + processo + backlog |
@@ -127,8 +145,8 @@ Altri ingressi (filoni diversi):
 ```bash
 cd BoxManagerNew
 git fetch origin
-git checkout cursor/sel-cartella-nas-d69a
-git pull origin cursor/sel-cartella-nas-d69a
+git checkout cursor/qr-avanzato-analisi-8374
+git pull origin cursor/qr-avanzato-analisi-8374
 
 ./gradlew :app:assembleFamigliaDebug
 ./gradlew :app:installFamigliaDebug
@@ -136,4 +154,4 @@ git pull origin cursor/sel-cartella-nas-d69a
 
 ---
 
-*Aggiornato 07/09/2026 — Disco di rete CONVALIDATO; Foto + processo: CONVALIDA aggiornamento documento SI Renato.*
+*Aggiornato 07/09/2026 (sera) — A1/A2/A3 requisiti congelati; codice P2 in STOP fino a fine test Play; fraintendimento «Sì»→codice corretto (revert).*
