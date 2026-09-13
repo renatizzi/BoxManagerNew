@@ -4,6 +4,7 @@
 **Data bozza:** 10/09/2026.  
 **Avanzamento a micro-step:** [CHECKLIST_M3_MICRO.md](CHECKLIST_M3_MICRO.md) (stato vivo).  
 **Runbook giorno cutover:** [RUNBOOK_M3_GIORNO.md](RUNBOOK_M3_GIORNO.md) (aggregato A11).  
+**Ingresso sessione cutover (13/09+):** [PROMPT_CONTINUITA_M3_CUTOVER.md](PROMPT_CONTINUITA_M3_CUTOVER.md).  
 **Fonti vincolanti (già CONVALIDATE — non rivotare):**
 
 | Fonte | Ruolo |
