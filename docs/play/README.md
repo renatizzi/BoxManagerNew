@@ -97,7 +97,7 @@ Il codice amico `BOXMANAGER-AMICO` resta valido per il rinnovo via condivisione.
 
 ## Test chiuso — checklist (solo sul tuo PC / Console)
 
-**Stato Play 1.2 (durante test):** flavor **play** su `main` — `versionCode = 3`, `versionName = 1.2`. Topbar da Gradle. A M3: alzare oltre questo (es. **1.3** / vc > 3) sulla linea ufficiale.
+**Stato Play ufficiale (cutover M3):** flavor **play** — `versionCode = 4`, `versionName = 1.3` (branch cutover → `main`). Topbar da Gradle. Package `it.renatizzi.boxmanager`.
 
 ### Tu — passo 1: aggiorna e genera AAB
 

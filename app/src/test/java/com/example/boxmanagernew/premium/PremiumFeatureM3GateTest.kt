@@ -38,9 +38,9 @@ class PremiumFeatureM3GateTest {
     }
 
     @Test
-    fun playFlavor_enablesFamilyBetaForM3Prep() {
+    fun playFlavor_cutover13_familyBetaNoSuffix() {
         val gradle = File("build.gradle.kts").readText()
-        // play block: FAMILY_BETA true e nessun suffix package (prima di create famiglia)
+        // play block: FAMILY_BETA true, 1.3 / vc 4, nessun suffix package
         val playIdx = gradle.indexOf("create(\"play\")")
         val famIdx = gradle.indexOf("create(\"famiglia\")")
         require(playIdx >= 0 && famIdx > playIdx) {
@@ -51,6 +51,8 @@ class PremiumFeatureM3GateTest {
             playBlock.contains("buildConfigField(\"boolean\", \"FAMILY_BETA\", \"true\")")
         )
         assertTrue(!playBlock.contains("applicationIdSuffix ="))
+        assertTrue(playBlock.contains("versionName = \"1.3\""))
+        assertTrue(playBlock.contains("versionCode = 4"))
     }
 
     @Test

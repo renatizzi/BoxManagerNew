@@ -20,8 +20,8 @@ android {
         applicationId = "it.renatizzi.boxmanager"
         minSdk = 24
         targetSdk = 36
-        versionCode = 3
-        versionName = "1.2"
+        versionCode = 4
+        versionName = "1.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -44,11 +44,10 @@ android {
     productFlavors {
         create("play") {
             dimension = "distribution"
-            // Prep M3: stesse funzioni di sviluppo nel binario ufficiale.
-            // versionName resta 1.2 finché non si fa cutover (poi → 1.3, vc > 3).
+            // M3 cutover 13/09: ufficiale 1.3 — class I + FAMILY_BETA (archivio condiviso).
             // Package Store senza suffisso: it.renatizzi.boxmanager.
-            versionCode = 3
-            versionName = "1.2"
+            versionCode = 4
+            versionName = "1.3"
             buildConfigField("boolean", "FAMILY_BETA", "true")
         }
         create("famiglia") {
