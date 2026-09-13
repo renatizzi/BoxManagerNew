@@ -34,7 +34,7 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 | B0 | Check Console aggregato (C-A…C-E) | **PRONTO enough** | C-A OK; C-B richiesta inviata. Scheda/dichiarazioni ok al 10/09; avvisi residui solo se rossi |
 | B1–B2 | Accesso produzione / domande Google | **ATTESA Google** | Richiesta inviata **13/09 ~12:59**; esame tipico ≤7 gg. **Non blocca** closed 1.3 |
 | B3–B4 | Gate Disco/Condividi | **FATTO in B-prep** | |
-| B5–B6 | Merge → `main` + **1.3** / vc > Play | **IN CORSO** | Branch `cursor/m3-cutover-13-d5b2`: play **1.3** / vc **4**; PR → `main` |
+| B5–B6 | Merge → `main` + **1.3** / vc > Play | **FATTO** | `main` @ `271808c` — play **1.3** / vc **4** (FF merge 13/09) |
 | B7–B9 | AAB play, closed 1.3, scheda, smoke | **ATTESA Renato** | PC: `bundlePlayRelease` + upload closed |
 | B10 | Freeze docs post-M3 | **DOPO** | Con SI |
 
@@ -55,9 +55,10 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 
 ---
 
-## Prossimo (cutover B5 — 13/09)
+## Prossimo (solo Renato PC — B7)
 
-1. Merge/PR `cursor/m3-cutover-13-d5b2` → `main` (FF: +180 commit sviluppo + bump).  
-2. Renato PC: AAB **playRelease** → upload **closed 1.3**.  
-3. Scheda IT/EN + `BOXMANAGER-TESTER` se closed.  
-4. **Non** promuovere produzione finché email Google OK + closed ok.
+1. `git pull origin main`
+2. AAB **playRelease** firmato → upload **closed 1.3**
+3. Scheda IT/EN + `BOXMANAGER-TESTER` se closed
+4. Scrivi: `SI AAB closed`
+5. **Non** produzione ampia finché email Google OK + closed ok
