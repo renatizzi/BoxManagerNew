@@ -39,8 +39,8 @@ Renato incolla testo (o elenco) da Play Console. L’agente marca **PRONTO** sol
 
 | # | Controllo | OK se |
 |---|-----------|--------|
-| C-A | Test chiuso 1.2 | Chiuso / requisiti 12 tester × 14 giorni soddisfatti (o accesso produzione già ottenibile) |
-| C-B | Produzione | Accesso richiedibile o già concesso; niente blocco rosso |
+| C-A | Test chiuso 1.2 | **OK 13/09** — tre spunte verdi; bottone Richiedi attivo |
+| C-B | Produzione | Accesso **richiedibile** (B1–B2); poi «già concesso»; niente blocco rosso |
 | C-C | Dichiarazioni app | Sicurezza dati, classificazione, privacy, ecc. complete (già ok al 10/09) |
 | C-D | Scheda Store | Icona, feature graphic, screenshot, testi IT (EN listing da aggiornare in B8) |
 | C-E | Pacchetto | `it.renatizzi.boxmanager` — nessun `.famiglia` |
