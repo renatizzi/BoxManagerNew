@@ -8,7 +8,7 @@
 
 ## Ordine di lavoro di questa sessione (fisso)
 
-1. **Verifica Play Console** con Renato (testo Console basta) → aggiornare A4/B1.  
+1. **Verifica Play Console** — **C-A FATTO** (screenshot 13/09: 12×14 ok, bottone **Richiedi per la produzione** attivo). Completare **B1–B2** (clic + questionario) e chiudere eventuali avvisi (**B0**).  
 2. **Smoke gate device** (rinviato): Disco + Condividi Archivio **senza** Archivio completo → deve uscire paywall (admin da solo non sblocca; se serve: Scade prova / debug OFF).  
 3. Eseguire cutover secondo [RUNBOOK_M3_GIORNO.md](RUNBOOK_M3_GIORNO.md) e [CHECKLIST_M3_MICRO.md](CHECKLIST_M3_MICRO.md) §B.  
 4. A fine cutover: aggiornare checklist + Promemoria; **non** aprire Progetto 2 senza SI «apri fetta codice».

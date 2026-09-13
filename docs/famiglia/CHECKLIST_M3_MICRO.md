@@ -17,7 +17,7 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 | # | Micro-step | Stato | Note |
 |---|------------|-------|------|
 | A1–A3 | Classe I, premium, dichiarazioni | **FATTO** | 10/09 |
-| A4 | Giorni / chiusura test chiuso | **IN CORSO** | Renato 13/09: «test chiusi, pronto produzione» — **confermare in Console** (incolla stato) |
+| A4 | Giorni / chiusura test chiuso | **FATTO** | Screenshot Console 13/09: 12 tester × 14 giorni **ok**; bottone **Richiedi per la produzione** attivo |
 | A5–A11 | Listing, sync, smoke A7, shot, traccia, runbook | **FATTO** | |
 | **B-prep** | Gate Disco/Condividi + play features | **FATTO** | Branch `cursor/qr-avanzato-analisi-8374`; **no merge `main` finché cutover** |
 
@@ -32,8 +32,8 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 
 | # | Micro-step | Stato | Note |
 |---|------------|-------|------|
-| B0 | Check Console aggregato (C-A…C-E) | **ATTESA Renato** | Vedi prompt cutover |
-| B1–B2 | Accesso produzione / domande Google | **ATTESA** | Dopo B0 OK |
+| B0 | Check Console aggregato (C-A…C-E) | **IN CORSO** | C-A/C-B test: **OK** (14/14). Restano avvisi scheda/dichiarazioni se ci sono; package ok |
+| B1–B2 | Accesso produzione / domande Google | **ATTESA Renato** | Cliccare **Richiedi per la produzione** e completare il questionario Google |
 | B3–B4 | Gate Disco/Condividi | **FATTO in B-prep** | |
 | B5–B6 | Merge → `main` + **1.3** / vc > Play | **DOPO** | Nuova sessione dopo B0 |
 | B7–B9 | AAB play, closed 1.3, scheda, smoke | **DOPO** | Renato PC |
@@ -54,9 +54,9 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 
 ---
 
-## Prossimo (questa conversazione → nuova sessione)
+## Prossimo (dopo screenshot 13/09)
 
-1. Renato: incolla stato **Play Console** (test / produzione / avvisi).  
-2. Agente: marca B0; se PRONTO, Renato fa smoke gate device.  
-3. Renato: apre **nuova** sessione Agents con ingresso `PROMPT_CONTINUITA_M3_CUTOVER.md`.  
-4. Lì: cutover B5–B9.
+1. **Renato (ora):** Dashboard → **Richiedi per la produzione** → completa le domande Google (**B1–B2**).  
+2. Se restano avvisi rossi/gialli sulla scheda: inviali (chiude **B0**).  
+3. Smoke gate device (Disco + Condividi senza Archivio completo = paywall).  
+4. Nuova sessione Agents con `PROMPT_CONTINUITA_M3_CUTOVER.md` → cutover **B5–B9**.
