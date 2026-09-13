@@ -56,8 +56,9 @@ Se manca qualcosa: elencare solo i buchi e fermarsi. Se tutto ok: **SI cutover**
 | 0 | Renato | Smoke gate device (se non ancora fatto) |
 | 1 | Renato | **FATTO** 13/09: richiesta accesso produzione inviata (ATTESA Google) |
 | 2–3 | Agente | Merge branch sviluppo → `main`; `versionName` **1.3**; `versionCode` > ultimo Play |
-| 4 | Renato PC | AAB **release** flavor **play** + keystore |
-| 5 | Renato | Upload su **closed 1.3** (non produzione ampia; non aspetta email Google) |
+| 4a | Renato PC | **Obbligatorio (SI 13/09):** prima di Play, test telefono = **Run** con variante **`playRelease`** (non famiglia). Topbar ufficiale senza «famiglia» |
+| 4b | Renato PC | Solo dopo: AAB **release** flavor **play** + keystore |
+| 5 | Renato | Upload su **closed 1.3** e invio release (non produzione ampia; non aspetta email Google) |
 | 6–7 | Renato | Scheda Store IT/EN + messaggio tester (`BOXMANAGER-TESTER` se closed) |
 | 8 | Renato | Smoke install da Play: package, topbar **1.3**, lingua, Backup |
 | 9 | Renato | Closed ok **e** email Google OK → promuovi produzione |

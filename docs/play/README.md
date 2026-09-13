@@ -26,6 +26,19 @@ In Play Console → scheda dello Store → **Immagine in primo piano** → caric
 
 Il **video** promo sulla scheda Store è **facoltativo**: puoi saltarlo.
 
+## Prima di caricare su Play (regola Renato 13/09)
+
+**Sempre** test sul telefono **prima** dell’upload Console, con il processo solito (Run / install), non solo AAB “alla cieca”.
+
+1. `git checkout main` e `git pull origin main`
+2. Android Studio → pannello **Build Variants** → **`playRelease`** (mai `famigliaDebug` / `famigliaRelease` per questa verifica)
+3. **Run** sul telefono
+4. Controlla topbar: versione ufficiale (es. **`v. 1.3`**) **senza** la parola `famiglia`
+5. Solo se ok → genera AAB `playRelease` e carica su Console
+6. Completa fino a **Invia / Avvia distribuzione** (se resta bozza, sul telefono da Play non compare)
+
+Nota: **Run** con `famiglia*` installa l’app di sviluppo (topbar `…-famiglia…`). Quella non è la prova della release Store.
+
 ## Keystore + AAB (solo sul tuo PC — non in git)
 
 ### A) Con Android Studio (consigliato)

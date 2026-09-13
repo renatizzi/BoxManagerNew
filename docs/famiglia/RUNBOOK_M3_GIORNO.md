@@ -36,8 +36,9 @@
 | 1 | Renato | **FATTO 13/09:** richiesta accesso produzione inviata (esame Google ≤7 gg tipici). Non blocca closed 1.3 |
 | 2 | Agente | Codice cutover: gate Disco + Condividi Archivio (**B-prep FATTO** 10/09 su branch); funzioni nel binario **play** |
 | 3 | Agente | Merge sviluppo → **`main`**; `versionName` **1.3**; `versionCode` > 3 |
-| 4 | Renato PC | Genera AAB **release** flavor **play** (Android Studio / Gradle + keystore) |
-| 5 | Renato | Upload AAB su **test chiuso** (traccia closed 1.3 / successore), non ancora “tutti” |
+| 4a | Renato PC | **Prima di Play (regola 13/09):** `git pull` → Build Variant **`playRelease`** → **Run** sul telefono → topbar **`v. 1.3`** (senza famiglia). Stesso processo di sempre, variante play |
+| 4b | Renato PC | Solo dopo smoke telefono: genera AAB **release** flavor **play** (keystore) |
+| 5 | Renato | Upload AAB su **test chiuso** e **completa Invio/distribuzione** (bozza ≠ disponibile sul telefono) |
 | 6 | Renato | Scheda Store: testi IT/EN; icona/feature graphic; screenshot |
 | 7 | Renato | Avviso tester: novità 1.3 + codice `BOXMANAGER-TESTER` se serve Archivio completo |
 | 8 | Renato | Smoke post-install da Play (package `it.renatizzi.boxmanager`, topbar **1.3**, lingua, Backup) |
