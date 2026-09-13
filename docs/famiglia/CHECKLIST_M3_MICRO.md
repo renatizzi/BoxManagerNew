@@ -57,11 +57,12 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 
 ## Prossimo (solo Renato PC — B7)
 
-**Regola Renato 13/09 (permanente):** prima di Play Console → **test sul telefono** con lo stesso flusso Run/install, ma variante **`playDebug`** per il Run sul telefono (non `famiglia*`). Topbar deve essere `v. 1.3` senza «famiglia». Solo dopo → AAB **playRelease** + upload. (Run su `playRelease` richiede firma Gradle/`key.properties`: per la prova telefono usiamo `playDebug`.)
-
-1. `git pull origin main`
-2. Android Studio: Build Variant **`playDebug`** → **Run** sul telefono → verifica topbar **`v. 1.3`**
-3. Poi AAB **playRelease** firmato (Generate Signed App Bundle) → upload **closed 1.3** (completa fino a **Invia / Avvia distribuzione**)
+**Regola Renato 13/09 (permanente) — processo ovvio:**
+1. Agente modifica codice su `main`
+2. Renato: `git pull` + **Run `playDebug`** (senza firma) → test telefono → topbar `v. 1.3` senza famiglia
+3. Solo dopo OK test: Renato crea AAB **`playRelease`** (con firma) → Play → Invio
 4. Scheda IT/EN + `BOXMANAGER-TESTER` se closed
 5. Scrivi: `SI AAB closed`
 6. **Non** produzione ampia finché email Google OK + closed ok
+
+Ora (cutover 1.3 già su `main` / AAB già caricato): completa Invio se in bozza; oppure sul PC `playDebug` Run per vedere `v. 1.3` mentre aspetti la revisione Play.

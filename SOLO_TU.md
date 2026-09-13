@@ -46,13 +46,16 @@ git push -u origin cursor/family-b-beta-75ee
 5. Topbar tipo `v. 1.3-famiglia…` = normale per lo sviluppo
 
 ### B) Prima di caricare su Play (obbligatorio — SI Renato 13/09)
-Stesso processo Run di sempre, ma variante Store:
-1. `git pull origin main`
-2. Build Variants → **`playDebug`**
-3. **Run** sul telefono
-4. Topbar deve essere tipo **`v. 1.3`** (senza `famiglia`)
-5. Solo dopo: crea il file firmato **playRelease** (Generate Signed App Bundle) e caricalo su Play Console
-6. Completa l’invio della release (non lasciare in bozza)
+
+Processo di sempre (il più semplice):
+
+1. Io (agente) preparo il codice su `main`
+2. Tu: `git pull origin main`
+3. Build Variants → **`playDebug`** (versione **senza firma**, come il Run di sempre)
+4. **Run** sul telefono → topbar ufficiale tipo **`v. 1.3`** (senza `famiglia`)
+5. Solo dopo il tuo OK ai test: Generate Signed App Bundle → **`playRelease`** (con firma) → Play Console → Invio release
+
+Nota: **`playRelease` al Run** dà errore di firma: non usarlo per le prove. Serve solo per il file da caricare su Play.
 
 ## Stop — non fare
 

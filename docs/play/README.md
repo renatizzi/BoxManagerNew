@@ -26,18 +26,14 @@ In Play Console → scheda dello Store → **Immagine in primo piano** → caric
 
 Il **video** promo sulla scheda Store è **facoltativo**: puoi saltarlo.
 
-## Prima di caricare su Play (regola Renato 13/09)
+## Prima di caricare su Play (regola Renato 13/09 — processo ovvio)
 
-**Sempre** test sul telefono **prima** dell’upload Console, con il processo solito (Run / install), non solo AAB “alla cieca”.
+1. Agente: modifiche su `main`
+2. Renato: `git pull` + Build Variants **`playDebug`** + **Run** (senza firma) → test telefono
+3. Topbar ufficiale (es. `v. 1.3`) senza `famiglia`
+4. Solo dopo OK: Generate Signed App Bundle **`playRelease`** (con firma) → Play → Invio
 
-1. `git checkout main` e `git pull origin main`
-2. Android Studio → pannello **Build Variants** → **`playDebug`** (mai `famiglia*`; non usare `playRelease` per Run: serve firma Gradle)
-3. **Run** sul telefono
-4. Controlla topbar: versione ufficiale (es. **`v. 1.3`**) **senza** la parola `famiglia`
-5. Solo se ok → Generate Signed App Bundle con **`playRelease`** e carica su Console
-6. Completa fino a **Invia / Avvia distribuzione** (se resta bozza, sul telefono da Play non compare)
-
-Nota: **Run** con `famiglia*` installa l’app di sviluppo (topbar `…-famiglia…`). Quella non è la prova della release Store.
+`playRelease` al Run dà errore di firma: non usarlo per le prove. `famiglia*` = solo sviluppo, non prova Store.
 
 ## Keystore + AAB (solo sul tuo PC — non in git)
 
