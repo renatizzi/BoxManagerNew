@@ -33,7 +33,7 @@
 
 | Passo | Chi | Cosa |
 |-------|-----|------|
-| 1 | Renato | In Console: se richiesto, **richiedi accesso produzione** (dopo 14/14) e rispondi alle domande sul test chiuso |
+| 1 | Renato | **FATTO 13/09:** richiesta accesso produzione inviata (esame Google ≤7 gg tipici). Non blocca closed 1.3 |
 | 2 | Agente | Codice cutover: gate Disco + Condividi Archivio (**B-prep FATTO** 10/09 su branch); funzioni nel binario **play** |
 | 3 | Agente | Merge sviluppo → **`main`**; `versionName` **1.3**; `versionCode` > 3 |
 | 4 | Renato PC | Genera AAB **release** flavor **play** (Android Studio / Gradle + keystore) |

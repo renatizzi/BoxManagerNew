@@ -8,10 +8,10 @@
 
 ## Ordine di lavoro di questa sessione (fisso)
 
-1. **Verifica Play Console** — **C-A FATTO** (screenshot 13/09: 12×14 ok, bottone **Richiedi per la produzione** attivo). Completare **B1–B2** (clic + questionario) e chiudere eventuali avvisi (**B0**).  
-2. **Smoke gate device** (rinviato): Disco + Condividi Archivio **senza** Archivio completo → deve uscire paywall (admin da solo non sblocca; se serve: Scade prova / debug OFF).  
-3. Eseguire cutover secondo [RUNBOOK_M3_GIORNO.md](RUNBOOK_M3_GIORNO.md) e [CHECKLIST_M3_MICRO.md](CHECKLIST_M3_MICRO.md) §B.  
-4. A fine cutover: aggiornare checklist + Promemoria; **non** aprire Progetto 2 senza SI «apri fetta codice».
+1. **Play Console** — **C-A OK**; **B1–B2 inviata** 13/09 ~12:59 (**ATTESA Google**, tipico ≤7 gg). Non blocca il cutover closed.  
+2. **Smoke gate device**: Disco + Condividi Archivio **senza** Archivio completo → paywall (admin da solo non sblocca; se serve: Scade prova / debug OFF).  
+3. Eseguire cutover **B5–B9** (merge → `main`, 1.3, AAB play, upload **closed 1.3**) secondo [RUNBOOK_M3_GIORNO.md](RUNBOOK_M3_GIORNO.md).  
+4. Promozione produzione = **solo dopo** email OK Google + closed 1.3 ok. A fine: docs + SI; **non** aprire Progetto 2 senza SI «apri fetta codice».
 
 ---
 
@@ -40,7 +40,7 @@ Renato incolla testo (o elenco) da Play Console. L’agente marca **PRONTO** sol
 | # | Controllo | OK se |
 |---|-----------|--------|
 | C-A | Test chiuso 1.2 | **OK 13/09** — tre spunte verdi; bottone Richiedi attivo |
-| C-B | Produzione | Accesso **richiedibile** (B1–B2); poi «già concesso»; niente blocco rosso |
+| C-B | Produzione | Richiesta **inviata** 13/09 ~12:59 — in esame Google; promozione ampia solo dopo OK email |
 | C-C | Dichiarazioni app | Sicurezza dati, classificazione, privacy, ecc. complete (già ok al 10/09) |
 | C-D | Scheda Store | Icona, feature graphic, screenshot, testi IT (EN listing da aggiornare in B8) |
 | C-E | Pacchetto | `it.renatizzi.boxmanager` — nessun `.famiglia` |
@@ -54,13 +54,13 @@ Se manca qualcosa: elencare solo i buchi e fermarsi. Se tutto ok: **SI cutover**
 | Step | Chi | Azione |
 |------|-----|--------|
 | 0 | Renato | Smoke gate device (se non ancora fatto) |
-| 1 | Renato | Console: accesso produzione / domande test se richieste |
+| 1 | Renato | **FATTO** 13/09: richiesta accesso produzione inviata (ATTESA Google) |
 | 2–3 | Agente | Merge branch sviluppo → `main`; `versionName` **1.3**; `versionCode` > ultimo Play |
 | 4 | Renato PC | AAB **release** flavor **play** + keystore |
-| 5 | Renato | Upload su **closed 1.3** (non produzione ampia subito) |
+| 5 | Renato | Upload su **closed 1.3** (non produzione ampia; non aspetta email Google) |
 | 6–7 | Renato | Scheda Store IT/EN + messaggio tester (`BOXMANAGER-TESTER` se closed) |
 | 8 | Renato | Smoke install da Play: package, topbar **1.3**, lingua, Backup |
-| 9 | Renato | Dopo pochi giorni closed ok → promuovi produzione |
+| 9 | Renato | Closed ok **e** email Google OK → promuovi produzione |
 | 10 | Agente | Freeze docs post-M3 con SI |
 
 Dettaglio: [RUNBOOK_M3_GIORNO.md](RUNBOOK_M3_GIORNO.md). Stato vivo: [CHECKLIST_M3_MICRO.md](CHECKLIST_M3_MICRO.md).

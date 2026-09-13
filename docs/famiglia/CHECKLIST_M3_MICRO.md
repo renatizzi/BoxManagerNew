@@ -32,14 +32,14 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 
 | # | Micro-step | Stato | Note |
 |---|------------|-------|------|
-| B0 | Check Console aggregato (C-A…C-E) | **IN CORSO** | C-A/C-B test: **OK** (14/14). Restano avvisi scheda/dichiarazioni se ci sono; package ok |
-| B1–B2 | Accesso produzione / domande Google | **ATTESA Renato** | Cliccare **Richiedi per la produzione** e completare il questionario Google |
+| B0 | Check Console aggregato (C-A…C-E) | **PRONTO enough** | C-A OK; C-B richiesta inviata. Scheda/dichiarazioni ok al 10/09; avvisi residui solo se rossi |
+| B1–B2 | Accesso produzione / domande Google | **ATTESA Google** | Richiesta inviata **13/09 ~12:59**; esame tipico ≤7 gg. **Non blocca** closed 1.3 |
 | B3–B4 | Gate Disco/Condividi | **FATTO in B-prep** | |
-| B5–B6 | Merge → `main` + **1.3** / vc > Play | **DOPO** | Nuova sessione dopo B0 |
-| B7–B9 | AAB play, closed 1.3, scheda, smoke | **DOPO** | Renato PC |
+| B5–B6 | Merge → `main` + **1.3** / vc > Play | **PROSSIMO** | Nuova sessione cutover (dopo smoke gate) |
+| B7–B9 | AAB play, closed 1.3, scheda, smoke | **DOPO B5** | Renato PC — **closed**, non produzione ampia |
 | B10 | Freeze docs post-M3 | **DOPO** | Con SI |
 
-**Traccia:** breve **closed 1.3** → poi produzione (A10 OK).
+**Traccia:** breve **closed 1.3** → poi produzione **solo dopo** email OK Google + closed ok (A10).
 
 ---
 
@@ -54,9 +54,9 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 
 ---
 
-## Prossimo (dopo screenshot 13/09)
+## Prossimo (13/09 — richiesta produzione in esame)
 
-1. **Renato (ora):** Dashboard → **Richiedi per la produzione** → completa le domande Google (**B1–B2**).  
-2. Se restano avvisi rossi/gialli sulla scheda: inviali (chiude **B0**).  
-3. Smoke gate device (Disco + Condividi senza Archivio completo = paywall).  
-4. Nuova sessione Agents con `PROMPT_CONTINUITA_M3_CUTOVER.md` → cutover **B5–B9**.
+1. Smoke gate device (Disco + Condividi senza Archivio completo = paywall).  
+2. Nuova sessione Agents: ingresso `PROMPT_CONTINUITA_M3_CUTOVER.md` → **B5–B9** (merge, 1.3, AAB, **closed 1.3**).  
+3. **Non** promuovere in produzione finché Google non concede l’accesso (+ closed 1.3 ok).  
+4. Email Google (≤7 gg tipici): quando arriva, annotare e solo allora step promozione.
