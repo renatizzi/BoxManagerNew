@@ -41,7 +41,7 @@
 | 6 | Renato | Scheda Store: testi IT/EN; icona/feature graphic; screenshot |
 | 7 | Renato | Avviso tester: novità 1.3 + codice `BOXMANAGER-TESTER` se serve Archivio completo |
 | 8 | Renato | Smoke post-install da Play (package `it.renatizzi.boxmanager`, topbar **1.3**, lingua, Backup) |
-| 9 | Renato | Dopo pochi giorni closed ok → **promuovi / pubblica in produzione** |
+| 9 | Renato | Closed 1.3 ok **e** email Google OK → **promuovi / pubblica in produzione** |
 | 10 | Agente | Con SI: annotare freeze post-M3 in Promemoria / Nota |
 
 ---
