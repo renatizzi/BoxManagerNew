@@ -35,7 +35,7 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 | B1–B2 | Accesso produzione / domande Google | **ATTESA Google** | Richiesta inviata **13/09 ~12:59**; esame tipico ≤7 gg. **Non blocca** closed 1.3 |
 | B3–B4 | Gate Disco/Condividi | **FATTO in B-prep** | |
 | B5–B6 | Merge → `main` + **1.3** / vc > Play | **FATTO** | `main` @ `271808c` — play **1.3** / vc **4** (FF merge 13/09) |
-| B7–B9 | AAB play, closed 1.3, scheda, smoke | **ATTESA Renato** | PC: `bundlePlayRelease` + upload closed |
+| B7–B9 | AAB play, closed 1.3, scheda, smoke | **IN CORSO** | Smoke playDebug **FATTO**. AAB già caricato; in **revisione Play**. Poi install da Store + scheda |
 | B10 | Freeze docs post-M3 | **DOPO** | Con SI |
 
 **Traccia:** breve **closed 1.3** → poi produzione **solo dopo** email OK Google + closed ok (A10).
@@ -55,6 +55,10 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 
 ---
 
+## Smoke telefono playDebug
+
+**FATTO** SI Renato 13/09 — topbar `v. 1.3` + smoke ok (Dashboard, Contenitori, Backup, lingua, Dark, paywall Disco/Condividi, ricerca).
+
 ## Prossimo (solo Renato PC — B7)
 
 **Regola Renato 13/09 (permanente) — processo ovvio:**
@@ -65,4 +69,9 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 5. Scrivi: `SI AAB closed`
 6. **Non** produzione ampia finché email Google OK + closed ok
 
-Ora (cutover 1.3 già su `main` / AAB già caricato): completa Invio se in bozza; oppure sul PC `playDebug` Run per vedere `v. 1.3` mentre aspetti la revisione Play.
+## Prossimo ora
+
+1. Aspetta fine revisione Play sulla release closed 1.3.
+2. Installa/aggiorna dal **Play Store** (account tester) → conferma topbar `v. 1.3`.
+3. Scrivi: `ok play store`.
+4. Produzione ampia solo dopo email Google OK + closed ok.
