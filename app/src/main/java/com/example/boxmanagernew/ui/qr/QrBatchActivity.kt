@@ -6,10 +6,13 @@ import android.net.Uri
 import android.os.Bundle
 import android.print.PrintAttributes
 import android.print.PrintManager
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
@@ -17,12 +20,16 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.data.local.DatabaseProvider
+import com.example.boxmanagernew.data.local.entity.CategoryEntity
 import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
+import com.example.boxmanagernew.domain.model.Box
 import com.example.boxmanagernew.domain.premium.PremiumFeature
 import com.example.boxmanagernew.domain.qr.BoxQrPayload
 import com.example.boxmanagernew.domain.qr.LabelSheetSpec
 import com.example.boxmanagernew.domain.qr.QrBatchFileNames
+import com.example.boxmanagernew.ui.categories.IconMapper
 import com.example.boxmanagernew.ui.common.BaseActivity
+import com.example.boxmanagernew.ui.common.UiUtils
 import com.example.boxmanagernew.ui.premium.ArchivioCompletoNav
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -73,7 +80,7 @@ class QrBatchActivity : BaseActivity() {
         setupAppShell()
         setupPageHeader(
             title = getString(R.string.page_qr_batch_title),
-            subtitle = ""
+            subtitle = getString(R.string.page_qr_batch_subtitle)
         )
         setupBottomNav()
 
@@ -131,28 +138,28 @@ class QrBatchActivity : BaseActivity() {
     }
 
     private fun loadBoxes(boxIds: IntArray) {
-        val repository =
-            BoxRepositoryImpl(
-                DatabaseProvider.getDatabase(applicationContext).boxDao()
-            )
+        val db = DatabaseProvider.getDatabase(applicationContext)
+        val repository = BoxRepositoryImpl(db.boxDao())
 
         lifecycleScope.launch {
-            val boxes =
+            val (boxes, categories) =
                 withContext(Dispatchers.IO) {
-                    boxIds.toList().mapNotNull { id ->
-                        repository.getBoxById(id)
-                    }
+                    val loaded =
+                        boxIds.toList().mapNotNull { id ->
+                            repository.getBoxById(id)
+                        }
+                    val cats = db.categoryDao().getAllSync()
+                    loaded to cats
                 }
 
             val sorted = boxes.sortedBy { it.name.trim().lowercase() }
-            val included = mutableListOf<Pair<String, String>>()
+            val included = mutableListOf<Box>()
             var excluded = 0
             for (box in sorted) {
-                val permanentId = box.permanentId.trim()
-                if (permanentId.isEmpty()) {
+                if (box.permanentId.trim().isEmpty()) {
                     excluded++
                 } else {
-                    included.add(box.name to permanentId)
+                    included.add(box)
                 }
             }
             excludedCount = excluded
@@ -169,8 +176,7 @@ class QrBatchActivity : BaseActivity() {
                 excludedView.visibility = View.GONE
             }
 
-            findViewById<TextView>(R.id.textBatchNames).text =
-                included.joinToString(separator = "\n") { it.first }
+            bindBoxCards(included, categories)
 
             if (included.isEmpty()) {
                 return@launch
@@ -178,7 +184,8 @@ class QrBatchActivity : BaseActivity() {
 
             preparedLabels =
                 withContext(Dispatchers.Default) {
-                    included.map { (_, permanentId) ->
+                    included.map { box ->
+                        val permanentId = box.permanentId.trim()
                         val payload = BoxQrPayload.encode(permanentId)
                         QrBatchPdf.Label(
                             permanentId = permanentId,
@@ -190,6 +197,48 @@ class QrBatchActivity : BaseActivity() {
             findViewById<Button>(R.id.btnBatchPrint).isEnabled = true
             findViewById<Button>(R.id.btnBatchExport).isEnabled = true
             findViewById<Button>(R.id.btnBatchShare).isEnabled = true
+        }
+    }
+
+    private fun bindBoxCards(
+        boxes: List<Box>,
+        categories: List<CategoryEntity>
+    ) {
+        val container = findViewById<LinearLayout>(R.id.boxesListContainer)
+        container.removeAllViews()
+        val inflater = LayoutInflater.from(this)
+
+        for (box in boxes) {
+            val card = inflater.inflate(R.layout.item_box, container, false)
+            card.findViewById<TextView>(R.id.textBoxName).text = box.name
+
+            val category = categories.find { it.id == box.categoryId }
+            val categoryName =
+                category?.name ?: getString(R.string.category_unknown)
+            val subtitleParts =
+                listOf(
+                    categoryName,
+                    box.position,
+                    UiUtils.formatDate(box.lastModified)
+                ).filter { it.isNotBlank() }
+            card.findViewById<TextView>(R.id.textSubtitle).text =
+                subtitleParts.joinToString(" • ")
+
+            val imageCategory = card.findViewById<ImageView>(R.id.imageCategory)
+            if (category != null) {
+                imageCategory.setImageResource(
+                    IconMapper.getIconRes(category.icon)
+                )
+            } else {
+                imageCategory.setImageResource(R.drawable.outline_browse_24)
+            }
+
+            card.findViewById<TextView>(R.id.textMenu).visibility = View.GONE
+            card.findViewById<View>(R.id.iconArea).isClickable = false
+            card.findViewById<View>(R.id.contentArea).isClickable = false
+            card.findViewById<View>(R.id.contentArea).foreground = null
+
+            container.addView(card)
         }
     }
 
@@ -208,12 +257,6 @@ class QrBatchActivity : BaseActivity() {
         val printManager =
             getSystemService(Context.PRINT_SERVICE) as? PrintManager
                 ?: return
-        val media =
-            if (selectedSpec.isoA4) {
-                PrintAttributes.MediaSize.ISO_A4
-            } else {
-                PrintAttributes.MediaSize.ISO_A6
-            }
         try {
             printManager.print(
                 getString(R.string.qr_print_label),
@@ -223,7 +266,7 @@ class QrBatchActivity : BaseActivity() {
                     selectedSpec.pageCount(preparedLabels.size)
                 ),
                 PrintAttributes.Builder()
-                    .setMediaSize(media)
+                    .setMediaSize(PrintAttributes.MediaSize.ISO_A4)
                     .setColorMode(PrintAttributes.COLOR_MODE_MONOCHROME)
                     .build()
             )

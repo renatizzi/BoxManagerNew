@@ -50,7 +50,7 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 |---|------------|-------|
 | C1 | B-ROTATE-FORM-DRAFT | **FATTO** | SI Renato 14/09; play **1.3.1** |
 | — | B-AUTO-FILES-LIST | **FATTO** | SI 14/09; play **1.3.2** — PRE_* fuori lista Ripristino |
-| C2 | A1 QR avanzato | **FATTO** | SI device Renato 14/09 — play **1.3.3** ok |
+| C2 | A1 QR avanzato | **FATTO** | SI device Renato 14/09 — play **1.3.3** ok; polish UI batch → **1.3.4** (test) |
 | C3 | A2 → A3 (+ OCR idea §6 foto) → B–C → B-QTY | **DOPO** |
 | C4 | D Dashboard | no-code |
 
@@ -64,7 +64,7 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 
 **Regola Renato 13/09 (permanente) — processo ovvio:**
 1. Agente modifica codice su `main`
-2. Renato: `git pull` + **Run `playDebug`** → topbar = versione detta dall’agente (ora **`v. 1.3.3`**, senza famiglia)
+2. Renato: `git pull` + **Run `playDebug`** → topbar = versione detta dall’agente (ora **`v. 1.3.4`**, senza famiglia)
 3. Solo dopo OK test: Renato crea AAB **`playRelease`** (con firma) → Play → Invio
 4. Scheda IT/EN + `BOXMANAGER-TESTER` se closed
 5. Scrivi: `SI AAB closed`

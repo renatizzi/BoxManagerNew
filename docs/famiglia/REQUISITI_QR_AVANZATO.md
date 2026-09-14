@@ -45,8 +45,8 @@ Policy di imposizione sul foglio (`LabelSheetSpec`), separata dal layout etichet
 
 | Livello | In scope A1 | Descrizione |
 |---------|-------------|-------------|
-| **L0** | **Sì** | 1 etichetta / pagina (multi-page PDF; allineato mentalmente a V1/A6) |
-| **L1** | **Sì** | Preset A4 fissi: almeno **2×2** (4/foglio); **2×3** (6/foglio) se poco costo aggiuntivo. Margini fissi in codice |
+| **L0** | **Sì** | A4 — **1 etichetta / pagina** (multi-page PDF). UI: `A4 - 1 etichetta`. V1 singola resta A6 |
+| **L1** | **Sì** | Preset A4 fissi: **2×2** (4/foglio); **2×3** (6/foglio). Margini fissi in codice |
 | **L2** | **No** | Personalizzabile pieno (righe×colonne/margini liberi) — estensione futura documentata, non in questa voce |
 
 ### R6 — Condivisione
@@ -58,7 +58,7 @@ Policy di imposizione sul foglio (`LabelSheetSpec`), separata dal layout etichet
 - Riuso cartella dopo primo CONSENTI (stesse preferenze Backup/export dove applicabile).
 
 ### R8 — Anteprima batch
-- Lista testuale + genera documento (niente carosello anteprime bitmap in prima fetta).
+- Riepilogo: sottotitolo fisso; `Totale etichette n. X`; sezione **Contenitori** con card come lista ricerca/Contenitori; **Formato** (combo in card standard) + genera documento (niente carosello anteprime bitmap).
 
 ### R9 — Testo sotto QR
 - Come oggi in V1 (`permanentId` sull’etichetta). Non riaprire 3.4.4.
@@ -80,7 +80,7 @@ Policy di imposizione sul foglio (`LabelSheetSpec`), separata dal layout etichet
 - Separare:
   1. **modello etichetta singola** (view/layout V1);
   2. **`LabelSheetSpec`** (pageSize, rows, cols, margins) per L0/L1.
-- Stampa: PrintManager; L0 può restare media A6; L1 usa **ISO_A4**.
+- Stampa: PrintManager; batch L0/L1 usano **ISO_A4**. V1 singola resta A6.
 - Esporta / Condividi: stesso PDF generato.
 
 ### T3 — Stack
