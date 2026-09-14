@@ -1,0 +1,19 @@
+---
+description: Test telefono Renato solo su main — merge prima di chiedere il test.
+alwaysApply: true
+---
+
+# Test telefono solo su `main` (SI Renato 14/09)
+
+Regola permanente.
+
+## Obbligo
+
+- Il test sul telefono di Renato si fa **solo** su `main`, mai su branch di lavoro.
+- Prima di chiedere `git pull` + Run `playDebug`, l’agente deve avere **già mergiato** (o portato) le modifiche su `main` e fatto push di `main`.
+- Nella richiesta di test indicare sempre il `versionName` atteso in topbar (es. `v. 1.3.4`).
+
+## Vietato
+
+- Chiedere a Renato di fare checkout di un branch `cursor/…` per provare sul telefono.
+- Dire «prova sul branch X» o lasciare il codice solo sul PR senza merge quando il passo successivo è il test device.
