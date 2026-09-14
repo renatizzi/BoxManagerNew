@@ -35,7 +35,7 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 | B1–B2 | Accesso produzione / domande Google | **ATTESA Google** | Richiesta inviata **13/09 ~12:59**; esame tipico ≤7 gg. **Non blocca** closed 1.3 |
 | B3–B4 | Gate Disco/Condividi | **FATTO in B-prep** | |
 | B5–B6 | Merge → `main` + **1.3** / vc > Play | **FATTO** | `main` @ `271808c` — play **1.3** / vc **4** (FF merge 13/09) |
-| B7–B9 | AAB play, closed 1.3, scheda, smoke | **IN CORSO** | Smoke playDebug **FATTO**. AAB già caricato; in **revisione Play**. Poi install da Store + scheda |
+| B7–B9 | AAB play, closed 1.3, scheda, smoke | **FATTO** (closed) | SI Renato 14/09: 1.3 su Play closed, scaricata e testata |
 | B10 | Freeze docs post-M3 | **DOPO** | Con SI |
 
 **Traccia:** breve **closed 1.3** → poi produzione **solo dopo** email OK Google + closed ok (A10).
@@ -69,9 +69,10 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 5. Scrivi: `SI AAB closed`
 6. **Non** produzione ampia finché email Google OK + closed ok
 
-## Prossimo ora
+## Prossimo ora (14/09)
 
-1. Aspetta fine revisione Play sulla release closed 1.3.
-2. Installa/aggiorna dal **Play Store** (account tester) → conferma topbar `v. 1.3`.
-3. Scrivi: `ok play store`.
-4. Produzione ampia solo dopo email Google OK + closed ok.
+1. Breve closed 1.3 in corso (già installata/testata da Renato).
+2. Aspetta **email Google** su accesso produzione (richiesta 13/09).
+3. Quando arriva OK Google + closed ok → promuovi **1.3** in produzione.
+4. Scrivi: `email Google OK` oppure `promuovi produzione`.
+5. Dopo promozione: freeze docs (B10) con SI.

@@ -41,7 +41,7 @@
 | 5 | Renato | Upload AAB su **test chiuso** e **completa Invio/distribuzione** (bozza ≠ disponibile sul telefono) |
 | 6 | Renato | Scheda Store: testi IT/EN; icona/feature graphic; screenshot |
 | 7 | Renato | Avviso tester: novità 1.3 + codice `BOXMANAGER-TESTER` se serve Archivio completo |
-| 8 | Renato | Smoke post-install da Play (package `it.renatizzi.boxmanager`, topbar **1.3**, lingua, Backup) |
+| 8 | Renato | **FATTO 14/09:** 1.3 closed su Play, scaricata e testata |
 | 9 | Renato | Closed 1.3 ok **e** email Google OK → **promuovi / pubblica in produzione** |
 | 10 | Agente | Con SI: annotare freeze post-M3 in Promemoria / Nota |
 
