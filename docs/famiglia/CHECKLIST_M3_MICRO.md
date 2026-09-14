@@ -50,7 +50,7 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 |---|------------|-------|
 | C1 | B-ROTATE-FORM-DRAFT | **FATTO** | SI Renato 14/09; play **1.3.1** |
 | — | B-AUTO-FILES-LIST | **FATTO** | SI 14/09; play **1.3.2** — PRE_* fuori lista Ripristino |
-| C2 | A1 QR avanzato | **FATTO** | SI device Renato 14/09 — play **1.3.3** ok; polish UI batch → **1.3.4** (test) |
+| C2 | A1 QR avanzato | **FATTO** | SI device Renato 14/09 — play **1.3.3** ok; polish UI batch **1.3.4 OK** |
 | C3 | A2 → A3 (+ OCR idea §6 foto) → B–C → B-QTY | **DOPO** |
 | C4 | D Dashboard | no-code |
 
@@ -80,7 +80,7 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 **Binario piano:**
 1. **C1** — **FATTO** (1.3.1).
 2. **B-AUTO-FILES-LIST** — **FATTO** (1.3.3 ok).
-3. **C2 / A1** — **FATTO** SI device 14/09 (1.3.3 ok).
+3. **C2 / A1** — **FATTO** SI device 14/09 (1.3.3 + polish **1.3.4 OK**).
 4. **Prossimo: C3 / A2 Cestino** — serve SI «apri fetta codice» (o conferma esplicita).
 5. Poi A3 Foto → B–C → B-QTY; **C4** Dashboard no-code.
 
