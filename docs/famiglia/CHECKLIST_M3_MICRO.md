@@ -48,9 +48,9 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 
 | # | Micro-step | Stato |
 |---|------------|-------|
-| C1 | B-ROTATE-FORM-DRAFT | **FATTO** | SI Renato 14/09; su `main`; play **1.3.1** / vc **5** |
-| — | B-AUTO-FILES-LIST | **NOTA** | Regressione lista file auto vs Sfoglia (14/09); fuori C1 |
-| C2 | A1 — WIP `cursor/qr-avanzato-wip-parked-8374` @ `f523735` | **DOPO** + SI codice |
+| C1 | B-ROTATE-FORM-DRAFT | **FATTO** | SI Renato 14/09; play **1.3.1** |
+| — | B-AUTO-FILES-LIST | **FATTO** | SI 14/09; play **1.3.2** — PRE_* fuori lista Ripristino |
+| C2 | A1 QR avanzato | **PROSSIMO** | SI Renato 14/09: aprire senza altra conferma (WIP parked) |
 | C3 | A2 → A3 (+ OCR idea §6 foto) → B–C → B-QTY | **DOPO** |
 | C4 | D Dashboard | no-code |
 
@@ -79,9 +79,10 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 
 **Binario piano (si riprende subito, senza aspettare produzione):**
 1. **C1** — **FATTO** (1.3.1).
-2. **B-AUTO-FILES-LIST** — prossimo candidato fix (lista file auto vs Sfoglia).
-3. **C2** — A1 QR: serve SI **«apri fetta codice»**.
+2. **B-AUTO-FILES-LIST** — **FATTO** in codice (**1.3.2**): da testare — lista Ripristino senza PRE_*; Sfoglia li mostra ancora.
+3. **C2 / A1** — prossima fetta codice (SI anticipato Renato 14/09: apri senza altra conferma).
 4. Poi **C3** A2 → A3 → B–C → B-QTY; **C4** Dashboard no-code.
 
 **Regola test (SI 14/09):** prima di ogni Run l’agente indica il `versionName` atteso in topbar.
-Ora: dopo pull → Run **`playDebug`** → topbar deve essere **`v. 1.3.1`**.
+**Ora:** pull `main` → Run **`playDebug`** → topbar **`v. 1.3.2`**.
+Utility → Ripristino: in lista solo backup tipo `BCK_…` / nomi liberi; niente `PRE_RESTORE_` / `PRE_IMPORT_`. Con Sfoglia quei file devono esserci ancora.

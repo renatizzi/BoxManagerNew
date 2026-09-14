@@ -52,7 +52,6 @@ class RestoreActivity : BaseActivity() {
     private var selectedFileUri: Uri? = null
     private var pendingRestoreAfterFolder = false
     private var pendingPickFileAfterFolder = false
-    private var showSafetyCopies = false
 
     private val folderPicker =
         registerForActivityResult(
@@ -161,12 +160,10 @@ class RestoreActivity : BaseActivity() {
                     BackupConfiguration.restoreCompleted(this)
                 )
             ) {
-                showSafetyCopies = false
                 refreshFileList()
             } else if (
                 userMessage.text == BackupConfiguration.restoreFailed(this)
             ) {
-                showSafetyCopies = true
                 refreshFileList()
             }
         }
@@ -424,16 +421,10 @@ class RestoreActivity : BaseActivity() {
     private fun visibleBackupFiles(
         files: List<BackupZipPersister.ZipFileItem>
     ): List<BackupZipPersister.ZipFileItem> {
-
-        if (showSafetyCopies) {
-            return files
-        }
-
+        // B-AUTO-FILES-LIST: solo backup «effettivi» in lista app.
+        // PRE_RESTORE_ / PRE_IMPORT_ restano visibili solo via Sfoglia.
         return files.filterNot { item ->
-            item.name.startsWith(
-                BackupConfiguration.PRE_RESTORE_PREFIX,
-                ignoreCase = true
-            )
+            BackupConfiguration.isAutomaticBackupFileName(item.name)
         }
     }
 

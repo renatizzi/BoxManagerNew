@@ -20,8 +20,8 @@ android {
         applicationId = "it.renatizzi.boxmanager"
         minSdk = 24
         targetSdk = 36
-        versionCode = 5
-        versionName = "1.3.1"
+        versionCode = 6
+        versionName = "1.3.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -44,9 +44,9 @@ android {
     productFlavors {
         create("play") {
             dimension = "distribution"
-            // Post-C1 (14/09): 1.3.1 — fix draft form su rotazione. vc 5 > Play closed 1.3 (vc 4).
-            versionCode = 5
-            versionName = "1.3.1"
+            // 14/09: 1.3.2 — B-AUTO-FILES-LIST (nasconde PRE_* in lista Ripristino). vc 6.
+            versionCode = 6
+            versionName = "1.3.2"
             buildConfigField("boolean", "FAMILY_BETA", "true")
         }
         create("famiglia") {

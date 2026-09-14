@@ -74,6 +74,26 @@ object BackupConfiguration {
 
     const val PRE_RESTORE_PREFIX = "PRE_RESTORE_"
 
+    /**
+     * Prefissi di file **automatici** (stessa cartella Backup).
+     * Non vanno in lista Ripristino dell’app; restano raggiungibili con Sfoglia.
+     * Allineare [ImportConfiguration.PRE_IMPORT_PREFIX].
+     */
+    private val AUTOMATIC_BACKUP_NAME_PREFIXES = listOf(
+        PRE_RESTORE_PREFIX,
+        "PRE_IMPORT_"
+    )
+
+    fun isAutomaticBackupFileName(fileName: String): Boolean {
+        val name = fileName.trim()
+        if (name.isEmpty()) {
+            return false
+        }
+        return AUTOMATIC_BACKUP_NAME_PREFIXES.any { prefix ->
+            name.startsWith(prefix, ignoreCase = true)
+        }
+    }
+
     fun proposedPreRestoreFileName(now: Date = Date()): String {
         val formatter = SimpleDateFormat(
             "ddMMyy_HHmm",
