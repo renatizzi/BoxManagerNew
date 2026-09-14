@@ -7,7 +7,8 @@ Ingresso sessione 07/09 → [PROMPT_CONTINUITA_07_09_DISCO_FOTO.md](PROMPT_CONTI
 **Checklist micro-step M3** → [CHECKLIST_M3_MICRO.md](CHECKLIST_M3_MICRO.md).  
 Correttivi → [PROMPT_CONTINUITA_CORRETTIVI.md](PROMPT_CONTINUITA_CORRETTIVI.md).  
 Regola: `.cursor/rules/annotazioni-renato.mdc`.  
-Processo analisi: `.cursor/rules/processo-analisi.mdc`.
+Processo analisi: `.cursor/rules/processo-analisi.mdc`.  
+**Test telefono (SI 14/09 permanente):** solo su `main` — merge prima di chiedere `playDebug` (`.cursor/rules/test-telefono-main.mdc`).
 
 ---
 
