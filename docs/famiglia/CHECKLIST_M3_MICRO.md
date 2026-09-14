@@ -64,7 +64,7 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 
 **Regola Renato 13/09 (permanente) — processo ovvio:**
 1. Agente modifica codice su `main`
-2. Renato: `git pull` + **Run `playDebug`** → topbar = versione detta dall’agente (ora **`v. 1.3.1`**, senza famiglia)
+2. Renato: `git pull` + **Run `playDebug`** → topbar = versione detta dall’agente (ora **`v. 1.3.2`**, senza famiglia)
 3. Solo dopo OK test: Renato crea AAB **`playRelease`** (con firma) → Play → Invio
 4. Scheda IT/EN + `BOXMANAGER-TESTER` se closed
 5. Scrivi: `SI AAB closed`
