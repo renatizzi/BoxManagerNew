@@ -48,7 +48,8 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 
 | # | Micro-step | Stato |
 |---|------------|-------|
-| C1 | Opz. B-ROTATE-FORM-DRAFT | **DOPO** |
+| C1 | B-ROTATE-FORM-DRAFT | **IN CORSO** | SI 14/09; branch `cursor/c1-rotate-form-draft-d5b2` — `configChanges` su form dialog |
+| — | B-AUTO-FILES-LIST | **NOTA** | Regressione lista file auto vs Sfoglia (14/09); fuori C1 |
 | C2 | A1 — WIP `cursor/qr-avanzato-wip-parked-8374` @ `f523735` | **DOPO** + SI codice |
 | C3 | A2 → A3 (+ OCR idea §6 foto) → B–C → B-QTY | **DOPO** |
 | C4 | D Dashboard | no-code |
@@ -77,9 +78,10 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 3. Dopo promozione: freeze docs **B10** con SI.
 
 **Binario piano (si riprende subito, senza aspettare produzione):**
-1. **C1** — B-ROTATE-FORM-DRAFT (fix rotazione schermo nei form) — pronto da aprire.
+1. **C1** — B-ROTATE-FORM-DRAFT **IN CORSO**: pull branch / merge → Run `playDebug` → apri add Contenitore/Oggetto/Categoria/Luogo → digita → **ruota** → il testo deve restare. Scrivi `C1 ok` o `C1 ko`.
 2. **C2** — A1 QR avanzato: serve tuo SI **«apri fetta codice»** (WIP su `cursor/qr-avanzato-wip-parked-8374` @ `f523735`).
 3. Poi **C3** A2 Cestino → A3 Foto → B–C Export/Import → B-QTY.
 4. **C4** Dashboard D = solo requisiti, no codice.
+5. **B-AUTO-FILES-LIST** (nota): dopo C1, verificare Ripristino — file auto assenti dalla lista app, visibili con Sfoglia.
 
 Processo prove: pull + **Run `playDebug`** → OK → solo allora AAB firmato su Play.

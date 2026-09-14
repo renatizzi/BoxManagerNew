@@ -53,10 +53,17 @@
 
         <activity
             android:name=".ui.boxdetail.BoxDetailActivity"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden"
             android:windowSoftInputMode="adjustPan" />
 
-        <activity android:name=".ui.categories.CategoriesActivity" />
-        <activity android:name=".ui.settings.LocationsActivity" />
+        <!-- C1 B-ROTATE-FORM-DRAFT: niente recreate su rotazione → i dialog add/edit
+             (AlertDialog) tengono il testo digitato. Nessun layout-land dedicato. -->
+        <activity
+            android:name=".ui.categories.CategoriesActivity"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden" />
+        <activity
+            android:name=".ui.settings.LocationsActivity"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden" />
 
         <activity
             android:name=".ui.dashboard.DashboardActivity"
@@ -81,6 +88,7 @@
 
         <activity
             android:name=".MainActivity"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden"
             android:exported="false" />
 
     </application>
