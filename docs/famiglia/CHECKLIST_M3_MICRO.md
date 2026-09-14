@@ -50,7 +50,7 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 |---|------------|-------|
 | C1 | B-ROTATE-FORM-DRAFT | **FATTO** | SI Renato 14/09; play **1.3.1** |
 | — | B-AUTO-FILES-LIST | **FATTO** | SI 14/09; play **1.3.2** — PRE_* fuori lista Ripristino |
-| C2 | A1 QR avanzato | **PROSSIMO** | SI Renato 14/09: aprire senza altra conferma (WIP parked) |
+| C2 | A1 QR avanzato | **IN CORSO** | SI 14/09; ripresa WIP; play **1.3.3** |
 | C3 | A2 → A3 (+ OCR idea §6 foto) → B–C → B-QTY | **DOPO** |
 | C4 | D Dashboard | no-code |
 
@@ -64,7 +64,7 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 
 **Regola Renato 13/09 (permanente) — processo ovvio:**
 1. Agente modifica codice su `main`
-2. Renato: `git pull` + **Run `playDebug`** → topbar = versione detta dall’agente (ora **`v. 1.3.2`**, senza famiglia)
+2. Renato: `git pull` + **Run `playDebug`** → topbar = versione detta dall’agente (ora **`v. 1.3.3`**, senza famiglia)
 3. Solo dopo OK test: Renato crea AAB **`playRelease`** (con firma) → Play → Invio
 4. Scheda IT/EN + `BOXMANAGER-TESTER` se closed
 5. Scrivi: `SI AAB closed`
@@ -84,5 +84,6 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 4. Poi **C3** A2 → A3 → B–C → B-QTY; **C4** Dashboard no-code.
 
 **Regola test (SI 14/09):** prima di ogni Run l’agente indica il `versionName` atteso in topbar.
-**Ora:** pull `main` → Run **`playDebug`** → topbar **`v. 1.3.2`**.
-Utility → Ripristino: in lista solo backup tipo `BCK_…` / nomi liberi; niente `PRE_RESTORE_` / `PRE_IMPORT_`. Con Sfoglia quei file devono esserci ancora.
+**Ora — due check sulla stessa build `v. 1.3.3`:**
+1. Utility → Ripristino: lista senza `PRE_RESTORE_` / `PRE_IMPORT_`; Sfoglia li mostra ancora.
+2. A1: lista Contenitori → selezione multipla → etichette QR batch → formato foglio → PDF/Stampa/Condividi (serve Archivio completo / codice tester).

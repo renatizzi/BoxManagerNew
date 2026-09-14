@@ -20,8 +20,8 @@ android {
         applicationId = "it.renatizzi.boxmanager"
         minSdk = 24
         targetSdk = 36
-        versionCode = 6
-        versionName = "1.3.2"
+        versionCode = 7
+        versionName = "1.3.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -44,9 +44,9 @@ android {
     productFlavors {
         create("play") {
             dimension = "distribution"
-            // 14/09: 1.3.2 — B-AUTO-FILES-LIST (nasconde PRE_* in lista Ripristino). vc 6.
-            versionCode = 6
-            versionName = "1.3.2"
+            // 14/09: 1.3.3 — A1 QR batch + include fix auto-files. vc 7.
+            versionCode = 7
+            versionName = "1.3.3"
             buildConfigField("boolean", "FAMILY_BETA", "true")
         }
         create("famiglia") {
