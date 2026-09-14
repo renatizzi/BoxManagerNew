@@ -69,10 +69,17 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 5. Scrivi: `SI AAB closed`
 6. **Non** produzione ampia finché email Google OK + closed ok
 
-## Prossimo ora (14/09)
+## Prossimo ora (14/09) — due binari in parallelo
 
-1. Breve closed 1.3 in corso (già installata/testata da Renato).
-2. Aspetta **email Google** su accesso produzione (richiesta 13/09).
-3. Quando arriva OK Google + closed ok → promuovi **1.3** in produzione.
-4. Scrivi: `email Google OK` oppure `promuovi produzione`.
-5. Dopo promozione: freeze docs (B10) con SI.
+**Binario Play (non blocca il codice):**
+1. **ATTESA Google** accesso produzione (B1–B2). Quando arriva: `email Google OK` → promuovi 1.3 in produzione.
+2. Opz. scheda Store IT/EN / screenshot da 1.3 ufficiale se ancora da rifinire.
+3. Dopo promozione: freeze docs **B10** con SI.
+
+**Binario piano (si riprende subito, senza aspettare produzione):**
+1. **C1** — B-ROTATE-FORM-DRAFT (fix rotazione schermo nei form) — pronto da aprire.
+2. **C2** — A1 QR avanzato: serve tuo SI **«apri fetta codice»** (WIP su `cursor/qr-avanzato-wip-parked-8374` @ `f523735`).
+3. Poi **C3** A2 Cestino → A3 Foto → B–C Export/Import → B-QTY.
+4. **C4** Dashboard D = solo requisiti, no codice.
+
+Processo prove: pull + **Run `playDebug`** → OK → solo allora AAB firmato su Play.
