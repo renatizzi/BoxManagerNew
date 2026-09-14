@@ -20,8 +20,8 @@ android {
         applicationId = "it.renatizzi.boxmanager"
         minSdk = 24
         targetSdk = 36
-        versionCode = 4
-        versionName = "1.3"
+        versionCode = 5
+        versionName = "1.3.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -44,10 +44,9 @@ android {
     productFlavors {
         create("play") {
             dimension = "distribution"
-            // M3 cutover 13/09: ufficiale 1.3 — class I + FAMILY_BETA (archivio condiviso).
-            // Package Store senza suffisso: it.renatizzi.boxmanager.
-            versionCode = 4
-            versionName = "1.3"
+            // Post-C1 (14/09): 1.3.1 — fix draft form su rotazione. vc 5 > Play closed 1.3 (vc 4).
+            versionCode = 5
+            versionName = "1.3.1"
             buildConfigField("boolean", "FAMILY_BETA", "true")
         }
         create("famiglia") {

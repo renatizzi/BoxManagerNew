@@ -49,13 +49,14 @@ git push -u origin cursor/family-b-beta-75ee
 
 Processo di sempre (il più semplice):
 
-1. Io (agente) preparo il codice su `main`
+1. Io (agente) preparo il codice su `main` e ti dico il **`versionName` atteso** (es. `v. 1.3.1`)
 2. Tu: `git pull origin main`
 3. Build Variants → **`playDebug`** (versione **senza firma**, come il Run di sempre)
-4. **Run** sul telefono → topbar ufficiale tipo **`v. 1.3`** (senza `famiglia`)
+4. **Run** sul telefono → controlla topbar = versione comunicata (senza `famiglia`)
 5. Solo dopo il tuo OK ai test: Generate Signed App Bundle → **`playRelease`** (con firma) → Play Console → Invio release
 
 Nota: **`playRelease` al Run** dà errore di firma: non usarlo per le prove. Serve solo per il file da caricare su Play.
+**SI 14/09:** prima di ogni test l’agente indica sempre il riferimento versione in topbar.
 
 ## Stop — non fare
 

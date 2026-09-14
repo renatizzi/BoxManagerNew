@@ -48,7 +48,7 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 
 | # | Micro-step | Stato |
 |---|------------|-------|
-| C1 | B-ROTATE-FORM-DRAFT | **IN CORSO** | SI 14/09; branch `cursor/c1-rotate-form-draft-d5b2` — `configChanges` su form dialog |
+| C1 | B-ROTATE-FORM-DRAFT | **FATTO** | SI Renato 14/09; su `main`; play **1.3.1** / vc **5** |
 | — | B-AUTO-FILES-LIST | **NOTA** | Regressione lista file auto vs Sfoglia (14/09); fuori C1 |
 | C2 | A1 — WIP `cursor/qr-avanzato-wip-parked-8374` @ `f523735` | **DOPO** + SI codice |
 | C3 | A2 → A3 (+ OCR idea §6 foto) → B–C → B-QTY | **DOPO** |
@@ -64,7 +64,7 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 
 **Regola Renato 13/09 (permanente) — processo ovvio:**
 1. Agente modifica codice su `main`
-2. Renato: `git pull` + **Run `playDebug`** (senza firma) → test telefono → topbar `v. 1.3` senza famiglia
+2. Renato: `git pull` + **Run `playDebug`** → topbar = versione detta dall’agente (ora **`v. 1.3.1`**, senza famiglia)
 3. Solo dopo OK test: Renato crea AAB **`playRelease`** (con firma) → Play → Invio
 4. Scheda IT/EN + `BOXMANAGER-TESTER` se closed
 5. Scrivi: `SI AAB closed`
@@ -78,10 +78,10 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 3. Dopo promozione: freeze docs **B10** con SI.
 
 **Binario piano (si riprende subito, senza aspettare produzione):**
-1. **C1** — B-ROTATE-FORM-DRAFT **IN CORSO**: pull branch / merge → Run `playDebug` → apri add Contenitore/Oggetto/Categoria/Luogo → digita → **ruota** → il testo deve restare. Scrivi `C1 ok` o `C1 ko`.
-2. **C2** — A1 QR avanzato: serve tuo SI **«apri fetta codice»** (WIP su `cursor/qr-avanzato-wip-parked-8374` @ `f523735`).
-3. Poi **C3** A2 Cestino → A3 Foto → B–C Export/Import → B-QTY.
-4. **C4** Dashboard D = solo requisiti, no codice.
-5. **B-AUTO-FILES-LIST** (nota): dopo C1, verificare Ripristino — file auto assenti dalla lista app, visibili con Sfoglia.
+1. **C1** — **FATTO** (1.3.1).
+2. **B-AUTO-FILES-LIST** — prossimo candidato fix (lista file auto vs Sfoglia).
+3. **C2** — A1 QR: serve SI **«apri fetta codice»**.
+4. Poi **C3** A2 → A3 → B–C → B-QTY; **C4** Dashboard no-code.
 
-Processo prove: pull + **Run `playDebug`** → OK → solo allora AAB firmato su Play.
+**Regola test (SI 14/09):** prima di ogni Run l’agente indica il `versionName` atteso in topbar.
+Ora: dopo pull → Run **`playDebug`** → topbar deve essere **`v. 1.3.1`**.
