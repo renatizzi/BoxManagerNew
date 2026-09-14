@@ -30,6 +30,14 @@ class LabelSheetSpecTest {
         assertTrue(presets.contains(LabelSheetSpec.A4_2X2))
         assertTrue(presets.contains(LabelSheetSpec.A4_2X3))
     }
+
+    @Test
+    fun onePerPage_isA4Page() {
+        assertEquals(595, LabelSheetSpec.ONE_PER_PAGE.pageWidthPt)
+        assertEquals(842, LabelSheetSpec.ONE_PER_PAGE.pageHeightPt)
+        assertEquals(1, LabelSheetSpec.ONE_PER_PAGE.rows)
+        assertEquals(1, LabelSheetSpec.ONE_PER_PAGE.cols)
+    }
 }
 
 class QrBatchFileNamesTest {

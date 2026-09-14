@@ -11,18 +11,15 @@ enum class LabelSheetSpec(
     val pageWidthPt: Int,
     /** Altezza pagina PDF in punti. */
     val pageHeightPt: Int,
-    val marginPt: Int,
-    /** true = stampa tipica A4; false = A6 (L0). */
-    val isoA4: Boolean
+    val marginPt: Int
 ) {
-    /** L0 — 1 etichetta / pagina (A6, come V1). */
+    /** L0 — A4, 1 etichetta / pagina (batch; V1 singola resta A6). */
     ONE_PER_PAGE(
         rows = 1,
         cols = 1,
-        pageWidthPt = 298,
-        pageHeightPt = 420,
-        marginPt = 12,
-        isoA4 = false
+        pageWidthPt = 595,
+        pageHeightPt = 842,
+        marginPt = 24
     ),
 
     /** L1 — A4 2×2 (4 etichette). */
@@ -31,8 +28,7 @@ enum class LabelSheetSpec(
         cols = 2,
         pageWidthPt = 595,
         pageHeightPt = 842,
-        marginPt = 18,
-        isoA4 = true
+        marginPt = 18
     ),
 
     /** L1 — A4 2×3 (6 etichette). */
@@ -41,8 +37,7 @@ enum class LabelSheetSpec(
         cols = 2,
         pageWidthPt = 595,
         pageHeightPt = 842,
-        marginPt = 16,
-        isoA4 = true
+        marginPt = 16
     );
 
     val labelsPerPage: Int get() = rows * cols
