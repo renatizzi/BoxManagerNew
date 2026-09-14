@@ -50,7 +50,7 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 |---|------------|-------|
 | C1 | B-ROTATE-FORM-DRAFT | **FATTO** | SI Renato 14/09; play **1.3.1** |
 | — | B-AUTO-FILES-LIST | **FATTO** | SI 14/09; play **1.3.2** — PRE_* fuori lista Ripristino |
-| C2 | A1 QR avanzato | **IN CORSO** | SI 14/09; ripresa WIP; play **1.3.3** |
+| C2 | A1 QR avanzato | **FATTO** | SI device Renato 14/09 — play **1.3.3** ok |
 | C3 | A2 → A3 (+ OCR idea §6 foto) → B–C → B-QTY | **DOPO** |
 | C4 | D Dashboard | no-code |
 
@@ -77,13 +77,12 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 2. Opz. scheda Store IT/EN / screenshot da 1.3 ufficiale se ancora da rifinire.
 3. Dopo promozione: freeze docs **B10** con SI.
 
-**Binario piano (si riprende subito, senza aspettare produzione):**
+**Binario piano:**
 1. **C1** — **FATTO** (1.3.1).
-2. **B-AUTO-FILES-LIST** — **FATTO** in codice (**1.3.2**): da testare — lista Ripristino senza PRE_*; Sfoglia li mostra ancora.
-3. **C2 / A1** — prossima fetta codice (SI anticipato Renato 14/09: apri senza altra conferma).
-4. Poi **C3** A2 → A3 → B–C → B-QTY; **C4** Dashboard no-code.
+2. **B-AUTO-FILES-LIST** — **FATTO** (1.3.3 ok).
+3. **C2 / A1** — **FATTO** SI device 14/09 (1.3.3 ok).
+4. **Prossimo: C3 / A2 Cestino** — serve SI «apri fetta codice» (o conferma esplicita).
+5. Poi A3 Foto → B–C → B-QTY; **C4** Dashboard no-code.
 
-**Regola test (SI 14/09):** prima di ogni Run l’agente indica il `versionName` atteso in topbar.
-**Ora — due check sulla stessa build `v. 1.3.3`:**
-1. Utility → Ripristino: lista senza `PRE_RESTORE_` / `PRE_IMPORT_`; Sfoglia li mostra ancora.
-2. A1: lista Contenitori → selezione multipla → etichette QR batch → formato foglio → PDF/Stampa/Condividi (serve Archivio completo / codice tester).
+**Regola test:** l’agente indica sempre il `versionName` atteso in topbar.
+
