@@ -32,7 +32,7 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 | # | Micro-step | Stato | Note |
 |---|------------|-------|------|
 | B0 | Check Console aggregato (C-A…C-E) | **PRONTO enough** | C-A OK; C-B richiesta inviata. Scheda/dichiarazioni ok al 10/09; avvisi residui solo se rossi |
-| B1–B2 | Accesso produzione / domande Google | **ATTESA Google** | Richiesta inviata **13/09 ~12:59**; esame tipico ≤7 gg. **Non blocca** closed 1.3 |
+| B1–B2 | Accesso produzione / domande Google | **FATTO** | SI Renato 16/09: **email Google OK** |
 | B3–B4 | Gate Disco/Condividi | **FATTO in B-prep** | |
 | B5–B6 | Merge → `main` + **1.3** / vc > Play | **FATTO** | `main` @ `271808c` — play **1.3** / vc **4** (FF merge 13/09) |
 | B7–B9 | AAB play, closed 1.3, scheda, smoke | **FATTO** (closed) | SI Renato 14/09: 1.3 su Play closed, scaricata e testata |
@@ -82,10 +82,10 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 1. **C1** — **FATTO** (1.3.1).
 2. **B-AUTO-FILES-LIST** — **FATTO** (1.3.3 ok).
 3. **C2 / A1** — **FATTO** SI device 14/09 (1.3.3 + polish **1.3.4 OK**).
-4. **C3 / A2 Cestino** — **IN TEST** play **1.3.7** (Cestino ultimo + colore accent).
-5. Backlog QR batch (non A2): **B-QR-BATCH-CODE-FONT**, **B-QR-BATCH-BOX-NAME** — Aperto 16/09.
+4. **C3 / A2 Cestino** — **FATTO** SI device 16/09 (**1.3.7 ok**).
+5. Backlog QR batch: **B-QR-BATCH-CODE-FONT**, **B-QR-BATCH-BOX-NAME** — Aperto 16/09.
 6. Backlog UI: **B-UI-BUTTONS-ACCESSO-RAPIDO** — Aperto 16/09.
-7. Poi A3 Foto → B–C → B-QTY; **C5** Dashboard no-code.
+7. **Prossimo codice (con SI):** A3 Foto → B–C → B-QTY; **C5** Dashboard no-code.
 
 **Regola test:** l’agente indica sempre il `versionName` atteso in topbar; merge su **`main`** obbligatorio prima del test telefono (SI 14/09).
 
