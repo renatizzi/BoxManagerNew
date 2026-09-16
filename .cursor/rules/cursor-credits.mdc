@@ -1,0 +1,22 @@
+---
+description: Risparmio crediti Cursor — sessioni corte, niente lavoro non richiesto.
+alwaysApply: true
+---
+
+# Crediti Cursor (SI Renato 16/09 — ottimizzazione)
+
+Mese scorso i crediti sono finiti in ~1 settimana. Preferenza permanente.
+
+## Obbligo
+
+- Una fetta per sessione (o passo esplicito); niente “continua da solo” su A3/B–C senza SI.
+- Dopo OK/test: aggiornare docs, fermarsi; non aprire la voce successiva senza messaggio Renato.
+- Preferire risposte corte; niente riassunti lunghi o piano multi-settimana non chiesti.
+- Non lanciare subagent / build / test UI larghi se bastano unit test o verifica mirata.
+- Annotazioni e punto stato: solo testo/docs, zero codice.
+
+## Vietato
+
+- Riscrivere file grandi “per igiene” fuori scope.
+- Ri-analizzare requisiti già CONGELATI senza SI di revisione.
+- Parallelizzare più branch/feature nella stessa sessione senza richiesta.

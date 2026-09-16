@@ -51,7 +51,7 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 | C1 | B-ROTATE-FORM-DRAFT | **FATTO** | SI Renato 14/09; play **1.3.1** |
 | — | B-AUTO-FILES-LIST | **FATTO** | SI 14/09; play **1.3.2** — PRE_* fuori lista Ripristino |
 | C2 | A1 QR avanzato | **FATTO** | SI device Renato 14/09 — play **1.3.3** ok; polish UI batch **1.3.4 OK** |
-| C3 | A2 Cestino | **IN TEST** | play **1.3.7** — ordine Utility + colore titolo Cestino |
+| C3 | A2 Cestino | **FATTO** | SI device Renato 16/09 — play **1.3.7 ok** |
 | C4 | A3 → B–C → B-QTY | **DOPO** |
 | C5 | D Dashboard | no-code |
 
