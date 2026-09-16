@@ -59,6 +59,8 @@ Nota: **`playRelease` al Run** dà errore di firma: non usarlo per le prove. Ser
 **SI 14/09:** prima di ogni test l’agente indica sempre il riferimento versione in topbar.
 **SI 14/09 (permanente):** test telefono **solo su `main`** — l’agente fa sempre il merge su `main` prima di chiedere il test.
 
+**SI 16/09:** quando ti chiedo un test, trovi sempre una **procedura numerata** (pull, variante, versione in topbar, tap da fare, cosa deve succedere). Se manca, chiedi «passi operativi».
+
 ## Stop — non fare
 
 - Non caricare la build di sviluppo su Play Console **durante** il test  

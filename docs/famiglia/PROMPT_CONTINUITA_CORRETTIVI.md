@@ -12,6 +12,8 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) — sezione **Che
 
 | ID | Indicazione |
 |----|-------------|
+| **B-UI-BUTTONS-ACCESSO-RAPIDO** | Uniformare bottoni stile Accesso rapido Dashboard (screenshot 16/09) — **Aperto** |
+| **B-TEST-ISTRUZIONI-OPERATIVE** | Test telefono: istruzioni operative obbligatorie (SI 16/09) |
 | **B-QR-BATCH-CODE-FONT** | Stampa multietichette: carattere più piccolo per il codice (sovrapposizione / demarcazione se taglio) — **Aperto** 16/09 |
 | **B-QR-BATCH-BOX-NAME** | Stampa multietichette: sopra al codice **sempre** nome contenitore in grassetto — **Aperto** 16/09 |
 | **B-ROTATE-FORM-DRAFT** | Rotazione in inserimento: testo sparisce — **FATTO C1** 14/09 |
