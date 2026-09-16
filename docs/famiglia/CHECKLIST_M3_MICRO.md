@@ -75,9 +75,9 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 
 **Binario Play (non blocca il codice):**
 1. **email Google OK** (SI Renato 16/09). **DECISO:** AAB da `main` **1.3.7** → **closed** breve → poi **produzione** (SI Renato 16/09).
-2. Paesi UE (inglese diffuso): selezionati, **da confermare** in Console.
-3. Scheda Store: IT ok; EN = `docs/play/store-listing-en.md` + screenshot EN.
-4. Renato: AAB **playRelease** → upload **test chiuso** → smoke da Play → promuovi produzione.
+2. Paesi / regioni: **FATTO** in coda revisione (SI Renato 16/09 — produzione +13 paesi).
+3. Scheda Store EN: **FATTO** (SI Renato 16/09) — testi Shared Archive / Full archive, novità, screenshot EN; «Non etichettare gli asset»; tablet non richiesti.
+4. Renato: closed **1.3.7** in revisione / attesa disponibilità → smoke da Play → **`SI AAB closed`** → promuovi produzione → **`SI produzione OK`**.
 5. Dopo promozione: freeze docs **B10** con SI.
 
 **Binario piano:**
