@@ -13,6 +13,7 @@ import com.example.boxmanagernew.ui.importdata.ImportActivity
 import com.example.boxmanagernew.ui.premium.ArchivioCompletoNav
 import com.example.boxmanagernew.ui.qr.QRActivity
 import com.example.boxmanagernew.ui.restore.RestoreActivity
+import com.example.boxmanagernew.ui.trash.TrashActivity
 import com.google.android.material.card.MaterialCardView
 
 class UtilityActivity : BaseActivity() {
@@ -66,6 +67,19 @@ class UtilityActivity : BaseActivity() {
                 Intent(
                     this,
                     ImportActivity::class.java
+                )
+            )
+        }
+
+        findViewById<MaterialCardView>(
+            R.id.btnTrash
+        ).setOnClickListener {
+            ArchivioCompletoNav.start(
+                this,
+                PremiumFeature.TRASH,
+                Intent(
+                    this,
+                    TrashActivity::class.java
                 )
             )
         }

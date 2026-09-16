@@ -20,6 +20,20 @@ class ObjectViewModel(
     private val _selectionMode = MutableLiveData(false)
     val selectionMode: LiveData<Boolean> = _selectionMode
 
+    data class TrashUndoEvent(
+        val objectIds: List<Int> = emptyList()
+    )
+
+    private val _trashUndoEvent =
+        MutableLiveData<TrashUndoEvent?>()
+
+    val trashUndoEvent: LiveData<TrashUndoEvent?> =
+        _trashUndoEvent
+
+    fun consumeTrashUndoEvent() {
+        _trashUndoEvent.value = null
+    }
+
     private val _objects = MediatorLiveData<List<ObjectWithType>>()
     val objects: LiveData<List<ObjectWithType>> = _objects
 
@@ -210,6 +224,8 @@ class ObjectViewModel(
 
         viewModelScope.launch {
             trashStore.softDeleteObjects(ids)
+            _trashUndoEvent.value =
+                TrashUndoEvent(objectIds = ids)
             clearSelection()
         }
     }
@@ -286,13 +302,18 @@ class ObjectViewModel(
 
         viewModelScope.launch {
             trashStore.softDeleteObjects(listOf(obj.id))
+            _trashUndoEvent.value =
+                TrashUndoEvent(objectIds = listOf(obj.id))
             clearSelection()
         }
     }
 
-    fun undoTrashObject(objectId: Int) {
+    fun undoTrashObjects(objectIds: List<Int>) {
         viewModelScope.launch {
-            trashStore.undoSoftDeleteObject(objectId)
+            for (id in objectIds) {
+                trashStore.restoreObjectFromTrash(id)
+            }
+            consumeTrashUndoEvent()
         }
     }
 }

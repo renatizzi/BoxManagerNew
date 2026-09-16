@@ -74,6 +74,20 @@ class BoxViewModel(
     val selectionMode =
         _selectionMode
 
+    data class TrashUndoEvent(
+        val boxIds: List<Int> = emptyList()
+    )
+
+    private val _trashUndoEvent =
+        MutableLiveData<TrashUndoEvent?>()
+
+    val trashUndoEvent: LiveData<TrashUndoEvent?> =
+        _trashUndoEvent
+
+    fun consumeTrashUndoEvent() {
+        _trashUndoEvent.value = null
+    }
+
     private val _hasHiddenSelections =
         MutableLiveData(false)
 
@@ -213,6 +227,8 @@ class BoxViewModel(
 
         viewModelScope.launch {
             trashStore.softDeleteBox(id)
+            _trashUndoEvent.value =
+                TrashUndoEvent(boxIds = listOf(id))
             clearSelection()
         }
     }
@@ -224,13 +240,16 @@ class BoxViewModel(
 
         viewModelScope.launch {
             trashStore.softDeleteBoxes(ids)
+            _trashUndoEvent.value =
+                TrashUndoEvent(boxIds = ids)
             clearSelection()
         }
     }
 
-    fun undoTrashBox(boxId: Int) {
+    fun undoTrashBoxes(boxIds: List<Int>) {
         viewModelScope.launch {
-            trashStore.undoSoftDeleteBox(boxId)
+            trashStore.undoSoftDeleteBoxes(boxIds)
+            consumeTrashUndoEvent()
         }
     }
 

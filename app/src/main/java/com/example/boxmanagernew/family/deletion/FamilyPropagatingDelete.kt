@@ -77,7 +77,9 @@ class FamilyPropagatingDelete(
         }
         val deletedAt = System.currentTimeMillis()
         for (objectId in objectIds) {
-            val obj = objectRepository.getObjectById(objectId) ?: continue
+            val obj =
+                objectRepository.getObjectEntityByIdAny(objectId)
+                    ?: continue
             recorder.recordObjectDeletion(
                 permanentId = obj.objectPermanentId,
                 deletedBy = deletedBy,

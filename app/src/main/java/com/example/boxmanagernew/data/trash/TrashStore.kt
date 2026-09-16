@@ -56,6 +56,32 @@ class TrashStore(
         objectDao.restoreFromTrash(objectId, now)
     }
 
+    suspend fun undoSoftDeleteBoxes(boxIds: List<Int>) {
+        for (id in boxIds) {
+            undoSoftDeleteBox(id)
+        }
+    }
+
+    suspend fun restoreObjectFromTrash(objectId: Int) {
+        val obj = objectDao.getByIdAny(objectId) ?: return
+        val box = boxDao.getByIdAny(obj.boxId)
+        if (box?.deletedAt != null) {
+            undoSoftDeleteBox(obj.boxId)
+        } else {
+            undoSoftDeleteObject(objectId)
+        }
+    }
+
+    suspend fun emptyTrash(deletedBy: String) {
+        val boxIds = boxDao.getAllInTrash().map { it.id }
+        for (boxId in boxIds) {
+            hardDeleteBox(boxId, deletedBy)
+        }
+        val orphanObjects =
+            objectDao.getAllInTrash().map { it.id }
+        hardDeleteObjects(orphanObjects, deletedBy)
+    }
+
     suspend fun purgeExpired(now: Long = System.currentTimeMillis()) {
         val cutoff = now - TrashRetention.RETENTION_MS
         val expiredObjects = objectDao.getTrashExpiredIds(cutoff)

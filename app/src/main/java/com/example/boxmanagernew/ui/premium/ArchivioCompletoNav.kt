@@ -100,7 +100,8 @@ object ArchivioCompletoNav {
 
             PremiumFeature.QR_SCAN,
             PremiumFeature.IMPORT,
-            PremiumFeature.ARCHIVE_SHARE ->
+            PremiumFeature.ARCHIVE_SHARE,
+            PremiumFeature.TRASH ->
                 BottomNavManager.TAB_UTILITY
 
             PremiumFeature.QR_LABEL,
