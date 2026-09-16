@@ -94,6 +94,7 @@ Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino
 
 | ID | Data | Indicazione | Stato |
 |----|------|-------------|-------|
+| **B-CURSOR-CREDITS** | 16/09/2026 | Rinnovato abbonamento Cursor: ottimizzare l’interazione per non sprecare crediti (mese scorso esauriti in ~1 settimana). | **Aperto** — regole operative sotto; SI Renato su eventuale regola agente permanente |
 | **B-UI-BUTTONS-ACCESSO-RAPIDO** | 16/09/2026 | Uniformare il formato dei bottoni come da screenshot allegato (Accesso rapido Dashboard: card `MaterialCardView`, testo centrato grassetto ~18sp, `elevated_surface`; eventualmente senza icona). | **Aperto** |
 | **B-TEST-ISTRUZIONI-OPERATIVE** | 16/09/2026 | Ogni richiesta di test telefono deve essere accompagnata da istruzioni operative sulle attività di Renato (passi concreti); escludere indicazioni generiche e vaghe. | **SI Renato 16/09** — regola agente: `.cursor/rules/test-telefono-main.mdc`, [SOLO_TU.md](SOLO_TU.md) |
 | **B-QR-BATCH-CODE-FONT** | 16/09/2026 | Usare un carattere più piccolo per il codice riportato nella stampa multietichette (al momento i numeri si sovrappongono e nel caso si dovessero tagliare, non è chiaro quale sia la linea di demarcazione) | **Aperto** |

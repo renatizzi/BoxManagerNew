@@ -74,10 +74,10 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 ## Prossimo ora (14/09) — due binari in parallelo
 
 **Binario Play (non blocca il codice):**
-1. **email Google OK** (SI Renato 16/09). Scelta AAB: **B** = da `main` (**1.3.7**), closed breve e/o produzione — in valutazione (A3 Foto **non** in codice).
+1. **email Google OK** (SI Renato 16/09). **DECISO:** AAB da `main` **1.3.7** → **closed** breve → poi **produzione** (SI Renato 16/09).
 2. Paesi UE (inglese diffuso): selezionati, **da confermare** in Console.
 3. Scheda Store: IT ok; EN = `docs/play/store-listing-en.md` + screenshot EN.
-4. Dopo AAB (+ smoke closed se usato) → promuovi produzione.
+4. Renato: AAB **playRelease** → upload **test chiuso** → smoke da Play → promuovi produzione.
 5. Dopo promozione: freeze docs **B10** con SI.
 
 **Binario piano:**
