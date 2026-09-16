@@ -75,8 +75,18 @@ class FamilyPropagatingDeleteTest {
         override suspend fun insert(box: BoxEntity) = error("unused")
         override suspend fun update(box: BoxEntity) = error("unused")
         override fun getAllLive() = error("unused")
-        override suspend fun getAllSync() = boxes.values.toList()
-        override suspend fun getById(id: Int) = boxes[id]
+        override suspend fun getAllSync() =
+            boxes.values.filter { it.deletedAt == null }
+        override suspend fun getAllSyncIncludingTrash() =
+            boxes.values.toList()
+        override suspend fun getById(id: Int) =
+            boxes[id]?.takeIf { it.deletedAt == null }
+        override suspend fun getByIdAny(id: Int) = boxes[id]
+        override suspend fun getAllInTrash() =
+            boxes.values.filter { it.deletedAt != null }
+        override suspend fun markDeleted(id: Int, deletedAt: Long) = Unit
+        override suspend fun restoreFromTrash(id: Int, restoredAt: Long) = Unit
+        override suspend fun getTrashExpiredIds(cutoff: Long) = emptyList<Int>()
         override suspend fun getByPermanentId(permanentId: String) =
             boxes.values.firstOrNull { it.permanentId == permanentId }
         override suspend fun deleteById(id: Int) { boxes.remove(id) }

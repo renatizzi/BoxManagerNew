@@ -94,4 +94,16 @@ object BoxSchemaMigrations {
             )
         }
     }
+
+    val MIGRATION_8_9 = object : Migration(8, 9) {
+
+        override fun migrate(db: SupportSQLiteDatabase) {
+            db.execSQL(
+                "ALTER TABLE box ADD COLUMN deletedAt INTEGER DEFAULT NULL"
+            )
+            db.execSQL(
+                "ALTER TABLE objects ADD COLUMN deletedAt INTEGER DEFAULT NULL"
+            )
+        }
+    }
 }

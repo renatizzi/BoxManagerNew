@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
         LocationEntity::class,
         FamilyDeletionTombstoneEntity::class
     ],
-    version = 8,
+    version = 9,
     exportSchema = false
 )
 abstract class AppDatabase :
@@ -55,7 +55,8 @@ abstract class AppDatabase :
                             .addMigrations(
                                 BoxSchemaMigrations.MIGRATION_5_6,
                                 BoxSchemaMigrations.MIGRATION_6_7,
-                                BoxSchemaMigrations.MIGRATION_7_8
+                                BoxSchemaMigrations.MIGRATION_7_8,
+                                BoxSchemaMigrations.MIGRATION_8_9
                             )
                             .build()
 

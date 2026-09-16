@@ -92,7 +92,8 @@ class BoxRepositoryImpl(
                         ?: box.permanentId
                 ),
                 createdBy = existing?.createdBy
-                    ?: box.createdBy.trim()
+                    ?: box.createdBy.trim(),
+                deletedAt = existing?.deletedAt
             )
         )
     }
@@ -126,6 +127,18 @@ class BoxRepositoryImpl(
             toDomain(entity)
         }
     }
+
+    suspend fun getBoxByIdAny(
+        id: Int
+    ): Box? {
+        return boxDao.getByIdAny(id)?.let { entity ->
+            toDomain(entity)
+        }
+    }
+
+    suspend fun getBoxEntityByIdAny(
+        id: Int
+    ): BoxEntity? = boxDao.getByIdAny(id)
 
     suspend fun moveBoxes(
         ids: List<Int>,

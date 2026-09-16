@@ -189,17 +189,30 @@ class ObjectRepositoryImpl(
 
     suspend fun getObjectById(id: Int): Object? {
         return dao.getById(id)?.let { entity ->
-            Object(
-                entity.id,
-                entity.typeObjectId,
-                entity.boxId,
-                entity.description,
-                entity.quantity,
-                entity.objectPermanentId,
-                entity.lastModified,
-                entity.createdBy
-            )
+            toObject(entity)
         }
+    }
+
+    suspend fun getObjectByIdAny(id: Int): Object? {
+        return dao.getByIdAny(id)?.let { entity ->
+            toObject(entity)
+        }
+    }
+
+    suspend fun getObjectEntityByIdAny(id: Int): ObjectEntity? =
+        dao.getByIdAny(id)
+
+    private fun toObject(entity: ObjectEntity): Object {
+        return Object(
+            entity.id,
+            entity.typeObjectId,
+            entity.boxId,
+            entity.description,
+            entity.quantity,
+            entity.objectPermanentId,
+            entity.lastModified,
+            entity.createdBy
+        )
     }
 
     suspend fun insertDynamic(
@@ -278,7 +291,8 @@ class ObjectRepositoryImpl(
                     existing?.objectPermanentId
                 ),
                 lastModified = now,
-                createdBy = existing?.createdBy.orEmpty()
+                createdBy = existing?.createdBy.orEmpty(),
+                deletedAt = existing?.deletedAt
             )
         )
     }

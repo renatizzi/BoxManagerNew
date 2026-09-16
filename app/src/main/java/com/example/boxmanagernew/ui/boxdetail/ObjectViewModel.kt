@@ -1,18 +1,17 @@
 package com.example.boxmanagernew.ui.boxdetail
 
 import androidx.lifecycle.*
-import com.example.boxmanagernew.BuildConfig
 import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
+import com.example.boxmanagernew.data.trash.TrashStore
 import com.example.boxmanagernew.domain.model.Object
 import com.example.boxmanagernew.domain.model.ObjectWithType
-import com.example.boxmanagernew.family.deletion.FamilyPropagatingDelete
 import com.example.boxmanagernew.domain.search.ObjectSearchMatcher
 import com.example.boxmanagernew.util.SimpleSearch
 import kotlinx.coroutines.launch
 
 class ObjectViewModel(
     private val repository: ObjectRepositoryImpl,
-    private val familyDelete: FamilyPropagatingDelete? = null
+    private val trashStore: TrashStore
 ) : ViewModel() {
 
     private val _selectedItems = MutableLiveData<Set<Int>>(emptySet())
@@ -210,13 +209,7 @@ class ObjectViewModel(
         }
 
         viewModelScope.launch {
-
-            if (BuildConfig.FAMILY_BETA && familyDelete != null) {
-                familyDelete.deleteObjects(ids, deletedBy)
-            } else {
-                repository.deleteByIds(ids)
-            }
-
+            trashStore.softDeleteObjects(ids)
             clearSelection()
         }
     }
@@ -292,10 +285,14 @@ class ObjectViewModel(
     ) {
 
         viewModelScope.launch {
-
-            repository.delete(obj)
-
+            trashStore.softDeleteObjects(listOf(obj.id))
             clearSelection()
+        }
+    }
+
+    fun undoTrashObject(objectId: Int) {
+        viewModelScope.launch {
+            trashStore.undoSoftDeleteObject(objectId)
         }
     }
 }

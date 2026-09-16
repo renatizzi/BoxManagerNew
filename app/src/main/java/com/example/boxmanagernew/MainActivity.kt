@@ -273,8 +273,8 @@ class MainActivity : BaseActivity() {
         repository: BoxRepositoryImpl,
         objectRepository: ObjectRepositoryImpl
     ) {
-        val familyDelete =
-            FamilyDeleteProvider.create(
+        val trashStore =
+            com.example.boxmanagernew.data.trash.TrashStoreProvider.create(
                 db,
                 repository,
                 objectRepository
@@ -290,7 +290,7 @@ class MainActivity : BaseActivity() {
                         return BoxViewModel(
                             repository,
                             objectRepository,
-                            familyDelete
+                            trashStore
                         ) as T
                     }
                 }

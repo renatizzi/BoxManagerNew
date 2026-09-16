@@ -224,8 +224,8 @@ class BoxDetailActivity : BaseActivity() {
         val boxRepo =
             BoxRepositoryImpl(db.boxDao())
 
-        val familyDelete =
-            FamilyDeleteProvider.create(
+        val trashStore =
+            com.example.boxmanagernew.data.trash.TrashStoreProvider.create(
                 db,
                 boxRepo,
                 objectRepo
@@ -234,7 +234,7 @@ class BoxDetailActivity : BaseActivity() {
         objectViewModel =
             ViewModelProvider(
                 this,
-                ObjectViewModelFactory(objectRepo, familyDelete)
+                ObjectViewModelFactory(objectRepo, trashStore)
             )[ObjectViewModel::class.java]
 
         boxViewModel =
@@ -249,7 +249,7 @@ class BoxDetailActivity : BaseActivity() {
                         return BoxViewModel(
                             boxRepo,
                             objectRepo,
-                            familyDelete
+                            trashStore
                         ) as T
                     }
                 }

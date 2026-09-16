@@ -27,5 +27,7 @@ data class ObjectEntity(
 
     val lastModified: Long,
 
-    val createdBy: String = ""
+    val createdBy: String = "",
+    /** null = oggetto vivo; valorizzato = in Cestino (A2). */
+    val deletedAt: Long? = null
 )
