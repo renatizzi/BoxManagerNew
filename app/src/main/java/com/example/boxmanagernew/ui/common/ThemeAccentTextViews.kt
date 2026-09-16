@@ -25,6 +25,7 @@ object ThemeAccentTextViews {
           R.id.textImport,
           R.id.textQr,
           R.id.textFamilyCatalog,
+          R.id.textTrash,
           // Condivisione archivio (flavor famiglia)
           R.id.textExportSharedTables,
           R.id.textImportSharedTables,

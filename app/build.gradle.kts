@@ -20,8 +20,8 @@ android {
         applicationId = "it.renatizzi.boxmanager"
         minSdk = 24
         targetSdk = 36
-        versionCode = 10
-        versionName = "1.3.6"
+        versionCode = 11
+        versionName = "1.3.7"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -45,8 +45,8 @@ android {
         create("play") {
             dimension = "distribution"
             // 14/09: 1.3.3 — A1 QR batch + include fix auto-files. vc 7.
-            versionCode = 10
-            versionName = "1.3.6"
+            versionCode = 11
+            versionName = "1.3.7"
             buildConfigField("boolean", "FAMILY_BETA", "true")
         }
         create("famiglia") {

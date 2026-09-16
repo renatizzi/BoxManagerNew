@@ -51,7 +51,7 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 | C1 | B-ROTATE-FORM-DRAFT | **FATTO** | SI Renato 14/09; play **1.3.1** |
 | — | B-AUTO-FILES-LIST | **FATTO** | SI 14/09; play **1.3.2** — PRE_* fuori lista Ripristino |
 | C2 | A1 QR avanzato | **FATTO** | SI device Renato 14/09 — play **1.3.3** ok; polish UI batch **1.3.4 OK** |
-| C3 | A2 Cestino | **IN TEST** | play **1.3.6** — fix Utility (Cestino+Condividi) + BottomNav Trash |
+| C3 | A2 Cestino | **IN TEST** | play **1.3.7** — ordine Utility + colore titolo Cestino |
 | C4 | A3 → B–C → B-QTY | **DOPO** |
 | C5 | D Dashboard | no-code |
 
@@ -65,7 +65,7 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 
 **Regola Renato 13/09 + 14/09 (permanente) — processo ovvio:**
 1. Agente porta il codice su **`main`** (merge del branch di lavoro **prima** di chiedere il test)
-2. Renato: `git checkout main` + `git pull origin main` + **Run `playDebug`** → topbar = versione detta dall’agente (ora **`v. 1.3.6`**, senza famiglia). **Mai** altri branch per il test telefono.
+2. Renato: `git checkout main` + `git pull origin main` + **Run `playDebug`** → topbar = versione detta dall’agente (ora **`v. 1.3.7`**, senza famiglia). **Mai** altri branch per il test telefono.
 3. Solo dopo OK test: Renato crea AAB **`playRelease`** (con firma) → Play → Invio
 4. Scheda IT/EN + `BOXMANAGER-TESTER` se closed
 5. Scrivi: `SI AAB closed`
@@ -82,7 +82,7 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 1. **C1** — **FATTO** (1.3.1).
 2. **B-AUTO-FILES-LIST** — **FATTO** (1.3.3 ok).
 3. **C2 / A1** — **FATTO** SI device 14/09 (1.3.3 + polish **1.3.4 OK**).
-4. **C3 / A2 Cestino** — **IN TEST** play **1.3.6** (fix Utility + BottomNav).
+4. **C3 / A2 Cestino** — **IN TEST** play **1.3.7** (Cestino ultimo + colore accent).
 5. Backlog QR batch (non A2): **B-QR-BATCH-CODE-FONT**, **B-QR-BATCH-BOX-NAME** — Aperto 16/09.
 6. Backlog UI: **B-UI-BUTTONS-ACCESSO-RAPIDO** — Aperto 16/09.
 7. Poi A3 Foto → B–C → B-QTY; **C5** Dashboard no-code.

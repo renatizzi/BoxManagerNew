@@ -25,6 +25,11 @@ class ThemeAccentTextViewsTest {
                 R.id.textBackup
             )
         )
+        assertTrue(
+            ThemeAccentTextViews.appliesAccent(
+                R.id.textTrash
+            )
+        )
     }
 
     @Test
