@@ -1,6 +1,6 @@
 # Promemoria — interventi trasversali (BoxManager)
 
-**Aggiornato:** 10/09/2026.  
+**Aggiornato:** 16/09/2026.  
 Ingresso sessione 07/09 → [PROMPT_CONTINUITA_07_09_DISCO_FOTO.md](PROMPT_CONTINUITA_07_09_DISCO_FOTO.md).  
 **Ingresso M3 / merge Play / roadmap** → [PROMPT_CONTINUITA_M3_MERGE_PLAY.md](PROMPT_CONTINUITA_M3_MERGE_PLAY.md).  
 **Ingresso cutover 1.3 (nuova sessione)** → [PROMPT_CONTINUITA_M3_CUTOVER.md](PROMPT_CONTINUITA_M3_CUTOVER.md).  
@@ -94,6 +94,8 @@ Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino
 
 | ID | Data | Indicazione | Stato |
 |----|------|-------------|-------|
+| **B-QR-BATCH-CODE-FONT** | 16/09/2026 | Usare un carattere più piccolo per il codice riportato nella stampa multietichette (al momento i numeri si sovrappongono e nel caso si dovessero tagliare, non è chiaro quale sia la linea di demarcazione) | **Aperto** |
+| **B-QR-BATCH-BOX-NAME** | 16/09/2026 | Sopra al codice inserire SEMPRE il nome del contenitore (IN GRASSETTO) per non fare confusione quando le etichette devono essere incollate | **Aperto** |
 | **B-ROTATE-FORM-DRAFT** | 10/09/2026 | In inserimento dati (qualsiasi elemento) la stringa digitata **sparisce** se, prima della conferma, si ruota lo schermo. | **FATTO C1** SI Renato 14/09 — `configChanges` su Main/BoxDetail/Categorie/Luoghi; merge `main`; build **1.3.1** |
 | **B-AUTO-FILES-LIST** | 14/09/2026 | Regressione: file **automatici** (`PRE_RESTORE_`, `PRE_IMPORT_`) non in lista Ripristino dell’app; restano con **Sfoglia**. | **FATTO** 14/09 — `BackupConfiguration.isAutomaticBackupFileName` + filtro sempre attivo; play **1.3.2** |
 | **B-PREMIUM-POST-12** | 10/09/2026 | Principio: post-1.2 = premium salvo eccezioni. **Free:** IT/EN, Dark, fix, Guida. **Premium:** archivio condiviso + **Disco di rete** (correzione: non free). | **SI Renato 10/09** — docs RP/ingresso M3 aggiornati; gate codice Disco a M3; patch Nota 4.23 |

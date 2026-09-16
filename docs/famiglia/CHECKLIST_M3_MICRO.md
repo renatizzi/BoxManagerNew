@@ -81,7 +81,8 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 1. **C1** — **FATTO** (1.3.1).
 2. **B-AUTO-FILES-LIST** — **FATTO** (1.3.3 ok).
 3. **C2 / A1** — **FATTO** SI device 14/09 (1.3.3 + polish **1.3.4 OK**).
-4. **Prossimo: C3 / A2 Cestino** — serve SI «apri fetta codice» (o conferma esplicita).
+4. **C3 / A2 Cestino** — **IN CORSO** SI Renato 16/09 («Riprendi da A2»).
+5. Backlog QR batch (non A2): **B-QR-BATCH-CODE-FONT**, **B-QR-BATCH-BOX-NAME** — Aperto 16/09.
 5. Poi A3 Foto → B–C → B-QTY; **C4** Dashboard no-code.
 
 **Regola test:** l’agente indica sempre il `versionName` atteso in topbar; merge su **`main`** obbligatorio prima del test telefono (SI 14/09).
