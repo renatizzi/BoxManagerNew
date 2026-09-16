@@ -12,6 +12,16 @@ Regola permanente.
 - Il test sul telefono di Renato si fa **solo** su `main`, mai su branch di lavoro.
 - Prima di chiedere `git pull` + Run `playDebug`, l’agente deve avere **già mergiato** (o portato) le modifiche su `main` e fatto push di `main`.
 - Nella richiesta di test indicare sempre il `versionName` atteso in topbar (es. `v. 1.3.4`).
+- **SI Renato 16/09:** ogni richiesta di test deve includere **istruzioni operative** per Renato (solo attività di sua competenza): passi numerati con comandi/azioni concrete (`git checkout main`, `git pull`, variante **`playDebug`**, Run, schermate da aprire, cosa controllare). **Vietato** lasciare solo «prova» / «verifica» senza procedura.
+
+## Modello minimo (agente → Renato)
+
+1. Merge già su **`main`** (conferma breve).
+2. `git checkout main` + `git pull origin main`.
+3. Android Studio → Build Variants → **`playDebug`**.
+4. Run sul telefono → topbar attesa **`v. X.Y.Z`** (senza `famiglia`).
+5. Percorso di test (3–8 passi: tap, dati, esito atteso).
+6. Risposta attesa (es. `X.Y.Z ok` o elenco KO).
 
 ## Vietato
 

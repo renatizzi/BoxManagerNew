@@ -94,6 +94,8 @@ Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino
 
 | ID | Data | Indicazione | Stato |
 |----|------|-------------|-------|
+| **B-UI-BUTTONS-ACCESSO-RAPIDO** | 16/09/2026 | Uniformare il formato dei bottoni come da screenshot allegato (Accesso rapido Dashboard: card `MaterialCardView`, testo centrato grassetto ~18sp, `elevated_surface`; eventualmente senza icona). | **Aperto** |
+| **B-TEST-ISTRUZIONI-OPERATIVE** | 16/09/2026 | Ogni richiesta di test telefono deve essere accompagnata da istruzioni operative sulle attività di Renato (passi concreti); escludere indicazioni generiche e vaghe. | **SI Renato 16/09** — regola agente: `.cursor/rules/test-telefono-main.mdc`, [SOLO_TU.md](SOLO_TU.md) |
 | **B-QR-BATCH-CODE-FONT** | 16/09/2026 | Usare un carattere più piccolo per il codice riportato nella stampa multietichette (al momento i numeri si sovrappongono e nel caso si dovessero tagliare, non è chiaro quale sia la linea di demarcazione) | **Aperto** |
 | **B-QR-BATCH-BOX-NAME** | 16/09/2026 | Sopra al codice inserire SEMPRE il nome del contenitore (IN GRASSETTO) per non fare confusione quando le etichette devono essere incollate | **Aperto** |
 | **B-ROTATE-FORM-DRAFT** | 10/09/2026 | In inserimento dati (qualsiasi elemento) la stringa digitata **sparisce** se, prima della conferma, si ruota lo schermo. | **FATTO C1** SI Renato 14/09 — `configChanges` su Main/BoxDetail/Categorie/Luoghi; merge `main`; build **1.3.1** |

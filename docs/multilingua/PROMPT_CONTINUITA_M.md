@@ -11,6 +11,8 @@ Fonte viva: [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md) — *
 
 | ID | Indicazione |
 |----|-------------|
+| **B-UI-BUTTONS-ACCESSO-RAPIDO** | Bottoni stile Accesso rapido Dashboard — **Aperto** 16/09 |
+| **B-TEST-ISTRUZIONI-OPERATIVE** | Istruzioni operative obbligatorie su ogni test (SI 16/09) |
 | **B-QR-BATCH-CODE-FONT** | Stampa multietichette: carattere più piccolo per il codice — **Aperto** 16/09 |
 | **B-QR-BATCH-BOX-NAME** | Stampa multietichette: nome contenitore in grassetto sopra al codice — **Aperto** 16/09 |
 | **B-ROTATE-FORM-DRAFT** | Rotazione in inserimento — **FATTO C1** 14/09 |
