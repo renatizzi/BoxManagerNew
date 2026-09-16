@@ -45,6 +45,7 @@ interface ObjectDao {
         INNER JOIN object_types t
             ON o.typeObjectId = t.id
         WHERE o.boxId = :boxId
+        AND o.deletedAt IS NULL
         """
     )
     fun getObjectsWithTypeByBox(
@@ -74,6 +75,9 @@ interface ObjectDao {
         LEFT JOIN categories c
             ON c.id = b.categoryId
 
+        WHERE o.deletedAt IS NULL
+        AND b.deletedAt IS NULL
+
         ORDER BY
             b.name ASC,
             t.name ASC
@@ -86,6 +90,7 @@ interface ObjectDao {
         """
         SELECT *
         FROM objects
+        WHERE deletedAt IS NULL
         ORDER BY id ASC
         """
     )
@@ -96,7 +101,18 @@ interface ObjectDao {
         """
         SELECT *
         FROM objects
+        ORDER BY id ASC
+        """
+    )
+    suspend fun getAllSyncIncludingTrash():
+            List<ObjectEntity>
+
+    @Query(
+        """
+        SELECT *
+        FROM objects
         WHERE boxId = :boxId
+        AND deletedAt IS NULL
         """
     )
     suspend fun getObjectsByBoxSync(
@@ -107,13 +123,113 @@ interface ObjectDao {
         """
         SELECT *
         FROM objects
+        WHERE boxId = :boxId
+        """
+    )
+    suspend fun getAllByBoxIdIncludingTrash(
+        boxId: Int
+    ): List<ObjectEntity>
+
+    @Query(
+        """
+        SELECT *
+        FROM objects
         WHERE id = :id
+        AND deletedAt IS NULL
         LIMIT 1
         """
     )
     suspend fun getById(
         id: Int
     ): ObjectEntity?
+
+    @Query(
+        """
+        SELECT *
+        FROM objects
+        WHERE id = :id
+        LIMIT 1
+        """
+    )
+    suspend fun getByIdAny(
+        id: Int
+    ): ObjectEntity?
+
+    @Query(
+        """
+        SELECT *
+        FROM objects
+        WHERE deletedAt IS NOT NULL
+        ORDER BY deletedAt DESC
+        """
+    )
+    suspend fun getAllInTrash():
+            List<ObjectEntity>
+
+    @Query(
+        """
+        UPDATE objects
+        SET deletedAt = :deletedAt,
+            lastModified = :deletedAt
+        WHERE id = :id
+        """
+    )
+    suspend fun markDeleted(
+        id: Int,
+        deletedAt: Long
+    )
+
+    @Query(
+        """
+        UPDATE objects
+        SET deletedAt = :deletedAt,
+            lastModified = :deletedAt
+        WHERE boxId = :boxId
+        AND deletedAt IS NULL
+        """
+    )
+    suspend fun markDeletedByBoxId(
+        boxId: Int,
+        deletedAt: Long
+    )
+
+    @Query(
+        """
+        UPDATE objects
+        SET deletedAt = NULL,
+            lastModified = :restoredAt
+        WHERE id = :id
+        """
+    )
+    suspend fun restoreFromTrash(
+        id: Int,
+        restoredAt: Long
+    )
+
+    @Query(
+        """
+        UPDATE objects
+        SET deletedAt = NULL,
+            lastModified = :restoredAt
+        WHERE boxId = :boxId
+        AND deletedAt IS NOT NULL
+        """
+    )
+    suspend fun restoreByBoxId(
+        boxId: Int,
+        restoredAt: Long
+    )
+
+    @Query(
+        """
+        SELECT id FROM objects
+        WHERE deletedAt IS NOT NULL
+        AND deletedAt < :cutoff
+        """
+    )
+    suspend fun getTrashExpiredIds(
+        cutoff: Long
+    ): List<Int>
 
     @Query(
         """
@@ -132,6 +248,7 @@ interface ObjectDao {
         SELECT COUNT(*)
         FROM objects
         WHERE boxId = :boxId
+        AND deletedAt IS NULL
         """
     )
     suspend fun countObjectsByBox(
@@ -149,6 +266,7 @@ interface ObjectDao {
         SELECT *
         FROM objects
         WHERE objectPermanentId = :permanentId
+        AND deletedAt IS NULL
         LIMIT 1
         """
     )

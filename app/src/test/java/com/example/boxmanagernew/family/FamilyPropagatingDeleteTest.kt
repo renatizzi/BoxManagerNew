@@ -75,8 +75,18 @@ class FamilyPropagatingDeleteTest {
         override suspend fun insert(box: BoxEntity) = error("unused")
         override suspend fun update(box: BoxEntity) = error("unused")
         override fun getAllLive() = error("unused")
-        override suspend fun getAllSync() = boxes.values.toList()
-        override suspend fun getById(id: Int) = boxes[id]
+        override suspend fun getAllSync() =
+            boxes.values.filter { it.deletedAt == null }
+        override suspend fun getAllSyncIncludingTrash() =
+            boxes.values.toList()
+        override suspend fun getById(id: Int) =
+            boxes[id]?.takeIf { it.deletedAt == null }
+        override suspend fun getByIdAny(id: Int) = boxes[id]
+        override suspend fun getAllInTrash() =
+            boxes.values.filter { it.deletedAt != null }
+        override suspend fun markDeleted(id: Int, deletedAt: Long) = Unit
+        override suspend fun restoreFromTrash(id: Int, restoredAt: Long) = Unit
+        override suspend fun getTrashExpiredIds(cutoff: Long) = emptyList<Int>()
         override suspend fun getByPermanentId(permanentId: String) =
             boxes.values.firstOrNull { it.permanentId == permanentId }
         override suspend fun deleteById(id: Int) { boxes.remove(id) }
@@ -112,10 +122,24 @@ class FamilyPropagatingDeleteTest {
         override suspend fun delete(obj: ObjectEntity) = error("unused")
         override fun getObjectsWithTypeByBox(boxId: Int) = error("unused")
         override suspend fun searchObjects() = error("unused")
-        override suspend fun getAllSync() = objects.values.toList()
+        override suspend fun getAllSync() =
+            objects.values.filter { it.deletedAt == null }
+        override suspend fun getAllSyncIncludingTrash() =
+            objects.values.toList()
         override suspend fun getObjectsByBoxSync(boxId: Int) =
+            objects.values.filter { it.boxId == boxId && it.deletedAt == null }
+        override suspend fun getAllByBoxIdIncludingTrash(boxId: Int) =
             objects.values.filter { it.boxId == boxId }
-        override suspend fun getById(id: Int) = objects[id]
+        override suspend fun getById(id: Int) =
+            objects[id]?.takeIf { it.deletedAt == null }
+        override suspend fun getByIdAny(id: Int) = objects[id]
+        override suspend fun getAllInTrash() =
+            objects.values.filter { it.deletedAt != null }
+        override suspend fun markDeleted(id: Int, deletedAt: Long) = Unit
+        override suspend fun markDeletedByBoxId(boxId: Int, deletedAt: Long) = Unit
+        override suspend fun restoreFromTrash(id: Int, restoredAt: Long) = Unit
+        override suspend fun restoreByBoxId(boxId: Int, restoredAt: Long) = Unit
+        override suspend fun getTrashExpiredIds(cutoff: Long) = emptyList<Int>()
         override suspend fun moveObjects(ids: List<Int>, targetBoxId: Int) =
             error("unused")
         override suspend fun countObjectsByBox(boxId: Int) =

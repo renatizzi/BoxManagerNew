@@ -9,7 +9,9 @@ enum class PremiumFeature {
     /** Disco di rete (CIFS) — SI 10/09: premium. */
     NETWORK_DRIVE,
     /** Condividi Archivio (Invia/Ricevi) — SI 10/09: premium. */
-    ARCHIVE_SHARE
+    ARCHIVE_SHARE,
+    /** Cestino (A2) — gestione ripristino / svuota. */
+    TRASH
 }
 
 enum class ShareActionResult {

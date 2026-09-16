@@ -90,6 +90,8 @@ object ArchivioCompletoCopy {
                 context.getString(R.string.premium_feature_network_drive)
             PremiumFeature.ARCHIVE_SHARE ->
                 context.getString(R.string.premium_feature_archive_share)
+            PremiumFeature.TRASH ->
+                context.getString(R.string.premium_feature_trash)
         }
     }
 
@@ -162,6 +164,16 @@ object ArchivioCompletoCopy {
                     ),
                     example = context.getString(
                         R.string.premium_pitch_archive_share_example
+                    )
+                )
+
+            PremiumFeature.TRASH ->
+                FeaturePitch(
+                    lead = context.getString(
+                        R.string.premium_pitch_trash_lead
+                    ),
+                    example = context.getString(
+                        R.string.premium_pitch_trash_example
                     )
                 )
         }

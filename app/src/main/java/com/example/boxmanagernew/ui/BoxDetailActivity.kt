@@ -25,7 +25,6 @@ import com.example.boxmanagernew.domain.search.SearchConfiguration
 import com.example.boxmanagernew.ui.categories.CategorySpinnerAdapter
 import com.example.boxmanagernew.ui.categories.CategoryViewModel
 import com.example.boxmanagernew.ui.categories.IconMapper
-import com.example.boxmanagernew.family.deletion.FamilyDeleteProvider
 import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.CreatedByResolver
 import com.example.boxmanagernew.ui.common.DialogUtils
@@ -40,6 +39,7 @@ import com.example.boxmanagernew.viewoutput.model.ViewPrintHeader
 import com.example.boxmanagernew.viewoutput.persist.ViewExportPersister
 import com.example.boxmanagernew.viewoutput.ui.ViewOutputController
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -224,8 +224,8 @@ class BoxDetailActivity : BaseActivity() {
         val boxRepo =
             BoxRepositoryImpl(db.boxDao())
 
-        val familyDelete =
-            FamilyDeleteProvider.create(
+        val trashStore =
+            com.example.boxmanagernew.data.trash.TrashStoreProvider.create(
                 db,
                 boxRepo,
                 objectRepo
@@ -234,7 +234,7 @@ class BoxDetailActivity : BaseActivity() {
         objectViewModel =
             ViewModelProvider(
                 this,
-                ObjectViewModelFactory(objectRepo, familyDelete)
+                ObjectViewModelFactory(objectRepo, trashStore)
             )[ObjectViewModel::class.java]
 
         boxViewModel =
@@ -249,7 +249,7 @@ class BoxDetailActivity : BaseActivity() {
                         return BoxViewModel(
                             boxRepo,
                             objectRepo,
-                            familyDelete
+                            trashStore
                         ) as T
                     }
                 }
@@ -578,6 +578,32 @@ class BoxDetailActivity : BaseActivity() {
             adapter.updateData(it)
 
             updateObjectsTitle()
+        }
+
+        objectViewModel.trashUndoEvent.observe(this) { event ->
+            if (event == null || event.objectIds.isEmpty()) {
+                return@observe
+            }
+            val anchor = findViewById<View>(R.id.rootContainer)
+            Snackbar.make(
+                anchor,
+                getString(R.string.trash_snackbar_moved),
+                Snackbar.LENGTH_LONG
+            )
+                .setAction(getString(R.string.common_cancel)) {
+                    objectViewModel.undoTrashObjects(event.objectIds)
+                }
+                .addCallback(
+                    object : Snackbar.Callback() {
+                        override fun onDismissed(
+                            transientBottomBar: Snackbar?,
+                            dismissEvent: Int
+                        ) {
+                            objectViewModel.consumeTrashUndoEvent()
+                        }
+                    }
+                )
+                .show()
         }
 
         objectViewModel.isAscending.observe(this) {

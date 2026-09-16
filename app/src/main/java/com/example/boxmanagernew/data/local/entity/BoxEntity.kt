@@ -18,5 +18,7 @@ data class BoxEntity(
     val position: String,
     val lastModified: Long,
     val permanentId: String,
-    val createdBy: String = ""
+    val createdBy: String = "",
+    /** null = contenitore vivo; valorizzato = in Cestino (A2). */
+    val deletedAt: Long? = null
 )

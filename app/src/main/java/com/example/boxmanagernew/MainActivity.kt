@@ -33,6 +33,7 @@ import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.common.CreatedByResolver
 import com.example.boxmanagernew.ui.common.DialogUtils
 import com.example.boxmanagernew.ui.common.FeedbackUtils
+import com.google.android.material.snackbar.Snackbar
 import com.example.boxmanagernew.ui.common.UiUtils
 import com.example.boxmanagernew.ui.common.VoiceSearchController
 import com.example.boxmanagernew.ui.main.BoxAdapter
@@ -273,8 +274,8 @@ class MainActivity : BaseActivity() {
         repository: BoxRepositoryImpl,
         objectRepository: ObjectRepositoryImpl
     ) {
-        val familyDelete =
-            FamilyDeleteProvider.create(
+        val trashStore =
+            com.example.boxmanagernew.data.trash.TrashStoreProvider.create(
                 db,
                 repository,
                 objectRepository
@@ -290,7 +291,7 @@ class MainActivity : BaseActivity() {
                         return BoxViewModel(
                             repository,
                             objectRepository,
-                            familyDelete
+                            trashStore
                         ) as T
                     }
                 }
@@ -330,6 +331,32 @@ class MainActivity : BaseActivity() {
                 viewModel.selectedItems.value?.size ?: 0,
                 it.size
             )
+        }
+
+        viewModel.trashUndoEvent.observe(this) { event ->
+            if (event == null || event.boxIds.isEmpty()) {
+                return@observe
+            }
+            val anchor = findViewById<View>(R.id.rootLayout)
+            Snackbar.make(
+                anchor,
+                getString(R.string.trash_snackbar_moved),
+                Snackbar.LENGTH_LONG
+            )
+                .setAction(getString(R.string.common_cancel)) {
+                    viewModel.undoTrashBoxes(event.boxIds)
+                }
+                .addCallback(
+                    object : Snackbar.Callback() {
+                        override fun onDismissed(
+                            transientBottomBar: Snackbar?,
+                            dismissEvent: Int
+                        ) {
+                            viewModel.consumeTrashUndoEvent()
+                        }
+                    }
+                )
+                .show()
         }
 
         viewModel.selectedItems.observe(this) {

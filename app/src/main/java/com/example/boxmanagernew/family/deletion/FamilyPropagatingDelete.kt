@@ -17,8 +17,27 @@ class FamilyPropagatingDelete(
         boxId: Int,
         deletedBy: String
     ) {
-        val box = boxRepository.getBoxById(boxId) ?: return
-        val objects = objectRepository.getObjectsByBoxSync(boxId)
+        deleteBoxPermanently(
+            boxId,
+            deletedBy,
+            objectIds = null
+        )
+    }
+
+    /** Hard delete (anche da Cestino): tombstone + rimozione righe. */
+    suspend fun deleteBoxPermanently(
+        boxId: Int,
+        deletedBy: String,
+        objectIds: List<Int>?
+    ) {
+        val box = boxRepository.getBoxEntityByIdAny(boxId) ?: return
+        val objects =
+            if (objectIds != null) {
+                objectIds.mapNotNull { objectRepository.getObjectEntityByIdAny(it) }
+            } else {
+                objectRepository.getObjectsByBoxSync(boxId)
+                    .mapNotNull { objectRepository.getObjectEntityByIdAny(it.id) }
+            }
         val deletedAt = System.currentTimeMillis()
 
         for (obj in objects) {
@@ -58,7 +77,9 @@ class FamilyPropagatingDelete(
         }
         val deletedAt = System.currentTimeMillis()
         for (objectId in objectIds) {
-            val obj = objectRepository.getObjectById(objectId) ?: continue
+            val obj =
+                objectRepository.getObjectEntityByIdAny(objectId)
+                    ?: continue
             recorder.recordObjectDeletion(
                 permanentId = obj.objectPermanentId,
                 deletedBy = deletedBy,

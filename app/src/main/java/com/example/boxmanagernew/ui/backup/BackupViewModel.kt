@@ -95,9 +95,9 @@ class BackupViewModel(
                         val payload =
                             backupFacade.exportPayload(
                                 boxes = boxRepository
-                                    .getAllBoxEntitiesSync(),
+                                    .getAllBoxEntitiesForBackup(),
                                 objects = objectRepository
-                                    .getAllObjectEntitiesSync(),
+                                    .getAllObjectEntitiesForBackup(),
                                 categories = categoryRepository
                                     .getAllCategoryEntitiesSync(),
                                 locations = locationRepository

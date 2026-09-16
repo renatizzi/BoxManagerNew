@@ -105,6 +105,11 @@ class BackupDeserializer {
                     item.getString("createdBy")
                 } else {
                     ""
+                },
+                deletedAt = if (item.has("deletedAt") && !item.isNull("deletedAt")) {
+                    item.getLong("deletedAt")
+                } else {
+                    null
                 }
             )
         }
@@ -144,6 +149,11 @@ class BackupDeserializer {
                     item.getString("createdBy")
                 } else {
                     ""
+                },
+                deletedAt = if (item.has("deletedAt") && !item.isNull("deletedAt")) {
+                    item.getLong("deletedAt")
+                } else {
+                    null
                 }
             )
         }

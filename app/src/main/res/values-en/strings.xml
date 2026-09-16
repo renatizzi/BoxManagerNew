@@ -73,6 +73,19 @@
     <string name="utility_import">📥 Import data</string>
     <string name="utility_qr">📱 QR code</string>
     <string name="utility_family_catalog">📤 Share Archive</string>
+    <string name="utility_trash">🗑 Trash</string>
+    <string name="page_trash_title">Trash</string>
+    <string name="page_trash_subtitle">Restore or permanent delete</string>
+    <string name="trash_empty">Trash is empty.</string>
+    <string name="trash_type_box">Container</string>
+    <string name="trash_type_object">Object</string>
+    <string name="trash_restore">Restore</string>
+    <string name="trash_delete_permanent">Delete</string>
+    <string name="trash_empty_all">Empty trash</string>
+    <string name="trash_empty_confirm">Permanently delete all items in trash?</string>
+    <string name="trash_snackbar_moved">Moved to trash</string>
+    <string name="trash_pick_box_title">Choose container</string>
+    <string name="trash_no_live_box">No container available: create one before restoring the object.</string>
 
     <!-- Backup -->
     <string name="backup_folder_cd">Backup folder</string>
@@ -382,6 +395,7 @@
     <string name="premium_feature_export">Export data</string>
     <string name="premium_feature_network_drive">Network drive</string>
     <string name="premium_feature_archive_share">Share Archive</string>
+    <string name="premium_feature_trash">Trash</string>
     <string name="premium_pitch_advanced_search_lead">This powerful feature lets you run rich searches using natural language.</string>
     <string name="premium_pitch_advanced_search_example">What do I have in the garage and basement?</string>
     <string name="premium_pitch_qr_scan_lead">With one scan you open the right container, even in the basement or garage, without searching by hand.</string>
@@ -396,6 +410,8 @@
     <string name="premium_pitch_network_drive_example">Backup → Browse → folder on the NAS</string>
     <string name="premium_pitch_archive_share_lead">Update and share tables and archive with people at home via Send and Receive, without replacing Import/Export.</string>
     <string name="premium_pitch_archive_share_example">Send Archive → the other device uses Receive Archive</string>
+    <string name="premium_pitch_trash_lead">Recover containers and objects deleted by mistake, or delete them permanently from trash.</string>
+    <string name="premium_pitch_trash_example">Delete → Trash in Utility → Restore</string>
     <string name="premium_example_prefix"> (Example: </string>
     <string name="premium_example_suffix">).</string>
     <string name="premium_share_hint_one">The %1$d-day trial has ended. Share BoxManager with a friend: get another %2$d days on advanced search, QR, import and export.</string>
