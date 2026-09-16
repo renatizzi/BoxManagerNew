@@ -21,7 +21,8 @@ class PremiumFeatureM3GateTest {
                 "IMPORT",
                 "EXPORT",
                 "NETWORK_DRIVE",
-                "ARCHIVE_SHARE"
+                "ARCHIVE_SHARE",
+                "TRASH"
             ),
             PremiumFeature.entries.map { it.name }.toSet()
         )
@@ -51,8 +52,8 @@ class PremiumFeatureM3GateTest {
             playBlock.contains("buildConfigField(\"boolean\", \"FAMILY_BETA\", \"true\")")
         )
         assertTrue(!playBlock.contains("applicationIdSuffix ="))
-        assertTrue(playBlock.contains("versionName = \"1.3.3\""))
-        assertTrue(playBlock.contains("versionCode = 7"))
+        assertTrue(playBlock.contains("versionName = \"1.3.5\""))
+        assertTrue(playBlock.contains("versionCode = 9"))
     }
 
     @Test
@@ -61,6 +62,7 @@ class PremiumFeatureM3GateTest {
             File("src/main/java/com/example/boxmanagernew/ui/utility/UtilityActivity.kt")
                 .readText()
         assertTrue(utility.contains("PremiumFeature.ARCHIVE_SHARE"))
+        assertTrue(utility.contains("PremiumFeature.TRASH"))
         assertTrue(utility.contains("ArchivioCompletoNav.start"))
         val settings =
             File("src/main/java/com/example/boxmanagernew/ui/settings/SettingsActivity.kt")

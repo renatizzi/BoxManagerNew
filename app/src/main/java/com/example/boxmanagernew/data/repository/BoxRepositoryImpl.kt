@@ -48,6 +48,11 @@ class BoxRepositoryImpl(
         return boxDao.getAllSync()
     }
 
+    /** Backup R8 — include anche voci in cestino. */
+    suspend fun getAllBoxEntitiesForBackup():
+            List<BoxEntity> =
+        boxDao.getAllSyncIncludingTrash()
+
     suspend fun getEmptyBoxIds():
             List<Int> {
 

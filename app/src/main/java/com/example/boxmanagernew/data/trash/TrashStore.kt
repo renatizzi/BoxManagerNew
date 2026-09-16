@@ -62,14 +62,43 @@ class TrashStore(
         }
     }
 
-    suspend fun restoreObjectFromTrash(objectId: Int) {
-        val obj = objectDao.getByIdAny(objectId) ?: return
+    suspend fun restoreObjectFromTrash(objectId: Int): Boolean {
+        val obj = objectDao.getByIdAny(objectId) ?: return false
         val box = boxDao.getByIdAny(obj.boxId)
-        if (box?.deletedAt != null) {
-            undoSoftDeleteBox(obj.boxId)
-        } else {
-            undoSoftDeleteObject(objectId)
+        return when {
+            box == null -> false
+            box.deletedAt != null -> {
+                undoSoftDeleteBox(obj.boxId)
+                true
+            }
+            else -> {
+                undoSoftDeleteObject(objectId)
+                true
+            }
         }
+    }
+
+    /** R6 — contenitore di origine eliminato definitivamente. */
+    suspend fun restoreObjectToBox(
+        objectId: Int,
+        targetBoxId: Int
+    ) {
+        val obj = objectDao.getByIdAny(objectId) ?: return
+        val target = boxDao.getById(targetBoxId)
+            ?: error("target_not_live")
+        val now = System.currentTimeMillis()
+        objectDao.update(
+            obj.copy(
+                boxId = target.id,
+                deletedAt = null,
+                lastModified = now
+            )
+        )
+    }
+
+    suspend fun objectRestoreNeedsBoxPicker(objectId: Int): Boolean {
+        val obj = objectDao.getByIdAny(objectId) ?: return false
+        return boxDao.getByIdAny(obj.boxId) == null
     }
 
     suspend fun emptyTrash(deletedBy: String) {

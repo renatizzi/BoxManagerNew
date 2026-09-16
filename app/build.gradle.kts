@@ -45,7 +45,7 @@ android {
         create("play") {
             dimension = "distribution"
             // 14/09: 1.3.3 — A1 QR batch + include fix auto-files. vc 7.
-            versionCode = 8
+            versionCode = 9
             versionName = "1.3.5"
             buildConfigField("boolean", "FAMILY_BETA", "true")
         }

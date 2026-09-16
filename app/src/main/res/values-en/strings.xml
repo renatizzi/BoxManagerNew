@@ -84,6 +84,8 @@
     <string name="trash_empty_all">Empty trash</string>
     <string name="trash_empty_confirm">Permanently delete all items in trash?</string>
     <string name="trash_snackbar_moved">Moved to trash</string>
+    <string name="trash_pick_box_title">Choose container</string>
+    <string name="trash_no_live_box">No container available: create one before restoring the object.</string>
 
     <!-- Backup -->
     <string name="backup_folder_cd">Backup folder</string>

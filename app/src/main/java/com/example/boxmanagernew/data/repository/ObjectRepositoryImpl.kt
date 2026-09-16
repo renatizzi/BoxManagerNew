@@ -79,6 +79,11 @@ class ObjectRepositoryImpl(
         return dao.getAllSync()
     }
 
+    /** Backup R8 — include anche voci in cestino. */
+    suspend fun getAllObjectEntitiesForBackup():
+            List<ObjectEntity> =
+        dao.getAllSyncIncludingTrash()
+
     suspend fun searchObjects(
         query: String
     ): List<SearchResult> {

@@ -83,6 +83,8 @@
     <string name="trash_empty_all">Svuota cestino</string>
     <string name="trash_empty_confirm">Eliminare definitivamente tutti gli elementi nel cestino?</string>
     <string name="trash_snackbar_moved">Spostato nel cestino</string>
+    <string name="trash_pick_box_title">Scegli contenitore</string>
+    <string name="trash_no_live_box">Nessun contenitore disponibile: creane uno prima di ripristinare l\'oggetto.</string>
 
     <!-- Backup -->
     <string name="backup_folder_cd">Cartella backup</string>

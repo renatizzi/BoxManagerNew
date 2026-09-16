@@ -177,14 +177,40 @@ class TrashActivity : BaseActivity() {
                     ),
                     onRestore = {
                         lifecycleScope.launch {
-                            withContext(Dispatchers.IO) {
-                                trashStore.restoreObjectFromTrash(obj.id)
+                            val needsPicker =
+                                withContext(Dispatchers.IO) {
+                                    trashStore.objectRestoreNeedsBoxPicker(
+                                        obj.id
+                                    )
+                                }
+                            if (needsPicker) {
+                                pickLiveBox { targetId ->
+                                    lifecycleScope.launch {
+                                        withContext(Dispatchers.IO) {
+                                            trashStore.restoreObjectToBox(
+                                                obj.id,
+                                                targetId
+                                            )
+                                        }
+                                        reloadList(
+                                            trashStore,
+                                            listContainer,
+                                            emptyView
+                                        )
+                                    }
+                                }
+                            } else {
+                                withContext(Dispatchers.IO) {
+                                    trashStore.restoreObjectFromTrash(
+                                        obj.id
+                                    )
+                                }
+                                reloadList(
+                                    trashStore,
+                                    listContainer,
+                                    emptyView
+                                )
                             }
-                            reloadList(
-                                trashStore,
-                                listContainer,
-                                emptyView
-                            )
                         }
                     },
                     onDeletePermanent = {
@@ -245,6 +271,34 @@ class TrashActivity : BaseActivity() {
         row.findViewById<Button>(R.id.btnTrashDeletePermanent)
             .setOnClickListener { onDeletePermanent() }
         return row
+    }
+
+    private fun pickLiveBox(onPicked: (Int) -> Unit) {
+        lifecycleScope.launch {
+            val namesAndIds =
+                withContext(Dispatchers.IO) {
+                    val db =
+                        DatabaseProvider.getDatabase(
+                            applicationContext
+                        )
+                    db.boxDao().getAllSync().map { it.id to it.name }
+                }
+            if (namesAndIds.isEmpty()) {
+                AlertDialog.Builder(this@TrashActivity)
+                    .setMessage(R.string.trash_no_live_box)
+                    .setPositiveButton(android.R.string.ok, null)
+                    .show()
+                return@launch
+            }
+            val labels = namesAndIds.map { it.second }.toTypedArray()
+            AlertDialog.Builder(this@TrashActivity)
+                .setTitle(R.string.trash_pick_box_title)
+                .setItems(labels) { _, which ->
+                    onPicked(namesAndIds[which].first)
+                }
+                .setNegativeButton(R.string.common_cancel, null)
+                .show()
+        }
     }
 
     private fun confirmPermanentDelete(onConfirm: () -> Unit) {
