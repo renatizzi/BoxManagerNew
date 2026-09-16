@@ -52,8 +52,8 @@ class PremiumFeatureM3GateTest {
             playBlock.contains("buildConfigField(\"boolean\", \"FAMILY_BETA\", \"true\")")
         )
         assertTrue(!playBlock.contains("applicationIdSuffix ="))
-        assertTrue(playBlock.contains("versionName = \"1.3.6\""))
-        assertTrue(playBlock.contains("versionCode = 10"))
+        assertTrue(playBlock.contains("versionName = \"1.3.7\""))
+        assertTrue(playBlock.contains("versionCode = 11"))
     }
 
     @Test
@@ -65,6 +65,10 @@ class PremiumFeatureM3GateTest {
         assertTrue(utility.contains("PremiumFeature.TRASH"))
         assertTrue(utility.contains("btnFamilyCatalog"))
         assertTrue(utility.contains("ArchivioCompletoNav.start"))
+        val accentViews =
+            File("src/main/java/com/example/boxmanagernew/ui/common/ThemeAccentTextViews.kt")
+                .readText()
+        assertTrue(accentViews.contains("R.id.textTrash"))
         val bottomNav =
             File("src/main/java/com/example/boxmanagernew/ui/common/BottomNavManager.kt")
                 .readText()

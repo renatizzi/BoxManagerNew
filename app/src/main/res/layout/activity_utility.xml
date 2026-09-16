@@ -140,36 +140,20 @@
 
             </LinearLayout>
 
-            <!-- Cestino + Condividi Archivio sulla stessa riga (play / FAMILY_BETA). -->
+            <!-- Condividi Archivio (se play) poi Cestino come ultimo bottone. -->
             <LinearLayout
                 android:id="@+id/rowTrashFamily"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/btnTrash"
+                <View
+                    android:id="@+id/spacerTrashRow"
                     android:layout_width="0dp"
                     android:layout_height="180dp"
                     android:layout_weight="1"
                     android:layout_margin="6dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:cardBackgroundColor="@color/elevated_surface"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="5dp"
-                    app:strokeWidth="0dp">
-
-                    <TextView
-                        android:id="@+id/textTrash"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:text="@string/utility_trash"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                </com.google.android.material.card.MaterialCardView>
+                    android:visibility="gone" />
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/btnFamilyCatalog"
@@ -196,13 +180,29 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
-                <View
-                    android:id="@+id/spacerTrashRow"
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/btnTrash"
                     android:layout_width="0dp"
                     android:layout_height="180dp"
                     android:layout_weight="1"
                     android:layout_margin="6dp"
-                    android:visibility="gone" />
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="@color/elevated_surface"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="5dp"
+                    app:strokeWidth="0dp">
+
+                    <TextView
+                        android:id="@+id/textTrash"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="@string/utility_trash"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
 
