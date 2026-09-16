@@ -23,6 +23,8 @@ import com.example.boxmanagernew.ui.settings.LocationsActivity
 import com.example.boxmanagernew.ui.settings.SettingsActivity
 import com.example.boxmanagernew.ui.utility.UtilityActivity
 import com.example.boxmanagernew.ui.family.FamilyCatalogActivity
+import com.example.boxmanagernew.ui.trash.TrashActivity
+import com.example.boxmanagernew.ui.qr.QrBatchActivity
 
 object BottomNavManager {
 
@@ -55,8 +57,10 @@ object BottomNavManager {
             is RestoreActivity,
             is ImportActivity,
             is FamilyCatalogActivity,
+            is TrashActivity,
             is QRActivity,
-            is QrLabelActivity ->
+            is QrLabelActivity,
+            is QrBatchActivity ->
                 TAB_UTILITY
 
             is SettingsActivity,

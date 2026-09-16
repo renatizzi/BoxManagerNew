@@ -52,8 +52,8 @@ class PremiumFeatureM3GateTest {
             playBlock.contains("buildConfigField(\"boolean\", \"FAMILY_BETA\", \"true\")")
         )
         assertTrue(!playBlock.contains("applicationIdSuffix ="))
-        assertTrue(playBlock.contains("versionName = \"1.3.5\""))
-        assertTrue(playBlock.contains("versionCode = 9"))
+        assertTrue(playBlock.contains("versionName = \"1.3.6\""))
+        assertTrue(playBlock.contains("versionCode = 10"))
     }
 
     @Test
@@ -63,7 +63,13 @@ class PremiumFeatureM3GateTest {
                 .readText()
         assertTrue(utility.contains("PremiumFeature.ARCHIVE_SHARE"))
         assertTrue(utility.contains("PremiumFeature.TRASH"))
+        assertTrue(utility.contains("btnFamilyCatalog"))
         assertTrue(utility.contains("ArchivioCompletoNav.start"))
+        val bottomNav =
+            File("src/main/java/com/example/boxmanagernew/ui/common/BottomNavManager.kt")
+                .readText()
+        assertTrue(bottomNav.contains("TrashActivity"))
+        assertTrue(bottomNav.contains("QrBatchActivity"))
         val settings =
             File("src/main/java/com/example/boxmanagernew/ui/settings/SettingsActivity.kt")
                 .readText()

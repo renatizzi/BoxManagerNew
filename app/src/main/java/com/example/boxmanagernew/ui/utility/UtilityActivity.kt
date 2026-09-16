@@ -72,19 +72,6 @@ class UtilityActivity : BaseActivity() {
         }
 
         findViewById<MaterialCardView>(
-            R.id.btnTrash
-        ).setOnClickListener {
-            ArchivioCompletoNav.start(
-                this,
-                PremiumFeature.TRASH,
-                Intent(
-                    this,
-                    TrashActivity::class.java
-                )
-            )
-        }
-
-        findViewById<MaterialCardView>(
             R.id.btnQr
         ).setOnClickListener {
 
@@ -98,11 +85,26 @@ class UtilityActivity : BaseActivity() {
             )
         }
 
-        val familyRow = findViewById<View>(R.id.rowFamilyCatalog)
+        findViewById<MaterialCardView>(
+            R.id.btnTrash
+        ).setOnClickListener {
+            ArchivioCompletoNav.start(
+                this,
+                PremiumFeature.TRASH,
+                Intent(
+                    this,
+                    TrashActivity::class.java
+                )
+            )
+        }
+
         val familyButton =
             findViewById<MaterialCardView>(R.id.btnFamilyCatalog)
+        val spacer =
+            findViewById<View>(R.id.spacerTrashRow)
         if (BuildConfig.FAMILY_BETA) {
-            familyRow.visibility = View.VISIBLE
+            familyButton.visibility = View.VISIBLE
+            spacer.visibility = View.GONE
             familyButton.setOnClickListener {
                 ArchivioCompletoNav.start(
                     this,
@@ -114,7 +116,8 @@ class UtilityActivity : BaseActivity() {
                 )
             }
         } else {
-            familyRow.visibility = View.GONE
+            familyButton.visibility = View.GONE
+            spacer.visibility = View.VISIBLE
         }
     }
 }
