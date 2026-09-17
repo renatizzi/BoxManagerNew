@@ -11,7 +11,7 @@ Fonte viva: [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md) — *
 
 | ID | Indicazione |
 |----|-------------|
-| **B-PLAY-DEX-R8** | Play: offuscamento DEX 1% (feb 2027) — **Aperto** 17/09; niente minify senza SI |
+| **B-PLAY-DEX-R8** | Play: DEX obfuscation 1%; enforcement **feb 2027** (non bloccante oggi) — **Aperto** 17/09; niente minify senza SI |
 | **B-CURSOR-CREDITS** | Ottimizzare sessioni Cursor (crediti) — **Aperto** 16/09 |
 | **B-UI-BUTTONS-ACCESSO-RAPIDO** | Bottoni stile Accesso rapido Dashboard — **Aperto** 16/09 |
 | **B-TEST-ISTRUZIONI-OPERATIVE** | Istruzioni operative obbligatorie su ogni test (SI 16/09) |
