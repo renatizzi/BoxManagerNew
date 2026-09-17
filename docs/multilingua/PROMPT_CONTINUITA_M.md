@@ -11,7 +11,7 @@ Fonte viva: [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md) — *
 
 | ID | Indicazione |
 |----|-------------|
-| **B-IDEA-OCR-COVER** | OCR cover → testo: ANALISI con A3 — zero codice OCR finché CONVALIDA |
+| **B-IDEA-OCR-COVER** | OCR: FEEDBACK 17/09 — attesa CONVALIDA; zero codice |
 | **B-PLAY-DEX-R8** | Play DEX obfuscation 1%; enforcement feb 2027 — non bloccante oggi |
 | **B-CURSOR-CREDITS** | Ottimizzare sessioni Cursor (crediti) — **Aperto** 16/09 |
 | **B-UI-BUTTONS-ACCESSO-RAPIDO** | Bottoni stile Accesso rapido Dashboard — **Aperto** 16/09 |
