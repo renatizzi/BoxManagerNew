@@ -154,6 +154,7 @@
     <string name="object_photo_preview_cd">Object photo preview</string>
     <string name="object_photo_preview_title">Object photo</string>
     <string name="object_photo_camera_rationale">BoxManager can use the camera for an object photo. It stays on your phone and in backups you create; it is not sent to image-analysis services.</string>
+    <string name="object_photo_ocr_replace_description">Replace the Description with the text read from the photo?</string>
     <string name="dialog_category_name_hint">Category name</string>
     <string name="dialog_category_pick_icon">Select icon</string>
     <string name="dialog_box_name_hint">Container name</string>

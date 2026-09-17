@@ -153,6 +153,7 @@
     <string name="object_photo_preview_cd">Anteprima foto oggetto</string>
     <string name="object_photo_preview_title">Foto oggetto</string>
     <string name="object_photo_camera_rationale">BoxManager può usare la fotocamera per una foto dell\'oggetto. Resta sul telefono e nel Backup che fai tu; non è inviata a servizi di analisi immagini.</string>
+    <string name="object_photo_ocr_replace_description">Sostituire la Descrizione con il testo letto dalla foto?</string>
     <string name="dialog_category_name_hint">Nome categoria</string>
     <string name="dialog_category_pick_icon">Seleziona icona</string>
     <string name="dialog_box_name_hint">Nome contenitore</string>

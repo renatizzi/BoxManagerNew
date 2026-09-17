@@ -6,22 +6,28 @@ import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.view.View
+import android.widget.EditText
 import android.widget.ImageView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.boxmanagernew.R
+import com.example.boxmanagernew.data.photo.ObjectDescriptionOcr
 import com.example.boxmanagernew.data.photo.ObjectPhotoStore
 import com.example.boxmanagernew.domain.premium.PremiumFeature
 import com.example.boxmanagernew.ui.common.DialogUtils
 import com.example.boxmanagernew.ui.premium.ArchivioCompletoNav
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 
 /**
- * Gestione galleria/scatto/rimozione foto nel dialog oggetto (A3).
- * Pending: URI o flag remove applicati al Salva.
+ * Gestione galleria/scatto/rimozione foto + OCR Descrizione (A3 / R-OCR).
+ * HD temporaneo: dopo Salva resta solo display/thumb; il file capture si elimina.
  */
 class ObjectPhotoDialogBinder(
     private val activity: AppCompatActivity,
@@ -40,10 +46,10 @@ class ObjectPhotoDialogBinder(
         private set
     var pendingCaptureFile: File? = null
         private set
-    private var existingPermanentId: String? = null
+
+    private var descriptionField: EditText? = null
     private var previewView: ImageView? = null
     private var removeBtn: View? = null
-
     private var captureFile: File? = null
 
     private lateinit var pickGallery: ActivityResultLauncher<String>
@@ -60,6 +66,7 @@ class ObjectPhotoDialogBinder(
                     pendingUri = uri
                     pendingCaptureFile = null
                     showPreview(uri)
+                    runOcrFromUri(uri)
                 }
             }
         takePicture =
@@ -72,6 +79,7 @@ class ObjectPhotoDialogBinder(
                     pendingUri = null
                     pendingCaptureFile = file
                     showPreviewFile(file)
+                    runOcrFromFile(file)
                 }
             }
         requestCamera =
@@ -88,10 +96,10 @@ class ObjectPhotoDialogBinder(
         views: DialogUtils.ObjectDialogViews,
         permanentId: String?
     ) {
-        existingPermanentId = permanentId
         pendingAction = PendingAction.NONE
         pendingUri = null
         pendingCaptureFile = null
+        descriptionField = views.description
         previewView = views.photoPreview
         removeBtn = views.btnPhotoRemove
 
@@ -149,6 +157,41 @@ class ObjectPhotoDialogBinder(
                 .setPositiveButton(R.string.common_ok, null)
                 .show()
         }
+    }
+
+    private fun runOcrFromUri(uri: Uri) {
+        activity.lifecycleScope.launch {
+            val text = withContext(Dispatchers.IO) {
+                ObjectDescriptionOcr.readFromUri(activity, uri)
+            }
+            proposeDescription(text)
+        }
+    }
+
+    private fun runOcrFromFile(file: File) {
+        activity.lifecycleScope.launch {
+            val text = withContext(Dispatchers.IO) {
+                ObjectDescriptionOcr.readFromFile(file)
+            }
+            proposeDescription(text)
+        }
+    }
+
+    private fun proposeDescription(text: String?) {
+        if (text.isNullOrBlank()) return
+        val field = descriptionField ?: return
+        val current = field.text?.toString().orEmpty().trim()
+        if (current.isEmpty()) {
+            field.setText(text)
+            return
+        }
+        AlertDialog.Builder(activity)
+            .setMessage(R.string.object_photo_ocr_replace_description)
+            .setPositiveButton(R.string.common_yes) { _, _ ->
+                field.setText(text)
+            }
+            .setNegativeButton(R.string.common_no, null)
+            .show()
     }
 
     private fun showPreview(uri: Uri) {

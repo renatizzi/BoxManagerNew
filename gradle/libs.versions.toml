@@ -11,6 +11,7 @@ espressoCore = "3.5.1"
 room = "2.6.1"
 camerax = "1.4.2"
 mlkitBarcode = "17.3.0"
+mlkitText = "16.0.1"
 zxing = "3.5.3"
 
 [libraries]
@@ -32,6 +33,7 @@ camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", versi
 camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "camerax" }
 camera-mlkit-vision = { group = "androidx.camera", name = "camera-mlkit-vision", version.ref = "camerax" }
 mlkit-barcode-scanning = { group = "com.google.mlkit", name = "barcode-scanning", version.ref = "mlkitBarcode" }
+mlkit-text-recognition = { group = "com.google.mlkit", name = "text-recognition", version.ref = "mlkitText" }
 zxing-core = { group = "com.google.zxing", name = "core", version.ref = "zxing" }
 
 [plugins]

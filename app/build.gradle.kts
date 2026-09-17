@@ -106,6 +106,7 @@ dependencies {
     implementation(libs.camera.view)
     implementation(libs.camera.mlkit.vision)
     implementation(libs.mlkit.barcode.scanning)
+    implementation(libs.mlkit.text.recognition)
     implementation(libs.zxing.core)
 
     testImplementation(libs.junit)

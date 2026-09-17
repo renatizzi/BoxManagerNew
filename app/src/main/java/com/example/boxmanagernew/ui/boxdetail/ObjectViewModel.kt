@@ -283,7 +283,10 @@ class ObjectViewModel(
             if (permanentId.isBlank()) return@launch
             when {
                 removePhoto -> photoStore.deletePhoto(permanentId)
-                photoFile != null -> photoStore.saveFromFile(permanentId, photoFile)
+                photoFile != null -> {
+                    photoStore.saveFromFile(permanentId, photoFile)
+                    photoFile.delete()
+                }
                 photoUri != null -> photoStore.saveFromUri(permanentId, photoUri)
             }
         }
@@ -313,7 +316,10 @@ class ObjectViewModel(
             val permanentId = entity.objectPermanentId
             when {
                 removePhoto -> photoStore.deletePhoto(permanentId)
-                photoFile != null -> photoStore.saveFromFile(permanentId, photoFile)
+                photoFile != null -> {
+                    photoStore.saveFromFile(permanentId, photoFile)
+                    photoFile.delete()
+                }
                 photoUri != null -> photoStore.saveFromUri(permanentId, photoUri)
             }
         }
