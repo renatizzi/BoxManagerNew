@@ -3,11 +3,11 @@
 **Stato:** CONGELATO 07/09/2026 (SI Renato).  
 **CONVALIDA aggiornamento documento:** SI Renato 07/09/2026 (T1 allineamento DB, T3–T5/T8 tracciati file, processo 4 fasi).  
 **Integrazione 07/09/2026:** **R6 Premium** (Progetto 2) — SI Renato in sessione Cestino; non riapre il resto del merito foto.  
-**Integrazione OCR 17/09/2026:** requisiti **R-OCR-1…8** (§6) — CONVALIDA **analisi/merito** SI Renato 17/09; **in attesa CONVALIDA aggiornamento documento** (passo 4). Fonte analisi: [ASSESSMENT_OCR_COVER.md](ASSESSMENT_OCR_COVER.md).  
+**Integrazione OCR 17/09/2026:** requisiti **R-OCR-1…8** (§6) — CONVALIDA **analisi/merito** SI Renato 17/09; **CONVALIDA aggiornamento documento** SI Renato 17/09 («Convalido tutto»). Fonte analisi: [ASSESSMENT_OCR_COVER.md](ASSESSMENT_OCR_COVER.md).  
 **Uso:** riferimento funzionale e tecnico-architetturale fino all’implementazione Progetto 2.  
 **Destinazione:** confluire nella Nota Integrata ufficiale (Allegato dedicato) senza riaprire il merito.  
 **Assessment di lavoro:** [ASSESSMENT_FOTO_MINIATURA.md](ASSESSMENT_FOTO_MINIATURA.md) (storico analisi; prevale **questo** file su conflitti).  
-**Sequenza implementativa:** Foto A3 in corso (SI 17/09); codice OCR **dopo** CONVALIDA aggiornamento documento §6.
+**Sequenza implementativa:** Foto A3 in corso (SI 17/09); codice OCR **ammesso** (documento §6 chiuso).
 
 ---
 
@@ -149,7 +149,7 @@ Al salvataggio (galleria o scatto), pipeline obbligatoria:
 ## 5. Nota per il recepimento ufficiale
 
 In Nota Integrata: Allegato “Foto oggetto — supporto visivo” (o numerazione vigente), con rinvio da Roadmap 4.1.6 / Progetto 2; OCR Descrizione come sotto-sezione o Allegato collegato.  
-Questo file è la **fonte congelata** per R1–R6 / T1–T8; §6 OCR in **aggiornamento documento** (attesa CONVALIDA passo 4). Non riaprire R1–R5 / T1–T8 in chat di implementazione salvo SI esplicito di revisione.
+Questo file è la **fonte congelata** per R1–R6 / T1–T8 e §6 OCR (R-OCR-1…8). Non riaprire in chat di implementazione salvo SI esplicito di revisione.
 
 ### Processo analisi (da usare in futuro)
 
@@ -167,8 +167,8 @@ Vedi anche [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) § Processo analis
 ## 6. OCR locale su cover → Descrizione oggetto
 
 **Stato merito (passo 3):** **CONVALIDATO** SI Renato 17/09 — [ASSESSMENT_OCR_COVER.md](ASSESSMENT_OCR_COVER.md) §3.  
-**Stato documento (passo 4):** bozza qui sotto — **attesa** `CONVALIDA documento OCR` (o equivalente).  
-**Codice OCR:** solo dopo CONVALIDA passo 4.
+**Stato documento (passo 4):** **CONVALIDATO** SI Renato 17/09 («Convalido tutto»).  
+**Codice OCR:** ammesso (R-OCR-1…8 congelati).
 
 ### R-OCR-1 — Campo target
 - L’OCR propone testo **solo** nel campo **Descrizione**.

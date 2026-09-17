@@ -12,7 +12,7 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) — sezione **Che
 
 | ID | Indicazione |
 |----|-------------|
-| **B-IDEA-OCR-COVER** | OCR: CONVALIDA merito 17/09; attesa CONVALIDA documento (§6 REQUISITI_FOTO); zero codice |
+| **B-IDEA-OCR-COVER** | OCR Descrizione: documento CONVALIDATO 17/09 — codice in A3 |
 | **B-PLAY-DEX-R8** | Play DEX obfuscation 1%; enforcement feb 2027 — non bloccante oggi |
 | **B-CURSOR-CREDITS** | Ottimizzare sessioni Cursor (crediti) — **Aperto** 16/09 |
 | **B-UI-BUTTONS-ACCESSO-RAPIDO** | Uniformare bottoni stile Accesso rapido Dashboard (screenshot 16/09) — **Aperto** |
