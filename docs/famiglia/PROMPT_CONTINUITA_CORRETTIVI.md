@@ -12,6 +12,7 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) — sezione **Che
 
 | ID | Indicazione |
 |----|-------------|
+| **B-PLAY-DEX-R8** | Play: offuscamento DEX 1% (soglia 25%); correggere entro feb 2027 — **Aperto** 17/09; niente minify senza SI |
 | **B-CURSOR-CREDITS** | Ottimizzare sessioni Cursor (crediti) — **Aperto** 16/09 |
 | **B-UI-BUTTONS-ACCESSO-RAPIDO** | Uniformare bottoni stile Accesso rapido Dashboard (screenshot 16/09) — **Aperto** |
 | **B-TEST-ISTRUZIONI-OPERATIVE** | Test telefono: istruzioni operative obbligatorie (SI 16/09) |

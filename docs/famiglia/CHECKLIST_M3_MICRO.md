@@ -77,9 +77,9 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 1. **email Google OK** (SI Renato 16/09). **DECISO:** AAB da `main` **1.3.7** → **closed** breve → poi **produzione** (SI Renato 16/09).
 2. Paesi / regioni: **FATTO** in coda revisione (SI Renato 16/09 — produzione +13 paesi).
 3. Scheda Store EN: **FATTO** (SI Renato 16/09) — testi Shared Archive / Full archive, screenshot EN; «Non etichettare gli asset»; tablet non richiesti. **Note/novità IT+EN:** non in questa release (prima versione pubblica) — dalla prossima (SI Renato 16/09).
-4. Renato: closed **1.3.7** in revisione / attesa conferma Google → smoke da Play → **`SI AAB closed`** → promuovi produzione → **`SI produzione OK`**.
-5. Dopo promozione: freeze docs **B10** con SI.
-6. **PAUSA** (SI Renato 16/09) — niente A3/backlog finché non torna con esito revisione / SI.
+4. **Produzione 1.3.7:** in Console = release **Più recente 11 (1.3.7)** (SI schermata Renato 17/09). Avviso soft: offuscamento DEX **1%** (soglia 25%) — **non bloccante**; correggere entro **feb 2027** → backlog **B-PLAY-DEX-R8**. Smoke da Play Store → **`SI produzione OK`**.
+5. Dopo promozione/smoke: freeze docs **B10** con SI.
+6. Note/novità IT+EN: dalla prossima release (prima pubblica = niente novità ora).
 
 **Binario piano:**
 1. **C1** — **FATTO** (1.3.1).
