@@ -52,7 +52,7 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 | — | B-AUTO-FILES-LIST | **FATTO** | SI 14/09; play **1.3.2** — PRE_* fuori lista Ripristino |
 | C2 | A1 QR avanzato | **FATTO** | SI device Renato 14/09 — play **1.3.3** ok; polish UI batch **1.3.4 OK** |
 | C3 | A2 Cestino | **FATTO** | SI device Renato 16/09 — play **1.3.7 ok** |
-| C4 | A3 → B–C → B-QTY | **CODICE PR #35** | Foto+OCR+T4+T5 su branch; target play **1.3.8**; **prossimo:** merge `main` + test device — [PROMPT_CONTINUITA_A3_FOTO.md](PROMPT_CONTINUITA_A3_FOTO.md) |
+| C4 | A3 → B–C → B-QTY | **ATTESA device** | A3 su `main` (PR #35 FF); play **1.3.8**; **prossimo:** SI Renato device → poi B–C solo con SI — [PROMPT_CONTINUITA_A3_FOTO.md](PROMPT_CONTINUITA_A3_FOTO.md) |
 | C5 | D Dashboard | no-code |
 
 ---
@@ -65,7 +65,7 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 
 **Regola Renato 13/09 + 14/09 (permanente) — processo ovvio:**
 1. Agente porta il codice su **`main`** (merge del branch di lavoro **prima** di chiedere il test)
-2. Renato: `git checkout main` + `git pull origin main` + **Run `playDebug`** → topbar = versione detta dall’agente (ora **`v. 1.3.7`**, senza famiglia). **Mai** altri branch per il test telefono.
+2. Renato: `git checkout main` + `git pull origin main` + **Run `playDebug`** → topbar = versione detta dall’agente (ora **`v. 1.3.8`**, senza famiglia). **Mai** altri branch per il test telefono.
 3. Solo dopo OK test: Renato crea AAB **`playRelease`** (con firma) → Play → Invio
 4. Scheda IT/EN + `BOXMANAGER-TESTER` se closed
 5. Scrivi: `SI AAB closed`

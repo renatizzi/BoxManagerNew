@@ -22,21 +22,21 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md).
 
 ---
 
-## Stato al 17/09/2026 (sera)
+## Stato al 17/09/2026 (sera — post merge)
 
 | Voce | Valore |
 |------|--------|
-| **Branch lavoro** | `cursor/a3-foto-oggetto-d5b2` |
-| **PR** | [#35](https://github.com/renatizzi/BoxManagerNew/pull/35) → base `main` — **OPEN**, codice T1–T5 + OCR su branch |
-| **Head tipico** | `8f68a3b` — `feat(A3): T4 Invia/Ricevi ZIP + T5 Esporta/Importa ZIP` |
-| **Build play attesa** | Topbar **`v. 1.3.8`** (versionCode **12**) — dopo merge su `main` |
+| **Branch lavoro** | `cursor/a3-foto-oggetto-d5b2` (chiuso) |
+| **PR** | [#35](https://github.com/renatizzi/BoxManagerNew/pull/35) — **MERGIATO** su `main` (FF `b04570d`) |
+| **Head `main`** | `b04570d` — tip A3 completo (foto + OCR + T4 + T5) |
+| **Build play** | Topbar **`v. 1.3.8`** (versionCode **12**) — **su `main`**, pronto per test telefono |
 | **Play Console** | 1.3.7 in revisione / closed; DEX non bloccante (B-PLAY-DEX-R8) |
-| **A3 codice** | **COMPLETO su branch** (foto + OCR + T4 + T5) — **manca test device + SI Renato** |
+| **A3 codice** | **COMPLETO su `main`** — **manca solo test device + SI Renato «A3 OK»** |
 | **Documento requisiti** | [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) — CONVALIDATO (T1–T8 + §6 OCR) |
 
 ---
 
-## Cosa è chiuso in codice (branch PR #35)
+## Cosa è chiuso in codice (su `main` dopo PR #35)
 
 ### Foto (T1–T3, UI, premium)
 - Galleria / scatto / rimuovi; thumb lista + anteprima; gate `OBJECT_PHOTO`
@@ -68,14 +68,14 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md).
 
 ---
 
-## Prossima sessione — prossimi passi (ordine obbligatorio)
+## Prossimi passi (ordine obbligatorio)
 
 | # | Azione | Chi | Note |
 |---|--------|-----|------|
-| **1** | Merge PR **#35** su `main` + push `main` | Agente (dopo SI Renato se serve conferma merge) oppure Renato da GitHub | Senza questo **niente** test telefono |
-| **2** | Istruzioni operative **numerate** a Renato | Agente | Topbar attesa **`v. 1.3.8`**. Passi concreti (non vaghi). Vedi bozza sotto. |
-| **3** | Renato: `checkout main` + `pull` + Run **`playDebug`** | Renato | Mai branch `cursor/…` sul telefono |
-| **4** | Ritest accettazione A3 (criteri §4 REQUISITI) | Renato + agente annota | Checklist sotto |
+| **1** | Merge PR **#35** su `main` + push `main` | Agente | **FATTO** 17/09 — FF `b04570d` |
+| **2** | Istruzioni operative **numerate** a Renato | Agente | **FATTO** — topbar **`v. 1.3.8`**. Vedi sotto. |
+| **3** | Renato: `checkout main` + `pull` + Run **`playDebug`** | Renato | Mai branch `cursor/…` sul telefono — **ATTESA** |
+| **4** | Ritest accettazione A3 (criteri §4 REQUISITI) | Renato + agente annota | Checklist sotto — **ATTESA** |
 | **5** | SI Renato «A3 OK» / chiudere fetta | Renato | Solo allora aggiornare PROMEMORIA / CHECKLIST C4 → **FATTO** |
 | **6** | (Dopo A3 chiuso) prossima fetta codice | — | Default: **B–C Export/Import avanzati** (selezione, report errori) **oppure** backlog QR batch / UI bottoni — **solo con SI** Renato |
 
@@ -87,20 +87,23 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md).
 
 ---
 
-## Bozza istruzioni operative test device (passo 2)
+## Istruzioni operative test device (attive — passo 3)
 
-Da inviare **dopo** merge su `main`. Topbar: **`v. 1.3.8`**.
+Topbar attesa: **`v. 1.3.8`**. Solo su `main`.
 
-1. `git checkout main` → `git pull origin main` → Android Studio Run **`playDebug`** (flavor play, non release).
-2. Verificare topbar **`v. 1.3.8`**.
-3. **Foto:** oggetto → galleria + scatto; thumb in lista; tap anteprima; rimuovi foto; Salva.
-4. **OCR:** nuovo scatto/galleria → proposta Descrizione → conferma; Nome non modificato da OCR.
-5. **Premium:** senza Archivio completo, gate sulle azioni foto.
-6. **Backup → Ripristina:** foto presenti dopo REPLACE.
-7. **Invia Archivio → Ricevi Archivio** (altro device o stesso dopo wipe dati se serve): ZIP; foto sugli oggetti per id; riepilogo foto in Invia.
-8. **Esporta dati ZIP → Importa** (su archivio dove ha senso): foto riagganciate; **Esporta CSV** resta senza foto.
-9. **Cestino:** elimina oggetto con foto → file foto spariti.
-10. Rispondere in chat con OK/KO per ogni punto 3–9.
+1. `git checkout main`
+2. `git pull origin main`
+3. Android Studio → Build Variants → **`playDebug`** (flavor play, non release / non famiglia)
+4. Run sul telefono
+5. Verificare topbar **`v. 1.3.8`** (senza `famiglia`)
+6. **Foto:** oggetto → galleria + scatto; thumb in lista; tap anteprima; rimuovi foto; Salva
+7. **OCR:** nuovo scatto/galleria → proposta Descrizione → conferma; Nome non modificato da OCR
+8. **Premium:** senza Archivio completo, gate sulle azioni foto
+9. **Backup → Ripristina:** foto presenti dopo REPLACE
+10. **Invia Archivio → Ricevi Archivio** (altro device o stesso dopo wipe dati se serve): ZIP; foto sugli oggetti per id; riepilogo foto in Invia
+11. **Esporta dati ZIP → Importa** (su archivio dove ha senso): foto riagganciate; **Esporta CSV** resta senza foto
+12. **Cestino:** elimina oggetto con foto → file foto spariti
+13. Rispondere in chat con OK/KO per ogni punto 6–12 (es. `1.3.8 ok` o elenco KO)
 
 ---
 
@@ -119,10 +122,10 @@ Da inviare **dopo** merge su `main`. Topbar: **`v. 1.3.8`**.
 ## Sequenza agente (allineamento nuova sessione)
 
 1. Leggere **questo** prompt + [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) + [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md).
-2. `git fetch origin` · stato PR #35 · `main` vs `cursor/a3-foto-oggetto-d5b2`.
-3. Se PR non mergiata: merge/push su `main` (con SI se richiesto) **prima** di qualsiasi richiesta test.
-4. Preparare istruzioni operative numerate + `versionName` **`v. 1.3.8`**.
-5. Dopo esito device: aggiornare PROMEMORIA / CHECKLIST; commit docs; non aprire B–C senza SI.
+2. `git fetch origin` · `main` @ tip A3 (`b04570d` o successivo docs).
+3. Merge #35: **già fatto**. Non riaprire codice A3 senza SI.
+4. Se manca SI device: ripetere istruzioni operative + attendere OK/KO Renato.
+5. Dopo SI «A3 OK»: aggiornare PROMEMORIA / CHECKLIST C4 → **FATTO**; commit docs; **non** aprire B–C senza SI.
 
 ---
 
@@ -147,8 +150,8 @@ Da inviare **dopo** merge su `main`. Topbar: **`v. 1.3.8`**.
 ```
 Continua A3 Foto da docs/famiglia/PROMPT_CONTINUITA_A3_FOTO.md.
 
-Priorità: (1) merge PR #35 su main + push; (2) istruzioni operative numerate
-con topbar v. 1.3.8; (3) test telefono solo su main; (4) chiudere A3 dopo SI device.
-Non aprire B–C Export avanzato né altre fette senza SI.
+Priorità: (1) PR #35 già su main — non ri-mergiare; (2) se manca SI device,
+ripetere istruzioni playDebug topbar v. 1.3.8; (3) dopo SI «A3 OK» chiudere
+PROMEMORIA/CHECKLIST C4; (4) non aprire B–C senza SI.
 Identità: una sola BoxManager.
 ```
