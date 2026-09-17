@@ -21,7 +21,7 @@ La ricerca semplice filtra l’elenco mentre digiti. La ricerca avanzata sull’
 
 In Impostazioni scegli la lingua dell’app (italiano o inglese). I nomi di oggetti e contenitori restano come li hai scritti: BoxManager non traduce i tuoi dati.
 
-Backup e ripristino dell’archivio, import/export CSV, stampa o condivisione della vista. La condivisione archivio (Archivio completo) consente a più persone della stessa casa di tenere allineati cataloghi e inventari. Con Archivio completo puoi anche salvare Backup e CSV su una cartella di rete (CIFS / disco mappato) quando il dispositivo la raggiunge.
+Backup e ripristino dell’archivio, import/export CSV, stampa o condivisione della vista. La condivisione archivio (Condividi Archivio) consente a più persone della stessa casa di tenere allineati cataloghi e inventari. Con Archivio completo puoi anche salvare Backup e CSV su una cartella di rete (CIFS / disco mappato) quando il dispositivo la raggiunge.
 
 Pensata per uso personale e domestico.
 

@@ -1,6 +1,6 @@
 # Promemoria — interventi trasversali (BoxManager)
 
-**Aggiornato:** 16/09/2026.  
+**Aggiornato:** 17/09/2026.  
 Ingresso sessione 07/09 → [PROMPT_CONTINUITA_07_09_DISCO_FOTO.md](PROMPT_CONTINUITA_07_09_DISCO_FOTO.md).  
 **Ingresso M3 / merge Play / roadmap** → [PROMPT_CONTINUITA_M3_MERGE_PLAY.md](PROMPT_CONTINUITA_M3_MERGE_PLAY.md).  
 **Ingresso cutover 1.3 (nuova sessione)** → [PROMPT_CONTINUITA_M3_CUTOVER.md](PROMPT_CONTINUITA_M3_CUTOVER.md).  
@@ -94,6 +94,7 @@ Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino
 
 | ID | Data | Indicazione | Stato |
 |----|------|-------------|-------|
+| **B-PLAY-DEX-R8** | 17/09/2026 | Play Console: «ottimizzazione DEX sotto soglia» — Offuscamento **1%** (soglia 25%); Console «Correggi entro feb 2027». **Policy ufficiale:** enforcement **from February 2027** (Help Play «technical quality requirements»); oggi avviso / visibilità futura, **non** rifiuto pubblicazione. Causa: `isMinifyEnabled = false`. Analisi+SI prima di R8 (Room/Gson). | **Aperto** — confermato non bloccante 17/09 |
 | **B-CURSOR-CREDITS** | 16/09/2026 | Rinnovato abbonamento Cursor: ottimizzare l’interazione per non sprecare crediti (mese scorso esauriti in ~1 settimana). | **Aperto** — regole operative sotto; SI Renato su eventuale regola agente permanente |
 | **B-UI-BUTTONS-ACCESSO-RAPIDO** | 16/09/2026 | Uniformare il formato dei bottoni come da screenshot allegato (Accesso rapido Dashboard: card `MaterialCardView`, testo centrato grassetto ~18sp, `elevated_surface`; eventualmente senza icona). | **Aperto** |
 | **B-TEST-ISTRUZIONI-OPERATIVE** | 16/09/2026 | Ogni richiesta di test telefono deve essere accompagnata da istruzioni operative sulle attività di Renato (passi concreti); escludere indicazioni generiche e vaghe. | **SI Renato 16/09** — regola agente: `.cursor/rules/test-telefono-main.mdc`, [SOLO_TU.md](SOLO_TU.md) |

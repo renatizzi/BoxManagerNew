@@ -75,10 +75,10 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 
 **Binario Play (non blocca il codice):**
 1. **email Google OK** (SI Renato 16/09). **DECISO:** AAB da `main` **1.3.7** → **closed** breve → poi **produzione** (SI Renato 16/09).
-2. Paesi UE (inglese diffuso): selezionati, **da confermare** in Console.
-3. Scheda Store: IT ok; EN = `docs/play/store-listing-en.md` + screenshot EN.
-4. Renato: AAB **playRelease** → upload **test chiuso** → smoke da Play → promuovi produzione.
-5. Dopo promozione: freeze docs **B10** con SI.
+2. Paesi / regioni: **FATTO** in coda revisione (SI Renato 16/09 — produzione +13 paesi).
+3. Scheda Store EN: **FATTO** (SI Renato 16/09) — testi Shared Archive / Full archive, screenshot EN; «Non etichettare gli asset»; tablet non richiesti. **Note/novità IT+EN:** **FATTO** (SI Renato 17/09 — obbligatorie in Console; bozza vuota in chat era solo errore copia-incolla).
+4. **Produzione 1.3.7:** release **11** in **fase di revisione** (SI Renato 17/09). Avviso soft DEX/offuscamento **1%** — **non bloccante ora**; enforcement ufficiale **da feb 2027** ([Play technical quality](https://support.google.com/googleplay/android-developer/answer/17492799)) → **B-PLAY-DEX-R8**. Quando passa a Disponibile: smoke da account non tester → **`SI produzione OK`**.
+5. Dopo smoke produzione: freeze docs **B10** con SI.
 
 **Binario piano:**
 1. **C1** — **FATTO** (1.3.1).
