@@ -3,10 +3,11 @@
 **Stato:** CONGELATO 07/09/2026 (SI Renato).  
 **CONVALIDA aggiornamento documento:** SI Renato 07/09/2026 (T1 allineamento DB, T3–T5/T8 tracciati file, processo 4 fasi).  
 **Integrazione 07/09/2026:** **R6 Premium** (Progetto 2) — SI Renato in sessione Cestino; non riapre il resto del merito foto.  
+**Integrazione OCR 17/09/2026:** requisiti **R-OCR-1…8** (§6) — CONVALIDA **analisi/merito** SI Renato 17/09; **in attesa CONVALIDA aggiornamento documento** (passo 4). Fonte analisi: [ASSESSMENT_OCR_COVER.md](ASSESSMENT_OCR_COVER.md).  
 **Uso:** riferimento funzionale e tecnico-architetturale fino all’implementazione Progetto 2.  
 **Destinazione:** confluire nella Nota Integrata ufficiale (Allegato dedicato) senza riaprire il merito.  
 **Assessment di lavoro:** [ASSESSMENT_FOTO_MINIATURA.md](ASSESSMENT_FOTO_MINIATURA.md) (storico analisi; prevale **questo** file su conflitti).  
-**Sequenza implementativa:** dopo **QR avanzato** e **Cestino**. STOP codice finché non si apre quella fetta.
+**Sequenza implementativa:** Foto A3 in corso (SI 17/09); codice OCR **dopo** CONVALIDA aggiornamento documento §6.
 
 ---
 
@@ -14,7 +15,8 @@
 
 Fornire un **supporto visivo del contenuto**: una foto **opzionale** per ogni **oggetto**, così da riconoscerlo in lista e in dettaglio.  
 I **contenitori** restano identificati dal **QR** (fuori da questa voce).  
-Niente riconoscimento automatico / vision / ML / cerca-per-immagine **nel perimetro congelato 07/09** (vedi §6 idea OCR correlata — da approfondire in seguito, non attiva ora).
+**Niente** riconoscimento automatico di oggetti / cerca-per-immagine.  
+**Eccezione CONVALIDATA (merito 17/09):** OCR testo **on-device** solo per proporre la **Descrizione** oggetto (§6 R-OCR) — non è vision di prodotto né cloud.
 
 ---
 
@@ -117,10 +119,12 @@ Al salvataggio (galleria o scatto), pipeline obbligatoria:
 
 ### T6 — Fuori scope di questa voce
 - Foto sui **contenitori**
-- Vision / ML / cerca per immagine *(nel perimetro congelato 07/09; idea OCR cover → §6, da approfondire)*
+- Riconoscimento oggetti / cerca-per-immagine *(OCR testo Descrizione = §6, non questo bullet)*
 - Foto in Esporta vista / stampa A4 (salvo SI successivo)
 - Obbligatorietà foto in censimento
 - BLOB immagini in SQLite / CSV
+- Conservazione di file HD oltre la sessione OCR
+- Auto-compilazione del **Nome** oggetto da OCR
 
 ### T6bis — Premium (allineamento Progetto 2)
 - Gate **Archivio completo** sulle azioni foto (R6). Stesso vincolo trasversale di A1 QR e A2 Cestino (SI Renato 07/09/2026).
@@ -137,14 +141,15 @@ Al salvataggio (galleria o scatto), pipeline obbligatoria:
 3. Backup → Ripristina: foto presenti.  
 4. Invia Archivio → Ricevi Archivio: foto presenti sugli oggetti corrispondenti per id.  
 5. (Se SI estensione Import/Export ZIP) ciclo Esporta ZIP → Importa ZIP ripristina foto; il solo CSV legacy resta senza foto.  
-6. Senza Archivio completo: gate premium sulle azioni foto (R6); nessun bypass.
+6. Senza Archivio completo: gate premium sulle azioni foto (R6); nessun bypass.  
+7. (OCR §6, dopo CONVALIDA documento) Galleria/scatto → proposta Descrizione → conferma; Nome invariato da OCR; solo mini in archivio; HD eliminato subito.
 
 ---
 
 ## 5. Nota per il recepimento ufficiale
 
-In Nota Integrata: Allegato “Foto oggetto — supporto visivo” (o numerazione vigente), con rinvio da Roadmap 4.1.6 / Progetto 2.  
-Questo file è la **fonte congelata**; non riaprire R1–R5 / T1–T8 in chat di implementazione salvo SI esplicito di revisione.
+In Nota Integrata: Allegato “Foto oggetto — supporto visivo” (o numerazione vigente), con rinvio da Roadmap 4.1.6 / Progetto 2; OCR Descrizione come sotto-sezione o Allegato collegato.  
+Questo file è la **fonte congelata** per R1–R6 / T1–T8; §6 OCR in **aggiornamento documento** (attesa CONVALIDA passo 4). Non riaprire R1–R5 / T1–T8 in chat di implementazione salvo SI esplicito di revisione.
 
 ### Processo analisi (da usare in futuro)
 
@@ -159,25 +164,38 @@ Vedi anche [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) § Processo analis
 
 ---
 
-## 6. Idea correlata — OCR locale sulla cover (annotata 10/09/2026, da approfondire)
+## 6. OCR locale su cover → Descrizione oggetto
 
-**Stato:** **ANALISI** aperta 17/09 con SI A3 — vedi [ASSESSMENT_OCR_COVER.md](ASSESSMENT_OCR_COVER.md).  
-**Non** fa parte dei requisiti congelati R1–R6 / T1–T8. **Niente codice OCR** finché FEEDBACK → CONVALIDA → AGGIORNAMENTO DOCUMENTO. Quando si conferma, approfondire (toccherebbe anche il “niente ML” del §1).
+**Stato merito (passo 3):** **CONVALIDATO** SI Renato 17/09 — [ASSESSMENT_OCR_COVER.md](ASSESSMENT_OCR_COVER.md) §3.  
+**Stato documento (passo 4):** bozza qui sotto — **attesa** `CONVALIDA documento OCR` (o equivalente).  
+**Codice OCR:** solo dopo CONVALIDA passo 4.
 
-### Intento
-In fase di **censimento**, ridurre il lavoro di digitazione: dalla stessa occasione dello scatto foto oggetto, ricavare una **proposta di testo** (nome/descrizione) da confermare.
+### R-OCR-1 — Campo target
+- L’OCR propone testo **solo** nel campo **Descrizione**.
+- Il **Nome** (tipo oggetto) resta inserimento **manuale o vocale** — mai auto-compilato dall’OCR.
 
-### Schema concordato in chat (10/09)
-1. Scatto (o frame) **ad alta definizione** solo temporaneo  
-2. **OCR locale on-device** (niente internet obbligatorio) sulla cover/etichetta  
-3. Utente **conferma/corregge** il testo nei campi oggetto  
-4. Si conserva solo la **mini** (policy T2 / thumb-display) per lista e scheda  
-5. L’immagine HD **non** resta in archivio né in Backup  
+### R-OCR-2 — Origine immagine
+- Attivabile da **scatto** e da **galleria** (stesso perimetro foto A3).
 
-«Due piccioni con una fava»: un gesto → supporto visivo (mini) + aiuto compilazione testo (OCR).
+### R-OCR-3 — Pipeline file
+1. Immagine **HD temporanea** (solo sessione)  
+2. OCR **on-device**  
+3. Utente **conferma/corregge** la Descrizione  
+4. Persistono solo **display 800** + **thumb 160** (T2)  
+5. **Eliminazione immediata** del file HD — **non** passa dal Cestino; **non** in Backup / Invia Archivio
 
-### Da chiarire al momento dell’analisi
-- Qualità OCR su packaging reali; solo nome vs nome+descrizione  
-- Premium (allineamento R6) sì/no  
-- Galleria vs solo scatto; lingua/mixed text  
-- Revisione esplicita del fuori-scope «niente ML» se si conferma l’OCR
+### R-OCR-4 — Premium
+- Gate **Archivio completo** (allineato R6). Eccezioni free solo se Renato le comunica.
+
+### R-OCR-5 — Motore
+- **ML Kit Text Recognition** on-device (niente cloud obbligatorio).
+
+### R-OCR-6 — Lingua
+- Nessun vincolo alla lingua UI; packaging IT/EN/mixed accettati in lettura.
+
+### R-OCR-7 — UI
+- Integrato nel **flusso foto A3** (non bottone separato «Suggerisci da etichetta»).
+
+### R-OCR-8 — Scope rispetto al §1
+- Eccezione limitata: OCR testo on-device per Descrizione.  
+- Restano vietati: riconoscimento oggetti, cerca-per-immagine, barcode/catalogo remoto, auto-Nome.

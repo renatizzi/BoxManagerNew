@@ -1,89 +1,61 @@
 # Assessment — OCR locale su cover (proposta testo oggetto)
 
-**Stato:** **FEEDBACK ricevuto** 17/09/2026 (SI Renato Q1–Q7) — in attesa **CONVALIDA** analisi/requisiti condivisi.  
-**Fonte idea:** [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) §6 · backlog **B-IDEA-OCR-COVER**.  
-**Non è codice.** Niente OCR finché CONVALIDA → AGGIORNAMENTO DOCUMENTO.
+**Stato:** passo **3 CONVALIDATO** SI Renato 17/09 (`CONVALIDA OCR` sul §3).  
+Passo **4** in corso: bozza in [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) §6 — attesa **CONVALIDA aggiornamento documento**.  
+**Fonte:** backlog **B-IDEA-OCR-COVER**.  
+**Codice OCR:** solo dopo CONVALIDA passo 4.
 
 ---
 
 ## 1. Contesto
 
-A3 Foto (supporto visivo) in implementazione (R1–R6 / T1–T8).  
-OCR: dalla stessa occasione della foto, proporre testo per la **descrizione** oggetto; HD temporaneo → OCR → mini (T2) → elimina HD (no cestino).
+A3 Foto in implementazione. OCR: HD temporaneo → OCR → mini T2 → elimina HD (no cestino); propone solo **Descrizione**.
 
 ---
 
-## 2. FEEDBACK Renato 17/09 (testuale)
+## 2. FEEDBACK Renato 17/09
 
 | # | Risposta |
 |---|----------|
-| **Q1** | Solo **Descrizione** oggetto. Il **Nome** resta inserimento manuale o vocale. |
-| **Q2** | **B)** scatto **e** galleria |
-| **Q3** | **A)** premium (Archivio completo). Eccezioni free solo se Renato le comunica. |
-| **Q4** | Default: **ML Kit Text Recognition on-device** |
-| **Q5** | **SI** — revisione esplicita del fuori-scope «niente ML» del §1 foto |
-| **Q6** | Default: OCR **senza** vincolo lingua UI |
-| **Q7** | Sequenza: foto HD → OCR → Minifoto → elimina originale (**no cestino**). UI: **A)** nello stesso flusso foto A3 (se A non coerente → B). **Decisione analisi:** **A è coerente** con la sequenza. |
+| Q1 | Solo **Descrizione**. Nome manuale/vocale. |
+| Q2 | Scatto **e** galleria |
+| Q3 | **Premium** |
+| Q4 | ML Kit on-device |
+| Q5 | **SI** revisione §1 ML |
+| Q6 | Senza vincolo lingua UI |
+| Q7 | HD→OCR→mini→elimina HD; UI **A** nel flusso foto A3 |
 
 ---
 
-## 3. Requisiti condivisi proposti (per CONVALIDA)
+## 3. Requisiti condivisi — **CONVALIDATI** (passo 3)
 
-### R-OCR-1 — Campo target
-- L’OCR propone testo **solo** nel campo **Descrizione**.
-- Il **Nome** (tipo oggetto) non viene riempito dall’OCR.
+Vedi testo ufficiale proposto in `REQUISITI_FOTO_OGGETTO.md` §6 (**R-OCR-1…8**). Sintesi:
 
-### R-OCR-2 — Origine immagine
-- Attivabile da **scatto** e da **galleria** (stesso perimetro foto A3).
-
-### R-OCR-3 — Pipeline file
-1. Immagine HD (temporanea, solo sessione)  
-2. OCR on-device  
-3. Utente conferma/corregge la Descrizione  
-4. Scrittura **solo** display 800 + thumb 160 (T2 A3)  
-5. **Eliminazione immediata** del file HD (non passa dal Cestino)
-
-### R-OCR-4 — Premium
-- Gate **Archivio completo** (allineato R6 Foto / Progetto 2).
-
-### R-OCR-5 — Motore
-- **ML Kit Text Recognition** on-device (niente cloud obbligatorio).
-
-### R-OCR-6 — Lingua
-- Nessun vincolo alla lingua UI; packaging IT/EN/mixed accettati in lettura.
-
-### R-OCR-7 — UI
-- Integrato nel **flusso foto A3** (non bottone separato «Suggerisci da etichetta»), salvo ripensamento post-CONVALIDA.
-
-### R-OCR-8 — Scope Nota
-- Con CONVALIDA si **revisione** il fuori-scope «niente ML / vision» del §1 di `REQUISITI_FOTO_OGGETTO.md` limitatamente a OCR testo on-device per Descrizione (non cerca-per-immagine).
+1. Solo Descrizione  
+2. Scatto + galleria  
+3. Pipeline HD → OCR → mini → elimina HD (no cestino; no Backup HD)  
+4. Premium  
+5. ML Kit on-device  
+6. Lingua libera  
+7. UI nel flusso foto A3  
+8. Eccezione §1 limitata all’OCR testo Descrizione  
 
 ---
 
-## 4. Fuori scope (restano fuori)
+## 4. Fuori scope
 
-- Riconoscimento oggetti / cerca-per-immagine  
-- Barcode/catalogo remoto  
-- Conservazione HD in Backup / Invia Archivio  
-- Auto-compilazione del Nome  
-
----
-
-## 5. Impatto su A3 codice foto (V1)
-
-| Voce | Stato |
-|------|--------|
-| Foto R1–R6 / Backup / UI | In corso (1.3.8) — indipendente |
-| Codice OCR | **Dopo** CONVALIDA + AGGIORNAMENTO documento |
-| Hook | Stesso binder foto: dopo scelta immagine → OCR → propone Descrizione → poi compressione T2 |
+- Cerca-per-immagine / riconoscimento oggetti  
+- Barcode/catalogo  
+- HD in Backup / Invia  
+- Auto-Nome  
 
 ---
 
-## 6. Prossimo passo processo
+## 5. Prossimo passo
 
-1. ~~FEEDBACK Q1–Q7~~ **FATTO** 17/09  
-2. **CONVALIDA** Renato sul §3 (requisiti condivisi) — scrivi es. `CONVALIDA OCR`  
-3. AGGIORNAMENTO: estendere `REQUISITI_FOTO_OGGETTO.md` (o Allegato OCR) + chiusura §1 ML  
-4. Solo dopo: codice OCR (dipendenza ML Kit + UI)
+1. ~~FEEDBACK~~ FATTO  
+2. ~~CONVALIDA merito §3~~ FATTO 17/09  
+3. **CONVALIDA documento** — Renato conferma il testo in `REQUISITI_FOTO_OGGETTO.md` §1 + §6 (`CONVALIDA documento OCR`)  
+4. Solo dopo: codice OCR  
 
-Finché manca CONVALIDA: **zero codice OCR**.
+Finché manca CONVALIDA documento: **zero codice OCR**.
