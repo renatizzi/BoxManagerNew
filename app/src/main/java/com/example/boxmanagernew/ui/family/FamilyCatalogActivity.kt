@@ -187,6 +187,13 @@ class FamilyCatalogActivity : BaseActivity() {
             )
         }
 
+        mergeViewModel.archiveExportReady.observe(this) { ready ->
+            if (ready == null) {
+                return@observe
+            }
+            showArchiveExportConfirm(ready)
+        }
+
         mergeViewModel.sharedTablesPreview.observe(this) { preview ->
             if (preview == null) {
                 return@observe
@@ -200,6 +207,21 @@ class FamilyCatalogActivity : BaseActivity() {
             }
             showArchivePreview(preview)
         }
+    }
+
+    private fun showArchiveExportConfirm(
+        ready: FamilyMergeViewModel.ArchiveExportReady
+    ) {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.family_dialog_send_archive)
+            .setMessage(ready.photoSummary)
+            .setPositiveButton(R.string.common_yes) { _, _ ->
+                mergeViewModel.confirmArchiveExport()
+            }
+            .setNegativeButton(R.string.common_no) { _, _ ->
+                mergeViewModel.clearArchiveExportReady()
+            }
+            .show()
     }
 
     private fun showSharedTablesPreview(
@@ -244,6 +266,8 @@ class FamilyCatalogActivity : BaseActivity() {
     private fun launchArchiveFilePicker() {
         archiveFilePicker.launch(
             buildFamilyFilePickerIntent(
+                FamilyMergeConfiguration.ZIP_MIME_TYPE,
+                "application/x-zip-compressed",
                 FamilyMergeConfiguration.CSV_MIME_TYPE,
                 FamilyCatalogConfiguration.CSV_MIME_TYPE,
                 FamilyInventoryConfiguration.CSV_MIME_TYPE
@@ -277,14 +301,14 @@ class FamilyCatalogActivity : BaseActivity() {
     }
 
     private fun onArchiveImportChosen(uri: Uri) {
-        val text = persister.readText(uri) ?: run {
+        val bytes = persister.readBytes(uri) ?: run {
             showUserMessage(
                 getString(R.string.family_msg_read_failed),
                 blockingError = true
             )
             return
         }
-        mergeViewModel.importArchiveText(text)
+        mergeViewModel.importArchiveBytes(bytes)
     }
 
     private fun showExportCompletedDialog() {

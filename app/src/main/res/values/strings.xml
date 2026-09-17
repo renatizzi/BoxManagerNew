@@ -70,6 +70,7 @@
     <string name="utility_backup">💾 Backup</string>
     <string name="utility_restore">🔄 Ripristino</string>
     <string name="utility_import">📥 Importa dati</string>
+    <string name="utility_export">📤 Esporta dati</string>
     <string name="utility_qr">📱 Codice QR</string>
     <string name="utility_family_catalog">📤 Condividi Archivio</string>
     <string name="utility_trash">🗑 Cestino</string>
@@ -202,6 +203,12 @@
     <string name="page_restore_title">Ripristino Archivio</string>
     <string name="page_restore_subtitle">Sostituzione completa dell\'archivio</string>
     <string name="page_import_title">Importa Dati</string>
+    <string name="page_export_title">Esporta Dati</string>
+    <string name="export_intro">Esporta l\'archivio in CSV (apribile in fogli esterni, senza foto) oppure in ZIP con foto e id stabili.</string>
+    <string name="export_button_csv">📄 Esporta CSV (senza foto)</string>
+    <string name="export_button_zip">📦 Esporta ZIP (con foto)</string>
+    <string name="export_msg_photo_summary">Foto: %1$d oggetti, circa %2$s MB.\nConfermi l\'esportazione ZIP?</string>
+    <string name="export_msg_completed">Esportazione completata.</string>
     <string name="page_qr_title">Codice QR</string>
     <string name="page_qr_label_title">Anteprima etichetta</string>
     <string name="page_search_results_title">Lista Oggetti Trovati</string>
@@ -319,6 +326,8 @@
     <string name="family_msg_receive_completed">Ricezione completata.</string>
     <string name="family_msg_read_failed">Impossibile leggere il file.</string>
     <string name="family_msg_write_failed">Salvataggio non riuscito. Riprovare.</string>
+    <string name="family_msg_photo_summary">Foto: %1$d oggetti, circa %2$s MB.\nConfermi l\'invio?</string>
+    <string name="family_dialog_send_archive">Invia Archivio</string>
     <string name="family_dialog_receive_shared_tables">Ricevi tabelle condivise</string>
     <string name="family_dialog_receive_archive">Ricevi Archivio</string>
 
@@ -451,6 +460,7 @@
     <string name="family_preview_boxes">Contenitori: %1$d nuovi, %2$d aggiornamenti, %3$d conflitti, %4$d invariati.</string>
     <string name="family_preview_objects">Oggetti: %1$d nuovi, %2$d aggiornamenti, %3$d conflitti, %4$d invariati.</string>
     <string name="family_preview_deletes">Cancellazioni: %1$d contenitori, %2$d oggetti, %3$d conflitti.</string>
+    <string name="family_preview_photos">Foto nel pacchetto: %1$d oggetti.</string>
     <string name="family_preview_conflicts_note">I conflitti non verranno sovrascritti (versione locale più recente o uguale).</string>
     <string name="family_preview_shared_prefix">Anteprima tabelle condivise:\n</string>
     <string name="family_preview_archive_prefix">Anteprima condivisione archivio:\n</string>

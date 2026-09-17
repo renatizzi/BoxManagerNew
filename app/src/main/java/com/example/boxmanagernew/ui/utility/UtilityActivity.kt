@@ -8,6 +8,7 @@ import com.example.boxmanagernew.R
 import com.example.boxmanagernew.domain.premium.PremiumFeature
 import com.example.boxmanagernew.ui.backup.BackupActivity
 import com.example.boxmanagernew.ui.common.BaseActivity
+import com.example.boxmanagernew.ui.exportdata.ExportDataActivity
 import com.example.boxmanagernew.ui.family.FamilyCatalogActivity
 import com.example.boxmanagernew.ui.importdata.ImportActivity
 import com.example.boxmanagernew.ui.premium.ArchivioCompletoNav
@@ -67,6 +68,20 @@ class UtilityActivity : BaseActivity() {
                 Intent(
                     this,
                     ImportActivity::class.java
+                )
+            )
+        }
+
+        findViewById<MaterialCardView>(
+            R.id.btnExport
+        ).setOnClickListener {
+
+            ArchivioCompletoNav.start(
+                this,
+                PremiumFeature.EXPORT,
+                Intent(
+                    this,
+                    ExportDataActivity::class.java
                 )
             )
         }

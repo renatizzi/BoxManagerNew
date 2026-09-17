@@ -144,6 +144,24 @@ class ObjectPhotoStore(
         keepIds: Set<String>
     ) {
         clearAllFilesAndMeta()
+        applyZipEntries(entries, keepIds)
+    }
+
+    /**
+     * T4/T5 merge: upsert photo files from ZIP without wiping local photos
+     * for objects not present in the package.
+     */
+    suspend fun mergeFromZipEntries(
+        entries: Map<String, ByteArray>,
+        keepIds: Set<String>
+    ) {
+        applyZipEntries(entries, keepIds)
+    }
+
+    private suspend fun applyZipEntries(
+        entries: Map<String, ByteArray>,
+        keepIds: Set<String>
+    ) {
         val prefix = ObjectPhotoPaths.ZIP_DIR
         val byId = mutableMapOf<String, MutableMap<String, ByteArray>>()
         for ((path, bytes) in entries) {

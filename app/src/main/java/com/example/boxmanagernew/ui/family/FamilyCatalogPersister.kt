@@ -76,9 +76,13 @@ class FamilyCatalogPersister(
     }
 
     fun readText(uri: Uri): String? {
+        return readBytes(uri)?.toString(Charsets.UTF_8)
+    }
+
+    fun readBytes(uri: Uri): ByteArray? {
         return try {
             context.contentResolver.openInputStream(uri)?.use { input ->
-                input.readBytes().toString(Charsets.UTF_8)
+                input.readBytes()
             }
         } catch (_: Exception) {
             null

@@ -19,7 +19,11 @@ object FamilyMergeConfiguration {
 
     const val FILE_EXTENSION = ".csv"
 
+    const val ZIP_EXTENSION = ".zip"
+
     const val CSV_MIME_TYPE = "text/csv"
+
+    const val ZIP_MIME_TYPE = "application/zip"
 
     val UTF8_BOM: ByteArray = byteArrayOf(
         0xEF.toByte(),
@@ -31,5 +35,12 @@ object FamilyMergeConfiguration {
         val formatter =
             SimpleDateFormat("ddMMyy_HHmm", Locale.ITALY)
         return FILE_PREFIX + formatter.format(now) + FILE_EXTENSION
+    }
+
+    /** T4 — Invia Archivio con foto = ZIP. */
+    fun proposedZipFileName(now: Date = Date()): String {
+        val formatter =
+            SimpleDateFormat("ddMMyy_HHmm", Locale.ITALY)
+        return FILE_PREFIX + formatter.format(now) + ZIP_EXTENSION
     }
 }

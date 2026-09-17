@@ -70,19 +70,16 @@ class ViewExportPersister(
     ): DocumentFile? {
 
         val tree = tree(treeUri) ?: return null
-        val csvName = ViewOutputConfiguration.csvFileName(fileName)
+        val resolved = resolveExportFileName(fileName)
 
         val byExact =
-            tree.findFile(csvName)
-                ?: tree.findFile(ViewOutputConfiguration.csvStem(csvName))
+            tree.findFile(resolved)
+                ?: tree.findFile(stemOf(resolved))
 
         if (
             byExact != null &&
             byExact.isFile &&
-            ViewOutputConfiguration.csvNamesMatch(
-                byExact.name.orEmpty(),
-                csvName
-            )
+            namesMatch(byExact.name.orEmpty(), resolved)
         ) {
             return byExact
         }
@@ -92,13 +89,13 @@ class ViewExportPersister(
                 return@firstOrNull false
             }
             val name = child.name ?: return@firstOrNull false
-            ViewOutputConfiguration.csvNamesMatch(name, csvName)
-        } ?: existingFileFromQuery(treeUri, csvName)
+            namesMatch(name, resolved)
+        } ?: existingFileFromQuery(treeUri, resolved)
     }
 
     private fun existingFileFromQuery(
         treeUri: Uri,
-        csvName: String
+        resolvedName: String
     ): DocumentFile? {
 
         val treeId =
@@ -140,12 +137,7 @@ class ViewExportPersister(
                     continue
                 }
                 val name = rows.getString(1) ?: continue
-                if (
-                    !ViewOutputConfiguration.csvNamesMatch(
-                        name,
-                        csvName
-                    )
-                ) {
+                if (!namesMatch(name, resolvedName)) {
                     continue
                 }
                 val documentId = rows.getString(0) ?: continue
@@ -180,8 +172,9 @@ class ViewExportPersister(
             )
         }
 
-        val csvName = ViewOutputConfiguration.csvFileName(fileName)
-        val existing = existingFile(treeUri, csvName)
+        val resolved = resolveExportFileName(fileName)
+        val zip = isZipFileName(resolved)
+        val existing = existingFile(treeUri, resolved)
         var temp: File? = null
         var created: DocumentFile? = null
 
@@ -189,7 +182,7 @@ class ViewExportPersister(
 
             temp = File.createTempFile(
                 "view_export_",
-                ImportConfiguration.FILE_EXTENSION,
+                if (zip) ".zip" else ImportConfiguration.FILE_EXTENSION,
                 context.cacheDir
             )
 
@@ -203,8 +196,12 @@ class ViewExportPersister(
 
             // Nome con estensione: su disco di rete il MIME da solo non basta.
             created = tree.createFile(
-                ImportConfiguration.CSV_MIME_TYPE,
-                csvName
+                if (zip) {
+                    BackupConfiguration.ZIP_MIME_TYPE
+                } else {
+                    ImportConfiguration.CSV_MIME_TYPE
+                },
+                resolved
             ) ?: return writeFailed()
 
             copyToDocument(temp, created.uri)
@@ -220,6 +217,37 @@ class ViewExportPersister(
 
             temp?.delete()
         }
+    }
+
+    /** CSV → force `.csv`; ZIP → keep/append `.zip` (T4 Invia Archivio). */
+    fun resolveExportFileName(fileName: String): String {
+        return if (isZipFileName(fileName)) {
+            val trimmed = fileName.trim()
+            if (trimmed.endsWith(".zip", ignoreCase = true)) {
+                trimmed
+            } else {
+                trimmed + ".zip"
+            }
+        } else {
+            ViewOutputConfiguration.csvFileName(fileName)
+        }
+    }
+
+    private fun isZipFileName(fileName: String): Boolean {
+        return fileName.trim().endsWith(".zip", ignoreCase = true)
+    }
+
+    private fun stemOf(fileName: String): String {
+        val trimmed = fileName.trim()
+        val dot = trimmed.lastIndexOf('.')
+        return if (dot > 0) trimmed.substring(0, dot) else trimmed
+    }
+
+    private fun namesMatch(left: String, right: String): Boolean {
+        if (isZipFileName(left) || isZipFileName(right)) {
+            return stemOf(left).equals(stemOf(right), ignoreCase = true)
+        }
+        return ViewOutputConfiguration.csvNamesMatch(left, right)
     }
 
     private fun copyToDocument(

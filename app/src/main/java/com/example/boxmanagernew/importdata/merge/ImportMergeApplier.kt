@@ -46,7 +46,7 @@ class ImportMergeApplier(
                         categoryId = category.id,
                         position = location.name,
                         lastModified = now,
-                        permanentId = BoxPermanentId.fromStored(null)
+                        permanentId = BoxPermanentId.fromStored(box.permanentId)
                     )
                 ).toInt()
 
@@ -64,7 +64,9 @@ class ImportMergeApplier(
                         boxId = boxId,
                         description = obj.description,
                         quantity = obj.quantity,
-                        objectPermanentId = ObjectPermanentId.generate(),
+                        objectPermanentId = ObjectPermanentId.fromStored(
+                            obj.objectPermanentId
+                        ),
                         lastModified = now
                     )
                 )

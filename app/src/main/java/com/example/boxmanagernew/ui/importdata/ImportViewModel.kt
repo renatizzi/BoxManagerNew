@@ -287,6 +287,16 @@ class ImportViewModel(
 
                 if (planned.canApply) {
                     mergeApplier.apply(planned)
+                    if (pending.photoEntries.isNotEmpty()) {
+                        val keepIds = objectRepository
+                            .getAllObjectEntitiesSync()
+                            .map { it.objectPermanentId }
+                            .filter { it.isNotBlank() }
+                            .toSet()
+                        com.example.boxmanagernew.data.photo.ObjectPhotoStoreProvider
+                            .get(appContext)
+                            .mergeFromZipEntries(pending.photoEntries, keepIds)
+                    }
                 }
 
                 planned

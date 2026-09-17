@@ -115,6 +115,37 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/btnExport"
+                    android:layout_width="0dp"
+                    android:layout_height="180dp"
+                    android:layout_weight="1"
+                    android:layout_margin="6dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="@color/elevated_surface"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="5dp"
+                    app:strokeWidth="0dp">
+
+                    <TextView
+                        android:id="@+id/textExport"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="@string/utility_export"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/btnQr"
                     android:layout_width="0dp"
                     android:layout_height="180dp"
@@ -137,6 +168,12 @@
                         android:textStyle="bold" />
 
                 </com.google.android.material.card.MaterialCardView>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="180dp"
+                    android:layout_weight="1"
+                    android:layout_margin="6dp" />
 
             </LinearLayout>
 

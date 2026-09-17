@@ -59,6 +59,10 @@
             android:name=".ui.importdata.ImportActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".ui.exportdata.ExportDataActivity"
+            android:exported="false" />
+
         <activity android:name=".ui.backup.BackupActivity" />
         <activity
             android:name=".ui.globalsearch.GlobalSearchActivity"

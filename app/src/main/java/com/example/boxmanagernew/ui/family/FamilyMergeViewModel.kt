@@ -51,12 +51,19 @@ class FamilyMergeViewModel(
 
     data class ArchivePreview(
         val summary: String,
-        val plan: FamilyMergeMerger.Plan
+        val plan: FamilyMergeMerger.Plan,
+        val photoEntries: Map<String, ByteArray> = emptyMap()
     )
 
     data class SharedTablesPreview(
         val summary: String,
         val plan: SharedTablesMerger.Plan
+    )
+
+    data class ArchiveExportReady(
+        val fileName: String,
+        val bytes: ByteArray,
+        val photoSummary: String
     )
 
     private val _message = MutableLiveData<String>()
@@ -68,6 +75,9 @@ class FamilyMergeViewModel(
     private val _exportBytes = MutableLiveData<Pair<String, ByteArray>?>()
     val exportBytes: LiveData<Pair<String, ByteArray>?> = _exportBytes
 
+    private val _archiveExportReady = MutableLiveData<ArchiveExportReady?>()
+    val archiveExportReady: LiveData<ArchiveExportReady?> = _archiveExportReady
+
     private val _archivePreview = MutableLiveData<ArchivePreview?>()
     val archivePreview: LiveData<ArchivePreview?> = _archivePreview
 
@@ -76,6 +86,16 @@ class FamilyMergeViewModel(
 
     fun clearExport() {
         _exportBytes.value = null
+    }
+
+    fun clearArchiveExportReady() {
+        _archiveExportReady.value = null
+    }
+
+    fun confirmArchiveExport() {
+        val ready = _archiveExportReady.value ?: return
+        _archiveExportReady.value = null
+        _exportBytes.value = ready.fileName to ready.bytes
     }
 
     fun clearArchivePreview() {
@@ -101,11 +121,36 @@ class FamilyMergeViewModel(
 
     fun requestArchiveExport() {
         viewModelScope.launch {
-            val snapshot = withContext(Dispatchers.IO) { loadArchiveSnapshot() }
-            val name = FamilyMergeConfiguration.proposedFileName()
-            val bytes = FamilyMergeWriter.toCsvBytes(snapshot)
-            _exportBytes.value = name to bytes
+            val packed = withContext(Dispatchers.IO) {
+                val snapshot = loadArchiveSnapshot()
+                val csv = FamilyMergeWriter.toCsvBytes(snapshot)
+                val photos =
+                    com.example.boxmanagernew.data.photo.ObjectPhotoStoreProvider
+                        .get(appContext)
+                        .zipEntriesForBackup()
+                val count = photos.keys.count {
+                    it.endsWith(".jpg") && !it.contains("_thumb")
+                }
+                val bytesApprox = photos.values.sumOf { it.size.toLong() }
+                val zip = com.example.boxmanagernew.family.zip.FamilyArchiveZip.pack(
+                    csv,
+                    photos
+                )
+                val name = FamilyMergeConfiguration.proposedZipFileName()
+                val summary = appContext.getString(
+                    R.string.family_msg_photo_summary,
+                    count,
+                    formatMb(bytesApprox)
+                )
+                ArchiveExportReady(name, zip, summary)
+            }
+            _archiveExportReady.value = packed
         }
+    }
+
+    private fun formatMb(bytes: Long): String {
+        val mb = bytes / (1024.0 * 1024.0)
+        return String.format(java.util.Locale.ITALY, "%.1f", mb)
     }
 
     fun importSharedTablesText(text: String) {
@@ -128,14 +173,37 @@ class FamilyMergeViewModel(
     }
 
     fun importArchiveText(text: String) {
+        importArchiveBytes(text.toByteArray(Charsets.UTF_8))
+    }
+
+    fun importArchiveBytes(bytes: ByteArray) {
         viewModelScope.launch {
-            when (val parsed = mergeReader.parse(text)) {
+            val csvText: String
+            val photos: Map<String, ByteArray>
+            if (com.example.boxmanagernew.family.zip.FamilyArchiveZip.looksLikeZip(bytes)) {
+                val unpacked =
+                    com.example.boxmanagernew.family.zip.FamilyArchiveZip.unpack(bytes)
+                if (unpacked == null) {
+                    _message.value = appContext.getString(R.string.family_msg_read_failed)
+                    return@launch
+                }
+                csvText = unpacked.csvBytes.toString(Charsets.UTF_8)
+                photos = unpacked.photoEntries
+            } else {
+                csvText = bytes.toString(Charsets.UTF_8)
+                photos = emptyMap()
+            }
+            when (val parsed = mergeReader.parse(csvText)) {
                 is FamilyMergeReader.Result.Error -> {
                     _message.value = parsed.message
                 }
                 is FamilyMergeReader.Result.Ok -> {
                     val preview = withContext(Dispatchers.IO) {
-                        buildArchivePreview(parsed.snapshot, parsed.skippedRows)
+                        buildArchivePreview(
+                            parsed.snapshot,
+                            parsed.skippedRows,
+                            photos
+                        )
                     }
                     if (preview == null) {
                         return@launch
@@ -187,7 +255,30 @@ class FamilyMergeViewModel(
         }
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
+                val deleteObjectIds =
+                    current.plan.inventoryPlan.objectsToDelete.toSet()
+                val deletePermanentIds =
+                    if (deleteObjectIds.isEmpty()) {
+                        emptyList()
+                    } else {
+                        objectRepository.getAllObjectEntitiesSync()
+                            .filter { it.id in deleteObjectIds }
+                            .map { it.objectPermanentId }
+                    }
                 mergeApplier.apply(current.plan)
+                val photoStore =
+                    com.example.boxmanagernew.data.photo.ObjectPhotoStoreProvider
+                        .get(appContext)
+                if (deletePermanentIds.isNotEmpty()) {
+                    photoStore.deletePhotos(deletePermanentIds)
+                }
+                if (current.photoEntries.isNotEmpty()) {
+                    val keepIds = objectRepository.getAllObjectEntitiesSync()
+                        .map { it.objectPermanentId }
+                        .filter { it.isNotBlank() }
+                        .toSet()
+                    photoStore.mergeFromZipEntries(current.photoEntries, keepIds)
+                }
             }
             _archivePreview.value = null
             _message.value = buildString {
@@ -263,7 +354,8 @@ class FamilyMergeViewModel(
 
     private suspend fun buildArchivePreview(
         incoming: FamilyMergeSnapshot,
-        skippedRows: Int = 0
+        skippedRows: Int = 0,
+        photoEntries: Map<String, ByteArray> = emptyMap()
     ): ArchivePreview? {
         val localBoxes = boxRepository.getAllBoxEntitiesSync()
         val localObjects = objectRepository.getAllObjectEntitiesSync()
@@ -297,6 +389,10 @@ class FamilyMergeViewModel(
                 appContext.getString(R.string.family_msg_nothing_to_merge)
             )
             return null
+        }
+
+        val photoCount = photoEntries.keys.count {
+            it.endsWith(".jpg") && !it.contains("_thumb")
         }
 
         val summary = buildString {
@@ -350,6 +446,15 @@ class FamilyMergeViewModel(
                     )
                 )
             }
+            if (photoCount > 0) {
+                appendLine()
+                append(
+                    appContext.getString(
+                        R.string.family_preview_photos,
+                        photoCount
+                    )
+                )
+            }
             if (plan.hasConflicts) {
                 appendLine()
                 append(
@@ -358,7 +463,11 @@ class FamilyMergeViewModel(
             }
         }
 
-        return ArchivePreview(summary = summary, plan = plan)
+        return ArchivePreview(
+            summary = summary,
+            plan = plan,
+            photoEntries = photoEntries
+        )
     }
 
     private suspend fun loadSharedTablesSnapshot(): FamilyCatalogSnapshot {

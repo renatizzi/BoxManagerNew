@@ -56,6 +56,7 @@ object BottomNavManager {
             is BackupActivity,
             is RestoreActivity,
             is ImportActivity,
+            is com.example.boxmanagernew.ui.exportdata.ExportDataActivity,
             is FamilyCatalogActivity,
             is TrashActivity,
             is QRActivity,

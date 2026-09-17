@@ -22,7 +22,8 @@ class ImportMergePlanner {
         val name: String,
         val box: String,
         val description: String?,
-        val quantity: Int?
+        val quantity: Int?,
+        val objectPermanentId: String? = null
     )
 
     data class Plan(
@@ -84,7 +85,8 @@ class ImportMergePlanner {
                         name = obj.name,
                         box = obj.box,
                         description = obj.description,
-                        quantity = qty
+                        quantity = qty,
+                        objectPermanentId = obj.objectPermanentId
                     )
                 )
             }

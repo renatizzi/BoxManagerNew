@@ -86,6 +86,34 @@ class ImportFileInspectorTest {
     }
 
     @Test
+    fun zipWithV2CsvAndPhotos_isReady() {
+        val csv = csv(
+            "formato;BoxManager_Import;2",
+            "sezione;CONTENITORI",
+            "nome;categoria;posizione;permanentId",
+            "Scatola;Alimenti;Cucina;box-1",
+            "sezione;OGGETTI",
+            "nome;contenitore;descrizione;quantita;objectPermanentId",
+            "Viti;Scatola;4mm;100;obj-1"
+        )
+        val photos = mapOf(
+            "photos/objects/obj-1.jpg" to byteArrayOf(1, 2),
+            "photos/objects/obj-1_thumb.jpg" to byteArrayOf(3)
+        )
+        val zip = com.example.boxmanagernew.importdata.zip.ImportDataZip.pack(
+            csv,
+            photos
+        )
+        val result = inspector.inspect(zip)
+        assertTrue(result is ImportFileInspector.Result.Ready)
+        val ready = result as ImportFileInspector.Result.Ready
+        assertEquals(2, ready.formatVersion)
+        assertEquals("box-1", ready.boxes.single().permanentId)
+        assertEquals("obj-1", ready.objects.single().objectPermanentId)
+        assertEquals(2, ready.photoEntries.size)
+    }
+
+    @Test
     fun wrongBoxHeader_failsStructure() {
         val result = inspector.inspect(
             csv(

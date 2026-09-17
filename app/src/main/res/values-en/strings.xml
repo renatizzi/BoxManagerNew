@@ -71,6 +71,7 @@
     <string name="utility_backup">💾 Backup</string>
     <string name="utility_restore">🔄 Restore</string>
     <string name="utility_import">📥 Import data</string>
+    <string name="utility_export">📤 Export data</string>
     <string name="utility_qr">📱 QR code</string>
     <string name="utility_family_catalog">📤 Share Archive</string>
     <string name="utility_trash">🗑 Trash</string>
@@ -203,6 +204,12 @@
     <string name="page_restore_title">Restore archive</string>
     <string name="page_restore_subtitle">Full replacement of the archive</string>
     <string name="page_import_title">Import data</string>
+    <string name="page_export_title">Export data</string>
+    <string name="export_intro">Export the archive as CSV (opens in external sheets, no photos) or as a ZIP with photos and stable ids.</string>
+    <string name="export_button_csv">📄 Export CSV (no photos)</string>
+    <string name="export_button_zip">📦 Export ZIP (with photos)</string>
+    <string name="export_msg_photo_summary">Photos: %1$d objects, about %2$s MB.\nConfirm ZIP export?</string>
+    <string name="export_msg_completed">Export completed.</string>
     <string name="page_qr_title">QR code</string>
     <string name="page_qr_label_title">Label preview</string>
     <string name="page_search_results_title">Found objects</string>
@@ -320,6 +327,8 @@
     <string name="family_msg_receive_completed">Receive completed.</string>
     <string name="family_msg_read_failed">Unable to read the file.</string>
     <string name="family_msg_write_failed">Save failed. Try again.</string>
+    <string name="family_msg_photo_summary">Photos: %1$d objects, about %2$s MB.\nConfirm send?</string>
+    <string name="family_dialog_send_archive">Send Archive</string>
     <string name="family_dialog_receive_shared_tables">Receive shared tables</string>
     <string name="family_dialog_receive_archive">Receive Archive</string>
 
@@ -452,6 +461,7 @@
     <string name="family_preview_boxes">Containers: %1$d new, %2$d updates, %3$d conflicts, %4$d unchanged.</string>
     <string name="family_preview_objects">Objects: %1$d new, %2$d updates, %3$d conflicts, %4$d unchanged.</string>
     <string name="family_preview_deletes">Deletions: %1$d containers, %2$d objects, %3$d conflicts.</string>
+    <string name="family_preview_photos">Photos in package: %1$d objects.</string>
     <string name="family_preview_conflicts_note">Conflicts will not be overwritten (local version is newer or equal).</string>
     <string name="family_preview_shared_prefix">Shared tables preview:\n</string>
     <string name="family_preview_archive_prefix">Archive share preview:\n</string>

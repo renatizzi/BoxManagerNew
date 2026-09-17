@@ -9,14 +9,18 @@ import java.util.Date
 import java.util.Locale
 
 /**
- * Tracciato ufficiale V1 del Modello di Importazione (CSV).
- * Recepito in Nota 9.1_B5, sezione 3.4.3 / Allegato 4.9.
+ * Tracciato ufficiale del Modello di Importazione (CSV).
+ * V1 = solo testo (Nota 9.1_B5 §3.4.3 / Allegato 4.9).
+ * V2 = V1 + id stabili (T5 ZIP Esporta/Importa con foto).
  */
 object ImportConfiguration {
 
     const val FORMAT_NAME = "BoxManager_Import"
 
     const val FORMAT_VERSION = 1
+
+    /** CSV nel pacchetto ZIP con permanentId / objectPermanentId (T5). */
+    const val FORMAT_VERSION_WITH_IDS = 2
 
     const val SEPARATOR = ";"
 
@@ -31,6 +35,8 @@ object ImportConfiguration {
     const val TEMPLATE_FOLDER_KEY = StorageFolderConfiguration.KEY_BACKUP
 
     const val CSV_MIME_TYPE = "text/csv"
+
+    const val ZIP_MIME_TYPE = "application/zip"
 
     const val SECTION_BOXES = "CONTENITORI"
 
@@ -47,6 +53,10 @@ object ImportConfiguration {
     const val COL_DESCRIPTION = "descrizione"
 
     const val COL_QUANTITY = "quantita"
+
+    const val COL_PERMANENT_ID = "permanentId"
+
+    const val COL_OBJECT_PERMANENT_ID = "objectPermanentId"
 
     val UTF8_BOM: ByteArray = byteArrayOf(
         0xEF.toByte(),
@@ -69,19 +79,37 @@ object ImportConfiguration {
     )
 
     fun isOfficialFormatLine(fields: List<String>): Boolean {
+        return formatVersionOf(fields) != null
+    }
+
+    fun formatVersionOf(fields: List<String>): Int? {
         val cols = fields.dropLastWhile { it.isBlank() }
-        if (cols.size != FORMAT_FIELDS.size) {
-            return false
+        if (cols.size != 3) {
+            return null
         }
-        return cols[0].equals(FORMAT_FIELDS[0], ignoreCase = true) &&
-                cols[1] == FORMAT_NAME &&
-                cols[2] == FORMAT_VERSION.toString()
+        if (!cols[0].equals("formato", ignoreCase = true)) {
+            return null
+        }
+        if (cols[1] != FORMAT_NAME) {
+            return null
+        }
+        val version = cols[2].toIntOrNull() ?: return null
+        return if (
+            version == FORMAT_VERSION ||
+            version == FORMAT_VERSION_WITH_IDS
+        ) {
+            version
+        } else {
+            null
+        }
     }
 
     val IMPORT_OPEN_MIME_TYPES: Array<String> = arrayOf(
         CSV_MIME_TYPE,
         "text/comma-separated-values",
-        "text/plain"
+        "text/plain",
+        ZIP_MIME_TYPE,
+        "application/x-zip-compressed"
     )
 
     val BOX_HEADER_FIELDS: List<String> = listOf(
@@ -90,11 +118,26 @@ object ImportConfiguration {
         COL_POSITION
     )
 
+    val BOX_HEADER_FIELDS_V2: List<String> = listOf(
+        COL_NAME,
+        COL_CATEGORY,
+        COL_POSITION,
+        COL_PERMANENT_ID
+    )
+
     val OBJECT_HEADER_FIELDS: List<String> = listOf(
         COL_NAME,
         COL_BOX,
         COL_DESCRIPTION,
         COL_QUANTITY
+    )
+
+    val OBJECT_HEADER_FIELDS_V2: List<String> = listOf(
+        COL_NAME,
+        COL_BOX,
+        COL_DESCRIPTION,
+        COL_QUANTITY,
+        COL_OBJECT_PERMANENT_ID
     )
 
     const val CHECK_FILE_EXISTS = "esistenza del file"

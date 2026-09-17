@@ -7,7 +7,6 @@ import com.example.boxmanagernew.backup.config.BackupConfiguration
 import com.example.boxmanagernew.ui.common.DialogUtils
 import com.example.boxmanagernew.ui.common.FeedbackUtils
 import com.example.boxmanagernew.storage.StorageFolderConfiguration
-import com.example.boxmanagernew.viewoutput.config.ViewOutputConfiguration
 import com.example.boxmanagernew.viewoutput.persist.ViewExportPersister
 
 /**
@@ -80,9 +79,10 @@ class FamilyExportCoordinator(
 
     private fun askExportFileName(uri: Uri) {
         val bytes = pendingBytes ?: return
+        val defaultName = persister.resolveExportFileName(pendingDefaultName)
         DialogUtils.showExportFileName(
             activity,
-            ViewOutputConfiguration.csvFileName(pendingDefaultName),
+            defaultName,
             exists = { fileName ->
                 persister.existingFile(uri, fileName) != null
             },
@@ -91,6 +91,11 @@ class FamilyExportCoordinator(
             },
             onBrowseFolder = {
                 launchFolderPicker()
+            },
+            normalizeName = { typed ->
+                persister.resolveExportFileName(
+                    typed.ifBlank { pendingDefaultName }
+                )
             }
         )
     }

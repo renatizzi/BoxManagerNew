@@ -65,18 +65,23 @@ class ImportPreBackupNameTest {
     }
 
     @Test
-    fun importOpenMimeTypes_areCsvNotZip() {
+    fun importOpenMimeTypes_includeCsvAndZip() {
         val types = ImportConfiguration.IMPORT_OPEN_MIME_TYPES.toList()
         assertTrue(types.contains(ImportConfiguration.CSV_MIME_TYPE))
-        assertTrue(types.none { it.contains("zip", ignoreCase = true) })
+        assertTrue(types.contains(ImportConfiguration.ZIP_MIME_TYPE))
         assertTrue(types.none { it == "*/*" })
     }
 
     @Test
-    fun officialFormatLine_acceptsTrailingEmptyAndIgnoresFormatoCase() {
+    fun officialFormatLine_acceptsV1AndV2() {
         assertTrue(
             ImportConfiguration.isOfficialFormatLine(
                 listOf("formato", "BoxManager_Import", "1")
+            )
+        )
+        assertTrue(
+            ImportConfiguration.isOfficialFormatLine(
+                listOf("formato", "BoxManager_Import", "2")
             )
         )
         assertTrue(
@@ -87,6 +92,11 @@ class ImportPreBackupNameTest {
         assertTrue(
             !ImportConfiguration.isOfficialFormatLine(
                 listOf("formato", "BoxManager_FamilyCatalog", "1")
+            )
+        )
+        assertTrue(
+            !ImportConfiguration.isOfficialFormatLine(
+                listOf("formato", "BoxManager_Import", "3")
             )
         )
     }
