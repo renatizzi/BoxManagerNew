@@ -52,7 +52,7 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 | — | B-AUTO-FILES-LIST | **FATTO** | SI 14/09; play **1.3.2** — PRE_* fuori lista Ripristino |
 | C2 | A1 QR avanzato | **FATTO** | SI device Renato 14/09 — play **1.3.3** ok; polish UI batch **1.3.4 OK** |
 | C3 | A2 Cestino | **FATTO** | SI device Renato 16/09 — play **1.3.7 ok** |
-| C4 | A3 → B–C → B-QTY | **DOPO** |
+| C4 | A3 → B–C → B-QTY | **IN CORSO** | SI Renato 17/09 — A3 Foto codice (target play **1.3.8**); OCR solo analisi |
 | C5 | D Dashboard | no-code |
 
 ---
@@ -87,7 +87,7 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 4. **C3 / A2 Cestino** — **FATTO** SI device 16/09 (**1.3.7 ok**).
 5. Backlog QR batch: **B-QR-BATCH-CODE-FONT**, **B-QR-BATCH-BOX-NAME** — Aperto 16/09.
 6. Backlog UI: **B-UI-BUTTONS-ACCESSO-RAPIDO** — Aperto 16/09.
-7. **Prossimo codice (con SI):** A3 Foto → B–C → B-QTY; **C5** Dashboard no-code.
+7. **Prossimo codice:** A3 Foto **IN CORSO** (SI 17/09) → poi B–C → B-QTY; **C5** Dashboard no-code. OCR cover: [ASSESSMENT_OCR_COVER.md](ASSESSMENT_OCR_COVER.md) (FEEDBACK Q1–Q7).
 
 **Regola test:** l’agente indica sempre il `versionName` atteso in topbar; merge su **`main`** obbligatorio prima del test telefono (SI 14/09).
 

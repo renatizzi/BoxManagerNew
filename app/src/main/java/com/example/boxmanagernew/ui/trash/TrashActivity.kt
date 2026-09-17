@@ -51,7 +51,7 @@ class TrashActivity : BaseActivity() {
         val objectRepo =
             ObjectRepositoryImpl(db.objectDao(), db.objectTypeDao())
         val trashStore =
-            TrashStoreProvider.create(db, boxRepo, objectRepo)
+            TrashStoreProvider.create(db, boxRepo, objectRepo, this)
 
         val listContainer = findViewById<LinearLayout>(R.id.trashListContainer)
         val emptyView = findViewById<TextView>(R.id.textTrashEmpty)

@@ -47,17 +47,17 @@ class BackupPackageInspector(
             val manifest = deserializer.deserializeManifest(manifestBytes)
 
             if (
-                archive.formatVersion > BackupConfiguration.BACKUP_FORMAT_VERSION ||
-                metadata.backupFormatVersion > BackupConfiguration.BACKUP_FORMAT_VERSION
+                archive.formatVersion !in BackupArchive.SUPPORTED_READ_FORMATS ||
+                metadata.backupFormatVersion !in BackupArchive.SUPPORTED_READ_FORMATS
             ) {
                 return Result.Incompatible
             }
 
             if (
-                archive.formatVersion != BackupConfiguration.BACKUP_FORMAT_VERSION ||
-                metadata.backupFormatVersion != BackupConfiguration.BACKUP_FORMAT_VERSION
+                archive.formatVersion > BackupConfiguration.BACKUP_FORMAT_VERSION ||
+                metadata.backupFormatVersion > BackupConfiguration.BACKUP_FORMAT_VERSION
             ) {
-                return Result.Invalid
+                return Result.Incompatible
             }
 
             if (

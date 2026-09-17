@@ -34,7 +34,9 @@ data class BackupArchive(
 ) {
 
     companion object {
-        const val CURRENT_FORMAT_VERSION = 1
+        const val CURRENT_FORMAT_VERSION = 2
+        /** Formati leggibili in Ripristina (scrittura = CURRENT). */
+        val SUPPORTED_READ_FORMATS = 1..CURRENT_FORMAT_VERSION
     }
 }
 

@@ -106,4 +106,22 @@ object BoxSchemaMigrations {
             )
         }
     }
+
+    /** A3 Foto oggetto — metadati leggeri; file sotto filesDir/object_photos. */
+    val MIGRATION_9_10 = object : Migration(9, 10) {
+
+        override fun migrate(db: SupportSQLiteDatabase) {
+            db.execSQL(
+                """
+                CREATE TABLE IF NOT EXISTS object_photos (
+                    objectPermanentId TEXT NOT NULL PRIMARY KEY,
+                    displayFileName TEXT NOT NULL,
+                    thumbFileName TEXT NOT NULL,
+                    updatedAt INTEGER NOT NULL,
+                    byteSize INTEGER NOT NULL DEFAULT 0
+                )
+                """.trimIndent()
+            )
+        }
+    }
 }

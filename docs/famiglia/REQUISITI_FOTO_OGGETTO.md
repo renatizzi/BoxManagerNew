@@ -161,8 +161,8 @@ Vedi anche [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) § Processo analis
 
 ## 6. Idea correlata — OCR locale sulla cover (annotata 10/09/2026, da approfondire)
 
-**Stato:** solo **idea** (SI Renato 10/09: annotare qui; barcode scartato perché offline inutile senza catalogo).  
-**Non** fa parte dei requisiti congelati R1–R6 / T1–T8. **Non** apre codice. Quando si aprirà la fetta Foto (dopo QR avanzato + Cestino), approfondire con processo 4 fasi e SI esplicito (toccherebbe anche il “niente ML” del §1).
+**Stato:** **ANALISI** aperta 17/09 con SI A3 — vedi [ASSESSMENT_OCR_COVER.md](ASSESSMENT_OCR_COVER.md).  
+**Non** fa parte dei requisiti congelati R1–R6 / T1–T8. **Niente codice OCR** finché FEEDBACK → CONVALIDA → AGGIORNAMENTO DOCUMENTO. Quando si conferma, approfondire (toccherebbe anche il “niente ML” del §1).
 
 ### Intento
 In fase di **censimento**, ridurre il lavoro di digitazione: dalla stessa occasione dello scatto foto oggetto, ricavare una **proposta di testo** (nome/descrizione) da confermare.

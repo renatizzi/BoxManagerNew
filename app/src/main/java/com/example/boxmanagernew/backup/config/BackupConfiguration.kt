@@ -18,7 +18,7 @@ object BackupConfiguration {
      * Versione del formato di Backup.
      * È indipendente dalla versione dell'applicazione.
      */
-    const val BACKUP_FORMAT_VERSION = 1
+    const val BACKUP_FORMAT_VERSION = 2
 
     /**
      * Prefisso del nome file proposto all'utente.

@@ -21,7 +21,11 @@ class BackupZipReader {
             while (entry != null) {
 
                 if (!entry.isDirectory) {
-                    val name = entry.name.substringAfterLast('/')
+                    // Preserve nested paths (A3 photos/objects/…); root JSON stay basename-only keys.
+                    val raw = entry.name.removePrefix("./")
+                    val name =
+                        if (raw.contains('/')) raw
+                        else raw.substringAfterLast('/')
                     entries[name] = zip.readBytes()
                 }
 

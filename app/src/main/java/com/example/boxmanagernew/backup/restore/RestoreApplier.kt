@@ -19,6 +19,7 @@ class RestoreApplier(
             database.categoryDao().deleteAll()
             database.locationDao().deleteAll()
             database.objectTypeDao().deleteAll()
+            database.objectPhotoDao().deleteAll()
 
             for (category in archive.categories) {
                 database.categoryDao().insert(category)

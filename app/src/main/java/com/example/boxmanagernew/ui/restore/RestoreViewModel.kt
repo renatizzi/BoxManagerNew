@@ -59,6 +59,7 @@ class RestoreViewModel(
     val restoreEnabled: LiveData<Boolean> = _restoreEnabled
 
     private var inspectedArchive: BackupArchive? = null
+    private var inspectedZipEntries: Map<String, ByteArray>? = null
 
     fun inspect(
         fileLabel: String,
@@ -70,6 +71,7 @@ class RestoreViewModel(
             _busy.value = true
             _fileName.value = fileLabel
             inspectedArchive = null
+            inspectedZipEntries = null
             _restoreEnabled.value = false
 
             try {
@@ -79,16 +81,17 @@ class RestoreViewModel(
                     val entries = zipReader.read(
                         ByteArrayInputStream(zipBytes)
                     )
-                    inspector.inspect(entries)
+                    Pair(entries, inspector.inspect(entries))
                 }
 
-                when (result) {
+                when (val inspectResult = result.second) {
 
                     is BackupPackageInspector.Result.Ready -> {
 
-                        inspectedArchive = result.archive
+                        inspectedArchive = inspectResult.archive
+                        inspectedZipEntries = result.first
 
-                        _preview.value = buildPreview(result)
+                        _preview.value = buildPreview(inspectResult)
                         _message.value = UserMessage("")
                         _restoreEnabled.value = true
                     }
@@ -157,6 +160,11 @@ class RestoreViewModel(
                         locations = locationRepository.getAllLocationEntitiesSync(),
                         objectTypes = objectTypeDao.getAllTypesSync(),
                         applicationVersion = applicationVersion
+                    ).toMutableMap()
+                    payload.putAll(
+                        com.example.boxmanagernew.data.photo.ObjectPhotoStoreProvider
+                            .get(appContext)
+                            .zipEntriesForBackup()
                     )
 
                     persister.persist(
@@ -183,6 +191,12 @@ class RestoreViewModel(
 
                 withContext(Dispatchers.IO) {
                     applier.replace(archive)
+                    val keepIds =
+                        archive.objects.map { it.objectPermanentId }.toSet()
+                    val entries = inspectedZipEntries.orEmpty()
+                    com.example.boxmanagernew.data.photo.ObjectPhotoStoreProvider
+                        .get(appContext)
+                        .restoreFromZipEntries(entries, keepIds)
                 }
 
                 _message.value = UserMessage(

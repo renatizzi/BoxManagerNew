@@ -8,11 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.boxmanagernew.R
+import com.example.boxmanagernew.data.photo.ObjectPhotoStore
 import com.example.boxmanagernew.domain.model.ObjectWithType
 import com.example.boxmanagernew.domain.search.SearchConfiguration
 import com.example.boxmanagernew.ui.common.SimpleSearchHighlight
@@ -20,11 +22,13 @@ import com.example.boxmanagernew.util.CanonicalNormalizer
 
 class ObjectAdapter(
     private var items: List<ObjectWithType>,
+    private val photoStore: ObjectPhotoStore,
     private val onClick: (Int) -> Unit,
     private val onToggleSelection: (Int) -> Unit,
     private val onEdit: (Int) -> Unit,
     private val onMove: (Int) -> Unit,
-    private val onDelete: (Int) -> Unit
+    private val onDelete: (Int) -> Unit,
+    private val onPhotoPreview: (String) -> Unit
 ) : RecyclerView.Adapter<ObjectAdapter.ObjectViewHolder>() {
 
     private var selectedIds: Set<Int> = emptySet()
@@ -45,6 +49,16 @@ class ObjectAdapter(
         val iconArea: FrameLayout =
             itemView.findViewById(
                 R.id.iconArea
+            )
+
+        val textIcon: TextView =
+            itemView.findViewById(
+                R.id.textIcon
+            )
+
+        val imageThumb: ImageView =
+            itemView.findViewById(
+                R.id.imageObjectThumb
             )
 
         val contentArea: View =
@@ -151,6 +165,23 @@ class ObjectAdapter(
 
         holder.rootSelectable.isSelected =
             isSelected
+
+        val permanentId = item.obj.objectPermanentId
+        val thumbFile = photoStore.thumbFile(permanentId)
+        if (thumbFile.isFile) {
+            holder.textIcon.visibility = View.GONE
+            holder.imageThumb.visibility = View.VISIBLE
+            photoStore.bindThumb(holder.imageThumb, permanentId)
+            holder.iconArea.setOnClickListener {
+                onPhotoPreview(permanentId)
+            }
+        } else {
+            holder.imageThumb.setImageDrawable(null)
+            holder.imageThumb.visibility = View.GONE
+            holder.textIcon.visibility = View.VISIBLE
+            holder.iconArea.setOnClickListener(null)
+            holder.iconArea.isClickable = false
+        }
 
         val selectedCount =
             selectedIds.size

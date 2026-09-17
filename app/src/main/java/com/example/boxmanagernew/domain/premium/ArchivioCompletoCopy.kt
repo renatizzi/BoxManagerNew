@@ -92,6 +92,8 @@ object ArchivioCompletoCopy {
                 context.getString(R.string.premium_feature_archive_share)
             PremiumFeature.TRASH ->
                 context.getString(R.string.premium_feature_trash)
+            PremiumFeature.OBJECT_PHOTO ->
+                context.getString(R.string.premium_feature_object_photo)
         }
     }
 
@@ -174,6 +176,16 @@ object ArchivioCompletoCopy {
                     ),
                     example = context.getString(
                         R.string.premium_pitch_trash_example
+                    )
+                )
+
+            PremiumFeature.OBJECT_PHOTO ->
+                FeaturePitch(
+                    lead = context.getString(
+                        R.string.premium_pitch_object_photo_lead
+                    ),
+                    example = context.getString(
+                        R.string.premium_pitch_object_photo_example
                     )
                 )
         }

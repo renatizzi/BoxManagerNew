@@ -226,7 +226,7 @@ class ObjectRepositoryImpl(
         description:String?,
         quantity:Int?,
         createdBy: String = ""
-    ){
+    ): String {
 
         var type =
             typeDao.getByName(name)
@@ -244,19 +244,21 @@ class ObjectRepositoryImpl(
         }
 
         val now = System.currentTimeMillis()
+        val permanentId = ObjectPermanentId.generate()
 
         dao.insert(
             ObjectEntity(
                 0,
-                type?.id ?: return,
+                type?.id ?: return "",
                 boxId,
                 description,
                 quantity,
-                objectPermanentId = ObjectPermanentId.generate(),
+                objectPermanentId = permanentId,
                 lastModified = now,
                 createdBy = createdBy.trim()
             )
         )
+        return permanentId
     }
 
     suspend fun updateWithName(

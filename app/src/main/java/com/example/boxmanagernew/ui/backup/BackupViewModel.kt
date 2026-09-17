@@ -105,7 +105,13 @@ class BackupViewModel(
                                 objectTypes = objectTypeDao
                                     .getAllTypesSync(),
                                 applicationVersion = applicationVersion
-                            )
+                            ).toMutableMap()
+
+                        val photos =
+                            com.example.boxmanagernew.data.photo.ObjectPhotoStoreProvider
+                                .get(appContext)
+                                .zipEntriesForBackup()
+                        payload.putAll(photos)
 
                         persister.persist(
                             treeUri = treeUri,

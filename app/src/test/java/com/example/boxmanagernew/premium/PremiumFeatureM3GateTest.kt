@@ -22,7 +22,8 @@ class PremiumFeatureM3GateTest {
                 "EXPORT",
                 "NETWORK_DRIVE",
                 "ARCHIVE_SHARE",
-                "TRASH"
+                "TRASH",
+                "OBJECT_PHOTO"
             ),
             PremiumFeature.entries.map { it.name }.toSet()
         )
@@ -52,8 +53,8 @@ class PremiumFeatureM3GateTest {
             playBlock.contains("buildConfigField(\"boolean\", \"FAMILY_BETA\", \"true\")")
         )
         assertTrue(!playBlock.contains("applicationIdSuffix ="))
-        assertTrue(playBlock.contains("versionName = \"1.3.7\""))
-        assertTrue(playBlock.contains("versionCode = 11"))
+        assertTrue(playBlock.contains("versionName = \"1.3.8\""))
+        assertTrue(playBlock.contains("versionCode = 12"))
     }
 
     @Test

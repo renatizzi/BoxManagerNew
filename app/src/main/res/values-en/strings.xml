@@ -148,6 +148,12 @@
     <string name="dialog_object_name_hint">Object name</string>
     <string name="dialog_object_description_hint">Description</string>
     <string name="dialog_object_quantity_hint">Quantity</string>
+    <string name="object_photo_from_gallery">Gallery</string>
+    <string name="object_photo_from_camera">Take photo</string>
+    <string name="object_photo_remove">Remove photo</string>
+    <string name="object_photo_preview_cd">Object photo preview</string>
+    <string name="object_photo_preview_title">Object photo</string>
+    <string name="object_photo_camera_rationale">BoxManager can use the camera for an object photo. It stays on your phone and in backups you create; it is not sent to image-analysis services.</string>
     <string name="dialog_category_name_hint">Category name</string>
     <string name="dialog_category_pick_icon">Select icon</string>
     <string name="dialog_box_name_hint">Container name</string>
@@ -396,6 +402,7 @@
     <string name="premium_feature_network_drive">Network drive</string>
     <string name="premium_feature_archive_share">Share Archive</string>
     <string name="premium_feature_trash">Trash</string>
+    <string name="premium_feature_object_photo">Object photo</string>
     <string name="premium_pitch_advanced_search_lead">This powerful feature lets you run rich searches using natural language.</string>
     <string name="premium_pitch_advanced_search_example">What do I have in the garage and basement?</string>
     <string name="premium_pitch_qr_scan_lead">With one scan you open the right container, even in the basement or garage, without searching by hand.</string>
@@ -412,6 +419,8 @@
     <string name="premium_pitch_archive_share_example">Send Archive → the other device uses Receive Archive</string>
     <string name="premium_pitch_trash_lead">Recover containers and objects deleted by mistake, or delete them permanently from trash.</string>
     <string name="premium_pitch_trash_example">Delete → Trash in Utility → Restore</string>
+    <string name="premium_pitch_object_photo_lead">Add a photo to an object so you can recognize it quickly in the list and detail view.</string>
+    <string name="premium_pitch_object_photo_example">Gallery or camera → list thumbnail → tap to enlarge</string>
     <string name="premium_example_prefix"> (Example: </string>
     <string name="premium_example_suffix">).</string>
     <string name="premium_share_hint_one">The %1$d-day trial has ended. Share BoxManager with a friend: get another %2$d days on advanced search, QR, import and export.</string>

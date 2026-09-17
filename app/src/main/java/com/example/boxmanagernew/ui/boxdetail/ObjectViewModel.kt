@@ -1,6 +1,8 @@
 package com.example.boxmanagernew.ui.boxdetail
 
 import androidx.lifecycle.*
+import android.net.Uri
+import com.example.boxmanagernew.data.photo.ObjectPhotoStore
 import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
 import com.example.boxmanagernew.data.trash.TrashStore
 import com.example.boxmanagernew.domain.model.Object
@@ -11,7 +13,8 @@ import kotlinx.coroutines.launch
 
 class ObjectViewModel(
     private val repository: ObjectRepositoryImpl,
-    private val trashStore: TrashStore
+    private val trashStore: TrashStore,
+    private val photoStore: ObjectPhotoStore
 ) : ViewModel() {
 
     private val _selectedItems = MutableLiveData<Set<Int>>(emptySet())
@@ -258,7 +261,10 @@ class ObjectViewModel(
         boxId: Int,
         description: String?,
         quantity: Int?,
-        createdBy: String = ""
+        createdBy: String = "",
+        photoUri: Uri? = null,
+        photoFile: java.io.File? = null,
+        removePhoto: Boolean = false
     ) {
 
         if (name.isBlank())
@@ -266,13 +272,20 @@ class ObjectViewModel(
 
         viewModelScope.launch {
 
-            repository.insertDynamic(
-                name,
-                boxId,
-                description,
-                quantity,
-                createdBy
-            )
+            val permanentId =
+                repository.insertDynamic(
+                    name,
+                    boxId,
+                    description,
+                    quantity,
+                    createdBy
+                )
+            if (permanentId.isBlank()) return@launch
+            when {
+                removePhoto -> photoStore.deletePhoto(permanentId)
+                photoFile != null -> photoStore.saveFromFile(permanentId, photoFile)
+                photoUri != null -> photoStore.saveFromUri(permanentId, photoUri)
+            }
         }
     }
 
@@ -281,7 +294,10 @@ class ObjectViewModel(
         name: String,
         boxId: Int,
         description: String?,
-        quantity: Int?
+        quantity: Int?,
+        photoUri: Uri? = null,
+        photoFile: java.io.File? = null,
+        removePhoto: Boolean = false
     ) {
 
         viewModelScope.launch {
@@ -293,6 +309,13 @@ class ObjectViewModel(
                 description,
                 quantity
             )
+            val entity = repository.getObjectEntityByIdAny(id) ?: return@launch
+            val permanentId = entity.objectPermanentId
+            when {
+                removePhoto -> photoStore.deletePhoto(permanentId)
+                photoFile != null -> photoStore.saveFromFile(permanentId, photoFile)
+                photoUri != null -> photoStore.saveFromUri(permanentId, photoUri)
+            }
         }
     }
 

@@ -44,6 +44,7 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import com.example.boxmanagernew.data.photo.ObjectPhotoStoreProvider
 import com.example.boxmanagernew.storage.OpenStorageTreeContract
 import com.example.boxmanagernew.storage.StorageFolderPicker
 
@@ -54,6 +55,8 @@ class BoxDetailActivity : BaseActivity() {
     private lateinit var categoryViewModel: CategoryViewModel
 
     private lateinit var adapter: ObjectAdapter
+    private lateinit var photoBinder: ObjectPhotoDialogBinder
+    private val photoStore by lazy { ObjectPhotoStoreProvider.get(this) }
 
     private lateinit var selectionBar: View
     private lateinit var textSelectionCount: TextView
@@ -99,6 +102,9 @@ class BoxDetailActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_box_detail)
+
+        photoBinder = ObjectPhotoDialogBinder(this, photoStore)
+        photoBinder.register()
 
         setupAppShell()
 
@@ -228,13 +234,14 @@ class BoxDetailActivity : BaseActivity() {
             com.example.boxmanagernew.data.trash.TrashStoreProvider.create(
                 db,
                 boxRepo,
-                objectRepo
+                objectRepo,
+                this
             )
 
         objectViewModel =
             ViewModelProvider(
                 this,
-                ObjectViewModelFactory(objectRepo, trashStore)
+                ObjectViewModelFactory(objectRepo, trashStore, photoStore)
             )[ObjectViewModel::class.java]
 
         boxViewModel =
@@ -285,6 +292,7 @@ class BoxDetailActivity : BaseActivity() {
         adapter =
             ObjectAdapter(
                 emptyList(),
+                photoStore = photoStore,
 
                 onClick = {},
 
@@ -310,6 +318,10 @@ class BoxDetailActivity : BaseActivity() {
                 onDelete = { id ->
 
                     showDeleteObjectDialog(id)
+                },
+
+                onPhotoPreview = { permanentId ->
+                    photoBinder.showFullscreen(permanentId)
                 }
             )
 
@@ -1064,6 +1076,7 @@ class BoxDetailActivity : BaseActivity() {
         attachObjectDialogVoice(
             dialogViews
         )
+        photoBinder.bind(dialogViews, item.obj.objectPermanentId)
 
         val dialog =
             AlertDialog.Builder(this)
@@ -1117,7 +1130,11 @@ class BoxDetailActivity : BaseActivity() {
                         .ifBlank { null },
                     dialogViews.quantity.text
                         .toString()
-                        .toIntOrNull()
+                        .toIntOrNull(),
+                    photoUri = photoBinder.pendingUri,
+                    photoFile = photoBinder.pendingCaptureFile,
+                    removePhoto = photoBinder.pendingAction ==
+                        ObjectPhotoDialogBinder.PendingAction.REMOVE
                 )
 
                 dialog.dismiss()
@@ -1181,6 +1198,7 @@ class BoxDetailActivity : BaseActivity() {
         attachObjectDialogVoice(
             dialogViews
         )
+        photoBinder.bind(dialogViews, permanentId = null)
 
         val dialog =
             AlertDialog.Builder(this)
@@ -1229,7 +1247,11 @@ class BoxDetailActivity : BaseActivity() {
                     dialogViews.quantity.text
                         .toString()
                         .toIntOrNull(),
-                    CreatedByResolver.current(this@BoxDetailActivity)
+                    CreatedByResolver.current(this@BoxDetailActivity),
+                    photoUri = photoBinder.pendingUri,
+                    photoFile = photoBinder.pendingCaptureFile,
+                    removePhoto = photoBinder.pendingAction ==
+                        ObjectPhotoDialogBinder.PendingAction.REMOVE
                 )
 
                 dialog.dismiss()

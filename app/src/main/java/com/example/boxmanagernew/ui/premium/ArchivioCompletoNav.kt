@@ -105,7 +105,8 @@ object ArchivioCompletoNav {
                 BottomNavManager.TAB_UTILITY
 
             PremiumFeature.QR_LABEL,
-            PremiumFeature.EXPORT ->
+            PremiumFeature.EXPORT,
+            PremiumFeature.OBJECT_PHOTO ->
                 BottomNavManager.TAB_BOXES
 
             PremiumFeature.NETWORK_DRIVE ->

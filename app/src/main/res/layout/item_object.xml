@@ -29,6 +29,14 @@
                 android:gravity="center"
                 android:text="@string/item_object_icon"
                 android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/imageObjectThumb"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/object_photo_preview_cd"
+                android:visibility="gone" />
         </FrameLayout>
 
         <LinearLayout

@@ -18,9 +18,10 @@ import kotlinx.coroutines.launch
         ObjectEntity::class,
         ObjectTypeEntity::class,
         LocationEntity::class,
-        FamilyDeletionTombstoneEntity::class
+        FamilyDeletionTombstoneEntity::class,
+        ObjectPhotoEntity::class
     ],
-    version = 9,
+    version = 10,
     exportSchema = false
 )
 abstract class AppDatabase :
@@ -32,6 +33,7 @@ abstract class AppDatabase :
     abstract fun objectTypeDao(): ObjectTypeDao
     abstract fun locationDao(): LocationDao
     abstract fun familyDeletionTombstoneDao(): FamilyDeletionTombstoneDao
+    abstract fun objectPhotoDao(): ObjectPhotoDao
 
     companion object {
 
@@ -56,7 +58,8 @@ abstract class AppDatabase :
                                 BoxSchemaMigrations.MIGRATION_5_6,
                                 BoxSchemaMigrations.MIGRATION_6_7,
                                 BoxSchemaMigrations.MIGRATION_7_8,
-                                BoxSchemaMigrations.MIGRATION_8_9
+                                BoxSchemaMigrations.MIGRATION_8_9,
+                                BoxSchemaMigrations.MIGRATION_9_10
                             )
                             .build()
 

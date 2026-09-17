@@ -3,4 +3,7 @@
     <cache-path
         name="qr_share"
         path="qr_share/" />
+    <cache-path
+        name="object_photo_capture"
+        path="object_photo_capture/" />
 </paths>

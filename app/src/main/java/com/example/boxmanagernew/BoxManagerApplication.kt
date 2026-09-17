@@ -37,7 +37,8 @@ class BoxManagerApplication : Application() {
             TrashStoreProvider.create(
                 db,
                 boxRepo,
-                objectRepo
+                objectRepo,
+                this@BoxManagerApplication
             ).purgeExpired()
         }
     }

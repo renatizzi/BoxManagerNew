@@ -75,7 +75,7 @@ class BackupRestoreInspectorTest {
         val metadata = payload.getValue(BackupConfiguration.METADATA_FILE_NAME)
             .toString(StandardCharsets.UTF_8)
             .replace(
-                "\"backupFormatVersion\": 1",
+                Regex("\"backupFormatVersion\":\\s*\\d+"),
                 "\"backupFormatVersion\": 99"
             )
 

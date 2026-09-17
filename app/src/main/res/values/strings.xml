@@ -147,6 +147,12 @@
     <string name="dialog_object_name_hint">Nome oggetto</string>
     <string name="dialog_object_description_hint">Descrizione</string>
     <string name="dialog_object_quantity_hint">Quantità</string>
+    <string name="object_photo_from_gallery">Galleria</string>
+    <string name="object_photo_from_camera">Scatta foto</string>
+    <string name="object_photo_remove">Rimuovi foto</string>
+    <string name="object_photo_preview_cd">Anteprima foto oggetto</string>
+    <string name="object_photo_preview_title">Foto oggetto</string>
+    <string name="object_photo_camera_rationale">BoxManager può usare la fotocamera per una foto dell\'oggetto. Resta sul telefono e nel Backup che fai tu; non è inviata a servizi di analisi immagini.</string>
     <string name="dialog_category_name_hint">Nome categoria</string>
     <string name="dialog_category_pick_icon">Seleziona icona</string>
     <string name="dialog_box_name_hint">Nome contenitore</string>
@@ -395,6 +401,7 @@
     <string name="premium_feature_network_drive">Disco di rete</string>
     <string name="premium_feature_archive_share">Condividi Archivio</string>
     <string name="premium_feature_trash">Cestino</string>
+    <string name="premium_feature_object_photo">Foto oggetto</string>
     <string name="premium_pitch_advanced_search_lead">Questa potentissima funzione ti consente di fare ricerche articolate usando il linguaggio naturale.</string>
     <string name="premium_pitch_advanced_search_example">Cosa ho in garage e in cantina?</string>
     <string name="premium_pitch_qr_scan_lead">Con una sola inquadratura apri il contenitore giusto, anche in cantina o in garage, senza cercare a mano.</string>
@@ -411,6 +418,8 @@
     <string name="premium_pitch_archive_share_example">Invia Archivio → l’altro dispositivo usa Ricevi Archivio</string>
     <string name="premium_pitch_trash_lead">Recupera contenitori e oggetti eliminati per errore, oppure eliminali definitivamente dal cestino.</string>
     <string name="premium_pitch_trash_example">Elimina → Cestino in Utility → Ripristina</string>
+    <string name="premium_pitch_object_photo_lead">Aggiungi una foto all\'oggetto per riconoscerlo subito in lista e in dettaglio.</string>
+    <string name="premium_pitch_object_photo_example">Galleria o scatto → miniatura in lista → tap per ingrandire</string>
     <string name="premium_example_prefix"> (Esempio: </string>
     <string name="premium_example_suffix">).</string>
     <string name="premium_share_hint_one">Il periodo di prova di %1$d giorni è terminato. Condividi BoxManager con un amico: ottieni altri %2$d giorni su ricerca avanzata, QR, import ed export.</string>

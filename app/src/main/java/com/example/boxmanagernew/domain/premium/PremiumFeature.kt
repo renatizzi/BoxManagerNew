@@ -11,7 +11,9 @@ enum class PremiumFeature {
     /** Condividi Archivio (Invia/Ricevi) — SI 10/09: premium. */
     ARCHIVE_SHARE,
     /** Cestino (A2) — gestione ripristino / svuota. */
-    TRASH
+    TRASH,
+    /** Foto oggetto (A3) — galleria/scatto/anteprima. */
+    OBJECT_PHOTO
 }
 
 enum class ShareActionResult {

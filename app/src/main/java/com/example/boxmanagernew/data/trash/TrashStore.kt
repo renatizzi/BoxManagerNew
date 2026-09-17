@@ -18,7 +18,8 @@ class TrashStore(
     private val objectDao: ObjectDao,
     private val boxRepository: BoxRepositoryImpl,
     private val objectRepository: ObjectRepositoryImpl,
-    private val familyHardDelete: FamilyPropagatingDelete?
+    private val familyHardDelete: FamilyPropagatingDelete?,
+    private val photoStore: com.example.boxmanagernew.data.photo.ObjectPhotoStore? = null
 ) {
 
     suspend fun softDeleteBox(boxId: Int): Long {
@@ -127,6 +128,7 @@ class TrashStore(
     ) {
         val objects =
             objectDao.getAllByBoxIdIncludingTrash(boxId)
+        val photoIds = objects.map { it.objectPermanentId }
         if (BuildConfig.FAMILY_BETA && familyHardDelete != null) {
             familyHardDelete.deleteBoxPermanently(
                 boxId,
@@ -139,6 +141,7 @@ class TrashStore(
             }
             boxRepository.deleteBox(boxId)
         }
+        photoStore?.deletePhotos(photoIds)
     }
 
     suspend fun hardDeleteObjects(
@@ -148,11 +151,16 @@ class TrashStore(
         if (objectIds.isEmpty()) {
             return
         }
+        val photoIds =
+            objectIds.mapNotNull { id ->
+                objectDao.getByIdAny(id)?.objectPermanentId
+            }
         if (BuildConfig.FAMILY_BETA && familyHardDelete != null) {
             familyHardDelete.deleteObjects(objectIds, deletedBy)
         } else {
             objectRepository.deleteByIds(objectIds)
         }
+        photoStore?.deletePhotos(photoIds)
     }
 
     suspend fun listTrashBoxes(): List<BoxEntity> =

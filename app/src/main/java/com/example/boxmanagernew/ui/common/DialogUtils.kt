@@ -37,7 +37,11 @@ object DialogUtils {
         val errorText: TextView,
         val name: EditText,
         val description: EditText,
-        val quantity: EditText
+        val quantity: EditText,
+        val photoPreview: android.widget.ImageView?,
+        val btnPhotoGallery: TextView?,
+        val btnPhotoCamera: TextView?,
+        val btnPhotoRemove: TextView?
     )
 
     fun createBoxDialog(
@@ -222,7 +226,11 @@ object DialogUtils {
             error,
             name,
             description,
-            quantity
+            quantity,
+            photoPreview = view.findViewById(R.id.imageObjectPhotoPreview),
+            btnPhotoGallery = view.findViewById(R.id.btnObjectPhotoGallery),
+            btnPhotoCamera = view.findViewById(R.id.btnObjectPhotoCamera),
+            btnPhotoRemove = view.findViewById(R.id.btnObjectPhotoRemove)
         )
     }
 

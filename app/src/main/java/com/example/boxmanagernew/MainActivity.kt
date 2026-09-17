@@ -278,7 +278,8 @@ class MainActivity : BaseActivity() {
             com.example.boxmanagernew.data.trash.TrashStoreProvider.create(
                 db,
                 repository,
-                objectRepository
+                objectRepository,
+                this
             )
         viewModel =
             ViewModelProvider(
