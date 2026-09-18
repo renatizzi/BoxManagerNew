@@ -95,6 +95,8 @@ Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino
 
 | ID | Data | Indicazione | Stato |
 |----|------|-------------|-------|
+| **B-UTILITY-BUTTON-HEIGHT** | 18/09/2026 | Ridurre l'altezza dei bottoni di utility in modo da evitare lo scrolling | **Aperto** |
+| **B-UTILITY-RIPRISTINA-VISIBLE** | 18/09/2026 | Il tasto Ripristina si trova in fondo alla pagina e senza scrolling non si vede | **Aperto** |
 | **B-PREMIUM-UNIFY-PAGE** | 18/09/2026 | Pagina premium unica: sottotitolo «Funzione Premium scaduta»; corpo prova scaduta → CONDIVIDI / CODICE; enfasi «Se hai un CODICE inseriscilo qui sotto» + campo Codice; tasti uguali. Scheletro unico + eventuale riga per funzione. | **Aperto** — parere agente 18/09: sì unificare; zero codice finché SI apertura (processo analisi) |
 | **B-CURSOR-CREDITS** | 16/09/2026 | Rinnovato abbonamento Cursor: ottimizzare l’interazione per non sprecare crediti (mese scorso esauriti in ~1 settimana). | **Aperto** — regole operative sotto; SI Renato su eventuale regola agente permanente |
 | **B-UI-BUTTONS-ACCESSO-RAPIDO** | 16/09/2026 | Uniformare il formato dei bottoni come da screenshot allegato (Accesso rapido Dashboard: card `MaterialCardView`, testo centrato grassetto ~18sp, `elevated_surface`; eventualmente senza icona). | **Aperto** |

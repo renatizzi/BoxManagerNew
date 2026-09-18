@@ -12,6 +12,8 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md).
 
 | ID | Indicazione |
 |----|-------------|
+| **B-UTILITY-BUTTON-HEIGHT** | Ridurre altezza bottoni Utility (niente scroll) — **Aperto** 18/09 |
+| **B-UTILITY-RIPRISTINA-VISIBLE** | Tasto Ripristina in fondo pagina, non visibile senza scroll — **Aperto** 18/09 |
 | **B-PREMIUM-UNIFY-PAGE** | Pagina premium unica (scaduta → CONDIVIDI/CODICE) — **Aperto** 18/09 |
 | **B-PLAY-DEX-R8** | Play DEX obfuscation 1%; enforcement feb 2027 — non bloccante oggi |
 | **B-CURSOR-CREDITS** | Ottimizzare sessioni Cursor (crediti) — **Aperto** 16/09 |
@@ -19,7 +21,7 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md).
 | **B-QR-BATCH-CODE-FONT** | Stampa multietichette: carattere più piccolo per il codice — **Aperto** |
 | **B-QR-BATCH-BOX-NAME** | Stampa multietichette: nome contenitore in grassetto sopra al codice — **Aperto** |
 | **B-QTY-KPI-SEARCH** | **CONGELATO** — zero codice finché SI apertura |
-| *(altre)* | P2 sync continuo; B–C Export/Import avanzati (selezione/report) dopo chiusura device A3 |
+| *(altre)* | P2 sync continuo; B–C Export/Import avanzati — solo con SI |
 
 ---
 
