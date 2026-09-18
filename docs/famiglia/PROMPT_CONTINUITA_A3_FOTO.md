@@ -22,17 +22,26 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md).
 
 ---
 
-## Stato al 17/09/2026 (sera — post merge)
+## Stato al 18/09/2026 (device — KO aperti)
 
 | Voce | Valore |
 |------|--------|
 | **Branch lavoro** | `cursor/a3-foto-oggetto-d5b2` (chiuso) |
 | **PR** | [#35](https://github.com/renatizzi/BoxManagerNew/pull/35) — **MERGIATO** su `main` (FF `b04570d`) |
-| **Head `main`** | `b04570d` — tip A3 completo (foto + OCR + T4 + T5) |
-| **Build play** | Topbar **`v. 1.3.8`** (versionCode **12**) — **su `main`**, pronto per test telefono |
+| **Head `main`** | tip docs post-merge; codice A3 su `main` |
+| **Build play** | Topbar **`v. 1.3.8`** (versionCode **12**) — confermata da Renato (screenshot Utility) |
 | **Play Console** | 1.3.7 in revisione / closed; DEX non bloccante (B-PLAY-DEX-R8) |
-| **A3 codice** | **COMPLETO su `main`** — **manca solo test device + SI Renato «A3 OK»** |
+| **A3 codice** | **COMPLETO su `main`** — device **parziale**; KO sotto; **niente chiusura** senza SI «A3 OK» |
 | **Documento requisiti** | [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) — CONVALIDATO (T1–T8 + §6 OCR) |
+
+### KO device Renato 18/09 (solo negativi)
+
+| # | Voce | Esito | Nota tecnica |
+|---|------|-------|--------------|
+| 6 | Foto scatto | **KO** | Solo da fotocamera: proposta/salva con rotazione ~45°. Compressore **non** applica EXIF orientation (galleria spesso già raddrizzata). |
+| 7 | OCR Descrizione | **KO parziale** | Accuratezza OK; **non** rispetta limite max caratteri precedente. Oggi `setText` OCR senza truncate; layout senza `maxLength` — serve numero limite da Renato. |
+| 8 | Premium UI unica | **Parere** (non KO A3) | Proposta Renato pagina unificata — fuori fetta A3; zero codice finché SI (processo analisi). |
+| — | Utility | **KO UX / blocco ritest** | T5 ha inserito card **Esporta dati** in riga 2 → QR in riga 3 → **Condividi + Cestino in riga 4** (sotto fold senza scroll). Non cancellati; **Esporta ≠ Condividi**. |
 
 ---
 
@@ -74,10 +83,11 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md).
 |---|--------|-----|------|
 | **1** | Merge PR **#35** su `main` + push `main` | Agente | **FATTO** 17/09 — FF `b04570d` |
 | **2** | Istruzioni operative **numerate** a Renato | Agente | **FATTO** — topbar **`v. 1.3.8`**. Vedi sotto. |
-| **3** | Renato: `checkout main` + `pull` + Run **`playDebug`** | Renato | Mai branch `cursor/…` sul telefono — **ATTESA** |
-| **4** | Ritest accettazione A3 (criteri §4 REQUISITI) | Renato + agente annota | Checklist sotto — **ATTESA** |
+| **3** | Renato: `checkout main` + `pull` + Run **`playDebug`** | Renato | **FATTO** — topbar `v. 1.3.8` OK |
+| **4** | Ritest accettazione A3 (criteri §4 REQUISITI) | Renato + agente | **PARZIALE** — KO 6/7 + Utility; punti 9–12 non testati |
+| **4b** | Hotfix A3 (Utility griglia + EXIF scatto + truncate OCR) | Agente | **Solo con SI** Renato; poi ritest su `main` |
 | **5** | SI Renato «A3 OK» / chiudere fetta | Renato | Solo allora aggiornare PROMEMORIA / CHECKLIST C4 → **FATTO** |
-| **6** | (Dopo A3 chiuso) prossima fetta codice | — | Default: **B–C Export/Import avanzati** (selezione, report errori) **oppure** backlog QR batch / UI bottoni — **solo con SI** Renato |
+| **6** | (Dopo A3 chiuso) prossima fetta codice | — | Default: **B–C** **oppure** backlog / premium UI unificata — **solo con SI** |
 
 ### Non fare nella prossima sessione (salvo SI)
 - Riaprire merito R1–R6 / T1–T8 / R-OCR senza SI revisione
