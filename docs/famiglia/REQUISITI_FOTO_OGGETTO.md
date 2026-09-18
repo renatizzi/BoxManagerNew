@@ -7,7 +7,7 @@
 **Uso:** riferimento funzionale e tecnico-architetturale fino all’implementazione Progetto 2.  
 **Destinazione:** confluire nella Nota Integrata ufficiale (Allegato dedicato) senza riaprire il merito.  
 **Assessment di lavoro:** [ASSESSMENT_FOTO_MINIATURA.md](ASSESSMENT_FOTO_MINIATURA.md) (storico analisi; prevale **questo** file su conflitti).  
-**Sequenza implementativa:** Foto A3 in corso (SI 17/09); codice OCR **ammesso** (documento §6 chiuso).
+**Sequenza implementativa:** A3 **FATTO** SI device Renato 18/09 — play **1.3.9 ok** (foto + OCR + T4/T5 + hotfix).
 
 ---
 

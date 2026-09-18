@@ -23,25 +23,26 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md).
 
 ---
 
-## Stato al 18/09/2026 (hotfix — ritest)
+## Stato al 18/09/2026 (sera — **A3 CHIUSO**)
 
 | Voce | Valore |
 |------|--------|
-| **Branch hotfix** | `cursor/a3-hotfix-utility-exif-ocr-8f03` |
-| **PR #35** | **MERGIATO** su `main` (FF `b04570d`) |
-| **Build play** | Topbar **`v. 1.3.9`** (versionCode **13**) — dopo merge hotfix su `main` |
-| **Decisione Esporta** | **Tenere** card Utility (R3 B–C + T5). Copy chiarisce ≠ Backup. Esporta vista resta contestuale. |
-| **A3 codice** | Hotfix: griglia Utility + EXIF scatto + Descrizione max **100** + B-PREMIUM-UNIFY-PAGE annotato |
+| **Stato fetta** | **FATTO** — SI Renato «A3 OK» 18/09 |
+| **Build play** | Topbar **`v. 1.3.9`** (versionCode **13**) su `main` |
+| **PR codice** | [#35](https://github.com/renatizzi/BoxManagerNew/pull/35) + hotfix [#36](https://github.com/renatizzi/BoxManagerNew/pull/36) — entrambi su `main` |
+| **Decisione Esporta** | Card Utility **tenuta** (R3 B–C + T5); copy ≠ Backup; Esporta vista resta contestuale |
+| **A3 codice** | Completo: foto + OCR + T4/T5 + hotfix Utility/EXIF/OCR max 100 |
 | **Documento requisiti** | [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) — CONVALIDATO (T1–T8 + §6 OCR) |
+| **Prossima fetta** | **B–C** Export/Import avanzati **oppure** backlog (QR batch / UI / **B-PREMIUM-UNIFY-PAGE**) — **solo con SI** |
 
-### KO device Renato 18/09 → hotfix
+### KO device 18/09 → risolti in 1.3.9
 
-| # | Voce | Esito | Hotfix |
-|---|------|-------|---------|
-| 6 | Foto scatto | **KO** | EXIF orientation in compressione + anteprima |
-| 7 | OCR Descrizione | **KO parziale** | Truncate + `maxLength` **100** (2 righe UI) |
-| 8 | Premium UI unica | fuori A3 | Annotato **B-PREMIUM-UNIFY-PAGE** |
-| — | Utility | **KO UX** | Griglia: Import\|Esporta; QR\|Condividi; Cestino ultimo. Copy Esporta ≠ Backup |
+| # | Voce | Esito chiusura |
+|---|------|----------------|
+| 6 | Foto scatto EXIF | **OK** (hotfix) |
+| 7 | OCR max caratteri | **OK** (max 100) |
+| 8 | Premium UI unica | Annotato **B-PREMIUM-UNIFY-PAGE** — fuori A3 |
+| — | Utility griglia | **OK** (Condividi/Cestino + Esporta tenuta) |
 
 ---
 
@@ -77,47 +78,36 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md).
 
 ---
 
-## Prossimi passi (ordine obbligatorio)
+## Passi (chiusura)
 
 | # | Azione | Chi | Note |
 |---|--------|-----|------|
-| **1** | Merge PR **#35** su `main` + push `main` | Agente | **FATTO** 17/09 — FF `b04570d` |
-| **2** | Istruzioni operative **numerate** a Renato | Agente | **FATTO** — topbar **`v. 1.3.8`**. Vedi sotto. |
-| **3** | Renato: `checkout main` + `pull` + Run **`playDebug`** | Renato | **FATTO** — topbar `v. 1.3.8` OK |
-| **4** | Ritest accettazione A3 (criteri §4 REQUISITI) | Renato + agente | **PARZIALE** — KO 6/7 + Utility; punti 9–12 non testati |
-| **4b** | Hotfix A3 (Utility + EXIF + OCR 100 + copy Esporta) | Agente | **IN CORSO** branch `cursor/a3-hotfix-utility-exif-ocr-8f03` → merge `main` → ritest **1.3.9** |
-| **5** | SI Renato «A3 OK» / chiudere fetta | Renato | Solo allora aggiornare PROMEMORIA / CHECKLIST C4 → **FATTO** |
-| **6** | (Dopo A3 chiuso) prossima fetta codice | — | Default: **B–C** **oppure** backlog / premium UI unificata — **solo con SI** |
+| **1** | Merge PR **#35** su `main` | Agente | **FATTO** |
+| **2–3** | Istruzioni + Run `playDebug` 1.3.8 | Renato | **FATTO** |
+| **4 / 4b** | KO + hotfix 1.3.9 | Agente + Renato | **FATTO** — PR #36 su `main` |
+| **5** | SI «A3 OK» | Renato | **FATTO** 18/09 — PROMEMORIA / CHECKLIST C4 aggiornati |
+| **6** | Prossima fetta codice | — | **B–C** / backlog / **B-PREMIUM-UNIFY-PAGE** — **solo con SI** |
 
-### Non fare nella prossima sessione (salvo SI)
+### Non fare (salvo SI)
 - Riaprire merito R1–R6 / T1–T8 / R-OCR senza SI revisione
-- Test telefono sul branch PR
 - Anticipare Dashboard (D) o B-QTY
-- Espandere Export avanzato (profili selezione, report riga-per-riga) oltre T5 già shippato
+- Aprire codice B–C Export avanzato senza SI
 
 ---
 
-## Istruzioni operative test device (attive — passo 3)
+## Istruzioni operative (storico — A3 chiuso)
 
-Topbar attesa: **`v. 1.3.8`**. Solo su `main`.
+Topbar chiusura: **`v. 1.3.9`**. Solo su `main`.
 
-1. `git checkout main`
-2. `git pull origin main`
-3. Android Studio → Build Variants → **`playDebug`** (flavor play, non release / non famiglia)
-4. Run sul telefono
-5. Verificare topbar **`v. 1.3.8`** (senza `famiglia`)
-6. **Foto:** oggetto → galleria + scatto; thumb in lista; tap anteprima; rimuovi foto; Salva
-7. **OCR:** nuovo scatto/galleria → proposta Descrizione → conferma; Nome non modificato da OCR
-8. **Premium:** senza Archivio completo, gate sulle azioni foto
-9. **Backup → Ripristina:** foto presenti dopo REPLACE
-10. **Invia Archivio → Ricevi Archivio** (altro device o stesso dopo wipe dati se serve): ZIP; foto sugli oggetti per id; riepilogo foto in Invia
-11. **Esporta dati ZIP → Importa** (su archivio dove ha senso): foto riagganciate; **Esporta CSV** resta senza foto
-12. **Cestino:** elimina oggetto con foto → file foto spariti
-13. Rispondere in chat con OK/KO per ogni punto 6–12 (es. `1.3.8 ok` o elenco KO)
+(Elenco ritest usato per SI device — non ripetere salvo regressione.)
+
+1. `git checkout main` + `git pull origin main` + Run **`playDebug`**
+2. Topbar **`v. 1.3.9`**
+3. Foto / OCR / Premium / Backup / Invia-Ricevi / Esporta-Importa / Cestino — criteri §4
 
 ---
 
-## Criterio accettazione (da REQUISITI §4 — ritest)
+## Criterio accettazione (da REQUISITI §4 — chiuso con SI)
 
 1. Foto galleria + scatto; modifica; elimina foto; Salva senza foto OK  
 2. Lista: thumb; tap → ingrandimento; senza foto → icona fissa  
@@ -129,13 +119,12 @@ Topbar attesa: **`v. 1.3.8`**. Solo su `main`.
 
 ---
 
-## Sequenza agente (allineamento nuova sessione)
+## Sequenza agente (nuova sessione)
 
-1. Leggere **questo** prompt + [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) + [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md).
-2. `git fetch origin` · `main` @ tip A3 (`b04570d` o successivo docs).
-3. Merge #35: **già fatto**. Non riaprire codice A3 senza SI.
-4. Se manca SI device: ripetere istruzioni operative + attendere OK/KO Renato.
-5. Dopo SI «A3 OK»: aggiornare PROMEMORIA / CHECKLIST C4 → **FATTO**; commit docs; **non** aprire B–C senza SI.
+1. A3 è **CHIUSO**. Non riprendere codice A3 senza SI revisione.
+2. Leggere [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) backlog aperto.
+3. Prossima fetta **solo con SI** Renato (default suggerito: B–C).
+4. **Non** aprire B–C / D / B-QTY da soli.
 
 ---
 
@@ -145,23 +134,22 @@ Topbar attesa: **`v. 1.3.8`**. Solo su `main`.
 |------|--------|
 | [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) | Freeze A3 + OCR §6 |
 | [ASSESSMENT_OCR_COVER.md](ASSESSMENT_OCR_COVER.md) | Storico OCR CONVALIDATO |
-| [REQUISITI_EXPORT_IMPORT_AVANZATO.md](REQUISITI_EXPORT_IMPORT_AVANZATO.md) | B–C completo (dopo A3 device) |
+| [REQUISITI_EXPORT_IMPORT_AVANZATO.md](REQUISITI_EXPORT_IMPORT_AVANZATO.md) | B–C completo — prossimo candidato codice |
 | [PROMEMORIA_INTERVENTI_TRASVERSALI.md](PROMEMORIA_INTERVENTI_TRASVERSALI.md) | Backlog + stato Progetto 2 |
-| [CHECKLIST_M3_MICRO.md](CHECKLIST_M3_MICRO.md) | C4 A3 |
-| [SOLO_TU.md](SOLO_TU.md) | Come Renato prova sul telefono |
+| [CHECKLIST_M3_MICRO.md](CHECKLIST_M3_MICRO.md) | C4 A3 **FATTO** |
 | `.cursor/rules/test-telefono-main.mdc` | Solo `main` |
 | `.cursor/rules/processo-analisi.mdc` | 4 fasi |
 | `.cursor/rules/annotazioni-renato.mdc` | Annotazioni fuori contesto |
 
 ---
 
-## Incolla in chat (nuova sessione)
+## Incolla in chat (nuova sessione — post A3)
 
 ```
-Continua A3 Foto da docs/famiglia/PROMPT_CONTINUITA_A3_FOTO.md.
+A3 Foto CHIUSO (SI 18/09, play 1.3.9). Ingresso: docs/famiglia/PROMPT_CONTINUITA_A3_FOTO.md
+(solo storico) oppure PROMEMORIA.
 
-Priorità: (1) PR #35 già su main — non ri-mergiare; (2) se manca SI device,
-ripetere istruzioni playDebug topbar v. 1.3.8; (3) dopo SI «A3 OK» chiudere
-PROMEMORIA/CHECKLIST C4; (4) non aprire B–C senza SI.
+Prossima fetta: solo con SI — default B–C Export/Import avanzati
+oppure backlog (B-PREMIUM-UNIFY-PAGE / QR batch / UI bottoni).
 Identità: una sola BoxManager.
 ```

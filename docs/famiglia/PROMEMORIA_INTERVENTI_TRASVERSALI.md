@@ -1,7 +1,7 @@
 # Promemoria — interventi trasversali (BoxManager)
 
-**Aggiornato:** 17/09/2026.  
-**Ingresso A3 Foto (nuova sessione)** → [PROMPT_CONTINUITA_A3_FOTO.md](PROMPT_CONTINUITA_A3_FOTO.md).  
+**Aggiornato:** 18/09/2026.  
+**A3 Foto — CHIUSO** (SI device 18/09, play **1.3.9 ok**) → [PROMPT_CONTINUITA_A3_FOTO.md](PROMPT_CONTINUITA_A3_FOTO.md).  
 Ingresso sessione 07/09 → [PROMPT_CONTINUITA_07_09_DISCO_FOTO.md](PROMPT_CONTINUITA_07_09_DISCO_FOTO.md).  
 **Ingresso M3 / merge Play / roadmap** → [PROMPT_CONTINUITA_M3_MERGE_PLAY.md](PROMPT_CONTINUITA_M3_MERGE_PLAY.md).  
 **Ingresso cutover 1.3 (nuova sessione)** → [PROMPT_CONTINUITA_M3_CUTOVER.md](PROMPT_CONTINUITA_M3_CUTOVER.md).  
@@ -39,8 +39,8 @@ Sequenza concordata: **A1 QR avanzato → A2 Cestino → A3 Foto** → poi B/C/D
 |------|-----------|--------|
 | **A1 QR avanzato** | [REQUISITI_QR_AVANZATO.md](REQUISITI_QR_AVANZATO.md) (**congelato** + CONVALIDA documento 07/09; R10 premium) · [ASSESSMENT_QR_AVANZATO.md](ASSESSMENT_QR_AVANZATO.md) | **FATTO** SI device Renato 14/09 — batch + UI standard su play **1.3.4 OK** |
 | **A2 Cestino** | [REQUISITI_CESTINO.md](REQUISITI_CESTINO.md) (**congelato** + CONVALIDA documento 07/09) · [ASSESSMENT_CESTINO.md](ASSESSMENT_CESTINO.md) (storico) | **FATTO** SI device Renato 16/09 — play **1.3.7 ok** |
-| **A3 Foto oggetto** | [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) (**congelato** + CONVALIDA documento 07/09; **R6 + T6bis Premium**) · [ASSESSMENT_FOTO_MINIATURA.md](ASSESSMENT_FOTO_MINIATURA.md) (storico) · OCR: [ASSESSMENT_OCR_COVER.md](ASSESSMENT_OCR_COVER.md) · ingresso: [PROMPT_CONTINUITA_A3_FOTO.md](PROMPT_CONTINUITA_A3_FOTO.md) | Hotfix **1.3.9** (Utility/EXIF/OCR) su branch → merge `main` + ritest device; **niente chiusura** senza SI |
-| **B–C Export/Import avanzati** | [REQUISITI_EXPORT_IMPORT_AVANZATO.md](REQUISITI_EXPORT_IMPORT_AVANZATO.md) (**congelato** + CONVALIDA documento 08/09) · [ASSESSMENT_EXPORT_IMPORT_AVANZATO.md](ASSESSMENT_EXPORT_IMPORT_AVANZATO.md) | Requisiti chiusi; zero codice finché SI apertura fetta (dopo A1–A3) |
+| **A3 Foto oggetto** | [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) (**congelato** + CONVALIDA documento 07/09; **R6 + T6bis Premium**) · [ASSESSMENT_FOTO_MINIATURA.md](ASSESSMENT_FOTO_MINIATURA.md) (storico) · OCR: [ASSESSMENT_OCR_COVER.md](ASSESSMENT_OCR_COVER.md) · ingresso: [PROMPT_CONTINUITA_A3_FOTO.md](PROMPT_CONTINUITA_A3_FOTO.md) | **FATTO** SI device Renato 18/09 — play **1.3.9 ok** (foto+OCR+T4/T5 + hotfix Utility/EXIF/OCR) |
+| **B–C Export/Import avanzati** | [REQUISITI_EXPORT_IMPORT_AVANZATO.md](REQUISITI_EXPORT_IMPORT_AVANZATO.md) (**congelato** + CONVALIDA documento 08/09) · [ASSESSMENT_EXPORT_IMPORT_AVANZATO.md](ASSESSMENT_EXPORT_IMPORT_AVANZATO.md) | Requisiti chiusi; zero codice finché SI apertura fetta (dopo A3 **FATTO**) |
 | **D Dashboard / UI avanzata** | [REQUISITI_DASHBOARD_UI_AVANZATA.md](REQUISITI_DASHBOARD_UI_AVANZATA.md) (**congelato** + CONVALIDA documento 08/09; U0; **no codice**) · [ASSESSMENT_DASHBOARD_UI_AVANZATA.md](ASSESSMENT_DASHBOARD_UI_AVANZATA.md) | Requisiti chiusi; zero codice finché SI apertura |
 | **B-QTY-KPI-SEARCH** | [REQUISITI_QTY_KPI_SEARCH.md](REQUISITI_QTY_KPI_SEARCH.md) (**congelato** + CONVALIDA documento 08/09) · [ASSESSMENT_QTY_KPI_SEARCH.md](ASSESSMENT_QTY_KPI_SEARCH.md) | Requisiti chiusi (K1+K2); zero codice finché SI apertura |
 | **B-PIANO-RILASCIO-RP** | [REQUISITI_PIANO_RILASCIO_ROADMAP.md](REQUISITI_PIANO_RILASCIO_ROADMAP.md) (**congelato**) · Nota 9.2 Allegati **4.21**+**4.23** | **CONVALIDATO** recepimento Nota 08/09; zero codice P2 fino a fine Play |
@@ -104,7 +104,7 @@ Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino
 | **B-ROTATE-FORM-DRAFT** | 10/09/2026 | In inserimento dati (qualsiasi elemento) la stringa digitata **sparisce** se, prima della conferma, si ruota lo schermo. | **FATTO C1** SI Renato 14/09 — `configChanges` su Main/BoxDetail/Categorie/Luoghi; merge `main`; build **1.3.1** |
 | **B-AUTO-FILES-LIST** | 14/09/2026 | Regressione: file **automatici** (`PRE_RESTORE_`, `PRE_IMPORT_`) non in lista Ripristino dell’app; restano con **Sfoglia**. | **FATTO** 14/09 — `BackupConfiguration.isAutomaticBackupFileName` + filtro sempre attivo; play **1.3.2** |
 | **B-PREMIUM-POST-12** | 10/09/2026 | Principio: post-1.2 = premium salvo eccezioni. **Free:** IT/EN, Dark, fix, Guida. **Premium:** archivio condiviso + **Disco di rete** (correzione: non free). | **SI Renato 10/09** — docs RP/ingresso M3 aggiornati; gate codice Disco a M3; patch Nota 4.23 |
-| **B-IDEA-OCR-COVER** | 10/09/2026 | OCR locale → Descrizione oggetto (R-OCR in REQUISITI_FOTO §6). | **CODICE in A3** (PR #35) — attesa test device 1.3.8 |
+| **B-IDEA-OCR-COVER** | 10/09/2026 | OCR locale → Descrizione oggetto (R-OCR in REQUISITI_FOTO §6). | **FATTO** in A3 — SI device 18/09 play **1.3.9 ok** |
 | **B-DELEGA-PIANO** | 10/09/2026 | Su priorità / impatto / traccia release e scelte di piano: decide l’agente; Renato OK unico su aggregati. | **SI Renato 10/09** — in [CHECKLIST_M3_MICRO.md](CHECKLIST_M3_MICRO.md) |
 | **B-PRE-PLAY-PHONE-TEST** | 13/09/2026 | Processo ovvio: agente modifica → Renato pull + **Run `playDebug`** (senza firma) → OK test → solo allora AAB **`playRelease`** firmato su Play. Mai Run su `playRelease` per le prove. **SI 14/09:** l’agente comunica **sempre** il `versionName` atteso in topbar (es. `v. 1.3.1`) prima del test. | **SI Renato 13/09** + precisazione versione 14/09 — SOLO_TU / checklist |
 | **B-NO-FAMILY-UI** | 10/09/2026 | Chiarito: «family» = nome tecnico provvisorio (flavor/branch), non seconda app. Ufficiale = **BoxManager 1.3** su `main`, package senza `.famiglia`, topbar **1.3**. **Non** obbligatorio rimuovere «famiglia/familiari/family» da guida e messaggi in-app. | **SI Renato 10/09 sera** — correzione malinteso; runbook aggiornato |

@@ -52,7 +52,7 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 | — | B-AUTO-FILES-LIST | **FATTO** | SI 14/09; play **1.3.2** — PRE_* fuori lista Ripristino |
 | C2 | A1 QR avanzato | **FATTO** | SI device Renato 14/09 — play **1.3.3** ok; polish UI batch **1.3.4 OK** |
 | C3 | A2 Cestino | **FATTO** | SI device Renato 16/09 — play **1.3.7 ok** |
-| C4 | A3 → B–C → B-QTY | **ATTESA device** | A3 su `main` (PR #35 FF); play **1.3.8**; **prossimo:** SI Renato device → poi B–C solo con SI — [PROMPT_CONTINUITA_A3_FOTO.md](PROMPT_CONTINUITA_A3_FOTO.md) |
+| C4 | A3 → B–C → B-QTY | **A3 FATTO** | SI device Renato 18/09 — play **1.3.9 ok**; B–C / B-QTY **solo con SI** — [PROMPT_CONTINUITA_A3_FOTO.md](PROMPT_CONTINUITA_A3_FOTO.md) |
 | C5 | D Dashboard | no-code |
 
 ---
@@ -65,7 +65,7 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 
 **Regola Renato 13/09 + 14/09 (permanente) — processo ovvio:**
 1. Agente porta il codice su **`main`** (merge del branch di lavoro **prima** di chiedere il test)
-2. Renato: `git checkout main` + `git pull origin main` + **Run `playDebug`** → topbar = versione detta dall’agente (ora **`v. 1.3.8`**, senza famiglia). **Mai** altri branch per il test telefono.
+2. Renato: `git checkout main` + `git pull origin main` + **Run `playDebug`** → topbar = versione detta dall’agente (ora **`v. 1.3.9`**, senza famiglia). **Mai** altri branch per il test telefono.
 3. Solo dopo OK test: Renato crea AAB **`playRelease`** (con firma) → Play → Invio
 4. Scheda IT/EN + `BOXMANAGER-TESTER` se closed
 5. Scrivi: `SI AAB closed`
@@ -87,7 +87,8 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 4. **C3 / A2 Cestino** — **FATTO** SI device 16/09 (**1.3.7 ok**).
 5. Backlog QR batch: **B-QR-BATCH-CODE-FONT**, **B-QR-BATCH-BOX-NAME** — Aperto 16/09.
 6. Backlog UI: **B-UI-BUTTONS-ACCESSO-RAPIDO** — Aperto 16/09.
-7. **Prossimo codice:** A3 Foto **CODICE PR #35** — merge `main` + test device **1.3.8** ([PROMPT_CONTINUITA_A3_FOTO.md](PROMPT_CONTINUITA_A3_FOTO.md)) → poi B–C → B-QTY; **C5** Dashboard no-code.
+7. **C4 / A3 Foto** — **FATTO** SI device 18/09 (**1.3.9 ok**).
+8. **Prossimo codice (solo SI):** B–C Export/Import avanzati **oppure** backlog (B-PREMIUM-UNIFY-PAGE / QR batch / UI); **C5** Dashboard no-code.
 
 **Regola test:** l’agente indica sempre il `versionName` atteso in topbar; merge su **`main`** obbligatorio prima del test telefono (SI 14/09).
 
