@@ -115,11 +115,11 @@ class UtilityActivity : BaseActivity() {
 
         val familyButton =
             findViewById<MaterialCardView>(R.id.btnFamilyCatalog)
-        val spacer =
-            findViewById<View>(R.id.spacerTrashRow)
+        val spacerQr =
+            findViewById<View>(R.id.spacerQrRow)
         if (BuildConfig.FAMILY_BETA) {
             familyButton.visibility = View.VISIBLE
-            spacer.visibility = View.GONE
+            spacerQr.visibility = View.GONE
             familyButton.setOnClickListener {
                 ArchivioCompletoNav.start(
                     this,
@@ -132,7 +132,7 @@ class UtilityActivity : BaseActivity() {
             }
         } else {
             familyButton.visibility = View.GONE
-            spacer.visibility = View.VISIBLE
+            spacerQr.visibility = View.VISIBLE
         }
     }
 }

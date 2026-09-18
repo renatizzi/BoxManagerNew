@@ -205,7 +205,8 @@
     <string name="page_restore_subtitle">Full replacement of the archive</string>
     <string name="page_import_title">Import data</string>
     <string name="page_export_title">Export data</string>
-    <string name="export_intro">Export the archive as CSV (opens in external sheets, no photos) or as a ZIP with photos and stable ids.</string>
+    <string name="page_export_subtitle">CSV for external sheets · ZIP with photos (not a Backup)</string>
+    <string name="export_intro">Does not replace Backup/Restore.\nExport CSV for Sheets/Excel (no photos), or ZIP with photos and stable ids to reattach via Import (merge).</string>
     <string name="export_button_csv">📄 Export CSV (no photos)</string>
     <string name="export_button_zip">📦 Export ZIP (with photos)</string>
     <string name="export_msg_photo_summary">Photos: %1$d objects, about %2$s MB.\nConfirm ZIP export?</string>

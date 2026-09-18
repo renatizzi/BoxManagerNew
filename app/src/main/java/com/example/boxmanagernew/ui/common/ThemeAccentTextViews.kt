@@ -23,6 +23,7 @@ object ThemeAccentTextViews {
           R.id.textBackup,
           R.id.textRestore,
           R.id.textImport,
+          R.id.textExport,
           R.id.textQr,
           R.id.textFamilyCatalog,
           R.id.textTrash,

@@ -12,7 +12,8 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) — sezione **Che
 
 | ID | Indicazione |
 |----|-------------|
-| **B-IDEA-OCR-COVER** | OCR Descrizione: codice su `main` (PR #35 FF) — **ATTESA** device 1.3.8 |
+| **B-PREMIUM-UNIFY-PAGE** | Pagina premium unica (scaduta → CONDIVIDI/CODICE) — **Aperto** 18/09 |
+| **B-IDEA-OCR-COVER** | OCR Descrizione: codice su `main` (PR #35 FF) — hotfix 1.3.9 in corso |
 | **B-PLAY-DEX-R8** | Play DEX obfuscation 1%; enforcement feb 2027 — non bloccante oggi |
 | **B-CURSOR-CREDITS** | Ottimizzare sessioni Cursor (crediti) — **Aperto** 16/09 |
 | **B-UI-BUTTONS-ACCESSO-RAPIDO** | Uniformare bottoni stile Accesso rapido Dashboard (screenshot 16/09) — **Aperto** |

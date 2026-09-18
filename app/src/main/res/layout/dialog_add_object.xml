@@ -42,6 +42,7 @@
         android:hint="@string/dialog_object_description_hint"
         android:imeOptions="actionNext"
         android:inputType="textCapSentences"
+        android:maxLength="100"
         android:maxLines="2"
         android:minHeight="44dp"
         android:paddingTop="6dp"

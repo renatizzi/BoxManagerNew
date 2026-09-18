@@ -59,7 +59,7 @@ class ExportDataActivity : BaseActivity() {
         setupAppShell()
         setupPageHeader(
             title = getString(R.string.page_export_title),
-            subtitle = ""
+            subtitle = getString(R.string.page_export_subtitle)
         )
         setupBottomNav()
 

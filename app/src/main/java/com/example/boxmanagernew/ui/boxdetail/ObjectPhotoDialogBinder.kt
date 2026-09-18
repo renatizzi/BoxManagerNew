@@ -3,7 +3,6 @@ package com.example.boxmanagernew.ui.boxdetail
 import android.Manifest
 import android.app.AlertDialog
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.view.View
 import android.widget.EditText
@@ -16,6 +15,7 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.data.photo.ObjectDescriptionOcr
+import com.example.boxmanagernew.data.photo.ObjectPhotoCompressor
 import com.example.boxmanagernew.data.photo.ObjectPhotoStore
 import com.example.boxmanagernew.domain.premium.PremiumFeature
 import com.example.boxmanagernew.ui.common.DialogUtils
@@ -180,15 +180,16 @@ class ObjectPhotoDialogBinder(
     private fun proposeDescription(text: String?) {
         if (text.isNullOrBlank()) return
         val field = descriptionField ?: return
+        val clipped = ObjectDescriptionOcr.truncateToMax(text)
         val current = field.text?.toString().orEmpty().trim()
         if (current.isEmpty()) {
-            field.setText(text)
+            field.setText(clipped)
             return
         }
         AlertDialog.Builder(activity)
             .setMessage(R.string.object_photo_ocr_replace_description)
             .setPositiveButton(R.string.common_yes) { _, _ ->
-                field.setText(text)
+                field.setText(clipped)
             }
             .setNegativeButton(R.string.common_no, null)
             .show()
@@ -198,7 +199,12 @@ class ObjectPhotoDialogBinder(
         val preview = previewView ?: return
         try {
             activity.contentResolver.openInputStream(uri)?.use { input ->
-                val bmp = BitmapFactory.decodeStream(input)
+                val bytes = input.readBytes()
+                val bmp =
+                    ObjectPhotoCompressor.decodeOrientedBitmap(
+                        bytes,
+                        orientationFromBytes(bytes)
+                    ) ?: return
                 preview.setImageBitmap(bmp)
                 preview.visibility = View.VISIBLE
                 removeBtn?.visibility = View.VISIBLE
@@ -210,11 +216,38 @@ class ObjectPhotoDialogBinder(
 
     private fun showPreviewFile(file: File) {
         val preview = previewView ?: return
-        val bmp = BitmapFactory.decodeFile(file.absolutePath) ?: return
+        val bytes = file.readBytes()
+        val bmp =
+            ObjectPhotoCompressor.decodeOrientedBitmap(
+                bytes,
+                orientationFromFile(file)
+            ) ?: return
         preview.setImageBitmap(bmp)
         preview.visibility = View.VISIBLE
         removeBtn?.visibility = View.VISIBLE
     }
+
+    private fun orientationFromBytes(bytes: ByteArray): Int =
+        try {
+            android.media.ExifInterface(java.io.ByteArrayInputStream(bytes))
+                .getAttributeInt(
+                    android.media.ExifInterface.TAG_ORIENTATION,
+                    android.media.ExifInterface.ORIENTATION_NORMAL
+                )
+        } catch (_: Exception) {
+            android.media.ExifInterface.ORIENTATION_NORMAL
+        }
+
+    private fun orientationFromFile(file: File): Int =
+        try {
+            android.media.ExifInterface(file.absolutePath)
+                .getAttributeInt(
+                    android.media.ExifInterface.TAG_ORIENTATION,
+                    android.media.ExifInterface.ORIENTATION_NORMAL
+                )
+        } catch (_: Exception) {
+            android.media.ExifInterface.ORIENTATION_NORMAL
+        }
 
     private fun ensureCameraThenCapture() {
         val granted =

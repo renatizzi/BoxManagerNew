@@ -12,6 +12,7 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md).
 
 | ID | Indicazione |
 |----|-------------|
+| **B-PREMIUM-UNIFY-PAGE** | Pagina premium unica (scaduta → CONDIVIDI/CODICE) — **Aperto** 18/09 |
 | **B-PLAY-DEX-R8** | Play DEX obfuscation 1%; enforcement feb 2027 — non bloccante oggi |
 | **B-CURSOR-CREDITS** | Ottimizzare sessioni Cursor (crediti) — **Aperto** 16/09 |
 | **B-UI-BUTTONS-ACCESSO-RAPIDO** | Uniformare bottoni stile Accesso rapido Dashboard — **Aperto** |
@@ -22,26 +23,25 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md).
 
 ---
 
-## Stato al 18/09/2026 (device — KO aperti)
+## Stato al 18/09/2026 (hotfix — ritest)
 
 | Voce | Valore |
 |------|--------|
-| **Branch lavoro** | `cursor/a3-foto-oggetto-d5b2` (chiuso) |
-| **PR** | [#35](https://github.com/renatizzi/BoxManagerNew/pull/35) — **MERGIATO** su `main` (FF `b04570d`) |
-| **Head `main`** | tip docs post-merge; codice A3 su `main` |
-| **Build play** | Topbar **`v. 1.3.8`** (versionCode **12**) — confermata da Renato (screenshot Utility) |
-| **Play Console** | 1.3.7 in revisione / closed; DEX non bloccante (B-PLAY-DEX-R8) |
-| **A3 codice** | **COMPLETO su `main`** — device **parziale**; KO sotto; **niente chiusura** senza SI «A3 OK» |
+| **Branch hotfix** | `cursor/a3-hotfix-utility-exif-ocr-8f03` |
+| **PR #35** | **MERGIATO** su `main` (FF `b04570d`) |
+| **Build play** | Topbar **`v. 1.3.9`** (versionCode **13**) — dopo merge hotfix su `main` |
+| **Decisione Esporta** | **Tenere** card Utility (R3 B–C + T5). Copy chiarisce ≠ Backup. Esporta vista resta contestuale. |
+| **A3 codice** | Hotfix: griglia Utility + EXIF scatto + Descrizione max **100** + B-PREMIUM-UNIFY-PAGE annotato |
 | **Documento requisiti** | [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) — CONVALIDATO (T1–T8 + §6 OCR) |
 
-### KO device Renato 18/09 (solo negativi)
+### KO device Renato 18/09 → hotfix
 
-| # | Voce | Esito | Nota tecnica |
-|---|------|-------|--------------|
-| 6 | Foto scatto | **KO** | Solo da fotocamera: proposta/salva con rotazione ~45°. Compressore **non** applica EXIF orientation (galleria spesso già raddrizzata). |
-| 7 | OCR Descrizione | **KO parziale** | Accuratezza OK; **non** rispetta limite max caratteri precedente. Oggi `setText` OCR senza truncate; layout senza `maxLength` — serve numero limite da Renato. |
-| 8 | Premium UI unica | **Parere** (non KO A3) | Proposta Renato pagina unificata — fuori fetta A3; zero codice finché SI (processo analisi). |
-| — | Utility | **KO UX / blocco ritest** | T5 ha inserito card **Esporta dati** in riga 2 → QR in riga 3 → **Condividi + Cestino in riga 4** (sotto fold senza scroll). Non cancellati; **Esporta ≠ Condividi**. |
+| # | Voce | Esito | Hotfix |
+|---|------|-------|---------|
+| 6 | Foto scatto | **KO** | EXIF orientation in compressione + anteprima |
+| 7 | OCR Descrizione | **KO parziale** | Truncate + `maxLength` **100** (2 righe UI) |
+| 8 | Premium UI unica | fuori A3 | Annotato **B-PREMIUM-UNIFY-PAGE** |
+| — | Utility | **KO UX** | Griglia: Import\|Esporta; QR\|Condividi; Cestino ultimo. Copy Esporta ≠ Backup |
 
 ---
 
@@ -85,7 +85,7 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md).
 | **2** | Istruzioni operative **numerate** a Renato | Agente | **FATTO** — topbar **`v. 1.3.8`**. Vedi sotto. |
 | **3** | Renato: `checkout main` + `pull` + Run **`playDebug`** | Renato | **FATTO** — topbar `v. 1.3.8` OK |
 | **4** | Ritest accettazione A3 (criteri §4 REQUISITI) | Renato + agente | **PARZIALE** — KO 6/7 + Utility; punti 9–12 non testati |
-| **4b** | Hotfix A3 (Utility griglia + EXIF scatto + truncate OCR) | Agente | **Solo con SI** Renato; poi ritest su `main` |
+| **4b** | Hotfix A3 (Utility + EXIF + OCR 100 + copy Esporta) | Agente | **IN CORSO** branch `cursor/a3-hotfix-utility-exif-ocr-8f03` → merge `main` → ritest **1.3.9** |
 | **5** | SI Renato «A3 OK» / chiudere fetta | Renato | Solo allora aggiornare PROMEMORIA / CHECKLIST C4 → **FATTO** |
 | **6** | (Dopo A3 chiuso) prossima fetta codice | — | Default: **B–C** **oppure** backlog / premium UI unificata — **solo con SI** |
 
