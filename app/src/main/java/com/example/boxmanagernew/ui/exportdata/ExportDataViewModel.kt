@@ -11,7 +11,9 @@ import com.example.boxmanagernew.data.repository.BoxRepositoryImpl
 import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
 import com.example.boxmanagernew.data.local.dao.ObjectTypeDao
 import com.example.boxmanagernew.data.local.AppDatabase
+import com.example.boxmanagernew.data.local.entity.BoxEntity
 import com.example.boxmanagernew.importdata.export.DataExportCsvBuilder
+import com.example.boxmanagernew.importdata.export.ExportSelectionFilter
 import com.example.boxmanagernew.importdata.zip.ImportDataZip
 import com.example.boxmanagernew.viewoutput.config.ViewOutputConfiguration
 import kotlinx.coroutines.Dispatchers
@@ -28,10 +30,25 @@ class ExportDataViewModel(
     private val csvBuilder: DataExportCsvBuilder = DataExportCsvBuilder()
 ) : ViewModel() {
 
+    enum class Scope {
+        ALL,
+        SELECTION
+    }
+
+    enum class Format {
+        CSV,
+        ZIP
+    }
+
     data class ExportReady(
         val fileName: String,
         val bytes: ByteArray,
         val photoSummary: String?
+    )
+
+    data class BoxChoice(
+        val id: Int,
+        val name: String
     )
 
     private val _busy = MutableLiveData(false)
@@ -43,52 +60,98 @@ class ExportDataViewModel(
     private val _message = MutableLiveData<String>()
     val message: LiveData<String> = _message
 
+    private val _pickBoxes = MutableLiveData<Pair<Format, List<BoxChoice>>?>()
+    val pickBoxes: LiveData<Pair<Format, List<BoxChoice>>?> = _pickBoxes
+
+    var scope: Scope = Scope.ALL
+
     fun clearExportReady() {
         _exportReady.value = null
     }
 
+    fun clearPickBoxes() {
+        _pickBoxes.value = null
+    }
+
     fun requestCsvExport() {
-        viewModelScope.launch {
-            _busy.value = true
-            try {
-                val ready = withContext(Dispatchers.IO) {
-                    val (boxes, objects) = loadRows()
-                    val csv = csvBuilder.build(boxes, objects, withIds = false)
-                    ExportReady(
-                        fileName = ViewOutputConfiguration.proposedFileName(),
-                        bytes = csv,
-                        photoSummary = null
-                    )
-                }
-                _exportReady.value = ready
-            } finally {
-                _busy.value = false
-            }
-        }
+        requestExport(Format.CSV)
     }
 
     fun requestZipExport() {
+        requestExport(Format.ZIP)
+    }
+
+    fun confirmSelection(format: Format, selectedBoxIds: Set<Int>) {
+        if (selectedBoxIds.isEmpty()) {
+            _message.value =
+                appContext.getString(R.string.export_msg_select_at_least_one)
+            return
+        }
+        runExport(format, selectedBoxIds)
+    }
+
+    private fun requestExport(format: Format) {
+        if (scope == Scope.ALL) {
+            runExport(format, selectedBoxIds = null)
+            return
+        }
+        viewModelScope.launch {
+            _busy.value = true
+            try {
+                val choices = withContext(Dispatchers.IO) {
+                    boxRepository.getAllBoxEntitiesSync()
+                        .sortedBy { it.name.lowercase(Locale.getDefault()) }
+                        .map { BoxChoice(it.id, it.name) }
+                }
+                if (choices.isEmpty()) {
+                    _message.value =
+                        appContext.getString(R.string.export_msg_no_boxes)
+                    return@launch
+                }
+                _pickBoxes.value = format to choices
+            } finally {
+                _busy.value = false
+            }
+        }
+    }
+
+    private fun runExport(format: Format, selectedBoxIds: Set<Int>?) {
         viewModelScope.launch {
             _busy.value = true
             try {
                 val ready = withContext(Dispatchers.IO) {
-                    val (boxes, objects) = loadRows()
-                    val csv = csvBuilder.build(boxes, objects, withIds = true)
-                    val photos = ObjectPhotoStoreProvider.get(appContext)
-                        .zipEntriesForBackup()
-                    val count = photos.keys.count {
-                        it.endsWith(".jpg") && !it.contains("_thumb")
+                    val (boxes, objects) = loadRows(selectedBoxIds)
+                    when (format) {
+                        Format.CSV -> {
+                            val csv = csvBuilder.build(boxes, objects, withIds = false)
+                            ExportReady(
+                                fileName = ViewOutputConfiguration.proposedFileName(),
+                                bytes = csv,
+                                photoSummary = null
+                            )
+                        }
+                        Format.ZIP -> {
+                            val csv = csvBuilder.build(boxes, objects, withIds = true)
+                            val photoIds = objects.map { it.objectPermanentId }
+                                .filter { it.isNotBlank() }
+                                .toSet()
+                            val photos = ObjectPhotoStoreProvider.get(appContext)
+                                .zipEntriesForBackup(photoIds)
+                            val count = photos.keys.count {
+                                it.endsWith(".jpg") && !it.contains("_thumb")
+                            }
+                            val bytesApprox = photos.values.sumOf { it.size.toLong() }
+                            val zip = ImportDataZip.pack(csv, photos)
+                            val name = ViewOutputConfiguration.proposedFileName()
+                                .removeSuffix(".csv") + ".zip"
+                            val summary = appContext.getString(
+                                R.string.export_msg_photo_summary,
+                                count,
+                                formatMb(bytesApprox)
+                            )
+                            ExportReady(name, zip, summary)
+                        }
                     }
-                    val bytesApprox = photos.values.sumOf { it.size.toLong() }
-                    val zip = ImportDataZip.pack(csv, photos)
-                    val name = ViewOutputConfiguration.proposedFileName()
-                        .removeSuffix(".csv") + ".zip"
-                    val summary = appContext.getString(
-                        R.string.export_msg_photo_summary,
-                        count,
-                        formatMb(bytesApprox)
-                    )
-                    ExportReady(name, zip, summary)
                 }
                 _exportReady.value = ready
             } finally {
@@ -97,14 +160,26 @@ class ExportDataViewModel(
         }
     }
 
-    private suspend fun loadRows(): Pair<
+    private suspend fun loadRows(
+        selectedBoxIds: Set<Int>?
+    ): Pair<
         List<DataExportCsvBuilder.BoxRow>,
         List<DataExportCsvBuilder.ObjectRow>
         > {
-        val boxes = boxRepository.getAllBoxEntitiesSync()
+        val allBoxes = boxRepository.getAllBoxEntitiesSync()
+        val boxes = ExportSelectionFilter.filterBoxes(
+            allBoxes,
+            BoxEntity::id,
+            selectedBoxIds
+        )
         val categories = database.categoryDao().getAllSync()
             .associate { it.id to it.name }
-        val objects = objectRepository.getAllObjectEntitiesSync()
+        val allObjects = objectRepository.getAllObjectEntitiesSync()
+        val objects = ExportSelectionFilter.filterObjects(
+            allObjects,
+            { it.boxId },
+            selectedBoxIds
+        )
         val typeNames = objectTypeDao.getAllTypesSync()
             .associate { it.id to it.name }
         val boxNames = boxes.associate { it.id to it.name }

@@ -206,7 +206,14 @@
     <string name="page_import_title">Import data</string>
     <string name="page_export_title">Export data</string>
     <string name="page_export_subtitle">CSV for external sheets · ZIP with photos (not a Backup)</string>
-    <string name="export_intro">Does not replace Backup/Restore.\nExport CSV for Sheets/Excel (no photos), or ZIP with photos and stable ids to reattach via Import (merge).</string>
+    <string name="export_intro">Does not replace Backup/Restore.\nExport CSV for Sheets/Excel (no photos), or ZIP with photos and stable ids to reattach via Import (merge).\nYou can export the whole archive or only selected containers.</string>
+    <string name="export_scope_label">Contents</string>
+    <string name="export_scope_all">Entire archive</string>
+    <string name="export_scope_selection">Selection…</string>
+    <string name="export_pick_boxes_title">Choose containers</string>
+    <string name="export_pick_all">All</string>
+    <string name="export_msg_select_at_least_one">Select at least one container.</string>
+    <string name="export_msg_no_boxes">No containers to export.</string>
     <string name="export_button_csv">📄 Export CSV (no photos)</string>
     <string name="export_button_zip">📦 Export ZIP (with photos)</string>
     <string name="export_msg_photo_summary">Photos: %1$d objects, about %2$s MB.\nConfirm ZIP export?</string>

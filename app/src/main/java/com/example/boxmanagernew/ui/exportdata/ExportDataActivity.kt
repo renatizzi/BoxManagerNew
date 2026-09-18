@@ -1,6 +1,7 @@
 package com.example.boxmanagernew.ui.exportdata
 
 import android.os.Bundle
+import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
@@ -20,7 +21,7 @@ import com.example.boxmanagernew.viewoutput.persist.ViewExportPersister
 import com.google.android.material.card.MaterialCardView
 
 /**
- * Utility → Esporta dati (T5): CSV V1 senza foto, oppure ZIP con id + foto.
+ * Utility → Esporta dati (T5 + B–C B1): CSV / ZIP; profilo Intero o Selezione.
  */
 class ExportDataActivity : BaseActivity() {
 
@@ -30,6 +31,7 @@ class ExportDataActivity : BaseActivity() {
     private lateinit var tvMessages: TextView
     private lateinit var btnExportCsv: MaterialCardView
     private lateinit var btnExportZip: MaterialCardView
+    private lateinit var radioScope: RadioGroup
 
     private val folderPicker =
         registerForActivityResult(
@@ -102,6 +104,16 @@ class ExportDataActivity : BaseActivity() {
         tvMessages = findViewById(R.id.tvMessages)
         btnExportCsv = findViewById(R.id.btnExportCsv)
         btnExportZip = findViewById(R.id.btnExportZip)
+        radioScope = findViewById(R.id.radioExportScope)
+
+        radioScope.setOnCheckedChangeListener { _, checkedId ->
+            viewModel.scope =
+                if (checkedId == R.id.radioScopeSelection) {
+                    ExportDataViewModel.Scope.SELECTION
+                } else {
+                    ExportDataViewModel.Scope.ALL
+                }
+        }
 
         btnExportCsv.setOnClickListener { viewModel.requestCsvExport() }
         btnExportZip.setOnClickListener { viewModel.requestZipExport() }
@@ -109,6 +121,19 @@ class ExportDataActivity : BaseActivity() {
         viewModel.busy.observe(this) { busy ->
             btnExportCsv.isEnabled = !busy
             btnExportZip.isEnabled = !busy
+            radioScope.isEnabled = !busy
+        }
+
+        viewModel.message.observe(this) { text ->
+            if (!text.isNullOrBlank()) {
+                showMessage(text, blocking = true)
+            }
+        }
+
+        viewModel.pickBoxes.observe(this) { pick ->
+            if (pick == null) return@observe
+            showBoxPicker(pick.first, pick.second)
+            viewModel.clearPickBoxes()
         }
 
         viewModel.exportReady.observe(this) { ready ->
@@ -129,6 +154,34 @@ class ExportDataActivity : BaseActivity() {
                     .show()
             }
         }
+    }
+
+    private fun showBoxPicker(
+        format: ExportDataViewModel.Format,
+        choices: List<ExportDataViewModel.BoxChoice>
+    ) {
+        val labels = choices.map { it.name }.toTypedArray()
+        val checked = BooleanArray(choices.size)
+        AlertDialog.Builder(this)
+            .setTitle(R.string.export_pick_boxes_title)
+            .setMultiChoiceItems(labels, checked) { _, which, isChecked ->
+                checked[which] = isChecked
+            }
+            .setPositiveButton(R.string.common_ok) { _, _ ->
+                val selected = choices
+                    .filterIndexed { index, _ -> checked[index] }
+                    .map { it.id }
+                    .toSet()
+                viewModel.confirmSelection(format, selected)
+            }
+            .setNeutralButton(R.string.export_pick_all) { _, _ ->
+                viewModel.confirmSelection(
+                    format,
+                    choices.map { it.id }.toSet()
+                )
+            }
+            .setNegativeButton(R.string.common_cancel, null)
+            .show()
     }
 
     private fun beginPersist(ready: ExportDataViewModel.ExportReady) {

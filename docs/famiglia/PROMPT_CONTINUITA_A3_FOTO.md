@@ -88,7 +88,7 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md).
 | **2–3** | Istruzioni + Run `playDebug` 1.3.8 | Renato | **FATTO** |
 | **4 / 4b** | KO + hotfix 1.3.9 | Agente + Renato | **FATTO** — PR #36 su `main` |
 | **5** | SI «A3 OK» | Renato | **FATTO** 18/09 — PROMEMORIA / CHECKLIST C4 aggiornati |
-| **6** | Prossima fetta codice | — | **B–C** / backlog / **B-PREMIUM-UNIFY-PAGE** — **solo con SI** |
+| **6** | Prossima fetta codice | — | **B–C aperto** SI 18/09 → [PROMPT_CONTINUITA_BC_EXPORT.md](PROMPT_CONTINUITA_BC_EXPORT.md); poi backlog Utility/Premium/QR in sequenza |
 
 ### Non fare (salvo SI)
 - Riaprire merito R1–R6 / T1–T8 / R-OCR senza SI revisione

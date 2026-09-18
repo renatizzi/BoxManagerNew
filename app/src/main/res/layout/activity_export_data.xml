@@ -35,6 +35,38 @@
                 android:text="@string/export_intro"
                 android:textColor="@color/text_secondary" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="@string/export_scope_label"
+                android:textColor="@color/text_primary"
+                android:textStyle="bold" />
+
+            <RadioGroup
+                android:id="@+id/radioExportScope"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/radioScopeAll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:minHeight="48dp"
+                    android:text="@string/export_scope_all" />
+
+                <RadioButton
+                    android:id="@+id/radioScopeSelection"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="48dp"
+                    android:text="@string/export_scope_selection" />
+
+            </RadioGroup>
+
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/btnExportCsv"
                 android:layout_width="match_parent"

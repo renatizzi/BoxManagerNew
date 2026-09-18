@@ -6,7 +6,7 @@
 **Uso:** riferimento funzionale e tecnico-architetturale fino all’implementazione.  
 **Destinazione:** Nota Integrata (rinvio §4.1.6 EXPORT/IMPORT AVANZATO).  
 **Assessment:** [ASSESSMENT_EXPORT_IMPORT_AVANZATO.md](ASSESSMENT_EXPORT_IMPORT_AVANZATO.md) (storico; prevale **questo** file).  
-**Sequenza codice:** dopo A1 QR + A2 Cestino + A3 Foto. **STOP codice** fino a fine test Play / SI «apri fetta codice».  
+**Sequenza codice:** dopo A1 QR + A2 Cestino + A3 Foto. **SI apertura codice Renato 18/09/2026** — fetta B–C in corso ([PROMPT_CONTINUITA_BC_EXPORT.md](PROMPT_CONTINUITA_BC_EXPORT.md)).  
 **Priorità prodotto:** **importanti ma non core** (allineato a Nota: medio-bassa).
 
 ---

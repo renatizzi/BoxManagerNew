@@ -205,7 +205,14 @@
     <string name="page_import_title">Importa Dati</string>
     <string name="page_export_title">Esporta Dati</string>
     <string name="page_export_subtitle">CSV per fogli esterni · ZIP con foto (non è un Backup)</string>
-    <string name="export_intro">Non sostituisce Backup/Ripristino.\nEsporta CSV per Google/Excel (senza foto), oppure ZIP con foto e id stabili da riagganciare con Importa (merge).</string>
+    <string name="export_intro">Non sostituisce Backup/Ripristino.\nEsporta CSV per Google/Excel (senza foto), oppure ZIP con foto e id stabili da riagganciare con Importa (merge).\nPuoi esportare tutto l\'archivio oppure solo i contenitori selezionati.</string>
+    <string name="export_scope_label">Contenuti</string>
+    <string name="export_scope_all">Archivio intero</string>
+    <string name="export_scope_selection">Selezione…</string>
+    <string name="export_pick_boxes_title">Scegli i contenitori</string>
+    <string name="export_pick_all">Tutti</string>
+    <string name="export_msg_select_at_least_one">Seleziona almeno un contenitore.</string>
+    <string name="export_msg_no_boxes">Nessun contenitore da esportare.</string>
     <string name="export_button_csv">📄 Esporta CSV (senza foto)</string>
     <string name="export_button_zip">📦 Esporta ZIP (con foto)</string>
     <string name="export_msg_photo_summary">Foto: %1$d oggetti, circa %2$s MB.\nConfermi l\'esportazione ZIP?</string>

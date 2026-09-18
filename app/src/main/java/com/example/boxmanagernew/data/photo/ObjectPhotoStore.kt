@@ -118,11 +118,16 @@ class ObjectPhotoStore(
         return true
     }
 
-    /** Entries for Backup / Family ZIP (path → bytes). */
-    suspend fun zipEntriesForBackup(): Map<String, ByteArray> {
+    /** Entries for Backup / Family / Esporta ZIP (path → bytes). */
+    suspend fun zipEntriesForBackup(
+        objectPermanentIds: Set<String>? = null
+    ): Map<String, ByteArray> {
         val out = linkedMapOf<String, ByteArray>()
         for (meta in photoDao.getAll()) {
             val id = meta.objectPermanentId
+            if (objectPermanentIds != null && id !in objectPermanentIds) {
+                continue
+            }
             val display = displayFile(id)
             val thumb = thumbFile(id)
             if (display.isFile) {

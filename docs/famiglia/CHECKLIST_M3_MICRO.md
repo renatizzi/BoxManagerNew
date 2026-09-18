@@ -52,7 +52,7 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 | — | B-AUTO-FILES-LIST | **FATTO** | SI 14/09; play **1.3.2** — PRE_* fuori lista Ripristino |
 | C2 | A1 QR avanzato | **FATTO** | SI device Renato 14/09 — play **1.3.3** ok; polish UI batch **1.3.4 OK** |
 | C3 | A2 Cestino | **FATTO** | SI device Renato 16/09 — play **1.3.7 ok** |
-| C4 | A3 → B–C → B-QTY | **A3 FATTO** | SI device Renato 18/09 — play **1.3.9 ok**; B–C / B-QTY **solo con SI** — [PROMPT_CONTINUITA_A3_FOTO.md](PROMPT_CONTINUITA_A3_FOTO.md) |
+| C4 | A3 → B–C → B-QTY | **B–C IN CORSO** | A3 **FATTO** 1.3.9; B1 selezione — [PROMPT_CONTINUITA_BC_EXPORT.md](PROMPT_CONTINUITA_BC_EXPORT.md); B-QTY solo SI |
 | C5 | D Dashboard | no-code |
 
 ---
@@ -88,7 +88,7 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 5. Backlog QR batch: **B-QR-BATCH-CODE-FONT**, **B-QR-BATCH-BOX-NAME** — Aperto 16/09.
 6. Backlog UI: **B-UI-BUTTONS-ACCESSO-RAPIDO** — Aperto 16/09.
 7. **C4 / A3 Foto** — **FATTO** SI device 18/09 (**1.3.9 ok**).
-8. **Prossimo codice (solo SI):** B–C Export/Import avanzati **oppure** backlog (B-PREMIUM-UNIFY-PAGE / QR batch / UI); **C5** Dashboard no-code.
+8. **Prossimo codice:** B–C Export/Import — [PROMPT_CONTINUITA_BC_EXPORT.md](PROMPT_CONTINUITA_BC_EXPORT.md) (B1 selezione **1.3.10**); poi backlog Utility/Premium/QR **in sequenza** dopo chiusura B–C; **C5** Dashboard no-code.
 
 **Regola test:** l’agente indica sempre il `versionName` atteso in topbar; merge su **`main`** obbligatorio prima del test telefono (SI 14/09).
 
