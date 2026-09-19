@@ -17,7 +17,7 @@ object ImportErrorReportBuilder {
     const val COL_LINE = "riga"
     const val COL_REASON = "motivo"
 
-    const val FILE_PREFIX = "IMPORT_ERRORI_"
+    const val FILE_PREFIX = "REPORT_ERRORI_"
 
     fun fileName(now: Date = Date()): String {
         val stamp = SimpleDateFormat("ddMMyy_HHmm", Locale.getDefault()).format(now)

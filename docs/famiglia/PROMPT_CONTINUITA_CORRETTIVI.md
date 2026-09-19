@@ -12,8 +12,8 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) — sezione **Che
 
 | ID | Indicazione |
 |----|-------------|
-| **B-UTILITY-BUTTON-HEIGHT** | Ridurre altezza bottoni Utility (niente scroll) — **Aperto** 18/09 |
-| **B-UTILITY-RIPRISTINA-VISIBLE** | Tasto Ripristina in fondo pagina, non visibile senza scroll — **Aperto** 18/09 |
+| **B-UTILITY-BUTTON-HEIGHT** | Ridurre altezza bottoni Utility (niente scroll) — **IN CORSO** 19/09 → [PROMPT_CONTINUITA_UTILITY_UI.md](PROMPT_CONTINUITA_UTILITY_UI.md) |
+| **B-UTILITY-RIPRISTINA-VISIBLE** | Tasto Ripristina in fondo pagina, non visibile senza scroll — **IN CORSO** (stessa fetta) |
 | **B-PREMIUM-UNIFY-PAGE** | Pagina premium unica (scaduta → CONDIVIDI/CODICE) — **Aperto** 18/09 |
 | **B-IDEA-OCR-COVER** | OCR Descrizione — **FATTO** in A3 (SI device 18/09, 1.3.9 ok) |
 | **B-PLAY-DEX-R8** | Play DEX obfuscation 1%; enforcement feb 2027 — non bloccante oggi |

@@ -20,8 +20,8 @@ android {
         applicationId = "it.renatizzi.boxmanager"
         minSdk = 24
         targetSdk = 36
-        versionCode = 19
-        versionName = "1.3.15"
+        versionCode = 20
+        versionName = "1.3.16"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -44,9 +44,9 @@ android {
     productFlavors {
         create("play") {
             dimension = "distribution"
-            // 19/09: 1.3.15 — B4 testo dialog promemoria errori. vc 19.
-            versionCode = 19
-            versionName = "1.3.15"
+            // 19/09: 1.3.16 — REPORT_ERRORI_ + Utility tile height. vc 20.
+            versionCode = 20
+            versionName = "1.3.16"
             buildConfigField("boolean", "FAMILY_BETA", "true")
         }
         create("famiglia") {
