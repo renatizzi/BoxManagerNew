@@ -20,8 +20,8 @@ android {
         applicationId = "it.renatizzi.boxmanager"
         minSdk = 24
         targetSdk = 36
-        versionCode = 17
-        versionName = "1.3.13"
+        versionCode = 18
+        versionName = "1.3.14"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -44,9 +44,9 @@ android {
     productFlavors {
         create("play") {
             dimension = "distribution"
-            // 19/09: 1.3.13 — hotfix B3 omonimi BOX ammessi. vc 17.
-            versionCode = 17
-            versionName = "1.3.13"
+            // 19/09: 1.3.14 — B–C B4 report errori riga-per-riga. vc 18.
+            versionCode = 18
+            versionName = "1.3.14"
             buildConfigField("boolean", "FAMILY_BETA", "true")
         }
         create("famiglia") {

@@ -282,6 +282,13 @@
     <string name="import_msg_box_dependency">a Container cannot be imported if it refers to a Category or Location that does not exist</string>
     <string name="import_msg_object_dependency">an Object cannot be imported if it refers to a Container that does not exist</string>
     <string name="import_msg_relation_cancelled">any violation of the data model relationships cancels the import</string>
+    <string name="import_error_report_heading">Error details:</string>
+    <string name="import_error_section_file">FILE</string>
+    <string name="import_error_line_format">%1$s · row %2$d · %3$s</string>
+    <string name="import_error_line_no_row">%1$s · %2$s</string>
+    <string name="import_error_report_save_title">Error report</string>
+    <string name="import_error_report_save_message">Save the detailed report (CSV)?</string>
+    <string name="import_error_report_saved">Error report saved.</string>
     <string name="label_containers_count">Containers: %1$d</string>
     <string name="label_objects_count">Objects: %1$d</string>
     <string name="label_categories_count">Categories: %1$d</string>

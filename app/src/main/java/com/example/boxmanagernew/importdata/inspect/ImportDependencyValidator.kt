@@ -9,8 +9,11 @@ class ImportDependencyValidator {
         object Ok : Result()
 
         data class Failed(
+            val errors: List<ImportRowError>
+        ) : Result() {
             val message: String
-        ) : Result()
+                get() = errors.firstOrNull()?.reason.orEmpty()
+        }
     }
 
     fun validate(
@@ -24,22 +27,39 @@ class ImportDependencyValidator {
         val categories = indexed(categoryNames)
         val locations = indexed(locationNames)
         val knownBoxes = indexed(archiveBoxNames) + indexed(boxes.map { it.name })
+        val errors = mutableListOf<ImportRowError>()
 
         for (box in boxes) {
             if (!categories.contains(key(box.category)) ||
                 !locations.contains(key(box.position))
             ) {
-                return Result.Failed(ImportConfiguration.MSG_BOX_DEPENDENCY)
+                errors.add(
+                    ImportRowError(
+                        section = ImportConfiguration.SECTION_BOXES,
+                        line = box.sourceLine,
+                        reason = ImportConfiguration.MSG_BOX_DEPENDENCY
+                    )
+                )
             }
         }
 
         for (obj in objects) {
             if (!knownBoxes.contains(key(obj.box))) {
-                return Result.Failed(ImportConfiguration.MSG_OBJECT_DEPENDENCY)
+                errors.add(
+                    ImportRowError(
+                        section = ImportConfiguration.SECTION_OBJECTS,
+                        line = obj.sourceLine,
+                        reason = ImportConfiguration.MSG_OBJECT_DEPENDENCY
+                    )
+                )
             }
         }
 
-        return Result.Ok
+        return if (errors.isEmpty()) {
+            Result.Ok
+        } else {
+            Result.Failed(errors)
+        }
     }
 
     private fun indexed(names: Collection<String>): Set<String> {

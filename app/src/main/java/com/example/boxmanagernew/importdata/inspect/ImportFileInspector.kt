@@ -9,7 +9,8 @@ class ImportFileInspector {
         val name: String,
         val category: String,
         val position: String,
-        val permanentId: String? = null
+        val permanentId: String? = null,
+        val sourceLine: Int = 0
     )
 
     data class ObjectRow(
@@ -17,7 +18,8 @@ class ImportFileInspector {
         val box: String,
         val description: String?,
         val quantity: String?,
-        val objectPermanentId: String? = null
+        val objectPermanentId: String? = null,
+        val sourceLine: Int = 0
     )
 
     sealed class Result {
@@ -32,20 +34,44 @@ class ImportFileInspector {
         }
 
         data class Failed(
-            val check: String
+            val check: String,
+            val errors: List<ImportRowError> = emptyList()
         ) : Result()
     }
 
+    private data class NumberedLine(
+        val line: Int,
+        val text: String
+    )
+
     fun inspect(bytes: ByteArray?): Result {
         if (bytes == null) {
-            return Result.Failed(ImportConfiguration.CHECK_FILE_EXISTS)
+            return Result.Failed(
+                check = ImportConfiguration.CHECK_FILE_EXISTS,
+                errors = listOf(
+                    ImportRowError(
+                        section = "",
+                        line = 0,
+                        reason = ImportConfiguration.CHECK_FILE_EXISTS
+                    )
+                )
+            )
         }
 
         val csvBytes: ByteArray
         val photos: Map<String, ByteArray>
         if (ImportDataZip.looksLikeZip(bytes)) {
             val unpacked = ImportDataZip.unpack(bytes)
-                ?: return Result.Failed(ImportConfiguration.CHECK_FORMAT)
+                ?: return Result.Failed(
+                    check = ImportConfiguration.CHECK_FORMAT,
+                    errors = listOf(
+                        ImportRowError(
+                            section = "",
+                            line = 0,
+                            reason = ImportConfiguration.CHECK_FORMAT
+                        )
+                    )
+                )
             csvBytes = unpacked.csvBytes
             photos = unpacked.photoEntries
         } else {
@@ -55,17 +81,37 @@ class ImportFileInspector {
 
         val text = decode(csvBytes)
         val lines = text.split("\r\n", "\n", "\r")
-            .map { it.trim() }
-            .filter { it.isNotEmpty() }
+            .mapIndexed { index, raw ->
+                NumberedLine(line = index + 1, text = raw.trim())
+            }
+            .filter { it.text.isNotEmpty() }
 
         if (lines.isEmpty()) {
-            return Result.Failed(ImportConfiguration.CHECK_FORMAT)
+            return Result.Failed(
+                check = ImportConfiguration.CHECK_FORMAT,
+                errors = listOf(
+                    ImportRowError(
+                        section = "",
+                        line = 0,
+                        reason = ImportConfiguration.CHECK_FORMAT
+                    )
+                )
+            )
         }
 
         var index = 0
-        val format = splitCsv(lines[index])
+        val format = splitCsv(lines[index].text)
         val version = ImportConfiguration.formatVersionOf(format)
-            ?: return Result.Failed(ImportConfiguration.CHECK_FORMAT)
+            ?: return Result.Failed(
+                check = ImportConfiguration.CHECK_FORMAT,
+                errors = listOf(
+                    ImportRowError(
+                        section = "",
+                        line = lines[index].line,
+                        reason = ImportConfiguration.CHECK_FORMAT
+                    )
+                )
+            )
         index++
 
         val boxHeader =
@@ -82,64 +128,143 @@ class ImportFileInspector {
             }
 
         if (index >= lines.size ||
-            splitCsv(lines[index]) != listOf("sezione", ImportConfiguration.SECTION_BOXES)
+            splitCsv(lines[index].text) != listOf("sezione", ImportConfiguration.SECTION_BOXES)
         ) {
-            return Result.Failed(ImportConfiguration.CHECK_STRUCTURE)
+            val line = lines.getOrNull(index)?.line ?: 0
+            return Result.Failed(
+                check = ImportConfiguration.CHECK_STRUCTURE,
+                errors = listOf(
+                    ImportRowError(
+                        section = ImportConfiguration.SECTION_BOXES,
+                        line = line,
+                        reason = ImportConfiguration.CHECK_STRUCTURE
+                    )
+                )
+            )
         }
         index++
 
         if (index >= lines.size ||
-            splitCsv(lines[index]) != boxHeader
+            splitCsv(lines[index].text) != boxHeader
         ) {
-            return Result.Failed(ImportConfiguration.CHECK_STRUCTURE)
+            val line = lines.getOrNull(index)?.line ?: 0
+            return Result.Failed(
+                check = ImportConfiguration.CHECK_STRUCTURE,
+                errors = listOf(
+                    ImportRowError(
+                        section = ImportConfiguration.SECTION_BOXES,
+                        line = line,
+                        reason = ImportConfiguration.CHECK_STRUCTURE
+                    )
+                )
+            )
         }
         index++
 
         val boxes = mutableListOf<BoxRow>()
         while (index < lines.size) {
-            val fields = splitCsv(lines[index])
+            val numbered = lines[index]
+            val fields = splitCsv(numbered.text)
             if (fields == listOf("sezione", ImportConfiguration.SECTION_OBJECTS)) {
                 break
             }
             if (fields.size != boxHeader.size) {
-                return Result.Failed(ImportConfiguration.CHECK_STRUCTURE)
+                return Result.Failed(
+                    check = ImportConfiguration.CHECK_STRUCTURE,
+                    errors = listOf(
+                        ImportRowError(
+                            section = ImportConfiguration.SECTION_BOXES,
+                            line = numbered.line,
+                            reason = ImportConfiguration.CHECK_STRUCTURE
+                        )
+                    )
+                )
             }
             if (fields[0].isBlank() || fields[1].isBlank() || fields[2].isBlank()) {
-                return Result.Failed(ImportConfiguration.CHECK_REQUIRED)
+                return Result.Failed(
+                    check = ImportConfiguration.CHECK_REQUIRED,
+                    errors = listOf(
+                        ImportRowError(
+                            section = ImportConfiguration.SECTION_BOXES,
+                            line = numbered.line,
+                            reason = ImportConfiguration.CHECK_REQUIRED
+                        )
+                    )
+                )
             }
             boxes.add(
                 BoxRow(
                     name = fields[0],
                     category = fields[1],
                     position = fields[2],
-                    permanentId = fields.getOrNull(3)?.takeIf { it.isNotBlank() }
+                    permanentId = fields.getOrNull(3)?.takeIf { it.isNotBlank() },
+                    sourceLine = numbered.line
                 )
             )
             index++
         }
 
         if (index >= lines.size ||
-            splitCsv(lines[index]) != listOf("sezione", ImportConfiguration.SECTION_OBJECTS)
+            splitCsv(lines[index].text) != listOf("sezione", ImportConfiguration.SECTION_OBJECTS)
         ) {
-            return Result.Failed(ImportConfiguration.CHECK_STRUCTURE)
+            val line = lines.getOrNull(index)?.line ?: 0
+            return Result.Failed(
+                check = ImportConfiguration.CHECK_STRUCTURE,
+                errors = listOf(
+                    ImportRowError(
+                        section = ImportConfiguration.SECTION_OBJECTS,
+                        line = line,
+                        reason = ImportConfiguration.CHECK_STRUCTURE
+                    )
+                )
+            )
         }
         index++
 
         if (index >= lines.size ||
-            splitCsv(lines[index]) != objectHeader
+            splitCsv(lines[index].text) != objectHeader
         ) {
-            return Result.Failed(ImportConfiguration.CHECK_STRUCTURE)
+            val line = lines.getOrNull(index)?.line ?: 0
+            return Result.Failed(
+                check = ImportConfiguration.CHECK_STRUCTURE,
+                errors = listOf(
+                    ImportRowError(
+                        section = ImportConfiguration.SECTION_OBJECTS,
+                        line = line,
+                        reason = ImportConfiguration.CHECK_STRUCTURE
+                    )
+                )
+            )
         }
         index++
 
         val objects = mutableListOf<ObjectRow>()
         while (index < lines.size) {
-            val fields = splitCsv(lines[index])
+            val numbered = lines[index]
+            val fields = splitCsv(numbered.text)
             if (fields.size != objectHeader.size) {
-                return Result.Failed(ImportConfiguration.CHECK_STRUCTURE)
+                return Result.Failed(
+                    check = ImportConfiguration.CHECK_STRUCTURE,
+                    errors = listOf(
+                        ImportRowError(
+                            section = ImportConfiguration.SECTION_OBJECTS,
+                            line = numbered.line,
+                            reason = ImportConfiguration.CHECK_STRUCTURE
+                        )
+                    )
+                )
             }
             if (fields[0].isBlank() || fields[1].isBlank()) {
-                return Result.Failed(ImportConfiguration.CHECK_REQUIRED)
+                return Result.Failed(
+                    check = ImportConfiguration.CHECK_REQUIRED,
+                    errors = listOf(
+                        ImportRowError(
+                            section = ImportConfiguration.SECTION_OBJECTS,
+                            line = numbered.line,
+                            reason = ImportConfiguration.CHECK_REQUIRED
+                        )
+                    )
+                )
             }
             objects.add(
                 ObjectRow(
@@ -147,7 +272,8 @@ class ImportFileInspector {
                     box = fields[1],
                     description = fields[2].takeIf { it.isNotBlank() },
                     quantity = fields[3].takeIf { it.isNotBlank() },
-                    objectPermanentId = fields.getOrNull(4)?.takeIf { it.isNotBlank() }
+                    objectPermanentId = fields.getOrNull(4)?.takeIf { it.isNotBlank() },
+                    sourceLine = numbered.line
                 )
             )
             index++

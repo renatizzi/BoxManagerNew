@@ -15,8 +15,10 @@ import com.example.boxmanagernew.data.repository.LocationRepositoryImpl
 import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
 import com.example.boxmanagernew.importdata.config.ImportConfiguration
 import com.example.boxmanagernew.importdata.inspect.ImportDependencyValidator
+import com.example.boxmanagernew.importdata.inspect.ImportErrorReportBuilder
 import com.example.boxmanagernew.importdata.inspect.ImportExtendedValidator
 import com.example.boxmanagernew.importdata.inspect.ImportFileInspector
+import com.example.boxmanagernew.importdata.inspect.ImportRowError
 import com.example.boxmanagernew.importdata.merge.ImportMergeApplier
 import com.example.boxmanagernew.importdata.merge.ImportMergePlanner
 import com.example.boxmanagernew.importdata.template.ImportTemplateBuilder
@@ -43,7 +45,9 @@ class ImportViewModel(
 
     data class UserMessage(
         val text: String,
-        val blockingError: Boolean = false
+        val blockingError: Boolean = false,
+        val errorReportBytes: ByteArray? = null,
+        val errorReportDefaultName: String = ""
     )
 
     private val _busy = MutableLiveData(false)
@@ -157,21 +161,32 @@ class ImportViewModel(
 
                 when {
                     inspected is ImportFileInspector.Result.Failed -> {
-                        _message.value = UserMessage(
-                            buildInspectFailure(inspected.check),
-                            blockingError = true
+                        _message.value = blockingRowReport(
+                            titleCheck = inspected.check,
+                            errors = inspected.errors.ifEmpty {
+                                listOf(
+                                    ImportRowError(
+                                        section = "",
+                                        line = 0,
+                                        reason = inspected.check
+                                    )
+                                )
+                            },
+                            footer = ImportConfiguration.importCancelled(appContext)
                         )
                     }
                     dataCheck is ImportExtendedValidator.Result.Failed -> {
-                        _message.value = UserMessage(
-                            buildDataFailure(dataCheck.message),
-                            blockingError = true
+                        _message.value = blockingRowReport(
+                            titleCheck = ImportConfiguration.CHECK_DATA,
+                            errors = dataCheck.errors,
+                            footer = ImportConfiguration.importCancelled(appContext)
                         )
                     }
                     dependencies is ImportDependencyValidator.Result.Failed -> {
-                        _message.value = UserMessage(
-                            buildDependencyFailure(dependencies.message),
-                            blockingError = true
+                        _message.value = blockingRowReport(
+                            titleCheck = null,
+                            errors = dependencies.errors,
+                            footer = ImportConfiguration.relationCancelled(appContext)
                         )
                     }
                     inspected is ImportFileInspector.Result.Ready -> {
@@ -376,6 +391,29 @@ class ImportViewModel(
         }
     }
 
+    private fun blockingRowReport(
+        titleCheck: String?,
+        errors: List<ImportRowError>,
+        footer: String
+    ): UserMessage {
+        val text = buildString {
+            if (!titleCheck.isNullOrBlank()) {
+                appendLine(
+                    ImportConfiguration.localizeCheck(appContext, titleCheck)
+                )
+            }
+            appendLine(ImportErrorReportBuilder.toScreenText(appContext, errors))
+            appendLine()
+            append(footer)
+        }
+        return UserMessage(
+            text = text,
+            blockingError = true,
+            errorReportBytes = ImportErrorReportBuilder.toCsvBytes(appContext, errors),
+            errorReportDefaultName = ImportErrorReportBuilder.fileName()
+        )
+    }
+
     private fun buildPreview(
         fileName: String,
         ready: ImportFileInspector.Result.Ready
@@ -386,47 +424,6 @@ class ImportViewModel(
             appendLine("${ImportConfiguration.reportRecordsRead(appContext)}: ${ready.recordsRead}")
             appendLine(appContext.getString(R.string.label_containers_count, ready.boxes.size))
             append(appContext.getString(R.string.label_objects_count, ready.objects.size))
-        }
-    }
-
-    private fun buildDataFailure(
-        message: String
-    ): String {
-
-        return buildString {
-            appendLine(
-                ImportConfiguration.localizeCheck(
-                    appContext,
-                    ImportConfiguration.CHECK_DATA
-                )
-            )
-            appendLine(
-                ImportConfiguration.localizeDependency(appContext, message)
-            )
-            appendLine()
-            append(ImportConfiguration.importCancelled(appContext))
-        }
-    }
-
-    private fun buildDependencyFailure(
-        message: String
-    ): String {
-
-        return buildString {
-            appendLine(ImportConfiguration.localizeDependency(appContext, message))
-            appendLine()
-            append(ImportConfiguration.relationCancelled(appContext))
-        }
-    }
-
-    private fun buildInspectFailure(
-        check: String
-    ): String {
-
-        return buildString {
-            appendLine(ImportConfiguration.localizeCheck(appContext, check))
-            appendLine()
-            append(ImportConfiguration.importCancelled(appContext))
         }
     }
 
