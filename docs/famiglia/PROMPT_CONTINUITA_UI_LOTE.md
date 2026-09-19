@@ -1,32 +1,23 @@
 # Prompt di continuità — lote UI trasversale (19/09/2026)
 
-**Identità:** una sola **BoxManager**. Test solo su `main`.  
-**Build:** **`v. 1.3.22`** (vc **26**).
+**CHIUSO** — SI Renato device **`1.3.22 ok`** (19/09/2026).
 
-## Checklist
+**Identità:** una sola **BoxManager**. Test solo su `main`.  
+**Build chiusa:** **`v. 1.3.22`** (vc **26**).
+
+## Checklist (CONVALIDATO)
 
 | # | ID | Scope | Stato |
 |---|-----|--------|--------|
-| 1 | **B-UTILITY-*** | Tile Utility a weight (griglia piena) | **1.3.20** |
-| 2 | **B-UI-BUTTONS-ACCESSO-RAPIDO** | ORDINA = theme Button 14sp | **1.3.19** SI |
-| 3–5 | QR PDF / mic / premium | | SI codice lote |
-| 6 | **QR BATCH Utility** | Dialog intro su Utility (neutro) → lista; ETICHETTE in selezione | **1.3.22** |
+| 1 | **B-UTILITY-*** | Tile Utility a weight / griglia 4×2 | **SI 1.3.22 ok** |
+| 2 | **B-UI-BUTTONS-ACCESSO-RAPIDO** | ORDINA = theme Button 14sp | **SI 1.3.19 ok** |
+| 3 | **B-QR-BATCH-*** | Nome BOX grassetto + codice più piccolo | **SI 1.3.22 ok** (lote) |
+| 4 | **B-VOICE-MIC-ACCIDENTAL** | Voice solo long-press | **SI 1.3.22 ok** (lote) |
+| 5 | **B-PREMIUM-UNIFY-PAGE** | Premium senza elenco funzioni | **SI 1.3.18** + lote |
+| 6 | **QR BATCH Utility** | Dialog intro Utility → lista; ETICHETTE in selezione | **SI 1.3.22 ok** |
 
----
+**Nota guida online:** Renato aggiorna il testo sul sito (punti forniti in chat 19/09); in-app Guida già allineata.
 
-## Ritest — topbar `v. 1.3.22`
+## Non riaprire
 
-1. `git checkout main` + `git pull` + Run **`playDebug`**
-2. Topbar **`v. 1.3.22`**
-3. Utility → **QR BATCH** → dialog (non riquadro rosso; ORDINA resta intatto) → OK → lista
-4. Seleziona schede → **ETICHETTE QR**
-5. Rispondi `1.3.22 ok` o elenco KO
-
----
-
-## Incolla
-
-```
-Continua lote UI da docs/famiglia/PROMPT_CONTINUITA_UI_LOTE.md.
-Identità: una sola BoxManager. Test telefono solo su main.
-```
+Zero codice su questa fetta senza nuovo SI Renato.

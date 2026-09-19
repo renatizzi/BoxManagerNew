@@ -11,19 +11,14 @@ Fonte viva: [PROMEMORIA](../famiglia/PROMEMORIA_INTERVENTI_TRASVERSALI.md) — *
 
 | ID | Indicazione |
 |----|-------------|
-| **B-UTILITY-BUTTON-HEIGHT** | Ridurre altezza bottoni Utility (niente scroll) — **Aperto** 18/09 |
-| **B-UTILITY-RIPRISTINA-VISIBLE** | Tasto Ripristina in fondo pagina, non visibile senza scroll — **Aperto** 18/09 |
-| **B-PREMIUM-UNIFY-PAGE** | Pagina premium unica (scaduta → CONDIVIDI/CODICE) — **Aperto** 18/09 |
-| **B-IDEA-OCR-COVER** | OCR Descrizione — **FATTO** in A3 (SI 18/09, 1.3.9 ok) |
-| **B-PLAY-DEX-R8** | Play DEX obfuscation 1%; enforcement feb 2027 — non bloccante oggi |
 | **B-CURSOR-CREDITS** | Ottimizzare sessioni Cursor (crediti) — **Aperto** 16/09 |
-| **B-UI-BUTTONS-ACCESSO-RAPIDO** | Bottoni stile Accesso rapido Dashboard — **Aperto** 16/09 |
 | **B-TEST-ISTRUZIONI-OPERATIVE** | Istruzioni operative obbligatorie su ogni test (SI 16/09) |
-| **B-QR-BATCH-CODE-FONT** | Stampa multietichette: carattere più piccolo per il codice — **Aperto** 16/09 |
-| **B-QR-BATCH-BOX-NAME** | Stampa multietichette: nome contenitore in grassetto sopra al codice — **Aperto** 16/09 |
+| **B-PLAY-DEX-R8** | Play DEX obfuscation 1%; enforcement feb 2027 — non bloccante oggi |
+| **B-IDEA-OCR-COVER** | OCR Descrizione — **FATTO** in A3 (SI 18/09, 1.3.9 ok) |
 | **B-ROTATE-FORM-DRAFT** | Rotazione in inserimento — **FATTO C1** 14/09 |
 | **B-PIANO-RILASCIO-RP** | **CONVALIDATO** — M3: [PROMPT_CONTINUITA_M3_MERGE_PLAY.md](../famiglia/PROMPT_CONTINUITA_M3_MERGE_PLAY.md) |
 | **B-QTY-KPI-SEARCH** | Quantità oggetto come possibile chiave KPI / query Ricerca avanzata (08/09) — vedi Promemoria |
+| *(lote UI 19/09)* | Utility / ORDINA / mic / premium / QR BATCH — **SI 1.3.22 ok** → [PROMPT_CONTINUITA_UI_LOTE.md](../famiglia/PROMPT_CONTINUITA_UI_LOTE.md) |
 | *(altre)* | M3 solo a test chiuso; P2 sync continuo; B-FAMILY-DOMAIN-ERR opzionale |
 
 ---

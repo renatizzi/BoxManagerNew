@@ -12,16 +12,10 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md).
 
 | ID | Indicazione |
 |----|-------------|
-| **B-UTILITY-BUTTON-HEIGHT** | Ridurre altezza bottoni Utility (niente scroll) — **IN CORSO** lote → [PROMPT_CONTINUITA_UI_LOTE.md](PROMPT_CONTINUITA_UI_LOTE.md) |
-| **B-UTILITY-RIPRISTINA-VISIBLE** | Tasto Ripristina visibile senza scroll — **IN CORSO** (stessa fetta) |
-| **B-PREMIUM-UNIFY-PAGE** | Pagina premium unica (scaduta → CONDIVIDI/CODICE) — **IN CORSO** lote UI |
-| **B-PLAY-DEX-R8** | Play DEX obfuscation 1%; enforcement feb 2027 — non bloccante oggi |
 | **B-CURSOR-CREDITS** | Ottimizzare sessioni Cursor (crediti) — **Aperto** 16/09 |
-| **B-UI-BUTTONS-ACCESSO-RAPIDO** | Caratteri bottoni «azione» = **Ordina** (testo 19/09) — **IN CORSO** lote UI |
-| **B-VOICE-MIC-ACCIDENTAL** | Evitare avvio involontario microfono — **IN CORSO** lote UI *(nuovo 19/09)* |
-| **B-QR-BATCH-CODE-FONT** | Stampa multietichette: carattere più piccolo per il codice — **IN CORSO** lote UI |
-| **B-QR-BATCH-BOX-NAME** | Stampa multietichette: nome contenitore in grassetto sopra al codice — **IN CORSO** lote UI |
+| **B-PLAY-DEX-R8** | Play DEX obfuscation 1%; enforcement feb 2027 — non bloccante oggi |
 | **B-QTY-KPI-SEARCH** | **CONGELATO** — zero codice finché SI apertura |
+| *(lote UI 19/09)* | Utility / ORDINA / mic / premium / QR BATCH — **SI 1.3.22 ok** → [PROMPT_CONTINUITA_UI_LOTE.md](PROMPT_CONTINUITA_UI_LOTE.md) |
 | *(altre)* | P2 sync continuo; B–C Export/Import avanzati — solo con SI |
 
 ---

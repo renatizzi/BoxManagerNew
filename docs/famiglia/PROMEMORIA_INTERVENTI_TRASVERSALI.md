@@ -3,7 +3,7 @@
 **Aggiornato:** 19/09/2026.  
 **A3 Foto — CHIUSO** (SI device 18/09, play **1.3.9 ok**) → [PROMPT_CONTINUITA_A3_FOTO.md](PROMPT_CONTINUITA_A3_FOTO.md).  
 **B–C Export/Import — CHIUSO** (SI Renato 19/09) → [PROMPT_CONTINUITA_BC_EXPORT.md](PROMPT_CONTINUITA_BC_EXPORT.md).  
-**Ingresso Utility UI / lote UI** → [PROMPT_CONTINUITA_UI_LOTE.md](PROMPT_CONTINUITA_UI_LOTE.md) (ritest unico a fine).  
+**Lote UI — CHIUSO** (SI device 19/09, play **1.3.22 ok**) → [PROMPT_CONTINUITA_UI_LOTE.md](PROMPT_CONTINUITA_UI_LOTE.md).  
 Ingresso sessione 07/09 → [PROMPT_CONTINUITA_07_09_DISCO_FOTO.md](PROMPT_CONTINUITA_07_09_DISCO_FOTO.md).  
 **Ingresso M3 / merge Play / roadmap** → [PROMPT_CONTINUITA_M3_MERGE_PLAY.md](PROMPT_CONTINUITA_M3_MERGE_PLAY.md).  
 **Ingresso cutover 1.3 (nuova sessione)** → [PROMPT_CONTINUITA_M3_CUTOVER.md](PROMPT_CONTINUITA_M3_CUTOVER.md).  
@@ -97,15 +97,15 @@ Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino
 
 | ID | Data | Indicazione | Stato |
 |----|------|-------------|-------|
-| **B-VOICE-MIC-ACCIDENTAL** | 19/09/2026 | Trovare una soluzione per evitare che in fase di editing, per i campi con input anche vocale, parta involontariamente la registrazione se si sfiora il microfono | **SI codice 1.3.17** — ritest con lote |
-| **B-UTILITY-BUTTON-HEIGHT** | 18/09/2026 | Ridurre l'altezza dei bottoni di utility in modo da evitare lo scrolling | **IN CORSO** — tile a weight griglia 4×2, play **1.3.20** |
-| **B-UTILITY-RIPRISTINA-VISIBLE** | 18/09/2026 | Il tasto Ripristina si trova in fondo alla pagina e senza scrolling non si vede | **IN CORSO** — stessa fetta **1.3.20** |
-| **B-PREMIUM-UNIFY-PAGE** | 18/09/2026 | Pagina premium unica: sottotitolo «Funzione Premium scaduta»; corpo prova scaduta → CONDIVIDI / CODICE; enfasi «Se hai un CODICE inseriscilo qui sotto» + campo Codice; tasti uguali. Scheletro unico + eventuale riga per funzione. | **SI codice 1.3.18** — ritest OK Renato 19/09 |
+| **B-VOICE-MIC-ACCIDENTAL** | 19/09/2026 | Trovare una soluzione per evitare che in fase di editing, per i campi con input anche vocale, parta involontariamente la registrazione se si sfiora il microfono | **SI 1.3.22 ok** Renato 19/09 |
+| **B-UTILITY-BUTTON-HEIGHT** | 18/09/2026 | Ridurre l'altezza dei bottoni di utility in modo da evitare lo scrolling | **SI 1.3.22 ok** Renato 19/09 — tile weight griglia 4×2 |
+| **B-UTILITY-RIPRISTINA-VISIBLE** | 18/09/2026 | Il tasto Ripristina si trova in fondo alla pagina e senza scrolling non si vede | **SI 1.3.22 ok** Renato 19/09 |
+| **B-PREMIUM-UNIFY-PAGE** | 18/09/2026 | Pagina premium unica: sottotitolo «Funzione Premium scaduta»; corpo prova scaduta → CONDIVIDI / CODICE; enfasi «Se hai un CODICE inseriscilo qui sotto» + campo Codice; tasti uguali. Scheletro unico + eventuale riga per funzione. | **SI 1.3.22 ok** (codice 1.3.18; lote chiuso) |
 | **B-CURSOR-CREDITS** | 16/09/2026 | Rinnovato abbonamento Cursor: ottimizzare l’interazione per non sprecare crediti (mese scorso esauriti in ~1 settimana). | **Aperto** — regole operative sotto; SI Renato su eventuale regola agente permanente |
 | **B-UI-BUTTONS-ACCESSO-RAPIDO** | 16/09/2026 *(testo aggiornato 19/09)* | Verificare che i caratteri di tutti gli altri bottoni «azione» abbiano caratteri uguali a quelli usati in **Ordina** | **SI 1.3.19 ok** Renato 19/09 |
 | **B-TEST-ISTRUZIONI-OPERATIVE** | 16/09/2026 | Ogni richiesta di test telefono deve essere accompagnata da istruzioni operative sulle attività di Renato (passi concreti); escludere indicazioni generiche e vaghe. | **SI Renato 16/09** — regola agente: `.cursor/rules/test-telefono-main.mdc`, [SOLO_TU.md](SOLO_TU.md) |
-| **B-QR-BATCH-CODE-FONT** | 16/09/2026 | Usare un carattere più piccolo per il codice riportato nella stampa multietichette (al momento i numeri si sovrappongono e nel caso si dovessero tagliare, non è chiaro quale sia la linea di demarcazione) | **IN CORSO** — lote UI 19/09 |
-| **B-QR-BATCH-BOX-NAME** | 16/09/2026 | Sopra al codice inserire SEMPRE il nome del contenitore (IN GRASSETTO) per non fare confusione quando le etichette devono essere incollate | **IN CORSO** — lote UI 19/09 |
+| **B-QR-BATCH-CODE-FONT** | 16/09/2026 | Usare un carattere più piccolo per il codice riportato nella stampa multietichette (al momento i numeri si sovrappongono e nel caso si dovessero tagliare, non è chiaro quale sia la linea di demarcazione) | **SI 1.3.22 ok** Renato 19/09 |
+| **B-QR-BATCH-BOX-NAME** | 16/09/2026 | Sopra al codice inserire SEMPRE il nome del contenitore (IN GRASSETTO) per non fare confusione quando le etichette devono essere incollate | **SI 1.3.22 ok** Renato 19/09 |
 | **B-ROTATE-FORM-DRAFT** | 10/09/2026 | In inserimento dati (qualsiasi elemento) la stringa digitata **sparisce** se, prima della conferma, si ruota lo schermo. | **FATTO C1** SI Renato 14/09 — `configChanges` su Main/BoxDetail/Categorie/Luoghi; merge `main`; build **1.3.1** |
 | **B-AUTO-FILES-LIST** | 14/09/2026 | Regressione: file **automatici** (`PRE_RESTORE_`, `PRE_IMPORT_`) non in lista Ripristino dell’app; restano con **Sfoglia**. | **FATTO** 14/09 — `BackupConfiguration.isAutomaticBackupFileName` + filtro sempre attivo; play **1.3.2** |
 | **B-PREMIUM-POST-12** | 10/09/2026 | Principio: post-1.2 = premium salvo eccezioni. **Free:** IT/EN, Dark, fix, Guida. **Premium:** archivio condiviso + **Disco di rete** (correzione: non free). | **SI Renato 10/09** — docs RP/ingresso M3 aggiornati; gate codice Disco a M3; patch Nota 4.23 |
@@ -116,7 +116,7 @@ Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino
 | **B-PIANO-RILASCIO-RP** | 08/09/2026 | Piano strutturato: rilascio funzioni già implementate; Play Console; Roadmap ufficiale; priorità/premium; verifica Nota vs analisi. | **CONVALIDATO** — Nota 9.2 quadro 08/09 + Allegati **4.21**+**4.23** (SI aggiornamento Nota 08/09) |
 | **B-QTY-KPI-SEARCH** | 08/09/2026 | Quantità oggetti (facoltativa) come **chiave** per nuovi KPI e nuove query Ricerca avanzata. | **CONGELATO** — [REQUISITI_QTY_KPI_SEARCH.md](REQUISITI_QTY_KPI_SEARCH.md); zero codice finché SI apertura |
 
-**Chiuso di recente:** **B-SEL-CARTELLA** — CONVALIDATO (Nota 9.2 Allegato **4.22**). **Foto oggetto** — CONVALIDA aggiornamento documento 07/09/2026 ([REQUISITI](REQUISITI_FOTO_OGGETTO.md)).
+**Chiuso di recente:** lote UI **1.3.22 ok** (Utility tile, QR BATCH Utility, ORDINA, mic, premium, QR PDF). **B-SEL-CARTELLA** — CONVALIDATO (Nota 9.2 Allegato **4.22**). **Foto oggetto** — CONVALIDA aggiornamento documento 07/09/2026 ([REQUISITI](REQUISITI_FOTO_OGGETTO.md)).
 
 ---
 
