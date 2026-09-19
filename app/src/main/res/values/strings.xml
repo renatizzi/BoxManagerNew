@@ -166,6 +166,7 @@
     <string name="page_qr_batch_title">Etichette QR</string>
     <string name="page_qr_batch_subtitle">Stampa etichette secondo il formato selezionato</string>
     <string name="menu_qr_batch_labels">ETICHETTE QR</string>
+    <string name="msg_qr_batch_select_hint">Per le etichette QR: tocca l\'area testo di una o più schede Contenitore (non l\'icona a sinistra), poi premi ETICHETTE QR.</string>
     <string name="qr_batch_summary">Totale etichette n. %1$d</string>
     <string name="qr_batch_excluded">Esclusi (senza codice): %1$d</string>
     <string name="qr_batch_containers_title">Contenitori</string>
@@ -353,7 +354,7 @@
 
     <!-- Settings: Archivio completo (debug / unlock) -->
     <string name="premium_settings_unlock_title">Archivio completo (prova)</string>
-    <string name="premium_settings_unlock_hint">Solo in questa installazione di prova: attiva per usare ricerca avanzata, QR, import ed export senza limiti. Disattiva e usa i tasti sotto per simulare fine prova o ricominciare il periodo di prova.</string>
+    <string name="premium_settings_unlock_hint">Solo in questa installazione di prova: attiva per usare Archivio completo senza limiti. Disattiva e usa i tasti sotto per simulare fine prova o ricominciare il periodo di prova.</string>
     <string name="premium_settings_expire_trial">Simula fine prova</string>
     <string name="premium_settings_restart_trial">Ricomincia il periodo di prova</string>
     <string name="premium_settings_params_title">Parametri Archivio completo</string>
@@ -364,7 +365,7 @@
     <string name="premium_settings_param_bonus">Rinnovo per condivisione (giorni)</string>
     <string name="premium_settings_param_friends">Amici da condividere</string>
     <string name="premium_settings_code_title">Archivio completo</string>
-    <string name="premium_settings_code_hint">Inserisci il codice tester o amico per sbloccare le funzioni avanzate.</string>
+    <string name="premium_settings_code_hint">Inserisci il codice tester o amico per sbloccare Archivio completo.</string>
     <string name="premium_settings_code_active">Archivio completo attivo su questo dispositivo.</string>
     <string name="premium_unlock_code_hint">Codice</string>
     <string name="premium_button_redeem">USA CODICE</string>
@@ -453,8 +454,8 @@
     <string name="premium_pitch_object_photo_example">Galleria o scatto → miniatura in lista → tap per ingrandire</string>
     <string name="premium_example_prefix"> (Esempio: </string>
     <string name="premium_example_suffix">).</string>
-    <string name="premium_share_hint_one">Il periodo di prova di %1$d giorni è terminato. Condividi BoxManager con un amico: ottieni altri %2$d giorni su ricerca avanzata, QR, import ed export.</string>
-    <string name="premium_share_hint_many">Il periodo di prova di %1$d giorni è terminato. Condividi BoxManager con %2$d amici: ottieni altri %3$d giorni su ricerca avanzata, QR, import ed export.</string>
+    <string name="premium_share_hint_one">Il periodo di prova di %1$d giorni è terminato. Condividi BoxManager con un amico: ottieni altri %2$d giorni di Archivio completo.</string>
+    <string name="premium_share_hint_many">Il periodo di prova di %1$d giorni è terminato. Condividi BoxManager con %2$d amici: ottieni altri %3$d giorni di Archivio completo.</string>
     <string name="premium_share_granted">Hai altri %1$d giorni di Archivio completo.</string>
     <string name="premium_share_progress">Condivisione %1$d di %2$d. Continua con un altro amico.</string>
     <string name="premium_trial_ended">Il periodo di prova è terminato.</string>
