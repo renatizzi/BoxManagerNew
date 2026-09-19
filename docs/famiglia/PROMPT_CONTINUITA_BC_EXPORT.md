@@ -34,7 +34,7 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md).
 | **B1** | **FATTO** SI `1.3.10 ok` |
 | **B2** | **FATTO** SI `1.3.11 ok` |
 | **B3** | **FATTO** SI `1.3.13 ok` |
-| **B4** | Report errori riga-per-riga (R6/G1) → ritest **1.3.14** |
+| **B4** | Report errori → ritest **1.3.14** (istruzioni riviste 19/09) |
 
 ---
 
@@ -47,16 +47,18 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md).
 | **B3** | Import: validazione estesa | R5 | **FATTO** `1.3.13 ok` |
 | **B4** | Import: report errori riga-per-riga (schermata + CSV `IMPORT_ERRORI_…`) | R6 | **IN CORSO** → ritest **1.3.14** |
 
+**Nota ritest:** il campo Quantità **in app** è solo numerico (`inputType=number`) — non si digita `abc` lì. Il KO quantità alfabetica si prepara **nel file CSV** (editor testo / foglio), non nel form Oggetto. Fixture pronta: `docs/famiglia/fixtures/IMPORT_TEST_ERRORI.csv`.
+
 ---
 
 ## Ritest B4 (dopo merge `main`) — topbar `v. 1.3.14`
 
 1. `git checkout main` + `git pull origin main` + Run **`playDebug`**
 2. Topbar **`v. 1.3.14`**
-3. Importa CSV con quantità `abc` → blocco; in messaggio: sezione · riga · motivo
-4. Dialog «Salvare il report dettagliato?» → SI → file `IMPORT_ERRORI_…csv` in cartella Esporta/Importa
-5. CSV con due errori (es. quantità + nome lungo) → elenco con più righe
-6. CSV valido → import ok come prima
+3. Copia sul telefono il file `docs/famiglia/fixtures/IMPORT_TEST_ERRORI.csv` (dal PC dopo pull), **oppure** apri un CSV di import con **editor di testo** (non il form Quantità in app) e metti nome contenitore con **più di 100 caratteri** e/o quantità `abc` / `-1`
+4. Utility → **Importa dati** → scegli quel CSV → **blocco**; messaggio con **sezione · riga · motivo** (almeno un errore)
+5. Dialog «Salvare il report dettagliato?» → SI → file `IMPORT_ERRORI_…csv`
+6. CSV valido (Modello / export) → import ok come prima
 7. Rispondi `1.3.14 ok` o KO
 
 ---
