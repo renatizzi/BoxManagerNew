@@ -12,8 +12,8 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md).
 
 | ID | Indicazione |
 |----|-------------|
-| **B-UTILITY-BUTTON-HEIGHT** | Ridurre altezza bottoni Utility (niente scroll) — **Aperto** 18/09 |
-| **B-UTILITY-RIPRISTINA-VISIBLE** | Tasto Ripristina in fondo pagina, non visibile senza scroll — **Aperto** 18/09 |
+| **B-UTILITY-BUTTON-HEIGHT** | Ridurre altezza bottoni Utility (niente scroll) — **IN CORSO** 19/09 → [PROMPT_CONTINUITA_UTILITY_UI.md](PROMPT_CONTINUITA_UTILITY_UI.md) |
+| **B-UTILITY-RIPRISTINA-VISIBLE** | Tasto Ripristina visibile senza scroll — **IN CORSO** (stessa fetta) |
 | **B-PREMIUM-UNIFY-PAGE** | Pagina premium unica (scaduta → CONDIVIDI/CODICE) — **Aperto** 18/09 |
 | **B-PLAY-DEX-R8** | Play DEX obfuscation 1%; enforcement feb 2027 — non bloccante oggi |
 | **B-CURSOR-CREDITS** | Ottimizzare sessioni Cursor (crediti) — **Aperto** 16/09 |
