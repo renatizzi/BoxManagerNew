@@ -1,6 +1,5 @@
 package com.example.boxmanagernew.ui.common
 
-import android.graphics.Typeface
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -16,9 +15,12 @@ object UiUtils {
 
     private const val SORT_ASC = "▲"
     private const val SORT_DESC = "▼"
-    private const val SORT_TEXT_SIZE = 18f
     private const val DATE_PATTERN = "dd/MM/yyyy HH:mm"
 
+    /**
+     * Solo etichetta + freccia. Tipografia = [BoxManager.Button] (14sp bold allCaps),
+     * senza override runtime di textSize/typeface (causava ORDINA ≠ SPOSTA/ELIMINA).
+     */
     fun updateSortButton(
         button: Button,
         isAscending: Boolean
@@ -32,14 +34,6 @@ object UiUtils {
             button.context.getString(
                 R.string.common_sort
             ) + " $arrow"
-
-        button.textSize =
-            SORT_TEXT_SIZE
-
-        button.setTypeface(
-            null,
-            Typeface.BOLD
-        )
 
         button.backgroundTintList =
             android.content.res.ColorStateList.valueOf(
