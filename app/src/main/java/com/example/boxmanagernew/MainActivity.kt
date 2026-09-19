@@ -96,6 +96,9 @@ class MainActivity : BaseActivity() {
     private var ignoreSearchChanges =
         false
 
+    /** Messaggio contestuale da non cancellare quando hasHiddenSelections → false (es. QR BATCH). */
+    private var stickyContextMessage: String? = null
+
     private lateinit var objectRepository: ObjectRepositoryImpl
     private lateinit var exportPersister: ViewExportPersister
 
@@ -154,12 +157,12 @@ class MainActivity : BaseActivity() {
 
             applyIncomingSearch()
 
-            applyQrBatchPickIntent(intent)
-
         } else {
 
             restoreAdvancedSearchPresentation()
         }
+
+        applyQrBatchPickIntent(intent)
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -173,9 +176,9 @@ class MainActivity : BaseActivity() {
             return
         }
         intent.removeExtra(EXTRA_QR_BATCH_PICK)
-        showContextMessage(
+        stickyContextMessage =
             getString(R.string.msg_qr_batch_select_containers)
-        )
+        showContextMessage(stickyContextMessage!!)
     }
 
     override fun onRestoreInstanceState(
@@ -422,7 +425,12 @@ class MainActivity : BaseActivity() {
 
             } else {
 
-                hideContextMessage()
+                val sticky = stickyContextMessage
+                if (sticky != null) {
+                    showContextMessage(sticky)
+                } else {
+                    hideContextMessage()
+                }
             }
         }
 
@@ -1184,6 +1192,7 @@ class MainActivity : BaseActivity() {
 
         hideKeyboard(editSearch)
 
+        stickyContextMessage = null
         hideContextMessage()
     }
 
@@ -1234,6 +1243,7 @@ class MainActivity : BaseActivity() {
             ).show()
             return
         }
+        stickyContextMessage = null
         ArchivioCompletoNav.start(
             this,
             PremiumFeature.QR_LABEL,

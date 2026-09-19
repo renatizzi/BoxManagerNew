@@ -1,7 +1,7 @@
 # Prompt di continuità — lote UI trasversale (19/09/2026)
 
 **Identità:** una sola **BoxManager**. Test solo su `main`.  
-**Build:** **`v. 1.3.20`** (vc **24**).
+**Build:** **`v. 1.3.21`** (vc **25**).
 
 ## Checklist
 
