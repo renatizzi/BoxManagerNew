@@ -137,6 +137,7 @@ object QuickStartGuideCopy {
             add(context.getString(R.string.guide_utility_network_folder))
             add(context.getString(R.string.guide_utility_import))
             add(context.getString(R.string.guide_utility_qr))
+            add(context.getString(R.string.guide_utility_qr_batch))
             if (includeFamilyBeta) {
                 add(context.getString(R.string.guide_utility_family_share))
                 add(context.getString(R.string.guide_utility_family_merge))

@@ -97,12 +97,12 @@ Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino
 
 | ID | Data | Indicazione | Stato |
 |----|------|-------------|-------|
-| **B-VOICE-MIC-ACCIDENTAL** | 19/09/2026 | Trovare una soluzione per evitare che in fase di editing, per i campi con input anche vocale, parta involontariamente la registrazione se si sfiora il microfono | **Aperto** |
-| **B-UTILITY-BUTTON-HEIGHT** | 18/09/2026 | Ridurre l'altezza dei bottoni di utility in modo da evitare lo scrolling | **IN CORSO** — tile 92dp, play **1.3.16** (lote UI; ritest unico a fine) |
-| **B-UTILITY-RIPRISTINA-VISIBLE** | 18/09/2026 | Il tasto Ripristina si trova in fondo alla pagina e senza scrolling non si vede | **IN CORSO** — stessa fetta altezza tile |
-| **B-PREMIUM-UNIFY-PAGE** | 18/09/2026 | Pagina premium unica: sottotitolo «Funzione Premium scaduta»; corpo prova scaduta → CONDIVIDI / CODICE; enfasi «Se hai un CODICE inseriscilo qui sotto» + campo Codice; tasti uguali. Scheletro unico + eventuale riga per funzione. | **IN CORSO** — lote UI 19/09 (SI sequenza + ritest unico a fine) |
+| **B-VOICE-MIC-ACCIDENTAL** | 19/09/2026 | Trovare una soluzione per evitare che in fase di editing, per i campi con input anche vocale, parta involontariamente la registrazione se si sfiora il microfono | **SI codice 1.3.17** — ritest con lote |
+| **B-UTILITY-BUTTON-HEIGHT** | 18/09/2026 | Ridurre l'altezza dei bottoni di utility in modo da evitare lo scrolling | **IN CORSO** — tile a weight griglia 4×2, play **1.3.20** |
+| **B-UTILITY-RIPRISTINA-VISIBLE** | 18/09/2026 | Il tasto Ripristina si trova in fondo alla pagina e senza scrolling non si vede | **IN CORSO** — stessa fetta **1.3.20** |
+| **B-PREMIUM-UNIFY-PAGE** | 18/09/2026 | Pagina premium unica: sottotitolo «Funzione Premium scaduta»; corpo prova scaduta → CONDIVIDI / CODICE; enfasi «Se hai un CODICE inseriscilo qui sotto» + campo Codice; tasti uguali. Scheletro unico + eventuale riga per funzione. | **SI codice 1.3.18** — ritest OK Renato 19/09 |
 | **B-CURSOR-CREDITS** | 16/09/2026 | Rinnovato abbonamento Cursor: ottimizzare l’interazione per non sprecare crediti (mese scorso esauriti in ~1 settimana). | **Aperto** — regole operative sotto; SI Renato su eventuale regola agente permanente |
-| **B-UI-BUTTONS-ACCESSO-RAPIDO** | 16/09/2026 *(testo aggiornato 19/09)* | Verificare che i caratteri di tutti gli altri bottoni «azione» abbiano caratteri uguali a quelli usati in **Ordina** | **IN CORSO** — lote UI 19/09 |
+| **B-UI-BUTTONS-ACCESSO-RAPIDO** | 16/09/2026 *(testo aggiornato 19/09)* | Verificare che i caratteri di tutti gli altri bottoni «azione» abbiano caratteri uguali a quelli usati in **Ordina** | **SI 1.3.19 ok** Renato 19/09 |
 | **B-TEST-ISTRUZIONI-OPERATIVE** | 16/09/2026 | Ogni richiesta di test telefono deve essere accompagnata da istruzioni operative sulle attività di Renato (passi concreti); escludere indicazioni generiche e vaghe. | **SI Renato 16/09** — regola agente: `.cursor/rules/test-telefono-main.mdc`, [SOLO_TU.md](SOLO_TU.md) |
 | **B-QR-BATCH-CODE-FONT** | 16/09/2026 | Usare un carattere più piccolo per il codice riportato nella stampa multietichette (al momento i numeri si sovrappongono e nel caso si dovessero tagliare, non è chiaro quale sia la linea di demarcazione) | **IN CORSO** — lote UI 19/09 |
 | **B-QR-BATCH-BOX-NAME** | 16/09/2026 | Sopra al codice inserire SEMPRE il nome del contenitore (IN GRASSETTO) per non fare confusione quando le etichette devono essere incollate | **IN CORSO** — lote UI 19/09 |

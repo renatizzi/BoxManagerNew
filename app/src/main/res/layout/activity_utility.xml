@@ -26,20 +26,22 @@
         <LinearLayout
             android:id="@+id/contentContainer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:padding="16dp">
 
             <!-- Riga 1: Backup | Ripristino -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:minHeight="72dp"
                 android:orientation="horizontal">
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/btnBackup"
                     android:layout_width="0dp"
-                    android:layout_height="92dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:layout_margin="6dp"
                     android:clickable="true"
@@ -63,7 +65,7 @@
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/btnRestore"
                     android:layout_width="0dp"
-                    android:layout_height="92dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:layout_margin="6dp"
                     android:clickable="true"
@@ -86,16 +88,18 @@
 
             </LinearLayout>
 
-            <!-- Riga 2: Importa | Esporta (R3 B–C / T5; ≠ Backup) -->
+            <!-- Riga 2: Importa | Esporta -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:minHeight="72dp"
                 android:orientation="horizontal">
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/btnImport"
                     android:layout_width="0dp"
-                    android:layout_height="92dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:layout_margin="6dp"
                     android:clickable="true"
@@ -119,7 +123,7 @@
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/btnExport"
                     android:layout_width="0dp"
-                    android:layout_height="92dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:layout_margin="6dp"
                     android:clickable="true"
@@ -142,17 +146,19 @@
 
             </LinearLayout>
 
-            <!-- Riga 3: QR | Condividi (play) oppure spacer -->
+            <!-- Riga 3: Codice QR | QR BATCH -->
             <LinearLayout
-                android:id="@+id/rowQrFamily"
+                android:id="@+id/rowQrBatch"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:minHeight="72dp"
                 android:orientation="horizontal">
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/btnQr"
                     android:layout_width="0dp"
-                    android:layout_height="92dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:layout_margin="6dp"
                     android:clickable="true"
@@ -173,10 +179,45 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
-                <View
-                    android:id="@+id/spacerQrRow"
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/btnQrBatch"
                     android:layout_width="0dp"
-                    android:layout_height="92dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_margin="6dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="@color/elevated_surface"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="5dp"
+                    app:strokeWidth="0dp">
+
+                    <TextView
+                        android:id="@+id/textQrBatch"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="@string/utility_qr_batch"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+            <!-- Riga 4: Condividi (play) | Cestino -->
+            <LinearLayout
+                android:id="@+id/rowTrash"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:minHeight="72dp"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/spacerTrashRow"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:layout_margin="6dp"
                     android:visibility="gone" />
@@ -184,7 +225,7 @@
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/btnFamilyCatalog"
                     android:layout_width="0dp"
-                    android:layout_height="92dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:layout_margin="6dp"
                     android:clickable="true"
@@ -206,26 +247,10 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
-            </LinearLayout>
-
-            <!-- Riga 4: Cestino ultimo (A2) -->
-            <LinearLayout
-                android:id="@+id/rowTrash"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <View
-                    android:id="@+id/spacerTrashRow"
-                    android:layout_width="0dp"
-                    android:layout_height="92dp"
-                    android:layout_weight="1"
-                    android:layout_margin="6dp" />
-
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/btnTrash"
                     android:layout_width="0dp"
-                    android:layout_height="92dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:layout_margin="6dp"
                     android:clickable="true"

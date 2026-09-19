@@ -20,8 +20,8 @@ android {
         applicationId = "it.renatizzi.boxmanager"
         minSdk = 24
         targetSdk = 36
-        versionCode = 23
-        versionName = "1.3.19"
+        versionCode = 24
+        versionName = "1.3.20"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -44,9 +44,9 @@ android {
     productFlavors {
         create("play") {
             dimension = "distribution"
-            // 19/09: 1.3.19 — ORDINA senza override textSize (theme BoxManager.Button). vc 23.
-            versionCode = 23
-            versionName = "1.3.19"
+            // 19/09: 1.3.20 — Utility QR BATCH + tile weight + ETICHETTE in selezione. vc 24.
+            versionCode = 24
+            versionName = "1.3.20"
             buildConfigField("boolean", "FAMILY_BETA", "true")
         }
         create("famiglia") {

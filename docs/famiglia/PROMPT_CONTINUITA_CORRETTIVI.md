@@ -12,14 +12,14 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) — sezione **Che
 
 | ID | Indicazione |
 |----|-------------|
-| **B-UTILITY-BUTTON-HEIGHT** | Ridurre altezza bottoni Utility (niente scroll) — **IN CORSO** lote → [PROMPT_CONTINUITA_UI_LOTE.md](PROMPT_CONTINUITA_UI_LOTE.md) |
-| **B-UTILITY-RIPRISTINA-VISIBLE** | Tasto Ripristina visibile senza scroll — **IN CORSO** (stessa fetta) |
-| **B-PREMIUM-UNIFY-PAGE** | Pagina premium unica — **IN CORSO** lote UI |
+| **B-UTILITY-BUTTON-HEIGHT** | Tile Utility a weight / griglia piena — **IN CORSO** **1.3.20** → [PROMPT_CONTINUITA_UI_LOTE.md](PROMPT_CONTINUITA_UI_LOTE.md) |
+| **B-UTILITY-RIPRISTINA-VISIBLE** | Ripristina in griglia senza buco — **IN CORSO** **1.3.20** |
+| **B-PREMIUM-UNIFY-PAGE** | Pagina premium unica — **SI codice 1.3.18** |
 | **B-IDEA-OCR-COVER** | OCR Descrizione — **FATTO** in A3 (SI device 18/09, 1.3.9 ok) |
 | **B-PLAY-DEX-R8** | Play DEX obfuscation 1%; enforcement feb 2027 — non bloccante oggi |
 | **B-CURSOR-CREDITS** | Ottimizzare sessioni Cursor (crediti) — **Aperto** 16/09 |
-| **B-UI-BUTTONS-ACCESSO-RAPIDO** | Caratteri bottoni «azione» = **Ordina** (testo 19/09) — **IN CORSO** lote UI |
-| **B-VOICE-MIC-ACCIDENTAL** | Evitare avvio involontario microfono — **IN CORSO** lote UI *(nuovo 19/09)* |
+| **B-UI-BUTTONS-ACCESSO-RAPIDO** | Caratteri = Ordina — **SI 1.3.19 ok** |
+| **B-VOICE-MIC-ACCIDENTAL** | Mic long-press — **SI codice 1.3.17** |
 | **B-TEST-ISTRUZIONI-OPERATIVE** | Test telefono: istruzioni operative obbligatorie (SI 16/09) |
 | **B-QR-BATCH-CODE-FONT** | Multietichette: carattere codice più piccolo — **IN CORSO** lote UI |
 | **B-QR-BATCH-BOX-NAME** | Multietichette: nome contenitore grassetto sopra codice — **IN CORSO** lote UI |

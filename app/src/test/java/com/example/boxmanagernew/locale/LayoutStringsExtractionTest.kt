@@ -80,8 +80,8 @@ class LayoutStringsExtractionTest {
         assertEquals("Move", stringEn("menu_move"))
         assertEquals("Quick guide", stringEn("guide_page_title"))
         assertEquals("Guida rapida", stringIt("guide_page_title"))
-        assertEquals("Advanced feature", stringEn("premium_page_subtitle"))
-        assertEquals("Funzione avanzata", stringIt("premium_page_subtitle"))
+        assertEquals("Premium feature expired", stringEn("premium_page_subtitle"))
+        assertEquals("Funzione Premium scaduta", stringIt("premium_page_subtitle"))
         assertEquals("SHARE", stringEn("premium_button_share"))
         assertEquals("CONDIVIDI", stringIt("premium_button_share"))
     }

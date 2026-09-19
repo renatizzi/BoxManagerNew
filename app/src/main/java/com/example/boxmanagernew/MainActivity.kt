@@ -60,6 +60,18 @@ import com.example.boxmanagernew.storage.StorageFolderPicker
 
 class MainActivity : BaseActivity() {
 
+    companion object {
+        const val EXTRA_QR_BATCH_PICK = "qr_batch_pick"
+
+        fun intentQrBatchPick(context: Context): Intent =
+            Intent(context, MainActivity::class.java).apply {
+                flags =
+                    Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                        Intent.FLAG_ACTIVITY_SINGLE_TOP
+                putExtra(EXTRA_QR_BATCH_PICK, true)
+            }
+    }
+
     private lateinit var viewModel: BoxViewModel
     private lateinit var adapter: BoxAdapter
 
@@ -142,10 +154,28 @@ class MainActivity : BaseActivity() {
 
             applyIncomingSearch()
 
+            applyQrBatchPickIntent(intent)
+
         } else {
 
             restoreAdvancedSearchPresentation()
         }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        applyQrBatchPickIntent(intent)
+    }
+
+    private fun applyQrBatchPickIntent(intent: Intent?) {
+        if (intent?.getBooleanExtra(EXTRA_QR_BATCH_PICK, false) != true) {
+            return
+        }
+        intent.removeExtra(EXTRA_QR_BATCH_PICK)
+        showContextMessage(
+            getString(R.string.msg_qr_batch_select_containers)
+        )
     }
 
     override fun onRestoreInstanceState(
