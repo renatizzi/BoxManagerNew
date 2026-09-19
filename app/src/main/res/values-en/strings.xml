@@ -167,6 +167,7 @@
     <string name="page_qr_batch_title">QR labels</string>
     <string name="page_qr_batch_subtitle">Print labels using the selected format</string>
     <string name="menu_qr_batch_labels">QR LABELS</string>
+    <string name="msg_qr_batch_select_hint">For QR labels: tap the text area of one or more Container cards (not the icon on the left), then press QR LABELS.</string>
     <string name="qr_batch_summary">Total labels n. %1$d</string>
     <string name="qr_batch_excluded">Excluded (no code): %1$d</string>
     <string name="qr_batch_containers_title">Containers</string>
@@ -354,7 +355,7 @@
 
     <!-- Settings: full archive (debug / unlock) -->
     <string name="premium_settings_unlock_title">Full archive (trial)</string>
-    <string name="premium_settings_unlock_hint">Only in this trial install: turn on to use advanced search, QR, import and export without limits. Turn off and use the buttons below to simulate end of trial or restart the trial period.</string>
+    <string name="premium_settings_unlock_hint">Only in this trial install: turn on to use Full archive without limits. Turn off and use the buttons below to simulate end of trial or restart the trial period.</string>
     <string name="premium_settings_expire_trial">Simulate end of trial</string>
     <string name="premium_settings_restart_trial">Restart trial period</string>
     <string name="premium_settings_params_title">Full archive parameters</string>
@@ -454,8 +455,8 @@
     <string name="premium_pitch_object_photo_example">Gallery or camera → list thumbnail → tap to enlarge</string>
     <string name="premium_example_prefix"> (Example: </string>
     <string name="premium_example_suffix">).</string>
-    <string name="premium_share_hint_one">The %1$d-day trial has ended. Share BoxManager with a friend: get another %2$d days on advanced search, QR, import and export.</string>
-    <string name="premium_share_hint_many">The %1$d-day trial has ended. Share BoxManager with %2$d friends: get another %3$d days on advanced search, QR, import and export.</string>
+    <string name="premium_share_hint_one">The %1$d-day trial has ended. Share BoxManager with a friend: get another %2$d days of Full archive.</string>
+    <string name="premium_share_hint_many">The %1$d-day trial has ended. Share BoxManager with %2$d friends: get another %3$d days of Full archive.</string>
     <string name="premium_share_granted">You have another %1$d days of Full archive.</string>
     <string name="premium_share_progress">Sharing %1$d of %2$d. Continue with another friend.</string>
     <string name="premium_trial_ended">The trial period has ended.</string>

@@ -136,7 +136,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:minHeight="44dp"
                 android:text="@string/common_move" />
 
             <Space
@@ -148,20 +147,19 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:minHeight="44dp"
                 android:text="@string/common_delete" />
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btnQrSelected"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:minHeight="44dp"
-            android:text="@string/menu_qr_batch_labels" />
-
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btnQrSelected"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/menu_qr_batch_labels" />
 
     <!-- LISTA -->
     <androidx.recyclerview.widget.RecyclerView

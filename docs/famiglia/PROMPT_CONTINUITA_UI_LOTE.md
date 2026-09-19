@@ -3,7 +3,7 @@
 **Ritest telefono: unico a fine lote** (SI Renato 19/09).
 
 **Identità:** una sola **BoxManager**. Test solo su `main`.  
-**Build:** **`v. 1.3.17`** (vc **21**).
+**Build:** **`v. 1.3.18`** (vc **22**).
 
 ## Checklist
 
@@ -20,16 +20,17 @@
 
 ---
 
-## Ritest unico — topbar `v. 1.3.17`
+## Ritest unico — topbar `v. 1.3.18`
 
 1. `git checkout main` + `git pull origin main` + Run **`playDebug`**
-2. Topbar **`v. 1.3.17`**
+2. Topbar **`v. 1.3.18`**
 3. **Utility:** Backup e Ripristina senza scroll; tile più bassi
 4. **Liste:** ORDINA / SPOSTA / ELIMINA (e altri Button azione) stesso stile carattere
-5. **QR batch:** stampa/PDF → nome contenitore in **grassetto** sopra; codice sotto più piccolo
+5. **QR batch:** lista Contenitori → tocca **area testo** scheda (non icona) → **ETICHETTE QR** (sempre visibile) → stampa/PDF: nome grassetto + codice piccolo
+   - Se premi ETICHETTE QR senza selezione: toast con istruzione
 6. **Mic:** tap breve sul microfono in Cerca **non** avvia; **pressione prolungata** sì
-7. **Premium** (funzione scaduta): sottotitolo «Funzione Premium scaduta»; CONDIVIDI; «Se hai un CODICE…»; campo; USA CODICE
-8. Rispondi `1.3.17 ok` o elenco KO
+7. **Premium** scaduta: sottotitolo «Funzione Premium scaduta»; messaggio prova **senza** elenco funzioni (solo Archivio completo); CONDIVIDI; «Se hai un CODICE…»
+8. Rispondi `1.3.18 ok` o elenco KO
 
 ---
 

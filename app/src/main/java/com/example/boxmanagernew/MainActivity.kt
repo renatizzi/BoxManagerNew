@@ -1195,8 +1195,13 @@ class MainActivity : BaseActivity() {
     private fun handleQrSelected() {
         val ids =
             viewModel.selectedItems.value?.toList()
-                ?: return
+                ?: emptyList()
         if (ids.isEmpty()) {
+            android.widget.Toast.makeText(
+                this,
+                getString(R.string.msg_qr_batch_select_hint),
+                android.widget.Toast.LENGTH_LONG
+            ).show()
             return
         }
         ArchivioCompletoNav.start(
