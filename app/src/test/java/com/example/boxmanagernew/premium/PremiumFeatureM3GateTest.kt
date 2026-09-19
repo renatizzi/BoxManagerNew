@@ -53,8 +53,8 @@ class PremiumFeatureM3GateTest {
             playBlock.contains("buildConfigField(\"boolean\", \"FAMILY_BETA\", \"true\")")
         )
         assertTrue(!playBlock.contains("applicationIdSuffix ="))
-        assertTrue(playBlock.contains("versionName = \"1.3.21\""))
-        assertTrue(playBlock.contains("versionCode = 25"))
+        assertTrue(playBlock.contains("versionName = \"1.3.22\""))
+        assertTrue(playBlock.contains("versionCode = 26"))
     }
 
     @Test

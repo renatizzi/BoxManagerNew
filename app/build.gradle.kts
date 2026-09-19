@@ -20,8 +20,8 @@ android {
         applicationId = "it.renatizzi.boxmanager"
         minSdk = 24
         targetSdk = 36
-        versionCode = 25
-        versionName = "1.3.21"
+        versionCode = 26
+        versionName = "1.3.22"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -44,9 +44,9 @@ android {
     productFlavors {
         create("play") {
             dimension = "distribution"
-            // 19/09: 1.3.21 — messaggio contestuale QR BATCH sticky. vc 25.
-            versionCode = 25
-            versionName = "1.3.21"
+            // 19/09: 1.3.22 — dialog intro QR BATCH su Utility. vc 26.
+            versionCode = 26
+            versionName = "1.3.22"
             buildConfigField("boolean", "FAMILY_BETA", "true")
         }
         create("famiglia") {

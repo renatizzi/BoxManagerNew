@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import com.example.boxmanagernew.BuildConfig
 import com.example.boxmanagernew.MainActivity
@@ -167,11 +168,25 @@ class UtilityActivity : BaseActivity() {
                 ).show()
                 return@launch
             }
-            ArchivioCompletoNav.start(
-                this@UtilityActivity,
-                PremiumFeature.QR_LABEL,
-                MainActivity.intentQrBatchPick(this@UtilityActivity)
-            )
+            AlertDialog.Builder(this@UtilityActivity)
+                .setTitle(R.string.msg_qr_batch_intro_title)
+                .setMessage(R.string.msg_qr_batch_intro)
+                .setPositiveButton(R.string.common_ok) { _, _ ->
+                    ArchivioCompletoNav.start(
+                        this@UtilityActivity,
+                        PremiumFeature.QR_LABEL,
+                        Intent(
+                            this@UtilityActivity,
+                            MainActivity::class.java
+                        ).apply {
+                            flags =
+                                Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                                    Intent.FLAG_ACTIVITY_SINGLE_TOP
+                        }
+                    )
+                }
+                .setNegativeButton(R.string.common_cancel, null)
+                .show()
         }
     }
 }

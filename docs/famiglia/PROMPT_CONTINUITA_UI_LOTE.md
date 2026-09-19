@@ -1,7 +1,7 @@
 # Prompt di continuità — lote UI trasversale (19/09/2026)
 
 **Identità:** una sola **BoxManager**. Test solo su `main`.  
-**Build:** **`v. 1.3.21`** (vc **25**).
+**Build:** **`v. 1.3.22`** (vc **26**).
 
 ## Checklist
 
@@ -9,20 +9,18 @@
 |---|-----|--------|--------|
 | 1 | **B-UTILITY-*** | Tile Utility a weight (griglia piena) | **1.3.20** |
 | 2 | **B-UI-BUTTONS-ACCESSO-RAPIDO** | ORDINA = theme Button 14sp | **1.3.19** SI |
-| 3 | **B-QR-BATCH-*** | Nome BOX + codice piccolo | **1.3.17** |
-| 4 | **B-VOICE-MIC-ACCIDENTAL** | Voice solo long-press | **1.3.17** |
-| 5 | **B-PREMIUM-UNIFY-PAGE** | Premium senza elenco funzioni | **1.3.18** |
-| 6 | **QR BATCH Utility** | Tile + selezione contestuale; niente ETICHETTE sempre in lista | **1.3.21** (fix messaggio sticky) |
+| 3–5 | QR PDF / mic / premium | | SI codice lote |
+| 6 | **QR BATCH Utility** | Dialog intro su Utility (neutro) → lista; ETICHETTE in selezione | **1.3.22** |
 
 ---
 
-## Ritest — topbar `v. 1.3.21`
+## Ritest — topbar `v. 1.3.22`
 
 1. `git checkout main` + `git pull` + Run **`playDebug`**
-2. Topbar **`v. 1.3.21`**
-3. **Utility → QR BATCH:** lista + messaggio contestuale «Seleziona i contenitori» (resta visibile)
-4. Seleziona schede → **ETICHETTE QR** in barra selezione
-5. Rispondi `1.3.21 ok` o elenco KO
+2. Topbar **`v. 1.3.22`**
+3. Utility → **QR BATCH** → dialog (non riquadro rosso; ORDINA resta intatto) → OK → lista
+4. Seleziona schede → **ETICHETTE QR**
+5. Rispondi `1.3.22 ok` o elenco KO
 
 ---
 

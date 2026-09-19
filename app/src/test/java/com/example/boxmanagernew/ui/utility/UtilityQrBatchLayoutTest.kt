@@ -6,8 +6,8 @@ import org.junit.Test
 import java.io.File
 
 /**
- * Utility: tile QR BATCH accanto a Codice QR; griglia 4×2 con weight;
- * ETICHETTE QR solo in selectionBar (non sempre sulla lista).
+ * Utility: tile QR BATCH; dialog intro su Utility (non riquadro warning lista);
+ * ETICHETTE QR solo in selectionBar.
  */
 class UtilityQrBatchLayoutTest {
 
@@ -38,25 +38,33 @@ class UtilityQrBatchLayoutTest {
     }
 
     @Test
-    fun utilityActivity_opensMainWithQrBatchPick() {
+    fun utilityActivity_showsDialogThenOpensMain() {
         val src = File("src/main/java/com/example/boxmanagernew/ui/utility/UtilityActivity.kt")
             .readText()
-        assertTrue(src.contains("MainActivity.intentQrBatchPick"))
+        assertTrue(src.contains("msg_qr_batch_intro"))
+        assertTrue(src.contains("AlertDialog.Builder"))
         assertTrue(src.contains("PremiumFeature.QR_LABEL"))
-        assertTrue(src.contains("msg_qr_batch_no_boxes"))
+        assertTrue(src.contains("MainActivity::class.java"))
+        assertFalse(src.contains("intentQrBatchPick"))
+        assertFalse(src.contains("msg_qr_batch_select_containers"))
     }
 
     @Test
-    fun strings_qrBatchItAndEn() {
+    fun mainActivity_noStickyContextForQrBatch() {
+        val src = File("src/main/java/com/example/boxmanagernew/MainActivity.kt").readText()
+        assertFalse(src.contains("stickyContextMessage"))
+        assertFalse(src.contains("EXTRA_QR_BATCH_PICK"))
+        assertFalse(src.contains("applyQrBatchPickIntent"))
+    }
+
+    @Test
+    fun strings_qrBatchIntroItAndEn() {
         val it = File("src/main/res/values/strings.xml").readText()
         val en = File("src/main/res/values-en/strings.xml").readText()
-        assertTrue(it.contains("name=\"utility_qr_batch\""))
-        assertTrue(en.contains("name=\"utility_qr_batch\""))
-        assertTrue(it.contains("QR BATCH"))
-        assertTrue(en.contains("QR BATCH"))
-        assertTrue(it.contains("name=\"msg_qr_batch_select_containers\""))
-        assertTrue(en.contains("Select the containers"))
-        assertTrue(it.contains("Seleziona i contenitori"))
-        assertTrue(en.contains("name=\"msg_qr_batch_no_boxes\""))
+        assertTrue(it.contains("name=\"msg_qr_batch_intro\""))
+        assertTrue(en.contains("name=\"msg_qr_batch_intro\""))
+        assertTrue(it.contains("stampa o l\\'esportazione"))
+        assertTrue(en.contains("print or export labels"))
+        assertFalse(it.contains("name=\"msg_qr_batch_select_containers\""))
     }
 }

@@ -73,6 +73,8 @@
     <string name="utility_export">📤 Esporta dati</string>
     <string name="utility_qr">📱 Codice QR</string>
     <string name="utility_qr_batch">🏷 QR BATCH</string>
+    <string name="msg_qr_batch_intro_title">QR BATCH</string>
+    <string name="msg_qr_batch_intro">Hai richiesto la stampa o l\'esportazione di etichette per più contenitori.\n\nNella prossima lista selezionali, poi premi ETICHETTE QR.</string>
     <string name="utility_family_catalog">📤 Condividi Archivio</string>
     <string name="utility_trash">🗑 Cestino</string>
     <string name="page_trash_title">Cestino</string>
@@ -167,7 +169,6 @@
     <string name="page_qr_batch_title">Etichette QR</string>
     <string name="page_qr_batch_subtitle">Stampa etichette secondo il formato selezionato</string>
     <string name="menu_qr_batch_labels">ETICHETTE QR</string>
-    <string name="msg_qr_batch_select_containers">Seleziona i contenitori</string>
     <string name="msg_qr_batch_no_boxes">Nessun contenitore in archivio. Creane almeno uno.</string>
     <string name="msg_qr_batch_select_hint">Tocca l\'area testo di una o più schede Contenitore (non l\'icona a sinistra), poi premi ETICHETTE QR.</string>
     <string name="qr_batch_summary">Totale etichette n. %1$d</string>
@@ -407,7 +408,7 @@
     <string name="guide_utility_network_folder">Per salvare su un disco di rete: Impostazioni → Disco di rete (app CIFS se serve) → poi in Backup/Esporta/Invia premi Sfoglia.</string>
     <string name="guide_utility_import">Importa dati da file CSV per interagire con file esterni (*).</string>
     <string name="guide_utility_qr">Codice QR per vedere il contenuto di un box usando la fotocamera.</string>
-    <string name="guide_utility_qr_batch">QR BATCH per stampare etichette di più contenitori: seleziona le schede, poi ETICHETTE QR.</string>
+    <string name="guide_utility_qr_batch">QR BATCH: messaggio su Utility, poi lista Contenitori — seleziona le schede e premi ETICHETTE QR.</string>
     <string name="guide_utility_family_share">Condividi Archivio per aggiornare e condividere con i tuoi familiari i dati del tuo archivio.</string>
     <string name="guide_utility_family_merge">Per unire i dati usa Invia/Ricevi Archivio, non Ripristino (sostituisce tutto l\'archivio).</string>
     <string name="guide_section_tools_title">Strumenti contestuali</string>
