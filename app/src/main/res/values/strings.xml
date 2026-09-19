@@ -268,7 +268,7 @@
     <string name="import_check_format">formato corretto</string>
     <string name="import_check_structure">struttura conforme al modello ufficiale</string>
     <string name="import_check_required">presenza dei campi obbligatori</string>
-    <string name="import_check_data">coerenza dei dati (quantità, lunghezze, duplicati)</string>
+    <string name="import_check_data">coerenza dei dati (quantità, lunghezze, oggetti duplicati)</string>
     <string name="import_msg_quantity_invalid">Quantità non valida (intero ≥ 0)</string>
     <string name="import_msg_field_too_long">Campo troppo lungo</string>
     <string name="import_msg_duplicate_box">Contenitore duplicato nel file</string>
