@@ -20,8 +20,8 @@ android {
         applicationId = "it.renatizzi.boxmanager"
         minSdk = 24
         targetSdk = 36
-        versionCode = 15
-        versionName = "1.3.11"
+        versionCode = 16
+        versionName = "1.3.12"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -44,9 +44,9 @@ android {
     productFlavors {
         create("play") {
             dimension = "distribution"
-            // 19/09: 1.3.11 — B–C B2 CSV v2 + Modello. vc 15.
-            versionCode = 15
-            versionName = "1.3.11"
+            // 19/09: 1.3.12 — B–C B3 validazione import. vc 16.
+            versionCode = 16
+            versionName = "1.3.12"
             buildConfigField("boolean", "FAMILY_BETA", "true")
         }
         create("famiglia") {

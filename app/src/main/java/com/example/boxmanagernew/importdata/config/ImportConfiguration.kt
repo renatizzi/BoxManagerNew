@@ -155,6 +155,13 @@ object ImportConfiguration {
 
     const val CHECK_REQUIRED = "presenza dei campi obbligatori"
 
+    const val CHECK_DATA = "coerenza dei dati (quantità, lunghezze, duplicati)"
+
+    /** Limite stringhe import (allineato Descrizione UI / OCR). */
+    const val MAX_FIELD_CHARS = 100
+
+    const val MAX_QUANTITY = 999_999
+
     const val MSG_IMPORT_CANCELLED =
         "Se uno qualsiasi dei controlli fallisce, l'importazione viene annullata senza modificare l'archivio."
 
@@ -172,6 +179,18 @@ object ImportConfiguration {
     const val MSG_OBJECT_DEPENDENCY =
         "un Oggetto non può essere importato se fa riferimento a un Contenitore inesistente"
 
+    const val MSG_QUANTITY_INVALID =
+        "quantità non valida (intero ≥ 0)"
+
+    const val MSG_FIELD_TOO_LONG =
+        "campo troppo lungo"
+
+    const val MSG_DUPLICATE_BOX =
+        "contenitore duplicato nel file"
+
+    const val MSG_DUPLICATE_OBJECT =
+        "oggetto duplicato nel file"
+
     const val MSG_RELATION_CANCELLED =
         "qualsiasi violazione delle relazioni previste dal modello dati comporta l'annullamento dell'importazione"
 
@@ -185,16 +204,30 @@ object ImportConfiguration {
                 context.getString(R.string.import_check_structure)
             CHECK_REQUIRED ->
                 context.getString(R.string.import_check_required)
+            CHECK_DATA ->
+                context.getString(R.string.import_check_data)
             else -> check
         }
     }
 
     fun localizeDependency(context: Context, message: String): String {
-        return when (message) {
-            MSG_BOX_DEPENDENCY ->
+        return when {
+            message == MSG_BOX_DEPENDENCY ->
                 context.getString(R.string.import_msg_box_dependency)
-            MSG_OBJECT_DEPENDENCY ->
+            message == MSG_OBJECT_DEPENDENCY ->
                 context.getString(R.string.import_msg_object_dependency)
+            message.startsWith(MSG_QUANTITY_INVALID) ->
+                context.getString(R.string.import_msg_quantity_invalid) +
+                    message.removePrefix(MSG_QUANTITY_INVALID)
+            message.startsWith(MSG_FIELD_TOO_LONG) ->
+                context.getString(R.string.import_msg_field_too_long) +
+                    message.removePrefix(MSG_FIELD_TOO_LONG)
+            message.startsWith(MSG_DUPLICATE_BOX) ->
+                context.getString(R.string.import_msg_duplicate_box) +
+                    message.removePrefix(MSG_DUPLICATE_BOX)
+            message.startsWith(MSG_DUPLICATE_OBJECT) ->
+                context.getString(R.string.import_msg_duplicate_object) +
+                    message.removePrefix(MSG_DUPLICATE_OBJECT)
             else -> message
         }
     }

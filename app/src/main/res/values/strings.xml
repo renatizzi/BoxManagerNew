@@ -268,6 +268,11 @@
     <string name="import_check_format">formato corretto</string>
     <string name="import_check_structure">struttura conforme al modello ufficiale</string>
     <string name="import_check_required">presenza dei campi obbligatori</string>
+    <string name="import_check_data">coerenza dei dati (quantità, lunghezze, duplicati)</string>
+    <string name="import_msg_quantity_invalid">Quantità non valida (intero ≥ 0)</string>
+    <string name="import_msg_field_too_long">Campo troppo lungo</string>
+    <string name="import_msg_duplicate_box">Contenitore duplicato nel file</string>
+    <string name="import_msg_duplicate_object">Oggetto duplicato nel file</string>
     <string name="import_msg_cancelled">Se uno qualsiasi dei controlli fallisce, l\'importazione viene annullata senza modificare l\'archivio.</string>
     <string name="import_report_records_read">record letti</string>
     <string name="import_report_imported">record importati</string>

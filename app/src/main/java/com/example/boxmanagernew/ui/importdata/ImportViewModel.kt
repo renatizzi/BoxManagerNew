@@ -15,6 +15,7 @@ import com.example.boxmanagernew.data.repository.LocationRepositoryImpl
 import com.example.boxmanagernew.data.repository.ObjectRepositoryImpl
 import com.example.boxmanagernew.importdata.config.ImportConfiguration
 import com.example.boxmanagernew.importdata.inspect.ImportDependencyValidator
+import com.example.boxmanagernew.importdata.inspect.ImportExtendedValidator
 import com.example.boxmanagernew.importdata.inspect.ImportFileInspector
 import com.example.boxmanagernew.importdata.merge.ImportMergeApplier
 import com.example.boxmanagernew.importdata.merge.ImportMergePlanner
@@ -34,6 +35,7 @@ class ImportViewModel(
     private val mergeApplier: ImportMergeApplier,
     private val templateBuilder: ImportTemplateBuilder = ImportTemplateBuilder(),
     private val fileInspector: ImportFileInspector = ImportFileInspector(),
+    private val extendedValidator: ImportExtendedValidator = ImportExtendedValidator(),
     private val dependencyValidator: ImportDependencyValidator = ImportDependencyValidator(),
     private val mergePlanner: ImportMergePlanner = ImportMergePlanner(),
     private val appContext: android.content.Context
@@ -122,32 +124,47 @@ class ImportViewModel(
                 val result = withContext(Dispatchers.IO) {
                     val inspected = fileInspector.inspect(bytes)
                     if (inspected is ImportFileInspector.Result.Ready) {
-                        val dependencies = dependencyValidator.validate(
+                        val dataCheck = extendedValidator.validate(
                             boxes = inspected.boxes,
-                            objects = inspected.objects,
-                            categoryNames = categoryRepository
-                                .getAllCategoryEntitiesSync()
-                                .map { it.name },
-                            locationNames = locationRepository
-                                .getAllLocationEntitiesSync()
-                                .map { it.name },
-                            archiveBoxNames = boxRepository
-                                .getAllBoxEntitiesSync()
-                                .map { it.name }
+                            objects = inspected.objects
                         )
-                        Pair(inspected, dependencies)
+                        if (dataCheck is ImportExtendedValidator.Result.Failed) {
+                            Triple(inspected, dataCheck, null)
+                        } else {
+                            val dependencies = dependencyValidator.validate(
+                                boxes = inspected.boxes,
+                                objects = inspected.objects,
+                                categoryNames = categoryRepository
+                                    .getAllCategoryEntitiesSync()
+                                    .map { it.name },
+                                locationNames = locationRepository
+                                    .getAllLocationEntitiesSync()
+                                    .map { it.name },
+                                archiveBoxNames = boxRepository
+                                    .getAllBoxEntitiesSync()
+                                    .map { it.name }
+                            )
+                            Triple(inspected, dataCheck, dependencies)
+                        }
                     } else {
-                        Pair(inspected, null)
+                        Triple(inspected, null, null)
                     }
                 }
 
                 val inspected = result.first
-                val dependencies = result.second
+                val dataCheck = result.second
+                val dependencies = result.third
 
                 when {
                     inspected is ImportFileInspector.Result.Failed -> {
                         _message.value = UserMessage(
                             buildInspectFailure(inspected.check),
+                            blockingError = true
+                        )
+                    }
+                    dataCheck is ImportExtendedValidator.Result.Failed -> {
+                        _message.value = UserMessage(
+                            buildDataFailure(dataCheck.message),
                             blockingError = true
                         )
                     }
@@ -369,6 +386,25 @@ class ImportViewModel(
             appendLine("${ImportConfiguration.reportRecordsRead(appContext)}: ${ready.recordsRead}")
             appendLine(appContext.getString(R.string.label_containers_count, ready.boxes.size))
             append(appContext.getString(R.string.label_objects_count, ready.objects.size))
+        }
+    }
+
+    private fun buildDataFailure(
+        message: String
+    ): String {
+
+        return buildString {
+            appendLine(
+                ImportConfiguration.localizeCheck(
+                    appContext,
+                    ImportConfiguration.CHECK_DATA
+                )
+            )
+            appendLine(
+                ImportConfiguration.localizeDependency(appContext, message)
+            )
+            appendLine()
+            append(ImportConfiguration.importCancelled(appContext))
         }
     }
 
