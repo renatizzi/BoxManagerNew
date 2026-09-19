@@ -27,15 +27,19 @@ import com.example.boxmanagernew.ui.common.BaseActivity
 import com.example.boxmanagernew.ui.premium.ArchivioCompletoNav
 import com.example.boxmanagernew.ui.common.DialogUtils
 import com.example.boxmanagernew.ui.common.FeedbackUtils
+import com.example.boxmanagernew.ui.family.FamilyExportCoordinator
 import com.google.android.material.card.MaterialCardView
 import com.example.boxmanagernew.storage.OpenStorageTreeContract
 import com.example.boxmanagernew.storage.StorageFolderPicker
+import com.example.boxmanagernew.viewoutput.persist.ViewExportPersister
 
 class ImportActivity : BaseActivity() {
 
     private lateinit var viewModel: ImportViewModel
     private lateinit var templatePersister: ImportTemplatePersister
     private lateinit var backupPersister: BackupZipPersister
+    private lateinit var errorReportPersister: ViewExportPersister
+    private lateinit var errorReportCoordinator: FamilyExportCoordinator
     private lateinit var tvMessages: TextView
     private lateinit var btnGenerateTemplate: MaterialCardView
     private lateinit var btnImportData: MaterialCardView
@@ -43,6 +47,17 @@ class ImportActivity : BaseActivity() {
     private var importExportFolderUri: Uri? = null
     private var backupFolderUri: Uri? = null
     private var pendingTemplateAfterFolder = false
+
+    private val errorReportFolderPicker =
+        registerForActivityResult(
+            OpenStorageTreeContract()
+        ) { uri ->
+            if (uri != null) {
+                errorReportCoordinator.onFolderChosen(uri)
+            } else {
+                errorReportCoordinator.cancelPending()
+            }
+        }
 
     private val backupFolderPicker =
         registerForActivityResult(
@@ -95,6 +110,30 @@ class ImportActivity : BaseActivity() {
 
         templatePersister = ImportTemplatePersister(this)
         backupPersister = BackupZipPersister(this)
+        errorReportPersister = ViewExportPersister(
+            this,
+            StorageFolderConfiguration.KEY_IMPORT_EXPORT
+        )
+        errorReportCoordinator = FamilyExportCoordinator(
+            activity = this,
+            persister = errorReportPersister,
+            onFolderInaccessible = {
+                showBlocking(BackupConfiguration.folderInaccessible(this))
+            },
+            onExportCompleted = {
+                val previous = tvMessages.text.toString()
+                tvMessages.text = buildString {
+                    if (previous.isNotBlank()) {
+                        appendLine(previous)
+                        appendLine()
+                    }
+                    append(getString(R.string.import_error_report_saved))
+                }
+            },
+            launchFolderPicker = {
+                StorageFolderPicker.choose(this, errorReportFolderPicker)
+            }
+        )
 
         val db = DatabaseProvider.getDatabase(applicationContext)
         val factory = ImportViewModelFactory(
@@ -121,6 +160,18 @@ class ImportActivity : BaseActivity() {
 
             if (userMessage.blockingError && userMessage.text.isNotBlank()) {
                 FeedbackUtils.alert(this)
+            }
+
+            val reportBytes = userMessage.errorReportBytes
+            if (
+                userMessage.blockingError &&
+                reportBytes != null &&
+                reportBytes.isNotEmpty()
+            ) {
+                offerSaveErrorReport(
+                    reportBytes,
+                    userMessage.errorReportDefaultName
+                )
             }
         }
 
@@ -336,6 +387,26 @@ class ImportActivity : BaseActivity() {
             folderName = backupPersister.resolvedFolderDisplayName(uri)
                 ?: templatePersister.folderDisplayName(uri)
         )
+    }
+
+    private fun offerSaveErrorReport(
+        bytes: ByteArray,
+        defaultName: String
+    ) {
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle(R.string.import_error_report_save_title)
+            .setMessage(R.string.import_error_report_save_message)
+            .setPositiveButton(R.string.common_yes) { _, _ ->
+                errorReportCoordinator.beginExport(
+                    defaultFileName = defaultName.ifBlank {
+                        com.example.boxmanagernew.importdata.inspect
+                            .ImportErrorReportBuilder.fileName()
+                    },
+                    bytes = bytes
+                )
+            }
+            .setNegativeButton(R.string.common_no, null)
+            .show()
     }
 
     private fun showBlocking(text: String) {

@@ -281,6 +281,13 @@
     <string name="import_msg_box_dependency">un Contenitore non può essere importato se fa riferimento a una Categoria o a una Posizione inesistente</string>
     <string name="import_msg_object_dependency">un Oggetto non può essere importato se fa riferimento a un Contenitore inesistente</string>
     <string name="import_msg_relation_cancelled">qualsiasi violazione delle relazioni previste dal modello dati comporta l\'annullamento dell\'importazione</string>
+    <string name="import_error_report_heading">Dettaglio errori:</string>
+    <string name="import_error_section_file">FILE</string>
+    <string name="import_error_line_format">%1$s · riga %2$d · %3$s</string>
+    <string name="import_error_line_no_row">%1$s · %2$s</string>
+    <string name="import_error_report_save_title">Report errori</string>
+    <string name="import_error_report_save_message">Salvare il report dettagliato (CSV)?</string>
+    <string name="import_error_report_saved">Report errori salvato.</string>
     <string name="label_containers_count">Contenitori: %1$d</string>
     <string name="label_objects_count">Oggetti: %1$d</string>
     <string name="label_categories_count">Categorie: %1$d</string>
