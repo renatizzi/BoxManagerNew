@@ -29,11 +29,11 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md).
 | Voce | Valore |
 |------|--------|
 | **SI apertura codice** | Renato 18/09 — roadmap dopo A3 |
-| **Branch tipico** | `cursor/bc-omonimi-import-8f03` (hotfix B3) |
-| **Build play** | **`v. 1.3.13`** (vc **17**) — hotfix omonimi BOX |
+| **Build play** | **`v. 1.3.13`** (vc **17**) |
 | **B1** | **FATTO** SI `1.3.10 ok` |
 | **B2** | **FATTO** SI `1.3.11 ok` |
-| **B3** | Validazione estesa + hotfix omonimi → ritest **1.3.13** |
+| **B3** | **FATTO** SI `1.3.13 ok` (19/09; include hotfix omonimi) |
+| **Prossimo** | **B4** — report errori riga-per-riga (R6) — **attende SI** |
 
 ---
 
@@ -43,23 +43,10 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md).
 |---|--------|-----------|-------|
 | **B1** | Export selezione | R2, R3 | **FATTO** `1.3.10 ok` |
 | **B2** | CSV v2 Utility + Modello; V1 importabile | R7, R4 | **FATTO** `1.3.11 ok` |
-| **B3** | Import: validazione estesa (quantità, lunghezze; oggetti duplicati hard; BOX omonimi ammessi / soft) + ZIP/id | R5 | **IN CORSO** → ritest **1.3.13** |
-| **B4** | Import: report errori riga-per-riga | R6 | Dopo B3 device |
+| **B3** | Import: validazione estesa (quantità, lunghezze; oggetti duplicati hard; BOX omonimi ammessi / soft) + ZIP/id | R5 | **FATTO** `1.3.13 ok` |
+| **B4** | Import: report errori riga-per-riga | R6 | **Attende SI** |
 
-**Nota B3 (KO Renato 19/09):** contenitori omonimi sono ammessi in archivio (Room: nessun unique sul nome). Assessment V1 = «duplicati soft». Il hard-block su solo-nome era errato; rimosso in 1.3.13. Merge resta su chiave `nome|categoria|posizione`.
-
----
-
-## Ritest B3 (dopo merge `main`) — topbar `v. 1.3.13`
-
-1. `git checkout main` + `git pull origin main` + Run **`playDebug`**
-2. Topbar **`v. 1.3.13`**
-3. Importa CSV valido → anteprima ok (come prima)
-4. CSV con quantità `abc` o `-1` → blocco + messaggio quantità
-5. CSV con nome > 100 caratteri → blocco
-6. CSV con due contenitori **omonimi** (stesso nome, cat/pos diverse) → **ok** (import/anteprima, non blocco)
-7. CSV v1 e ZIP v2 validi → ancora ok
-8. Rispondi `1.3.13 ok` o KO
+**Nota B3:** contenitori omonimi ammessi (Room senza unique sul nome; V1 duplicati soft). Hard-block solo-nome rimosso in 1.3.13. Merge: chiave `nome|categoria|posizione`.
 
 ---
 
@@ -67,6 +54,6 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md).
 
 ```
 Continua B–C Export/Import da docs/famiglia/PROMPT_CONTINUITA_BC_EXPORT.md.
-Priorità: micro-step in corso; non aprire Utility UI / Premium / QR senza SI.
+Priorità: B4 solo con SI; non aprire Utility UI / Premium / QR senza SI.
 Identità: una sola BoxManager. Test telefono solo su main.
 ```
