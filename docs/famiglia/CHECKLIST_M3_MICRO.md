@@ -79,7 +79,8 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 3. Paesi UE (inglese diffuso): selezionati, **da confermare** in Console.
 4. Scheda Store: IT ok; EN = `docs/play/store-listing-en.md` + screenshot EN.
 5. Attesa esito Google su produzione → poi freeze docs **B10** con SI.
-6. **A1 QR avanzato:** SI Renato 19/09 in coda — **aprire codice solo dopo** chiarimento/ok Play (priorità assoluta 19/09).
+6. **PAUSA 19/09 (SI Renato):** nessun lavoro codice finché Google non convalida Produzione 1.3.7. Ripresa: messaggio `produzione 1.3.7 ok`.
+7. **A1 QR avanzato:** SI Renato 19/09 in coda — **aprire codice solo dopo** ok Play.
 
 **Binario piano:**
 1. **C1** — **FATTO** (1.3.1).

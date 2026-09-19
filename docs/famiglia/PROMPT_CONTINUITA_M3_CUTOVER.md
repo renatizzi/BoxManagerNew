@@ -85,7 +85,8 @@ Screenshot Renato (Produzione + scheda App bundle). **Priorità assoluta** chiar
 1. Aprire **Panoramica della pubblicazione** (link sulla release «In revisione») e attendere esito Google / email.
 2. **Non** modificare né inviare la release in **Bozza** finché quella in revisione non chiude.
 3. Quando lo stato diventa tipo «Disponibile su Google Play» → comunicare `produzione 1.3.7 ok` (poi B10 docs).
-4. **A1** (SI 19/09): in coda — codice **dopo** ok/chiarimento Play.
+4. **A1** (SI 19/09): in coda — codice **dopo** ok Play.
+5. **PAUSA 19/09:** Renato — zero codice in attesa convalida Google. Ripresa con `produzione 1.3.7 ok`.
 
 ---
 

@@ -5,6 +5,7 @@
 **B–C Export/Import — CHIUSO** (SI Renato 19/09) → [PROMPT_CONTINUITA_BC_EXPORT.md](PROMPT_CONTINUITA_BC_EXPORT.md).  
 **Lote UI — CHIUSO** (SI device 19/09, play **1.3.22 ok**) → [PROMPT_CONTINUITA_UI_LOTE.md](PROMPT_CONTINUITA_UI_LOTE.md).  
 **Play 1.3.7 (19/09):** Produzione = **In revisione** (non live); esiste anche Bozza duplicata — [PROMPT_CONTINUITA_M3_CUTOVER.md](PROMPT_CONTINUITA_M3_CUTOVER.md) § Stato Play 1.3.7.  
+**PAUSA (SI Renato 19/09):** zero codice in attesa ok Google su produzione 1.3.7. Ripresa con messaggio `produzione 1.3.7 ok` (poi A1 in coda).  
 **A1 QR avanzato:** SI Renato 19/09 — **in coda** dopo Play.  
 Ingresso sessione 07/09 → [PROMPT_CONTINUITA_07_09_DISCO_FOTO.md](PROMPT_CONTINUITA_07_09_DISCO_FOTO.md).  
 **Ingresso M3 / merge Play / roadmap** → [PROMPT_CONTINUITA_M3_MERGE_PLAY.md](PROMPT_CONTINUITA_M3_MERGE_PLAY.md).  
