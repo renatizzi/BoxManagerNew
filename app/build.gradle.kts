@@ -20,8 +20,8 @@ android {
         applicationId = "it.renatizzi.boxmanager"
         minSdk = 24
         targetSdk = 36
-        versionCode = 20
-        versionName = "1.3.16"
+        versionCode = 21
+        versionName = "1.3.17"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -44,9 +44,9 @@ android {
     productFlavors {
         create("play") {
             dimension = "distribution"
-            // 19/09: 1.3.16 — REPORT_ERRORI_ + Utility tile height. vc 20.
-            versionCode = 20
-            versionName = "1.3.16"
+            // 19/09: 1.3.17 — lote UI (Ordina/QR/mic/premium). vc 21.
+            versionCode = 21
+            versionName = "1.3.17"
             buildConfigField("boolean", "FAMILY_BETA", "true")
         }
         create("famiglia") {

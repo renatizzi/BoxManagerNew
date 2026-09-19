@@ -25,6 +25,7 @@
             android:orientation="vertical"
             android:padding="16dp">
 
+            <!-- Corpo: prova scaduta / pitch funzione -->
             <TextView
                 android:id="@+id/textPreviewBody"
                 android:layout_width="match_parent"
@@ -41,6 +42,7 @@
                 android:textColor="@color/text_secondary"
                 android:textSize="14sp" />
 
+            <!-- Azioni uguali: CONDIVIDI / CODICE -->
             <Button
                 android:id="@+id/buttonTry"
                 android:layout_width="match_parent"
@@ -54,19 +56,14 @@
                 android:layout_marginTop="8dp"
                 android:visibility="gone" />
 
-            <Button
-                android:id="@+id/buttonClose"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp" />
-
             <TextView
                 android:id="@+id/textLockedFooter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:textColor="@color/text_secondary"
-                android:textSize="13sp" />
+                android:layout_marginTop="20dp"
+                android:textColor="@color/text_primary"
+                android:textSize="15sp"
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/editUnlockCode"
@@ -83,6 +80,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp" />
+
+            <Button
+                android:id="@+id/buttonClose"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp" />
 
         </LinearLayout>
     </ScrollView>

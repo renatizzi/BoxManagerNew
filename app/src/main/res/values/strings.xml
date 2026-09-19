@@ -55,7 +55,7 @@
     <string name="main_count_boxes_sample">N. Contenitori: 0</string>
 
     <!-- Categories -->
-    <string name="categories_sort">Ordina</string>
+    <string name="categories_sort">ORDINA</string>
     <string name="categories_count_sample">N. Categorie: 0</string>
 
     <!-- Locations -->
@@ -79,9 +79,9 @@
     <string name="trash_empty">Il cestino è vuoto.</string>
     <string name="trash_type_box">Contenitore</string>
     <string name="trash_type_object">Oggetto</string>
-    <string name="trash_restore">Ripristina</string>
-    <string name="trash_delete_permanent">Elimina</string>
-    <string name="trash_empty_all">Svuota cestino</string>
+    <string name="trash_restore">RIPRISTINA</string>
+    <string name="trash_delete_permanent">ELIMINA</string>
+    <string name="trash_empty_all">SVUOTA CESTINO</string>
     <string name="trash_empty_confirm">Eliminare definitivamente tutti gli elementi nel cestino?</string>
     <string name="trash_snackbar_moved">Spostato nel cestino</string>
     <string name="trash_pick_box_title">Scegli contenitore</string>
@@ -161,11 +161,11 @@
     <string name="dialog_box_last_modified">Ultima modifica</string>
 
     <!-- QR label -->
-    <string name="qr_print_label">Stampa etichetta</string>
-    <string name="qr_export_pdf">Esporta PDF</string>
+    <string name="qr_print_label">STAMPA ETICHETTA</string>
+    <string name="qr_export_pdf">ESPORTA PDF</string>
     <string name="page_qr_batch_title">Etichette QR</string>
     <string name="page_qr_batch_subtitle">Stampa etichette secondo il formato selezionato</string>
-    <string name="menu_qr_batch_labels">Etichette QR</string>
+    <string name="menu_qr_batch_labels">ETICHETTE QR</string>
     <string name="qr_batch_summary">Totale etichette n. %1$d</string>
     <string name="qr_batch_excluded">Esclusi (senza codice): %1$d</string>
     <string name="qr_batch_containers_title">Contenitori</string>
@@ -173,7 +173,7 @@
     <string name="qr_batch_format_one">A4 - 1 etichetta</string>
     <string name="qr_batch_format_a4_2x2">A4 - 4 etichette (2×2)</string>
     <string name="qr_batch_format_a4_2x3">A4 - 6 etichette (2×3)</string>
-    <string name="qr_batch_share">Condividi etichette PDF</string>
+    <string name="qr_batch_share">CONDIVIDI ETICHETTE PDF</string>
     <string name="qr_batch_share_subject">Etichette QR BoxManager</string>
 
     <!-- List item placeholders -->
@@ -420,10 +420,10 @@
     <string name="guide_csv_v1_compat">• I file CSV v1 (senza colonne id) restano importabili.</string>
 
     <!-- Premium / Full archive gate -->
-    <string name="premium_page_subtitle">Funzione avanzata</string>
+    <string name="premium_page_subtitle">Funzione Premium scaduta</string>
     <string name="premium_button_share">CONDIVIDI</string>
     <string name="premium_button_close">CHIUDI</string>
-    <string name="premium_code_prompt">Hai un codice?</string>
+    <string name="premium_code_prompt">Se hai un CODICE inseriscilo qui sotto</string>
     <string name="premium_feature_advanced_search">Ricerca avanzata</string>
     <string name="premium_feature_qr_scan">Codice QR</string>
     <string name="premium_feature_qr_label">Etichetta QR</string>

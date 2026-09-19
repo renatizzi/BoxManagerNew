@@ -189,6 +189,7 @@ class QrBatchActivity : BaseActivity() {
                         val payload = BoxQrPayload.encode(permanentId)
                         QrBatchPdf.Label(
                             permanentId = permanentId,
+                            boxName = box.name,
                             qrBitmap = QrLabelBitmap.render(payload)
                         )
                     }

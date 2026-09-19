@@ -62,7 +62,6 @@
                     android:id="@+id/buttonSortCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="44dp"
                     android:text="@string/categories_sort" />
 
             </LinearLayout>

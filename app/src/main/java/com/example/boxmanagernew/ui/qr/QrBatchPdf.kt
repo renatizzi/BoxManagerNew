@@ -10,13 +10,15 @@ import com.example.boxmanagernew.domain.qr.LabelSheetSpec
 import java.io.ByteArrayOutputStream
 
 /**
- * PDF batch da bitmap QR + permanentId (REQUISITI_QR_AVANZATO T2).
- * Non modifica [QrLabelPdf] V1 (singola view).
+ * PDF batch da bitmap QR + nome contenitore + permanentId (REQUISITI_QR_AVANZATO T2).
+ * B-QR-BATCH-BOX-NAME: nome sempre in grassetto sopra al codice.
+ * B-QR-BATCH-CODE-FONT: permanentId più piccolo (demarcazione / taglio).
  */
 object QrBatchPdf {
 
     data class Label(
         val permanentId: String,
+        val boxName: String,
         val qrBitmap: Bitmap
     )
 
@@ -85,18 +87,40 @@ object QrBatchPdf {
         cellH: Float
     ) {
         val pad = 6f
-        val textPaint =
+        val namePaint =
+            Paint(Paint.ANTI_ALIAS_FLAG).apply {
+                color = Color.BLACK
+                textAlign = Paint.Align.CENTER
+                typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
+                textSize = (cellH * 0.075f).coerceIn(9f, 13f)
+            }
+        val codePaint =
             Paint(Paint.ANTI_ALIAS_FLAG).apply {
                 color = Color.BLACK
                 textAlign = Paint.Align.CENTER
                 typeface = Typeface.MONOSPACE
-                textSize = (cellH * 0.08f).coerceIn(8f, 14f)
+                // Più piccolo del nome: meno sovrapposizione / linea di taglio più chiara.
+                textSize = (cellH * 0.045f).coerceIn(6f, 9f)
             }
-        val textHeight = textPaint.textSize * 1.4f
-        val qrArea = (minOf(cellW, cellH - textHeight) - 2 * pad).coerceAtLeast(24f)
+
+        val nameLine = namePaint.textSize * 1.25f
+        val codeLine = codePaint.textSize * 1.35f
+        val qrArea =
+            (minOf(cellW, cellH - nameLine - codeLine) - 2 * pad)
+                .coerceAtLeast(20f)
+
+        val nameY = top + pad + namePaint.textSize
+        val displayName =
+            label.boxName.trim().ifBlank { label.permanentId }
+        canvas.drawText(
+            ellipsize(displayName, namePaint, cellW - 2 * pad),
+            left + cellW / 2f,
+            nameY,
+            namePaint
+        )
 
         val qrLeft = left + (cellW - qrArea) / 2f
-        val qrTop = top + pad
+        val qrTop = nameY + pad
         val src = label.qrBitmap
         val dest =
             android.graphics.RectF(
@@ -107,12 +131,34 @@ object QrBatchPdf {
             )
         canvas.drawBitmap(src, null, dest, null)
 
-        val textY = qrTop + qrArea + textHeight
+        val codeY =
+            (qrTop + qrArea + codeLine)
+                .coerceAtMost(top + cellH - pad)
         canvas.drawText(
             label.permanentId,
             left + cellW / 2f,
-            textY.coerceAtMost(top + cellH - pad),
-            textPaint
+            codeY,
+            codePaint
         )
+    }
+
+    private fun ellipsize(
+        text: String,
+        paint: Paint,
+        maxWidth: Float
+    ): String {
+        if (paint.measureText(text) <= maxWidth) {
+            return text
+        }
+        val ellipsis = "…"
+        var end = text.length
+        while (end > 0) {
+            val candidate = text.substring(0, end) + ellipsis
+            if (paint.measureText(candidate) <= maxWidth) {
+                return candidate
+            }
+            end--
+        }
+        return ellipsis
     }
 }
