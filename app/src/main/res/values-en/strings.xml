@@ -366,7 +366,7 @@
     <string name="premium_settings_param_bonus">Renewal for sharing (days)</string>
     <string name="premium_settings_param_friends">Friends to share with</string>
     <string name="premium_settings_code_title">Full archive</string>
-    <string name="premium_settings_code_hint">Enter the tester or friend code to unlock advanced features.</string>
+    <string name="premium_settings_code_hint">Enter the tester or friend code to unlock Full archive.</string>
     <string name="premium_settings_code_active">Full archive is active on this device.</string>
     <string name="premium_unlock_code_hint">Code</string>
     <string name="premium_button_redeem">USE CODE</string>
