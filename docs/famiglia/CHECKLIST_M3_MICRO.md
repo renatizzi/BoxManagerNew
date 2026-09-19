@@ -75,10 +75,11 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 
 **Binario Play (non blocca il codice):**
 1. **email Google OK** (SI Renato 16/09). **DECISO:** AAB da `main` **1.3.7** → **closed** breve → poi **produzione** (SI Renato 16/09).
-2. Paesi UE (inglese diffuso): selezionati, **da confermare** in Console.
-3. Scheda Store: IT ok; EN = `docs/play/store-listing-en.md` + screenshot EN.
-4. Renato: AAB **playRelease** → upload **test chiuso** → smoke da Play → promuovi produzione.
-5. Dopo promozione: freeze docs **B10** con SI.
+2. **Stato Console 19/09 (screenshot Renato):** AAB **11 (1.3.7)** su Produzione = **In revisione** (non ancora live pubblica). Esiste anche una **Bozza** separata dello stesso 11 (1.3.7) — non confondere / non reinviare. Su **Test chiusi** il bundle risulta attivo. Dettaglio: [PROMPT_CONTINUITA_M3_CUTOVER.md](PROMPT_CONTINUITA_M3_CUTOVER.md) § Stato Play 1.3.7.
+3. Paesi UE (inglese diffuso): selezionati, **da confermare** in Console.
+4. Scheda Store: IT ok; EN = `docs/play/store-listing-en.md` + screenshot EN.
+5. Attesa esito Google su produzione → poi freeze docs **B10** con SI.
+6. **A1 QR avanzato:** SI Renato 19/09 in coda — **aprire codice solo dopo** chiarimento/ok Play (priorità assoluta 19/09).
 
 **Binario piano:**
 1. **C1** — **FATTO** (1.3.1).

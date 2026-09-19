@@ -68,6 +68,27 @@ Dettaglio: [RUNBOOK_M3_GIORNO.md](RUNBOOK_M3_GIORNO.md). Stato vivo: [CHECKLIST_
 
 ---
 
+## Stato Play **1.3.7** (vc **11**) — lettura Console 19/09
+
+Screenshot Renato (Produzione + scheda App bundle). **Priorità assoluta** chiarita così:
+
+| Cosa vedi | Significato |
+|-----------|-------------|
+| Produzione → **11 (1.3.7) «In revisione»** | Release **inviata** a Google, **non ancora** pubblica per tutti |
+| Produzione → **11 (1.3.7) «Bozza»** | Seconda release **incompleta** dello stesso AAB — **non** è lo stato ufficiale; non reinviare |
+| Bundle → «2 attive» (Produzione + Test chiusi) | L’AAB è **collegato** a quelle tracce; **non** = già live in Store |
+| Test chiusi attivo | I **tester closed** possono avere la 1.3.7 |
+
+**Verdetto:** **non** è in produzione pubblica. È **in revisione** Google sulla traccia Produzione. Su closed può già essere attiva per i tester.
+
+**Cosa fare (Renato):**
+1. Aprire **Panoramica della pubblicazione** (link sulla release «In revisione») e attendere esito Google / email.
+2. **Non** modificare né inviare la release in **Bozza** finché quella in revisione non chiude.
+3. Quando lo stato diventa tipo «Disponibile su Google Play» → comunicare `produzione 1.3.7 ok` (poi B10 docs).
+4. **A1** (SI 19/09): in coda — codice **dopo** ok/chiarimento Play.
+
+---
+
 ## File da tenere aperti
 
 | File | Ruolo |
