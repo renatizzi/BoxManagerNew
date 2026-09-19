@@ -3,7 +3,7 @@
 **Aggiornato:** 19/09/2026.  
 **A3 Foto — CHIUSO** (SI device 18/09, play **1.3.9 ok**) → [PROMPT_CONTINUITA_A3_FOTO.md](PROMPT_CONTINUITA_A3_FOTO.md).  
 **B–C Export/Import — CHIUSO** (SI Renato 19/09) → [PROMPT_CONTINUITA_BC_EXPORT.md](PROMPT_CONTINUITA_BC_EXPORT.md).  
-**Ingresso Utility UI** → [PROMPT_CONTINUITA_UTILITY_UI.md](PROMPT_CONTINUITA_UTILITY_UI.md).  
+**Ingresso Utility UI / lote UI** → [PROMPT_CONTINUITA_UI_LOTE.md](PROMPT_CONTINUITA_UI_LOTE.md) (ritest unico a fine).  
 Ingresso sessione 07/09 → [PROMPT_CONTINUITA_07_09_DISCO_FOTO.md](PROMPT_CONTINUITA_07_09_DISCO_FOTO.md).  
 **Ingresso M3 / merge Play / roadmap** → [PROMPT_CONTINUITA_M3_MERGE_PLAY.md](PROMPT_CONTINUITA_M3_MERGE_PLAY.md).  
 **Ingresso cutover 1.3 (nuova sessione)** → [PROMPT_CONTINUITA_M3_CUTOVER.md](PROMPT_CONTINUITA_M3_CUTOVER.md).  
