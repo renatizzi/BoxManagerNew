@@ -56,7 +56,7 @@
     <string name="main_count_boxes_sample">No. containers: 0</string>
 
     <!-- Categories -->
-    <string name="categories_sort">Sort</string>
+    <string name="categories_sort">SORT</string>
     <string name="categories_count_sample">No. categories: 0</string>
 
     <!-- Locations -->
@@ -80,9 +80,9 @@
     <string name="trash_empty">Trash is empty.</string>
     <string name="trash_type_box">Container</string>
     <string name="trash_type_object">Object</string>
-    <string name="trash_restore">Restore</string>
-    <string name="trash_delete_permanent">Delete</string>
-    <string name="trash_empty_all">Empty trash</string>
+    <string name="trash_restore">RESTORE</string>
+    <string name="trash_delete_permanent">DELETE</string>
+    <string name="trash_empty_all">EMPTY TRASH</string>
     <string name="trash_empty_confirm">Permanently delete all items in trash?</string>
     <string name="trash_snackbar_moved">Moved to trash</string>
     <string name="trash_pick_box_title">Choose container</string>
@@ -162,11 +162,11 @@
     <string name="dialog_box_last_modified">Last modified</string>
 
     <!-- QR label -->
-    <string name="qr_print_label">Print label</string>
-    <string name="qr_export_pdf">Export PDF</string>
+    <string name="qr_print_label">PRINT LABEL</string>
+    <string name="qr_export_pdf">EXPORT PDF</string>
     <string name="page_qr_batch_title">QR labels</string>
     <string name="page_qr_batch_subtitle">Print labels using the selected format</string>
-    <string name="menu_qr_batch_labels">QR labels</string>
+    <string name="menu_qr_batch_labels">QR LABELS</string>
     <string name="qr_batch_summary">Total labels n. %1$d</string>
     <string name="qr_batch_excluded">Excluded (no code): %1$d</string>
     <string name="qr_batch_containers_title">Containers</string>
@@ -174,7 +174,7 @@
     <string name="qr_batch_format_one">A4 - 1 label</string>
     <string name="qr_batch_format_a4_2x2">A4 - 4 labels (2×2)</string>
     <string name="qr_batch_format_a4_2x3">A4 - 6 labels (2×3)</string>
-    <string name="qr_batch_share">Share labels PDF</string>
+    <string name="qr_batch_share">SHARE LABELS PDF</string>
     <string name="qr_batch_share_subject">BoxManager QR labels</string>
 
     <!-- List item placeholders -->
@@ -421,10 +421,10 @@
     <string name="guide_csv_v1_compat">• CSV v1 files (without id columns) remain importable.</string>
 
     <!-- Premium / Full archive gate -->
-    <string name="premium_page_subtitle">Advanced feature</string>
+    <string name="premium_page_subtitle">Premium feature expired</string>
     <string name="premium_button_share">SHARE</string>
     <string name="premium_button_close">CLOSE</string>
-    <string name="premium_code_prompt">Do you have a code?</string>
+    <string name="premium_code_prompt">If you have a CODE, enter it below</string>
     <string name="premium_feature_advanced_search">Advanced search</string>
     <string name="premium_feature_qr_scan">QR code</string>
     <string name="premium_feature_qr_label">QR label</string>

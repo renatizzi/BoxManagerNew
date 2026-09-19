@@ -4,21 +4,32 @@ import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.os.Handler
+import android.os.Looper
 import android.speech.RecognizerIntent
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewConfiguration
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
 import java.util.Locale
 
+/**
+ * Microfono su EditText (drawable end).
+ * Avvio solo con **pressione prolungata** sul microfono (B-VOICE-MIC-ACCIDENTAL):
+ * uno sfioro / tap breve non parte la registrazione.
+ */
 class VoiceSearchController(
     private val activity: ComponentActivity
 ) {
 
     private var field: EditText? = null
     private var onSpoken: ((String) -> Unit)? = null
+    private val handler = Handler(Looper.getMainLooper())
+    private var longPressArmed = false
+    private var longPressFired = false
 
     private val launcher =
         activity.registerForActivityResult(
@@ -56,32 +67,57 @@ class VoiceSearchController(
         field = target
         this.onSpoken = onSpoken
 
+        val longPressTimeout =
+            ViewConfiguration.getLongPressTimeout().toLong()
+
         target.setOnTouchListener { view, event ->
 
-            val edit =
-                view as EditText
+            val edit = view as EditText
 
             if (!hitEndDrawable(edit, event)) {
+                cancelLongPress()
                 return@setOnTouchListener false
             }
 
-            when (event.action) {
+            when (event.actionMasked) {
 
                 MotionEvent.ACTION_DOWN -> {
                     field = edit
+                    longPressArmed = true
+                    longPressFired = false
+                    handler.postDelayed({
+                        if (longPressArmed && !longPressFired) {
+                            longPressFired = true
+                            field = edit
+                            launch()
+                        }
+                    }, longPressTimeout)
                     true
                 }
 
-                MotionEvent.ACTION_UP -> {
-                    field = edit
-                    launch()
+                MotionEvent.ACTION_UP,
+                MotionEvent.ACTION_CANCEL -> {
+                    val wasLong = longPressFired
+                    cancelLongPress()
+                    // Tap breve sul mic: consuma il tocco, non avvia voice.
+                    wasLong || true
+                }
+
+                MotionEvent.ACTION_MOVE -> {
+                    if (!hitEndDrawable(edit, event)) {
+                        cancelLongPress()
+                    }
                     true
                 }
 
-                else ->
-                    true
+                else -> true
             }
         }
+    }
+
+    private fun cancelLongPress() {
+        longPressArmed = false
+        handler.removeCallbacksAndMessages(null)
     }
 
     private fun launch() {
@@ -153,8 +189,9 @@ class VoiceSearchController(
 
         val width =
             drawable.bounds.width()
+        // Hit stretta (era +16dp): riduce gli sfiori involontari.
         val extra =
-            (16 * view.resources.displayMetrics.density).toInt()
+            (4 * view.resources.displayMetrics.density).toInt()
 
         return if (
             view.layoutDirection ==
