@@ -52,7 +52,7 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 | — | B-AUTO-FILES-LIST | **FATTO** | SI 14/09; play **1.3.2** — PRE_* fuori lista Ripristino |
 | C2 | A1 QR avanzato | **FATTO** | SI device Renato 14/09 — play **1.3.3** ok; polish UI batch **1.3.4 OK** |
 | C3 | A2 Cestino | **FATTO** | SI device Renato 16/09 — play **1.3.7 ok** |
-| C4 | A3 → B–C → B-QTY | **B–C IN CORSO** | A3 **FATTO** 1.3.9; B1 selezione — [PROMPT_CONTINUITA_BC_EXPORT.md](PROMPT_CONTINUITA_BC_EXPORT.md); B-QTY solo SI |
+| C4 | A3 → B–C → B-QTY | **B–C IN CORSO** | A3 **FATTO**; B1 **FATTO** 1.3.10; B2 → **1.3.11** — [PROMPT_CONTINUITA_BC_EXPORT.md](PROMPT_CONTINUITA_BC_EXPORT.md) |
 | C5 | D Dashboard | no-code |
 
 ---

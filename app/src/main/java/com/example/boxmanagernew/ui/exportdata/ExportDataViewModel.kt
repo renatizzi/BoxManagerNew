@@ -123,7 +123,7 @@ class ExportDataViewModel(
                     val (boxes, objects) = loadRows(selectedBoxIds)
                     when (format) {
                         Format.CSV -> {
-                            val csv = csvBuilder.build(boxes, objects, withIds = false)
+                            val csv = csvBuilder.build(boxes, objects, withIds = true)
                             ExportReady(
                                 fileName = ViewOutputConfiguration.proposedFileName(),
                                 bytes = csv,

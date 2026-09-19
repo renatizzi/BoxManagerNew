@@ -18,6 +18,7 @@ class ImportFileInspectorTest {
         assertTrue(result is ImportFileInspector.Result.Ready)
         val ready = result as ImportFileInspector.Result.Ready
         assertEquals(0, ready.recordsRead)
+        assertEquals(2, ready.formatVersion)
     }
 
     @Test

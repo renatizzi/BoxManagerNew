@@ -163,7 +163,7 @@ object QuickStartGuideCopy {
                 "formato${sep}" +
                     "${ImportConfiguration.FORMAT_NAME}" +
                     sep +
-                    ImportConfiguration.FORMAT_VERSION
+                    ImportConfiguration.FORMAT_VERSION_WITH_IDS
             )
             appendLine(
                 "sezione${sep}" +
@@ -172,7 +172,8 @@ object QuickStartGuideCopy {
             appendLine(
                 ImportConfiguration.COL_NAME +
                     " ${ImportConfiguration.COL_CATEGORY} " +
-                    ImportConfiguration.COL_POSITION
+                    "${ImportConfiguration.COL_POSITION} " +
+                    ImportConfiguration.COL_PERMANENT_ID
             )
             appendLine(
                 "sezione${sep}" +
@@ -182,7 +183,12 @@ object QuickStartGuideCopy {
                 "${ImportConfiguration.COL_NAME} (oggetto) " +
                     "${ImportConfiguration.COL_BOX} " +
                     "${ImportConfiguration.COL_DESCRIPTION} (oggetto) " +
-                    "${ImportConfiguration.COL_QUANTITY} (oggetto)"
+                    "${ImportConfiguration.COL_QUANTITY} (oggetto) " +
+                    ImportConfiguration.COL_OBJECT_PERMANENT_ID
+            )
+            appendLine()
+            appendLine(
+                context.getString(R.string.guide_csv_v1_compat)
             )
             appendLine()
             appendLine(

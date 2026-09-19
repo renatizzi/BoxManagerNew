@@ -10,7 +10,7 @@ import org.junit.Test
 class ImportTemplateBuilderTest {
 
     @Test
-    fun build_officialV1Track_utf8BomAndSections() {
+    fun build_officialV2Track_utf8BomAndIdColumns() {
 
         val bytes = ImportTemplateBuilder().build()
 
@@ -34,10 +34,14 @@ class ImportTemplateBuilderTest {
             ),
             text
         )
-        assertTrue(text.contains("formato;BoxManager_Import;1"))
+        assertTrue(text.contains("formato;BoxManager_Import;2"))
         assertTrue(text.contains("sezione;CONTENITORI"))
-        assertTrue(text.contains("nome;categoria;posizione"))
+        assertTrue(text.contains("nome;categoria;posizione;permanentId"))
         assertTrue(text.contains("sezione;OGGETTI"))
-        assertTrue(text.contains("nome;contenitore;descrizione;quantita"))
+        assertTrue(
+            text.contains(
+                "nome;contenitore;descrizione;quantita;objectPermanentId"
+            )
+        )
     }
 }

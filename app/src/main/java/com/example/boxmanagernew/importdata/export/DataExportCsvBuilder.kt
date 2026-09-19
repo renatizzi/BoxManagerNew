@@ -3,9 +3,9 @@ package com.example.boxmanagernew.importdata.export
 import com.example.boxmanagernew.importdata.config.ImportConfiguration
 
 /**
- * Builder CSV per Esporta dati.
- * [withIds]=false → V1 (Sheets/Excel, senza foto).
- * [withIds]=true → V2 con permanentId (pacchetto ZIP T5).
+ * Builder CSV per Esporta dati (Utility).
+ * Utility Esporta CSV/ZIP usano V2 con id stabili (B–C R7).
+ * Esporta vista contestuale resta V1 (ViewExportCsvBuilder).
  */
 class DataExportCsvBuilder {
 

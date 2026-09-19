@@ -204,8 +204,10 @@
     <string name="page_restore_subtitle">Sostituzione completa dell\'archivio</string>
     <string name="page_import_title">Importa Dati</string>
     <string name="page_export_title">Esporta Dati</string>
-    <string name="page_export_subtitle">CSV per fogli esterni · ZIP con foto (non è un Backup)</string>
-    <string name="export_intro">Non sostituisce Backup/Ripristino.\nEsporta CSV per Google/Excel (senza foto), oppure ZIP con foto e id stabili da riagganciare con Importa (merge).\nPuoi esportare tutto l\'archivio oppure solo i contenitori selezionati.</string>
+    <string name="page_export_subtitle">CSV v2 per fogli · ZIP con foto (non è un Backup)</string>
+    <string name="export_intro">Non sostituisce Backup/Ripristino.\nEsporta CSV v2 (id stabili, apribile in fogli, senza foto) oppure ZIP con foto.\nPuoi esportare tutto l\'archivio oppure solo i contenitori selezionati.</string>
+    <string name="export_button_csv">📄 Esporta CSV v2 (id, senza foto)</string>
+    <string name="export_button_zip">📦 Esporta ZIP (con foto)</string>
     <string name="export_scope_label">Contenuti</string>
     <string name="export_scope_all">Archivio intero</string>
     <string name="export_scope_selection">Selezione…</string>
@@ -213,8 +215,6 @@
     <string name="export_pick_all">Tutti</string>
     <string name="export_msg_select_at_least_one">Seleziona almeno un contenitore.</string>
     <string name="export_msg_no_boxes">Nessun contenitore da esportare.</string>
-    <string name="export_button_csv">📄 Esporta CSV (senza foto)</string>
-    <string name="export_button_zip">📦 Esporta ZIP (con foto)</string>
     <string name="export_msg_photo_summary">Foto: %1$d oggetti, circa %2$s MB.\nConfermi l\'esportazione ZIP?</string>
     <string name="export_msg_completed">Esportazione completata.</string>
     <string name="page_qr_title">Codice QR</string>
@@ -404,7 +404,8 @@
     <string name="guide_csv_header_label">Intestazione:</string>
     <string name="guide_csv_import_note">Le relative categorie e posizioni (obbligatorie) devono essere preliminarmente create in archivio. In fase di Import l\'app salva un backup automatico (%1$sddMMyy_HHmm) da ripristinare in caso di necessità.</string>
     <string name="guide_csv_export_format_title">Formato file Esporta dati (%1$sddMMyy_HHmm.csv)</string>
-    <string name="guide_csv_export_same_schema">• Stesso schema del modello Importa dati.</string>
+    <string name="guide_csv_export_same_schema">• Stesso schema del modello Importa dati (v2 con id stabili).</string>
+    <string name="guide_csv_v1_compat">• I file CSV v1 (senza colonne id) restano importabili.</string>
 
     <!-- Premium / Full archive gate -->
     <string name="premium_page_subtitle">Funzione avanzata</string>

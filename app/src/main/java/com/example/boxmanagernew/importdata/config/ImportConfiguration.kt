@@ -65,17 +65,24 @@ object ImportConfiguration {
     )
 
     val TEMPLATE_LINES: List<String> = listOf(
-        "formato$SEPARATOR$FORMAT_NAME$SEPARATOR$FORMAT_VERSION",
+        "formato$SEPARATOR$FORMAT_NAME$SEPARATOR$FORMAT_VERSION_WITH_IDS",
         "sezione$SEPARATOR$SECTION_BOXES",
-        "$COL_NAME$SEPARATOR$COL_CATEGORY$SEPARATOR$COL_POSITION",
+        "$COL_NAME$SEPARATOR$COL_CATEGORY$SEPARATOR$COL_POSITION$SEPARATOR$COL_PERMANENT_ID",
         "sezione$SEPARATOR$SECTION_OBJECTS",
-        "$COL_NAME$SEPARATOR$COL_BOX$SEPARATOR$COL_DESCRIPTION$SEPARATOR$COL_QUANTITY"
+        "$COL_NAME$SEPARATOR$COL_BOX$SEPARATOR$COL_DESCRIPTION$SEPARATOR$COL_QUANTITY$SEPARATOR$COL_OBJECT_PERMANENT_ID"
     )
 
+    /** Intestazione Esporta vista (V1, senza id) — canale contestuale distinto. */
     val FORMAT_FIELDS: List<String> = listOf(
         "formato",
         FORMAT_NAME,
         FORMAT_VERSION.toString()
+    )
+
+    val FORMAT_FIELDS_V2: List<String> = listOf(
+        "formato",
+        FORMAT_NAME,
+        FORMAT_VERSION_WITH_IDS.toString()
     )
 
     fun isOfficialFormatLine(fields: List<String>): Boolean {

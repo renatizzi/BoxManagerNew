@@ -1,4 +1,4 @@
-# Prompt di continuità — B–C Export/Import avanzati (18/09/2026)
+# Prompt di continuità — B–C Export/Import avanzati (19/09/2026)
 
 **Ingresso unico** per questa linea. Non mescolare con Utility UI backlog, Motore B, Dashboard (D).
 
@@ -29,10 +29,10 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md).
 | Voce | Valore |
 |------|--------|
 | **SI apertura codice** | Renato 18/09 — roadmap dopo A3 |
-| **Branch tipico** | `cursor/bc-export-selezione-8f03` |
-| **Build play** | **`v. 1.3.10`** (vc **14**) su merge `main` |
+| **Branch tipico** | `cursor/bc-export-csv-v2-8f03` (B2) |
+| **Build play** | **`v. 1.3.11`** (vc **15**) dopo merge B2 su `main` |
 | **A3** | **FATTO** 1.3.9 |
-| **Già shippato (T5/A3)** | Utility Esporta; CSV V1; ZIP+foto V2; Import ZIP; nome datato; riuso cartella |
+| **B1** | **FATTO** SI device Renato 19/09 — play **1.3.10 ok** |
 
 ---
 
@@ -40,12 +40,23 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md).
 
 | # | Scope | Requisiti | Stato |
 |---|--------|-----------|-------|
-| **B1** | Export **selezione** contenitori (+ oggetti collegati); profili Intero / Selezione | R2, R3 | **IN CORSO** |
-| **B2** | CSV **v2** da Utility (id stabili) + `Modello_Importazione` aggiornato; V1 resta | R7, R4 CSV | Dopo B1 |
-| **B3** | Import: validazione dati **estesa** | R5 | Dopo B2 |
-| **B4** | Import: report errori **riga-per-riga** (schermata e/o file) | R6 | Dopo B3 |
+| **B1** | Export **selezione** contenitori (+ oggetti); profili Intero / Selezione | R2, R3 | **FATTO** SI 19/09 `1.3.10 ok` |
+| **B2** | CSV **v2** da Utility (id stabili) + `Modello_Importazione` aggiornato; V1 resta importabile; Esporta vista resta V1 | R7, R4 CSV | **IN CORSO** → ritest **1.3.11** |
+| **B3** | Import: validazione dati **estesa** | R5 | Dopo B2 device |
+| **B4** | Import: report errori **riga-per-riga** | R6 | Dopo B3 |
 
 Fuori prima fetta (R8 / §4): picker categorie/posizioni; apply parziale; .xlsx nativo.
+
+---
+
+## Ritest B2 (dopo merge `main`) — topbar `v. 1.3.11`
+
+1. `git checkout main` + `git pull origin main` + Run **`playDebug`**
+2. Topbar **`v. 1.3.11`**
+3. Utility → Esporta → CSV: file con `formato;BoxManager_Import;2` e colonne `permanentId` / `objectPermanentId`
+4. Importa → Genera Modello: stesso schema v2
+5. Importa un CSV **v1** legacy: ancora ok
+6. Rispondi `1.3.11 ok` o KO
 
 ---
 
