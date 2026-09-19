@@ -79,7 +79,20 @@ class ImportExtendedValidatorTest {
     }
 
     @Test
-    fun duplicateBox_fails() {
+    fun homonymBoxes_ok() {
+        val result = validator.validate(
+            boxes = listOf(
+                box("Scatola", "Cat", "Soggiorno"),
+                box("scatola", "Cat", "Cantina")
+            ),
+            objects = emptyList()
+        )
+        assertTrue(result is ImportExtendedValidator.Result.Ok)
+    }
+
+    @Test
+    fun sameBoxTriple_softOk() {
+        // Soft: stesso nome+cat+pos non blocca; merge ignora il doppione.
         val result = validator.validate(
             boxes = listOf(
                 box("Scatola", "Cat", "Pos"),
@@ -87,11 +100,7 @@ class ImportExtendedValidatorTest {
             ),
             objects = emptyList()
         )
-        assertTrue(result is ImportExtendedValidator.Result.Failed)
-        assertTrue(
-            (result as ImportExtendedValidator.Result.Failed)
-                .message.startsWith(ImportConfiguration.MSG_DUPLICATE_BOX)
-        )
+        assertTrue(result is ImportExtendedValidator.Result.Ok)
     }
 
     @Test

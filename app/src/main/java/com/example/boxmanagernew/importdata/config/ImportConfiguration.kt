@@ -155,7 +155,7 @@ object ImportConfiguration {
 
     const val CHECK_REQUIRED = "presenza dei campi obbligatori"
 
-    const val CHECK_DATA = "coerenza dei dati (quantità, lunghezze, duplicati)"
+    const val CHECK_DATA = "coerenza dei dati (quantità, lunghezze, oggetti duplicati)"
 
     /** Limite stringhe import (allineato Descrizione UI / OCR). */
     const val MAX_FIELD_CHARS = 100
@@ -185,6 +185,7 @@ object ImportConfiguration {
     const val MSG_FIELD_TOO_LONG =
         "campo troppo lungo"
 
+    /** Soft su BOX (omonimi ammessi); usato solo se un giorno si ripristina un hard-check. */
     const val MSG_DUPLICATE_BOX =
         "contenitore duplicato nel file"
 

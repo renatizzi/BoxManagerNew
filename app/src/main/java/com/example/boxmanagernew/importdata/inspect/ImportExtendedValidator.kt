@@ -4,7 +4,9 @@ import com.example.boxmanagernew.importdata.config.ImportConfiguration
 import java.util.Locale
 
 /**
- * Validazione dati estesa (B–C R5 / V3): quantità, lunghezze campi, duplicati nel file.
+ * Validazione dati estesa (B–C R5 / V3): quantità, lunghezze campi, oggetti duplicati nel file.
+ * Contenitori omonimi ammessi (come in archivio / Room: nessun unique sul nome).
+ * Duplicati esatti BOX (nome+categoria+posizione) = soft: merge li ignora, non blocco qui.
  * Blocca l’import (niente apply parziale). ZIP + id già coperti da inspector/merge.
  */
 class ImportExtendedValidator {
@@ -21,19 +23,12 @@ class ImportExtendedValidator {
         boxes: List<ImportFileInspector.BoxRow>,
         objects: List<ImportFileInspector.ObjectRow>
     ): Result {
-        val seenBoxes = mutableSetOf<String>()
         for (box in boxes) {
             fieldTooLong(box.name, ImportConfiguration.SECTION_BOXES)?.let { return it }
             fieldTooLong(box.category, ImportConfiguration.SECTION_BOXES)?.let { return it }
             fieldTooLong(box.position, ImportConfiguration.SECTION_BOXES)?.let { return it }
             box.permanentId?.let { id ->
                 fieldTooLong(id, ImportConfiguration.SECTION_BOXES)?.let { return it }
-            }
-            val key = normalize(box.name)
-            if (!seenBoxes.add(key)) {
-                return Result.Failed(
-                    ImportConfiguration.MSG_DUPLICATE_BOX + ": " + box.name
-                )
             }
         }
 

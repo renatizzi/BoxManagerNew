@@ -269,7 +269,7 @@
     <string name="import_check_format">correct format</string>
     <string name="import_check_structure">structure matches the official template</string>
     <string name="import_check_required">required fields present</string>
-    <string name="import_check_data">data consistency (quantity, lengths, duplicates)</string>
+    <string name="import_check_data">data consistency (quantity, lengths, duplicate objects)</string>
     <string name="import_msg_quantity_invalid">Invalid quantity (integer ≥ 0)</string>
     <string name="import_msg_field_too_long">Field too long</string>
     <string name="import_msg_duplicate_box">Duplicate container in the file</string>
