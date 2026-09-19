@@ -285,9 +285,9 @@
     <string name="import_error_section_file">FILE</string>
     <string name="import_error_line_format">%1$s · riga %2$d · %3$s</string>
     <string name="import_error_line_no_row">%1$s · %2$s</string>
-    <string name="import_error_report_save_title">Report errori</string>
-    <string name="import_error_report_save_message">Salvare il report dettagliato (CSV)?</string>
-    <string name="import_error_report_saved">Report errori salvato.</string>
+    <string name="import_error_report_save_title">Importazione non riuscita</string>
+    <string name="import_error_report_save_message">ATTENZIONE: questo file non può essere importato perché contiene errori.\nVuoi salvare un promemoria?</string>
+    <string name="import_error_report_saved">Promemoria errori salvato.</string>
     <string name="label_containers_count">Contenitori: %1$d</string>
     <string name="label_objects_count">Oggetti: %1$d</string>
     <string name="label_categories_count">Categorie: %1$d</string>

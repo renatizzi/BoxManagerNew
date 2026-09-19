@@ -286,9 +286,9 @@
     <string name="import_error_section_file">FILE</string>
     <string name="import_error_line_format">%1$s · row %2$d · %3$s</string>
     <string name="import_error_line_no_row">%1$s · %2$s</string>
-    <string name="import_error_report_save_title">Error report</string>
-    <string name="import_error_report_save_message">Save the detailed report (CSV)?</string>
-    <string name="import_error_report_saved">Error report saved.</string>
+    <string name="import_error_report_save_title">Import failed</string>
+    <string name="import_error_report_save_message">WARNING: this file cannot be imported because it contains errors.\nDo you want to save a reminder?</string>
+    <string name="import_error_report_saved">Error reminder saved.</string>
     <string name="label_containers_count">Containers: %1$d</string>
     <string name="label_objects_count">Objects: %1$d</string>
     <string name="label_categories_count">Categories: %1$d</string>
