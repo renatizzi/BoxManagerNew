@@ -30,11 +30,11 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md).
 |------|--------|
 | **SI apertura codice** | Renato 18/09 — roadmap dopo A3 |
 | **Branch tipico** | `cursor/bc-import-error-report-8f03` (B4) |
-| **Build play** | **`v. 1.3.14`** (vc **18**) |
+| **Build play** | **`v. 1.3.15`** (vc **19**) — testo dialog promemoria |
 | **B1** | **FATTO** SI `1.3.10 ok` |
 | **B2** | **FATTO** SI `1.3.11 ok` |
 | **B3** | **FATTO** SI `1.3.13 ok` |
-| **B4** | Report errori → ritest **1.3.14** (istruzioni riviste 19/09) |
+| **B4** | Report errori → ritest dialog **1.3.15** |
 
 ---
 
@@ -45,21 +45,21 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md).
 | **B1** | Export selezione | R2, R3 | **FATTO** `1.3.10 ok` |
 | **B2** | CSV v2 Utility + Modello; V1 importabile | R7, R4 | **FATTO** `1.3.11 ok` |
 | **B3** | Import: validazione estesa | R5 | **FATTO** `1.3.13 ok` |
-| **B4** | Import: report errori riga-per-riga (schermata + CSV `IMPORT_ERRORI_…`) | R6 | **IN CORSO** → ritest **1.3.14** |
+| **B4** | Import: report errori riga-per-riga (schermata + CSV `IMPORT_ERRORI_…`) | R6 | **IN CORSO** → ritest **1.3.15** (testo dialog) |
 
 **Nota ritest:** il campo Quantità **in app** è solo numerico (`inputType=number`) — non si digita `abc` lì. Il KO quantità alfabetica si prepara **nel file CSV** (editor testo / foglio), non nel form Oggetto. Fixture pronta: `docs/famiglia/fixtures/IMPORT_TEST_ERRORI.csv`.
 
+Dialog salvataggio (SI Renato 19/09): titolo «Importazione non riuscita»; messaggio «ATTENZIONE: questo file non può essere importato… Vuoi salvare un promemoria?»
+
 ---
 
-## Ritest B4 (dopo merge `main`) — topbar `v. 1.3.14`
+## Ritest B4 dialog (dopo merge `main`) — topbar `v. 1.3.15`
 
 1. `git checkout main` + `git pull origin main` + Run **`playDebug`**
-2. Topbar **`v. 1.3.14`**
-3. Copia sul telefono il file `docs/famiglia/fixtures/IMPORT_TEST_ERRORI.csv` (dal PC dopo pull), **oppure** apri un CSV di import con **editor di testo** (non il form Quantità in app) e metti nome contenitore con **più di 100 caratteri** e/o quantità `abc` / `-1`
-4. Utility → **Importa dati** → scegli quel CSV → **blocco**; messaggio con **sezione · riga · motivo** (almeno un errore)
-5. Dialog «Salvare il report dettagliato?» → SI → file `IMPORT_ERRORI_…csv`
-6. CSV valido (Modello / export) → import ok come prima
-7. Rispondi `1.3.14 ok` o KO
+2. Topbar **`v. 1.3.15`**
+3. Importa `IMPORT_TEST_ERRORI.csv` (o altro CSV KO) → blocco + dettaglio riga
+4. Dialog: testo chiaro **ATTENZIONE… Vuoi salvare un promemoria?** — SI = salva CSV; NO = chiudi
+5. Rispondi `1.3.15 ok` o KO
 
 ---
 
