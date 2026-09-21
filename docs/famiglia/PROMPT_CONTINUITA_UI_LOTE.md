@@ -16,7 +16,7 @@
 | 5 | **B-PREMIUM-UNIFY-PAGE** | Premium senza elenco funzioni | **SI 1.3.18** + lote |
 | 6 | **QR BATCH Utility** | Dialog intro Utility → lista; ETICHETTE in selezione | **SI 1.3.22 ok** |
 
-**Nota guida online:** Renato aggiorna il testo sul sito (punti forniti in chat 19/09); in-app Guida già allineata.
+**Nota guida online:** testo in-app + PDF stampa allineati in **1.3.23** (`docs/play/BoxManager_Guida_rapida_1.3.23.docx`).
 
 ## Non riaprire
 
