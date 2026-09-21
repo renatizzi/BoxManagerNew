@@ -16,7 +16,7 @@
 | 5 | **B-PREMIUM-UNIFY-PAGE** | Premium senza elenco funzioni | **SI 1.3.18** + lote |
 | 6 | **QR BATCH Utility** | Dialog intro Utility → lista; ETICHETTE in selezione | **SI 1.3.22 ok** |
 
-**Nota guida online:** testo in-app + PDF stampa allineati in **1.3.24** (`docs/play/BoxManager_Guida_rapida_1.3.24.docx`).
+**Nota guida online:** testo in-app + PDF stampa allineati in **1.3.24** — IT `docs/play/BoxManager_Guida_rapida_1.3.24.docx`, EN `docs/play/BoxManager_Guida_rapida_1.3.24_EN.docx`.
 
 ## Non riaprire
 
