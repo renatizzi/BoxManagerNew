@@ -315,7 +315,7 @@ abstract class BaseActivity : AppCompatActivity() {
             ) ?: return
 
         if (this is QuickStartGuideActivity) {
-            button.text = "Chiudi"
+            button.text = getString(R.string.guide_button_close)
             button.visibility = View.VISIBLE
 
             button.setTextColor(

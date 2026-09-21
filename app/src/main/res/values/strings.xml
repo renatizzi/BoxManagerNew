@@ -433,6 +433,7 @@
     <string name="guide_zip_export">• Esporta dati Utility in ZIP: stesso CSV più cartella foto oggetti, se presenti.</string>
     <string name="guide_zip_family">• Condividi Archivio (Invia/Ricevi): pacchetto ZIP per unire dati tra familiari (non sostituisce tutto come Ripristino).</string>
     <string name="guide_print_job_name">BoxManager Guida rapida</string>
+    <string name="guide_button_close">Chiudi</string>
 
     <!-- Premium / Full archive gate -->
     <string name="premium_page_subtitle">Funzione Premium scaduta</string>

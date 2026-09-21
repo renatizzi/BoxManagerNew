@@ -14,6 +14,15 @@ import java.io.File
 class QuickStartGuideCopyTest {
 
     @Test
+    fun guideCloseButton_isLocalized() {
+        assertEquals("Chiudi", stringIt("guide_button_close"))
+        assertEquals("Close", stringEn("guide_button_close"))
+        val base = kotlinSource("ui/common/BaseActivity.kt")
+        assertTrue(base.contains("R.string.guide_button_close"))
+        assertFalse(base.contains("\"Chiudi\""))
+    }
+
+    @Test
     fun headerStrings_existInItalianAndEnglish() {
         assertEquals("Guida rapida", stringIt("guide_page_title"))
         assertEquals("Quick guide", stringEn("guide_page_title"))

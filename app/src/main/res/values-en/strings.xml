@@ -434,6 +434,7 @@
     <string name="guide_zip_export">• Utility Export as ZIP: the same CSV plus the object photos folder, if any.</string>
     <string name="guide_zip_family">• Share Archive (Send/Receive): ZIP package to merge family data (does not replace everything like Restore).</string>
     <string name="guide_print_job_name">BoxManager Quick guide</string>
+    <string name="guide_button_close">Close</string>
 
     <!-- Premium / Full archive gate -->
     <string name="premium_page_subtitle">Premium feature expired</string>
