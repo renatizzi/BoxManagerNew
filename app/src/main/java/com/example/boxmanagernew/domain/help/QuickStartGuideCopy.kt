@@ -124,12 +124,14 @@ object QuickStartGuideCopy {
                 phase = Phase.USAGE,
                 number = 6,
                 title = context.getString(R.string.guide_section_tools_title),
-                bodyIntro = context.getString(R.string.guide_section_tools_intro),
+                bodyIntro =
+                    context.getString(R.string.guide_section_tools_intro) +
+                        "\n\n" +
+                        context.getString(R.string.guide_section_tools_containers_lead),
                 bullets = listOf(
                     context.getString(R.string.guide_section_tools_b1),
                     context.getString(R.string.guide_section_tools_b2)
-                ),
-                bodyClosing = context.getString(R.string.guide_section_tools_closing)
+                )
             )
         )
     }
@@ -202,10 +204,6 @@ object QuickStartGuideCopy {
                     ImportConfiguration.COL_QUANTITY +
                     sep +
                     ImportConfiguration.COL_OBJECT_PERMANENT_ID
-            )
-            appendLine()
-            appendLine(
-                context.getString(R.string.guide_csv_v1_compat)
             )
             appendLine()
             appendLine(

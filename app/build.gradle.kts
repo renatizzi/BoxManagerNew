@@ -20,8 +20,8 @@ android {
         applicationId = "it.renatizzi.boxmanager"
         minSdk = 24
         targetSdk = 36
-        versionCode = 27
-        versionName = "1.3.23"
+        versionCode = 28
+        versionName = "1.3.24"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -44,9 +44,9 @@ android {
     productFlavors {
         create("play") {
             dimension = "distribution"
-            // 21/09: 1.3.23 — Guida rivista + CSV/ZIP + stampa PDF. vc 27.
-            versionCode = 27
-            versionName = "1.3.23"
+            // 21/09: 1.3.24 — Guida prosa Renato + CSV/ZIP senza v1. vc 28.
+            versionCode = 28
+            versionName = "1.3.24"
             buildConfigField("boolean", "FAMILY_BETA", "true")
         }
         create("famiglia") {

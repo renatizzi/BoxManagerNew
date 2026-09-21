@@ -100,9 +100,10 @@ class QuickStartGuideCopyTest {
     fun qrBatch_distinguishesScanFromMultiPrint() {
         assertTrue(stringIt("guide_utility_qr").contains("fotocamera"))
         assertFalse(stringIt("guide_utility_qr").contains("QR BATCH"))
-        assertTrue(stringIt("guide_utility_qr_batch").contains("ETICHETTE QR"))
-        assertTrue(stringIt("guide_utility_qr_batch").contains("selezioni"))
-        assertTrue(stringEn("guide_utility_qr_batch").contains("QR LABELS"))
+        assertTrue(stringIt("guide_utility_qr_batch").contains("QR BATCH"))
+        assertTrue(stringIt("guide_utility_qr_batch").contains("etichette"))
+        assertTrue(stringEn("guide_utility_qr_batch").contains("QR BATCH"))
+        assertTrue(stringEn("guide_utility_qr_batch").contains("labels"))
     }
 
     @Test
@@ -117,8 +118,25 @@ class QuickStartGuideCopyTest {
         assertEquals("Contextual tools", stringEn("guide_section_tools_title"))
         assertTrue(stringIt("guide_section_tools_intro").contains("(*)"))
         assertTrue(stringEn("guide_section_tools_intro").contains("(*)"))
-        assertTrue(stringIt("guide_section_tools_closing").contains("QR BATCH"))
-        assertTrue(stringEn("guide_section_tools_closing").contains("QR BATCH"))
+        assertTrue(stringIt("guide_section_tools_containers_lead").contains("Contenitori"))
+        assertTrue(stringEn("guide_section_tools_containers_lead").contains("Containers"))
+        assertTrue(stringIt("guide_section_tools_b1").contains("singolo"))
+        assertTrue(stringIt("guide_section_tools_b2").contains("multiselezione"))
+        assertTrue(stringEn("guide_section_tools_b2").contains("multi-select"))
+    }
+
+    @Test
+    fun csvFootnote_hasNoLegacyVersionLabels() {
+        assertFalse(stringIt("guide_csv_header_label").contains("v1"))
+        assertFalse(stringIt("guide_csv_header_label").contains("v2"))
+        assertFalse(stringIt("guide_csv_export_same_schema").contains("v1"))
+        assertFalse(stringIt("guide_zip_export").contains("v2"))
+        assertFalse(stringEn("guide_csv_header_label").contains("v1"))
+        assertFalse(stringEn("guide_csv_header_label").contains("v2"))
+        assertFalse(stringEn("guide_csv_export_same_schema").contains("v1"))
+        assertFalse(stringEn("guide_zip_export").contains("v2"))
+        val source = kotlinSource("domain/help/QuickStartGuideCopy.kt")
+        assertFalse(source.contains("guide_csv_v1_compat"))
     }
 
     @Test
