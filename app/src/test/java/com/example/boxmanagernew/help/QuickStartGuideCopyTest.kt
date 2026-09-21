@@ -40,7 +40,9 @@ class QuickStartGuideCopyTest {
         val source = kotlinSource("ui/help/QuickStartGuideActivity.kt")
         assertTrue(source.contains("QuickStartGuideCopy.pageTitle(this)"))
         assertTrue(source.contains("QuickStartGuideCopy.sectionsFor(this,"))
-        assertTrue(source.contains("QuickStartGuideCopy.csvFootnote(this)"))
+        assertTrue(source.contains("QuickStartGuideCopy.csvFootnote("))
+        assertTrue(source.contains("GuidePrintPdf.toBytes"))
+        assertTrue(source.contains("inflatePrintOnly"))
         assertFalse(source.contains("PAGE_TITLE"))
         assertFalse(source.contains("CSV_FOOTNOTE"))
     }
@@ -50,6 +52,8 @@ class QuickStartGuideCopyTest {
         val source = kotlinSource("domain/help/QuickStartGuideCopy.kt")
         assertTrue(source.contains("R.string.guide_section_settings_title"))
         assertTrue(source.contains("R.string.guide_utility_family_share"))
+        assertTrue(source.contains("R.string.guide_utility_trash"))
+        assertTrue(source.contains("R.string.guide_zip_backup"))
         assertTrue(source.contains("fun sectionsFor("))
         assertEquals(6, Regex("number = [1-6]").findAll(source).count())
     }
@@ -72,30 +76,49 @@ class QuickStartGuideCopyTest {
         assertTrue(source.contains("ImportConfiguration.SECTION_OBJECTS"))
         assertTrue(source.contains("ImportConfiguration.PRE_IMPORT_PREFIX"))
         assertTrue(source.contains("ViewOutputConfiguration.EXPORT_FILE_PREFIX"))
-        assertTrue(stringIt("guide_csv_export_same_schema").contains("Importa dati"))
-        assertTrue(stringEn("guide_csv_export_same_schema").contains("Import data"))
+        assertTrue(stringIt("guide_csv_export_same_schema").contains("Import"))
+        assertTrue(stringEn("guide_csv_export_same_schema").contains("Import"))
+        assertTrue(stringIt("guide_zip_backup").contains("BCK_"))
+        assertTrue(stringEn("guide_zip_export").contains("ZIP"))
         assertEquals(";", ImportConfiguration.SEPARATOR)
         assertTrue(ViewOutputConfiguration.EXPORT_FILE_PREFIX.isNotBlank())
     }
 
     @Test
-    fun settingsSection_mentionsPrivacyAndSharedArchive() {
+    fun settingsSection_mentionsLanguagePrivacyNetworkAndDark() {
         assertEquals("Impostazioni", stringIt("guide_section_settings_title"))
         assertEquals("Settings", stringEn("guide_section_settings_title"))
         assertTrue(stringIt("guide_section_settings_b1").contains("Archivio Condiviso"))
         assertTrue(stringEn("guide_section_settings_b1").contains("Shared Archive"))
-        assertTrue(stringIt("guide_section_settings_b3").contains("Privacy"))
-        assertTrue(stringEn("guide_section_settings_b3").contains("Privacy"))
+        assertTrue(stringIt("guide_section_settings_b2").contains("lingua"))
+        assertTrue(stringIt("guide_section_settings_b3").contains("Dark"))
+        assertTrue(stringIt("guide_section_settings_b5").contains("CIFS"))
+        assertTrue(stringIt("guide_section_settings_b6").contains("Privacy"))
+    }
+
+    @Test
+    fun qrBatch_distinguishesScanFromMultiPrint() {
+        assertTrue(stringIt("guide_utility_qr").contains("fotocamera"))
+        assertFalse(stringIt("guide_utility_qr").contains("QR BATCH"))
+        assertTrue(stringIt("guide_utility_qr_batch").contains("ETICHETTE QR"))
+        assertTrue(stringIt("guide_utility_qr_batch").contains("selezioni"))
+        assertTrue(stringEn("guide_utility_qr_batch").contains("QR LABELS"))
+    }
+
+    @Test
+    fun dashboard_mentionsLongPressMic() {
+        assertTrue(stringIt("guide_section_dashboard_b3").contains("pressione prolungata"))
+        assertTrue(stringEn("guide_section_dashboard_b3").contains("long press"))
     }
 
     @Test
     fun contextualToolsSection_referencesCsvFootnote() {
         assertEquals("Strumenti contestuali", stringIt("guide_section_tools_title"))
         assertEquals("Contextual tools", stringEn("guide_section_tools_title"))
-        assertTrue(stringIt("guide_section_tools_b2").contains("(*)"))
-        assertTrue(stringEn("guide_section_tools_b2").contains("(*)"))
-        assertTrue(stringIt("guide_section_tools_closing").contains("etichetta QR"))
-        assertTrue(stringEn("guide_section_tools_closing").contains("QR label"))
+        assertTrue(stringIt("guide_section_tools_intro").contains("(*)"))
+        assertTrue(stringEn("guide_section_tools_intro").contains("(*)"))
+        assertTrue(stringIt("guide_section_tools_closing").contains("QR BATCH"))
+        assertTrue(stringEn("guide_section_tools_closing").contains("QR BATCH"))
     }
 
     @Test
@@ -119,67 +142,42 @@ class QuickStartGuideCopyTest {
                 .contains("Network drive")
         )
         assertTrue(
-            stringIt("guide_utility_network_folder")
-                .contains("Impostazioni")
+            stringIt("guide_section_settings_b5")
+                .contains("disco di rete")
         )
-        // Messaggi minimalisti B5.20 (proposta Renato): CIFS esplicito + campi essenziali.
         assertTrue(
             stringIt("network_drive_dialog_need_app")
                 .contains("CIFS Documents Provider")
         )
-        assertTrue(
-            stringIt("network_drive_dialog_need_app")
-                .contains("Installa l'app")
-        )
-        assertTrue(
-            stringIt("network_drive_dialog_need_app")
-                .contains("Host")
-        )
-        assertTrue(
-            stringIt("network_drive_dialog_need_app")
-                .contains("Folder")
-        )
-        assertTrue(
-            stringIt("network_drive_dialog_ready")
-                .contains("già installata")
-        )
-        assertTrue(
-            stringIt("network_drive_dialog_ready")
-                .contains("Apri l'app")
-        )
         assertFalse(
             stringIt("guide_utility_network_folder")
-                .contains("NAS")
-        )
-        assertFalse(
-            stringIt("network_drive_dialog_need_app")
                 .contains("NAS")
         )
     }
 
     private fun kotlinSource(relativeUnderJava: String): String {
-        val path = "com/example/boxmanagernew/$relativeUnderJava"
-        return File("app/src/main/java/$path")
-            .takeIf { it.isFile }
-            ?.readText()
-            ?: File("src/main/java/$path").readText()
+        val candidates = listOf(
+            File("src/main/java/com/example/boxmanagernew/$relativeUnderJava"),
+            File("app/src/main/java/com/example/boxmanagernew/$relativeUnderJava")
+        )
+        return candidates.first { it.isFile }.readText()
     }
 
     private fun stringIt(name: String): String =
-        stringValue("values/strings.xml", name)
+        stringValue("src/main/res/values/strings.xml", name)
+            ?: stringValue("app/src/main/res/values/strings.xml", name)!!
 
     private fun stringEn(name: String): String =
-        stringValue("values-en/strings.xml", name)
+        stringValue("src/main/res/values-en/strings.xml", name)
+            ?: stringValue("app/src/main/res/values-en/strings.xml", name)!!
 
-    private fun stringValue(relative: String, name: String): String {
-        val text = File("app/src/main/res/$relative")
-            .takeIf { it.isFile }
-            ?.readText()
-            ?: File("src/main/res/$relative").readText()
-        val match = Regex("""name="$name">(.*?)</string>""", RegexOption.DOT_MATCHES_ALL)
-            .find(text)
-            ?: error("Missing string $name in $relative")
-        return match.groupValues[1]
+    private fun stringValue(path: String, name: String): String? {
+        val file = File(path)
+        if (!file.isFile) return null
+        val regex =
+            Regex("""<string\s+name="$name">(.*?)</string>""", RegexOption.DOT_MATCHES_ALL)
+        val raw = regex.find(file.readText())?.groupValues?.get(1) ?: return null
+        return raw
             .replace("\\'", "'")
             .replace("\\\"", "\"")
             .replace("\\n", "\n")

@@ -75,18 +75,22 @@ object QuickStartGuideCopy {
                     context.getString(R.string.guide_section_settings_b1),
                     context.getString(R.string.guide_section_settings_b2),
                     context.getString(R.string.guide_section_settings_b3),
-                    context.getString(R.string.guide_section_settings_b4)
+                    context.getString(R.string.guide_section_settings_b4),
+                    context.getString(R.string.guide_section_settings_b5),
+                    context.getString(R.string.guide_section_settings_b6)
                 )
             ),
             Section(
                 phase = Phase.CENSUS,
                 number = 2,
                 title = context.getString(R.string.guide_section_categories_title),
-                bullets = listOf(
-                    context.getString(R.string.guide_section_categories_b1),
-                    context.getString(R.string.guide_section_categories_b2),
-                    context.getString(R.string.guide_section_categories_b3)
-                )
+                bullets = buildList {
+                    add(context.getString(R.string.guide_section_categories_b1))
+                    add(context.getString(R.string.guide_section_categories_b2))
+                    if (includeFamilyBeta) {
+                        add(context.getString(R.string.guide_section_categories_b3))
+                    }
+                }
             ),
             Section(
                 phase = Phase.CENSUS,
@@ -95,7 +99,8 @@ object QuickStartGuideCopy {
                 bullets = listOf(
                     context.getString(R.string.guide_section_boxes_b1),
                     context.getString(R.string.guide_section_boxes_b2),
-                    context.getString(R.string.guide_section_boxes_b3)
+                    context.getString(R.string.guide_section_boxes_b3),
+                    context.getString(R.string.guide_section_boxes_b4)
                 )
             ),
             Section(
@@ -105,7 +110,8 @@ object QuickStartGuideCopy {
                 bullets = listOf(
                     context.getString(R.string.guide_section_dashboard_b1),
                     context.getString(R.string.guide_section_dashboard_b2),
-                    context.getString(R.string.guide_section_dashboard_b3)
+                    context.getString(R.string.guide_section_dashboard_b3),
+                    context.getString(R.string.guide_section_dashboard_b4)
                 )
             ),
             Section(
@@ -134,7 +140,6 @@ object QuickStartGuideCopy {
     ): List<String> {
         return buildList {
             add(context.getString(R.string.guide_utility_backup))
-            add(context.getString(R.string.guide_utility_network_folder))
             add(context.getString(R.string.guide_utility_import))
             add(context.getString(R.string.guide_utility_qr))
             add(context.getString(R.string.guide_utility_qr_batch))
@@ -142,10 +147,14 @@ object QuickStartGuideCopy {
                 add(context.getString(R.string.guide_utility_family_share))
                 add(context.getString(R.string.guide_utility_family_merge))
             }
+            add(context.getString(R.string.guide_utility_trash))
         }
     }
 
-    fun csvFootnote(context: Context): String {
+    fun csvFootnote(
+        context: Context,
+        includeFamilyBeta: Boolean
+    ): String {
         val sep = ImportConfiguration.SEPARATOR
         return buildString {
             appendLine(
@@ -172,8 +181,11 @@ object QuickStartGuideCopy {
             )
             appendLine(
                 ImportConfiguration.COL_NAME +
-                    " ${ImportConfiguration.COL_CATEGORY} " +
-                    "${ImportConfiguration.COL_POSITION} " +
+                    sep +
+                    ImportConfiguration.COL_CATEGORY +
+                    sep +
+                    ImportConfiguration.COL_POSITION +
+                    sep +
                     ImportConfiguration.COL_PERMANENT_ID
             )
             appendLine(
@@ -181,10 +193,14 @@ object QuickStartGuideCopy {
                     ImportConfiguration.SECTION_OBJECTS
             )
             appendLine(
-                "${ImportConfiguration.COL_NAME} (oggetto) " +
-                    "${ImportConfiguration.COL_BOX} " +
-                    "${ImportConfiguration.COL_DESCRIPTION} (oggetto) " +
-                    "${ImportConfiguration.COL_QUANTITY} (oggetto) " +
+                ImportConfiguration.COL_NAME +
+                    sep +
+                    ImportConfiguration.COL_BOX +
+                    sep +
+                    ImportConfiguration.COL_DESCRIPTION +
+                    sep +
+                    ImportConfiguration.COL_QUANTITY +
+                    sep +
                     ImportConfiguration.COL_OBJECT_PERMANENT_ID
             )
             appendLine()
@@ -205,7 +221,14 @@ object QuickStartGuideCopy {
                     ViewOutputConfiguration.EXPORT_FILE_PREFIX
                 )
             )
-            append(context.getString(R.string.guide_csv_export_same_schema))
-        }
+            appendLine(context.getString(R.string.guide_csv_export_same_schema))
+            appendLine()
+            appendLine(context.getString(R.string.guide_zip_title))
+            appendLine(context.getString(R.string.guide_zip_backup))
+            appendLine(context.getString(R.string.guide_zip_export))
+            if (includeFamilyBeta) {
+                append(context.getString(R.string.guide_zip_family))
+            }
+        }.trimEnd()
     }
 }

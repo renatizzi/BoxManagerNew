@@ -1,18 +1,28 @@
 package com.example.boxmanagernew.ui.help
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.print.PrintAttributes
+import android.print.PrintManager
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.boxmanagernew.BuildConfig
 import com.example.boxmanagernew.R
 import com.example.boxmanagernew.domain.help.QuickStartGuideCopy
 import com.example.boxmanagernew.ui.common.BaseActivity
+import com.example.boxmanagernew.viewoutput.print.ViewPrintAdapter
+import com.example.boxmanagernew.viewoutput.ui.ViewOutputController
 import com.google.android.material.card.MaterialCardView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class QuickStartGuideActivity : BaseActivity() {
 
@@ -47,9 +57,46 @@ class QuickStartGuideActivity : BaseActivity() {
         sectionsContainer = findViewById(R.id.sectionsContainer)
         guideScroll = findViewById(R.id.guideScroll)
 
+        setupPrintAction()
         bindWorkflow()
         bindSections()
         bindScrollHighlight()
+    }
+
+    private fun setupPrintAction() {
+        val container =
+            findViewById<FrameLayout>(R.id.headerActionContainer)
+        ViewOutputController(
+            this,
+            com.example.boxmanagernew.viewoutput.persist.ViewExportPersister(this),
+            showFolderInaccessible = {},
+            launchFolderPicker = {}
+        ).inflatePrintOnly(container) {
+            printGuidePdf()
+        }
+    }
+
+    private fun printGuidePdf() {
+        lifecycleScope.launch {
+            val result =
+                withContext(Dispatchers.Default) {
+                    GuidePrintPdf.toBytes(
+                        this@QuickStartGuideActivity,
+                        BuildConfig.FAMILY_BETA
+                    )
+                }
+            val printManager =
+                getSystemService(Context.PRINT_SERVICE) as? PrintManager
+                    ?: return@launch
+            printManager.print(
+                getString(R.string.guide_print_job_name),
+                ViewPrintAdapter(result.bytes, result.pageCount),
+                PrintAttributes.Builder()
+                    .setMediaSize(PrintAttributes.MediaSize.ISO_A4)
+                    .setColorMode(PrintAttributes.COLOR_MODE_COLOR)
+                    .build()
+            )
+        }
     }
 
     private fun bindWorkflow() {
@@ -64,7 +111,10 @@ class QuickStartGuideActivity : BaseActivity() {
         }
 
         findViewById<TextView>(R.id.textCsvFootnote).text =
-            QuickStartGuideCopy.csvFootnote(this)
+            QuickStartGuideCopy.csvFootnote(
+                this,
+                BuildConfig.FAMILY_BETA
+            )
     }
 
     private fun refreshChipHighlight() {
