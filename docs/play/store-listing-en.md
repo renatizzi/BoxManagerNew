@@ -25,7 +25,22 @@ Backup and restore your archive, import and export CSV, and print or share a vie
 
 Designed for personal and household use.
 
-## Release notes template (English) — M3 / 1.3
+## Release notes — **2.0** (from Production 1.3.7)
+
+Paste into Play Console → Production → **Release notes** (English). Typical limit **500** characters.
+
+```text
+BoxManager 2.0 — full feature alignment:
+
+• Object photos with OCR for descriptions
+• Advanced Export/Import (selection, error report)
+• Batch QR labels and Utility improvements
+• Updated Quick guide
+• Stronger code optimization (Play performance)
+• Bug fixes and stability
+```
+
+## Release notes template (English) — M3 / 1.3 (historical)
 
 What’s new in this release:
 

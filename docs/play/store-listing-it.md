@@ -25,7 +25,22 @@ Backup e ripristino dell’archivio, import/export CSV, stampa o condivisione de
 
 Pensata per uso personale e domestico.
 
-## Novità della release — M3 / 1.3
+## Novità della release — **2.0** (da Produzione 1.3.7)
+
+Copia in Play Console → Produzione → **Note sulla release** (Italiano). Limite tipico **500** caratteri.
+
+```text
+BoxManager 2.0 — allineamento completo:
+
+• Foto oggetti con OCR per la descrizione
+• Export/Import avanzati (selezione, report errori)
+• QR etichette a batch e migliorie Utility
+• Guida rapida aggiornata
+• Maggiore ottimizzazione del codice (prestazioni Play)
+• Correzioni e stabilità
+```
+
+## Novità della release — M3 / 1.3 (storico)
 
 Novità in questa versione:
 
