@@ -9,9 +9,9 @@
 
 | # | Decisione |
 |---|-----------|
-| 1 | **Allineare produzione** alla linea codice completa (release **`1.3.25`** = contenuto 1.3.24 + **R8**) |
+| 1 | **Allineare produzione** alla linea codice completa (release **`2.0`** = contenuto 1.3.24 + **R8**; SI Renato 02/10 nome **2.0**) |
 | 2 | **B-QTY** e **D Dashboard** = **congelati a tempo indeterminato** — zero codice senza nuovo SI |
-| 3 | **Strategia** (post-test / unificazione / Roadmap viva) = **riprendere solo dopo** `produzione 1.3.25 ok` |
+| 3 | **Strategia** (post-test / unificazione / Roadmap viva) = **riprendere solo dopo** `produzione 2.0 ok` |
 | 4 | Documentazione allineata a **questa** attività di chiusura (non riaprire Progetto 2) |
 | 5 | **B-PLAY-DEX-R8** = **in codice** in questa fetta (`isMinifyEnabled` + shrink) per soglia Play DEX ≥25% (oggi ~17%) |
 
@@ -24,8 +24,8 @@
 | Voce | Valore |
 |------|--------|
 | Flavor | **`play`** (mai `.famiglia`) |
-| `versionName` | **`1.3.25`** |
-| `versionCode` | **`29`** |
+| `versionName` | **`2.0`** |
+| `versionCode` | **`30`** |
 | R8 | `isMinifyEnabled = true`, `isShrinkResources = true` |
 | Mapping | upload `mapping.txt` in Play Console (App bundle explorer / deobfuscazione) |
 
@@ -41,7 +41,8 @@ Chiudere Photo&VideoManager e riaprire BoxManager **di solito basta**. Procedura
 2. **File → Open…** → cartella repo **BoxManager** (quella con `settings.gradle.kts` / `app/`).
 3. Attendi **Gradle Sync**.
 4. In basso a sinistra **Build Variants** → **`playDebug`** (non `famiglia*`, non `playRelease` per Run).
-5. Verifica topbar attesa dopo Run: **`v. 1.3.25`**.
+5. Verifica topbar attesa dopo Run: **`v. 2.0`** (senza `famiglia`).  
+   Se vedi `famiglia` nella versione → Build Variants è su **`famiglia*`**: passa a **`playDebug`**.
 
 Se Studio apre ancora l’altro progetto: **File → Open Recent** → scegli esplicitamente BoxManager.  
 Due finestre Studio contemporanee vanno bene; evita di Run sulla finestra sbagliata.
@@ -58,23 +59,24 @@ Poi Sync + Run **`playDebug`**.
 Dopo merge su `main` dell’agente:
 
 1. `git checkout main` + `git pull origin main`
-2. Build Variants → **`playDebug`**
-3. Run sul telefono → topbar **`v. 1.3.25`**
+2. Build Variants → **`playDebug`** (non `famigliaDebug`)
+3. Run sul telefono → topbar **`v. 2.0`**
 4. Smoke minimo: Dashboard, Contenitori, Backup, una ricerca semplice, Guida, (se premium) Foto / QR / Utility
-5. Risposta: `1.3.25 ok` oppure elenco KO
+5. Risposta: `2.0 ok` oppure elenco KO
 
 ### C — AAB produzione
 
-Solo dopo `1.3.25 ok`:
+Solo dopo `2.0 ok`:
 
 1. **Build → Generate Signed App Bundle** → flavor/build **`playRelease`**
 2. Stesso keystore storico BoxManager
-3. Play Console → **Produzione** → nuova release → carica AAB **`1.3.25` (vc 29)**
+3. Play Console → **Produzione** → nuova release → carica AAB **`2.0` (vc 30)**
 4. Carica anche **`mapping.txt`** (deobfuscazione crash) se Console lo chiede
 5. In **App bundle explorer** verifica % **obfuscation / shrinking / optimization** (target ≥ **25%** ciascuna se DEX > 10 MB)
-6. Quando live: messaggio `produzione 1.3.25 ok`
+6. Bozza **1.3.7** in Console: **cancellabile** ora che Produzione 1.3.7 è live (SI 02/10)
+7. Quando live: messaggio `produzione 2.0 ok`
 
-### D — Dopo `produzione 1.3.25 ok` (sessione successiva)
+### D — Dopo `produzione 2.0 ok` (sessione successiva)
 
 1. Freeze docs **B10** + eventuale nota strategia (punto 3).
 2. Photo&VideoManager: ripresa solo con SI Renato.

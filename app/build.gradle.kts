@@ -20,8 +20,8 @@ android {
         applicationId = "it.renatizzi.boxmanager"
         minSdk = 24
         targetSdk = 36
-        versionCode = 29
-        versionName = "1.3.25"
+        versionCode = 30
+        versionName = "2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -44,9 +44,10 @@ android {
     productFlavors {
         create("play") {
             dimension = "distribution"
-            // 02/10: 1.3.25 — allineamento produzione + R8 (DEX Play ≥25%). vc 29.
-            versionCode = 29
-            versionName = "1.3.25"
+            // 02/10: 2.0 — allineamento produzione (linea post-1.3.24) + R8. vc 30.
+            // Topbar ufficiale = solo "2.0" (flavor playDebug/playRelease). Mai famiglia*.
+            versionCode = 30
+            versionName = "2.0"
             buildConfigField("boolean", "FAMILY_BETA", "true")
         }
         create("famiglia") {

@@ -7,7 +7,7 @@
 **Runbook:** [RUNBOOK_M3_GIORNO.md](RUNBOOK_M3_GIORNO.md).
 
 **Delega (SI Renato 10/09):** priorità/impatto/traccia → agente; Renato OK unico su aggregati.  
-**Freeze 02/10:** B-QTY e D = tempo indeterminato; strategia dopo `produzione 1.3.25 ok`.
+**Freeze 02/10:** B-QTY e D = tempo indeterminato; strategia dopo `produzione 2.0 ok`.
 
 Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · **DOPO** · **CONGELATO**
 
@@ -37,7 +37,7 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 | B3–B4 | Gate Disco/Condividi | **FATTO in B-prep** | |
 | B5–B6 | Merge → `main` + **1.3** / vc > Play | **FATTO** | `main` @ `271808c` — play **1.3** / vc **4** (FF merge 13/09) |
 | B7–B9 | AAB play, closed 1.3, scheda, smoke | **FATTO** (closed) | SI Renato 14/09: 1.3 su Play closed, scaricata e testata |
-| B10 | Freeze docs post-M3 | **DOPO** | Dopo `produzione 1.3.25 ok` + eventuale strategia |
+| B10 | Freeze docs post-M3 | **DOPO** | Dopo `produzione 2.0 ok` + eventuale strategia |
 
 **Traccia:** breve **closed 1.3** → poi produzione **solo dopo** email OK Google + closed ok (A10).
 
@@ -54,7 +54,7 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 | C2 | A1 QR avanzato | **FATTO** | SI device Renato 14/09 — play **1.3.3** ok; polish UI batch **1.3.4 OK** |
 | C3 | A2 Cestino | **FATTO** | SI device Renato 16/09 — play **1.3.7 ok** |
 | C4 | A3 → B–C → lote UI → Guida | **FATTO** | A3 1.3.9; B–C 1.3.15; lote **1.3.22**; Guida **1.3.24** |
-| C4bis | Allineamento produzione + R8 | **IN CORSO** | play **1.3.25** / vc **29** — [PROMPT_CONTINUITA_CHIUSURA_ALLINEAMENTO.md](PROMPT_CONTINUITA_CHIUSURA_ALLINEAMENTO.md) |
+| C4bis | Allineamento produzione + R8 | **IN CORSO** | play **2.0** / vc **30** — [PROMPT_CONTINUITA_CHIUSURA_ALLINEAMENTO.md](PROMPT_CONTINUITA_CHIUSURA_ALLINEAMENTO.md) |
 | C5 | D Dashboard | **CONGELATO** | SI 02/10 tempo indeterminato |
 | C6 | B-QTY | **CONGELATO** | SI 02/10 tempo indeterminato |
 
@@ -62,14 +62,14 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 
 ## Smoke telefono playDebug
 
-**Prossimo (allineamento):** dopo merge su `main` → Run **`playDebug`** → topbar **`v. 1.3.25`**.
+**Prossimo (allineamento):** dopo merge su `main` → Run **`playDebug`** → topbar **`v. 2.0`**.
 
 ## Prossimo ora (02/10) — allineamento Store
 
-1. Agente: merge branch R8/docs su **`main`**.
-2. Renato: chiudi Photo&VideoManager → apri BoxManager (vedi prompt chiusura) → `git pull` → **`playDebug`** → `1.3.25 ok`.
-3. AAB **`playRelease`** → Produzione → verifica % DEX in App bundle explorer.
-4. Messaggio: `produzione 1.3.25 ok` → poi B10 / strategia (sessione dedicata).
+1. Agente: merge branch su **`main`**.
+2. Renato: chiudi Photo&VideoManager → apri BoxManager → `git pull` → **`playDebug`** (non famiglia) → `2.0 ok`.
+3. AAB **`playRelease`** → Produzione → verifica % DEX; bozza 1.3.7 **cancellabile**.
+4. Messaggio: `produzione 2.0 ok` → poi B10 / strategia (sessione dedicata).
 5. **Non** aprire B-QTY / D.
 
 **Regola test:** l’agente indica sempre il `versionName` atteso in topbar; merge su **`main`** obbligatorio prima del test telefono (SI 14/09).

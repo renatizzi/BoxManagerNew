@@ -43,7 +43,7 @@ Se hai aperto **Photo&VideoManager** e vuoi tornare a **BoxManager**:
 1. **File → Close Project**
 2. **File → Open…** → cartella repo BoxManager
 3. **Build Variants** → **`playDebug`**
-4. Topbar attesa dopo Run: vedi la versione detta dall’agente (allineamento: **`v. 1.3.25`**)
+4. Topbar attesa dopo Run: vedi la versione detta dall’agente (allineamento: **`v. 2.0`**, flavor **`playDebug`**)
 
 Dettaglio chiusura Store: [PROMPT_CONTINUITA_CHIUSURA_ALLINEAMENTO.md](PROMPT_CONTINUITA_CHIUSURA_ALLINEAMENTO.md).
 

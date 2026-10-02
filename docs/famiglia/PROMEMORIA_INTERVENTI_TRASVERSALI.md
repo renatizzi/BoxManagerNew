@@ -2,9 +2,9 @@
 
 **Aggiornato:** 02/10/2026.  
 **Ingresso chiusura / allineamento produzione** → [PROMPT_CONTINUITA_CHIUSURA_ALLINEAMENTO.md](PROMPT_CONTINUITA_CHIUSURA_ALLINEAMENTO.md).  
-**Build allineamento:** play **`1.3.25`** (vc **29**) = linea 1.3.24 + **R8** (B-PLAY-DEX-R8).  
+**Build allineamento:** play **`2.0`** (vc **30**) = linea 1.3.24 + **R8** (B-PLAY-DEX-R8).  
 **B-QTY** e **D Dashboard:** **congelati a tempo indeterminato** (SI Renato 02/10) — zero codice.  
-**Strategia post-Play:** ripresa **solo dopo** messaggio `produzione 1.3.25 ok`.  
+**Strategia post-Play:** ripresa **solo dopo** messaggio `produzione 2.0 ok`.  
 **Photo&VideoManager:** in pausa finché OK residui BoxManager.  
 **A3 Foto — CHIUSO** (SI device 18/09, play **1.3.9 ok**) → [PROMPT_CONTINUITA_A3_FOTO.md](PROMPT_CONTINUITA_A3_FOTO.md).  
 **B–C Export/Import — CHIUSO** (SI Renato 19/09) → [PROMPT_CONTINUITA_BC_EXPORT.md](PROMPT_CONTINUITA_BC_EXPORT.md).  
@@ -100,7 +100,7 @@ Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino
 
 | ID | Data | Indicazione | Stato |
 |----|------|-------------|-------|
-| **B-PLAY-DEX-R8** | 16/09/2026 *(presa in carico 02/10)* | Play DEX obfuscation bassa (~17%); enforcement feb 2027 ≥25% obfuscation/shrinking/optimization se DEX > 10 MB | **In codice 1.3.25** — R8 release; SI device + AAB produzione in corso |
+| **B-PLAY-DEX-R8** | 16/09/2026 *(presa in carico 02/10)* | Play DEX obfuscation bassa (~17%); enforcement feb 2027 ≥25% obfuscation/shrinking/optimization se DEX > 10 MB | **In codice 2.0** — R8 release; SI device + AAB produzione in corso |
 | **B-QTY-KPI-SEARCH** | 08/09/2026 *(freeze 02/10)* | Quantità oggetti → KPI / Ricerca avanzata | **Congelato a tempo indeterminato** — SI Renato 02/10 |
 | **B-D-DASHBOARD** | 08/09/2026 *(freeze 02/10)* | D Dashboard / UI avanzata (U0) | **Congelato a tempo indeterminato** — SI Renato 02/10 |
 | **B-VOICE-MIC-ACCIDENTAL** | 19/09/2026 | Trovare una soluzione per evitare che in fase di editing, per i campi con input anche vocale, parta involontariamente la registrazione se si sfiora il microfono | **SI 1.3.22 ok** Renato 19/09 |
