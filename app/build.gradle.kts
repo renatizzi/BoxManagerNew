@@ -20,8 +20,8 @@ android {
         applicationId = "it.renatizzi.boxmanager"
         minSdk = 24
         targetSdk = 36
-        versionCode = 28
-        versionName = "1.3.24"
+        versionCode = 29
+        versionName = "1.3.25"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -44,9 +44,9 @@ android {
     productFlavors {
         create("play") {
             dimension = "distribution"
-            // 21/09: 1.3.24 — Guida prosa Renato + CSV/ZIP senza v1. vc 28.
-            versionCode = 28
-            versionName = "1.3.24"
+            // 02/10: 1.3.25 — allineamento produzione + R8 (DEX Play ≥25%). vc 29.
+            versionCode = 29
+            versionName = "1.3.25"
             buildConfigField("boolean", "FAMILY_BETA", "true")
         }
         create("famiglia") {
@@ -60,7 +60,9 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            // Play DEX: obfuscation / shrinking / optimization (B-PLAY-DEX-R8).
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

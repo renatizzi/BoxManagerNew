@@ -1,21 +1,49 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# BoxManager — R8 / ProGuard (release play)
+# Obiettivo Play: ≥25% obfuscation / shrinking / optimization (DEX), feb 2027.
+# Fonte: B-PLAY-DEX-R8 + Play Console technical quality (DEX code optimization).
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# Stack traces utili in Crashlytics / Play Vitals
+-keepattributes SourceFile,LineNumberTable
+-renamesourcefileattribute SourceFile
+-keepattributes *Annotation*,Signature,InnerClasses,EnclosingMethod
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# Kotlin
+-dontwarn kotlin.**
+-keep class kotlin.Metadata { *; }
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# Room (entità + DAO generati)
+-keep class * extends androidx.room.RoomDatabase
+-keep @androidx.room.Entity class *
+-keep @androidx.room.Dao class *
+-dontwarn androidx.room.paging.**
+
+# Parcelable / enum usati da Intent / Bundle
+-keepclassmembers class * implements android.os.Parcelable {
+    public static final ** CREATOR;
+}
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
+# View Binding / layout XML (se referenziati per nome)
+-keepclassmembers class * extends android.app.Activity {
+    public void *(android.view.View);
+}
+
+# ML Kit barcode + OCR testo
+-keep class com.google.mlkit.** { *; }
+-dontwarn com.google.mlkit.**
+-keep class com.google.android.gms.internal.mlkit_** { *; }
+-dontwarn com.google.android.gms.internal.mlkit_**
+
+# CameraX
+-keep class androidx.camera.** { *; }
+-dontwarn androidx.camera.**
+
+# ZXing (QR generazione)
+-keep class com.google.zxing.** { *; }
+-dontwarn com.google.zxing.**
+
+# JSON org.json (già in Android SDK; keep se usiamo reflection indiretta)
+-dontwarn org.json.**
