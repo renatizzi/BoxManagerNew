@@ -1,7 +1,9 @@
 # Play — keystore, AAB, icona 512
 
-**Ingresso cutover M3 (post-test):** [PROMPT_CONTINUITA_M3_MERGE_PLAY.md](../famiglia/PROMPT_CONTINUITA_M3_MERGE_PLAY.md) (CONVALIDATO 10/09/2026).  
-Finché il test chiuso **1.2** è aperto: **niente** AAB flavor `famiglia` / `.famiglia` su Console (C8); niente merge feature su `main`.
+**Ingresso chiusura / allineamento produzione (02/10/2026):** [PROMPT_CONTINUITA_CHIUSURA_ALLINEAMENTO.md](../famiglia/PROMPT_CONTINUITA_CHIUSURA_ALLINEAMENTO.md).  
+**Build allineamento:** play **`1.3.25`** / vc **29** (R8 minify+shrink).  
+Storico cutover M3: [PROMPT_CONTINUITA_M3_MERGE_PLAY.md](../famiglia/PROMPT_CONTINUITA_M3_MERGE_PLAY.md).  
+**Mai** AAB flavor `famiglia` / `.famiglia` su Console (C8).
 
 ### Checklist Console M3 (C1–C8) — solo a test chiuso + SI
 

@@ -36,6 +36,17 @@ git checkout cursor/family-b-beta-75ee
 git push -u origin cursor/family-b-beta-75ee
 ```
 
+## Android Studio — quale progetto
+
+Se hai aperto **Photo&VideoManager** e vuoi tornare a **BoxManager**:
+
+1. **File → Close Project**
+2. **File → Open…** → cartella repo BoxManager
+3. **Build Variants** → **`playDebug`**
+4. Topbar attesa dopo Run: vedi la versione detta dall’agente (allineamento: **`v. 1.3.25`**)
+
+Dettaglio chiusura Store: [PROMPT_CONTINUITA_CHIUSURA_ALLINEAMENTO.md](PROMPT_CONTINUITA_CHIUSURA_ALLINEAMENTO.md).
+
 ## Android Studio — build sul telefono
 
 ### A) Sviluppo (lavoro quotidiano)

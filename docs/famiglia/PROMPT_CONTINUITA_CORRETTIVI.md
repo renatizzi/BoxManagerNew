@@ -14,7 +14,7 @@ Fonte viva: [PROMEMORIA](PROMEMORIA_INTERVENTI_TRASVERSALI.md) — sezione **Che
 |----|-------------|
 | **B-CURSOR-CREDITS** | Ottimizzare sessioni Cursor (crediti) — **Aperto** 16/09 |
 | **B-TEST-ISTRUZIONI-OPERATIVE** | Test telefono: istruzioni operative obbligatorie (SI 16/09) |
-| **B-PLAY-DEX-R8** | Play DEX obfuscation 1%; enforcement feb 2027 — non bloccante oggi |
+| **B-PLAY-DEX-R8** | Play DEX — **in codice 1.3.25** (R8); SI device + AAB produzione |
 | **B-IDEA-OCR-COVER** | OCR Descrizione — **FATTO** in A3 (SI device 18/09, 1.3.9 ok) |
 | **B-ROTATE-FORM-DRAFT** | Rotazione in inserimento: testo sparisce — **FATTO C1** 14/09 |
 | **B-PIANO-RILASCIO-RP** | **CONVALIDATO** — M3: [PROMPT_CONTINUITA_M3_MERGE_PLAY.md](../famiglia/PROMPT_CONTINUITA_M3_MERGE_PLAY.md) |

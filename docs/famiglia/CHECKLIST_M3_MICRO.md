@@ -1,14 +1,15 @@
 # Checklist M3 — micro-step (stato vivo)
 
-**Aggiornato:** 13/09/2026.  
-**Ingresso cutover (nuova sessione):** [PROMPT_CONTINUITA_M3_CUTOVER.md](PROMPT_CONTINUITA_M3_CUTOVER.md).  
+**Aggiornato:** 02/10/2026.  
+**Ingresso chiusura allineamento:** [PROMPT_CONTINUITA_CHIUSURA_ALLINEAMENTO.md](PROMPT_CONTINUITA_CHIUSURA_ALLINEAMENTO.md).  
+**Storico cutover:** [PROMPT_CONTINUITA_M3_CUTOVER.md](PROMPT_CONTINUITA_M3_CUTOVER.md).  
 **Contesto prep:** [PROMPT_CONTINUITA_M3_MERGE_PLAY.md](PROMPT_CONTINUITA_M3_MERGE_PLAY.md).  
 **Runbook:** [RUNBOOK_M3_GIORNO.md](RUNBOOK_M3_GIORNO.md).
 
 **Delega (SI Renato 10/09):** priorità/impatto/traccia → agente; Renato OK unico su aggregati.  
-Renato: smoke device, screenshot, Console/AAB sul PC, SI su merito quando previsto.
+**Freeze 02/10:** B-QTY e D = tempo indeterminato; strategia dopo `produzione 1.3.25 ok`.
 
-Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · **DOPO**
+Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · **DOPO** · **CONGELATO**
 
 ---
 
@@ -36,7 +37,7 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 | B3–B4 | Gate Disco/Condividi | **FATTO in B-prep** | |
 | B5–B6 | Merge → `main` + **1.3** / vc > Play | **FATTO** | `main` @ `271808c` — play **1.3** / vc **4** (FF merge 13/09) |
 | B7–B9 | AAB play, closed 1.3, scheda, smoke | **FATTO** (closed) | SI Renato 14/09: 1.3 su Play closed, scaricata e testata |
-| B10 | Freeze docs post-M3 | **DOPO** | Con SI |
+| B10 | Freeze docs post-M3 | **DOPO** | Dopo `produzione 1.3.25 ok` + eventuale strategia |
 
 **Traccia:** breve **closed 1.3** → poi produzione **solo dopo** email OK Google + closed ok (A10).
 
@@ -46,51 +47,29 @@ Legenda: **FATTO** · **IN CORSO** · **ATTESA Renato** · **ATTESA Google** · 
 
 ## C — Dopo M3
 
-| # | Micro-step | Stato |
-|---|------------|-------|
+| # | Micro-step | Stato | Note |
+|---|------------|-------|------|
 | C1 | B-ROTATE-FORM-DRAFT | **FATTO** | SI Renato 14/09; play **1.3.1** |
 | — | B-AUTO-FILES-LIST | **FATTO** | SI 14/09; play **1.3.2** — PRE_* fuori lista Ripristino |
 | C2 | A1 QR avanzato | **FATTO** | SI device Renato 14/09 — play **1.3.3** ok; polish UI batch **1.3.4 OK** |
 | C3 | A2 Cestino | **FATTO** | SI device Renato 16/09 — play **1.3.7 ok** |
-| C4 | A3 → B–C → B-QTY | **B–C IN CORSO** | B1/B2 **FATTO**; B3 → **1.3.12** — [PROMPT_CONTINUITA_BC_EXPORT.md](PROMPT_CONTINUITA_BC_EXPORT.md) |
-| C5 | D Dashboard | no-code |
+| C4 | A3 → B–C → lote UI → Guida | **FATTO** | A3 1.3.9; B–C 1.3.15; lote **1.3.22**; Guida **1.3.24** |
+| C4bis | Allineamento produzione + R8 | **IN CORSO** | play **1.3.25** / vc **29** — [PROMPT_CONTINUITA_CHIUSURA_ALLINEAMENTO.md](PROMPT_CONTINUITA_CHIUSURA_ALLINEAMENTO.md) |
+| C5 | D Dashboard | **CONGELATO** | SI 02/10 tempo indeterminato |
+| C6 | B-QTY | **CONGELATO** | SI 02/10 tempo indeterminato |
 
 ---
 
 ## Smoke telefono playDebug
 
-**FATTO** SI Renato 13/09 — topbar `v. 1.3` + smoke ok (Dashboard, Contenitori, Backup, lingua, Dark, paywall Disco/Condividi, ricerca).
+**Prossimo (allineamento):** dopo merge su `main` → Run **`playDebug`** → topbar **`v. 1.3.25`**.
 
-## Prossimo (solo Renato PC — B7)
+## Prossimo ora (02/10) — allineamento Store
 
-**Regola Renato 13/09 + 14/09 (permanente) — processo ovvio:**
-1. Agente porta il codice su **`main`** (merge del branch di lavoro **prima** di chiedere il test)
-2. Renato: `git checkout main` + `git pull origin main` + **Run `playDebug`** → topbar = versione detta dall’agente (ora **`v. 1.3.9`**, senza famiglia). **Mai** altri branch per il test telefono.
-3. Solo dopo OK test: Renato crea AAB **`playRelease`** (con firma) → Play → Invio
-4. Scheda IT/EN + `BOXMANAGER-TESTER` se closed
-5. Scrivi: `SI AAB closed`
-6. **Non** produzione ampia finché email Google OK + closed ok
-
-## Prossimo ora (14/09) — due binari in parallelo
-
-**Binario Play (non blocca il codice):**
-1. **email Google OK** (SI Renato 16/09). **DECISO:** AAB da `main` **1.3.7** → **closed** breve → poi **produzione** (SI Renato 16/09).
-2. **Stato Console 19/09 (screenshot Renato):** AAB **11 (1.3.7)** su Produzione = **In revisione** (non ancora live pubblica). Esiste anche una **Bozza** separata dello stesso 11 (1.3.7) — non confondere / non reinviare. Su **Test chiusi** il bundle risulta attivo. Dettaglio: [PROMPT_CONTINUITA_M3_CUTOVER.md](PROMPT_CONTINUITA_M3_CUTOVER.md) § Stato Play 1.3.7.
-3. Paesi UE (inglese diffuso): selezionati, **da confermare** in Console.
-4. Scheda Store: IT ok; EN = `docs/play/store-listing-en.md` + screenshot EN.
-5. Attesa esito Google su produzione → poi freeze docs **B10** con SI.
-6. **PAUSA 19/09 (SI Renato):** nessun lavoro codice finché Google non convalida Produzione 1.3.7. Ripresa: messaggio `produzione 1.3.7 ok`.
-7. **A1 QR avanzato:** SI Renato 19/09 in coda — **aprire codice solo dopo** ok Play.
-
-**Binario piano:**
-1. **C1** — **FATTO** (1.3.1).
-2. **B-AUTO-FILES-LIST** — **FATTO** (1.3.3 ok).
-3. **C2 / A1** — **FATTO** SI device 14/09 (1.3.3 + polish **1.3.4 OK**).
-4. **C3 / A2 Cestino** — **FATTO** SI device 16/09 (**1.3.7 ok**).
-5. Backlog QR batch: **B-QR-BATCH-CODE-FONT**, **B-QR-BATCH-BOX-NAME** — Aperto 16/09.
-6. Backlog UI: **B-UI-BUTTONS-ACCESSO-RAPIDO** — Aperto 16/09.
-7. **C4 / A3 Foto** — **FATTO** SI device 18/09 (**1.3.9 ok**).
-8. **Prossimo codice:** B–C Export/Import — [PROMPT_CONTINUITA_BC_EXPORT.md](PROMPT_CONTINUITA_BC_EXPORT.md) (B1 selezione **1.3.10**); poi backlog Utility/Premium/QR **in sequenza** dopo chiusura B–C; **C5** Dashboard no-code.
+1. Agente: merge branch R8/docs su **`main`**.
+2. Renato: chiudi Photo&VideoManager → apri BoxManager (vedi prompt chiusura) → `git pull` → **`playDebug`** → `1.3.25 ok`.
+3. AAB **`playRelease`** → Produzione → verifica % DEX in App bundle explorer.
+4. Messaggio: `produzione 1.3.25 ok` → poi B10 / strategia (sessione dedicata).
+5. **Non** aprire B-QTY / D.
 
 **Regola test:** l’agente indica sempre il `versionName` atteso in topbar; merge su **`main`** obbligatorio prima del test telefono (SI 14/09).
-

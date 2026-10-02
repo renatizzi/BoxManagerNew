@@ -1,15 +1,15 @@
 # Promemoria — interventi trasversali (BoxManager)
 
-**Aggiornato:** 19/09/2026.  
+**Aggiornato:** 02/10/2026.  
+**Ingresso chiusura / allineamento produzione** → [PROMPT_CONTINUITA_CHIUSURA_ALLINEAMENTO.md](PROMPT_CONTINUITA_CHIUSURA_ALLINEAMENTO.md).  
+**Build allineamento:** play **`1.3.25`** (vc **29**) = linea 1.3.24 + **R8** (B-PLAY-DEX-R8).  
+**B-QTY** e **D Dashboard:** **congelati a tempo indeterminato** (SI Renato 02/10) — zero codice.  
+**Strategia post-Play:** ripresa **solo dopo** messaggio `produzione 1.3.25 ok`.  
+**Photo&VideoManager:** in pausa finché OK residui BoxManager.  
 **A3 Foto — CHIUSO** (SI device 18/09, play **1.3.9 ok**) → [PROMPT_CONTINUITA_A3_FOTO.md](PROMPT_CONTINUITA_A3_FOTO.md).  
 **B–C Export/Import — CHIUSO** (SI Renato 19/09) → [PROMPT_CONTINUITA_BC_EXPORT.md](PROMPT_CONTINUITA_BC_EXPORT.md).  
 **Lote UI — CHIUSO** (SI device 19/09, play **1.3.22 ok**) → [PROMPT_CONTINUITA_UI_LOTE.md](PROMPT_CONTINUITA_UI_LOTE.md).  
-**Play 1.3.7 (19/09):** Produzione = **In revisione** (non live); esiste anche Bozza duplicata — [PROMPT_CONTINUITA_M3_CUTOVER.md](PROMPT_CONTINUITA_M3_CUTOVER.md) § Stato Play 1.3.7.  
-**PAUSA (SI Renato 19/09):** zero codice in attesa ok Google su produzione 1.3.7. Ripresa con messaggio `produzione 1.3.7 ok` (poi A1 in coda).  
-**A1 QR avanzato:** SI Renato 19/09 — **in coda** dopo Play.  
-Ingresso sessione 07/09 → [PROMPT_CONTINUITA_07_09_DISCO_FOTO.md](PROMPT_CONTINUITA_07_09_DISCO_FOTO.md).  
-**Ingresso M3 / merge Play / roadmap** → [PROMPT_CONTINUITA_M3_MERGE_PLAY.md](PROMPT_CONTINUITA_M3_MERGE_PLAY.md).  
-**Ingresso cutover 1.3 (nuova sessione)** → [PROMPT_CONTINUITA_M3_CUTOVER.md](PROMPT_CONTINUITA_M3_CUTOVER.md).  
+**Storico cutover M3** → [PROMPT_CONTINUITA_M3_CUTOVER.md](PROMPT_CONTINUITA_M3_CUTOVER.md).  
 **Checklist micro-step M3** → [CHECKLIST_M3_MICRO.md](CHECKLIST_M3_MICRO.md).  
 Correttivi → [PROMPT_CONTINUITA_CORRETTIVI.md](PROMPT_CONTINUITA_CORRETTIVI.md).  
 Regola: `.cursor/rules/annotazioni-renato.mdc`.  
@@ -46,8 +46,8 @@ Sequenza concordata: **A1 QR avanzato → A2 Cestino → A3 Foto** → poi B/C/D
 | **A2 Cestino** | [REQUISITI_CESTINO.md](REQUISITI_CESTINO.md) (**congelato** + CONVALIDA documento 07/09) · [ASSESSMENT_CESTINO.md](ASSESSMENT_CESTINO.md) (storico) | **FATTO** SI device Renato 16/09 — play **1.3.7 ok** |
 | **A3 Foto oggetto** | [REQUISITI_FOTO_OGGETTO.md](REQUISITI_FOTO_OGGETTO.md) (**congelato** + CONVALIDA documento 07/09; **R6 + T6bis Premium**) · [ASSESSMENT_FOTO_MINIATURA.md](ASSESSMENT_FOTO_MINIATURA.md) (storico) · OCR: [ASSESSMENT_OCR_COVER.md](ASSESSMENT_OCR_COVER.md) · ingresso: [PROMPT_CONTINUITA_A3_FOTO.md](PROMPT_CONTINUITA_A3_FOTO.md) | **FATTO** SI device Renato 18/09 — play **1.3.9 ok** (foto+OCR+T4/T5 + hotfix Utility/EXIF/OCR) |
 | **B–C Export/Import avanzati** | [REQUISITI_EXPORT_IMPORT_AVANZATO.md](REQUISITI_EXPORT_IMPORT_AVANZATO.md) (**congelato** + CONVALIDA documento 08/09) · [ASSESSMENT_EXPORT_IMPORT_AVANZATO.md](ASSESSMENT_EXPORT_IMPORT_AVANZATO.md) · ingresso: [PROMPT_CONTINUITA_BC_EXPORT.md](PROMPT_CONTINUITA_BC_EXPORT.md) | **FATTO** SI Renato 19/09 — B1–B4; report `REPORT_ERRORI_…` |
-| **D Dashboard / UI avanzata** | [REQUISITI_DASHBOARD_UI_AVANZATA.md](REQUISITI_DASHBOARD_UI_AVANZATA.md) (**congelato** + CONVALIDA documento 08/09; U0; **no codice**) · [ASSESSMENT_DASHBOARD_UI_AVANZATA.md](ASSESSMENT_DASHBOARD_UI_AVANZATA.md) | Requisiti chiusi; zero codice finché SI apertura |
-| **B-QTY-KPI-SEARCH** | [REQUISITI_QTY_KPI_SEARCH.md](REQUISITI_QTY_KPI_SEARCH.md) (**congelato** + CONVALIDA documento 08/09) · [ASSESSMENT_QTY_KPI_SEARCH.md](ASSESSMENT_QTY_KPI_SEARCH.md) | Requisiti chiusi (K1+K2); zero codice finché SI apertura |
+| **D Dashboard / UI avanzata** | [REQUISITI_DASHBOARD_UI_AVANZATA.md](REQUISITI_DASHBOARD_UI_AVANZATA.md) (**congelato** + CONVALIDA documento 08/09; U0; **no codice**) · [ASSESSMENT_DASHBOARD_UI_AVANZATA.md](ASSESSMENT_DASHBOARD_UI_AVANZATA.md) | **Congelato a tempo indeterminato** (SI Renato 02/10) — zero codice |
+| **B-QTY-KPI-SEARCH** | [REQUISITI_QTY_KPI_SEARCH.md](REQUISITI_QTY_KPI_SEARCH.md) (**congelato** + CONVALIDA documento 08/09) · [ASSESSMENT_QTY_KPI_SEARCH.md](ASSESSMENT_QTY_KPI_SEARCH.md) | **Congelato a tempo indeterminato** (SI Renato 02/10) — zero codice |
 | **B-PIANO-RILASCIO-RP** | [REQUISITI_PIANO_RILASCIO_ROADMAP.md](REQUISITI_PIANO_RILASCIO_ROADMAP.md) (**congelato**) · Nota 9.2 Allegati **4.21**+**4.23** | **CONVALIDATO** recepimento Nota 08/09; zero codice P2 fino a fine Play |
 
 ---
@@ -100,6 +100,9 @@ Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino
 
 | ID | Data | Indicazione | Stato |
 |----|------|-------------|-------|
+| **B-PLAY-DEX-R8** | 16/09/2026 *(presa in carico 02/10)* | Play DEX obfuscation bassa (~17%); enforcement feb 2027 ≥25% obfuscation/shrinking/optimization se DEX > 10 MB | **In codice 1.3.25** — R8 release; SI device + AAB produzione in corso |
+| **B-QTY-KPI-SEARCH** | 08/09/2026 *(freeze 02/10)* | Quantità oggetti → KPI / Ricerca avanzata | **Congelato a tempo indeterminato** — SI Renato 02/10 |
+| **B-D-DASHBOARD** | 08/09/2026 *(freeze 02/10)* | D Dashboard / UI avanzata (U0) | **Congelato a tempo indeterminato** — SI Renato 02/10 |
 | **B-VOICE-MIC-ACCIDENTAL** | 19/09/2026 | Trovare una soluzione per evitare che in fase di editing, per i campi con input anche vocale, parta involontariamente la registrazione se si sfiora il microfono | **SI 1.3.22 ok** Renato 19/09 |
 | **B-UTILITY-BUTTON-HEIGHT** | 18/09/2026 | Ridurre l'altezza dei bottoni di utility in modo da evitare lo scrolling | **SI 1.3.22 ok** Renato 19/09 — tile weight griglia 4×2 |
 | **B-UTILITY-RIPRISTINA-VISIBLE** | 18/09/2026 | Il tasto Ripristina si trova in fondo alla pagina e senza scrolling non si vede | **SI 1.3.22 ok** Renato 19/09 |
@@ -117,7 +120,6 @@ Indicazioni di Renato **fuori dalla fetta in corso**. Restano qui in cima **fino
 | **B-PRE-PLAY-PHONE-TEST** | 13/09/2026 | Processo ovvio: agente modifica → Renato pull + **Run `playDebug`** (senza firma) → OK test → solo allora AAB **`playRelease`** firmato su Play. Mai Run su `playRelease` per le prove. **SI 14/09:** l’agente comunica **sempre** il `versionName` atteso in topbar (es. `v. 1.3.1`) prima del test. | **SI Renato 13/09** + precisazione versione 14/09 — SOLO_TU / checklist |
 | **B-NO-FAMILY-UI** | 10/09/2026 | Chiarito: «family» = nome tecnico provvisorio (flavor/branch), non seconda app. Ufficiale = **BoxManager 1.3** su `main`, package senza `.famiglia`, topbar **1.3**. **Non** obbligatorio rimuovere «famiglia/familiari/family» da guida e messaggi in-app. | **SI Renato 10/09 sera** — correzione malinteso; runbook aggiornato |
 | **B-PIANO-RILASCIO-RP** | 08/09/2026 | Piano strutturato: rilascio funzioni già implementate; Play Console; Roadmap ufficiale; priorità/premium; verifica Nota vs analisi. | **CONVALIDATO** — Nota 9.2 quadro 08/09 + Allegati **4.21**+**4.23** (SI aggiornamento Nota 08/09) |
-| **B-QTY-KPI-SEARCH** | 08/09/2026 | Quantità oggetti (facoltativa) come **chiave** per nuovi KPI e nuove query Ricerca avanzata. | **CONGELATO** — [REQUISITI_QTY_KPI_SEARCH.md](REQUISITI_QTY_KPI_SEARCH.md); zero codice finché SI apertura |
 
 **Chiuso di recente:** lote UI **1.3.22 ok** (Utility tile, QR BATCH Utility, ORDINA, mic, premium, QR PDF). **B-SEL-CARTELLA** — CONVALIDATO (Nota 9.2 Allegato **4.22**). **Foto oggetto** — CONVALIDA aggiornamento documento 07/09/2026 ([REQUISITI](REQUISITI_FOTO_OGGETTO.md)).
 

@@ -1,11 +1,11 @@
 # Requisiti — Quantità oggetto come chiave KPI / Ricerca avanzata (B-QTY-KPI-SEARCH)
 
-**Stato:** **CONGELATO** 08/09/2026 (SI Renato).  
+**Stato:** **CONGELATO a tempo indeterminato** (SI Renato **02/10/2026** — chiusura allineamento Play). Congelato requisiti 08/09/2026.  
 **CONVALIDA analisi/requisiti (passo 3):** SI Renato 08/09/2026 — «Ok su tutto» = QTY-Q1–Q8 come raccomandato.  
 **CONVALIDA aggiornamento documento (passo 4):** SI Renato 08/09/2026 («Convalido»).  
-**Uso:** riferimento funzionale fino all’implementazione.  
+**Uso:** riferimento funzionale **solo** se in futuro SI riapertura esplicita.  
 **Assessment:** [ASSESSMENT_QTY_KPI_SEARCH.md](ASSESSMENT_QTY_KPI_SEARCH.md) (storico; prevale **questo** file).  
-**STOP codice** fino a fine test Play / SI «apri fetta codice».  
+**STOP codice** a tempo indeterminato — niente «apri fetta» implicito.  
 **Relazione D:** Dashboard/UI resta [REQUISITI_DASHBOARD_UI_AVANZATA.md](REQUISITI_DASHBOARD_UI_AVANZATA.md) (U0, no codice) — **questa voce non apre D**.
 
 ---

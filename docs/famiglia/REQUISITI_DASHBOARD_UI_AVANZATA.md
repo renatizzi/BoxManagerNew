@@ -1,11 +1,11 @@
 # Requisiti — Dashboard / UI avanzata (Progetto 2 / D)
 
-**Stato:** **CONVALIDATO** (documento + requisiti) — 08/09/2026.  
+**Stato:** **CONGELATO a tempo indeterminato** (SI Renato **02/10/2026** — chiusura allineamento Play). Documento CONVALIDATO 08/09/2026.  
 **CONVALIDA passo 3 e 4:** SI Renato 08/09/2026 — D-Q1/2/4/5/6 come raccomandato; **D-Q3 = U0**; **D-Q7 = nessun codice**; conferma esplicita «D-Q3: U0 e D-Q7: NO codice».  
-**Uso:** preservare i requisiti Nota §4.1.6 senza aprire fetta applicativa.  
+**Uso:** preservare i requisiti Nota §4.1.6; **nessuna** fetta applicativa.  
 **Assessment:** [ASSESSMENT_DASHBOARD_UI_AVANZATA.md](ASSESSMENT_DASHBOARD_UI_AVANZATA.md).  
-**STOP codice** su D finché non c’è SI esplicito di apertura (D-Q7).  
-**Correlato:** [REQUISITI_QTY_KPI_SEARCH.md](REQUISITI_QTY_KPI_SEARCH.md) (B-QTY-KPI-SEARCH — **CONGELATO**).
+**STOP codice** a tempo indeterminato — solo nuovo SI esplicito di riapertura.  
+**Correlato:** [REQUISITI_QTY_KPI_SEARCH.md](REQUISITI_QTY_KPI_SEARCH.md) (B-QTY — stesso freeze 02/10).
 
 ---
 
