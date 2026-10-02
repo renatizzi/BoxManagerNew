@@ -36,14 +36,18 @@ git checkout cursor/family-b-beta-75ee
 git push -u origin cursor/family-b-beta-75ee
 ```
 
-## Android Studio — quale progetto
+## Android Studio — quale progetto / quale Run
 
 Se hai aperto **Photo&VideoManager** e vuoi tornare a **BoxManager**:
 
 1. **File → Close Project**
 2. **File → Open…** → cartella repo BoxManager
-3. **Build Variants** → **`playDebug`**
-4. Topbar attesa dopo Run: vedi la versione detta dall’agente (allineamento: **`v. 2.0`**, flavor **`playDebug`**)
+3. In alto nella toolbar Run: scegli **`Play Debug`** (non **Famiglia Debug**)
+4. **Build Variants** → **`playDebug`**
+5. Topbar attesa: **`v. 2.0`** (senza `famiglia`)
+
+**Due app sul telefono:** Play = `it.renatizzi.boxmanager`; sviluppo = `it.renatizzi.boxmanager.famiglia`.  
+Disinstallare una **non** toglie l’altra. Se la topbar mostra `1.3-famigliaB5.…` stai aprendo/lanciare la build **famiglia**.
 
 Dettaglio chiusura Store: [PROMPT_CONTINUITA_CHIUSURA_ALLINEAMENTO.md](PROMPT_CONTINUITA_CHIUSURA_ALLINEAMENTO.md).
 

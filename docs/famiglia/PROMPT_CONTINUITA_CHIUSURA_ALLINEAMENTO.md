@@ -40,9 +40,12 @@ Chiudere Photo&VideoManager e riaprire BoxManager **di solito basta**. Procedura
 1. **File → Close Project** (chiude Photo&VideoManager).
 2. **File → Open…** → cartella repo **BoxManager** (quella con `settings.gradle.kts` / `app/`).
 3. Attendi **Gradle Sync**.
-4. In basso a sinistra **Build Variants** → **`playDebug`** (non `famiglia*`, non `playRelease` per Run).
-5. Verifica topbar attesa dopo Run: **`v. 2.0`** (senza `famiglia`).  
-   Se vedi `famiglia` nella versione → Build Variants è su **`famiglia*`**: passa a **`playDebug`**.
+4. In alto nella toolbar: configurazione Run = **`Play Debug`** (non **Famiglia Debug**).  
+5. **Build Variants** → **`playDebug`**.  
+6. Verifica topbar attesa dopo Run: **`v. 2.0`** (senza `famiglia`).  
+   Se vedi `1.3-famigliaB5.…` → stai ancora su **Famiglia Debug** / package `.famiglia`.
+
+**Due package sul telefono:** `it.renatizzi.boxmanager` (play) e `it.renatizzi.boxmanager.famiglia` (sviluppo). Disinstallare uno non toglie l’altro.
 
 Se Studio apre ancora l’altro progetto: **File → Open Recent** → scegli esplicitamente BoxManager.  
 Due finestre Studio contemporanee vanno bene; evita di Run sulla finestra sbagliata.
